@@ -105,7 +105,7 @@ WebRTCSession::init(std::string *errorMessage)
 namespace {
 
 std::string localsdp_;
-std::vector<mtx::events::msg::CallCandidates::Candidate> localcandidates_;
+std::vector<mtx::events::voip::CallCandidates::Candidate> localcandidates_;
 bool haveAudioStream_     = false;
 bool haveVideoStream_     = false;
 GstPad *localPiPSinkPad_  = nullptr;
@@ -726,7 +726,7 @@ WebRTCSession::acceptAnswer(const std::string &sdp)
 
 void
 WebRTCSession::acceptICECandidates(
-  const std::vector<mtx::events::msg::CallCandidates::Candidate> &candidates)
+  const std::vector<mtx::events::voip::CallCandidates::Candidate> &candidates)
 {
     if (state_ >= State::INITIATED) {
         for (const auto &c : candidates) {
@@ -1151,7 +1151,8 @@ WebRTCSession::acceptAnswer(const std::string &)
 }
 
 void
-WebRTCSession::acceptICECandidates(const std::vector<mtx::events::msg::CallCandidates::Candidate> &)
+WebRTCSession::acceptICECandidates(
+  const std::vector<mtx::events::voip::CallCandidates::Candidate> &)
 {}
 
 bool

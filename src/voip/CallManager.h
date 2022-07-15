@@ -67,15 +67,16 @@ public slots:
     void toggleMicMute();
     void toggleLocalPiP() { session_.toggleLocalPiP(); }
     void acceptInvite();
-    void hangUp(mtx::events::msg::CallHangUp::Reason = mtx::events::msg::CallHangUp::Reason::User);
+    void
+      hangUp(mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::User);
     QStringList windowList();
     void previewWindow(unsigned int windowIndex) const;
 
 signals:
-    void newMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
-    void newMessage(const QString &roomid, const mtx::events::msg::CallCandidates &);
-    void newMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
-    void newMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
+    void newMessage(const QString &roomid, const mtx::events::voip::CallInvite &);
+    void newMessage(const QString &roomid, const mtx::events::voip::CallCandidates &);
+    void newMessage(const QString &roomid, const mtx::events::voip::CallAnswer &);
+    void newMessage(const QString &roomid, const mtx::events::voip::CallHangUp &);
     void newInviteState();
     void newCallState();
     void micMuteChanged();
@@ -92,11 +93,13 @@ private:
     QString callPartyDisplayName_;
     QString callPartyAvatarUrl_;
     std::string callid_;
+    std::string partyid_       = "";
+    std::string invitee_       = "";
     const uint32_t timeoutms_  = 120000;
     webrtc::CallType callType_ = webrtc::CallType::VOICE;
     bool haveCallInvite_       = false;
     std::string inviteSDP_;
-    std::vector<mtx::events::msg::CallCandidates::Candidate> remoteICECandidates_;
+    std::vector<mtx::events::voip::CallCandidates::Candidate> remoteICECandidates_;
     std::vector<std::string> turnURIs_;
     QTimer turnServerTimer_;
     QMediaPlayer player_;
@@ -104,11 +107,11 @@ private:
 
     template<typename T>
     bool handleEvent(const mtx::events::collections::TimelineEvents &event);
-    void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &);
-    void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallCandidates> &);
-    void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &);
-    void handleEvent(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &);
-    void answerInvite(const mtx::events::msg::CallInvite &, bool isVideo);
+    void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallInvite> &);
+    void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallCandidates> &);
+    void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &);
+    void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &);
+    void answerInvite(const mtx::events::voip::CallInvite &, bool isVideo);
     void generateCallID();
     QStringList devices(bool isVideo) const;
     void clear();

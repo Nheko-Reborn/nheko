@@ -1639,18 +1639,18 @@ isMessage(const mtx::events::EncryptedEvent<T> &)
 }
 
 auto
-isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallInvite> &)
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallInvite> &)
 {
     return true;
 }
 
 auto
-isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallAnswer> &)
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &)
 {
     return true;
 }
 auto
-isMessage(const mtx::events::RoomEvent<mtx::events::msg::CallHangUp> &)
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
 {
     return true;
 }

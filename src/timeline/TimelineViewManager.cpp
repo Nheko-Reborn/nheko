@@ -347,7 +347,7 @@ TimelineViewManager::queueReply(const QString &roomid,
 
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
-                                      const mtx::events::msg::CallInvite &callInvite)
+                                      const mtx::events::voip::CallInvite &callInvite)
 {
     if (auto room = rooms_->getRoomById(roomid))
         room->sendMessageEvent(callInvite, mtx::events::EventType::CallInvite);
@@ -355,7 +355,7 @@ TimelineViewManager::queueCallMessage(const QString &roomid,
 
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
-                                      const mtx::events::msg::CallCandidates &callCandidates)
+                                      const mtx::events::voip::CallCandidates &callCandidates)
 {
     if (auto room = rooms_->getRoomById(roomid))
         room->sendMessageEvent(callCandidates, mtx::events::EventType::CallCandidates);
@@ -363,7 +363,7 @@ TimelineViewManager::queueCallMessage(const QString &roomid,
 
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
-                                      const mtx::events::msg::CallAnswer &callAnswer)
+                                      const mtx::events::voip::CallAnswer &callAnswer)
 {
     if (auto room = rooms_->getRoomById(roomid))
         room->sendMessageEvent(callAnswer, mtx::events::EventType::CallAnswer);
@@ -371,7 +371,7 @@ TimelineViewManager::queueCallMessage(const QString &roomid,
 
 void
 TimelineViewManager::queueCallMessage(const QString &roomid,
-                                      const mtx::events::msg::CallHangUp &callHangUp)
+                                      const mtx::events::voip::CallHangUp &callHangUp)
 {
     if (auto room = rooms_->getRoomById(roomid))
         room->sendMessageEvent(callHangUp, mtx::events::EventType::CallHangUp);

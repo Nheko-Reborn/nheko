@@ -105,10 +105,10 @@ public slots:
 
     void updateColorPalette();
     void queueReply(const QString &roomid, const QString &repliedToEvent, const QString &replyBody);
-    void queueCallMessage(const QString &roomid, const mtx::events::msg::CallInvite &);
-    void queueCallMessage(const QString &roomid, const mtx::events::msg::CallCandidates &);
-    void queueCallMessage(const QString &roomid, const mtx::events::msg::CallAnswer &);
-    void queueCallMessage(const QString &roomid, const mtx::events::msg::CallHangUp &);
+    void queueCallMessage(const QString &roomid, const mtx::events::voip::CallInvite &);
+    void queueCallMessage(const QString &roomid, const mtx::events::voip::CallCandidates &);
+    void queueCallMessage(const QString &roomid, const mtx::events::voip::CallAnswer &);
+    void queueCallMessage(const QString &roomid, const mtx::events::voip::CallHangUp &);
 
     void setVideoCallItem();
 
