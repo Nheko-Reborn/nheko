@@ -22,7 +22,7 @@ class FilteredCommunitiesModel : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent = nullptr);
+    explicit FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent = nullptr);
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
     bool filterAcceptsRow(int sourceRow, const QModelIndex &) const override;
 };
@@ -59,7 +59,10 @@ public:
         struct Elem
         {
             QString id;
-            int depth      = 0;
+            int depth = 0;
+
+            mtx::responses::UnreadNotifications notificationCounts = {0, 0};
+
             bool collapsed = false;
         };
 
@@ -159,6 +162,11 @@ private:
     FlatTree spaceOrder_;
     std::map<QString, RoomInfo> spaces_;
     std::vector<std::string> directMessages_;
+
+    std::unordered_map<QString, mtx::responses::UnreadNotifications> roomNotificationCache;
+    std::unordered_map<QString, mtx::responses::UnreadNotifications> tagNotificationCache;
+    mtx::responses::UnreadNotifications globalUnreads{};
+    mtx::responses::UnreadNotifications dmUnreads{};
 
     friend class FilteredCommunitiesModel;
 };

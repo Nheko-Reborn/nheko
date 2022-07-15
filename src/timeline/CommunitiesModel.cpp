@@ -18,15 +18,7 @@ CommunitiesModel::CommunitiesModel(QObject *parent)
   : QAbstractListModel(parent)
   , hiddenTagIds_{UserSettings::instance()->hiddenTags()}
   , mutedTagIds_{UserSettings::instance()->mutedTags()}
-{
-    connect(ChatPage::instance(), &ChatPage::unreadMessages, this, [this](int) {
-        // Simply updating every space is easier than tracking which ones need updated.
-        if (!spaces_.empty())
-            emit dataChanged(index(0, 0),
-                             index(spaces_.size() + tags_.size() + 1, 0),
-                             {Roles::UnreadMessages, Roles::HasLoudNotification});
-    });
-}
+{}
 
 QHash<int, QByteArray>
 CommunitiesModel::roleNames() const
@@ -92,17 +84,10 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "";
-        case CommunitiesModel::Roles::UnreadMessages: {
-            int total{0};
-            for (const auto &[id, info] : cache::getRoomInfo(cache::joinedRooms()))
-                total += info.notification_count;
-            return total;
-        }
+        case CommunitiesModel::Roles::UnreadMessages:
+            return (int)globalUnreads.notification_count;
         case CommunitiesModel::Roles::HasLoudNotification:
-            for (const auto &[id, info] : cache::getRoomInfo(cache::joinedRooms()))
-                if (info.highlight_count > 0)
-                    return true;
-            return false;
+            return globalUnreads.highlight_count > 0;
         }
     } else if (index.row() == 1) {
         switch (role) {
@@ -124,17 +109,10 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "dm";
-        case CommunitiesModel::Roles::UnreadMessages: {
-            int total{0};
-            for (const auto &[id, info] : cache::getRoomInfo(directMessages_))
-                total += info.notification_count;
-            return total;
-        }
+        case CommunitiesModel::Roles::UnreadMessages:
+            return (int)dmUnreads.notification_count;
         case CommunitiesModel::Roles::HasLoudNotification:
-            for (const auto &[id, info] : cache::getRoomInfo(directMessages_))
-                if (info.highlight_count > 0)
-                    return true;
-            return false;
+            return dmUnreads.highlight_count > 0;
         }
     } else if (index.row() - 2 < spaceOrder_.size()) {
         auto id = spaceOrder_.tree.at(index.row() - 2).id;
@@ -162,10 +140,20 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return spaceOrder_.tree.at(index.row() - 2).depth;
         case CommunitiesModel::Roles::Id:
             return "space:" + id;
-        case CommunitiesModel::Roles::UnreadMessages:
-            return utils::getChildNotificationsForSpace(id).first;
-        case CommunitiesModel::Roles::HasLoudNotification:
-            return utils::getChildNotificationsForSpace(id).second > 0;
+        case CommunitiesModel::Roles::UnreadMessages: {
+            int count = 0;
+            auto end  = spaceOrder_.lastChild(index.row() - 2);
+            for (int i = index.row() - 2; i <= end; i++)
+                count += spaceOrder_.tree[i].notificationCounts.notification_count;
+            return count;
+        }
+        case CommunitiesModel::Roles::HasLoudNotification: {
+            auto end = spaceOrder_.lastChild(index.row() - 2);
+            for (int i = index.row() - 2; i <= end; i++)
+                if (spaceOrder_.tree[i].notificationCounts.highlight_count > 0)
+                    return true;
+            return false;
+        }
         }
     } else if (index.row() - 2 < tags_.size() + spaceOrder_.size()) {
         auto tag = tags_.at(index.row() - 2 - spaceOrder_.size());
@@ -219,24 +207,10 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             return 0;
         case CommunitiesModel::Roles::Id:
             return "tag:" + tag;
-        case CommunitiesModel::Roles::UnreadMessages: {
-            int total{0};
-            auto rooms{cache::joinedRooms()};
-            for (const auto &[roomid, info] : cache::getRoomInfo(rooms))
-                if (std::find(std::begin(info.tags), std::end(info.tags), tag.toStdString()) !=
-                    std::end(info.tags))
-                    total += info.notification_count;
-            return total;
-        }
-        case CommunitiesModel::Roles::HasLoudNotification: {
-            auto rooms{cache::joinedRooms()};
-            for (const auto &[roomid, info] : cache::getRoomInfo(rooms))
-                if (std::find(std::begin(info.tags), std::end(info.tags), tag.toStdString()) !=
-                    std::end(info.tags))
-                    if (info.highlight_count > 0)
-                        return true;
-            return false;
-        }
+        case CommunitiesModel::Roles::UnreadMessages:
+            return (int)tagNotificationCache.at(tag).notification_count;
+        case CommunitiesModel::Roles::HasLoudNotification:
+            return (int)tagNotificationCache.at(tag).highlight_count > 0;
         }
     }
     return QVariant();
@@ -438,6 +412,72 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
                   e)) {
                 tagsUpdated = true;
             }
+
+        auto roomId           = QString::fromStdString(roomid);
+        auto oldUnreads       = roomNotificationCache[roomId];
+        int notificationCDiff = -static_cast<int64_t>(oldUnreads.highlight_count) +
+                                static_cast<int64_t>(room.unread_notifications.highlight_count);
+        int highlightCDiff = -static_cast<int64_t>(oldUnreads.highlight_count) +
+                             static_cast<int64_t>(room.unread_notifications.highlight_count);
+        if (highlightCDiff || notificationCDiff) {
+            // bool hidden = hiddenTagIds_.contains(roomId);
+            globalUnreads.notification_count += notificationCDiff;
+            globalUnreads.highlight_count += highlightCDiff;
+            emit dataChanged(index(0),
+                             index(0),
+                             {
+                               UnreadMessages,
+                               HasLoudNotification,
+                             });
+            if (std::find(begin(directMessages_), end(directMessages_), roomid) !=
+                end(directMessages_)) {
+                dmUnreads.notification_count += notificationCDiff;
+                dmUnreads.highlight_count += highlightCDiff;
+                emit dataChanged(index(1),
+                                 index(1),
+                                 {
+                                   UnreadMessages,
+                                   HasLoudNotification,
+                                 });
+            }
+
+            auto spaces = cache::client()->getParentRoomIds(roomid);
+            auto tags   = cache::singleRoomInfo(roomid).tags;
+
+            for (const auto &t : tags) {
+                auto tagId = QString::fromStdString(t);
+                auto &tNs  = tagNotificationCache[tagId];
+                tNs.notification_count += notificationCDiff;
+                tNs.highlight_count += highlightCDiff;
+                int idx = tags_.indexOf(tagId) + 2 + spaceOrder_.size();
+                ;
+                emit dataChanged(index(idx),
+                                 index(idx),
+                                 {
+                                   UnreadMessages,
+                                   HasLoudNotification,
+                                 });
+            }
+
+            for (const auto &s : spaces) {
+                auto spaceId = QString::fromStdString(s);
+
+                for (int i = 0; i < spaceOrder_.size(); i++) {
+                    spaceOrder_.tree[i].notificationCounts.notification_count += notificationCDiff;
+                    spaceOrder_.tree[i].notificationCounts.highlight_count += highlightCDiff;
+
+                    int idx = i;
+                    do {
+                        emit dataChanged(index(idx + 2),
+                                         index(idx + 2),
+                                         {
+                                           UnreadMessages,
+                                           HasLoudNotification,
+                                         });
+                    } while (idx != -1);
+                }
+            }
+        }
     }
     for (const auto &[roomid, room] : sync_.rooms.leave) {
         (void)room;
