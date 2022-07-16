@@ -2340,7 +2340,8 @@ TimelineModel::formatImagePackEvent(const QString &id)
 QString
 TimelineModel::formatPolicyRule(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto idStr                                  = id.toStdString();
+    mtx::events::collections::TimelineEvents *e = events.get(idStr, "");
     if (!e)
         return {};
 
@@ -2354,6 +2355,18 @@ TimelineModel::formatPolicyRule(const QString &id)
             (userRule->content.recommendation !=
                mtx::events::state::policy_rule::recommendation::ban &&
              userRule->content.recommendation != unstable_ban)) {
+            while (userRule->content.entity.empty() &&
+                   !userRule->unsigned_data.replaces_state.empty()) {
+                auto temp = events.get(userRule->unsigned_data.replaces_state, idStr);
+                if (!temp)
+                    break;
+                if (auto tempRule = std::get_if<
+                      mtx::events::StateEvent<mtx::events::state::policy_rule::UserRule>>(temp))
+                    userRule = tempRule;
+                else
+                    break;
+            }
+
             return tr("%1 disabled the rule to ban users matching %2.")
               .arg(sender, qsHtml(userRule->content.entity));
         } else {
@@ -2368,6 +2381,17 @@ TimelineModel::formatPolicyRule(const QString &id)
             (roomRule->content.recommendation !=
                mtx::events::state::policy_rule::recommendation::ban &&
              roomRule->content.recommendation != unstable_ban)) {
+            while (roomRule->content.entity.empty() &&
+                   !roomRule->unsigned_data.replaces_state.empty()) {
+                auto temp = events.get(roomRule->unsigned_data.replaces_state, idStr);
+                if (!temp)
+                    break;
+                if (auto tempRule = std::get_if<
+                      mtx::events::StateEvent<mtx::events::state::policy_rule::RoomRule>>(temp))
+                    roomRule = tempRule;
+                else
+                    break;
+            }
             return tr("%1 disabled the rule to ban rooms matching %2.")
               .arg(sender, qsHtml(roomRule->content.entity));
         } else {
@@ -2382,6 +2406,17 @@ TimelineModel::formatPolicyRule(const QString &id)
             (serverRule->content.recommendation !=
                mtx::events::state::policy_rule::recommendation::ban &&
              serverRule->content.recommendation != unstable_ban)) {
+            while (serverRule->content.entity.empty() &&
+                   !serverRule->unsigned_data.replaces_state.empty()) {
+                auto temp = events.get(serverRule->unsigned_data.replaces_state, idStr);
+                if (!temp)
+                    break;
+                if (auto tempRule = std::get_if<
+                      mtx::events::StateEvent<mtx::events::state::policy_rule::ServerRule>>(temp))
+                    serverRule = tempRule;
+                else
+                    break;
+            }
             return tr("%1 disabled the rule to ban servers matching %2.")
               .arg(sender, qsHtml(serverRule->content.entity));
         } else {
