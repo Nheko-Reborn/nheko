@@ -881,21 +881,3 @@ utils::markRoomAsDirect(QString roomid, std::vector<RoomMember> members)
           });
       });
 }
-
-QPair<int, int>
-utils::getChildNotificationsForSpace(const QString &spaceId)
-{
-    auto children = cache::getRoomInfo(cache::client()->getChildRoomIds(spaceId.toStdString()));
-    QPair<int, int> retVal;
-    for (const auto &[childId, child] : children) {
-        if (child.is_space) {
-            auto temp{utils::getChildNotificationsForSpace(childId)};
-            retVal.first += temp.first;
-            retVal.second += temp.second;
-        } else {
-            retVal.first += child.notification_count;
-            retVal.second += child.highlight_count;
-        }
-    }
-    return retVal;
-}

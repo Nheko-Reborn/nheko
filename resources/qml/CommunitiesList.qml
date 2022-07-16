@@ -71,30 +71,20 @@ Page {
             property color unimportantText: Nheko.colors.buttonText
             property color bubbleBackground: Nheko.colors.highlight
             property color bubbleText: Nheko.colors.highlightedText
-            required property string avatarUrl
-            required property string displayName
-            required property string tooltip
-            required property bool collapsed
-            required property bool collapsible
-            required property bool hidden
-            required property int depth
-            required property string id
-            required property int unreadMessages
-            required property bool hasLoudNotification
-            required property bool muted
+            required property var model
 
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
             state: "normal"
             ToolTip.visible: hovered && collapsed
-            ToolTip.text: communityItem.tooltip
+            ToolTip.text: model.tooltip
             ToolTip.delay: Nheko.tooltipDelay
-            onClicked: Communities.setCurrentTagId(communityItem.id)
-            onPressAndHold: communityContextMenu.show(communityItem.id, communityItem.hidden, communityItem.muted)
+            onClicked: Communities.setCurrentTagId(model.id)
+            onPressAndHold: communityContextMenu.show(model.id, model.hidden, model.muted)
             states: [
                 State {
                     name: "highlight"
-                    when: (communityItem.hovered || communityItem.hidden) && !(Communities.currentTagId === communityItem.id)
+                    when: (communityItem.hovered || model.hidden) && !(Communities.currentTagId === model.id)
 
                     PropertyChanges {
                         target: communityItem
@@ -108,7 +98,7 @@ Page {
                 },
                 State {
                     name: "selected"
-                    when: Communities.currentTagId == communityItem.id
+                    when: Communities.currentTagId == model.id
 
                     PropertyChanges {
                         target: communityItem
@@ -127,7 +117,7 @@ Page {
 
                 TapHandler {
                     acceptedButtons: Qt.RightButton
-                    onSingleTapped: communityContextMenu.show(communityItem.id, communityItem.hidden, communityItem.muted)
+                    onSingleTapped: communityContextMenu.show(model.id, model.hidden, model.muted)
                     gesturePolicy: TapHandler.ReleaseWithinBounds
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
@@ -139,27 +129,27 @@ Page {
                 spacing: Nheko.paddingMedium
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
-                anchors.leftMargin: Nheko.paddingMedium + (communitySidebar.collapsed ? 0 : (fontMetrics.lineSpacing * communityItem.depth))
+                anchors.leftMargin: Nheko.paddingMedium + (communitySidebar.collapsed ? 0 : (fontMetrics.lineSpacing * model.depth))
 
                 ImageButton {
-                    visible: !communitySidebar.collapsed && communityItem.collapsible
+                    visible: !communitySidebar.collapsed && model.collapsible
                     Layout.preferredHeight: fontMetrics.lineSpacing
                     Layout.preferredWidth: fontMetrics.lineSpacing
                     Layout.alignment: Qt.AlignVCenter
                     height: fontMetrics.lineSpacing
                     width: fontMetrics.lineSpacing
-                    image: communityItem.collapsed ? ":/icons/icons/ui/collapsed.svg" : ":/icons/icons/ui/expanded.svg"
+                    image: model.collapsed ? ":/icons/icons/ui/collapsed.svg" : ":/icons/icons/ui/expanded.svg"
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: communityItem.collapsed ? qsTr("Expand") : qsTr("Collapse")
+                    ToolTip.text: model.collapsed ? qsTr("Expand") : qsTr("Collapse")
                     hoverEnabled: true
 
-                    onClicked: communityItem.collapsed = !communityItem.collapsed
+                    onClicked: model.collapsed = !model.collapsed
                 }
 
                 Item {
                     Layout.preferredWidth: fontMetrics.lineSpacing
-                    visible: !communitySidebar.collapsed && !communityItem.collapsible && Communities.containsSubspaces
+                    visible: !communitySidebar.collapsed && !model.collapsible && Communities.containsSubspaces
                 }
 
                 Avatar {
@@ -170,22 +160,22 @@ Page {
                     height: avatarSize
                     width: avatarSize
                     url: {
-                        if (communityItem.avatarUrl.startsWith("mxc://"))
-                            return communityItem.avatarUrl.replace("mxc://", "image://MxcImage/");
+                        if (model.avatarUrl.startsWith("mxc://"))
+                            return model.avatarUrl.replace("mxc://", "image://MxcImage/");
                         else
-                            return "image://colorimage/" + communityItem.avatarUrl + "?" + communityItem.unimportantText;
+                            return "image://colorimage/" + model.avatarUrl + "?" + communityItem.unimportantText;
                     }
-                    roomid: communityItem.id
-                    displayName: communityItem.displayName
+                    roomid: model.id
+                    displayName: model.displayName
                     color: communityItem.backgroundColor
 
                     NotificationBubble {
-                        notificationCount: communityItem.unreadMessages
-                        hasLoudNotification: communityItem.hasLoudNotification
+                        notificationCount: model.unreadMessages
+                        hasLoudNotification: model.hasLoudNotification
                         bubbleBackgroundColor: communityItem.bubbleBackground
                         bubbleTextColor: communityItem.bubbleText
                         font.pixelSize: fontMetrics.font.pixelSize * 0.6
-                        mayBeVisible: communitySidebar.collapsed && !communityItem.muted && Settings.spaceNotifications
+                        mayBeVisible: communitySidebar.collapsed && !model.muted && Settings.spaceNotifications
                         anchors.right: avatar.right
                         anchors.bottom: avatar.bottom
                         anchors.margins: -Nheko.paddingSmall
@@ -199,7 +189,7 @@ Page {
                     color: communityItem.importantText
                     Layout.fillWidth: true
                     elideWidth: width
-                    fullText: communityItem.displayName
+                    fullText: model.displayName
                     textFormat: Text.PlainText
                 }
 
@@ -208,11 +198,11 @@ Page {
                 }
 
                 NotificationBubble {
-                    notificationCount: communityItem.unreadMessages
-                    hasLoudNotification: communityItem.hasLoudNotification
+                    notificationCount: model.unreadMessages
+                    hasLoudNotification: model.hasLoudNotification
                     bubbleBackgroundColor: communityItem.bubbleBackground
                     bubbleTextColor: communityItem.bubbleText
-                    mayBeVisible: !communitySidebar.collapsed && !communityItem.muted && Settings.spaceNotifications
+                    mayBeVisible: !communitySidebar.collapsed && !model.muted && Settings.spaceNotifications
                     Layout.alignment: Qt.AlignRight
                     Layout.leftMargin: Nheko.paddingSmall
                 }

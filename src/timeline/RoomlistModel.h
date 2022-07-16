@@ -105,7 +105,7 @@ public slots:
 
         return -1;
     }
-    void joinPreview(QString roomid, QString parentSpace);
+    void joinPreview(QString roomid);
     void acceptInvite(QString roomid);
     void declineInvite(QString roomid);
     void leave(QString roomid, QString reason = "");
@@ -169,11 +169,7 @@ public slots:
     {
         return mapFromSource(roomlistmodel->index(roomlistmodel->roomidToIndex(roomid))).row();
     }
-    void joinPreview(QString roomid)
-    {
-        roomlistmodel->joinPreview(roomid,
-                                   filterType == FilterBy::Space ? filterStr : QLatin1String(""));
-    }
+    void joinPreview(QString roomid) { roomlistmodel->joinPreview(roomid); }
     void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
     void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }
     void leave(QString roomid, QString reason = "") { roomlistmodel->leave(roomid, reason); }

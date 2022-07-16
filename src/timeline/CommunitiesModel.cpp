@@ -208,9 +208,15 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
         case CommunitiesModel::Roles::Id:
             return "tag:" + tag;
         case CommunitiesModel::Roles::UnreadMessages:
-            return (int)tagNotificationCache.at(tag).notification_count;
+            if (auto it = tagNotificationCache.find(tag); it != tagNotificationCache.end())
+                return (int)it->second.notification_count;
+            else
+                return 0;
         case CommunitiesModel::Roles::HasLoudNotification:
-            return (int)tagNotificationCache.at(tag).highlight_count > 0;
+            if (auto it = tagNotificationCache.find(tag); it != tagNotificationCache.end())
+                return it->second.highlight_count > 0;
+            else
+                return 0;
         }
     }
     return QVariant();
@@ -265,6 +271,21 @@ CommunitiesModel::initializeSidebar()
     tags_.clear();
     spaceOrder_.tree.clear();
     spaces_.clear();
+    tagNotificationCache.clear();
+    globalUnreads.notification_count = {};
+    dmUnreads.notification_count     = {};
+
+    auto e = cache::client()->getAccountData(mtx::events::EventType::Direct);
+    if (e) {
+        if (auto event =
+              std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(
+                &e.value())) {
+            directMessages_.clear();
+            for (const auto &[userId, roomIds] : event->content.user_to_rooms)
+                for (const auto &roomId : roomIds)
+                    directMessages_.push_back(roomId);
+        }
+    }
 
     std::set<std::string> ts;
 
@@ -284,6 +305,19 @@ CommunitiesModel::initializeSidebar()
                 }
             }
         }
+
+        for (const auto &t : it->tags) {
+            auto tagId = QString::fromStdString(t);
+            auto &tNs  = tagNotificationCache[tagId];
+            tNs.notification_count += it->notification_count;
+            tNs.highlight_count += it->highlight_count;
+        }
+
+        auto &e              = roomNotificationCache[it.key()];
+        e.highlight_count    = it->highlight_count;
+        e.notification_count = it->notification_count;
+        globalUnreads.notification_count += it->notification_count;
+        globalUnreads.highlight_count += it->highlight_count;
     }
 
     // NOTE(Nico): We build a forrest from the Directed Cyclic(!) Graph of spaces. To do that we
@@ -318,6 +352,14 @@ CommunitiesModel::initializeSidebar()
         tags_.push_back(QString::fromStdString(t));
 
     spaceOrder_.restoreCollapsed();
+
+    for (auto &space : spaceOrder_.tree) {
+        for (const auto &c : cache::client()->getChildRoomIds(space.id.toStdString())) {
+            const auto &counts = roomNotificationCache[QString::fromStdString(c)];
+            space.notificationCounts.highlight_count += counts.highlight_count;
+            space.notificationCounts.notification_count += counts.notification_count;
+        }
+    }
 
     endResetModel();
 
@@ -413,16 +455,21 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
                 tagsUpdated = true;
             }
 
-        auto roomId           = QString::fromStdString(roomid);
-        auto oldUnreads       = roomNotificationCache[roomId];
-        int notificationCDiff = -static_cast<int64_t>(oldUnreads.highlight_count) +
-                                static_cast<int64_t>(room.unread_notifications.highlight_count);
-        int highlightCDiff = -static_cast<int64_t>(oldUnreads.highlight_count) +
-                             static_cast<int64_t>(room.unread_notifications.highlight_count);
+        auto roomId            = QString::fromStdString(roomid);
+        auto &oldUnreads       = roomNotificationCache[roomId];
+        auto notificationCDiff = -static_cast<int64_t>(oldUnreads.notification_count) +
+                                 static_cast<int64_t>(room.unread_notifications.notification_count);
+        auto highlightCDiff = -static_cast<int64_t>(oldUnreads.highlight_count) +
+                              static_cast<int64_t>(room.unread_notifications.highlight_count);
+
+        auto applyDiff = [notificationCDiff,
+                          highlightCDiff](mtx::responses::UnreadNotifications &n) {
+            n.highlight_count    = static_cast<int64_t>(n.highlight_count) + highlightCDiff;
+            n.notification_count = static_cast<int64_t>(n.notification_count) + notificationCDiff;
+        };
         if (highlightCDiff || notificationCDiff) {
             // bool hidden = hiddenTagIds_.contains(roomId);
-            globalUnreads.notification_count += notificationCDiff;
-            globalUnreads.highlight_count += highlightCDiff;
+            applyDiff(globalUnreads);
             emit dataChanged(index(0),
                              index(0),
                              {
@@ -431,8 +478,7 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
                              });
             if (std::find(begin(directMessages_), end(directMessages_), roomid) !=
                 end(directMessages_)) {
-                dmUnreads.notification_count += notificationCDiff;
-                dmUnreads.highlight_count += highlightCDiff;
+                applyDiff(dmUnreads);
                 emit dataChanged(index(1),
                                  index(1),
                                  {
@@ -446,11 +492,8 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
 
             for (const auto &t : tags) {
                 auto tagId = QString::fromStdString(t);
-                auto &tNs  = tagNotificationCache[tagId];
-                tNs.notification_count += notificationCDiff;
-                tNs.highlight_count += highlightCDiff;
+                applyDiff(tagNotificationCache[tagId]);
                 int idx = tags_.indexOf(tagId) + 2 + spaceOrder_.size();
-                ;
                 emit dataChanged(index(idx),
                                  index(idx),
                                  {
@@ -463,8 +506,10 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
                 auto spaceId = QString::fromStdString(s);
 
                 for (int i = 0; i < spaceOrder_.size(); i++) {
-                    spaceOrder_.tree[i].notificationCounts.notification_count += notificationCDiff;
-                    spaceOrder_.tree[i].notificationCounts.highlight_count += highlightCDiff;
+                    if (spaceOrder_.tree[i].id != spaceId)
+                        continue;
+
+                    applyDiff(spaceOrder_.tree[i].notificationCounts);
 
                     int idx = i;
                     do {
@@ -474,10 +519,13 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
                                            UnreadMessages,
                                            HasLoudNotification,
                                          });
+                        idx = spaceOrder_.parent(idx);
                     } while (idx != -1);
                 }
             }
         }
+
+        roomNotificationCache[roomId] = room.unread_notifications;
     }
     for (const auto &[roomid, room] : sync_.rooms.leave) {
         (void)room;
