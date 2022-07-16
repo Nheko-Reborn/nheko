@@ -43,12 +43,12 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte die Raumadresse %1 nicht entfernen: %2</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte die Raumadresse %1 nicht aktualisieren: %2</translation>
     </message>
 </context>
 <context>
@@ -56,47 +56,47 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+26"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumaddressen für %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumaddressen dieses Raumes. Normalerweise kannst du Addressen nur für deinen eigenen Server hinzufügen. Du kannst eine primäre Adresse und beliebig viele Zweitadressen hinzufügen.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Primäre Adresse</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Zur primären Adresse machen</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Als Raumadresse bewerben</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumadresse in dem Raumverzeichnis veröffentlichen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse entfernen</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#neue-addresse:server.domain</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Add</source>
-        <translation type="unfinished">Hinzufügen</translation>
+        <translation>Hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -216,23 +216,24 @@
     <message>
         <location line="+302"/>
         <source>Knock on room</source>
-        <translation type="unfinished">Raumbeitritt anfragen (anklopfen)</translation>
+        <translation>Raumbeitritt anfragen (anklopfen)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte %1 nicht betreten. Du kannst stattdessen versuchen anzuklopfen, damit andere Leute bescheid wissen, dass sie dich einladen sollen. Möchtest du das versuchen?
+Du kannst zusätzlich einen Grund angeben, warum die anderen dich reinlassen sollen:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Möchstest du wirklich an %1 anklopfen? Du kannst zusätzlich einen Grund angeben, warum die anderen dich reinlassen sollen:</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Failed to knock room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Anklopfen fehlgeschlagen: %1</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -247,7 +248,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+34"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Raum konnte nicht erstellt werden: Invalide Raumaddresse</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -399,7 +400,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+51"/>
         <source>Do not show notification counts for this space or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige keine Benachrichtigungen für diese Gruppierung oder diesen Tag an.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -475,22 +476,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+16"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine Person direkt anschreiben</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Einzuladener Benutzer</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@nutzer.server.domain</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Encryption</source>
-        <translation type="unfinished">Verschlüsselung</translation>
+        <translation>Verschlüsselung</translation>
     </message>
 </context>
 <context>
@@ -499,62 +500,62 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
         <location line="+125"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Raum erstellen</translation>
     </message>
     <message>
         <location line="-98"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Name</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished">Thema</translation>
+        <translation>Thema</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Thema</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation type="unfinished">Raumalias</translation>
+        <translation>Raumaddresse</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished">Öffentlich</translation>
+        <translation>Öffentlich</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone, private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffentliche Räume können von jedem betreten werden, private Räume brauchen eine Einladung.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Trusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertrauenswürdig Konversation</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Eingeladenen Personen haben die gleichen Bereichtigungen wie der Ersteller</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished">Verschlüsselung</translation>
+        <translation>Verschlüsselung</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Achtung: Die Verschlüsselung kann nicht nachträglich deaktiviert werden</translation>
     </message>
 </context>
 <context>
@@ -1016,7 +1017,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+764"/>
         <source>Upload of &apos;%1&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Hochladen von &apos;%1&apos; ist fehlgeschlagen</translation>
     </message>
 </context>
 <context>
@@ -1185,7 +1186,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+14"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der ausgewählte Server spricht nicht die gleiche Version des Matrixprotocols (v1.1, v1.2 oder v1.3) wie Nheko. Du kannst dich nicht anmelden.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1660,7 +1661,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+25"/>
         <source>Permissions in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigungen in %1</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1723,7 +1724,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished">Hinzufügen</translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2147,7 +2148,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>In einem separaten Fenster öffnen</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2157,7 +2158,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumlink kopieren</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2250,7 +2251,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Direktkonversation starten</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2292,42 +2293,42 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Suchen...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Sortieren nach: </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished">Anmeldename</translation>
+        <translation>Benutzerkennung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzeigename</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigung</translation>
     </message>
     <message>
         <location line="+105"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer: %1</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2360,7 +2361,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+117"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Name des Raumes ändern</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
@@ -2373,17 +2374,17 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Mitglieder von %1 anzeigen</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Thema festgelegt</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema des Raumes ändern</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2443,7 +2444,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms or by knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Durch Teilnahme an anderen Räumen oder Anklopfen</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2465,17 +2466,17 @@ Die Verschlüsselung des Raumes kann nach Aktivierung nicht mehr deaktiviert wer
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigungen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigungen anzeigen und ändern</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumadressen anzeigen und ändern</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2507,7 +2508,7 @@ Die Verschlüsselung des Raumes kann nach Aktivierung nicht mehr deaktiviert wer
     <message>
         <location line="-35"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumaddressen</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -3277,12 +3278,12 @@ Grund: %4</translation>
     <message>
         <location line="+9"/>
         <source>Settings</source>
-        <translation type="unfinished">Einstellungen</translation>
+        <translation>Einstellungen</translation>
     </message>
     <message numerus="yes">
         <location line="+12"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n Mitglied</numerusform>
             <numerusform>%n Mitglieder</numerusform>
         </translation>
@@ -3290,7 +3291,7 @@ Grund: %4</translation>
     <message>
         <location line="+7"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Mitglieder von %1 an</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -3328,7 +3329,7 @@ Grund: %4</translation>
     <message>
         <location line="+140"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Raummitglieder an.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3683,7 +3684,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show message counts for spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeige Benachrichtigungsanzahl für diese Gruppe</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3873,7 +3874,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Expose room information via D-Bus</source>
-        <translation type="unfinished"></translation>
+        <translation>Mache Rauminformationen über D-Bus verfügbar</translation>
     </message>
     <message>
         <location line="+97"/>
