@@ -672,7 +672,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvatav emoji võib erinevate fondifailide tõttu eri klientides olla natuke erinev. Samuti võib nimi olla eri keeltes erinev. Sellele vaatamata kujutavad nad ühte 64&apos;st loomast või esemest. Näiteks lõvi või kass on ilmselgelt erinevad, kuid kass on siiski kass vaatamata sellele, et ühes fondis võib olla kuvatud vaid kassi nägu ja teises kogu kassi keha.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2444,7 +2444,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms or by knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Piiratud liikmelisusega teistes jututubades või vajadusega jututoa uksele koputada</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2476,7 +2476,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+12"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoa aadresside ja/või aliaste vaatamine ja muutmine</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2508,7 +2508,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="-35"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliased</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -3109,32 +3109,32 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas kasutusest reegli, mis keelab ligipääsu kasutajatele %2 mustri alusel.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lisas reegli, mis keelab „%3“ ligipääsu kasutajatele %2 mustri alusel.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas kasutusest reegli, mis keelab jututoad %2 mustri alusel.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lisas reegli, mis keelab „%3“ ligipääsu jututubadele %2 mustri alusel.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas kasutusest reegli, mis keelab ligipääsu serveritele %2 mustri alusel.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lisas reegli, mis keelab „%3“ ligipääsu serveritele %2 mustri alusel.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -3329,7 +3329,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+140"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita jututoas osalejaid.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3684,7 +3684,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show message counts for spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita sõnumite arvu kogukonnas</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3997,7 +3997,9 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita, kui sinu sõnum on loetud.
+Olek on kirjas ajatempli kõrval.
+Hoiatus: Kui sinu koduserver sellist võimalust ei toeta, siis jututubasid ei ole võimalik loetuks märkida!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -4028,7 +4030,7 @@ Kehtib vaid läbivalt krüptitud vestluste puhul.</translation>
     <message>
         <location line="+3"/>
         <source>Choose where to show the total number of notifications contained within a space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali kogukonnas leiduvate kõikide teavituste arvu kuvamise koht.</translation>
     </message>
     <message>
         <location line="+3"/>
