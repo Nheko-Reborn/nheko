@@ -43,12 +43,12 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal membatalkan publikasi alias %1: %2</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal memperbarui alias: %1</translation>
     </message>
 </context>
 <context>
@@ -56,47 +56,47 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+26"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias ke %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Daftar alias ke ruangan ini. Biasanya hanya kamu yang bisa menambahkan alias di servermu. Kamu bisa memiliki satu alias kanonik dan banyak alias lain.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias utama</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Buat sebagai alias utama</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Promosikan sebagai sebuah alias di ruangan ini</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Promosikan sebagai sebuah alias di ruangan ini</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Promosikan sebagai sebuah alias di ruangan ini</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#alias-baru:server.tld</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Add</source>
-        <translation type="unfinished">Tambahkan</translation>
+        <translation>Tambahkan</translation>
     </message>
 </context>
 <context>
@@ -399,7 +399,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+51"/>
         <source>Do not show notification counts for this space or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jangan tampilkan hitungan notifikasi untuk space atau tag ini.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -671,7 +671,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji yang ditampilkan mungkin terlihat berbeda dalam klien yang lain jika font lain digunakan. Mereka mungkin juga diterjemahkan ke bahasa yang berbeda. Mereka seharusnya menampilkan salah satu dari 64 objek atau binatang yang berbeda. Sebagai contoh, seekor singa dan kucing berbeda, tetapi seekor kucing masih sama bahkan jika satu klien menampilkan wajah kucing, dan klien yang lain menampilkan seluruh badan kucing.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1016,7 +1016,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     <message>
         <location line="+764"/>
         <source>Upload of &apos;%1&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengunggahan &apos;%1&apos; gagal</translation>
     </message>
 </context>
 <context>
@@ -1100,7 +1100,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation>Nama loginmu. Sebuah MXID harus mulai dengan @ diikuti dengan ID pengguna. Setelah ID penggunanya kamu harus menambahkan nama server setelah :.
 Kamu juga bisa memasukkan alamat homeserver-mu, jika servermu tidak mendukung pencarian .well-known.
 Misalnya: @pengguna:server.my
-Jika Nheko gagal menemukan homeserver Anda, Nheko akan menampilkan kolom untuk memasukkan servernya secara manual.</translation>
+Jika Nheko gagal menemukan homeservermu, Nheko akan menampilkan kolom untuk memasukkan servernya secara manual.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1185,7 +1185,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+14"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server yang dipilih tidak mendukung sebuah versi protokol Matrix yang klien ini tahu (v1.1, v1.2, atau v1.3). Kamu tidak bisa masuk.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1697,7 +1697,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="-233"/>
         <source>User (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengguna (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1718,12 +1718,12 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+42"/>
         <source>Add new role</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan peran baru</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished">Tambahkan</translation>
+        <translation>Tambahkan</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1879,17 +1879,17 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+3"/>
         <source>Ban users using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Cekal pengguna menggunakan aturan kebijakan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban rooms using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Cekal ruangan menggunakan aturan kebijakan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban servers using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Cekal server menggunakan aturan kebijakan</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2065,7 +2065,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server yang dipilih tidak mendukung sebuah versi protokol Matrix yang klien ini tahu (v1.1, v1.2, atau v1.3). Kamu tidak bisa mendaftar.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2157,7 +2157,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Salin tautan ruangan</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2376,7 +2376,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada topik yang ditetapkan</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2441,7 +2441,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms or by knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Dibatasi oleh peranggotaan dalam ruangan lain atau dengan mengetuk</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2473,7 +2473,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+12"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan dan ubah alamat/alias ruangan ini</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2505,7 +2505,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="-35"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -2714,7 +2714,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
         <translation>Halo dan selamat datang di Matrix!
-Sepertinya kamu baru di sini. Sebelum kamu dapat mengenkripsi pesan Anda dengan aman, kami perlu menyiapkan beberapa hal. Kamu bisa langsung menekan terima atau menyesuaikan beberapa opsi dasar. Kami juga mencoba menjelaskan beberapa dasar-dasarnya. Kamu bisa melewatkan bagian-bagiannya, tetapi mereka mungkin terbukti membantu!</translation>
+Sepertinya kamu baru di sini. Sebelum kamu dapat mengenkripsi pesanmu dengan aman, kami perlu menyiapkan beberapa hal. Kamu bisa langsung menekan terima atau menyesuaikan beberapa opsi dasar. Kami juga mencoba menjelaskan beberapa dasar-dasarnya. Kamu bisa melewatkan bagian-bagiannya, tetapi mereka mungkin terbukti membantu!</translation>
     </message>
     <message>
         <location line="+124"/>
@@ -3101,32 +3101,32 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menonaktifkan aturan untuk mencekal pengguna bercocokan dengan %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menambahkan sebuah aturan untuk mencekal pengguna bercocokan dengan %2 untuk &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menonaktifkan peraturan ini untuk mencekal ruangan bercocokan dengan %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menambahkan sebuah aturan untuk mencekal ruangan bercocokan dengan %2 untuk &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menonaktifkan aturan untuk mencekal ruangan bercocokan dengan %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menambahkan sebuah aturan untuk mencekal server bercocokan dengan %2 untuk &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -3320,7 +3320,7 @@ Alasan: %4</translation>
     <message>
         <location line="+140"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan anggota ruangan.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3674,7 +3674,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show message counts for spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan hitungan pesan untuk space</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3973,7 +3973,7 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+63"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation>Kunci untuk memverifikasi perangkat-perangkat kamu. Jika dicache, memverifikasi salah satu perangkat Anda akan menandainya sebagai terverifikasi untuk perangkat Anda yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
+        <translation>Kunci untuk memverifikasi perangkat-perangkat kamu. Jika dicache, memverifikasi salah satu perangkatmu akan menandainya sebagai terverifikasi untuk perangkatmu yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
     </message>
     <message>
         <location line="-67"/>
@@ -3987,7 +3987,9 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan jika pesanmu dibaca.
+Status ditampilkan di sebelah stempel waktu.
+Peringatan: Jika homeservermu tidak mendukung ini, ruanganmu tidak akan pernah ditandai sebagai dibaca!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -4018,7 +4020,7 @@ Hanya mempengaruhi pesan di chat terenkripsi.</translation>
     <message>
         <location line="+3"/>
         <source>Choose where to show the total number of notifications contained within a space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih di mana untuk menampilkan jumlah notifikasi total dalam sebuah space.</translation>
     </message>
     <message>
         <location line="+3"/>
