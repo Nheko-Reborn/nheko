@@ -627,12 +627,12 @@ CommunitiesModel::toggleTagMute(QString tagId)
     if (tagId.startsWith(QLatin1String("tag:"))) {
         auto idx = tags_.indexOf(tagId.mid(4));
         if (idx != -1)
-            emit dataChanged(index(idx + 1 + spaceOrder_.size()),
-                             index(idx + 1 + spaceOrder_.size()));
+            emit dataChanged(index(idx + 2 + spaceOrder_.size()),
+                             index(idx + 2 + spaceOrder_.size()));
     } else if (tagId.startsWith(QLatin1String("space:"))) {
         auto idx = spaceOrder_.indexOf(tagId.mid(6));
         if (idx != -1)
-            emit dataChanged(index(idx + 1), index(idx + 1));
+            emit dataChanged(index(idx + 2), index(idx + 2));
     } else if (tagId == QLatin1String("dm")) {
         emit dataChanged(index(1), index(1));
     } else if (tagId == QLatin1String("global")) {
