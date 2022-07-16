@@ -11,6 +11,8 @@
 #include <QString>
 #include <QStringList>
 
+#include <unordered_map>
+
 #include <mtx/responses/sync.hpp>
 
 #include "CacheStructs.h"
