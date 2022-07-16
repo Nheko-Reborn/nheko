@@ -13,10 +13,12 @@ Image {
 
     property bool encrypted: false
     property int trust: Crypto.Unverified
+    property string unencryptedIcon: ":/icons/icons/ui/shield-filled-cross.svg"
+    property color unencryptedColor: Nheko.theme.error
 
     property string sourceUrl: {
         if (!encrypted)
-        return "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?";
+        return "image://colorimage/"+unencryptedIcon+"?";
 
         switch (trust) {
             case Crypto.Verified:
@@ -45,7 +47,7 @@ Image {
                 return sourceUrl + Nheko.theme.error;
             }
         } else {
-            return sourceUrl + Nheko.theme.error;
+            return sourceUrl + unencryptedColor;
         }
     }
     ToolTip.visible: ma.hovered

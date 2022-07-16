@@ -144,10 +144,11 @@ Pane {
                 contentItem: EncryptionIndicator {
                     sourceSize.height: parent.Layout.preferredHeight * Screen.devicePixelRatio
                     sourceSize.width: parent.Layout.preferredWidth * Screen.devicePixelRatio
-                    visible: isEncrypted
                     encrypted: isEncrypted
                     trust: trustlevel
                     enabled: false
+                    unencryptedIcon: ":/icons/icons/ui/people.svg"
+                    unencryptedColor: Nheko.colors.buttonText
                 }
 
                 background: null
@@ -155,7 +156,7 @@ Pane {
                 ToolTip.delay: Nheko.tooltipDelay
                 ToolTip.text: {
                     if (!isEncrypted)
-                    return qsTr("This room is not encrypted!");
+                    return qsTr("Show room members.");
 
                     switch (trustlevel) {
                         case Crypto.Verified:
@@ -330,7 +331,7 @@ Pane {
 
                 Layout.row: 3
                 Layout.column: 2
-                Layout.columnSpan: 3
+                Layout.columnSpan: 1
 
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.min(contentHeight, Nheko.avatarSize * 1.5)
