@@ -294,7 +294,7 @@ CommunitiesModel::initializeSidebar()
     std::map<std::string, std::set<std::string>> spaceParents;
 
     auto infos = cache::roomInfo();
-    for (auto it = infos.begin(); it != infos.end(); it++) {
+    for (auto it = infos.begin(); it != infos.end(); ++it) {
         if (it.value().is_space) {
             spaces_[it.key()] = it.value();
             isSpace.insert(it.key().toStdString());
@@ -318,6 +318,12 @@ CommunitiesModel::initializeSidebar()
         e.notification_count = it->notification_count;
         globalUnreads.notification_count += it->notification_count;
         globalUnreads.highlight_count += it->highlight_count;
+
+        if (std::find(begin(directMessages_), end(directMessages_), it.key().toStdString()) !=
+            end(directMessages_)) {
+            dmUnreads.notification_count += it->notification_count;
+            dmUnreads.highlight_count += it->highlight_count;
+        }
     }
 
     // NOTE(Nico): We build a forrest from the Directed Cyclic(!) Graph of spaces. To do that we
