@@ -36,9 +36,73 @@
     </message>
 </context>
 <context>
+    <name>AliasEditingModel</name>
+    <message>
+        <location filename="../../src/AliasEditModel.cpp" line="+128"/>
+        <location line="+47"/>
+        <location line="+60"/>
+        <location line="+13"/>
+        <source>Failed to unpublish alias %1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+84"/>
+        <source>Failed to update aliases: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>AliasEditor</name>
+    <message>
+        <location filename="../qml/dialogs/AliasEditor.qml" line="+26"/>
+        <source>Aliases to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+45"/>
+        <source>Primary alias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Make primary alias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Advertise as an alias in this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Publish in room directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Remove this alias</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>#new-alias:server.tld</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Add</source>
+        <translation type="unfinished">Tambahkan</translation>
+    </message>
+</context>
+<context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2580"/>
+        <location filename="../../src/Cache.cpp" line="+2724"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 dan %n lainnya</numerusform>
@@ -46,7 +110,7 @@
     </message>
     <message>
         <location line="+2"/>
-        <location line="+175"/>
+        <location line="+153"/>
         <source>Empty Room</source>
         <translation>Ruangan Kosong</translation>
     </message>
@@ -115,7 +179,7 @@
 <context>
     <name>CallManager</name>
     <message>
-        <location filename="../../src/voip/CallManager.cpp" line="+519"/>
+        <location filename="../../src/voip/CallManager.cpp" line="+534"/>
         <source>Entire screen</source>
         <translation>Semua layar</translation>
     </message>
@@ -129,12 +193,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+732"/>
+        <location line="+737"/>
         <source>Invited user: %1</source>
         <translation>Pengguna yang diundang: %1</translation>
     </message>
     <message>
-        <location line="-510"/>
+        <location line="-511"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrasi cache ke versi saat ini gagal. Ini dapat memiliki alasan yang berbeda. Silakan buka masalah dan coba gunakan versi yang lebih lama untuk sementara. Alternatifnya kamu bisa mencoba menghapus cache secara manual.</translation>
     </message>
@@ -149,7 +213,7 @@
         <translation>Gagal untuk membuka basisdata, kamu telah dikeluarkan!</translation>
     </message>
     <message>
-        <location line="+301"/>
+        <location line="+302"/>
         <source>Knock on room</source>
         <translation>Ketuk pada ruangan</translation>
     </message>
@@ -192,12 +256,12 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     </message>
     <message>
         <location line="+43"/>
-        <location line="+469"/>
+        <location line="+470"/>
         <source>Confirm invite</source>
         <translation>Konfirmasi undangan</translation>
     </message>
     <message>
-        <location line="-468"/>
+        <location line="-469"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Apakah kamu ingin mengundang %1 (%2)?</translation>
     </message>
@@ -242,12 +306,12 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
         <translation>Menghilangkan cekalan pengguna: %1</translation>
     </message>
     <message>
-        <location line="+374"/>
+        <location line="+375"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Apakah kamu ingin memulai chat privat dengan %1?</translation>
     </message>
     <message>
-        <location line="-965"/>
+        <location line="-967"/>
         <source>Cache migration failed!</source>
         <translation>Migrasi cache gagal!</translation>
     </message>
@@ -275,7 +339,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     </message>
     <message>
         <location line="+35"/>
-        <location line="+112"/>
+        <location line="+113"/>
         <source>Please try to login again: %1</source>
         <translation>Mohon mencoba masuk lagi: %1</translation>
     </message>
@@ -333,12 +397,17 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+46"/>
+        <location filename="../qml/CommunitiesList.qml" line="+51"/>
+        <source>Do not show notification counts for this space or tag.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Hide rooms with this tag or from this space by default.</source>
         <translation>Sembunyikan ruangan dengan tanda ini atau dari space ini secara default.</translation>
     </message>
     <message>
-        <location line="+83"/>
+        <location line="+86"/>
         <source>Expand</source>
         <translation>Besarkan</translation>
     </message>
@@ -351,7 +420,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
 <context>
     <name>CommunitiesModel</name>
     <message>
-        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+58"/>
+        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+72"/>
         <source>All rooms</source>
         <translation>Semua ruangan</translation>
     </message>
@@ -361,7 +430,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
         <translation>Menampilkan semua ruangan tanpa penyaringan.</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+23"/>
         <source>Direct Chats</source>
         <translation>Pesan Langsung</translation>
     </message>
@@ -371,7 +440,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
         <translation>Tampilkan pesan langsung.</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+66"/>
         <source>Favourites</source>
         <translation>Favorit</translation>
     </message>
@@ -524,7 +593,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
         <translation>Kode Verifikasi</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+8"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
         <translation>Harap verifikasi digit berikut.  Kamu seharusnya melihat angka yang sama di kedua sisi.  Jika mereka berbeda, mohon tekan &apos;Mereka tidak cocok!&apos; untuk membatalkan verifikasi!</translation>
     </message>
@@ -547,7 +616,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
         <translation>Cari</translation>
     </message>
     <message>
-        <location line="+193"/>
+        <location line="+197"/>
         <source>People</source>
         <translation>Orang</translation>
     </message>
@@ -595,12 +664,17 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
         <translation>Kode Verifikasi</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
         <translation>Mohon verifikasi emoji berikut. Kamu seharusnya melihat emoji yang sama di kedua sisi. Jika mereka berbeda, mohon tekan &apos;Mereka tidak cocok!&apos; untuk membatalkan verifikasi!</translation>
     </message>
     <message>
-        <location line="+378"/>
+        <location line="+379"/>
+        <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>They do not match!</source>
         <translation>Mereka tidak cocok!</translation>
     </message>
@@ -656,7 +730,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+54"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+56"/>
         <source>This message is not encrypted!</source>
         <translation>Pesan ini tidak terenkripsi!</translation>
     </message>
@@ -684,7 +758,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
         <translation>Verifikasi gagal</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+12"/>
         <source>Other client does not support our verification protocol.</source>
         <translation>Client yang lain tidak mendukung protokol verifikasi kami.</translation>
     </message>
@@ -730,7 +804,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
 <context>
     <name>HiddenEvents</name>
     <message>
-        <location filename="../../src/ui/HiddenEvents.cpp" line="+79"/>
+        <location filename="../../src/ui/HiddenEvents.cpp" line="+80"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
         <translation>Gagal menetapkan peristiwa tersembunyi: %1</translation>
@@ -930,7 +1004,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+334"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+338"/>
         <source>Select a file</source>
         <translation>Pilih sebuah file</translation>
     </message>
@@ -938,6 +1012,11 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Semua File (*)</translation>
+    </message>
+    <message>
+        <location line="+764"/>
+        <source>Upload of &apos;%1&apos; failed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1024,7 +1103,7 @@ Misalnya: @pengguna:server.my
 Jika Nheko gagal menemukan homeserver Anda, Nheko akan menampilkan kolom untuk memasukkan servernya secara manual.</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+27"/>
         <source>Password</source>
         <translation>Kata Sandi</translation>
     </message>
@@ -1061,7 +1140,7 @@ Example: https://server.my:8787</source>
 Misalnya: https://server.id:8787</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+32"/>
         <source>LOGIN</source>
         <translation>MASUK</translation>
     </message>
@@ -1071,15 +1150,15 @@ Misalnya: https://server.id:8787</translation>
         <translation>Kembali</translation>
     </message>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+83"/>
+        <location filename="../../src/LoginPage.cpp" line="+86"/>
         <location line="+6"/>
         <location line="+58"/>
-        <location line="+109"/>
+        <location line="+125"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation>Kamu telah memasukkan ID Matrix yang tidak valid  mis. @joe:matrix.org</translation>
     </message>
     <message>
-        <location line="-139"/>
+        <location line="-155"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Penemuan otomatis gagal. Menerima respons cacat.</translation>
     </message>
@@ -1089,7 +1168,7 @@ Misalnya: https://server.id:8787</translation>
         <translation>Penemuan otomatis gagal. Kesalahan yang tidak diketahu saat meminta .well-known.</translation>
     </message>
     <message>
-        <location line="+33"/>
+        <location line="+34"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Titik akhir yang dibutuhkan tidak dapat ditemukan. Kemungkinan bukan server Matrix.</translation>
     </message>
@@ -1104,7 +1183,12 @@ Misalnya: https://server.id:8787</translation>
         <translation>Terjadi kesalahan yang tidak diketahui. Pastikan domain homeservernya valid.</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+14"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t sign in.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Sign in with Apple</source>
         <translation>Masuk dengan Apple</translation>
     </message>
@@ -1165,7 +1249,7 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>MediaUpload</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+598"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="-154"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Gagal untuk mengunggah media. Silakan coba lagi.</translation>
@@ -1249,12 +1333,12 @@ Misalnya: https://server.id:8787</translation>
         <translation>%1 sedang melakukan panggilan...</translation>
     </message>
     <message>
-        <location line="+80"/>
+        <location line="+122"/>
         <source>Allow them in</source>
         <translation>Izinkan mereka untuk masuk</translation>
     </message>
     <message>
-        <location line="-108"/>
+        <location line="-150"/>
         <source>%1 answered the call.</source>
         <translation>%1 menjawab panggilan.</translation>
     </message>
@@ -1287,7 +1371,7 @@ Misalnya: https://server.id:8787</translation>
         <translation>Ketik pesan…</translation>
     </message>
     <message>
-        <location line="+283"/>
+        <location line="+277"/>
         <source>Stickers</source>
         <translation>Stiker</translation>
     </message>
@@ -1330,7 +1414,7 @@ Misalnya: https://server.id:8787</translation>
         <translation>Opsi</translation>
     </message>
     <message>
-        <location line="+424"/>
+        <location line="+426"/>
         <source>Reason for removal</source>
         <translation>Alasan untuk menghapus</translation>
     </message>
@@ -1440,7 +1524,7 @@ Misalnya: https://server.id:8787</translation>
         <translation>Menerima Permintaan Verifikasi</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+14"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
         <translation>Untuk mengizinkan pengguna lain melihat  perangkat mana yang benar-benar milikmu, kamu bisa memverifikasinya. Ini juga memungkinkan cadangan kunci bekerja secara otomatis. Verifikasi perangkat yang belum diverifikasi sekarang? (Pastikan kamu memiliki salah satu perangkat tersebut.)</translation>
     </message>
@@ -1574,7 +1658,7 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>PowerLevelEditor</name>
     <message>
-        <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+24"/>
+        <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+25"/>
         <source>Permissions in %1</source>
         <translation>Perizinan di %1</translation>
     </message>
@@ -1600,24 +1684,29 @@ Misalnya: https://server.id:8787</translation>
     </message>
     <message>
         <location line="+22"/>
-        <location line="+182"/>
+        <location line="+235"/>
         <source>Administrator (%1)</source>
         <translation>Administrator (%1)</translation>
     </message>
     <message>
-        <location line="-180"/>
-        <location line="+182"/>
+        <location line="-233"/>
+        <location line="+235"/>
         <source>Moderator (%1)</source>
         <translation>Moderator (%1)</translation>
     </message>
     <message>
-        <location line="-180"/>
-        <location line="+182"/>
+        <location line="-233"/>
+        <source>User (%1)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+233"/>
         <source>Custom (%1)</source>
         <translation>Kustom (%1)</translation>
     </message>
     <message>
-        <location line="-169"/>
+        <location line="-220"/>
         <source>Remove event type</source>
         <translation>Hapus tipe peristiwa</translation>
     </message>
@@ -1627,7 +1716,17 @@ Misalnya: https://server.id:8787</translation>
         <translation>Tambahkan tipe peristiwa</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+42"/>
+        <source>Add new role</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Add</source>
+        <translation type="unfinished">Tambahkan</translation>
+    </message>
+    <message>
+        <location line="+16"/>
         <source>Move users up or down to change their permissions</source>
         <translation>Pindahkan pengguna ke atas atau ke bawah untuk mengubah izin mereka</translation>
     </message>
@@ -1645,7 +1744,7 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>PowerlevelEditingModels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+530"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+601"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>Gagal memperbarui tingkat daya: %1</translation>
     </message>
@@ -1653,7 +1752,7 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location line="-379"/>
+        <location line="-450"/>
         <source>Other events</source>
         <translation>Peristiwa lainnya</translation>
     </message>
@@ -1779,6 +1878,21 @@ Misalnya: https://server.id:8787</translation>
     </message>
     <message>
         <location line="+3"/>
+        <source>Ban users using policy rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ban rooms using policy rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Ban servers using policy rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Edit child rooms</source>
         <translation>Edit ruangan anak</translation>
     </message>
@@ -1816,7 +1930,7 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>PowerlevelsUserListModel</name>
     <message>
-        <location line="+190"/>
+        <location line="+217"/>
         <source>Other users</source>
         <translation>Pengguna lain</translation>
     </message>
@@ -1858,7 +1972,7 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../qml/pages/RegisterPage.qml" line="+93"/>
+        <location filename="../qml/pages/RegisterPage.qml" line="+95"/>
         <source>Username</source>
         <translation>Nama pengguna</translation>
     </message>
@@ -1869,12 +1983,12 @@ Misalnya: https://server.id:8787</translation>
     </message>
     <message>
         <location line="+21"/>
-        <location line="+96"/>
+        <location line="+102"/>
         <source>Back</source>
         <translation>Kembali</translation>
     </message>
     <message>
-        <location line="-75"/>
+        <location line="-79"/>
         <source>Password</source>
         <translation>Kata sandi</translation>
     </message>
@@ -1889,7 +2003,7 @@ Misalnya: https://server.id:8787</translation>
         <translation>Konfirmasi kata sandi</translation>
     </message>
     <message>
-        <location line="-86"/>
+        <location line="-90"/>
         <source>Homeserver</source>
         <translation>Homeserver</translation>
     </message>
@@ -1904,12 +2018,12 @@ Misalnya: https://server.id:8787</translation>
         <translation>Sebuah server yang mengizinkan pendaftaran. Karena Matrix itu terdecentralisasi, kamu pertama harus mencari server yang kamu daftar atau host servermu sendiri.</translation>
     </message>
     <message>
-        <location line="+90"/>
+        <location line="+95"/>
         <source>Your passwords do not match!</source>
         <translation>Kata sandimu tidak cocok!</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Device name</source>
         <translation>Nama perangkat</translation>
     </message>
@@ -1919,12 +2033,12 @@ Misalnya: https://server.id:8787</translation>
         <translation>Sebuah nama perangkat untuk perangkat ini, yang akan ditampilkan untuk yang lain, ketika memverifikasi perangkatmu. Jika tidak dimasukkan nama perangkat yang default akan digunakan.</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+31"/>
         <source>REGISTER</source>
         <translation>DAFTAR</translation>
     </message>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+77"/>
+        <location filename="../../src/RegisterPage.cpp" line="+80"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Penemuan otomatis gagal. Menerima respons cacat.</translation>
     </message>
@@ -1934,7 +2048,7 @@ Misalnya: https://server.id:8787</translation>
         <translation>Penemuan otomatis gagal. Terjadi kesalahan yang tidak diketahui saat meminta .well-known.</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+26"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
         <translation>Titik akhir yang dibutuhkan tidak dapat ditemukan. Kemungkinan bukan server Matrix.</translation>
     </message>
@@ -1949,7 +2063,12 @@ Misalnya: https://server.id:8787</translation>
         <translation>Terjadi kesalahan yang tidak diketahui. Pastikan domain homeservernya valid.</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+15"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t register.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Server does not support querying registration flows!</source>
         <translation>Server tidak mendukung kueri alur pendaftaran!</translation>
     </message>
@@ -1990,12 +2109,12 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>RoomDirectory</name>
     <message>
-        <location filename="../qml/dialogs/RoomDirectory.qml" line="+27"/>
+        <location filename="../qml/dialogs/RoomDirectory.qml" line="+26"/>
         <source>Explore Public Rooms</source>
         <translation>Temukan Ruangan Publik</translation>
     </message>
     <message>
-        <location line="+146"/>
+        <location line="+143"/>
         <source>Search for public rooms</source>
         <translation>Cari ruangan publik</translation>
     </message>
@@ -2008,7 +2127,7 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1960"/>
+        <location filename="../../src/Cache.cpp" line="+1971"/>
         <source>no version stored</source>
         <translation>tidak ada versi yang disimpan</translation>
     </message>
@@ -2016,7 +2135,7 @@ Misalnya: https://server.id:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+127"/>
+        <location filename="../qml/RoomList.qml" line="+128"/>
         <source>New tag</source>
         <translation>Tanda baru</translation>
     </message>
@@ -2034,6 +2153,11 @@ Misalnya: https://server.id:8787</translation>
         <location line="+12"/>
         <source>Leave room</source>
         <translation>Tinggalkan ruangan</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Copy room link</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2061,7 +2185,7 @@ Misalnya: https://server.id:8787</translation>
         <translation>Buat tanda baru…</translation>
     </message>
     <message>
-        <location line="+298"/>
+        <location line="+264"/>
         <source>Status Message</source>
         <translation>Pesan Status</translation>
     </message>
@@ -2205,7 +2329,7 @@ Misalnya: https://server.id:8787</translation>
         <translation>Pengguna: %1</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+20"/>
         <source>This room is not encrypted!</source>
         <translation>Ruangan ini tidak terenkripsi!</translation>
     </message>
@@ -2250,7 +2374,12 @@ Misalnya: https://server.id:8787</translation>
         <translation>Tampilkan anggota %1</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+24"/>
+        <source>No topic set</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
         <source>Change topic of this room</source>
         <translation>Ubah topik ruangan</translation>
     </message>
@@ -2310,6 +2439,11 @@ Misalnya: https://server.id:8787</translation>
         <translation>Dibatasi oleh keanggotaan di ruangan lain</translation>
     </message>
     <message>
+        <location line="+3"/>
+        <source>Restricted by membership in other rooms or by knocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+13"/>
         <source>Encryption</source>
         <translation>Enkripsi</translation>
@@ -2337,6 +2471,11 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
         <translation>Lihat dan ubah izin di ruangan ini</translation>
     </message>
     <message>
+        <location line="+12"/>
+        <source>View and change the addresses/aliases of this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+6"/>
         <source>Sticker &amp; Emote Settings</source>
         <translation>Pengaturan Stiker &amp; Emote</translation>
@@ -2357,13 +2496,19 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
         <translation>Peristiwa tersembunyi</translation>
     </message>
     <message>
-        <location line="-19"/>
+        <location line="-31"/>
+        <location line="+12"/>
         <location line="+30"/>
         <source>Configure</source>
         <translation>Konfigurasi</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-35"/>
+        <source>Aliases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+36"/>
         <source>Select events to hide in this room</source>
         <translation>Pilih peristiwa untuk disembunyikan di ruangan ini</translation>
     </message>
@@ -2398,12 +2543,12 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
         <translation>tampilkan</translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+180"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+182"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Gagal mengaktifkan enkripsi: %1</translation>
     </message>
     <message>
-        <location line="+309"/>
+        <location line="+320"/>
         <source>Select an avatar</source>
         <translation>Pilih sebuah avatar</translation>
     </message>
@@ -2432,7 +2577,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
 <context>
     <name>RoomlistModel</name>
     <message>
-        <location filename="../../src/timeline/RoomlistModel.cpp" line="+156"/>
+        <location filename="../../src/timeline/RoomlistModel.cpp" line="+162"/>
         <source>Pending invite.</source>
         <translation>Undangan tertunda.</translation>
     </message>
@@ -2450,7 +2595,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+339"/>
+        <location filename="../qml/Root.qml" line="+358"/>
         <source>Please enter your login password to continue:</source>
         <translation>Mohon masukkan kata sandi loginmu untuk melanjutkan:</translation>
     </message>
@@ -2532,7 +2677,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4382"/>
+        <location filename="../../src/Cache.cpp" line="-4514"/>
         <source>Failed to connect to secret storage</source>
         <translation>Gagal menghubungkan ke penyimpanan rahasia</translation>
     </message>
@@ -2597,7 +2742,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+43"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+44"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation>Gagal membuat kunci untuk penandatanganan silang!</translation>
     </message>
@@ -2630,7 +2775,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+269"/>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+271"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
         <translation>Gagal memperbarui paket gambar: %1</translation>
@@ -2692,7 +2837,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
         <translation>Verifikasi Berhasil</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+10"/>
         <source>Verification successful! Both sides verified their devices!</source>
         <translation>Verifikasi berhasil!  Kedua sisi telah memverifikasi perangkat mereka!</translation>
     </message>
@@ -2705,7 +2850,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1265"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1310"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Reaksi pesan gagal: %1</translation>
@@ -2737,7 +2882,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
         <translation>Simpan file</translation>
     </message>
     <message numerus="yes">
-        <location line="+250"/>
+        <location line="+262"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -2954,7 +3099,37 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
         <translation>%1 mengubah stiker dan emoji di ruangan ini.</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+22"/>
+        <source>%1 disabled the rule to ban users matching %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 disabled the rule to ban rooms matching %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>%1 disabled the rule to ban servers matching %2.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
         <source>Removed by %1</source>
         <translation>Dihapus oleh %1</translation>
     </message>
@@ -3036,12 +3211,12 @@ Alasan: %4</translation>
         <translation>%1 menolak ketukannya.</translation>
     </message>
     <message>
-        <location line="-1403"/>
+        <location line="-1497"/>
         <source>You joined this room.</source>
         <translation>Kamu bergabung ruangan ini.</translation>
     </message>
     <message>
-        <location line="+1355"/>
+        <location line="+1449"/>
         <source>%1 invited %2.</source>
         <translation>%1 mengundang %2.</translation>
     </message>
@@ -3143,9 +3318,9 @@ Alasan: %4</translation>
         <translation>Tidak ada ruangan yang dipilih</translation>
     </message>
     <message>
-        <location line="+139"/>
-        <source>This room is not encrypted!</source>
-        <translation>Ruangan ini tidak dienkripsi!</translation>
+        <location line="+140"/>
+        <source>Show room members.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3193,7 +3368,7 @@ Alasan: %4</translation>
         <translation>Pengaturan</translation>
     </message>
     <message>
-        <location line="+69"/>
+        <location line="+74"/>
         <source>Unpin</source>
         <translation>Lepaskan pin</translation>
     </message>
@@ -3214,7 +3389,7 @@ Alasan: %4</translation>
 <context>
     <name>UIA</name>
     <message>
-        <location filename="../../src/ui/UIA.cpp" line="+59"/>
+        <location filename="../../src/ui/UIA.cpp" line="+60"/>
         <source>No available registration flows!</source>
         <translation>Tidak ada alur pendaftaran yang tersedia!</translation>
     </message>
@@ -3340,7 +3515,7 @@ Alasan: %4</translation>
         <translation>Hapus verifikasi</translation>
     </message>
     <message>
-        <location filename="../../src/ui/UserProfile.cpp" line="+153"/>
+        <location filename="../../src/ui/UserProfile.cpp" line="+155"/>
         <source>Sign out device %1</source>
         <translation>Keluarkan perangkat %1</translation>
     </message>
@@ -3373,8 +3548,8 @@ Alasan: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+471"/>
-        <location filename="../../src/UserSettingsPage.h" line="+228"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+498"/>
+        <location filename="../../src/UserSettingsPage.h" line="+232"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -3382,7 +3557,7 @@ Alasan: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+399"/>
+        <location line="+404"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
@@ -3495,6 +3670,11 @@ Alasan: %4</translation>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
         <translation>Dekripsikan pesan di bilah samping</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show message counts for spaces</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3687,7 +3867,7 @@ Alasan: %4</translation>
         <translation>Ekspos informasi ruangan via D-Bus</translation>
     </message>
     <message>
-        <location line="+95"/>
+        <location line="+97"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -3779,14 +3959,7 @@ Jika ini dinyalakan, ruangan yang mempunyai notifikasi aktif (lingkaran kecil de
         <translation>Tampilkan tombol untuk membalas, bereaksi, atau mengakses opsi tambahan di sebelah pesan dengan cepat.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Show if your message was read.
-Status is displayed next to timestamps.</source>
-        <translation>Menampilkan jika pesan Anda telah dibaca.
-Status akan ditampilkan di sebelah waktu menerima pesan.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+8"/>
         <source>Notify about received messages when the client is not currently focused.</source>
         <translation>Beritahu tentang pesan-pesan yang diterima saat klien tidak difokuskan.</translation>
     </message>
@@ -3798,19 +3971,26 @@ OFF - square, ON - circle.</source>
 MATI - kotak, NYALA - bulat.</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+63"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>Kunci untuk memverifikasi perangkat-perangkat kamu. Jika dicache, memverifikasi salah satu perangkat Anda akan menandainya sebagai terverifikasi untuk perangkat Anda yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-67"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Menampilkan pemberitahuan saat sebuah pesan diterima.
 Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-6"/>
+        <source>Show if your message was read.
+Status is displayed next to timestamps.
+Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
         <translation>Tampilkan sebuah identikon daripada sebuah huruf ketika tidak ada avatar yang diatur.</translation>
     </message>
@@ -3834,6 +4014,11 @@ Dicatat bahwa ketika opsi ini NYALA, file yang terbuka ditinggal tidak terenkrip
 Only affects messages in encrypted chats.</source>
         <translation>Dekripsi pesan yang ditampilkan di bilah samping.
 Hanya mempengaruhi pesan di chat terenkripsi.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Choose where to show the total number of notifications contained within a space.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3897,7 +4082,7 @@ This setting will take effect upon restart.</source>
 Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     </message>
     <message>
-        <location line="+410"/>
+        <location line="+419"/>
         <source>Select a file</source>
         <translation>Pilih sebuah file</translation>
     </message>
@@ -4003,7 +4188,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <translation>Menunggu untuk mengguna lain…</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+12"/>
         <source>Waiting for other side to accept the verification request.</source>
         <translation>Menunggu untuk pengguna yang lain untuk menerima permintaan verifikasi.</translation>
     </message>
@@ -4018,7 +4203,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <translation>Menunggu untuk pengguna lain untuk menyelesaikan proses verifikasi.</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+19"/>
         <source>Cancel</source>
         <translation>Batalkan</translation>
     </message>
@@ -4049,7 +4234,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+193"/>
+        <location filename="../../src/Utils.cpp" line="+194"/>
         <source>Yesterday</source>
         <translation>Kemarin</translation>
     </message>

@@ -353,7 +353,7 @@ ApplicationWindow {
                 }
 
                 Label {
-                    text: qsTr("Addresses")
+                    text: qsTr("Aliases")
                     color: Nheko.colors.text
                 }
 
