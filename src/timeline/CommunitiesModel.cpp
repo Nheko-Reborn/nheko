@@ -238,7 +238,7 @@ struct temptree
     void flatten(CommunitiesModel::FlatTree &to, int i = 0) const
     {
         for (const auto &[child, subtree] : children) {
-            to.tree.push_back({QString::fromStdString(child), i, false});
+            to.tree.push_back({QString::fromStdString(child), i, {}, false});
             subtree.flatten(to, i + 1);
         }
     }
@@ -275,15 +275,17 @@ CommunitiesModel::initializeSidebar()
     globalUnreads.notification_count = {};
     dmUnreads.notification_count     = {};
 
-    auto e = cache::client()->getAccountData(mtx::events::EventType::Direct);
-    if (e) {
-        if (auto event =
-              std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(
-                &e.value())) {
-            directMessages_.clear();
-            for (const auto &[userId, roomIds] : event->content.user_to_rooms)
-                for (const auto &roomId : roomIds)
-                    directMessages_.push_back(roomId);
+    {
+        auto e = cache::client()->getAccountData(mtx::events::EventType::Direct);
+        if (e) {
+            if (auto event =
+                  std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(
+                    &e.value())) {
+                directMessages_.clear();
+                for (const auto &[userId, roomIds] : event->content.user_to_rooms)
+                    for (const auto &roomId : roomIds)
+                        directMessages_.push_back(roomId);
+            }
         }
     }
 
