@@ -43,12 +43,12 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliase avaldamise lõpetamine ei õnnestunud %1: %2</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliase uuendamine ei õnenstunud: %1</translation>
     </message>
 </context>
 <context>
@@ -56,47 +56,47 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+26"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 aliased</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoa aliaste loend. Tavaliselt võid sa neid hallata vaid oma serveris. Seadistada võid ühe kanoonilise aliase ja palju alternatiivseid aliasi.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Põhiline alias</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda põhiliseks aliaseks</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Levita selle jututoa aliasena</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Avalda selle jututoa aliasena</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Kustuta selle jututoa aliasena</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#uus-alias:server.tippdomeen</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Add</source>
-        <translation type="unfinished">Lisa</translation>
+        <translation>Lisa</translation>
     </message>
 </context>
 <context>
@@ -400,7 +400,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+51"/>
         <source>Do not show notification counts for this space or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ära näita selle kogukonna või sildi kohta teavituste loendit.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1017,7 +1017,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+764"/>
         <source>Upload of &apos;%1&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>„%1“ üleslaadimine ei õnnestunud</translation>
     </message>
 </context>
 <context>
@@ -1186,7 +1186,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+14"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitud server ei oska kasutada Matrix&apos;i protokolli versiooni, mida see klient oskab (v1.1, v1.2 või v1.3). Sa ei saa sisse logida.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1698,7 +1698,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="-233"/>
         <source>User (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1719,12 +1719,12 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+42"/>
         <source>Add new role</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa uus roll</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished">Lisa</translation>
+        <translation>Lisa</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1880,17 +1880,17 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+3"/>
         <source>Ban users using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Reeglite alusel kasutajatele ligipääsu keelamine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban rooms using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Reeglite alusel jututubade keelamine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban servers using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Reeglite alusel serverite keelamine</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2066,7 +2066,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitud server ei oska kasutada Matrix&apos;i protokolli versiooni, mida see klient oskab (v1.1, v1.2 või v1.3). Sa ei saa registreeruda.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2158,7 +2158,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri jututoa link</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2379,7 +2379,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema on kirjeldamata</translation>
     </message>
     <message>
         <location line="+21"/>
