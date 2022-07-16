@@ -370,10 +370,6 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     this->highlight_count    = roomInfo.highlight_count;
     lastMessage_.timestamp   = roomInfo.approximate_last_modification_ts;
 
-    // this connection will simplify adding the plainRoomNameChanged() signal everywhere that it
-    // needs to be
-    connect(this, &TimelineModel::roomNameChanged, this, &TimelineModel::plainRoomNameChanged);
-
     connect(
       this,
       &TimelineModel::redactionFailed,

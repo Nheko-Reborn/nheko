@@ -22,7 +22,7 @@ class FilteredCommunitiesModel : public QSortFilterProxyModel
     Q_OBJECT
 
 public:
-    FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent = nullptr);
+    explicit FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent = nullptr);
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
     bool filterAcceptsRow(int sourceRow, const QModelIndex &) const override;
 };
@@ -48,14 +48,21 @@ public:
         Parent,
         Depth,
         Id,
+        UnreadMessages,
+        HasLoudNotification,
+        Muted,
+        IsDirect,
     };
 
     struct FlatTree
     {
         struct Elem
         {
-            QString name;
-            int depth      = 0;
+            QString id;
+            int depth = 0;
+
+            mtx::responses::UnreadNotifications notificationCounts = {0, 0};
+
             bool collapsed = false;
         };
 
@@ -65,7 +72,7 @@ public:
         int indexOf(const QString &s) const
         {
             for (int i = 0; i < size(); i++)
-                if (tree[i].name == s)
+                if (tree[i].id == s)
                     return i;
             return -1;
         }
@@ -121,7 +128,7 @@ public slots:
     void sync(const mtx::responses::Sync &sync_);
     void clear();
     QString currentTagId() const { return currentTagId_; }
-    void setCurrentTagId(QString tagId);
+    void setCurrentTagId(const QString &tagId);
     void resetCurrentTagId()
     {
         currentTagId_.clear();
@@ -138,6 +145,7 @@ public slots:
         return tagsWD;
     }
     void toggleTagId(QString tagId);
+    void toggleTagMute(QString tagId);
     FilteredCommunitiesModel *filtered() { return new FilteredCommunitiesModel(this, this); }
 
 signals:
@@ -149,9 +157,16 @@ signals:
 private:
     QStringList tags_;
     QString currentTagId_;
-    QStringList hiddentTagIds_;
+    QStringList hiddenTagIds_;
+    QStringList mutedTagIds_;
     FlatTree spaceOrder_;
     std::map<QString, RoomInfo> spaces_;
+    std::vector<std::string> directMessages_;
+
+    std::unordered_map<QString, mtx::responses::UnreadNotifications> roomNotificationCache;
+    std::unordered_map<QString, mtx::responses::UnreadNotifications> tagNotificationCache;
+    mtx::responses::UnreadNotifications globalUnreads{};
+    mtx::responses::UnreadNotifications dmUnreads{};
 
     friend class FilteredCommunitiesModel;
 };

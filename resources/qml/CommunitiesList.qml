@@ -3,6 +3,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import "./components"
 import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQml 2.12
@@ -36,14 +37,27 @@ Page {
             id: communityContextMenu
 
             property string tagId
+            property bool hidden
+            property bool muted
 
-            function show(id_, tags_) {
+            function show(id_, hidden_, muted_) {
                 tagId = id_;
+                hidden = hidden_;
+                muted = muted_;
                 open();
             }
 
             Platform.MenuItem {
+                text: qsTr("Do not show notification counts for this space or tag.")
+                checkable: true
+                checked: communityContextMenu.muted
+                onTriggered: Communities.toggleTagMute(communityContextMenu.tagId)
+            }
+
+            Platform.MenuItem {
                 text: qsTr("Hide rooms with this tag or from this space by default.")
+                checkable: true
+                checked: communityContextMenu.hidden
                 onTriggered: Communities.toggleTagId(communityContextMenu.tagId)
             }
 
@@ -57,6 +71,7 @@ Page {
             property color unimportantText: Nheko.colors.buttonText
             property color bubbleBackground: Nheko.colors.highlight
             property color bubbleText: Nheko.colors.highlightedText
+            required property var model
 
             height: avatarSize + 2 * Nheko.paddingMedium
             width: ListView.view.width
@@ -65,11 +80,11 @@ Page {
             ToolTip.text: model.tooltip
             ToolTip.delay: Nheko.tooltipDelay
             onClicked: Communities.setCurrentTagId(model.id)
-            onPressAndHold: communityContextMenu.show(model.id)
+            onPressAndHold: communityContextMenu.show(model.id, model.hidden, model.muted)
             states: [
                 State {
                     name: "highlight"
-                    when: (communityItem.hovered || model.hidden) && !(Communities.currentTagId == model.id)
+                    when: (communityItem.hovered || model.hidden) && !(Communities.currentTagId === model.id)
 
                     PropertyChanges {
                         target: communityItem
@@ -102,7 +117,7 @@ Page {
 
                 TapHandler {
                     acceptedButtons: Qt.RightButton
-                    onSingleTapped: communityContextMenu.show(model.id)
+                    onSingleTapped: communityContextMenu.show(model.id, model.hidden, model.muted)
                     gesturePolicy: TapHandler.ReleaseWithinBounds
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                 }
@@ -153,6 +168,19 @@ Page {
                     roomid: model.id
                     displayName: model.displayName
                     color: communityItem.backgroundColor
+
+                    NotificationBubble {
+                        notificationCount: model.unreadMessages
+                        hasLoudNotification: model.hasLoudNotification
+                        bubbleBackgroundColor: communityItem.bubbleBackground
+                        bubbleTextColor: communityItem.bubbleText
+                        font.pixelSize: fontMetrics.font.pixelSize * 0.6
+                        mayBeVisible: communitySidebar.collapsed && !model.muted && Settings.spaceNotifications
+                        anchors.right: avatar.right
+                        anchors.bottom: avatar.bottom
+                        anchors.margins: -Nheko.paddingSmall
+                    }
+
                 }
 
                 ElidedLabel {
@@ -169,10 +197,20 @@ Page {
                     Layout.fillWidth: true
                 }
 
+                NotificationBubble {
+                    notificationCount: model.unreadMessages
+                    hasLoudNotification: model.hasLoudNotification
+                    bubbleBackgroundColor: communityItem.bubbleBackground
+                    bubbleTextColor: communityItem.bubbleText
+                    mayBeVisible: !communitySidebar.collapsed && !model.muted && Settings.spaceNotifications
+                    Layout.alignment: Qt.AlignRight
+                    Layout.leftMargin: Nheko.paddingSmall
+                }
+
             }
 
             background: Rectangle {
-                color: backgroundColor
+                color: communityItem.backgroundColor
             }
 
         }

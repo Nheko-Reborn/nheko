@@ -27,6 +27,7 @@
 #include <cmark.h>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "Config.h"
 #include "EventAccessors.h"
 #include "Logging.h"
