@@ -672,7 +672,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dich reinlassen sol
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je nach Schriftart können die angezeigten Emoji sich in unterschiedlichen Applikationen leicht unterscheiden. Auf die selbe Art kann sich die Übersetzung unter dem Emoji je nach Sprache unterscheiden. Trotzdem sollten die 64 möglichen Zeichen eindeutig genug sein. Z.B. sind eine Katze und ein Löwe unterschiedlich, aber in der einen Applikation ist die Katze eventuell nur als Gesicht dargestellt und nicht als ganze Katze.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1666,60 +1666,60 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+14"/>
         <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sei vorsichtig beim Bearbeiten der Berechtigungen. Du kannst Personen mit gleichem oder höheren Level als du nicht herunterstufen. Sei vorsichtig wenn du andere Leute beförderst.</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Roles</source>
-        <translation type="unfinished"></translation>
+        <translation>Rollen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Move permissions between roles to change them</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebe Berechtigungen zwischen Rollen um diese zu modifizieren</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+235"/>
         <source>Administrator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrator (%1)</translation>
     </message>
     <message>
         <location line="-233"/>
         <location line="+235"/>
         <source>Moderator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderator (%1)</translation>
     </message>
     <message>
         <location line="-233"/>
         <source>User (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+233"/>
         <source>Custom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzerdefiniert (%1)</translation>
     </message>
     <message>
         <location line="-220"/>
         <source>Remove event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Eventtyp entfernen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Eventtyp hinzufügen</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Add new role</source>
-        <translation type="unfinished"></translation>
+        <translation>Neue Rolle definieren</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -1729,17 +1729,17 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+16"/>
         <source>Move users up or down to change their permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebe Nutzer zwischen Rollen um deren Rolle zu ändern</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Remove user</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer entfernen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
+        <translation>Benutzer hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -1747,7 +1747,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+601"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Berechtigungen nicht aktualisieren: %1</translation>
     </message>
 </context>
 <context>
@@ -1755,177 +1755,177 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="-450"/>
         <source>Other events</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Events</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Statusevents</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Remove other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Nutzer entfernen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Nutzer verbannen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Nutzer einladen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact events sent by others</source>
-        <translation type="unfinished"></translation>
+        <translation>Fremde Nachrichten löschen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Reaktionen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Deprecated aliases events</source>
-        <translation type="unfinished"></translation>
+        <translation>Veraltetes Raumaddressenevent</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumbild ändern</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumaddressen bearbeiten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselte Nachrichten senden</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschlüsselung aktivieren</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change guest access</source>
-        <translation type="unfinished"></translation>
+        <translation>Gastzugang modifizieren</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change history visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Verlaufssichtbarkeit verändern</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change who can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Beitrittsregeln bearbeiten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachrichten senden</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumnamen ändern</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigungen bearbeiten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the rooms topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Thema ändern</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>Widgets bearbeiten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Widgets bearbeiten (experimentell)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact own events</source>
-        <translation type="unfinished"></translation>
+        <translation>Eigene Nachrichten löschen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the pinned events</source>
-        <translation type="unfinished"></translation>
+        <translation>Angeheftete Nachrichten ändern</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Upgrade the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Raum ersetzen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker senden</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ban users using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutzerrichtlinen senden (z.B. für globale Bans)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban rooms using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumrichtlinen senden (z.B. für globale Bans)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban servers using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Serverrichtlinen senden (z.B. für globale Bans)</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Edit child rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste untergeordneter Räume modifizieren</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste übergeordneter Räume modifizieren</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Anruf starten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Negotiate a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Anruf verbinden</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Answer a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Anruf annehmen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Hang up a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Anruf auflegen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room emotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumemotes bearbeiten</translation>
     </message>
 </context>
 <context>
@@ -1933,7 +1933,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+217"/>
         <source>Other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere Nutzer</translation>
     </message>
 </context>
 <context>
@@ -2066,7 +2066,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der ausgewählte Server spricht nicht die gleiche Version des Matrixprotocols (v1.1, v1.2 oder v1.3) wie Nheko. Du kannst dich nicht registrieren.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2952,14 +2952,14 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die benötigte Berechtigungen um Leute aus dem Raum zu werfen von %2 auf %3 geändert.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Teilnehmer kann nun Mitglieder aus dem Raum entfernen.</numerusform>
+            <numerusform>%n Teilnehmer können nun Mitglieder aus dem Raum entfernen.</numerusform>
         </translation>
     </message>
     <message>
@@ -3997,7 +3997,9 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeigt an ob eine Nachricht gelesen wurde.
+Der Lesesstatus ist neben dem Sendezeitpunkt zu finden
+Achtung: Wenn dein Server das deaktivieren vom Verteilen des Sendestatus nicht unterstützt, werden deine Benachrichtigungen nie weniger.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -4028,7 +4030,7 @@ Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
     <message>
         <location line="+3"/>
         <source>Choose where to show the total number of notifications contained within a space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle aus ob die Benachrichtigungsanzahl von Gruppen angezeigt wird.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4086,7 +4088,9 @@ be blurred.</source>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaubt anderen Anwendungen informationen über deine Matrixräume durch die D-Bus Schnittstelle zu laden. Dies kann nützlich sein, aber auch missbraucht werden. Aktivieren auf eigene Gefahr.
+
+Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     </message>
     <message>
         <location line="+419"/>
