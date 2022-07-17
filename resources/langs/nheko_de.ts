@@ -2965,176 +2965,176 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kann nun andere Nutzer aus dem Raum werfen.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die nötigen Berechtigungen um Nachrichten in diesem Raum zu löschen von %2 auf %3 geändert.</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 Teilnehmer kann nun Nachrichten löschen.</numerusform>
+            <numerusform>%1 Teilnehmer können nun Nachrichten löschen.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kann nun Nachrichten löschen.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die benötigten Berechtigungen um Leute aus dem Raum zu verbannen von %2 auf %3 geändert.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Teilnehmer kann nun Leute aus dem Rau verbannen.</numerusform>
+            <numerusform>%n Teilnehmer können nun Leute aus dem Rau verbannen.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kann nun Leute aus dem Raum verbannen.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat das Berechtigungslevel für die restlichen Zustandsevents von %2 auf %3 geändert.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n Teilnehmer kann nun Zustandevents senden.</numerusform>
+            <numerusform>%n Teilnehmer können nun Zustandevents senden.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now send state events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kann nun Zustandsevents senden.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die nötigen Berechtigungen um Nutzer einzuladen von %2 auf %3 geändert.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die nötigen Berechtigungen für beliebige Events von %2 auf %3 geändert. Neue Nutzer können jetzt keine Events mehr senden.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die nötigen Berechtigungen für beliebige Events von %2 auf %3 geändert. Neue Nutzer können jetzt Events senden, solange keine anderen Einschränkungen vorliegen.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die nötigen Berechtigungen für beliebige Events von %2 auf %3 geändert.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has made %2 an administrator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat %2 zum Administrator befördert.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has made %2 a moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat %2 zu einem Moderator gemacht.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat %2 zum Moderator degradiert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die Berechtigungen von %2 von %3 auf %4 geändert.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat nur Administratoren erlaubt &quot;%2&quot; zu senden.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat nur Moderatoren erlaubt &quot;%2&quot; zu senden.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat allen erlaubt &quot;%2&quot; zu senden.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die Berechtigungen für Events vom Typ &quot;%2&quot; vom Standard auf %3 geändert.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die nötigen Berechtigungen für Events vom Typ &quot;%2&quot; von %3 auf %4 geändert.</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>(empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>(leer)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die folgenden Bilder vom der Bilderpackung %2 entfernt:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die folgenden Bilder zu der Bilderpackung %2 hinzugefügt:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 changed the sticker and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die Sticker und Emotes in diesem Raum geändert.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die Regel zum bannen von Nutzern die %2 entsprechen deaktiviert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat eine Regel für das Verbannen von Nutzern wegen &apos;%3&apos;, die %2 entsprechen, hinzugefügt.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die Regel zum bannen von Räumen, die %2 entsprechen deaktiviert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat eine Regel für das Verbannen von Räumen wegen &apos;%3&apos;, die %2 entsprechen, hinzugefügt.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die Regel zum bannen von Servern, die %2 entsprechen deaktiviert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat eine Regel für das Verbannen von Servern wegen &apos;%3&apos;, die %2 entsprechen, hinzugefügt.</translation>
     </message>
     <message>
         <location line="+34"/>
