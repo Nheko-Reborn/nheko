@@ -2310,7 +2310,7 @@ TimelineModel::formatImagePackEvent(const QString &id)
 
     auto sender       = utils::replaceEmoji(displayName(QString::fromStdString(event->sender)));
     const auto packId = [&event]() -> QString {
-        if (!event->content.pack->display_name.empty()) {
+        if (event->content.pack && !event->content.pack->display_name.empty()) {
             return event->content.pack->display_name.c_str();
         } else if (!event->state_key.empty()) {
             return event->state_key.c_str();
