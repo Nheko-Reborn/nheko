@@ -2137,12 +2137,12 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location filename="../qml/RoomList.qml" line="+128"/>
         <source>New tag</source>
-        <translation>Tanda baru</translation>
+        <translation>Tag baru</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter the tag you want to use:</source>
-        <translation>Masukkan tanda yang kamu ingin gunakan:</translation>
+        <translation>Masukkan tag yang kamu ingin gunakan:</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2182,7 +2182,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Buat tanda baru…</translation>
+        <translation>Buat tag baru…</translation>
     </message>
     <message>
         <location line="+264"/>
@@ -3178,7 +3178,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation>%1 mengubah info profil.</translation>
+        <translation>%1 mengubah beberapa info profil.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3461,7 +3461,7 @@ Alasan: %4</translation>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation>Ini adalah profile specifik ruangan. Nama pengguna dan avatar mungkin berbeda dari versi globalnya.</translation>
+        <translation>Ini adalah profil spesifik ruangan. Nama pengguna dan avatar mungkin berbeda dari versi globalnya.</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3497,7 +3497,7 @@ Alasan: %4</translation>
     <message>
         <location line="+56"/>
         <source>Sign out this device.</source>
-        <translation>Keluar dari perangkat ini.</translation>
+        <translation>Keluarkan perangkat ini.</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3913,7 +3913,7 @@ Tetapkan ke 0 untuk memburamkan secara langsung setelah kehilangan fokus. Nilai 
     <message>
         <location line="+2"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation>Menampilkan kolom yang berisi grup dan tanda di sebelah daftar ruangan.</translation>
+        <translation>Tampilkan sebuah kolom yang berisi grup dan tanda di sebelah daftar ruangan.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3973,7 +3973,7 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+63"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation>Kunci untuk memverifikasi perangkat-perangkat kamu. Jika dicache, memverifikasi salah satu perangkatmu akan menandainya sebagai terverifikasi untuk perangkatmu yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
+        <translation>Kunci untuk memverifikasi perangkat-perangkatmu. Jika dicache, memverifikasi salah satu perangkatmu akan menandainya sebagai terverifikasi untuk perangkatmu yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
     </message>
     <message>
         <location line="-67"/>
@@ -4072,7 +4072,7 @@ akan diburamkan.</translation>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation>Kunci kamu yang paling penting. Kamu tidak perlu menyimpannya dalam cache, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatangananmu yang lain.</translation>
+        <translation>Kuncimu yang paling penting. Kamu tidak perlu menyimpannya dalam cache, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatangananmu yang lain.</translation>
     </message>
     <message>
         <location line="+5"/>
