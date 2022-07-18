@@ -21,7 +21,7 @@ ApplicationWindow {
     width: 650
     palette: Nheko.colors
     color: Nheko.colors.window
-    modality: Qt.WindowModal
+    modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     title: qsTr("Explore Public Rooms")
 
