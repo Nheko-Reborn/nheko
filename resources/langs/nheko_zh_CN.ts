@@ -474,12 +474,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+16"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>创建直接聊天</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>要邀请的用户</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -489,7 +489,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+14"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>加密</translation>
     </message>
 </context>
 <context>
@@ -498,32 +498,32 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
         <location line="+125"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>创建房间</translation>
     </message>
     <message>
         <location line="-98"/>
         <source>Name</source>
-        <translation type="unfinished">名称</translation>
+        <translation>名称</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>没有名称</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished">主题</translation>
+        <translation>主题</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>无主题</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation type="unfinished">别名</translation>
+        <translation>别名</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -543,12 +543,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>所有被邀请者都被赋予与创建者相同的权限等级</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>加密</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -854,7 +854,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>贴纸</translation>
     </message>
 </context>
 <context>
@@ -1005,12 +1005,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+338"/>
         <source>Select a file</source>
-        <translation type="unfinished">选择一个文件</translation>
+        <translation>选择一个文件</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">所有文件（*）</translation>
+        <translation>所有文件（*）</translation>
     </message>
     <message>
         <location line="+764"/>
@@ -1028,7 +1028,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+23"/>
         <source>User ID to invite</source>
-        <translation type="unfinished">要邀请的用户 ID</translation>
+        <translation>要邀请的用户 ID</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1039,7 +1039,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+17"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>添加</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -1049,7 +1049,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
 </context>
 <context>
@@ -1062,7 +1062,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+21"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished">聊天室 ID 或别名</translation>
+        <translation>聊天室 ID 或别名</translation>
     </message>
 </context>
 <context>
@@ -1070,12 +1070,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+17"/>
         <source>Leave room</source>
-        <translation type="unfinished">离开聊天室</translation>
+        <translation>离开聊天室</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished">你确定要离开吗？</translation>
+        <translation>你确定要离开吗？</translation>
     </message>
 </context>
 <context>
@@ -1121,12 +1121,12 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+10"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>主服务器地址</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>server.my:8787</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1142,7 +1142,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+42"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>返回</translation>
     </message>
     <message>
         <location filename="../../src/LoginPage.cpp" line="+86"/>
@@ -1155,7 +1155,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-155"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>自动发现失败。收到格式错误的回复。</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1185,7 +1185,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+20"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 Apple 登录</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1195,22 +1195,22 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 Google 登录</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 Twitter 登录</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 %1 登录</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>SSO登录</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -1260,7 +1260,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>%1 enabled encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 启用了加密</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -1368,7 +1368,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+277"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>贴纸</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -1378,7 +1378,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>发送</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1391,27 +1391,27 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageView.qml" line="+117"/>
         <source>Edit</source>
-        <translation type="unfinished">编辑</translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>回应</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>回复</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>选项</translation>
     </message>
     <message>
         <location line="+426"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>移除原因</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1511,12 +1511,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+12"/>
         <source>Send Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>发送验证请求</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Received Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>收到验证请求</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2524,7 +2524,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>聊天室版本</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2861,17 +2861,17 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>保存视频</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation type="unfinished"></translation>
+        <translation>保存音频</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>保存文件</translation>
     </message>
     <message numerus="yes">
         <location line="+262"/>
@@ -3463,7 +3463,7 @@ Reason: %4</source>
         <location line="+9"/>
         <location line="+200"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>验证</translation>
     </message>
     <message>
         <location line="-162"/>
@@ -3483,17 +3483,17 @@ Reason: %4</source>
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>刷新设备列表。</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>注销此设备。</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>更改设备名称。</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -3503,12 +3503,12 @@ Reason: %4</source>
     <message>
         <location line="+27"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>取消验证</translation>
     </message>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+155"/>
         <source>Sign out device %1</source>
-        <translation type="unfinished"></translation>
+        <translation>注销设备 %1</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3528,7 +3528,7 @@ Reason: %4</source>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>所选文件不是图像</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3542,7 +3542,7 @@ Reason: %4</source>
         <location filename="../../src/UserSettingsPage.cpp" line="+498"/>
         <location filename="../../src/UserSettingsPage.h" line="+232"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认</translation>
     </message>
 </context>
 <context>
@@ -3585,22 +3585,22 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>以 Markdown 格式发送消息</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable message bubbles</source>
-        <translation type="unfinished"></translation>
+        <translation>启用消息气泡</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable small Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>启用小头像</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>仅在悬停时播放动画图像</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3640,7 +3640,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>圆形头像</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3650,17 +3650,17 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Open images with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>用外部程序打开图像</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open videos with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>使用外部程序打开视频</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>解密侧边栏中的消息</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3680,12 +3680,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>触屏模式</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>字体大小</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3700,12 +3700,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>铃声</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>麦克风</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3730,12 +3730,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished"></translation>
+        <translation>仅向经过验证的用户发送加密消息</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished"></translation>
+        <translation>与经过验证的用户和设备共享密钥</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3755,7 +3755,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Accesstoken</source>
-        <translation type="unfinished"></translation>
+        <translation>访问令牌</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3775,12 +3775,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>版本</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Platform</source>
-        <translation type="unfinished"></translation>
+        <translation>平台</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3830,7 +3830,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Cross Signing Secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>交叉密钥验证</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3840,17 +3840,17 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Self signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>自签名密钥</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>用户签名密钥</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>主签名密钥</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3860,7 +3860,7 @@ Reason: %4</source>
     <message>
         <location line="+97"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -3870,7 +3870,7 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished"></translation>
+        <translation>设置时间线中消息的最大宽度（以像素为单位）。当 Nheko 最大化时，这有助于宽屏上的可读性。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3882,7 +3882,7 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>将鼠标悬停在消息上时更改消息的背景颜色。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3892,12 +3892,12 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
     <message>
         <location line="+2"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>关闭客户端窗口后保持应用程序在后台运行。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>在后台启动应用程序而不显示客户端窗口。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3908,7 +3908,8 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>允许在消息中使用 Markdown。
+禁用时，所有消息都以纯文本形式发送。</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4024,7 +4025,7 @@ be blurred.</source>
     <message>
         <location line="+3"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished"></translation>
+        <translation>需要验证用户才能向他们发送加密消息。 这提高了安全性，但也使 E2EE 更加繁琐。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4287,22 +4288,22 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+4"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>你发送了一个文件</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 发送了一个文件</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>你发送了一个视频</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 发送了一个视频</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4367,7 +4368,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+4"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>你结束了通话</translation>
     </message>
     <message>
         <location line="+2"/>
