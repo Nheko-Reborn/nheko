@@ -61,42 +61,42 @@
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista tämän huoneen aliaksista. Yleensä voit lisätä aliaksia vain omalle kotipalvelimellesi. Huoneella voi olla yksi alkuperäinen alias ja monta vaihtoehtoista aliasta.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Ensisijainen alias</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Tee ensisijaiseksi aliakseksi</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Esitä aliaksena tässä huoneessa</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Esitä aliaksena tässä huoneessa</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Esitä aliaksena tässä huoneessa</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#uusi-alias:palvelin.tld</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Add</source>
-        <translation type="unfinished">Lisää</translation>
+        <translation>Lisää</translation>
     </message>
 </context>
 <context>
@@ -400,7 +400,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+51"/>
         <source>Do not show notification counts for this space or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Älä näytä ilmoitusten määriä tästä spacesta tai tagista.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -672,7 +672,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytettävä emoji voi näyttää erilaiselta eri asiakasohjelmissa, jos käytetään eri fontteja. Niitä ei myöskään ole välttämättä käännetty eri kielille. Niiden silti pitäisi esittää yhtä 64:stä esineestä tai eläimestä. Esimerkiksi leijona ja kissa ovat erinäköisiä, mutta kissaemoji on silti sama, vaikka yhdessä ohjelmassa se esitettäisiin kissan kasvoina, ja toisessa koko ruumiina.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1017,7 +1017,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+764"/>
         <source>Upload of &apos;%1&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Tiedoston &quot;%1&quot; lähetys epäonnistui</translation>
     </message>
 </context>
 <context>
@@ -1186,7 +1186,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+14"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valittu palvelin ei tue mitään Matrix-protokollan versiota, jota tämä ohjelma tukee (v1.1, v1.2 tai v1.3). Et voi kirjautua sisään.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1698,7 +1698,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="-233"/>
         <source>User (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Käyttäjä (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1719,12 +1719,12 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+42"/>
         <source>Add new role</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää uusi rooli</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished">Lisää</translation>
+        <translation>Lisää</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1880,17 +1880,17 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+3"/>
         <source>Ban users using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna porttikieltoja käytäntölistojen perusteella</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban rooms using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna huoneille porttikielttoja käytäntölistojen perusteella</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban servers using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Anna palvelimille porttikieltoja käytäntölistojen perusteella</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2066,7 +2066,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valittu palvelin ei tue mitään Matrix-protokollan versiota, jota tämä ohjelma tukee (v1.1, v1.2 tai v1.3). Et voi rekisteröityä.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2158,7 +2158,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopioi huoneen linkki</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2379,7 +2379,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Aihetta ei ole asetettu</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2444,7 +2444,7 @@ Esimerkki: https://server.my:8787</translation>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms or by knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Rajoitettu tietyissä huoneissa oleville tai huoneeseen on koputettava</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2476,7 +2476,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="+12"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä ja muuta tämän huoneen osoitteita ja aliaksia</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2508,7 +2508,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="-35"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliakset</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -2811,7 +2811,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
     <message>
         <location line="+2"/>
         <source>Sent</source>
-        <translation>Lähetetyt</translation>
+        <translation>Lähetetty</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3109,32 +3109,32 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 poisti käytöstä käytännön antaa porttikielto sääntöön %2 täsmääville käyttäjille.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lisäsi käytännön antaa porttikielto sääntöön %2 täsmääville käyttäjille syystä &quot;%3&quot;.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 poisti käytöstä käytännön antaa porttikielto sääntöön %2 täsmääville huoneille.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lisäsi käytännön antaa porttikielto sääntöön %2 täsmääville huoneille syystä &quot;%3&quot;.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 poisti käytöstä käytännön antaa porttikielto sääntöön %2 täsmääville palvelimille.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lisäsi käytännön antaa porttikielto sääntöön %2 täsmääville palvelimille syystä &quot;%3&quot;.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -3329,7 +3329,7 @@ Syy: %4</translation>
     <message>
         <location line="+140"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä huoneen jäsenet.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3684,7 +3684,7 @@ Syy: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show message counts for spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä spacejen viestimäärät</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3997,7 +3997,9 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
-        <translation type="unfinished"></translation>
+        <translation>Näyttää onko viestisi luettu.
+Viestin tila näytetään aikaleimojen vieressä.
+Varoitus: Jos kotipalvelimesi ei tue tätä, huoneitasi ei ikinä merkitä luetuksi!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -4028,7 +4030,7 @@ Vaikuttaa vain salattujen keskustelujen viesteihin.</translation>
     <message>
         <location line="+3"/>
         <source>Choose where to show the total number of notifications contained within a space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse missä spacen ilmoitusten kokonaismäärä näytetään.</translation>
     </message>
     <message>
         <location line="+3"/>
