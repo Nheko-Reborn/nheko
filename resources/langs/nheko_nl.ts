@@ -672,7 +672,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>De weergegeven emoji kunnen er anders uit zien als bijvoorbeeld een ander lettertype wordt gebruikt. Ze kunnen ook vertaald zijn in andere talen. Hoe dan ook moeten ze één van 64 verschillende objecten of dieren weergeven. Bijvoorbeeld een leeuw en een kat zijn verschillend, maar een kat is een kat - ook als er bij de ene applicatie een kattengezicht verschijnt maar bij de andere een volledig kattenlichaam.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1017,7 +1017,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
     <message>
         <location line="+764"/>
         <source>Upload of &apos;%1&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Versturen van &apos;%1&apos; misluk</translation>
     </message>
 </context>
 <context>
@@ -1186,7 +1186,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+14"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>De gekozen server ondersteund geen versie van het Matrix protocol die deze applicatie begrijpt (v1.1, v1.2 of v1.3). Je kan daardoor niet inloggen.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1661,85 +1661,85 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+25"/>
         <source>Permissions in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Machtniveaus in %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kijk uit bij het aanpassen van machtniveaus. Je kan het niveau van mensen met een gelijk of hoger niveau als jijzelf niet aanpassen. Let dus op bij het verhogen van het niveau van anderen.</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Roles</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveaus</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikers</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Move permissions between roles to change them</source>
-        <translation type="unfinished"></translation>
+        <translation>Verplaats toestemmingen tussen niveaus om ze te veranderen</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+235"/>
         <source>Administrator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Beheerder (%1)</translation>
     </message>
     <message>
         <location line="-233"/>
         <location line="+235"/>
         <source>Moderator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Toezichthouder (%1)</translation>
     </message>
     <message>
         <location line="-233"/>
         <source>User (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+233"/>
         <source>Custom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepast (%1)</translation>
     </message>
     <message>
         <location line="-220"/>
         <source>Remove event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder evenementtype</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Evenementtype toevoegen</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Add new role</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuw niveau toevoegen</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished">Toevoegen</translation>
+        <translation>Toevoegen</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Move users up or down to change their permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Verplaats gebruikers omhoog of omlaag om hun niveau en toestemmingen aan te passen</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Remove user</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder gebruiker</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker toevoegen</translation>
     </message>
 </context>
 <context>
@@ -1747,7 +1747,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+601"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon machtsniveau niet bewerken: %1</translation>
     </message>
 </context>
 <context>
@@ -1755,177 +1755,177 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="-450"/>
         <source>Other events</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere evenementen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere statusevenementen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Remove other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder andere gebruikers</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Verban andere gebruikers</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere gebruikers uitnodigen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact events sent by others</source>
-        <translation type="unfinished"></translation>
+        <translation>Berichten intrekken die verstuurd waren door anderen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Reacties</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Deprecated aliases events</source>
-        <translation type="unfinished"></translation>
+        <translation>Verouderde aliasgebeurtenissen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander de kamerafbeelding</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Veranderen van de kameradressen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Versturen van versleutelde berichten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling inschakelen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change guest access</source>
-        <translation type="unfinished"></translation>
+        <translation>Gasttoegang aanpassen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change history visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Zichtbaarheid van de geschiedenis aanpassen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change who can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanpassen wie de kamer mag binnentreden</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Berichten versturen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>Veranderen van de kamernaam</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanpassen van de kamer machtsniveaus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the rooms topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Veranderen van het kameronderwerp</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>Veranderen van de widgets</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Veranderen van de widgets (experimenteel)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact own events</source>
-        <translation type="unfinished"></translation>
+        <translation>Intrekken van eigen gebeurtenissen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the pinned events</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastgeprikte gebeurtenissen veranderen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Upgrade the room</source>
-        <translation type="unfinished"></translation>
+        <translation>De kamerversie verhogen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Stickers versturen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ban users using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikers verbannen via beleidsregels</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban rooms using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamers verbannen via beleidsregels</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban servers using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Servers verbannen via beleidsregels</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Edit child rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Kindkamers veranderen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouderkamers veranderen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Een beeld- of geluidsgesprek beginnen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Negotiate a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Een beeld- of geluidsgesprek onderhandelen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Answer a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Een beeld- of geluidsgesprek opnemen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Hang up a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Een beeld- of geluidsgesprek ophangen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room emotes</source>
-        <translation type="unfinished"></translation>
+        <translation>De kamer emotes aanpassen</translation>
     </message>
 </context>
 <context>
@@ -1933,7 +1933,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+217"/>
         <source>Other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere gebruikers</translation>
     </message>
 </context>
 <context>
@@ -2066,7 +2066,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>De gekozen server ondersteund geen versie van het Matrix protocol die deze toepassing begrijpt (v1.1, v1.2 of v1.3). Je kan je daarom niet registreren.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2148,7 +2148,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>In een apart venster openen</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2158,7 +2158,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieer kamerlink</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2251,7 +2251,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Begin een privégesprek</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2293,42 +2293,42 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoeken...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteren op: </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished">Gebruikers ID</translation>
+        <translation>Gebruikers ID</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Weergavenaam</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Machtsniveau</translation>
     </message>
     <message>
         <location line="+105"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Beheerder: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Toezichthouder: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker: %1</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2361,7 +2361,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+117"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam van deze kamer veranderen</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
@@ -2374,17 +2374,17 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijk deelnemers aan %1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen onderwerp</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander onderwerp van deze kamer</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2444,7 +2444,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms or by knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Beperkt tot deelnemers aan bepaalde andere kamers of aankloppen</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2466,17 +2466,17 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Toestemmingen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijken en aanpassen van toestemmingen in deze kamer</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijken en aanpassen van adressen/aliassen van deze kamer</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2508,7 +2508,7 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
     <message>
         <location line="-35"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliassen</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -2952,14 +2952,14 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 paste het verwijderen-van-leden machtsniveau aan van %2 naar %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n deelnemer kan nu deelnemers verwijderen.</numerusform>
+            <numerusform>%n deelnemers kunnen nu deelnemers verwijderen.</numerusform>
         </translation>
     </message>
     <message>
