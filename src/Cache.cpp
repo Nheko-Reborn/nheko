@@ -46,10 +46,16 @@ static const std::string_view OLM_ACCOUNT_KEY("olm_account");
 static const std::string_view CACHE_FORMAT_VERSION_KEY("cache_format_version");
 static const std::string_view CURRENT_ONLINE_BACKUP_VERSION("current_online_backup_version");
 
+constexpr auto MAX_DBS = 32384UL;
+#if Q_PROCESSOR_WORDSIZE == 8                                                 // 64-bit
+constexpr auto DB_SIZE                 = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
 constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
-
-constexpr auto DB_SIZE    = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
-constexpr auto MAX_DBS    = 32384UL;
+#elif Q_PROCESSOR_WORDSIZE == 4 // 32-bit address space limits mmaps
+constexpr auto DB_SIZE                 = 1ULL * 1024ULL * 1024ULL * 1024ULL; // 1 GB
+constexpr size_t MAX_RESTORED_MESSAGES = 5'000;
+#else
+#error unknown word size on target CPU
+#endif
 constexpr auto BATCH_SIZE = 100;
 
 //! Cache databases and their format.
