@@ -3006,49 +3006,54 @@ Cache::getMember(const std::string &room_id, const std::string &user_id)
 std::vector<RoomMember>
 Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
-    auto txn    = ro_txn(env_);
-    auto db     = getMembersDb(txn, room_id);
-    auto cursor = lmdb::cursor::open(txn, db);
+    try {
+        auto txn    = ro_txn(env_);
+        auto db     = getMembersDb(txn, room_id);
+        auto cursor = lmdb::cursor::open(txn, db);
 
-    std::size_t currentIndex = 0;
+        std::size_t currentIndex = 0;
 
-    const auto endIndex = std::min(startIndex + len, db.size(txn));
+        const auto endIndex = std::min(startIndex + len, db.size(txn));
 
-    std::vector<RoomMember> members;
+        std::vector<RoomMember> members;
 
-    std::string_view user_id, user_data;
-    while (cursor.get(user_id, user_data, MDB_NEXT)) {
-        if (currentIndex < startIndex) {
+        std::string_view user_id, user_data;
+        while (cursor.get(user_id, user_data, MDB_NEXT)) {
+            if (currentIndex < startIndex) {
+                currentIndex += 1;
+                continue;
+            }
+
+            if (currentIndex >= endIndex)
+                break;
+
+            try {
+                MemberInfo tmp = nlohmann::json::parse(user_data).get<MemberInfo>();
+                members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
+                                                QString::fromStdString(tmp.name)});
+            } catch (const nlohmann::json::exception &e) {
+                nhlog::db()->warn("{}", e.what());
+            }
+
             currentIndex += 1;
-            continue;
         }
 
-        if (currentIndex >= endIndex)
-            break;
+        cursor.close();
 
-        try {
-            MemberInfo tmp = nlohmann::json::parse(user_data).get<MemberInfo>();
-            members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
-                                            QString::fromStdString(tmp.name)});
-        } catch (const nlohmann::json::exception &e) {
-            nhlog::db()->warn("{}", e.what());
-        }
-
-        currentIndex += 1;
+        return members;
+    } catch (const lmdb::error &e) {
+        nhlog::db()->error("Failed to retrieve members from db in room {}: {}", room_id, e.what());
+        return {};
     }
-
-    cursor.close();
-
-    return members;
 }
 
 std::vector<RoomMember>
 Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
-    auto txn = ro_txn(env_);
-    std::vector<RoomMember> members;
-
     try {
+        auto txn = ro_txn(env_);
+        std::vector<RoomMember> members;
+
         auto db     = getInviteMembersDb(txn, room_id);
         auto cursor = lmdb::cursor::open(txn, db);
 
@@ -3079,11 +3084,12 @@ Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, 
         }
 
         cursor.close();
-    } catch (const lmdb::error &e) {
-        nhlog::db()->warn("Failed to retrieve members {}", e.what());
-    }
 
-    return members;
+        return members;
+    } catch (const lmdb::error &e) {
+        nhlog::db()->error("Failed to retrieve members from db in room {}: {}", room_id, e.what());
+        return {};
+    }
 }
 
 bool
@@ -4033,17 +4039,22 @@ Cache::roomMembers(const std::string &room_id)
 {
     auto txn = ro_txn(env_);
 
-    std::vector<std::string> members;
-    std::string_view user_id, unused;
+    try {
+        std::vector<std::string> members;
+        std::string_view user_id, unused;
 
-    auto db = getMembersDb(txn, room_id);
+        auto db = getMembersDb(txn, room_id);
 
-    auto cursor = lmdb::cursor::open(txn, db);
-    while (cursor.get(user_id, unused, MDB_NEXT))
-        members.emplace_back(user_id);
-    cursor.close();
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(user_id, unused, MDB_NEXT))
+            members.emplace_back(user_id);
+        cursor.close();
 
-    return members;
+        return members;
+    } catch (const lmdb::error &e) {
+        nhlog::db()->error("Failed to retrieve members from db in room {}: {}", room_id, e.what());
+        return {};
+    }
 }
 
 crypto::Trust

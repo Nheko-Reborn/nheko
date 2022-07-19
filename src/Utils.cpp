@@ -881,3 +881,63 @@ utils::markRoomAsDirect(QString roomid, std::vector<RoomMember> members)
           });
       });
 }
+
+std::vector<std::string>
+utils::roomVias(const std::string &roomid)
+{
+    std::vector<std::string> vias;
+
+    {
+        auto members = cache::getMembers(roomid, 0, 100);
+        if (!members.empty()) {
+            vias.push_back(http::client()->user_id().hostname());
+            for (const auto &m : members) {
+                if (vias.size() >= 4)
+                    break;
+
+                auto user_id =
+                  mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
+
+                auto server = user_id.hostname();
+                if (std::find(begin(vias), end(vias), server) == vias.end())
+                    vias.push_back(server);
+            }
+        }
+    }
+
+    if (vias.empty()) {
+        auto members = cache::getMembersFromInvite(roomid, 0, 100);
+        if (!members.empty()) {
+            vias.push_back(http::client()->user_id().hostname());
+            for (const auto &m : members) {
+                if (vias.size() >= 4)
+                    break;
+
+                auto user_id =
+                  mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
+
+                auto server = user_id.hostname();
+                if (std::find(begin(vias), end(vias), server) == vias.end())
+                    vias.push_back(server);
+            }
+        }
+    }
+
+    if (vias.empty()) {
+        auto parents = cache::client()->getParentRoomIds(roomid);
+        for (const auto &p : parents) {
+            auto child =
+              cache::client()->getStateEvent<mtx::events::state::space::Child>(p, roomid);
+            if (child && child->content.via)
+                vias.insert(vias.end(), child->content.via->begin(), child->content.via->end());
+        }
+
+        std::sort(begin(vias), end(vias));
+        auto last = std::unique(begin(vias), end(vias));
+        vias.erase(last, end(vias));
+
+        // if (vias.size()> 3)
+        //     vias.erase(begin(vias)+3, end(vias));
+    }
+    return vias;
+}

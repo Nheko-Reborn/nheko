@@ -645,15 +645,8 @@ void
 RoomlistModel::joinPreview(QString roomid)
 {
     if (previewedRooms.contains(roomid)) {
-        std::vector<std::string> vias;
-        auto parents = cache::client()->getParentRoomIds(roomid.toStdString());
-        for (const auto &p : parents) {
-            auto child = cache::client()->getStateEvent<mtx::events::state::space::Child>(
-              p, roomid.toStdString());
-            if (child && child->content.via)
-                vias.insert(vias.end(), child->content.via->begin(), child->content.via->end());
-        }
-        ChatPage::instance()->joinRoomVia(roomid.toStdString(), vias, false);
+        ChatPage::instance()->joinRoomVia(
+          roomid.toStdString(), utils::roomVias(roomid.toStdString()), false);
     }
 }
 void

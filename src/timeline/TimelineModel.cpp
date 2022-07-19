@@ -1813,16 +1813,12 @@ TimelineModel::getRoomVias(const QString &roomId)
 {
     QStringList vias;
 
-    vias.push_back(QStringLiteral("via=%1").arg(QString(
-      QUrl::toPercentEncoding(QString::fromStdString(http::client()->user_id().hostname())))));
-    auto members = cache::getMembers(roomId.toStdString(), 0, 100);
-    for (const auto &m : members) {
+    for (const auto &m : utils::roomVias(roomId.toStdString())) {
         if (vias.size() >= 4)
             break;
 
-        auto user_id   = mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
-        QString server = QStringLiteral("via=%1").arg(
-          QString(QUrl::toPercentEncoding(QString::fromStdString(user_id.hostname()))));
+        QString server =
+          QStringLiteral("via=%1").arg(QString(QUrl::toPercentEncoding(QString::fromStdString(m))));
 
         if (!vias.contains(server))
             vias.push_back(server);
