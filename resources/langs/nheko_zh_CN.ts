@@ -252,7 +252,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>Room %1 created.</source>
-        <translation>房间 %1 已创建。</translation>
+        <translation>聊天室 %1 已创建。</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -404,7 +404,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this space by default.</source>
-        <translation>默认隐藏带这个标签或来自此空间的房间。</translation>
+        <translation>默认隐藏带这个标签或来自此空间的聊天室。</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -422,12 +422,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+72"/>
         <source>All rooms</source>
-        <translation>所有房间</translation>
+        <translation>所有聊天室</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
-        <translation>展示所有不带过滤器的房间。</translation>
+        <translation>显示所有聊天室而不过滤。</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -447,7 +447,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation>你收藏的房间。</translation>
+        <translation>你收藏的聊天室。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -457,7 +457,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation>低优先级房间。</translation>
+        <translation>低优先级聊天室。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -529,7 +529,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation>公共的</translation>
+        <translation>公开</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -539,7 +539,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Trusted</source>
-        <translation>受信的</translation>
+        <translation>可信</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -554,7 +554,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation>当心：加密无法被禁用</translation>
+        <translation>注意：加密无法被禁用</translation>
     </message>
 </context>
 <context>
@@ -618,7 +618,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+197"/>
         <source>People</source>
-        <translation>人们</translation>
+        <translation>人物</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -643,12 +643,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation>物品</translation>
+        <translation>物体</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation>标识</translation>
+        <translation>符号</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -666,7 +666,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>请验证一下表情。你应该会在另一边看到相同的表情，如果它们不一致，请按“它们不一致”来终止验证！</translation>
+        <translation>请验证以下表情符号。你应该会在两边看到相同的表情符号，如果它们不一致，请按“它们不一致”来终止验证！</translation>
     </message>
     <message>
         <location line="+379"/>
@@ -694,7 +694,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation>这条消息无法被解密，因为我们只持有较之更新的消息的密钥。你可以继续尝试访问这条消息。</translation>
+        <translation>这条消息无法被解密，因为我们只持有较之更新的消息的密钥。你可以继续尝试请求访问这条消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -807,7 +807,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/ui/HiddenEvents.cpp" line="+80"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation>设置隐藏事件失败：%1</translation>
+        <translation>未能设置隐藏事件：%1</translation>
     </message>
 </context>
 <context>
@@ -830,7 +830,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation>以下事件将在所有房间中 &lt;b&gt;展示&lt;/b&gt; ：</translation>
+        <translation>以下事件将在所有聊天室中 &lt;b&gt;展示&lt;/b&gt; ：</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -919,7 +919,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+9"/>
         <location line="+70"/>
         <source>Use as Emoji</source>
-        <translation>作为 Emoji 使用</translation>
+        <translation>作为表情符号使用</translation>
     </message>
     <message>
         <location line="-57"/>
@@ -963,7 +963,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+14"/>
         <source>New room pack</source>
-        <translation>创建和房间关联的表情包</translation>
+        <translation>创建和聊天室关联的表情包</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -973,7 +973,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation>来自本房间的表情包</translation>
+        <translation>来自此聊天室的表情包</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -988,7 +988,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation>允许在所有房间中使用该表情包</translation>
+        <translation>允许在所有聊天室中使用该表情包</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1011,7 +1011,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation>所有文件（*）</translation>
+        <translation>所有文件 (*)</translation>
     </message>
     <message>
         <location line="+764"/>
@@ -1058,7 +1058,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+15"/>
         <source>Join room</source>
-        <translation>加入房间</translation>
+        <translation>加入聊天室</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1388,7 +1388,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation>您没有在此聊天室发送消息的权限</translation>
+        <translation>你没有在此聊天室发送消息的权限</translation>
     </message>
 </context>
 <context>
@@ -1779,7 +1779,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Redact events sent by others</source>
-        <translation>编辑其他人发送的事件</translation>
+        <translation>删除其他人发送的事件</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1859,7 +1859,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Redact own events</source>
-        <translation>编辑自己的事件</translation>
+        <translation>删除自己的事件</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2306,7 +2306,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation>显示名称</translation>
+        <translation>昵称</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2965,19 +2965,19 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation>%1 已将聊天室的编辑权限等级从 %2 更改为 %3。</translation>
+        <translation>%1 已将聊天室的删除权限等级从 %2 更改为 %3。</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
         <translation>
-            <numerusform>现在有 %n 个成员可以编辑聊天室消息。</numerusform>
+            <numerusform>现在有 %n 个成员可以删除聊天室消息。</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation>%1 现在可以编辑聊天室消息。</translation>
+        <translation>%1 现在可以删除聊天室消息。</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3208,12 +3208,12 @@ Reason: %4</source>
     <message>
         <location line="-19"/>
         <source>%1 redacted their knock.</source>
-        <translation>%1 修改了其加入请求。</translation>
+        <translation>%1 删除了其加入请求。</translation>
     </message>
     <message>
         <location line="-1497"/>
         <source>You joined this room.</source>
-        <translation>您已加入此房间。</translation>
+        <translation>你已加入此聊天室。</translation>
     </message>
     <message>
         <location line="+1449"/>
@@ -3223,12 +3223,12 @@ Reason: %4</source>
     <message>
         <location line="+12"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation>%1 已更改其头像并将其显示名称更改为 %2。</translation>
+        <translation>%1 已更改其头像并将其昵称更改为 %2。</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed their display name to %2.</source>
-        <translation>%1 已将其显示名称更改为 %2。</translation>
+        <translation>%1 已将其昵称更改为 %2。</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -3350,7 +3350,7 @@ Reason: %4</source>
     <message>
         <location line="+8"/>
         <source>Invite users</source>
-        <translation>被邀请的用户</translation>
+        <translation>邀请用户</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3398,7 +3398,7 @@ Reason: %4</source>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation>注册已中止</translation>
+        <translation>注册已终止</translation>
     </message>
     <message>
         <location line="-27"/>
@@ -3446,12 +3446,12 @@ Reason: %4</source>
     <message>
         <location line="+84"/>
         <source>Change display name globally.</source>
-        <translation>全局更改显示名称。</translation>
+        <translation>全局更改昵称。</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation>更改显示名称。将只适用于此聊天室。</translation>
+        <translation>更改昵称。将只适用于此聊天室。</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -3461,7 +3461,7 @@ Reason: %4</source>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation>这是特定于聊天室的配置文件。用户的姓名和头像可能与他们的全局版本不同。</translation>
+        <translation>这是特定于聊天室的个人资料。用户的姓名和头像可能与其全局版本不同。</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3704,7 +3704,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation>表情符号字体系列</translation>
+        <translation>Emoji 贴纸集</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3874,7 +3874,7 @@ Reason: %4</source>
     <message>
         <location line="+35"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation>设置受到通话邀请时发出的通知音</translation>
+        <translation>设置当受到通话邀请时发出的通知音</translation>
     </message>
     <message>
         <location line="+7"/>
