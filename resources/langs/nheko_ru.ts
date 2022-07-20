@@ -104,10 +104,10 @@
     <message numerus="yes">
         <location filename="../../src/Cache.cpp" line="+2724"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 и ещё %n</numerusform>
+            <numerusform>%1 и ещё %n</numerusform>
+            <numerusform>%1 и ещё %n</numerusform>
         </translation>
     </message>
     <message>
@@ -140,7 +140,7 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+66"/>
         <source>Video Call</source>
-        <translation>Видео Звонок</translation>
+        <translation>Видеозвонок</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -160,12 +160,12 @@
     <message>
         <location line="+13"/>
         <source>Unknown microphone: %1</source>
-        <translation>Неизвестный микрофон: %1</translation>
+        <translation>Неопознанный микрофон: %1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Unknown camera: %1</source>
-        <translation>Неизвестная камера: %1</translation>
+        <translation>Неопознанная камера: %1</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -207,7 +207,7 @@
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Версия кэша на вашем диске новее той, что поддерживается текущей версией Nheko. Пожалуйста, обновите Nheko или очистите кэш.</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -238,7 +238,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+25"/>
         <source>Confirm join</source>
-        <translation>Подтвердить вход</translation>
+        <translation>Подтвердите вход</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -319,7 +319,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+13"/>
         <source>Incompatible cache version</source>
-        <translation>Не совместимая версия кэша</translation>
+        <translation>Несовместимая версия кэша</translation>
     </message>
     <message>
         <location line="+61"/>
