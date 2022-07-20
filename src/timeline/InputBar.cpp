@@ -343,6 +343,47 @@ InputBar::openFileSelection()
     startUploadFromPath(fileName);
 }
 
+QString
+replaceMatrixToMarkdownLink(QString input)
+{
+    bool replaced = false;
+    do {
+        replaced = false;
+
+        int endOfName = input.indexOf("](https://matrix.to/#/");
+        int startOfName;
+        int nestingCount = 0;
+        for (startOfName = endOfName - 1; startOfName > 0; startOfName--) {
+            // skip escaped chars
+            if (startOfName > 0 && input[startOfName - 1] == '\\')
+                continue;
+
+            if (input[startOfName] == '[') {
+                if (nestingCount <= 0)
+                    break;
+                else
+                    nestingCount--;
+            }
+            if (input[startOfName] == ']')
+                nestingCount++;
+        }
+        if (startOfName < 0 || nestingCount > 0)
+            break;
+
+        int endOfLink = input.indexOf(')', endOfName);
+        int newline   = input.indexOf('\n', endOfName);
+        if (endOfLink > endOfName && (newline == -1 || endOfLink < newline)) {
+            auto name = input.mid(startOfName + 1, endOfName - startOfName - 1);
+            name.replace("\\[", "[");
+            name.replace("\\]", "]");
+            input.replace(startOfName, endOfLink - startOfName + 1, name);
+            replaced = true;
+        }
+    } while (replaced);
+
+    return input;
+}
+
 void
 InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbowify)
 {
@@ -354,7 +395,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         useMarkdown == MarkdownOverride::ON) {
         text.formatted_body = utils::markdownToHtml(msg, rainbowify).toStdString();
         // Remove markdown links by completer
-        text.body = msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
+        text.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
 
         // Don't send formatted_body, when we don't need to
         if (text.formatted_body.find('<') == std::string::npos)
@@ -392,7 +433,8 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
                 }
             }
 
-            text.body = QStringLiteral("%1\n%2").arg(body, msg).toStdString();
+            text.body =
+              QStringLiteral("%1\n%2").arg(body, QString::fromStdString(text.body)).toStdString();
 
             // NOTE(Nico): rich replies always need a formatted_body!
             text.format = "org.matrix.custom.html";
@@ -426,8 +468,7 @@ InputBar::emote(const QString &msg, bool rainbowify)
         emote.formatted_body = html.toStdString();
         emote.format         = "org.matrix.custom.html";
         // Remove markdown links by completer
-        emote.body =
-          msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
+        emote.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
     }
 
     if (!room->reply().isEmpty()) {
@@ -454,8 +495,7 @@ InputBar::notice(const QString &msg, bool rainbowify)
         notice.formatted_body = html.toStdString();
         notice.format         = "org.matrix.custom.html";
         // Remove markdown links by completer
-        notice.body =
-          msg.trimmed().replace(conf::strings::matrixToMarkdownLink, "\\1").toStdString();
+        notice.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
     }
 
     if (!room->reply().isEmpty()) {

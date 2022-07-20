@@ -30,9 +30,7 @@ const QRegularExpression url_regex(
   //          vvvv atomic match url -> fail if there is a " before or after        vvv
   QStringLiteral(
     R"((?<!["'])(?>((www\.(?!\.)|[a-z][a-z0-9+.-]*://)[^\s<>'"]+[^!,\.\s<>'"\]\)\:]))(?!["']))"));
-// match any markdown matrix.to link. Capture group 1 is the link name, group 2 is the target.
-static const QRegularExpression
-  matrixToMarkdownLink(QStringLiteral(R"(\[(.*?)(?<!\\)\]\((https://matrix.to/#/.*?\)))"));
+// A matrix link to be converted back to markdown
 static const QRegularExpression
   matrixToLink(QStringLiteral(R"(<a href=\"(https://matrix.to/#/.*?)\">(.*?)</a>)"));
 }

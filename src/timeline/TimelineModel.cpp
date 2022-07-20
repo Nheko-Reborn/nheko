@@ -2625,6 +2625,8 @@ TimelineModel::setEdit(const QString &newEdit)
         nhlog::ui()->debug("Stored: {}", textBeforeEdit.toStdString());
     }
 
+    auto quoted = [](QString in) { return in.replace("[", "\\[").replace("]", "\\]"); };
+
     if (edit_ != newEdit) {
         auto ev = events.get(newEdit.toStdString(), "");
         if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
@@ -2649,7 +2651,7 @@ TimelineModel::setEdit(const QString &newEdit)
 
                     for (const auto &[user, link] : reverseNameMapping) {
                         // TODO(Nico): html unescape the user name
-                        editText.replace(user, QStringLiteral("[%1](%2)").arg(user, link));
+                        editText.replace(user, QStringLiteral("[%1](%2)").arg(quoted(user), link));
                     }
                 }
 

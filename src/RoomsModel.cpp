@@ -61,7 +61,11 @@ RoomsModel::data(const QModelIndex &index, int role) const
             if (UserSettings::instance()->markdown()) {
                 QString percentEncoding = QUrl::toPercentEncoding(roomAliases[index.row()]);
                 return QStringLiteral("[%1](https://matrix.to/#/%2)")
-                  .arg(roomAliases[index.row()], percentEncoding);
+                  .arg(QString(roomAliases[index.row()])
+                         .replace("[", "\\[")
+                         .replace("]", "\\]")
+                         .toHtmlEscaped(),
+                       percentEncoding);
             } else {
                 return roomAliases[index.row()];
             }
