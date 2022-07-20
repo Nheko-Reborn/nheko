@@ -2952,7 +2952,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation>%1 paste het verwijderen-van-leden machtsniveau aan van %2 naar %3.</translation>
+        <translation>%1 paste het verwijderen-van-deelnemers machtsniveau aan van %2 naar %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
@@ -2965,48 +2965,48 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kan nu deelnemers uit de kamer verwijderen.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het machtsniveau nodig om berichten in te trekken veranderd van %2 naar %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n deelnemer kan nu berichten intrekken.</numerusform>
+            <numerusform>%n deelnemers kunnen nu berichten intrekken.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kan nu berichten intrekken.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het machtsniveau om deelnemers uit te kamer te verbannen veranderd van %2 naar %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n deelnemer kan nu deelnemers uit de kamer verbannen.</numerusform>
+            <numerusform>%n deelnemers kunnen nu deelnemers uit de kamer verbannen.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kan u deelnemers uit de kamer verbannen.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het standaardmachtsniveau voor instellen van kamereigenschappen veranderd van %2 naar %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
