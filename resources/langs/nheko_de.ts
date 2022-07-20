@@ -48,7 +48,7 @@
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation>Konnte die Raumadresse %1 nicht aktualisieren: %2</translation>
+        <translation>Konnte die Raumadressen nicht aktualisieren: %1</translation>
     </message>
 </context>
 <context>
