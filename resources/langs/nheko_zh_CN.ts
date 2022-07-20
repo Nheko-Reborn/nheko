@@ -81,12 +81,12 @@
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation>在此聊天室中推广此别名</translation>
+        <translation>公布在聊天室目录中</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation>在此聊天室中推广此别名</translation>
+        <translation>移除此别名</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -112,7 +112,7 @@
         <location line="+2"/>
         <location line="+153"/>
         <source>Empty Room</source>
-        <translation>空房间</translation>
+        <translation>空聊天室</translation>
     </message>
 </context>
 <context>
@@ -215,14 +215,14 @@
     <message>
         <location line="+302"/>
         <source>Knock on room</source>
-        <translation>敲门</translation>
+        <translation>请求加入聊天室</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation>您未能加入%1。你可以试着敲门，这样别人就可以邀请你进来。你想这样做吗？
-您可以选择提供一个理由让其他人接受您的敲门：</translation>
+        <translation>你未能加入 %1。你可以尝试请求加入，以便其他人可以邀请你进来。你想这样做吗？
+你可以选择提供一个理由让其他人接受你的加入请求：</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -283,7 +283,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+3"/>
         <source>Banned user: %1</source>
-        <translation>禁止用户: %1</translation>
+        <translation>禁止用户：%1</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -303,12 +303,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+3"/>
         <source>Unbanned user: %1</source>
-        <translation>解禁用户: %1</translation>
+        <translation>解封用户：%1</translation>
     </message>
     <message>
         <location line="+375"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation>确认与%1开始私密聊天？</translation>
+        <translation>是否确认与 %1 开始私密聊天？</translation>
     </message>
     <message>
         <location line="-967"/>
@@ -335,7 +335,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+94"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation>设置密钥失败。服务器返回信息: %1 %2。请稍后再试。</translation>
+        <translation>未能设置加密密钥。服务器响应：%1 %2。请稍后再试。</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -346,12 +346,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+84"/>
         <source>Failed to join room: %1</source>
-        <translation>无法加入房间: %1</translation>
+        <translation>未能加入聊天室：%1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to remove invite: %1</source>
-        <translation>无法移除邀请: %1</translation>
+        <translation>未能移除邀请：%1</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -361,7 +361,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>Failed to leave room: %1</source>
-        <translation>离开聊天室失败：%1</translation>
+        <translation>未能离开聊天室：%1</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -371,12 +371,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation>输入踢出 %1 (%2) 的原因，如无原因请敲回车：</translation>
+        <translation>输入踢出 %1 (%2) 的原因，如无原因请按回车：</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation>从%2: %3踢出%1失败</translation>
+        <translation>未能踢出 %2 里的 %1：%3</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -386,7 +386,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation>输入封禁 %1 (%2) 的原因，如无原因请敲回车：</translation>
+        <translation>输入封禁 %1 (%2) 的原因，如无原因请按回车：</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
@@ -499,7 +499,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
         <location line="+125"/>
         <source>Create Room</source>
-        <translation>创建房间</translation>
+        <translation>创建聊天室</translation>
     </message>
     <message>
         <location line="-98"/>
@@ -529,7 +529,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation>公开</translation>
+        <translation>公共的</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -539,7 +539,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Trusted</source>
-        <translation>可信</translation>
+        <translation>受信的</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -554,7 +554,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation>注意：无法禁用加密</translation>
+        <translation>当心：加密无法被禁用</translation>
     </message>
 </context>
 <context>
@@ -572,7 +572,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation>填入你的恢复令牌或名为%1的口令以解密你的密钥：</translation>
+        <translation>输入你的恢复密钥或名为 %1 的口令以解密你的密钥：</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -653,7 +653,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation>标识</translation>
+        <translation>旗帜</translation>
     </message>
 </context>
 <context>
@@ -1340,7 +1340,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 正在接通中...</translation>
     </message>
     <message>
         <location line="+122"/>
@@ -4042,7 +4042,7 @@ be blurred.</source>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation>当你的主服务器没有提供通话辅助服务器时使用备用的 turn.matrix.org 服务器</translation>
+        <translation>当你的主服务器没有提供通话辅助服务器时使用备用的 turn.matrix.org 服务器。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4387,7 +4387,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+2"/>
         <source>%1 answered a call</source>
-        <translation>%1 接听了通话。</translation>
+        <translation>%1 接听了通话</translation>
     </message>
     <message>
         <location line="+4"/>
