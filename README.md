@@ -165,6 +165,7 @@ choco install nheko-reborn
 nheko does not provide binaries for any D-Bus plugins. However, we do provide the following list of known plugins:
 
 - [nheko-krunner](https://github.com/LorenDB/nheko-krunner)
+- [rofi-nheko](https://mzte.de/git/LordMZTE/rofi-nheko)
 
 ### FAQ
 
