@@ -563,7 +563,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+282"/>
         <source>Decrypt secrets</source>
-        <translation>Расшифровать секреты</translation>
+        <translation>Расшифровать ключи</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -583,7 +583,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation>Не удалось расшифровать секреты с помощью предоставленного ключа восстановления или пароля.</translation>
+        <translation>Не удалось расшифровать ключи шифрования с помощью предоставленного ключа восстановления или пароля</translation>
     </message>
 </context>
 <context>
@@ -690,12 +690,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+47"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сообщение не было расшифровано из-за отсутствия ключа. Ключ был запрошен автоматически, но Вы можете попробовать запросить его снова вручную.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сообщение не было расшифровано, так как имеющийся ключ подходит только к более поздним сообщениям. Попробуйте запросить доступ к этому сообщению.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -705,7 +705,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>При расшифровке сообщения произошла ошибка.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1253,7 +1253,7 @@ Example: https://server.my:8787</source>
         <location filename="../../src/timeline/InputBar.cpp" line="-154"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished">Не удалось загрузить медиа. Пожалуйста попробуйте ещё раз</translation>
+        <translation>Не удалось загрузить контент. Пожалуйста, повторите попытку.</translation>
     </message>
 </context>
 <context>
@@ -1517,7 +1517,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+12"/>
         <source>Send Verification Request</source>
-        <translation>Отправить Запрос Верификации</translation>
+        <translation>Отправить запрос на проверку</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -3889,7 +3889,7 @@ Reason: %4</source>
     <message>
         <location line="+35"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished">Установить звук уведомления, когда получено приглашение для звонка.</translation>
+        <translation>Выбрать звук уведомления входящего звонка</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4218,7 +4218,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../qml/pages/WelcomePage.qml" line="+29"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Добро пожаловать в nheko, клиент для протокола Matrix!</translation>
+        <translation>Добро пожаловать в Nheko, клиент для протокола Matrix!</translation>
     </message>
     <message>
         <location line="+10"/>
