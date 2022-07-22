@@ -2720,18 +2720,19 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
         <translation>Witaj w sieci Matrix!
-Wygląda na to, że jesteś tu nowy(-a). Zanim będzie można bezpiecznie szyfrować Twoje wiadomości, musimy skonfigurować kilka rzeczy. Możesz od razu kliknąć akceptuj lub ustawić kilka opcji. Postaramy się także wyjaśnić podstawowe rzeczy. Możesz pominąć ten samouczek, ale liczymy, że okaże się on użyteczny!</translation>
+Wygląda na to, że jesteś tu nowy(-a). Zanim będzie można bezpiecznie szyfrować Twoje wiadomości, musimy skonfigurować parę drobiazgów. Możesz od razu kliknąć &quot;akceptuj&quot; lub dostosować niektóre opcje. Postaramy się także wyjaśnić kilka podstaw. Możesz pominąć ten samouczek, choć może on okazać się pomocny!</translation>
     </message>
     <message>
         <location line="+124"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktywuj szyfrowanie</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wygląda na to, że masz już skonfigurowane szyfrowanie dla tego konta. Aby mieć dostęp do zaszyfrowanych wiadomości i oznaczyć to urządzenie jako zaufane możesz je zweryfikować przy użyciu innego istniejącego urządzenia (zaufanego) lub podać hasło odzyskiwania (jeśli zostało ustawione). Wybierz jedną z opcji poniżej:
+Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego urządzania. Jeśli wybierzesz opcję „Wprowadź hasło”, będziesz potrzebować klucza odzyskiwania lub hasła. Jeśli klikniesz przycisk anuluj, będziesz mógł/mogła zweryfikować to urządzenie później.</translation>
     </message>
     <message>
         <location line="+7"/>
