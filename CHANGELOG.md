@@ -27,7 +27,7 @@
   - Compatibility and stability improvements when dealing with different base64
       encodings and when verifying users and devices.
   - Fetch the whole online key backup at the klick of a button.
-- Integration with external apps 🗺️
+- Integration with external apps 🗺️ (LorenDB)
   - Nheko now has a D-Bus API, which you can enable in the settings menu.
   - This allows applications like KRunner or Rofi to list and switch between
       rooms.
