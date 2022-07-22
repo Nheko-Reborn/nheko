@@ -222,6 +222,8 @@ private:
 
     bool isMacVerified = false;
 
+    bool keySent = false, macSent = false, acceptSent = false, startSent = false;
+
     template<typename T>
     void send(T msg)
     {

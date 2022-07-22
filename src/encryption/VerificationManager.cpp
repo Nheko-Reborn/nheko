@@ -116,12 +116,18 @@ VerificationManager::verifyUser(QString userid)
                 if (auto model = rooms_->getRoomById(QString::fromStdString(room_id))) {
                     auto flow =
                       DeviceVerificationFlow::InitiateUserVerification(this, model.data(), userid);
-                    connect(model.data(),
-                            &TimelineModel::updateFlowEventId,
-                            this,
-                            [this, flow](std::string eventId) {
-                                dvList[QString::fromStdString(eventId)] = flow;
-                            });
+                    std::unique_ptr<QObject> context{new QObject(flow.get())};
+                    QObject *pcontext = context.get();
+                    connect(
+                      model.data(),
+                      &TimelineModel::updateFlowEventId,
+                      pcontext,
+                      [this, flow, context = std::move(context)](std::string eventId) mutable {
+                          if (context->parent() == flow.get()) {
+                              dvList[QString::fromStdString(eventId)] = flow;
+                              context.reset();
+                          }
+                      });
                     emit newDeviceVerificationRequest(flow.data());
                     return;
                 }
@@ -137,8 +143,9 @@ VerificationManager::verifyUser(QString userid)
 void
 VerificationManager::removeVerificationFlow(DeviceVerificationFlow *flow)
 {
+    nhlog::crypto()->debug("Removing verification flow {}", (void *)flow);
     for (auto it = dvList.keyValueBegin(); it != dvList.keyValueEnd(); ++it) {
-        if ((*it).second == flow) {
+        if (it->second == flow) {
             dvList.remove((*it).first);
             return;
         }

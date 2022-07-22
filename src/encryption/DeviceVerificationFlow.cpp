@@ -19,8 +19,6 @@
 
 static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
-namespace msgs = mtx::events::msg;
-
 static mtx::events::msg::KeyVerificationMac
 key_verification_mac(mtx::crypto::SAS *sas,
                      mtx::identifiers::User sender,
@@ -40,6 +38,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
   , deviceIds(std::move(deviceIds_))
   , model_(model)
 {
+    nhlog::crypto()->debug("CREATING NEW FLOW, {}, {}", flow_type, (void *)this);
     if (deviceIds.size() == 1)
         deviceId = deviceIds.front();
 
@@ -140,7 +139,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
             &ChatPage::receivedDeviceVerificationCancel,
             this,
             [this](const mtx::events::msg::KeyVerificationCancel &msg) {
-                nhlog::crypto()->info("verification: received cancel");
+                nhlog::crypto()->info(
+                  "verification: received cancel, {} : {}", msg.code, msg.reason);
                 if (msg.transaction_id.has_value()) {
                     if (msg.transaction_id.value() != this->transaction_id)
                         return;
@@ -359,7 +359,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
       &ChatPage::receivedDeviceVerificationReady,
       this,
       [this](const mtx::events::msg::KeyVerificationReady &msg) {
-          nhlog::crypto()->info("verification: received ready");
+          nhlog::crypto()->info("verification: received ready {}", (void *)this);
           if (!sender) {
               if (msg.from_device != http::client()->device_id()) {
                   error_ = User;
@@ -407,7 +407,10 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
               else {
                   this->deviceId = QString::fromStdString(msg.from_device);
               }
+          } else {
+              return;
           }
+          nhlog::crypto()->info("verification: received ready sending start {}", (void *)this);
           this->startVerificationRequest();
       });
 
@@ -546,7 +549,10 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
     } else if (msg.relations.references()) {
         if (msg.relations.references() != this->relation.event_id)
             return;
+    } else {
+        return;
     }
+
     if ((std::find(msg.key_agreement_protocols.begin(),
                    msg.key_agreement_protocols.end(),
                    "curve25519-hkdf-sha256") != msg.key_agreement_protocols.end()) &&
@@ -581,7 +587,7 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
             }
 
             if (msg.method != mtx::events::msg::VerificationMethods::SASv1) {
-                cancelVerification(DeviceVerificationFlow::Error::OutOfOrder);
+                cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
                 return;
             }
         }
@@ -599,6 +605,10 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
 void
 DeviceVerificationFlow::acceptVerificationRequest()
 {
+    if (acceptSent)
+        return;
+    acceptSent = true;
+
     mtx::events::msg::KeyVerificationAccept req;
 
     req.method                      = mtx::events::msg::VerificationMethods::SASv1;
@@ -639,6 +649,10 @@ DeviceVerificationFlow::sendVerificationDone()
 void
 DeviceVerificationFlow::startVerificationRequest()
 {
+    if (startSent)
+        return;
+    startSent = true;
+
     mtx::events::msg::KeyVerificationStart req;
 
     req.from_device                  = http::client()->device_id();
@@ -723,8 +737,8 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
     }
 
     this->error_ = error_code;
-    emit errorChanged();
     this->setState(Failed);
+    emit errorChanged();
 
     send(req);
 }
@@ -732,6 +746,10 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
 void
 DeviceVerificationFlow::sendVerificationKey()
 {
+    if (keySent)
+        return;
+    keySent = true;
+
     mtx::events::msg::KeyVerificationKey req;
 
     req.key = this->sas->public_key();
@@ -773,6 +791,10 @@ key_verification_mac(mtx::crypto::SAS *sas,
 void
 DeviceVerificationFlow::sendVerificationMac()
 {
+    if (macSent)
+        return;
+    macSent = true;
+
     std::map<std::string, std::string> key_list;
     key_list["ed25519:" + http::client()->device_id()] = olm::client()->identity_keys().ed25519;
 
