@@ -1261,32 +1261,32 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+205"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 usunął/ęła wiadomość</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 enabled encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 włączył(a) szyfrowanie</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 zmienił(a) nazwę pokoju na: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 usunął/ęła nazwę pokoju</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 zmienił(a) temat pokoju na: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 usunął/ęła temat pokoju</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1296,17 +1296,17 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) przypięte wiadomości.</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) adresy tego pokoju.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the parent spaces for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) nadrzędną przestrzeń tego pokoju.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1341,7 +1341,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ustanawia połączenie...</translation>
     </message>
     <message>
         <location line="+122"/>
@@ -1422,7 +1422,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Podaj powód usunięcia lub wciśnij enter by nie podawać powodu:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1527,7 +1527,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+14"/>
         <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aby umożliwić innym użytkownikom określenie, które z Twoich urządzeń faktycznie należą do Ciebie możesz je zweryfikować. Umożliwia to także automatyczny backup kluczy. Czy chcesz zweryfikować   teraz niezweryfikowane urządzenia? (Upewnij się wcześniej, że przynajmniej jedno z nich jest dostępne).</translation>
     </message>
     <message>
         <location line="+2"/>
