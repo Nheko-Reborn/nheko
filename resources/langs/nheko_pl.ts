@@ -2608,22 +2608,22 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation>Wprowadź prawidłowy adres email aby kontynuować</translation>
+        <translation>Wprowadź prawidłowy adres email aby kontynuować:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź prawidłowy numer telefonu aby kontynuować:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token, which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź otrzymany token:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaczekaj na dostarczenie linku potwierdzającego, a następnie kontynuuj.</translation>
     </message>
 </context>
 <context>
