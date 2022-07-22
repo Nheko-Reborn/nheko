@@ -104,10 +104,10 @@
     <message numerus="yes">
         <location filename="../../src/Cache.cpp" line="+2724"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 i jeszcze %n inny</numerusform>
+            <numerusform>%1 i %n innych</numerusform>
+            <numerusform>%1 i %n innych</numerusform>
         </translation>
     </message>
     <message>
@@ -1654,7 +1654,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+12"/>
         <source>unimplemented event: </source>
-        <translation>Niezaimplementowane wydarzenie: </translation>
+        <translation>Niezaimplementowane zdarzenie: </translation>
     </message>
 </context>
 <context>
@@ -2227,7 +2227,7 @@ Przykład: https://server.my:8787</translation>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Zweryfikuj swoje pozostałe urządzenia</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2252,7 +2252,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Rozpocznij czat bezpośredni</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2262,7 +2262,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>Search rooms (Ctrl+K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Szukaj pokojów (Ctrl+K)</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2283,7 +2283,7 @@ Przykład: https://server.my:8787</translation>
         <comment>Summary above list of members</comment>
         <translation>
             <numerusform>%n osoba w %1</numerusform>
-            <numerusform>%n osób w %1</numerusform>
+            <numerusform>%n osoby w %1</numerusform>
             <numerusform>%n osób w %1</numerusform>
         </translation>
     </message>
@@ -2295,47 +2295,47 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Szukaj...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Sortuj według: </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID użytkownika</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyświetlana nazwa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Poziom mocy</translation>
     </message>
     <message>
         <location line="+105"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Administrator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Użytkownik: %1</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>This room is not encrypted!</source>
-        <translation>Ten pokój jest szyfrowany!</translation>
+        <translation>Ten pokój nie jest szyfrowany!</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2358,36 +2358,36 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location filename="../qml/dialogs/RoomSettings.qml" line="+28"/>
         <source>Room Settings</source>
-        <translation>Ustawienia Pokoju</translation>
+        <translation>Ustawienia pokoju</translation>
     </message>
     <message>
         <location line="+117"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień nazwę tego pokoju</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n członek</numerusform>
+            <numerusform>%n członkowie</numerusform>
+            <numerusform>%n członków</numerusform>
         </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż członków pokoju %1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Brak ustawionego tematu</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień temat tego pokoju</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2442,12 +2442,12 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms</source>
-        <translation>Zastrzeżone poprzez członkostwo w innych pokojach</translation>
+        <translation>Ograniczony członkostwem w innych pokojach</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restricted by membership in other rooms or by knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Ograniczony członkostwem w innych pokojach lub pukaniem</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2463,22 +2463,23 @@ Przykład: https://server.my:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Szyfrowanie jest obecnie eksperymentalne, niektóre funkcjonalności mogą nagle przestać działać. &lt;br&gt;
+Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Uprawnienia</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyświetl i edytuj uprawnienia tego pokoju</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyświetl i edytuj adresy/aliasy tego pokoju</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2498,24 +2499,24 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+6"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryte zdarzenia</translation>
     </message>
     <message>
         <location line="-31"/>
         <location line="+12"/>
         <location line="+30"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguruj</translation>
     </message>
     <message>
         <location line="-35"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliasy</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Wybierz zdarzenia do ukrycia w tym pokoju</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2530,7 +2531,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Skopiowano do schowka</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2540,12 +2541,12 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>pokaż mniej</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>pokaż więcej</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+182"/>
@@ -2602,7 +2603,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location filename="../qml/Root.qml" line="+358"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź swoje hasło logowania aby kontynuować:</translation>
     </message>
     <message>
         <location line="+10"/>
