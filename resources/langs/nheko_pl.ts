@@ -2732,17 +2732,17 @@ Wygląda na to, że jesteś tu nowy(-a). Zanim będzie można bezpiecznie szyfro
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
         <translation>Wygląda na to, że masz już skonfigurowane szyfrowanie dla tego konta. Aby mieć dostęp do zaszyfrowanych wiadomości i oznaczyć to urządzenie jako zaufane możesz je zweryfikować przy użyciu innego istniejącego urządzenia (zaufanego) lub podać hasło odzyskiwania (jeśli zostało ustawione). Wybierz jedną z opcji poniżej:
-Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego urządzania. Jeśli wybierzesz opcję „Wprowadź hasło”, będziesz potrzebować klucza odzyskiwania lub hasła. Jeśli klikniesz przycisk anuluj, będziesz mógł/mogła zweryfikować to urządzenie później.</translation>
+Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego urządzania. Jeśli wybierzesz opcję &quot;Wprowadź hasło”, będziesz potrzebować klucza odzyskiwania lub hasła. Jeśli klikniesz przycisk &quot;anuluj&quot;, będziesz mógł/mogła zweryfikować to urządzenie później.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>zweryfikuj</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź hasło</translation>
     </message>
 </context>
 <context>
