@@ -2760,17 +2760,17 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation>Nie udało się utworzyć kluczy do menadżera sekretów po stronie serwera!</translation>
+        <translation>Nie udało się utworzyć kluczy do przechowywania sekretów na serwerze!</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Encryption Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfuguracja szyfrowania</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguracja szyfrowania zakończona niepowiedzenień: %1</translation>
     </message>
     <message>
         <location line="+140"/>
