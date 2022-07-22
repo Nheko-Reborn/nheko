@@ -2750,17 +2750,17 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+44"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation>Nie udało się stworzyć kluczy dla podpisywania krzyżowego!</translation>
+        <translation>Nie udało się utworzyć kluczy dla podpisywania krzyżowego!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation>Nie udało się utworzyć kluczy do kopii zapasowej online!</translation>
+        <translation>Nie udało się utworzyć kluczy dla kopii zapasowej online!</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się utworzyć kluczy do menadżera sekretów po stronie serwera!</translation>
     </message>
     <message>
         <location line="+44"/>
