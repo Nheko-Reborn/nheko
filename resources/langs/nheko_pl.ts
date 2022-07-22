@@ -2742,7 +2742,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation>Wprowadź hasło</translation>
+        <translation>wprowadź hasło</translation>
     </message>
 </context>
 <context>
@@ -2750,12 +2750,12 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+44"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się stworzyć kluczy dla podpisywania krzyżowego!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się utworzyć kluczy do kopii zapasowej online!</translation>
     </message>
     <message>
         <location line="+29"/>
