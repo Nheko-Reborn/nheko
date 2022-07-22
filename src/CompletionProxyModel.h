@@ -9,12 +9,19 @@
 
 #include <QAbstractProxyModel>
 
+enum class ElementRank
+{
+    first,
+    second
+};
+
 template<typename Key, typename Value>
 struct trie
 {
     std::vector<Value> values;
     std::map<Key, trie> next;
 
+    template<ElementRank r>
     void insert(const QVector<Key> &keys, const Value &v)
     {
         auto t = this;
@@ -22,7 +29,11 @@ struct trie
             t = &t->next[k];
         }
 
-        t->values.push_back(v);
+        if constexpr (r == ElementRank::first) {
+            t->values.insert(t->values.begin(), v);
+        } else if constexpr (r == ElementRank::second) {
+            t->values.push_back(v);
+        }
     }
 
     std::vector<Value> valuesAndSubvalues(size_t limit = -1) const
