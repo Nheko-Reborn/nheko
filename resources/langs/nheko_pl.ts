@@ -2215,13 +2215,13 @@ Przykład: https://server.my:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation>Szyfrowanie nie jest włączone</translation>
+        <translation>Szyfrowanie nie zostało skonfigurowane</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Niezweryfikowana sesja</translation>
     </message>
     <message>
         <location line="+3"/>
