@@ -107,7 +107,7 @@
 - Fix weak symbols from private object destructor. (Jason)
 - Fix failed uploads not cancelling properly.
 - Edits now properly update in replies again.
-- Improve test paste experience. (Syldra)
+- Improve text paste experience. (Syldra)
 - Pins should now properly update when the events are fetched.
 - Support latest iteration of the hidden read receipts MSC.
 - Fix cursor movement with some themes. (Syldra)
