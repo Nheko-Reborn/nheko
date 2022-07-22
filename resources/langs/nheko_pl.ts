@@ -2603,12 +2603,12 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
     <message>
         <location filename="../qml/Root.qml" line="+358"/>
         <source>Please enter your login password to continue:</source>
-        <translation>Wprowadź swoje hasło logowania aby kontynuować:</translation>
+        <translation>Wprowadź swoje hasło do konta, aby kontynuować:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wprowadź prawidłowy adres email aby kontynuować</translation>
     </message>
     <message>
         <location line="+10"/>
