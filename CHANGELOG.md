@@ -15,7 +15,7 @@
 - Moderation 👮‍♀️
   - You can now change the permissions and aliases of a room.
   - Permissions are shown in the Memberlist
-  - There is a `/command` to redact all messages sent by a specific user.
+  - A new `/redact` command to redact an event or all messages by a user.
   - You can now provide a reason when inviting, knocking, kicking and banning
       users.
 - Faster startup ⚡
