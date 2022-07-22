@@ -3011,130 +3011,130 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n deelnemer kan nu status gebeurtenissen versturen.</numerusform>
+            <numerusform>%n deelnemers kunnen nu status gebeurtenissen versturen.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now send state events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kan nu status gebeurtenissen versturen.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het machtsniveau om uitnodigingen te versturen veranderd van %2 naar %3.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het standaardmachtsniveau voor gebeurtenissen veranderd van %2 naar %3. Nieuwe deelnemers kunnen nu geen gebeurtenissen meer versturen.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het standaardmachtsniveau voor gebeurtenissen veranderd van %2 naar %3. Nieuwe deelnemers kunnen nu gebeurtenissen versturen die verder niet beperkt zijn.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het standaardmachtsniveau voor gebeurtenissen veranderd van %2 naar %3.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has made %2 an administrator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 maakte %2 een eigenaar van deze kamer.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has made %2 a moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 maakte %2 een beheerder van deze kamer.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft %2 gedegradeerd tot beheerder.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het machtsniveau van %2 veranderd van %3 naar %4.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 staat alleen eigenaars toe om &quot;%2&quot; te versturen.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 staat alleen beheerders toe om &quot;%2&quot; te versturen.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 staat iedereen toe om &quot;%2&quot; te versturen.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 veranderde het machtsniveau van gebeurtenistype &quot;%2&quot; van de standaard naar %3.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 veranderde het machtsniveau van gebeurtenistype &quot;%2&quot; van %3 naar %4.</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>(empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>(leeg)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 verwijderde de volgende afbeeldingen van het pakket %2:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 voegde de volgende afbeeldingen toe aan het pakket %2:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 changed the sticker and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 veranderde de stickers en emoji in deze kamer.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 schakelde de regel uit om deelnemers die voldoen aan %2 te verbannen.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 voegde een regel toe aan &apos;%3&apos; om deelnemers te verbannen die voldoen aan %2.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 schakelde de regel uit om kamers te verbannen die voldoen aan %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 voegde een regel toe aan &apos;%3&apos; om kamers te verbannen die voldoen aan %2.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 schakelde de regel uit om servers te verbannen die voldoen aan %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 voegde een regel toe aan &apos;%3&apos; om servers te verbannen die voldoen aan %2.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -3278,12 +3278,12 @@ Reden: %4</translation>
     <message>
         <location line="+9"/>
         <source>Settings</source>
-        <translation type="unfinished">Instellingen</translation>
+        <translation>Instellingen</translation>
     </message>
     <message numerus="yes">
         <location line="+12"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n deelnemer</numerusform>
             <numerusform>%n deelnemers</numerusform>
         </translation>
@@ -3291,7 +3291,7 @@ Reden: %4</translation>
     <message>
         <location line="+7"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijk deelnemers aan %1</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -3329,7 +3329,7 @@ Reden: %4</translation>
     <message>
         <location line="+140"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat kamerdeelnemers zien.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3684,7 +3684,7 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show message counts for spaces</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat berichtenteller zien voor ruimtes</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3874,7 +3874,7 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>Expose room information via D-Bus</source>
-        <translation type="unfinished"></translation>
+        <translation>Maak kamerinformatie beschikbaar over D-Bus</translation>
     </message>
     <message>
         <location line="+97"/>
@@ -3997,7 +3997,9 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat zien of je berichten gelezen waren.
+De status wordt weergegeven naast de tijdsindicatie.
+Let op: als je thuisserver dit niet ondersteund, zullen je kamers nooit als gelezen worden gemarkeerd!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -4028,7 +4030,7 @@ Heeft alleen effect op versleutelde chats.</translation>
     <message>
         <location line="+3"/>
         <source>Choose where to show the total number of notifications contained within a space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies waar het totale aantal notificaties te laten zien voor binnen een ruimte.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4087,7 +4089,9 @@ worden geblurt.</translation>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sta andere applicaties en plugins toe om informatie over de kamers waar je in zit uit te lezen via D-Bus. Dit kan nuttig zijn, maar brengt ook risico&apos;s met zich mee. Schakel in op eigen risico.
+
+Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translation>
     </message>
     <message>
         <location line="+419"/>
