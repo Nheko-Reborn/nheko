@@ -1,5 +1,142 @@
 # Changelog
 
+## [0.10.0] -- unreleased
+
+### Highlights
+
+- Notification counts 💯 (LorenDB, d42)
+  - You can now see notification counts in more spaces, like your task bar or in
+      the community sidebar.
+  - For better work-life balance you can hide the notification counts on a per
+      space basis.
+  - For notification counts in the task bar your desktop environment needs to
+      support the Unity protocol.
+  - Notifications are also preserved across restarts now.
+- Moderation 👮‍♀️
+  - You can now change the permissions and aliases of a room.
+  - Permissions are shown in the Memberlist
+  - There is a `/command` to redact all messages sent by a specific user.
+  - You can now provide a reason when inviting, knocking, kicking and banning
+      users.
+- Faster startup ⚡
+  - On at least some systems startup should now be instant even with thousands
+      of rooms.
+- Encryption improvements 🛡️
+  - Support for the most recent changes to Matrix E2EE including fallback keys,
+      no longer relying on the sender_key.
+  - Compatibility and stability improvements when dealing with different base64
+      encodings and when verifying users and devices.
+  - Fetch the whole online key backup at the klick of a button.
+- Integration with external apps 🗺️
+  - Nheko now has a D-Bus API, which you can enable in the settings menu.
+  - This allows applications like KRunner or Rofi to list and switch between
+      rooms.
+
+### Features
+
+- Create a room link from a room. (brausepulver)
+- Support rendering policy rules.
+- Show notification counts for spaces (with options to disable them per space).
+   (LorenDB)
+- Keep notification counts across restarts.
+- Support the new call events (but not the signaling yet). (r0hit)
+- Add a dbus API, which allows external applications to list and switch rooms in
+    Nheko. (LorenDB)
+- Support editing room aliases.
+- Support editing room permissions.
+- Allow redacting all locally cached messages of a user using `/redact
+    @userid:server.tld reason`.
+- Request full online key backup when toggling the online backup button.
+- Support the `knock_restricted` join rule.
+- Allow cancelling uploads using escape. (r0hit)
+- Send images on enter.
+- Close image viewer when clicking on the background.
+- Speedup startup by not loading messages for the room preview.
+- Make settings slightly narrower.
+- Show unread counts in the taskbar (if the Unity protocol is supported). (d42)
+- Indicate if a room has no topic in the settings. (LorenDB)
+- Simplify Fedora build instructions. (DaKnig)
+- Support e2ee fallback keys.
+- Allow opening rooms in separate windows.
+- Support more image formats in flatpak.
+- Show powerlevels in the memberlist.
+- Use less exotic emoji shortcodes. (Bulby)
+- Support sorting and filtering the memberlist. (LorenDB)
+- Make initial spinner half transparent. (LorenDB)
+- Fancier rendering for image pack changes. (tastytea)
+- Allow accessing member list and room settings for spaces. (LorenDB)
+- Add zsh completions. (tastytea)
+- Fancy rendering for Powerlevel changes. (MTRNord)
+- Make sender_key in encrypted messages optional.
+- Close current room using Ctrl-W. (LorenDB)
+- Allow knocking on failed room joins.
+- Allow knocking via matrix.to urls.
+- Allow specifying reasons for every room membership change.
+- Make room name and topic editing inline.
+- Add a jump to bottom button. (Malte)
+- Port room creation to qml. (Malte)
+- Streamline direct chat creation. (Malte)
+
+### Translations
+
+- Russian (Alexey Murz Korepov, Artem, Herecore, balsoft, librehacker,
+    glebasson, Mihail Iosilevich)
+- Chinese (Nekogawa Mio, Poesty Li, Reiuji Utsuho, hulb, ling, RainSlide, hosxy)
+- German
+- Dutch (Jaron Viëtor)
+- Finnish (Lurkki, Aminda)
+- Indonesian (Linerly)
+- Estonian (Priit)
+- French (Symphorien, Glandos, Eldred)
+- Serbian (Miroslav)
+
+### Bugfixes
+
+- Fix verification requests not stopping properly when initiated from this
+    instance.
+- Don't send matrix.to markdown links in replies.
+- Make the database work on 32bit systems again. (MayeulC)
+- Add missing window decoration to room directory dialog on macOS.
+- Don't crash on empty image packs.
+- Fix spacing of encryption indicator in the room tite if it contains widgets.
+- Emojis during verification should no longer be clipped.
+- Don't ping the whole room when replying to users with a localpart of `room`.
+- Make icons sharp on all platforms. (q234rty)
+- Work around synapse not sending the original resolution when requesting large
+    thumbnails to make large thumbnails less blurry. (brausepulver)
+- Fix weak symbols from private object destructor. (Jason)
+- Fix failed uploads not cancelling properly.
+- Edits now properly update in replies again.
+- Improve test paste experience. (Syldra)
+- Pins should now properly update when the events are fetched.
+- Support latest iteration of the hidden read receipts MSC.
+- Fix cursor movement with some themes. (Syldra)
+- Properly handle glare during verification.
+- Set an Element Android compatible height for custom emotes.
+- Don't crash because of reusing items in completer on some platforms.
+- Fix the privacy screen on popped out windows.
+- Properly scale animated images.
+- Don't clip pinned messages.
+- Use correct powerlevels for direct chats.
+- Properly close cursors before committing txn.
+- Don't fail if a different client used the wrong base64 encoding when setting
+    up SSSS.
+- Spaces usually aren't DMs. (LorenDB)
+- Don't send invalid aliases to the server on room creation. (Apurv)
+- Fix invite dialog.
+
+### Notes
+
+This release requires Matrix API v1.1-v1.3. Please make sure your server is up
+to date.
+
+This release limits the maximum connections per host to 8. For best performance
+we recommend your server supports http/2 so that slow requests don't slow down
+other parts of the app (like sending messages).
+
+Nheko now has KRunner and Rofi plugins (developed by LorenDB and LordMZTE
+respectively).
+
 ## [0.9.3] -- 2022-03-25
 
 ### Highlights
@@ -43,7 +180,6 @@
 - Don't Components actively in use.
 - Fix screensharing.
 - Fix device id when doing SSO logins.
-
 
 ## [0.9.2] -- 2022-03-09
 
