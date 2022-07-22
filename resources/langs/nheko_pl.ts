@@ -2698,28 +2698,29 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+40"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation>To jest Twój klucz odzyskiwania. Będziesz go potrzebować aby uzyskać dostęp do zaszyfrowanych wiadomości i kluczy weryfikacyjnych. Trzymaj go w bezpiecznym miejscu. Nie udostępniaj go nikomu i nie zgub go!</translation>
+        <translation>Oto twój klucz odzyskiwania. Będziesz go potrzebować aby móc przywrócić dostęp do zaszyfrowanych wiadomości i kluczy weryfikacyjnych. Przechowuj go w bezpiecznym miejscu, nie udostępniaj go nikomu i nie zgub go!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguracja szyfrowania zakończona pomyślnie</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguracja szyfrowania zakończona niepowodzeniem: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Skonfiguruj szyfrowanie</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Witaj w sieci Matrix!
+Wygląda na to, że jesteś tu nowy(-a). Zanim będzie można bezpiecznie szyfrować Twoje wiadomości, musimy skonfigurować kilka rzeczy. Możesz od razu kliknąć akceptuj lub ustawić kilka opcji. Postaramy się także wyjaśnić podstawowe rzeczy. Możesz pominąć ten samouczek, ale liczymy, że okaże się on użyteczny!</translation>
     </message>
     <message>
         <location line="+124"/>
