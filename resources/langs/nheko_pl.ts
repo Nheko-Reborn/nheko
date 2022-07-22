@@ -2123,7 +2123,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+12"/>
         <source>Choose custom homeserver</source>
-        <translation>Wybierz własny serwer domowy.</translation>
+        <translation>Wybierz własny serwer domowy</translation>
     </message>
 </context>
 <context>
@@ -2149,7 +2149,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>Otwórz oddzielnie</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2159,7 +2159,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Skopiuj link do pokoju</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2215,7 +2215,7 @@ Przykład: https://server.my:8787</translation>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Szyfrowanie nie jest włączone</translation>
     </message>
     <message>
         <location line="+3"/>
