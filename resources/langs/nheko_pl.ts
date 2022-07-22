@@ -43,7 +43,7 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się wycofać publikacji aliasu %1: %2</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -76,17 +76,17 @@
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ogłoś jako alias tego pokoju</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Opublikuj w katalogu pokojów</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Usuń ten alias</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1291,7 +1291,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 changed the room avatar</source>
-        <translation>%1 zmienił avatar pokoju</translation>
+        <translation>%1 zmienił(a) awatar pokoju</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1896,7 +1896,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+3"/>
         <source>Edit child rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Edytowanie pokojów potomnych</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2092,7 +2092,7 @@ Przykład: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Część zarezerwowanej przestrzeni nazw.</translation>
     </message>
 </context>
 <context>
@@ -2775,7 +2775,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+140"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation>Klucz identyfikacyjny zmieniony. To uniemożliwia korzystanie z szyfrowania E2E, wylogowanie.</translation>
+        <translation>Klucz identyfikacyjny został zmieniony. Uniemożliwia to dalsze korzystanie z szyfrowania end-to-end, w związku z czym nastąpi wylogowanie.</translation>
     </message>
 </context>
 <context>
@@ -2956,193 +2956,193 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy wymagany do wyrzucania użytkowników z %2 na %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n członek może teraz wyrzucać członków tego pokoju.</numerusform>
+            <numerusform>%n członkowie mogą teraz wyrzucać członków tego pokoju.</numerusform>
+            <numerusform>%n członków może teraz wyrzucać członków tego pokoju.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 może teraz wyrzucać członków tego pokoju.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy wymagany do redagowania z %2 na %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n członek może teraz redagować wiadomości w tym pokoju.</numerusform>
+            <numerusform>%n członkowie mogą teraz redagować wiadomości w tym pokoju.</numerusform>
+            <numerusform>%n członków może teraz redagować wiadomości w tym pokoju.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 może teraz redagować wiadomości w tym pokoju.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy wymagany do banowania użytkowników w tym pokoju z %2 na %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n członek może teraz banować członków tego pokoju.</numerusform>
+            <numerusform>%n członkowie mogą teraz banować członków tego pokoju.</numerusform>
+            <numerusform>%n członków może teraz banować członków tego pokoju.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 może teraz banować członków tego pokoju.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy dla state_default w tym pokoju z %2 na %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n członek może teraz wysyłać zdarzenia stanu.</numerusform>
+            <numerusform>%n członkowie mogą teraz wysyłać zdarzenia stanu.</numerusform>
+            <numerusform>%n członków może teraz wysyłać zdarzenia stanu.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now send state events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 może teraz wysyłać zdarzenia stanu.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy wymagany do zapraszania do tego pokoju z %2 na %3.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy dla events_default w tym pokoju z %2 na %3. Nowi użytkownicy nie mogą teraz wysyłać jakichkolwiek zdarzeń.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy dla events_default w tym pokoju z %2 na %3. Nowi użytkownicy mogą teraz wysyłać zdarzenia które nie podlegają innym ograniczeniom.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy dla events_default w tym pokoju z %2 na %3.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has made %2 an administrator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 uczynił(a) %2 administratorem tego pokoju.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has made %2 a moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 uczynił(a) %2 moderatorem tego pokoju.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 obniżył(a) uprawnienia %2 do poziomu moderatora tego pokoju.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy %2 z %3 na %4.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 pozwolił(a) tylko administratorom na wysyłanie &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 pozwolił(a) tylko moderatorom na wysyłanie &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 pozwolił(a) każdemu na wysyłanie &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy wymagany do wysyłania wydarzeń typu &quot;%2&quot; z domyślnego na %3.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) poziom mocy wymagany do wysyłania wydarzeń typu &quot;%2&quot; z %3 na %4.</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>(empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>(puste)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 usunął/ęła następujące obrazy z paczki %2:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 dodał(a) następujące obrazy do paczki %2:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 changed the sticker and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zmienił(a) naklejki i emotikony w tym pokoju.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wyłączył(a) regułę banowania użytkowników pasujących do %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 dodał(a) regułę banowania użytkowników pasujących do %2 z powodu &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wyłączył(a) regułę banowania pokojów pasujących do %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 dodał(a) regułę banowania pokojów pasujących do %2 z powodu &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wyłączył(a) regułę banowania serwerów pasujących do %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 dodał(a) regułę banowania serwerów pasujących do %2 z powodu &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -3152,7 +3152,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) usunął/ęła tę wiadomość o %3</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3163,27 +3163,28 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) usunął/ęła tę wiadomość o %3
+Powód: %4</translation>
     </message>
     <message>
         <location line="+126"/>
         <source>%2 revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 anulował(a) zaproszenie do %1.</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>%2 kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 wyrzucił(a) %1.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%2 unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 odbanował(a) %1.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%2 rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 odrzucił(a) zapukanie od %1.</translation>
     </message>
     <message>
         <location line="-32"/>
@@ -3233,17 +3234,17 @@ Reason: %4</source>
     <message>
         <location line="+1449"/>
         <source>%1 invited %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zaprosił(a) %2.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation>Użytkownik %1 zmienił swojego awatara i zmienił swoją nazwę wyświetlaną na %2.</translation>
+        <translation>%1 zmienił(a) swój awatar i ustawił(a) wyświetlaną nazwę na %2.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed their display name to %2.</source>
-        <translation>Użytkownik %1 zmienił swoją nazwę wyświetlaną na %2.</translation>
+        <translation>%1 ustawił(a) swoją wyświetlaną nazwę na %2.</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -3254,7 +3255,7 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>%1 banned %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 zbanował(a) %2</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3290,16 +3291,16 @@ Reason: %4</source>
     <message numerus="yes">
         <location line="+12"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n członek</numerusform>
+            <numerusform>%n członkowie</numerusform>
+            <numerusform>%n członków</numerusform>
         </translation>
     </message>
     <message>
         <location line="+7"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż członków %1</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -3337,7 +3338,7 @@ Reason: %4</source>
     <message>
         <location line="+140"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż członków pokoju.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3347,7 +3348,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ten pokój zawiera zweryfikowane urządzenia oraz urządzenia, które nigdy nie zmieniły swojego klucza głównego.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3357,7 +3358,7 @@ Reason: %4</source>
     <message>
         <location line="+22"/>
         <source>Show or hide pinned messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Pokaż lub ukryj przypięte wiadomości</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -3387,7 +3388,7 @@ Reason: %4</source>
     <message>
         <location line="+74"/>
         <source>Unpin</source>
-        <translation type="unfinished"></translation>
+        <translation>Odepnij</translation>
     </message>
 </context>
 <context>
@@ -3408,14 +3409,14 @@ Reason: %4</source>
     <message>
         <location filename="../../src/ui/UIA.cpp" line="+60"/>
         <source>No available registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie są dostępne żadne sposoby rejestracji!</translation>
     </message>
     <message>
         <location line="+56"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Rejestracja przerwana</translation>
     </message>
     <message>
         <location line="-27"/>
@@ -3425,7 +3426,7 @@ Reason: %4</source>
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieprawidłowy token</translation>
     </message>
 </context>
 <context>
@@ -3433,10 +3434,10 @@ Reason: %4</source>
     <message numerus="yes">
         <location filename="../qml/UploadBox.qml" line="+79"/>
         <source>Upload %n file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Wyślij plik</numerusform>
+            <numerusform>Wyślij %n pliki</numerusform>
+            <numerusform>Wyślij %n plików</numerusform>
         </translation>
     </message>
 </context>
@@ -3511,7 +3512,7 @@ Reason: %4</source>
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Odśwież listę urządzeń</translation>
     </message>
     <message>
         <location line="+56"/>
