@@ -2690,7 +2690,7 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko nie mógł połączyć się z menadżerem sekretów, aby zapisać tajne informacje dotyczące szyfrowania. Może to wynikać z wielu przyczyn. Sprawdź czy szyna D-Bus jest aktywna i czy masz skonfigurowaną usługę taką jak KWallet, Gnome Keyring, KeePassXC lub inną, odpowiednią dla platformy z której korzystasz.  W przypadku problemów możesz otworzyć issue tutaj: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
