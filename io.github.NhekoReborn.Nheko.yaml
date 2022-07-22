@@ -83,9 +83,9 @@ modules:
     buildsystem: cmake-ninja
     name: olm
     sources:
-      - commit: 797183f27f1c8cdb9d4551aaa317bd13ff02401b
+      - commit: 92769cec711c604a1f682b95d6944578d2a1bb3d
         disable-shallow-clone: true
-        tag: 3.2.8
+        tag: 3.2.12
         type: git
         url: https://gitlab.matrix.org/matrix-org/olm.git
   - buildsystem: meson
@@ -191,8 +191,8 @@ modules:
       - -Ddefault_library=static
     name: coeurl
     sources:
-      - commit: 1c530c153687c9072619f00ad77fff9960bdb048
-        tag: v0.1.2
+      - commit: cfeae3acef061dbb19706f462ee58b9be2e6ec76
+        tag: v0.2.1
         type: git
         url: https://nheko.im/nheko-reborn/coeurl.git
   - config-opts:
@@ -203,8 +203,8 @@ modules:
     buildsystem: cmake-ninja
     name: mtxclient
     sources:
-      - commit: 3a617ea4b5469f01f99724fc76593229a3f3edab
-        #tag: v0.7.0
+      - commit: 2a1cf15cbda4d3deb7986c9f3b38e6c7aabb0d6f
+        tag: v0.8.0
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git
   - config-opts:

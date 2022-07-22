@@ -186,7 +186,7 @@ if(USE_BUNDLED_COEURL)
 	FetchContent_Declare(
 		coeurl
 		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        v0.1.2
+		GIT_TAG        v0.2.1
 		)
 	FetchContent_MakeAvailable(coeurl)
 	set(COEURL_TARGET_NAME coeurl::coeurl)
@@ -199,7 +199,7 @@ else()
 endif()
 
 if(NOT TARGET PkgConfig::coeurl)
-	find_package(coeurl 0.1.1 CONFIG)
+	find_package(coeurl 0.2.1 CONFIG)
 	if (TARGET coeurl::coeurl)
 		set(COEURL_TARGET_NAME coeurl::coeurl)
 	endif()
@@ -581,13 +581,13 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        3a617ea4b5469f01f99724fc76593229a3f3edab
+		GIT_TAG        v0.8.0
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.6.2 REQUIRED)
+	find_package(MatrixClient 0.8.0 REQUIRED)
 endif()
 
 if (VOIP)
