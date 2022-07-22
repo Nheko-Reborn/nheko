@@ -3512,22 +3512,22 @@ Powód: %4</translation>
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation>Odśwież listę urządzeń</translation>
+        <translation>Odśwież listę urządzeń.</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyloguj to urządzenie.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień nazwę urządzenia.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Ostatnio widziany %1 z %2</translation>
     </message>
     <message>
         <location line="+27"/>
