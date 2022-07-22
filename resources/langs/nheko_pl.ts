@@ -2770,12 +2770,12 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation>Konfiguracja szyfrowania zakończona niepowiedzenień: %1</translation>
+        <translation>Konfiguracja szyfrowania zakończona niepowodzeniem: %1</translation>
     </message>
     <message>
         <location line="+140"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz identyfikacyjny zmieniony. To uniemożliwia korzystanie z szyfrowania E2E, wylogowanie.</translation>
     </message>
 </context>
 <context>
