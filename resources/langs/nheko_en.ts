@@ -81,12 +81,12 @@
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation>Advertise as an alias in this room</translation>
+        <translation>Publish in room directory</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation>Advertise as an alias in this room</translation>
+        <translation>Remove this alias</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1137,7 +1137,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <location line="+3"/>
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
-        <translation>The address that can be used to contact your homeservers client API.
+        <translation>The address that can be used to contact your homeserver&apos;s client API.
 Example: https://server.my:8787</translation>
     </message>
     <message>
