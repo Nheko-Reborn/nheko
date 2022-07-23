@@ -13,7 +13,7 @@ build-clazy:
     TRAVIS_OS_NAME: linux
   before_script:
     - apt-get update
-    - apt-get -y install --no-install-recommends build-essential ninja-build cmake gcc make automake liblmdb-dev 
+    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake liblmdb-dev 
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
         qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
         qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
