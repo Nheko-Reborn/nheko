@@ -921,6 +921,7 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                 });
         connect(mediaPlayer,
                 qOverload<const QString &, const QVariant &>(&QMediaPlayer::metaDataChanged),
+                this,
                 [this, mediaPlayer](QString t, QVariant) {
                     nhlog::ui()->debug("Got metadata {}", t.toStdString());
 
@@ -937,14 +938,15 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                         }
                     }
                 });
-        connect(mediaPlayer, &QMediaPlayer::durationChanged, [this, mediaPlayer](qint64 duration) {
-            if (duration > 0) {
-                this->duration_ = mediaPlayer->duration();
-                if (mimeClass_ == u"audio")
-                    mediaPlayer->stop();
-            }
-            nhlog::ui()->debug("Duration changed {}", duration);
-        });
+        connect(
+          mediaPlayer, &QMediaPlayer::durationChanged, this, [this, mediaPlayer](qint64 duration) {
+              if (duration > 0) {
+                  this->duration_ = mediaPlayer->duration();
+                  if (mimeClass_ == u"audio")
+                      mediaPlayer->stop();
+              }
+              nhlog::ui()->debug("Duration changed {}", duration);
+          });
 
         auto originalFile = qobject_cast<QFile *>(source.get());
 
