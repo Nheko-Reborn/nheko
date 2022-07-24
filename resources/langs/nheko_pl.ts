@@ -224,12 +224,12 @@
         <source>You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
         <translation>Nie udało ci się dołączyć do %1. Możesz spróbować zapukać, aby inni członkowie mogli cię zaprosić. Czy chcesz to zrobić?
-Możesz podać powód, dla którego członkowie mieliby cię przyjąć:</translation>
+Możesz podać powód pukania:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation>Czy na pewno chcesz zapukać do %1? Możesz podać powód, dla którego członkowie mieliby cię przyjąć:</translation>
+        <translation>Czy na pewno chcesz zapukać do %1? Możesz podać powód pukania:</translation>
     </message>
     <message>
         <location line="+14"/>
