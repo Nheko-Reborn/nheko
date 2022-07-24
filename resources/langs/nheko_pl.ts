@@ -406,7 +406,7 @@ Możesz podać powód, dla którego członkowie mieliby cię przyjąć:</transla
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this space by default.</source>
-        <translation>Domyślnie ukryj pokoje oznaczone tym tagiem z tej przestrzeni.</translation>
+        <translation>Ukryj pokoje oznaczone tym tagiem lub należące do tej przestrzeni.</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -2165,7 +2165,7 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location line="+5"/>
         <source>Tag room as:</source>
-        <translation>Oznacz (tag) pokój jako:</translation>
+        <translation>Oznacz pokój tagiem:</translation>
     </message>
     <message>
         <location line="+14"/>
