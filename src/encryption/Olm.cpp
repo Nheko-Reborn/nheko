@@ -902,7 +902,7 @@ download_full_keybackup()
                              mtx::http::RequestErr err) {
           if (err) {
               if (err->status_code != 404)
-                  nhlog::crypto()->error("Failed to dowload backup {}:{}: {} - {}",
+                  nhlog::crypto()->error("Failed to dowload backup: {} - {}",
                                          mtx::errors::to_string(err->matrix_error.errcode),
                                          err->matrix_error.error);
               return;
