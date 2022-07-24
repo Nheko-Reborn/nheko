@@ -2150,7 +2150,7 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation>Otwórz oddzielnie</translation>
+        <translation>Otwórz w nowym oknie</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2820,7 +2820,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation>Otrzymano</translation>
+        <translation>Dostarczono</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2893,9 +2893,9 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
-            <numerusform>%1 %2 pisze.</numerusform>
-            <numerusform>%1, oraz %2 piszą (w sumie %n osób).</numerusform>
-            <numerusform>%1, oraz %2 piszą (w sumie %n osób).</numerusform>
+            <numerusform>%1%2 pisze.</numerusform>
+            <numerusform>%1 i %2 piszą.</numerusform>
+            <numerusform>%1 i %2 piszą.</numerusform>
         </translation>
     </message>
     <message>
@@ -3447,7 +3447,7 @@ Powód: %4</translation>
     <message>
         <location filename="../qml/dialogs/UserProfile.qml" line="+26"/>
         <source>Global User Profile</source>
-        <translation>Globalny Profil Użytkownika</translation>
+        <translation>Globalny profil użytkownika</translation>
     </message>
     <message>
         <location line="+0"/>
