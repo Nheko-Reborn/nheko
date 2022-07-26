@@ -3153,7 +3153,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation>%1 (%2) usunął/ęła tę wiadomość o %3</translation>
+        <translation>%1 (%2) usunął/ęła tę wiadomość w dniu %3</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3164,7 +3164,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation>%1 (%2) usunął/ęła tę wiadomość o %3
+        <translation>%1 (%2) usunął/ęła tę wiadomość w dniu %3
 Powód: %4</translation>
     </message>
     <message>
@@ -3452,7 +3452,7 @@ Powód: %4</translation>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation>Profil Użytkownika Pokoju</translation>
+        <translation>Profil użytkownika w pokoju</translation>
     </message>
     <message>
         <location line="+48"/>
@@ -3482,7 +3482,7 @@ Powód: %4</translation>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation>To profil specyficzny dla pokoju. Nazwa użytkownika oraz awatar mogą być inne niż globalna nazwa użytkownika i globalny awatar.</translation>
+        <translation>To profil specyficzny dla tego pokoju. Nazwa użytkownika oraz awatar mogą być inne niż globalna nazwa użytkownika i globalny awatar.</translation>
     </message>
     <message>
         <location line="+15"/>
