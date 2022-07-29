@@ -1245,7 +1245,7 @@ decryptEvent(const MegolmSessionIndex &index,
         body["unsigned"]         = event.unsigned_data;
 
         mtx::events::collections::TimelineEvent te;
-        mtx::events::collections::from_json(body, te);
+        from_json(body, te);
 
         // relations are unencrypted in content...
         mtx::accessors::set_relations(te.data, std::move(event.content.relations));
