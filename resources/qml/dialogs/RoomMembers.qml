@@ -118,7 +118,7 @@ ApplicationWindow {
                 delegate: ItemDelegate {
                     id: del
 
-                    onClicked: Rooms.currentRoom.openUserProfile(model.mxid)
+                    onClicked: room.openUserProfile(model.mxid)
                     padding: Nheko.paddingMedium
                     width: ListView.view.width
                     height: memberLayout.implicitHeight + Nheko.paddingSmall * 2
