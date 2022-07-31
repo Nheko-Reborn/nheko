@@ -81,12 +81,12 @@
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation>Avalda selle jututoa aliasena</translation>
+        <translation>Avalda jututubade loendis</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation>Kustuta selle jututoa aliasena</translation>
+        <translation>Kustuta see alias</translation>
     </message>
     <message>
         <location line="+16"/>
