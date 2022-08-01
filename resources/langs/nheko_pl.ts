@@ -1485,7 +1485,7 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location line="+8"/>
         <source>View decrypted raw message</source>
-        <translation>Wyświetl odszyfrowaną nową wiadomość</translation>
+        <translation>Wyświetl odszyfrowane źródło wiadomości</translation>
     </message>
     <message>
         <location line="+6"/>
