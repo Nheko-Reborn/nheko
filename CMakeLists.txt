@@ -26,8 +26,8 @@ set(CMAKE_AUTOMOC ON)
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-	URL "https://github.com/cpp-pm/hunter/archive/v0.23.305.tar.gz"
-	SHA1 "fc8d7a6dac2fa23681847b3872d88d3839b657b0"
+	URL "https://github.com/cpp-pm/hunter/archive/v0.24.3.tar.gz"
+	SHA1 "10738b59e539818a01090e64c2d09896247530c7"
 	LOCAL
 	)
 
