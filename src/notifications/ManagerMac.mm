@@ -47,7 +47,7 @@ NotificationsManager::objCxxPostNotification(const QString &room_name,
                                              const QString &informativeText,
                                              const QString &bodyImagePath)
 {
-    UNAuthorizationOptions options = UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
+    UNAuthorizationOptions options = UNAuthorizationOptionAlert + UNAuthorizationOptionSound + UNAuthorizationOptionBadge;
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
 
     [center requestAuthorizationWithOptions:options
