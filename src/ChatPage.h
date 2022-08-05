@@ -24,6 +24,7 @@
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
+#include "ui/RoomSummary.h"
 
 class TimelineViewManager;
 class UserSettings;
@@ -84,8 +85,9 @@ public slots:
     void knockRoom(const QString &room, QString reason = "") { knockRoom(room, {}, reason, false); }
     void knockRoom(const QString &room,
                    const std::vector<std::string> &via,
-                   QString reason  = "",
-                   bool failedJoin = false);
+                   QString reason             = "",
+                   bool failedJoin            = false,
+                   bool promptForConfirmation = true);
     void joinRoomVia(const std::string &room_id,
                      const std::vector<std::string> &via,
                      bool promptForConfirmation = true,
@@ -163,10 +165,12 @@ signals:
     void downloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
                            const SecretsToDecrypt &secrets);
 
+    void showRoomJoinPrompt(RoomSummary *);
     void internalKnock(const QString &room,
                        const std::vector<std::string> &via,
-                       QString reason  = "",
-                       bool failedJoin = false);
+                       QString reason             = "",
+                       bool failedJoin            = false,
+                       bool promptForConfirmation = true);
 
 private slots:
     void logout();

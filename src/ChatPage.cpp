@@ -22,6 +22,7 @@
 #include "Utils.h"
 #include "encryption/DeviceVerificationFlow.h"
 #include "encryption/Olm.h"
+#include "ui/RoomSummary.h"
 #include "ui/Theme.h"
 #include "ui/UserProfile.h"
 #include "voip/CallManager.h"
@@ -130,7 +131,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
     connect(this,
             &ChatPage::internalKnock,
             this,
-            qOverload<const QString &, const std::vector<std::string> &, QString, bool>(
+            qOverload<const QString &, const std::vector<std::string> &, QString, bool, bool>(
               &ChatPage::knockRoom),
             Qt::QueuedConnection);
     connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
@@ -697,23 +698,26 @@ void
 ChatPage::knockRoom(const QString &room,
                     const std::vector<std::string> &via,
                     QString reason,
-                    bool failedJoin)
+                    bool failedJoin,
+                    bool promptForConfirmation)
 {
     const auto room_id = room.toStdString();
     bool confirmed     = false;
-    reason             = QInputDialog::getText(
-      nullptr,
-      tr("Knock on room"),
-      // clang-format off
+    if (promptForConfirmation) {
+        reason = QInputDialog::getText(
+          nullptr,
+          tr("Knock on room"),
+          // clang-format off
       failedJoin
         ? tr("You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?\nYou may optionally provide a reason for others to accept your knock:").arg(room)
         : tr("Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:").arg(room),
-      // clang-format on
-      QLineEdit::Normal,
-      reason,
-      &confirmed);
-    if (!confirmed) {
-        return;
+          // clang-format on
+          QLineEdit::Normal,
+          reason,
+          &confirmed);
+        if (!confirmed) {
+            return;
+        }
     }
 
     http::client()->knock_room(
@@ -742,13 +746,12 @@ ChatPage::joinRoomVia(const std::string &room_id,
                       bool promptForConfirmation,
                       const QString &reason)
 {
-    if (promptForConfirmation &&
-        QMessageBox::Yes !=
-          QMessageBox::question(
-            nullptr,
-            tr("Confirm join"),
-            tr("Do you really want to join %1?").arg(QString::fromStdString(room_id))))
+    if (promptForConfirmation) {
+        auto prompt = new RoomSummary(room_id, via, reason);
+        QQmlEngine::setObjectOwnership(prompt, QQmlEngine::JavaScriptOwnership);
+        emit showRoomJoinPrompt(prompt);
         return;
+    }
 
     http::client()->join_room(
       room_id,
@@ -756,7 +759,7 @@ ChatPage::joinRoomVia(const std::string &room_id,
       [this, room_id, reason, via](const mtx::responses::RoomId &, mtx::http::RequestErr err) {
           if (err) {
               if (err->matrix_error.errcode == mtx::errors::ErrorCode::M_FORBIDDEN)
-                  emit internalKnock(QString::fromStdString(room_id), via, reason, true);
+                  emit internalKnock(QString::fromStdString(room_id), via, reason, true, true);
               else
                   emit showNotification(tr("Failed to join room: %1")
                                           .arg(QString::fromStdString(err->matrix_error.error)));

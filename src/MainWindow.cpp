@@ -54,6 +54,7 @@
 #include "ui/NhekoDropArea.h"
 #include "ui/NhekoEventObserver.h"
 #include "ui/NhekoGlobalObject.h"
+#include "ui/RoomSummary.h"
 #include "ui/UIA.h"
 #include "voip/CallManager.h"
 #include "voip/WebRTCSession.h"
@@ -65,6 +66,7 @@
 Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
+Q_DECLARE_METATYPE(mtx::responses::PublicRoom)
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -142,6 +144,7 @@ MainWindow::registerQmlTypes()
     qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
     qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
     qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
+    qRegisterMetaType<mtx::responses::PublicRoom>();
     qRegisterMetaType<CombinedImagePackModel *>();
     qRegisterMetaType<mtx::events::collections::TimelineEvents>();
     qRegisterMetaType<std::vector<DeviceInfo>>();
@@ -180,6 +183,12 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
     qmlRegisterType<RegisterPage>("im.nheko", 1, 0, "Registration");
     qmlRegisterType<HiddenEvents>("im.nheko", 1, 0, "HiddenEvents");
+    qmlRegisterUncreatableType<RoomSummary>(
+      "im.nheko",
+      1,
+      0,
+      "RoomSummary",
+      QStringLiteral("Please use joinRoom to create a room summary."));
     qmlRegisterUncreatableType<AliasEditingModel>(
       "im.nheko",
       1,

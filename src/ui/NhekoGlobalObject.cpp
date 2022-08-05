@@ -22,6 +22,7 @@ Nheko::Nheko()
     connect(
       UserSettings::instance().get(), &UserSettings::themeChanged, this, &Nheko::colorsChanged);
     connect(ChatPage::instance(), &ChatPage::contentLoaded, this, &Nheko::updateUserProfile);
+    connect(ChatPage::instance(), &ChatPage::showRoomJoinPrompt, this, &Nheko::showRoomJoinPrompt);
     connect(this, &Nheko::joinRoom, ChatPage::instance(), &ChatPage::joinRoom);
 }
 

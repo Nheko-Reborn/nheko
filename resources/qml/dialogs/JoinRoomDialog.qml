@@ -64,7 +64,7 @@ ApplicationWindow {
         }
 
         Button {
-            text: "Join"
+            text: qsTr("Join")
             enabled: input.text.match("#.+?:.{3,}")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
         }

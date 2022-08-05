@@ -11,6 +11,7 @@
 
 #include "AliasEditModel.h"
 #include "PowerlevelsEditModels.h"
+#include "RoomSummary.h"
 #include "Theme.h"
 #include "UserProfile.h"
 
@@ -75,6 +76,8 @@ signals:
     void openLogoutDialog();
     void openJoinRoomDialog();
     void joinRoom(QString roomId, QString reason = "");
+
+    void showRoomJoinPrompt(RoomSummary *summary);
 
 private:
     QScopedPointer<UserProfile> currentUser_;

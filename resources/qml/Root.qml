@@ -175,6 +175,14 @@ Pane {
     }
 
     Component {
+        id: confirmJoinRoomDialog
+
+        ConfirmJoinRoomDialog {
+        }
+
+    }
+
+    Component {
         id: leaveRoomComponent
 
         LeaveRoomDialog {
@@ -237,6 +245,12 @@ Pane {
 
         function onOpenJoinRoomDialog() {
             var dialog = joinRoomDialog.createObject(timelineRoot);
+            dialog.show();
+            destroyOnClose(dialog);
+        }
+
+        function onShowRoomJoinPrompt(summary) {
+            var dialog = confirmJoinRoomDialog.createObject(timelineRoot, {"summary": summary});
             dialog.show();
             destroyOnClose(dialog);
         }

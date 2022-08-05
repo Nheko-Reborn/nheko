@@ -388,6 +388,8 @@ set(SRC_FILES
 	src/ui/NhekoGlobalObject.h
 	src/ui/RoomSettings.cpp
 	src/ui/RoomSettings.h
+	src/ui/RoomSummary.cpp
+	src/ui/RoomSummary.h
 	src/ui/Theme.cpp
 	src/ui/Theme.h
 	src/ui/ThemeManager.cpp
@@ -581,7 +583,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        v0.8.0
+		GIT_TAG        b706492de042455630063c847574bbc5ed5d4641
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
