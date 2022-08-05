@@ -33,11 +33,11 @@ RoomSummary::RoomSummary(std::string roomIdOrAlias_,
 
     http::client()->get_summary(
       roomIdOrAlias,
-      [proxy = std::move(ctx)](const mtx::responses::PublicRoom &room, mtx::http::RequestErr e) {
+      [proxy = std::move(ctx)](const mtx::responses::PublicRoom &room_, mtx::http::RequestErr e) {
           if (e) {
               emit proxy->failed();
           } else {
-              emit proxy->loaded(room);
+              emit proxy->loaded(room_);
           }
       },
       vias);
