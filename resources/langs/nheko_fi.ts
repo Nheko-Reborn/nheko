@@ -81,12 +81,12 @@
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation>Esitä aliaksena tässä huoneessa</translation>
+        <translation>Julkaise huonehakemistoon</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation>Esitä aliaksena tässä huoneessa</translation>
+        <translation>Poista tämä alias</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1138,7 +1138,7 @@ Jos Nheko ei onnistu löytämään kotipalvelintasi, se näyttää sinulle kent�
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>Osoite, jota voidaan käyttää ottamaan yhteyttä kotipalvelimesi asiakasrajapintaan.
-Esimerkki: https://server.my:8787</translation>
+Esimerkki: https://palvelime.ni:8787</translation>
     </message>
     <message>
         <location line="+32"/>
