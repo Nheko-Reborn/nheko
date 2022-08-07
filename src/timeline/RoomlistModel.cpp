@@ -283,6 +283,10 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
         QSharedPointer<TimelineModel> newRoom(new TimelineModel(manager, room_id));
         newRoom->setDecryptDescription(ChatPage::instance()->userSettings()->decryptSidebar());
 
+        connect(this,
+                &RoomlistModel::currentRoomChanged,
+                newRoom.data(),
+                &TimelineModel::updateUnreadLine);
         connect(newRoom.data(),
                 &TimelineModel::newEncryptedImage,
                 MainWindow::instance()->imageProvider(),

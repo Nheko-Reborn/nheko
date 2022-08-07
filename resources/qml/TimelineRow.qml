@@ -26,6 +26,8 @@ AbstractButton {
     required property string filesize
     required property string url
     required property string thumbnailUrl
+    required property string fullyReadEventId
+    required property bool roomReadStatus
     required property bool isOnlyEmoji
     required property bool isSender
     required property bool isEncrypted
@@ -49,7 +51,7 @@ AbstractButton {
     hoverEnabled: true
 
     width: parent.width
-    height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
+    height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )+(unreadRow.height > 0 ? unreadRow.height : 0 )
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
@@ -277,6 +279,7 @@ AbstractButton {
             }
         }
     }
+
     Reactions {
         anchors {
             top: row.bottom
@@ -291,5 +294,18 @@ AbstractButton {
 
         reactions: r.reactions
         eventId: r.eventId
+    }
+
+    Rectangle {
+        id: unreadRow
+        anchors {
+            top: reactionRow.bottom
+            topMargin: 5
+        }
+        color: Nheko.colors.highlight
+        width: row.maxWidth
+        height: 3
+        visible: (r.roomReadStatus && (r.fullyReadEventId == r.eventId)) ? 1 : 0
+
     }
 }

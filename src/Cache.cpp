@@ -1536,6 +1536,22 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
     }
 }
 
+std::string
+Cache::getLastFullyReadEventId(const std::string &room_id)
+{
+    auto txn = ro_txn(env_);
+
+    if (auto ev = getAccountData(txn, mtx::events::EventType::FullyRead, room_id)) {
+        if (auto fr =
+            std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(
+                &ev.value())) {
+            return fr->content.event_id;
+        }
+    }
+
+    return std::string();
+}
+
 void
 Cache::calculateRoomReadStatus()
 {
@@ -1561,13 +1577,8 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
         const auto localUser     = utils::localUser().toStdString();
 
         std::string fullyReadEventId;
-        if (auto ev = getAccountData(txn, mtx::events::EventType::FullyRead, room_id)) {
-            if (auto fr =
-                  std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(
-                    &ev.value())) {
-                fullyReadEventId = fr->content.event_id;
-            }
-        }
+
+        fullyReadEventId = getLastFullyReadEventId(room_id);
 
         if (last_event_id.empty() || fullyReadEventId.empty())
             return true;
@@ -5298,6 +5309,11 @@ getRoomInfo(const std::vector<std::string> &rooms)
 
 //! Calculates which the read status of a room.
 //! Whether all the events in the timeline have been read.
+std::string
+getLastFullyReadEventId(const std::string &room_id)
+{
+	return instance_->getLastFullyReadEventId(room_id);
+}
 bool
 calculateRoomReadStatus(const std::string &room_id)
 {

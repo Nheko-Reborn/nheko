@@ -977,6 +977,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
             emit encryptionChanged();
         }
     }
+
     updateLastMessage();
 }
 
@@ -1368,6 +1369,15 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
         }
         emit dataChanged(index(idx, 0), index(idx, 0));
     }
+}
+
+void
+TimelineModel::updateUnreadLine()
+{
+    this->roomReadStatus_ = cache::calculateRoomReadStatus(room_id_.toStdString());
+    this->fullyReadEventId_ = cache::getLastFullyReadEventId(room_id_.toStdString());
+    emit roomReadStatusChanged();
+    emit fullyReadEventIdChanged();
 }
 
 template<typename T>

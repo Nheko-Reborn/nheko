@@ -180,6 +180,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
     Q_PROPERTY(
       bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
+    Q_PROPERTY(bool roomReadStatus READ roomReadStatus NOTIFY roomReadStatusChanged)
     Q_PROPERTY(QString roomId READ roomId CONSTANT)
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
     Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY roomNameChanged)
@@ -189,6 +190,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QStringList widgetLinks READ widgetLinks NOTIFY widgetLinksChanged)
     Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
     Q_PROPERTY(bool isEncrypted READ isEncrypted NOTIFY encryptionChanged)
+    Q_PROPERTY(QString fullyReadEventId READ fullyReadEventId NOTIFY fullyReadEventIdChanged)
     Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
     Q_PROPERTY(int trustlevel READ trustlevel NOTIFY trustlevelChanged)
     Q_PROPERTY(bool isDirect READ isDirect NOTIFY isDirectChanged)
@@ -320,11 +322,13 @@ public:
     void sendMessageEvent(const T &content, mtx::events::EventType eventType);
     RelatedInfo relatedInfo(const QString &id);
 
+    bool roomReadStatus() const { return roomReadStatus_; }
     DescInfo lastMessage() const;
     uint64_t lastMessageTimestamp() const { return lastMessage_.timestamp; }
 
     bool isSpace() const { return isSpace_; }
     bool isEncrypted() const { return isEncrypted_; }
+    QString fullyReadEventId() const { return QString::fromStdString(fullyReadEventId_); }
     crypto::Trust trustlevel() const;
     int roomMemberCount() const;
     bool isDirect() const { return roomMemberCount() <= 2; }
@@ -344,6 +348,7 @@ public slots:
     int currentIndex() const { return idToIndex(currentId); }
     void eventShown();
     void markEventsAsRead(const std::vector<QString> &event_ids);
+    void updateUnreadLine();
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
     void updateTypingUsers(const std::vector<QString> &users)
     {
@@ -417,6 +422,7 @@ signals:
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
 
+    void roomReadStatusChanged();
     void lastMessageChanged();
     void notificationsChanged();
 
@@ -427,6 +433,7 @@ signals:
     void updateFlowEventId(std::string event_id);
 
     void encryptionChanged();
+    void fullyReadEventIdChanged();
     void trustlevelChanged();
     void roomNameChanged();
     void roomTopicChanged();
@@ -468,6 +475,8 @@ private:
     QString eventIdToShow;
     int showEventTimerCounter = 0;
 
+    bool roomReadStatus_;
+
     DescInfo lastMessage_{};
 
     friend struct SendMessageVisitor;
@@ -480,6 +489,7 @@ private:
     bool m_paginationInProgress = false;
     bool isSpace_               = false;
     bool isEncrypted_           = false;
+    std::string fullyReadEventId_;
 };
 
 template<class T>
