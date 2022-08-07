@@ -304,8 +304,8 @@ AbstractButton {
         }
         color: Nheko.colors.highlight
         width: row.maxWidth
-        height: 3
         visible: (r.roomReadStatus && (r.fullyReadEventId == r.eventId)) ? 1 : 0
+        height: visible ? 3 : 0
 
     }
 }
