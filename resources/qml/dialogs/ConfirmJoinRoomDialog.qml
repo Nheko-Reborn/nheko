@@ -17,7 +17,7 @@ ApplicationWindow {
 
     required property RoomSummary summary
 
-    title: qsTr("Confirm room join")
+    title: summary.isSpace ? qsTr("Confirm community join") : qsTr("Confirm room join")
     modality: Qt.WindowModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     palette: Nheko.colors
