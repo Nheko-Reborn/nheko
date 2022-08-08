@@ -32,7 +32,7 @@ class RoomSummary : public QObject
     Q_PROPERTY(QString roomTopic READ roomTopic NOTIFY loaded)
     Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY loaded)
     Q_PROPERTY(bool isInvite READ isInvite NOTIFY loaded)
-    Q_PROPERTY(bool isSpace READ isInvite NOTIFY loaded)
+    Q_PROPERTY(bool isSpace READ isSpace NOTIFY loaded)
     Q_PROPERTY(bool isKnockOnly READ isKnockOnly NOTIFY loaded)
     Q_PROPERTY(bool isLoaded READ isLoaded NOTIFY loaded)
     Q_PROPERTY(int memberCount READ memberCount NOTIFY loaded)
@@ -51,10 +51,7 @@ public:
     QString reason() const { return reason_; }
 
     QString roomid() const { return room ? QString::fromStdString(room->room_id) : ""; }
-    QString roomName() const
-    {
-        return QString::fromStdString(room ? room->room_id : roomIdOrAlias);
-    }
+    QString roomName() const { return QString::fromStdString(room ? room->name : roomIdOrAlias); }
     QString roomTopic() const { return room ? QString::fromStdString(room->topic) : ""; }
     QString roomAvatarUrl() const { return room ? QString::fromStdString(room->avatar_url) : ""; }
     bool isInvite() const
