@@ -751,7 +751,13 @@ CommunitiesModel::spaceChildrenListFromIndex(QString room, int idx) const
         const auto &e = spaceOrder_.tree[i];
         if (e.depth == spaceOrder_.tree[begin].depth && spaces_.count(e.id)) {
             bool canSendChild = Permissions(e.id).canChange(qml_mtx_events::SpaceChild);
-            auto spaceId      = e.id.toStdString();
+            // For now hide the space, if we can't send any child, since then the only allowed
+            // action would be removing a space and even that only works if it currently only has a
+            // parent set in the child.
+            if (!canSendChild)
+                continue;
+
+            auto spaceId = e.id.toStdString();
             auto child =
               cache::client()->getStateEvent<mtx::events::state::space::Child>(spaceId, room_);
             auto parent =
