@@ -51,7 +51,7 @@ AbstractButton {
     hoverEnabled: true
 
     width: parent.width
-    height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )+(unreadRow.height > 0 ? unreadRow.height : 0 )
+    height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )+unreadRow.height
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
