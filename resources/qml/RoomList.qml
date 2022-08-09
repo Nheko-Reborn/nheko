@@ -110,6 +110,17 @@ Page {
 
         }
 
+
+        Component {
+            id: nestedSpaceMenuLevel
+
+            SpaceMenuLevel {
+                roomid: roomContextMenu.roomid
+                childMenu: rootSpaceMenu.childMenu
+            }
+        }
+
+
         Platform.Menu {
             id: roomContextMenu
 
@@ -154,42 +165,51 @@ Page {
                 onTriggered: Rooms.copyLink(roomContextMenu.roomid)
             }
 
-            Platform.MenuSeparator {
-                text: qsTr("Tag room as:")
-            }
+            Platform.Menu {
+                id: tagsMenu
+                title: qsTr("Tag room as:")
 
-            Instantiator {
-                model: Communities.tagsWithDefault
-                onObjectAdded: roomContextMenu.insertItem(index + 4, object)
-                onObjectRemoved: roomContextMenu.removeItem(object)
+                Instantiator {
+                    model: Communities.tagsWithDefault
+                    onObjectAdded: tagsMenu.insertItem(index, object)
+                    onObjectRemoved: tagsMenu.removeItem(object)
 
-                delegate: Platform.MenuItem {
-                    property string t: modelData
+                    delegate: Platform.MenuItem {
+                        property string t: modelData
 
-                    text: {
-                        switch (t) {
-                        case "m.favourite":
-                            return qsTr("Favourite");
-                        case "m.lowpriority":
-                            return qsTr("Low priority");
-                        case "m.server_notice":
-                            return qsTr("Server notice");
-                        default:
-                            return t.substring(2);
+                        text: {
+                            switch (t) {
+                                case "m.favourite":
+                                return qsTr("Favourite");
+                                case "m.lowpriority":
+                                return qsTr("Low priority");
+                                case "m.server_notice":
+                                return qsTr("Server notice");
+                                default:
+                                return t.substring(2);
+                            }
                         }
+                        checkable: true
+                        checked: roomContextMenu.tags !== undefined && roomContextMenu.tags.includes(t)
+                        onTriggered: Rooms.toggleTag(roomContextMenu.roomid, t, checked)
                     }
-                    checkable: true
-                    checked: roomContextMenu.tags !== undefined && roomContextMenu.tags.includes(t)
-                    onTriggered: Rooms.toggleTag(roomContextMenu.roomid, t, checked)
+
                 }
 
+                Platform.MenuItem {
+                    text: qsTr("Create new tag...")
+                    onTriggered: newTag.show()
+                }
             }
 
-            Platform.MenuItem {
-                text: qsTr("Create new tag...")
-                onTriggered: newTag.show()
-            }
+            SpaceMenuLevel {
+                id: rootSpaceMenu
 
+                roomid: roomContextMenu.roomid
+                position: -1
+                title: qsTr("Add or remove from space")
+                childMenu: nestedSpaceMenuLevel
+            }
         }
 
         delegate: ItemDelegate {

@@ -26,10 +26,10 @@ set(CMAKE_AUTOMOC ON)
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-	URL "https://github.com/cpp-pm/hunter/archive/v0.23.305.tar.gz"
-	SHA1 "fc8d7a6dac2fa23681847b3872d88d3839b657b0"
-	LOCAL
-	)
+    URL "https://github.com/cpp-pm/hunter/archive/v0.24.3.tar.gz"
+    SHA1 "10738b59e539818a01090e64c2d09896247530c7"
+		LOCAL
+)
 
 macro(hunter_add_package_safe)
 	set(pkg_temp_backup_libdir "$ENV{PKG_CONFIG_LIBDIR}")
@@ -583,7 +583,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        b706492de042455630063c847574bbc5ed5d4641
+		GIT_TAG        eb747bb7723c11e38ed21543d05c42cc883c9d06
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")

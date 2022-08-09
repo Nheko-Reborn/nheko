@@ -1,9 +1,3 @@
-
-hunter_config(
-    spdlog
-    VERSION 1.8.0-p1
-)
-
 hunter_config(
     lmdb
     VERSION 0.9.21-p2

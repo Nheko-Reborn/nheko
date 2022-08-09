@@ -120,16 +120,14 @@
         <file>qml/SelfVerificationCheck.qml</file>
         <file>qml/TypingIndicator.qml</file>
         <file>qml/NotificationWarning.qml</file>
-        <file>qml/pages/UserSettingsPage.qml</file>
-        <file>qml/pages/WelcomePage.qml</file>
-        <file>qml/pages/LoginPage.qml</file>
-        <file>qml/pages/RegisterPage.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
         <file>qml/components/AvatarListTile.qml</file>
         <file>qml/components/FlatButton.qml</file>
         <file>qml/components/MainWindowDialog.qml</file>
+        <file>qml/components/NotificationBubble.qml</file>
         <file>qml/components/ReorderableListview.qml</file>
+        <file>qml/components/SpaceMenuLevel.qml</file>
         <file>qml/components/TextButton.qml</file>
         <file>qml/delegates/Encrypted.qml</file>
         <file>qml/delegates/FileMessage.qml</file>
@@ -172,10 +170,14 @@
         <file>qml/dialogs/UserProfile.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/emoji/StickerPicker.qml</file>
+        <file>qml/pages/LoginPage.qml</file>
+        <file>qml/pages/RegisterPage.qml</file>
+        <file>qml/pages/UserSettingsPage.qml</file>
+        <file>qml/pages/WelcomePage.qml</file>
         <file>qml/ui/NhekoSlider.qml</file>
         <file>qml/ui/Ripple.qml</file>
-        <file>qml/ui/Spinner.qml</file>
         <file>qml/ui/Snackbar.qml</file>
+        <file>qml/ui/Spinner.qml</file>
         <file>qml/ui/animations/BlinkAnimation.qml</file>
         <file>qml/ui/media/MediaControls.qml</file>
         <file>qml/voip/ActiveCallBar.qml</file>
@@ -186,7 +188,6 @@
         <file>qml/voip/PlaceCall.qml</file>
         <file>qml/voip/ScreenShare.qml</file>
         <file>qml/voip/VideoCall.qml</file>
-        <file>qml/components/NotificationBubble.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>

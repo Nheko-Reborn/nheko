@@ -546,6 +546,13 @@ RoomlistModel::sync(const mtx::responses::Sync &sync_)
                 }
             }
         }
+        for (const auto &e : room.account_data.events) {
+            if (std::holds_alternative<
+                  mtx::events::AccountDataEvent<mtx::events::account_data::Tags>>(e)) {
+                if (auto idx = roomidToIndex(qroomid); idx != -1)
+                    emit dataChanged(index(idx), index(idx), {Tags});
+            }
+        }
     }
 
     for (const auto &[room_id, room] : sync_.rooms.leave) {

@@ -29,6 +29,47 @@ public:
     bool filterAcceptsRow(int sourceRow, const QModelIndex &) const override;
 };
 
+class SpaceItem
+{
+    Q_GADGET
+
+    Q_PROPERTY(QString roomid MEMBER roomid CONSTANT)
+    Q_PROPERTY(QString name MEMBER name CONSTANT)
+    Q_PROPERTY(int treeIndex MEMBER treeIndex CONSTANT)
+
+    Q_PROPERTY(bool childValid MEMBER childValid CONSTANT)
+    Q_PROPERTY(bool parentValid MEMBER parentValid CONSTANT)
+    Q_PROPERTY(bool canonical MEMBER canonical CONSTANT)
+
+    Q_PROPERTY(bool canEditParent MEMBER canEditParent CONSTANT)
+    Q_PROPERTY(bool canEditChild MEMBER canEditChild CONSTANT)
+
+public:
+    SpaceItem() {}
+    SpaceItem(QString roomid_,
+              QString name_,
+              int treeIndex_,
+              bool childValid_,
+              bool parentValid_,
+              bool canonical_,
+              bool canEditChild_,
+              bool canEditParent_)
+      : roomid(std::move(roomid_))
+      , name(std::move(name_))
+      , treeIndex(treeIndex_)
+      , childValid(childValid_)
+      , parentValid(parentValid_)
+      , canonical(canonical_)
+      , canEditParent(canEditParent_)
+      , canEditChild(canEditChild_)
+    {}
+
+    QString roomid, name;
+    int treeIndex   = 0;
+    bool childValid = false, parentValid = false, canonical = false;
+    bool canEditParent = false, canEditChild = false;
+};
+
 class CommunitiesModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -125,6 +166,13 @@ public:
         return false;
     }
 
+    Q_INVOKABLE QVariantList spaceChildrenListFromIndex(QString room, int idx = -1) const;
+    Q_INVOKABLE void updateSpaceStatus(QString space,
+                                       QString room,
+                                       bool setParent,
+                                       bool setChild,
+                                       bool canonical) const;
+
 public slots:
     void initializeSidebar();
     void sync(const mtx::responses::Sync &sync_);
@@ -148,6 +196,7 @@ public slots:
     }
     void toggleTagId(QString tagId);
     void toggleTagMute(QString tagId);
+
     FilteredCommunitiesModel *filtered() { return new FilteredCommunitiesModel(this, this); }
 
 signals:
