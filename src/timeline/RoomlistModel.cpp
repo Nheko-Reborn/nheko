@@ -287,6 +287,10 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
                 &RoomlistModel::currentRoomChanged,
                 newRoom.data(),
                 &TimelineModel::updateUnreadLine);
+        connect(MainWindow::instance(),
+                &MainWindow::activeChanged,
+                newRoom.data(),
+                &TimelineModel::unreadLineOnWindowFocus);
         connect(newRoom.data(),
                 &TimelineModel::newEncryptedImage,
                 MainWindow::instance()->imageProvider(),

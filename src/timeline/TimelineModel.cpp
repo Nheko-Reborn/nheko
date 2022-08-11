@@ -1380,6 +1380,15 @@ TimelineModel::updateUnreadLine()
     emit fullyReadEventIdChanged();
 }
 
+void
+TimelineModel::unreadLineOnWindowFocus()
+{
+    /* this stops it from removing the line when focusing another window
+     * and from removing the line when refocusing nheko */
+    if (MainWindow::instance()->isActive() && !this->roomReadStatus_) {
+        updateUnreadLine();
+    }
+}
 template<typename T>
 void
 TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType)

@@ -349,6 +349,7 @@ public slots:
     void eventShown();
     void markEventsAsRead(const std::vector<QString> &event_ids);
     void updateUnreadLine();
+    void unreadLineOnWindowFocus();
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
     void updateTypingUsers(const std::vector<QString> &users)
     {
