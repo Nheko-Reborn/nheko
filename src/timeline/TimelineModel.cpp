@@ -1374,10 +1374,15 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
 void
 TimelineModel::updateUnreadLine()
 {
+
     this->roomReadStatus_ = cache::calculateRoomReadStatus(room_id_.toStdString());
-    this->fullyReadEventId_ = cache::getLastFullyReadEventId(room_id_.toStdString());
-    emit roomReadStatusChanged();
-    emit fullyReadEventIdChanged();
+    std::string last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
+    auto lastVisibleEventIndexAndId = cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
+    if (lastVisibleEventIndexAndId) {
+        this->fullyReadEventId_ = lastVisibleEventIndexAndId->second;
+        emit roomReadStatusChanged();
+        emit fullyReadEventIdChanged();
+    }
 }
 
 void

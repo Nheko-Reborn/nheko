@@ -2512,6 +2512,55 @@ Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view even
     }
 }
 
+std::optional<std::pair<uint64_t, std::string>>
+Cache::lastVisibleEvent(const std::string &room_id, std::string_view event_id)
+{
+    if (room_id.empty() || event_id.empty())
+        return {};
+
+    auto txn = ro_txn(env_);
+    lmdb::dbi orderDb;
+    lmdb::dbi eventOrderDb;
+    lmdb::dbi timelineDb;
+    try {
+        orderDb      = getEventToOrderDb(txn, room_id);
+        eventOrderDb = getEventOrderDb(txn, room_id);
+        timelineDb   = getMessageToOrderDb(txn, room_id);
+    } catch (lmdb::runtime_error &e) {
+        nhlog::db()->error(
+          "Can't open db for room '{}', probably doesn't exist yet. ({})", room_id, e.what());
+        return {};
+    }
+
+    std::string_view indexVal;
+
+    bool success = orderDb.get(txn, event_id, indexVal);
+    if (!success) {
+        return {};
+    }
+    try {
+        uint64_t idx = lmdb::from_sv<uint64_t>(indexVal);
+        std::string evId{event_id};
+
+        auto cursor = lmdb::cursor::open(txn, eventOrderDb);
+        if (cursor.get(indexVal, event_id, MDB_SET)) {
+            do {
+                std::string evId = nlohmann::json::parse(event_id)["event_id"].get<std::string>();
+                std::string_view temp;
+                idx = lmdb::from_sv<uint64_t>(indexVal);
+                if (timelineDb.get(txn, evId, temp)) {
+                    return std::pair{idx, evId};
+                }
+                } while (cursor.get(indexVal, event_id, MDB_PREV));
+        }
+
+        return std::pair{idx, evId};
+    } catch (lmdb::runtime_error &e) {
+        nhlog::db()->error("Failed to get last visible event after {}", event_id, e.what());
+        return {};
+    }
+}
+
 std::optional<uint64_t>
 Cache::getArrivalIndex(const std::string &room_id, std::string_view event_id)
 {
@@ -5288,6 +5337,12 @@ std::optional<std::pair<uint64_t, std::string>>
 lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id)
 {
     return instance_->lastInvisibleEventAfter(room_id, event_id);
+}
+
+std::optional<std::pair<uint64_t, std::string>>
+lastVisibleEvent(const std::string &room_id, std::string_view event_id)
+{
+    return instance_->lastVisibleEvent(room_id, event_id);
 }
 
 RoomInfo
