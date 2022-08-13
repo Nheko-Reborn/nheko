@@ -1323,6 +1323,11 @@ ChatPage::startChat(QString userid, std::optional<bool> encryptionEnabled)
     req.preset     = mtx::requests::Preset::TrustedPrivateChat;
     req.visibility = mtx::common::RoomVisibility::Private;
 
+    if (!encryptionEnabled.has_value()) {
+        if (auto keys = cache::client()->userKeys(userid.toStdString()))
+            encryptionEnabled = !keys->device_keys.empty();
+    }
+
     if (encryptionEnabled.value_or(false)) {
         mtx::events::StrippedEvent<mtx::events::state::Encryption> enc;
         enc.type              = mtx::events::EventType::RoomEncryption;
