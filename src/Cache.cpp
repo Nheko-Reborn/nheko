@@ -4381,6 +4381,14 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                             nhlog::crypto()->warn("device {}:{} has no signature", user, device_id);
                             continue;
                         }
+                        if (!device_keys.keys.count(device_signing_key) ||
+                            !device_keys.keys.count("curve25519:" + device_id)) {
+                            nhlog::crypto()->warn(
+                              "Device key has no curve25519 or ed25519 key  {}:{}",
+                              user,
+                              device_id);
+                            continue;
+                        }
 
                         if (!mtx::crypto::ed25519_verify_signature(
                               device_keys.keys.at(device_signing_key),
