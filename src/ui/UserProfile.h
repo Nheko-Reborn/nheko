@@ -32,6 +32,19 @@ Q_ENUM_NS(Status)
 class DeviceVerificationFlow;
 class TimelineViewManager;
 
+class UserProfileFetchProxy : public QObject
+{
+    Q_OBJECT
+
+public:
+    UserProfileFetchProxy(QObject *p = nullptr)
+      : QObject(p)
+    {}
+
+signals:
+    void profileFetched(mtx::responses::Profile);
+};
+
 class DeviceInfo
 {
 public:

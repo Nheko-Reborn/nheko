@@ -67,6 +67,7 @@ Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
 Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
 Q_DECLARE_METATYPE(mtx::responses::PublicRoom)
+Q_DECLARE_METATYPE(mtx::responses::Profile)
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -145,6 +146,7 @@ MainWindow::registerQmlTypes()
     qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
     qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
     qRegisterMetaType<mtx::responses::PublicRoom>();
+    qRegisterMetaType<mtx::responses::Profile>();
     qRegisterMetaType<CombinedImagePackModel *>();
     qRegisterMetaType<mtx::events::collections::TimelineEvents>();
     qRegisterMetaType<std::vector<DeviceInfo>>();

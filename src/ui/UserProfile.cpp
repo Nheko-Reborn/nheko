@@ -487,17 +487,27 @@ UserProfile::isLoading() const
 void
 UserProfile::getGlobalProfileData()
 {
-    http::client()->get_profile(
-      userid_.toStdString(), [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
-          if (err) {
-              nhlog::net()->warn("failed to retrieve profile info for {}", userid_.toStdString());
-              return;
-          }
+    auto profProx = std::make_shared<UserProfileFetchProxy>();
+    connect(profProx.get(),
+            &UserProfileFetchProxy::profileFetched,
+            this,
+            [this](const mtx::responses::Profile &res) {
+                emit globalUsernameRetrieved(QString::fromStdString(res.display_name));
+                globalAvatarUrl = QString::fromStdString(res.avatar_url);
+                emit avatarUrlChanged();
+            });
 
-          emit globalUsernameRetrieved(QString::fromStdString(res.display_name));
-          globalAvatarUrl = QString::fromStdString(res.avatar_url);
-          emit avatarUrlChanged();
-      });
+    http::client()->get_profile(userid_.toStdString(),
+                                [prox = std::move(profProx), user = userid_.toStdString()](
+                                  const mtx::responses::Profile &res, mtx::http::RequestErr err) {
+                                    if (err) {
+                                        nhlog::net()->warn("failed to retrieve profile info for {}",
+                                                           user);
+                                        return;
+                                    }
+
+                                    emit prox->profileFetched(res);
+                                });
 }
 
 void
