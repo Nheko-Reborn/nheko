@@ -163,6 +163,8 @@ MemberList::sortBy(const MemberSortRoles role)
 bool
 MemberList::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
-    return m_model.m_memberList[source_row].first.user_id.contains(filterString) ||
-           m_model.m_memberList[source_row].first.display_name.contains(filterString);
+    return m_model.m_memberList[source_row].first.user_id.contains(filterString,
+                                                                   Qt::CaseInsensitive) ||
+           m_model.m_memberList[source_row].first.display_name.contains(filterString,
+                                                                        Qt::CaseInsensitive);
 }
