@@ -266,7 +266,6 @@ if(NOT MSVC)
 		"${CMAKE_CXX_FLAGS} \
 		-Wall \
 		-Wextra \
-		-pipe \
 		-pedantic \
 		-fsized-deallocation \
 		-fdiagnostics-color=always \
@@ -750,6 +749,9 @@ if(NOT MSVC AND NOT HAIKU)
 		target_compile_options(nheko PRIVATE "-Werror")
 	endif()
 endif()
+#if(NOT MSVC)
+#	target_link_options(nheko PRIVATE "LINKER:,--gc-sections")
+#endif()
 
 if(MAN)
 	add_subdirectory(man)
