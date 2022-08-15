@@ -1548,7 +1548,6 @@ Cache::getLastFullyReadEventId(const std::string &room_id)
             return fr->content.event_id;
         }
     }
-
     return std::string();
 }
 
@@ -1588,6 +1587,31 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
 
         last_event_id_    = std::string(last_event_id);
         fullyReadEventId_ = std::string(fullyReadEventId);
+    }
+
+    // Retrieve all read receipts for that event.
+    return getEventIndex(room_id, last_event_id_) > getEventIndex(room_id, fullyReadEventId_);
+}
+
+bool
+Cache::calculateRoomReadStatus(const std::string &room_id, const std::string &event_id)
+{
+    std::string last_event_id_, fullyReadEventId_;
+    {
+        auto txn = ro_txn(env_);
+
+        // Get last event id on the room.
+        const auto last_event_id = getLastEventId(txn, room_id);
+        const auto localUser     = utils::localUser().toStdString();
+
+        if (last_event_id.empty() || event_id.empty())
+            return true;
+
+        if (last_event_id == event_id)
+            return false;
+
+        last_event_id_    = std::string(last_event_id);
+        fullyReadEventId_ = std::string(event_id);
     }
 
     // Retrieve all read receipts for that event.
@@ -5368,6 +5392,11 @@ std::string
 getLastFullyReadEventId(const std::string &room_id)
 {
 	return instance_->getLastFullyReadEventId(room_id);
+}
+bool
+calculateRoomReadStatus(const std::string &room_id, const std::string &event_id)
+{
+    return instance_->calculateRoomReadStatus(room_id, event_id);
 }
 bool
 calculateRoomReadStatus(const std::string &room_id)

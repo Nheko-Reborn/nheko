@@ -170,6 +170,7 @@ public:
     //! Calculates which the read status of a room.
     //! Whether all the events in the timeline have been read.
     std::string getLastFullyReadEventId(const std::string &room_id);
+    bool calculateRoomReadStatus(const std::string &room_id, const std::string &event_id);
     bool calculateRoomReadStatus(const std::string &room_id);
     void calculateRoomReadStatus();
 

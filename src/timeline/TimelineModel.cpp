@@ -867,6 +867,24 @@ TimelineModel::fetchMore(const QModelIndex &)
     setPaginationInProgress(true);
 
     events.fetchMore();
+
+    /* in the context of positioning the unread line in the timelin:
+     *
+     * the event2order database won't have the messages we need if more than ~10
+     * were sent while the user was offline
+     *
+     * this will just recheck if the db has loaded those messages in after a fetch
+     * IF it didn't have them before
+     */
+    if (this->fullyReadEventId_.empty()) {
+        if(this->last_event_id.empty())
+            this->last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
+        auto lastVisibleEventIndexAndId = cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
+        if (lastVisibleEventIndexAndId) {
+            this->fullyReadEventId_ = lastVisibleEventIndexAndId->second;
+            emit fullyReadEventIdChanged();
+        }
+    }
 }
 
 void
@@ -1374,9 +1392,8 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
 void
 TimelineModel::updateUnreadLine()
 {
-
-    this->roomReadStatus_ = cache::calculateRoomReadStatus(room_id_.toStdString());
-    std::string last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
+    this->last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
+    this->roomReadStatus_ = cache::calculateRoomReadStatus(room_id_.toStdString(), this->last_event_id);
     auto lastVisibleEventIndexAndId = cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
     if (lastVisibleEventIndexAndId) {
         this->fullyReadEventId_ = lastVisibleEventIndexAndId->second;

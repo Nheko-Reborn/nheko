@@ -490,6 +490,7 @@ private:
     bool m_paginationInProgress = false;
     bool isSpace_               = false;
     bool isEncrypted_           = false;
+    std::string last_event_id;
     std::string fullyReadEventId_;
 };
 
