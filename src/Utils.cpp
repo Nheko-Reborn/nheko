@@ -420,7 +420,7 @@ utils::linkifyMessage(const QString &body)
 QString
 utils::escapeBlacklistedHtml(const QString &rawStr)
 {
-    static const std::array allowedTags = {
+    static const std::set<QByteArray> allowedTags = {
       "font",       "/font",       "del",    "/del",    "h1",    "/h1",    "h2",     "/h2",
       "h3",         "/h3",         "h4",     "/h4",     "h5",    "/h5",    "h6",     "/h6",
       "blockquote", "/blockquote", "p",      "/p",      "a",     "/a",     "ul",     "/ul",
@@ -430,46 +430,133 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
       "br",         "br/",         "div",    "/div",    "table", "/table", "thead",  "/thead",
       "tbody",      "/tbody",      "tr",     "/tr",     "th",    "/th",    "td",     "/td",
       "caption",    "/caption",    "pre",    "/pre",    "span",  "/span",  "img",    "/img"};
+    constexpr static const std::array tagNameEnds  = {' ', '>'};
+    constexpr static const std::array attrNameEnds = {' ', '>', '=', '\t', '\r', '\n', '/', '\f'};
+    constexpr static const std::array spaceChars   = {' ', '\t', '\r', '\n', '\f'};
+
     QByteArray data = rawStr.toUtf8();
     QByteArray buffer;
     const int length = data.size();
     buffer.reserve(length);
-    bool escapingTag = false;
-    for (int pos = 0; pos != length; ++pos) {
-        switch (data.at(pos)) {
-        case '<': {
-            bool oneTagMatched = false;
-            const int endPos =
-              static_cast<int>(std::min(static_cast<size_t>(data.indexOf('>', pos)),
-                                        static_cast<size_t>(data.indexOf(' ', pos))));
+    const auto end = data.cend();
+    for (auto pos = data.cbegin(); pos < end;) {
+        auto tagStart = std::find(pos, end, '<');
+        buffer.append(pos, tagStart - pos);
+        if (tagStart == end)
+            break;
 
-            auto mid = data.mid(pos + 1, endPos - pos - 1);
-            for (const auto &tag : allowedTags) {
-                // TODO: Check src and href attribute
-                if (mid.toLower() == tag) {
-                    oneTagMatched = true;
+        const auto tagNameStart = tagStart + 1;
+        const auto tagNameEnd =
+          std::find_first_of(tagNameStart, end, tagNameEnds.begin(), tagNameEnds.end());
+
+        if (allowedTags.find(QByteArray(tagNameStart, tagNameEnd - tagNameStart).toLower()) ==
+            allowedTags.end()) {
+            // not allowed -> escape
+            buffer.append("&lt;");
+            pos = tagNameStart;
+            continue;
+        } else {
+            buffer.append(tagStart, tagNameEnd - tagStart);
+
+            pos = tagNameEnd;
+
+            if (tagNameEnd != end) {
+                auto attrStart = tagNameEnd;
+                auto attrsEnd  = std::find(attrStart, end, '>');
+                if (*(attrsEnd - 1) == '/')
+                    attrsEnd -= 1;
+
+                pos = attrsEnd;
+
+                auto consumeSpaces = [attrsEnd](auto p) {
+                    while (p < attrsEnd &&
+                           std::find(spaceChars.begin(), spaceChars.end(), *p) != spaceChars.end())
+                        p++;
+                    return p;
+                };
+
+                attrStart = consumeSpaces(attrStart);
+
+                while (attrStart < attrsEnd) {
+                    auto attrEnd = std::find_first_of(
+                      attrStart, attrsEnd, attrNameEnds.begin(), attrNameEnds.end());
+
+                    auto attrName = QByteArray(attrStart, attrEnd - attrStart).toLower();
+
+                    auto sanitizeValue = [&attrName](QByteArray val) {
+                        if (attrName == QByteArrayLiteral("src") && !val.startsWith("mxc://"))
+                            return QByteArray();
+                        else
+                            return val;
+                    };
+
+                    attrStart = consumeSpaces(attrEnd);
+
+                    if (attrStart < attrsEnd) {
+                        if (*attrStart == '=') {
+                            attrStart = consumeSpaces(attrStart + 1);
+
+                            if (attrStart < attrsEnd) {
+                                // we fall through here if the value is empty to transform attr=""
+                                // into attr, because otherwise we can't style it
+                                if (*attrStart == '"') {
+                                    attrStart += 1;
+                                    auto valueEnd = std::find(attrStart, attrsEnd, '"');
+                                    if (valueEnd == attrsEnd)
+                                        break;
+
+                                    auto val =
+                                      sanitizeValue(QByteArray(attrStart, valueEnd - attrStart));
+                                    attrStart = consumeSpaces(valueEnd + 1);
+                                    if (!val.isEmpty()) {
+                                        buffer.append(' ');
+                                        buffer.append(attrName);
+                                        buffer.append("=\"");
+                                        buffer.append(val);
+                                        buffer.append('"');
+                                        continue;
+                                    }
+                                } else if (*attrStart == '\'') {
+                                    attrStart += 1;
+                                    auto valueEnd = std::find(attrStart, attrsEnd, '\'');
+                                    if (valueEnd == attrsEnd)
+                                        break;
+
+                                    auto val =
+                                      sanitizeValue(QByteArray(attrStart, valueEnd - attrStart));
+                                    attrStart = consumeSpaces(valueEnd + 1);
+                                    if (!val.isEmpty()) {
+                                        buffer.append(' ');
+                                        buffer.append(attrName);
+                                        buffer.append("=\'");
+                                        buffer.append(val);
+                                        buffer.append('\'');
+                                        continue;
+                                    }
+                                } else {
+                                    attrStart += 1;
+                                    auto valueEnd = std::find_first_of(attrStart,
+                                                                       attrsEnd,
+                                                                       attrNameEnds.begin(),
+                                                                       attrNameEnds.end());
+                                    buffer.append(' ');
+                                    buffer.append(attrName);
+                                    buffer.append("=");
+                                    buffer.append(attrStart, valueEnd - attrStart);
+                                    attrStart = valueEnd;
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+
+                    buffer.append(' ');
+                    buffer.append(attrName);
                 }
             }
-            if (oneTagMatched)
-                buffer.append('<');
-            else {
-                escapingTag = true;
-                buffer.append("&lt;");
-            }
-            break;
-        }
-        case '>':
-            if (escapingTag) {
-                buffer.append("&gt;");
-                escapingTag = false;
-            } else
-                buffer.append('>');
-            break;
-        default:
-            buffer.append(data.at(pos));
-            break;
         }
     }
+
     return QString::fromUtf8(buffer);
 }
 

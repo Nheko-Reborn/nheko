@@ -34,7 +34,11 @@ MatrixText {
         border: 1px solid " + Nheko.colors.text + ";
     }
     blockquote { margin-left: 1em; }
-    </style>
+    " + (enabled ? "span[data-mx-spoiler] {
+        color: transparent;
+        background-color: " + Nheko.colors.text + ";
+    }" : "") +  // TODO(Nico): Figure out how to support mobile
+    "</style>
     " + formatted.replace(/<pre>/g, "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
     width: parent.width
     height: !keepFullText ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
