@@ -3579,7 +3579,7 @@ Reason: %4</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Group&apos;s sidebar</source>
+        <source>Groups sidebar</source>
         <translation type="unfinished">グループサイドバー</translation>
     </message>
     <message>

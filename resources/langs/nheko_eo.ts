@@ -3602,7 +3602,7 @@ Kialo: %4</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Group&apos;s sidebar</source>
+        <source>Groups sidebar</source>
         <translation type="unfinished">Flanka breto de grupoj</translation>
     </message>
     <message>

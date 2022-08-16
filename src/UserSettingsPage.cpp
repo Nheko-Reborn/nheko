@@ -911,7 +911,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case StartInTray:
             return tr("Start in tray");
         case GroupView:
-            return tr("Group's sidebar");
+            return tr("Groups sidebar");
         case Markdown:
             return tr("Send messages as Markdown");
         case Bubbles:

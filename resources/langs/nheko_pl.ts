@@ -3609,7 +3609,7 @@ Powód: %4</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Group&apos;s sidebar</source>
+        <source>Groups sidebar</source>
         <translation>Pasek boczny grupy</translation>
     </message>
     <message>
