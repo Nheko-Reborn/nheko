@@ -3598,7 +3598,7 @@ Põhjus: %4</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Group&apos;s sidebar</source>
+        <source>Groups sidebar</source>
         <translation>Rühmade külgpaan</translation>
     </message>
     <message>

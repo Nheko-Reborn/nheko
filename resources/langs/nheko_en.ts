@@ -3598,8 +3598,8 @@ Reason: %4</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Group&apos;s sidebar</source>
-        <translation>Group&apos;s sidebar</translation>
+        <source>Groups sidebar</source>
+        <translation>Groups sidebar</translation>
     </message>
     <message>
         <location line="+2"/>
