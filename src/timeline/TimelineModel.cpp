@@ -600,6 +600,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             if (isReply)
                 formattedBody_ = formattedBody_.remove(replyFallback);
         }
+        formattedBody_ = utils::escapeBlacklistedHtml(formattedBody_);
 
         // TODO(Nico): Don't parse html with a regex
         const static QRegularExpression matchIsImg(QStringLiteral("<img [^>]+>"));
@@ -637,8 +638,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             formattedBody_.replace(curImg, imgReplacement);
         }
 
-        return QVariant(
-          utils::replaceEmoji(utils::linkifyMessage(utils::escapeBlacklistedHtml(formattedBody_))));
+        return QVariant(utils::replaceEmoji(utils::linkifyMessage(formattedBody_)));
     }
     case Url:
         return QVariant(QString::fromStdString(url(event)));
