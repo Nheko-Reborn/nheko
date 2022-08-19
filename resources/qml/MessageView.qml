@@ -198,6 +198,7 @@ Item {
                     chat.model.reply = undefined;
                 else
                     chat.model.edit = undefined;
+                TimelineManager.focusMessageInput();
             }
         }
 
