@@ -421,15 +421,16 @@ QString
 utils::escapeBlacklistedHtml(const QString &rawStr)
 {
     static const std::set<QByteArray> allowedTags = {
-      "font",       "/font",       "del",    "/del",    "h1",    "/h1",    "h2",     "/h2",
-      "h3",         "/h3",         "h4",     "/h4",     "h5",    "/h5",    "h6",     "/h6",
-      "blockquote", "/blockquote", "p",      "/p",      "a",     "/a",     "ul",     "/ul",
-      "ol",         "/ol",         "sup",    "/sup",    "sub",   "/sub",   "li",     "/li",
-      "b",          "/b",          "i",      "/i",      "u",     "/u",     "strong", "/strong",
-      "em",         "/em",         "strike", "/strike", "code",  "/code",  "hr",     "/hr",
-      "br",         "br/",         "div",    "/div",    "table", "/table", "thead",  "/thead",
-      "tbody",      "/tbody",      "tr",     "/tr",     "th",    "/th",    "td",     "/td",
-      "caption",    "/caption",    "pre",    "/pre",    "span",  "/span",  "img",    "/img"};
+      "font",       "/font",       "del",     "/del",    "h1",    "/h1",    "h2",     "/h2",
+      "h3",         "/h3",         "h4",      "/h4",     "h5",    "/h5",    "h6",     "/h6",
+      "blockquote", "/blockquote", "p",       "/p",      "a",     "/a",     "ul",     "/ul",
+      "ol",         "/ol",         "sup",     "/sup",    "sub",   "/sub",   "li",     "/li",
+      "b",          "/b",          "i",       "/i",      "u",     "/u",     "strong", "/strong",
+      "em",         "/em",         "strike",  "/strike", "code",  "/code",  "hr",     "/hr",
+      "br",         "br/",         "div",     "/div",    "table", "/table", "thead",  "/thead",
+      "tbody",      "/tbody",      "tr",      "/tr",     "th",    "/th",    "td",     "/td",
+      "caption",    "/caption",    "pre",     "/pre",    "span",  "/span",  "img",    "/img",
+      "details",    "/details",    "summary", "/summary"};
     constexpr static const std::array tagNameEnds  = {' ', '>'};
     constexpr static const std::array attrNameEnds = {' ', '>', '=', '\t', '\r', '\n', '/', '\f'};
     constexpr static const std::array spaceChars   = {' ', '\t', '\r', '\n', '\f'};
