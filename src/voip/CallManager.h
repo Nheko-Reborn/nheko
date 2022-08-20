@@ -111,8 +111,12 @@ private:
     void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallCandidates> &);
     void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &);
     void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &);
+    void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallSelectAnswer> &);
+    void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &);
+    void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallNegotiate> &);
     void answerInvite(const mtx::events::voip::CallInvite &, bool isVideo);
     void generateCallID();
+    void generatePartyID();
     QStringList devices(bool isVideo) const;
     void clear();
     void endCall();

@@ -21,6 +21,7 @@
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include <mtxclient/utils.hpp>
 
 #include "mtx/responses/turn_server.hpp"
 
@@ -165,6 +166,9 @@ CallManager::CallManager(QObject *parent)
                     break;
                 }
             });
+    
+    // generate party id(?) 
+    generatePartyID();
 }
 
 void
@@ -182,7 +186,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     }
 
     auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
-    if (roomInfo.member_count != 2) {
+    if (roomInfo.member_count > 2) { // rooms with one member is valid for a self call.
         emit ChatPage::instance()->showNotification(
           QStringLiteral("Calls are limited to 1:1 rooms."));
         return;
@@ -197,18 +201,22 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     }
 
     callType_ = callType;
-    roomid_   = roomid;
+    roomid_   = roomid; 
     session_.setTurnServers(turnURIs_);
     generateCallID();
     std::string strCallType =
       callType_ == CallType::VOICE ? "voice" : (callType_ == CallType::VIDEO ? "video" : "screen");
     nhlog::ui()->debug("WebRTC: call id: {} - creating {} invite", callid_, strCallType);
     std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
-    const RoomMember &callee =
-      members.front().user_id == utils::localUser() ? members.back() : members.front();
-    callParty_            = callee.user_id;
-    callPartyDisplayName_ = callee.display_name.isEmpty() ? callee.user_id : callee.display_name;
+    const RoomMember *callee;
+    if(roomInfo.member_count == 1)
+      callee = &members.front();
+    else
+      callee = members.front().user_id == utils::localUser() ? &members.back() : &members.front();
+    callParty_            = callee->user_id;
+    callPartyDisplayName_ = callee->display_name.isEmpty() ? callee->user_id : callee->display_name;
     callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
+    invitee_ = callParty_.toStdString();
     emit newInviteState();
     playRingtone(QUrl(QStringLiteral("qrc:/media/media/ringback.ogg")), true);
     if (!session_.createOffer(callType,
@@ -299,35 +307,55 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         return;
 
     auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
-    if (isOnCall() || roomInfo.member_count != 2) {
+
+    if(isOnCall())
+    {
         emit newMessage(
-          QString::fromStdString(callInviteEvent.room_id),
-          CallHangUp{
-            callInviteEvent.content.call_id, partyid_, "0", CallHangUp::Reason::InviteTimeOut});
+        QString::fromStdString(callInviteEvent.room_id),
+        CallHangUp{
+            callInviteEvent.content.call_id, partyid_, "1", CallHangUp::Reason::UserBusy});
         return;
+    }
+    if(callInviteEvent.content.version == "0")
+    {
+        if (roomInfo.member_count != 2) {
+            emit newMessage(
+            QString::fromStdString(callInviteEvent.room_id),
+            CallHangUp{
+                callInviteEvent.content.call_id, partyid_, "1", CallHangUp::Reason::InviteTimeOut});
+            return;
+        }
+
+
+    }
+    else // for voip v1 and up
+    {
+        
     }
 
     const QString &ringtone = UserSettings::instance()->ringtone();
     if (ringtone != QLatin1String("Mute"))
         playRingtone(ringtone == QLatin1String("Default")
-                       ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
-                       : QUrl::fromLocalFile(ringtone),
-                     true);
+                    ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
+                    : QUrl::fromLocalFile(ringtone),
+                    true);
     roomid_ = QString::fromStdString(callInviteEvent.room_id);
     callid_ = callInviteEvent.content.call_id;
     remoteICECandidates_.clear();
-
+    
     std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
-    const RoomMember &caller =
-      members.front().user_id == utils::localUser() ? members.back() : members.front();
+    const RoomMember &caller = *std::find(members.begin(), members.end(), 
+                                                [&](RoomMember member){
+                                                    return member.user_id == callInviteEvent.sender;
+                                                });
     callParty_            = caller.user_id;
     callPartyDisplayName_ = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
     callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
-
     haveCallInvite_ = true;
     callType_       = isVideo ? CallType::VIDEO : CallType::VOICE;
     inviteSDP_      = callInviteEvent.content.offer.sdp;
     emit newInviteState();
+
 }
 
 void
@@ -362,7 +390,6 @@ CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
 {
     if (callCandidatesEvent.sender == utils::localUser().toStdString())
         return;
-
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallCandidates from {}",
                        callCandidatesEvent.content.call_id,
                        callCandidatesEvent.sender);
@@ -464,6 +491,12 @@ CallManager::generateCallID()
     using namespace std::chrono;
     uint64_t ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     callid_     = "c" + std::to_string(ms);
+}
+
+void
+CallManager::generatePartyID()
+{
+    partyid_ = mtx::client::utils::random_token(8, false);
 }
 
 void

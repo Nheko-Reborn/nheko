@@ -109,6 +109,9 @@ public slots:
     void queueCallMessage(const QString &roomid, const mtx::events::voip::CallCandidates &);
     void queueCallMessage(const QString &roomid, const mtx::events::voip::CallAnswer &);
     void queueCallMessage(const QString &roomid, const mtx::events::voip::CallHangUp &);
+    void queueCallMessage(const QString &roomid, const mtx::events::voip::CallSelectAnswer &);
+    void queueCallMessage(const QString &roomid, const mtx::events::voip::CallReject &);
+    void queueCallMessage(const QString &roomid, const mtx::events::voip::CallNegotiate &);
 
     void setVideoCallItem();
 
