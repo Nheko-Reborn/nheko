@@ -49,6 +49,8 @@ ApplicationWindow {
             spacing: Nheko.paddingMedium
 
             Avatar {
+                id: displayAvatar
+
                 Layout.topMargin: Nheko.paddingMedium
                 url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 roomid: roomSettings.roomId
@@ -56,9 +58,21 @@ ApplicationWindow {
                 height: 130
                 width: 130
                 Layout.alignment: Qt.AlignHCenter
-                onClicked: {
-                    if (roomSettings.canChangeAvatar)
+                onClicked: TimelineManager.openImageOverlay(null, roomSettings.roomAvatarUrl, "", 0, 0)
+
+                ImageButton {
+                    hoverEnabled: true
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Change room avatar.")
+                    anchors.left: displayAvatar.left
+                    anchors.top: displayAvatar.top
+                    anchors.leftMargin: Nheko.paddingMedium
+                    anchors.topMargin: Nheko.paddingMedium
+                    visible: roomSettings.canChangeAvatar
+                    image: ":/icons/icons/ui/edit.svg"
+                    onClicked: {
                         roomSettings.updateAvatar();
+                    }
 
                 }
             }
