@@ -348,8 +348,8 @@ public slots:
     int currentIndex() const { return idToIndex(currentId); }
     void eventShown();
     void markEventsAsRead(const std::vector<QString> &event_ids);
-    void updateUnreadLine();
-    void unreadLineOnWindowFocus();
+    void updateLastReadId(QString currentRoomId);
+    void lastReadIdOnWindowFocus();
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
     void updateTypingUsers(const std::vector<QString> &users)
     {
@@ -457,6 +457,7 @@ private:
     void setPaginationInProgress(const bool paginationInProgress);
 
     QString room_id_;
+    bool isActiveRoom;
 
     QSet<QString> read;
 

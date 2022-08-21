@@ -286,11 +286,11 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
         connect(this,
                 &RoomlistModel::currentRoomChanged,
                 newRoom.data(),
-                &TimelineModel::updateUnreadLine);
+                &TimelineModel::updateLastReadId);
         connect(MainWindow::instance(),
                 &MainWindow::activeChanged,
                 newRoom.data(),
-                &TimelineModel::unreadLineOnWindowFocus);
+                &TimelineModel::lastReadIdOnWindowFocus);
         connect(newRoom.data(),
                 &TimelineModel::newEncryptedImage,
                 MainWindow::instance()->imageProvider(),
@@ -391,7 +391,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
             currentRoomPreview_->roomid() == room_id) {
             currentRoom_ = models.value(room_id);
             currentRoomPreview_.reset();
-            emit currentRoomChanged();
+            emit currentRoomChanged(currentRoom_->roomId());
         }
 
         for (auto p : previewsToAdd) {
@@ -652,7 +652,7 @@ RoomlistModel::clear()
     invites.clear();
     roomids.clear();
     currentRoom_ = nullptr;
-    emit currentRoomChanged();
+    emit currentRoomChanged("");
     endResetModel();
 }
 
@@ -751,14 +751,14 @@ RoomlistModel::setCurrentRoom(QString roomid)
     if (roomid.isEmpty()) {
         currentRoom_        = nullptr;
         currentRoomPreview_ = {};
-        emit currentRoomChanged();
+        emit currentRoomChanged("");
     }
 
     nhlog::ui()->debug("Trying to switch to: {}", roomid.toStdString());
     if (models.contains(roomid)) {
         currentRoom_ = models.value(roomid);
         currentRoomPreview_.reset();
-        emit currentRoomChanged();
+        emit currentRoomChanged(currentRoom_->roomId());
         nhlog::ui()->debug("Switched to: {}", roomid.toStdString());
     } else if (invites.contains(roomid) || previewedRooms.contains(roomid)) {
         currentRoom_ = nullptr;
@@ -789,7 +789,7 @@ RoomlistModel::setCurrentRoom(QString roomid)
                                currentRoomPreview_->roomid_.toStdString());
         }
 
-        emit currentRoomChanged();
+        emit currentRoomChanged(currentRoom_->roomId());
     }
 }
 
