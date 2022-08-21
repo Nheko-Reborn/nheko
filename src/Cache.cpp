@@ -2569,7 +2569,7 @@ Cache::lastVisibleEvent(const std::string &room_id, std::string_view event_id)
         auto cursor = lmdb::cursor::open(txn, eventOrderDb);
         if (cursor.get(indexVal, event_id, MDB_SET)) {
             do {
-                std::string evId = nlohmann::json::parse(event_id)["event_id"].get<std::string>();
+                evId = nlohmann::json::parse(event_id)["event_id"].get<std::string>();
                 std::string_view temp;
                 idx = lmdb::from_sv<uint64_t>(indexVal);
                 if (timelineDb.get(txn, evId, temp)) {
