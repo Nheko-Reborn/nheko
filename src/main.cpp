@@ -202,8 +202,24 @@ main(int argc, char *argv[])
     QCommandLineParser parser;
     parser.addHelpOption();
     parser.addVersionOption();
-    QCommandLineOption debugOption(QStringLiteral("debug"), QStringLiteral("Enable debug output"));
+    QCommandLineOption debugOption(QStringLiteral("debug"),
+                                   QObject::tr("Alias for '--log-level trace'."));
     parser.addOption(debugOption);
+    QCommandLineOption logLevel(
+      QStringList() << QStringLiteral("l") << QStringLiteral("log-level"),
+      QObject::tr("Set the global log level, or a comma-separated list of <component>=<level> "
+                  "pairs, or both. For example, to set the default log level to 'warn' but "
+                  "disable logging for the 'ui' component, pass 'warn,ui=off'. "
+                  "levels:{trace,debug,info,warning,error,critical,off} "
+                  "components:{crypto,db,mtx,net,qml,ui}"),
+      QObject::tr("level"));
+    parser.addOption(logLevel);
+    QCommandLineOption logType(
+      QStringList() << QStringLiteral("L") << QStringLiteral("log-type"),
+      QObject::tr("Set the log output type. A comma-separated list is allowed. "
+                  "The default is 'file,stderr'. types:{file,stderr,none}"),
+      QObject::tr("type"));
+    parser.addOption(logType);
 
     // This option is not actually parsed via Qt due to the need to parse it before the app
     // name is set. It only exists to keep Qt from complaining about the --profile/-p
@@ -254,15 +270,36 @@ main(int argc, char *argv[])
     }
 #endif
 
-    if (parser.isSet(debugOption))
-        nhlog::enable_debug_log_from_commandline = true;
-
     try {
-        nhlog::init(QStringLiteral("%1/nheko.log")
-                      .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                      .toStdString());
+        QString level;
+        if (parser.isSet(logLevel)) {
+            level = parser.value(logLevel);
+        } else if (parser.isSet(debugOption)) {
+            level = "trace";
+        } else {
+            level = qEnvironmentVariable("NHEKO_LOG_LEVEL");
+        }
+
+        QStringList targets =
+          (parser.isSet(logType) ? parser.value(logType)
+                                 : qEnvironmentVariable("NHEKO_LOG_TYPE", "file,stderr"))
+            .split(',', Qt::SkipEmptyParts);
+        targets.removeAll("none");
+        bool to_stderr = bool(targets.removeAll("stderr"));
+        QString path   = targets.removeAll("file")
+                           ? QDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
+                             .filePath("nheko.log")
+                           : QLatin1String("");
+        if (!targets.isEmpty()) {
+            std::cerr << "Invalid log type '" << targets.first().toStdString().c_str() << "'"
+                      << std::endl;
+            std::exit(1);
+        }
+
+        nhlog::init(level, path, to_stderr);
+
     } catch (const spdlog::spdlog_ex &ex) {
-        std::cout << "Log initialization failed: " << ex.what() << std::endl;
+        std::cerr << "Log initialization failed: " << ex.what() << std::endl;
         std::exit(1);
     }
 

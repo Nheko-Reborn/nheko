@@ -31,7 +31,27 @@ Displays help including Qt specific options.
 Displays version information.
 
 *--debug*::
-Enables debug output.
+Alias for _--log-level trace_.
+
+*-l*, *--log-level* _<level>_::
+Set the global log level, or a comma-separated list of _<component>=<level>_
+pairs, or both. For example, to set the default log level to _warn_ but
+disable logging for the _ui_ component, pass _warn,ui=off_.
++
+levels: _trace_ _debug_ _info_ _warning_ _error_ _critical_ _off_
++
+components: _crypto_ _db_ _mtx_ _net_ _qml_ _ui_
++
+Log levels can also be set in the NHEKO_LOG_LEVEL environment variable, using
+the same syntax. It will be overridden by this command line option.
+
+*-L*, *--log-type* _<type>_::
+Set the log output type. A comma-separated list is allowed. The default is _file,stderr_.
++
+types: _file_ _stderr_ _none_
++
+The log type can also be set in the NHEKO_LOG_TYPE environment variable,
+which will be overridden by this command line option.
 
 *-p* _<profile>_, *--profile* _<profile>_::
 Creates a unique profile, which allows you to log into several accounts at the

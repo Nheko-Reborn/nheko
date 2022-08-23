@@ -6,8 +6,10 @@
 #include "Logging.h"
 #include "config/nheko.h"
 
+#include "spdlog/cfg/helpers.h"
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
+#include "spdlog/spdlog.h"
 #include <iostream>
 
 #include <QString>
@@ -61,19 +63,20 @@ qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QStri
 }
 
 namespace nhlog {
-bool enable_debug_log_from_commandline = false;
 
 void
-init(const std::string &file_path)
+init(const QString &level, const QString &path, bool to_stderr)
 {
-    auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
-      file_path, MAX_FILE_SIZE, MAX_LOG_FILES);
-
-    auto console_sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-
     std::vector<spdlog::sink_ptr> sinks;
-    sinks.push_back(file_sink);
-    sinks.push_back(console_sink);
+    if (!path.isEmpty()) {
+        auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
+          path.toStdString(), MAX_FILE_SIZE, MAX_LOG_FILES);
+        sinks.push_back(file_sink);
+    }
+    if (to_stderr) {
+        auto console_sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+        sinks.push_back(console_sink);
+    }
 
     mtx::utils::log::log()->sinks() = sinks;
     net_logger    = std::make_shared<spdlog::logger>("net", std::begin(sinks), std::end(sinks));
@@ -82,13 +85,24 @@ init(const std::string &file_path)
     crypto_logger = std::make_shared<spdlog::logger>("crypto", std::begin(sinks), std::end(sinks));
     qml_logger    = std::make_shared<spdlog::logger>("qml", std::begin(sinks), std::end(sinks));
 
-    if (nheko::enable_debug_log || enable_debug_log_from_commandline) {
+    if (nheko::enable_debug_log) {
         db_logger->set_level(spdlog::level::trace);
         ui_logger->set_level(spdlog::level::trace);
         crypto_logger->set_level(spdlog::level::trace);
         net_logger->set_level(spdlog::level::trace);
         qml_logger->set_level(spdlog::level::trace);
         mtx::utils::log::log()->set_level(spdlog::level::trace);
+    }
+
+    spdlog::register_logger(net_logger);
+    spdlog::register_logger(ui_logger);
+    spdlog::register_logger(db_logger);
+    spdlog::register_logger(crypto_logger);
+    spdlog::register_logger(qml_logger);
+    // We assume the mtxclient library will register its own logger.
+
+    if (!level.isEmpty()) {
+        spdlog::cfg::helpers::load_levels(level.toStdString());
     }
 
     qInstallMessageHandler(qmlMessageHandler);
