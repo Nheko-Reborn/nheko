@@ -1543,7 +1543,7 @@ Cache::getLastFullyReadEventId(const std::string &room_id)
 
     if (auto ev = getAccountData(txn, mtx::events::EventType::FullyRead, room_id)) {
         if (auto fr =
-            std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(
+              std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(
                 &ev.value())) {
             return fr->content.event_id;
         }
@@ -2575,7 +2575,7 @@ Cache::lastVisibleEvent(const std::string &room_id, std::string_view event_id)
                 if (timelineDb.get(txn, evId, temp)) {
                     return std::pair{idx, evId};
                 }
-                } while (cursor.get(indexVal, event_id, MDB_PREV));
+            } while (cursor.get(indexVal, event_id, MDB_PREV));
         }
 
         return std::pair{idx, evId};
@@ -5391,7 +5391,7 @@ getRoomInfo(const std::vector<std::string> &rooms)
 std::string
 getLastFullyReadEventId(const std::string &room_id)
 {
-	return instance_->getLastFullyReadEventId(room_id);
+    return instance_->getLastFullyReadEventId(room_id);
 }
 bool
 calculateRoomReadStatus(const std::string &room_id, const std::string &event_id)

@@ -873,7 +873,8 @@ TimelineModel::fetchMore(const QModelIndex &)
      * try again after these new messages were fetched
      */
     if (this->fullyReadEventId_.empty()) {
-        auto lastVisibleEventIndexAndId = cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
+        auto lastVisibleEventIndexAndId =
+          cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
         if (lastVisibleEventIndexAndId) {
             this->fullyReadEventId_ = lastVisibleEventIndexAndId->second;
             emit fullyReadEventIdChanged();
@@ -1387,10 +1388,11 @@ void
 TimelineModel::updateLastReadId(QString currentRoomId)
 {
     if (currentRoomId == room_id_) {
-        isActiveRoom = true;
+        isActiveRoom  = true;
         last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
         isRoomUnread_ = cache::calculateRoomReadStatus(room_id_.toStdString(), last_event_id);
-        auto lastVisibleEventIndexAndId = cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
+        auto lastVisibleEventIndexAndId =
+          cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
         if (lastVisibleEventIndexAndId) {
             fullyReadEventId_ = lastVisibleEventIndexAndId->second;
             emit isRoomUnreadChanged();
@@ -1406,7 +1408,8 @@ TimelineModel::lastReadIdOnWindowFocus()
 {
     /* this stops it from removing the line when focusing another window
      * and from removing the line when refocusing nheko */
-    if (MainWindow::instance()->isActive() && cache::calculateRoomReadStatus(room_id_.toStdString()) && isActiveRoom) {
+    if (MainWindow::instance()->isActive() &&
+        cache::calculateRoomReadStatus(room_id_.toStdString()) && isActiveRoom) {
         updateLastReadId(room_id_);
     }
 }
