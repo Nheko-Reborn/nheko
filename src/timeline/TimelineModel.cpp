@@ -1389,11 +1389,11 @@ TimelineModel::updateLastReadId(QString currentRoomId)
     if (currentRoomId == room_id_) {
         isActiveRoom = true;
         last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
-        roomReadStatus_ = cache::calculateRoomReadStatus(room_id_.toStdString(), last_event_id);
+        isRoomUnread_ = cache::calculateRoomReadStatus(room_id_.toStdString(), last_event_id);
         auto lastVisibleEventIndexAndId = cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
         if (lastVisibleEventIndexAndId) {
             fullyReadEventId_ = lastVisibleEventIndexAndId->second;
-            emit roomReadStatusChanged();
+            emit isRoomUnreadChanged();
             emit fullyReadEventIdChanged();
         }
     } else {

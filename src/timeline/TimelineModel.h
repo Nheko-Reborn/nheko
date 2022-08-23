@@ -180,7 +180,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
     Q_PROPERTY(
       bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
-    Q_PROPERTY(bool roomReadStatus READ roomReadStatus NOTIFY roomReadStatusChanged)
+    Q_PROPERTY(bool isRoomUnread READ isRoomUnread NOTIFY isRoomUnreadChanged)
     Q_PROPERTY(QString roomId READ roomId CONSTANT)
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
     Q_PROPERTY(QString plainRoomName READ plainRoomName NOTIFY roomNameChanged)
@@ -322,7 +322,7 @@ public:
     void sendMessageEvent(const T &content, mtx::events::EventType eventType);
     RelatedInfo relatedInfo(const QString &id);
 
-    bool roomReadStatus() const { return roomReadStatus_; }
+    bool isRoomUnread() const { return isRoomUnread_; }
     DescInfo lastMessage() const;
     uint64_t lastMessageTimestamp() const { return lastMessage_.timestamp; }
 
@@ -423,7 +423,7 @@ signals:
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
 
-    void roomReadStatusChanged();
+    void isRoomUnreadChanged();
     void lastMessageChanged();
     void notificationsChanged();
 
@@ -477,7 +477,7 @@ private:
     QString eventIdToShow;
     int showEventTimerCounter = 0;
 
-    bool roomReadStatus_;
+    bool isRoomUnread_;
 
     DescInfo lastMessage_{};
 
@@ -510,6 +510,8 @@ TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventTy
         msgCopy.type                      = eventType;
         emit newMessageToSend(msgCopy);
     }
+    isRoomUnread_ = false;
+    emit isRoomUnreadChanged();
     resetReply();
     resetEdit();
 }

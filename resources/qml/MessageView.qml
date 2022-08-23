@@ -400,7 +400,7 @@ Item {
             required property string userName
             property bool scrolledToThis: eventId === chat.model.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
             property string fullyReadEventId: chat.model.fullyReadEventId
-            property bool roomReadStatus: chat.model.roomReadStatus
+            property bool isRoomUnread: chat.model.isRoomUnread
 
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
@@ -443,7 +443,7 @@ Item {
                 url: wrapper.url
                 thumbnailUrl: wrapper.thumbnailUrl
                 fullyReadEventId: wrapper.fullyReadEventId
-                roomReadStatus: wrapper.roomReadStatus
+                isRoomUnread: wrapper.isRoomUnread
                 duration: wrapper.duration
                 isOnlyEmoji: wrapper.isOnlyEmoji
                 isSender: wrapper.isSender

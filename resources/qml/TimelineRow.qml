@@ -27,7 +27,7 @@ AbstractButton {
     required property string url
     required property string thumbnailUrl
     required property string fullyReadEventId
-    required property bool roomReadStatus
+    required property bool isRoomUnread
     required property bool isOnlyEmoji
     required property bool isSender
     required property bool isEncrypted
@@ -304,7 +304,7 @@ AbstractButton {
         }
         color: Nheko.colors.highlight
         width: row.maxWidth
-        visible: (r.roomReadStatus && (r.fullyReadEventId == r.eventId)) ? 1 : 0
+        visible: (r.isRoomUnread && (r.fullyReadEventId == r.eventId))
         height: visible ? 3 : 0
 
     }
