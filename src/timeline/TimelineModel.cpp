@@ -1406,7 +1406,7 @@ TimelineModel::lastReadIdOnWindowFocus()
 {
     /* this stops it from removing the line when focusing another window
      * and from removing the line when refocusing nheko */
-    if (MainWindow::instance()->isActive() && !roomReadStatus_ && isActiveRoom) {
+    if (MainWindow::instance()->isActive() && cache::calculateRoomReadStatus(room_id_.toStdString()) && isActiveRoom) {
         updateLastReadId(room_id_);
     }
 }
