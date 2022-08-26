@@ -457,7 +457,6 @@ private:
     void setPaginationInProgress(const bool paginationInProgress);
 
     QString room_id_;
-    bool isActiveRoom;
 
     QSet<QString> read;
 
@@ -512,6 +511,7 @@ TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventTy
     }
     isRoomUnread_ = false;
     emit isRoomUnreadChanged();
+
     resetReply();
     resetEdit();
 }

@@ -1388,7 +1388,6 @@ void
 TimelineModel::updateLastReadId(QString currentRoomId)
 {
     if (currentRoomId == room_id_) {
-        isActiveRoom  = true;
         last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
         isRoomUnread_ = cache::calculateRoomReadStatus(room_id_.toStdString(), last_event_id);
         auto lastVisibleEventIndexAndId =
@@ -1398,8 +1397,6 @@ TimelineModel::updateLastReadId(QString currentRoomId)
             emit isRoomUnreadChanged();
             emit fullyReadEventIdChanged();
         }
-    } else {
-        isActiveRoom = false;
     }
 }
 
@@ -1408,8 +1405,8 @@ TimelineModel::lastReadIdOnWindowFocus()
 {
     /* this stops it from removing the line when focusing another window
      * and from removing the line when refocusing nheko */
-    if (MainWindow::instance()->isActive() &&
-        cache::calculateRoomReadStatus(room_id_.toStdString()) && isActiveRoom) {
+    if (ChatPage::instance()->isRoomActive(room_id_) &&
+        cache::calculateRoomReadStatus(room_id_.toStdString())) {
         updateLastReadId(room_id_);
     }
 }
