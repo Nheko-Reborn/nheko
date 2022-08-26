@@ -94,6 +94,7 @@ private:
     QString callPartyAvatarUrl_;
     std::string callid_;
     std::string partyid_       = "";
+    std::string selectedpartyid_       = "";
     std::string invitee_       = "";
     const uint32_t timeoutms_  = 120000;
     webrtc::CallType callType_ = webrtc::CallType::VOICE;

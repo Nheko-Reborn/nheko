@@ -186,11 +186,11 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     }
 
     auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
-    if (roomInfo.member_count > 2) { // rooms with one member is valid for a self call.
-        emit ChatPage::instance()->showNotification(
-          QStringLiteral("Calls are limited to 1:1 rooms."));
-        return;
-    }
+    // if (roomInfo.member_count > 2) { // rooms with one member is valid for a self call.
+    //     emit ChatPage::instance()->showNotification(
+    //       QStringLiteral("Calls are limited to 1:1 rooms."));
+    //     return;
+    // }
 
     std::string errorMessage;
     if (!session_.havePlugins(false, &errorMessage) ||
@@ -211,8 +211,12 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     const RoomMember *callee;
     if(roomInfo.member_count == 1)
       callee = &members.front();
-    else
+    else if(roomInfo.member_count == 2)
       callee = members.front().user_id == utils::localUser() ? &members.back() : &members.front();
+    else {
+        // drop down or something
+    }
+
     callParty_            = callee->user_id;
     callPartyDisplayName_ = callee->display_name.isEmpty() ? callee->user_id : callee->display_name;
     callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
@@ -257,7 +261,7 @@ CallManager::hangUp(CallHangUp::Reason reason)
     if (!callid_.empty()) {
         nhlog::ui()->debug(
           "WebRTC: call id: {} - hanging up ({})", callid_, callHangUpReasonString(reason));
-        emit newMessage(roomid_, CallHangUp{callid_, partyid_, "0", reason});
+        emit newMessage(roomid_, CallHangUp{callid_, partyid_, "1", reason});
         endCall();
     }
 }
@@ -307,7 +311,6 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         return;
 
     auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
-
     if(isOnCall())
     {
         emit newMessage(
@@ -316,6 +319,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
             callInviteEvent.content.call_id, partyid_, "1", CallHangUp::Reason::UserBusy});
         return;
     }
+    const QString &ringtone = UserSettings::instance()->ringtone();
     if(callInviteEvent.content.version == "0")
     {
         if (roomInfo.member_count != 2) {
@@ -325,32 +329,42 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                 callInviteEvent.content.call_id, partyid_, "1", CallHangUp::Reason::InviteTimeOut});
             return;
         }
-
-
     }
     else // for voip v1 and up
     {
-        
+        std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
+        const RoomMember &caller = *std::find_if(members.begin(), members.end(), 
+                                                    [&](RoomMember member){
+                                                        return member.user_id.toStdString() == callInviteEvent.sender;
+                                                    });
+        callParty_            = caller.user_id;
+        callPartyDisplayName_ = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
+        callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
+        if  (roomInfo.member_count == 2 || 
+            (roomInfo.member_count == 1 && partyid_ != callInviteEvent.content.party_id) || 
+            callInviteEvent.content.invitee == "" || 
+            callInviteEvent.content.invitee == utils::localUser().toStdString())
+        {
+            bool sharesRoom = true;
+            if(roomInfo.member_count > 2)
+            {
+                
+            }
+            // ring if not mute or does not have direct message room
+            if (ringtone != QLatin1String("Mute") && sharesRoom)
+                playRingtone(ringtone == QLatin1String("Default")
+                            ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
+                            : QUrl::fromLocalFile(ringtone),
+                            true);
+        }
+        else
+            return;
     }
 
-    const QString &ringtone = UserSettings::instance()->ringtone();
-    if (ringtone != QLatin1String("Mute"))
-        playRingtone(ringtone == QLatin1String("Default")
-                    ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
-                    : QUrl::fromLocalFile(ringtone),
-                    true);
     roomid_ = QString::fromStdString(callInviteEvent.room_id);
     callid_ = callInviteEvent.content.call_id;
     remoteICECandidates_.clear();
     
-    std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
-    const RoomMember &caller = *std::find(members.begin(), members.end(), 
-                                                [&](RoomMember member){
-                                                    return member.user_id == callInviteEvent.sender;
-                                                });
-    callParty_            = caller.user_id;
-    callPartyDisplayName_ = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
-    callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
     haveCallInvite_ = true;
     callType_       = isVideo ? CallType::VIDEO : CallType::VOICE;
     inviteSDP_      = callInviteEvent.content.offer.sdp;
@@ -444,6 +458,54 @@ CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
 
     if (callid_ == callHangUpEvent.content.call_id)
         endCall();
+}
+
+// msc2756
+
+void
+CallManager::handleEvent(const RoomEvent<CallSelectAnswer> &callSelectAnswerEvent)
+{
+    nhlog::ui()->debug("WebRTC: call id: {} - incoming CallSelectAnswer from {}",
+                       callSelectAnswerEvent.content.call_id,
+                       callSelectAnswerEvent.sender);
+                    
+    if(partyid_ != callSelectAnswerEvent.content.selected_party_id) {
+        emit ChatPage::instance()->showNotification(
+                    QStringLiteral("The call was answered elsewhere."));
+        haveCallInvite_ = false;
+        endCall();
+    }
+}
+
+void
+CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
+{
+    nhlog::ui()->debug("WebRTC: call id: {} - incoming CallReject from {}",
+                       callRejectEvent.content.call_id,
+                       callRejectEvent.sender);
+    if(isOnCall())
+        return;
+    
+    // emit call_select_answer with selected party id = party id
+}
+
+void
+CallManager::handleEvent(const RoomEvent<CallNegotiate> &callNegotiateEvent)
+{
+    nhlog::ui()->debug("WebRTC: call id: {} - incoming CallNegotiate from {}",
+                       callNegotiateEvent.content.call_id,
+                       callNegotiateEvent.sender);
+
+    if(selectedpartyid_ != callNegotiateEvent.content.party_id || callParty_.toStdString() != callNegotiateEvent.sender)
+        return;
+
+    if(partyid_ == callNegotiateEvent.content.party_id)
+        return;
+
+    remoteICECandidates_.clear();
+    inviteSDP_      = callNegotiateEvent.content.description.sdp;
+    emit newInviteState();
+
 }
 
 void
