@@ -391,7 +391,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
             currentRoomPreview_->roomid() == room_id) {
             currentRoom_ = models.value(room_id);
             currentRoomPreview_.reset();
-            emit currentRoomChanged(currentRoom_->roomId());
+            emit currentRoomChanged(room_id);
         }
 
         for (auto p : previewsToAdd) {
@@ -789,7 +789,7 @@ RoomlistModel::setCurrentRoom(QString roomid)
                                currentRoomPreview_->roomid_.toStdString());
         }
 
-        emit currentRoomChanged(currentRoom_->roomId());
+        emit currentRoomChanged("");
     }
 }
 
