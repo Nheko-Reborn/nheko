@@ -27,7 +27,6 @@ AbstractButton {
     required property string url
     required property string thumbnailUrl
     required property string fullyReadEventId
-    required property bool isRoomUnread
     required property bool isOnlyEmoji
     required property bool isSender
     required property bool isEncrypted
@@ -46,6 +45,7 @@ AbstractButton {
     required property int duration
     required property var timestamp
     required property int status
+    required property int index
     required property int relatedEventCacheBuster
 
     hoverEnabled: true
@@ -304,7 +304,7 @@ AbstractButton {
         }
         color: Nheko.colors.highlight
         width: row.maxWidth
-        visible: (r.isRoomUnread && (r.fullyReadEventId == r.eventId))
+        visible: (r.index && (r.fullyReadEventId == r.eventId))
         height: visible ? 3 : 0
 
     }

@@ -1389,12 +1389,10 @@ TimelineModel::updateLastReadId(QString currentRoomId)
 {
     if (currentRoomId == room_id_) {
         last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
-        isRoomUnread_ = cache::calculateRoomReadStatus(room_id_.toStdString(), last_event_id);
         auto lastVisibleEventIndexAndId =
           cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
         if (lastVisibleEventIndexAndId) {
             fullyReadEventId_ = lastVisibleEventIndexAndId->second;
-            emit isRoomUnreadChanged();
             emit fullyReadEventIdChanged();
         }
     }
@@ -1590,6 +1588,9 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
       event);
 
     std::visit(SendMessageVisitor{this}, event);
+
+    fullyReadEventId_ = this->EventId;
+    emit fullyReadEventIdChanged();
 }
 
 void
