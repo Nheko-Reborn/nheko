@@ -2525,19 +2525,14 @@ Cache::lastVisibleEvent(const std::string &room_id, std::string_view event_id)
         orderDb      = getEventToOrderDb(txn, room_id);
         eventOrderDb = getEventOrderDb(txn, room_id);
         timelineDb   = getMessageToOrderDb(txn, room_id);
-    } catch (lmdb::runtime_error &e) {
-        nhlog::db()->error(
-          "Can't open db for room '{}', probably doesn't exist yet. ({})", room_id, e.what());
-        return {};
-    }
 
-    std::string_view indexVal;
+        std::string_view indexVal;
 
-    bool success = orderDb.get(txn, event_id, indexVal);
-    if (!success) {
-        return {};
-    }
-    try {
+        bool success = orderDb.get(txn, event_id, indexVal);
+        if (!success) {
+            return {};
+        }
+
         uint64_t idx = lmdb::from_sv<uint64_t>(indexVal);
         std::string evId{event_id};
 
