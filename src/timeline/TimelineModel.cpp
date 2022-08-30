@@ -2795,6 +2795,10 @@ TimelineModel::widgetLinks() const
     list.reserve(evs.size());
     for (const auto &p : evs) {
         auto url = QString::fromStdString(p.content.url);
+
+        if (url.isEmpty())
+            continue;
+
         for (const auto &[k, v] : p.content.data)
             url.replace("$" + QString::fromStdString(k),
                         QUrl::toPercentEncoding(QString::fromStdString(v)));
