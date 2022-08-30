@@ -4464,6 +4464,11 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
     query.token = sync_token;
 
     for (const auto &user : user_ids) {
+        if (user.size() > 255) {
+            nhlog::db()->debug("Skipping device key query for user with invalid mxid: {}", user);
+            continue;
+        }
+
         nhlog::db()->debug("Marking user keys out of date: {}", user);
 
         std::string_view oldKeys;
@@ -4504,6 +4509,15 @@ void
 Cache::query_keys(const std::string &user_id,
                   std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb)
 {
+    if (user_id.size() > 255) {
+        nhlog::db()->debug("Skipping device key query for user with invalid mxid: {}", user_id);
+
+        mtx::http::ClientError err{};
+        err.parse_error = "invalid mxid, more than 255 bytes";
+        cb({}, err);
+        return;
+    }
+
     mtx::requests::QueryKeys req;
     std::string last_changed;
     {
