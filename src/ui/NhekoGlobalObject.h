@@ -8,6 +8,7 @@
 #include <QFontDatabase>
 #include <QObject>
 #include <QPalette>
+#include <QWindow>
 
 #include "AliasEditModel.h"
 #include "PowerlevelsEditModels.h"
@@ -65,6 +66,7 @@ public:
     {
         return new AliasEditingModel(room_id_.toStdString());
     }
+    Q_INVOKABLE void setTransientParent(QWindow *window, QWindow *parentWindow) const;
 
 public slots:
     void updateUserProfile();

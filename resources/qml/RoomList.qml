@@ -74,7 +74,10 @@ Page {
                 property var room: null
                 property var roomPreview: null
 
-                Component.onCompleted: MainWindow.addPerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW)
+                Component.onCompleted: {
+                    MainWindow.addPerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW);
+                    Nheko.setTransientParent(roomWindowW, null);
+                }
                 Component.onDestruction: MainWindow.removePerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW)
 
                 height: 650
@@ -84,8 +87,7 @@ Page {
                 palette: Nheko.colors
                 color: Nheko.colors.window
                 title: room.plainRoomName
-                modality: Qt.NonModal
-                flags: Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+                //flags: Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
                 Shortcut {
                     sequence: StandardKey.Cancel

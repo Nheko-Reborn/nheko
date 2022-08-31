@@ -129,6 +129,13 @@ Nheko::logout() const
 }
 
 void
+Nheko::setTransientParent(QWindow *window, QWindow *parentWindow) const
+{
+    if (window)
+        window->setTransientParent(parentWindow);
+}
+
+void
 Nheko::createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, int preset)
 {
     mtx::requests::CreateRoom req;
