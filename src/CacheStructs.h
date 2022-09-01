@@ -126,4 +126,5 @@ struct ImagePackInfo
     mtx::events::msc2545::ImagePack pack;
     std::string source_room;
     std::string state_key;
+    bool from_space = false;
 };

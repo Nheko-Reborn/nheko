@@ -8,6 +8,7 @@
 #include "Cache_p.h"
 
 #include <stdexcept>
+#include <unordered_set>
 #include <variant>
 
 #include <QCoreApplication>
@@ -3911,7 +3912,8 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
 
     auto addPack = [&infos, stickers](const mtx::events::msc2545::ImagePack &pack,
                                       const std::string &source_room,
-                                      const std::string &state_key) {
+                                      const std::string &state_key,
+                                      bool from_space) {
         bool pack_is_sticker = pack.pack ? pack.pack->is_sticker() : true;
         bool pack_is_emoji   = pack.pack ? pack.pack->is_emoji() : true;
         bool pack_matches =
@@ -3921,6 +3923,7 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
         info.source_room = source_room;
         info.state_key   = state_key;
         info.pack.pack   = pack.pack;
+        info.from_space  = from_space;
 
         for (const auto &img : pack.images) {
             if (stickers.has_value() &&
@@ -3942,7 +3945,7 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
         auto tmp =
           std::get_if<mtx::events::EphemeralEvent<mtx::events::msc2545::ImagePack>>(&*accountpack);
         if (tmp)
-            addPack(tmp->content, "", "");
+            addPack(tmp->content, "", "", false);
     }
 
     // packs from rooms, that were enabled globally
@@ -3959,19 +3962,39 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
                     (void)d;
                     if (auto pack =
                           getStateEvent<mtx::events::msc2545::ImagePack>(txn, room_id2, state_id))
-                        addPack(pack->content, room_id2, state_id);
+                        addPack(pack->content, room_id2, state_id, false);
                 }
             }
         }
     }
 
-    // packs from current room
-    if (auto pack = getStateEvent<mtx::events::msc2545::ImagePack>(txn, room_id)) {
-        addPack(pack->content, room_id, "");
-    }
-    for (const auto &pack : getStateEventsWithType<mtx::events::msc2545::ImagePack>(txn, room_id)) {
-        addPack(pack.content, room_id, pack.state_key);
-    }
+    std::function<void(const std::string &room_id)> addRoomAndCanonicalParents;
+    std::unordered_set<std::string> visitedRooms;
+    addRoomAndCanonicalParents =
+      [this, &addRoomAndCanonicalParents, &addPack, &visitedRooms, &txn, &room_id](
+        const std::string &current_room) {
+          if (visitedRooms.count(current_room))
+              return;
+          else
+              visitedRooms.insert(current_room);
+
+          if (auto pack = getStateEvent<mtx::events::msc2545::ImagePack>(txn, current_room)) {
+              addPack(pack->content, current_room, "", current_room != room_id);
+          }
+          for (const auto &pack :
+               getStateEventsWithType<mtx::events::msc2545::ImagePack>(txn, current_room)) {
+              addPack(pack.content, current_room, pack.state_key, current_room != room_id);
+          }
+
+          for (const auto &parent :
+               getStateEventsWithType<mtx::events::state::space::Parent>(txn, current_room)) {
+              if (parent.content.canonical && parent.content.via && !parent.content.via->empty())
+                  addRoomAndCanonicalParents(parent.state_key);
+          }
+      };
+
+    // packs from current room and then iterate canonical space parents
+    addRoomAndCanonicalParents(room_id);
 
     return infos;
 }

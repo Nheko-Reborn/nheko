@@ -36,6 +36,7 @@ ImagePackListModel::roleNames() const
       {Roles::AvatarUrl, "avatarUrl"},
       {Roles::FromAccountData, "fromAccountData"},
       {Roles::FromCurrentRoom, "fromCurrentRoom"},
+      {Roles::FromSpace, "fromSpace"},
       {Roles::StateKey, "statekey"},
       {Roles::RoomId, "roomid"},
     };
@@ -55,6 +56,8 @@ ImagePackListModel::data(const QModelIndex &index, int role) const
             return pack->roomid().isEmpty();
         case Roles::FromCurrentRoom:
             return pack->roomid().toStdString() == this->room_id;
+        case Roles::FromSpace:
+            return pack->fromSpace();
         case Roles::StateKey:
             return pack->statekey();
         case Roles::RoomId:

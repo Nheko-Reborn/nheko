@@ -26,6 +26,7 @@ SingleImagePackModel::SingleImagePackModel(ImagePackInfo pack_, QObject *parent)
   , statekey_(std::move(pack_.state_key))
   , old_statekey_(statekey_)
   , pack(std::move(pack_.pack))
+  , fromSpace_(pack_.from_space)
 {
     [[maybe_unused]] static auto imageInfoType = qRegisterMetaType<mtx::common::ImageInfo>();
 

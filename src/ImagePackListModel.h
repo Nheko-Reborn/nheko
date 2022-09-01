@@ -21,6 +21,7 @@ public:
         AvatarUrl,
         FromAccountData,
         FromCurrentRoom,
+        FromSpace,
         StateKey,
         RoomId,
     };

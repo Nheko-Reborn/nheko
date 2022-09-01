@@ -105,6 +105,7 @@ ApplicationWindow {
                     required property string displayName
                     required property bool fromAccountData
                     required property bool fromCurrentRoom
+                    required property bool fromSpace
                     required property string statekey
 
                     title: displayName
@@ -113,6 +114,8 @@ ApplicationWindow {
                             return qsTr("Private pack");
                         else if (fromCurrentRoom)
                             return qsTr("Pack from this room");
+                        else if (fromSpace)
+                            return qsTr("Pack from parent community");
                         else
                             return qsTr("Globally enabled pack");
                     }
