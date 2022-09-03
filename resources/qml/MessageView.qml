@@ -399,7 +399,6 @@ Item {
             required property string previousMessageDay
             required property string userName
             property bool scrolledToThis: eventId === chat.model.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
-            property string fullyReadEventId: chat.model.fullyReadEventId
 
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
@@ -441,7 +440,6 @@ Item {
                 filesize: wrapper.filesize
                 url: wrapper.url
                 thumbnailUrl: wrapper.thumbnailUrl
-                fullyReadEventId: wrapper.fullyReadEventId
                 duration: wrapper.duration
                 isOnlyEmoji: wrapper.isOnlyEmoji
                 isSender: wrapper.isSender

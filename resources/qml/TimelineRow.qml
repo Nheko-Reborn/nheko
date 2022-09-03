@@ -26,7 +26,6 @@ AbstractButton {
     required property string filesize
     required property string url
     required property string thumbnailUrl
-    required property string fullyReadEventId
     required property bool isOnlyEmoji
     required property bool isSender
     required property bool isEncrypted
@@ -304,7 +303,7 @@ AbstractButton {
         }
         color: Nheko.colors.highlight
         width: row.maxWidth
-        visible: (r.index && (r.fullyReadEventId == r.eventId))
+        visible: (r.index > 0 && (chat.model.fullyReadEventId == r.eventId))
         height: visible ? 3 : 0
 
     }
