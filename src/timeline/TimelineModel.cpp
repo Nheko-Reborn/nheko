@@ -1373,7 +1373,6 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
     }
 }
 
-
 void
 TimelineModel::updateLastReadId(QString currentRoomId)
 {
@@ -1404,7 +1403,8 @@ TimelineModel::lastReadIdOnWindowFocus()
  * try again after these new messages were fetched
  */
 void
-TimelineModel::checkAfterFetch(){
+TimelineModel::checkAfterFetch()
+{
     if (fullyReadEventId_.empty()) {
         auto lastVisibleEventIndexAndId =
           cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
