@@ -427,6 +427,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         setPaginationInProgress(false);
         updateLastMessage();
     });
+    connect(&events, &EventStore::fetchedMore, this, &TimelineModel::checkAfterFetch);
     connect(&events,
             &EventStore::startDMVerification,
             this,
@@ -868,18 +869,6 @@ TimelineModel::fetchMore(const QModelIndex &)
 
     events.fetchMore();
 
-    /*
-     * if the event2order db didn't have the messages we needed when the room was opened
-     * try again after these new messages were fetched
-     */
-    if (this->fullyReadEventId_.empty()) {
-        auto lastVisibleEventIndexAndId =
-          cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
-        if (lastVisibleEventIndexAndId) {
-            this->fullyReadEventId_ = lastVisibleEventIndexAndId->second;
-            emit fullyReadEventIdChanged();
-        }
-    }
 }
 
 void
@@ -1384,6 +1373,7 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
     }
 }
 
+
 void
 TimelineModel::updateLastReadId(QString currentRoomId)
 {
@@ -1408,6 +1398,23 @@ TimelineModel::lastReadIdOnWindowFocus()
         updateLastReadId(room_id_);
     }
 }
+
+/*
+ * if the event2order db didn't have the messages we needed when the room was opened
+ * try again after these new messages were fetched
+ */
+void
+TimelineModel::checkAfterFetch(){
+    if (fullyReadEventId_.empty()) {
+        auto lastVisibleEventIndexAndId =
+          cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
+        if (lastVisibleEventIndexAndId) {
+            fullyReadEventId_ = lastVisibleEventIndexAndId->second;
+            emit fullyReadEventIdChanged();
+        }
+    }
+}
+
 template<typename T>
 void
 TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType)
