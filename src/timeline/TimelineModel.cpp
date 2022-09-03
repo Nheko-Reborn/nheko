@@ -868,7 +868,6 @@ TimelineModel::fetchMore(const QModelIndex &)
     setPaginationInProgress(true);
 
     events.fetchMore();
-
 }
 
 void
