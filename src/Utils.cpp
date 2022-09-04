@@ -431,9 +431,10 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
       "tbody",      "/tbody",      "tr",      "/tr",     "th",    "/th",    "td",     "/td",
       "caption",    "/caption",    "pre",     "/pre",    "span",  "/span",  "img",    "/img",
       "details",    "/details",    "summary", "/summary"};
-    constexpr static const std::array tagNameEnds  = {' ', '>'};
-    constexpr static const std::array attrNameEnds = {' ', '>', '=', '\t', '\r', '\n', '/', '\f'};
-    constexpr static const std::array spaceChars   = {' ', '\t', '\r', '\n', '\f'};
+    constexpr static const std::array tagNameEnds   = {' ', '>'};
+    constexpr static const std::array attrNameEnds  = {' ', '>', '=', '\t', '\r', '\n', '/', '\f'};
+    constexpr static const std::array attrValueEnds = {' ', '\t', '\r', '\n', '\f', '>'};
+    constexpr static const std::array spaceChars    = {' ', '\t', '\r', '\n', '\f'};
 
     QByteArray data = rawStr.toUtf8();
     QByteArray buffer;
@@ -535,16 +536,22 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                                         continue;
                                     }
                                 } else {
-                                    attrStart += 1;
                                     auto valueEnd = std::find_first_of(attrStart,
                                                                        attrsEnd,
-                                                                       attrNameEnds.begin(),
-                                                                       attrNameEnds.end());
+                                                                       attrValueEnds.begin(),
+                                                                       attrValueEnds.end());
+                                    auto val =
+                                      sanitizeValue(QByteArray(attrStart, valueEnd - attrStart));
+                                    attrStart = consumeSpaces(valueEnd);
+
+                                    if (val.contains('"'))
+                                        continue;
+
                                     buffer.append(' ');
                                     buffer.append(attrName);
-                                    buffer.append("=");
-                                    buffer.append(attrStart, valueEnd - attrStart);
-                                    attrStart = valueEnd;
+                                    buffer.append("=\"");
+                                    buffer.append(val);
+                                    buffer.append('"');
                                     continue;
                                 }
                             }
