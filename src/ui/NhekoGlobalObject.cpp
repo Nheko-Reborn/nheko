@@ -136,9 +136,21 @@ Nheko::setTransientParent(QWindow *window, QWindow *parentWindow) const
 }
 
 void
-Nheko::createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, int preset)
+Nheko::createRoom(bool space,
+                  QString name,
+                  QString topic,
+                  QString aliasLocalpart,
+                  bool isEncrypted,
+                  int preset)
 {
     mtx::requests::CreateRoom req;
+
+    if (space) {
+        req.creation_content       = mtx::events::state::Create{};
+        req.creation_content->type = mtx::events::state::room_type::space;
+        req.creation_content->creator.clear();
+        req.creation_content->room_version.clear();
+    }
 
     switch (preset) {
     case 1:

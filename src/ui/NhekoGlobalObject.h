@@ -56,8 +56,12 @@ public:
     Q_INVOKABLE void setStatusMessage(QString msg) const;
     Q_INVOKABLE void showUserSettingsPage() const;
     Q_INVOKABLE void logout() const;
-    Q_INVOKABLE void
-    createRoom(QString name, QString topic, QString aliasLocalpart, bool isEncrypted, int preset);
+    Q_INVOKABLE void createRoom(bool space,
+                                QString name,
+                                QString topic,
+                                QString aliasLocalpart,
+                                bool isEncrypted,
+                                int preset);
     Q_INVOKABLE PowerlevelEditingModels *editPowerlevels(QString room_id_) const
     {
         return new PowerlevelEditingModels(room_id_);

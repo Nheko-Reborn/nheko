@@ -449,7 +449,8 @@ CommunitiesModel::clear()
 void
 CommunitiesModel::sync(const mtx::responses::Sync &sync_)
 {
-    bool tagsUpdated = false;
+    bool tagsUpdated  = false;
+    const auto userid = http::client()->user_id().to_string();
 
     for (const auto &[roomid, room] : sync_.rooms.join) {
         for (const auto &e : room.account_data.events)
@@ -457,20 +458,28 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
                   mtx::events::AccountDataEvent<mtx::events::account_data::Tags>>(e)) {
                 tagsUpdated = true;
             }
-        for (const auto &e : room.state.events)
+        for (const auto &e : room.state.events) {
             if (std::holds_alternative<mtx::events::StateEvent<mtx::events::state::space::Child>>(
                   e) ||
                 std::holds_alternative<mtx::events::StateEvent<mtx::events::state::space::Parent>>(
-                  e)) {
+                  e))
                 tagsUpdated = true;
-            }
-        for (const auto &e : room.timeline.events)
+
+            if (auto ev = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(&e);
+                ev && ev->state_key == userid)
+                tagsUpdated = true;
+        }
+        for (const auto &e : room.timeline.events) {
             if (std::holds_alternative<mtx::events::StateEvent<mtx::events::state::space::Child>>(
                   e) ||
                 std::holds_alternative<mtx::events::StateEvent<mtx::events::state::space::Parent>>(
-                  e)) {
+                  e))
                 tagsUpdated = true;
-            }
+
+            if (auto ev = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(&e);
+                ev && ev->state_key == userid)
+                tagsUpdated = true;
+        }
 
         auto roomId            = QString::fromStdString(roomid);
         auto &oldUnreads       = roomNotificationCache[roomId];

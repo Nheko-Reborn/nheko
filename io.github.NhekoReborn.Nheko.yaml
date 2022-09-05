@@ -203,7 +203,7 @@ modules:
     buildsystem: cmake-ninja
     name: mtxclient
     sources:
-      - commit: 43e88905659b027bc47c40fe0d31cf28fd639ef9
+      - commit: a00a04adaddf856feaa21087217608e05b9c7ed3
         #tag: v0.8.0
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git

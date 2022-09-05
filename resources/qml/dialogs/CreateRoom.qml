@@ -12,7 +12,10 @@ import im.nheko 1.0
 
 ApplicationWindow {
     id: createRoomRoot
-    title: qsTr("Create Room")
+
+    property bool space: false
+
+    title: space ? qsTr("New community") : qsTr("New Room")
     minimumWidth: Math.max(rootLayout.implicitWidth+2*rootLayout.anchors.margins, footer.implicitWidth + Nheko.paddingLarge)
     minimumHeight: rootLayout.implicitHeight+footer.implicitHeight+2*rootLayout.anchors.margins
     modality: Qt.NonModal
@@ -95,6 +98,7 @@ ApplicationWindow {
             checked: false
         }
         Label {
+            visible: !space
             Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Trusted")
@@ -107,6 +111,7 @@ ApplicationWindow {
             ToolTip.delay: Nheko.tooltipDelay
         }
         ToggleButton {
+            visible: !space
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
             id: isTrusted
@@ -114,6 +119,7 @@ ApplicationWindow {
             enabled: !isPublic.checked
         }
         Label {
+            visible: !space
             Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Encryption")
@@ -126,6 +132,7 @@ ApplicationWindow {
             ToolTip.delay: Nheko.tooltipDelay
         }
         ToggleButton {
+            visible: !space
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
             id: isEncrypted
@@ -150,7 +157,7 @@ ApplicationWindow {
             else {
                 preset = isTrusted.checked ? 2 : 0;
             }
-            Nheko.createRoom(newRoomName.text, newRoomTopic.text, newRoomAlias.text, isEncrypted.checked, preset)
+            Nheko.createRoom(space, newRoomName.text, newRoomTopic.text, newRoomAlias.text, isEncrypted.checked, preset)
             createRoomRoot.close();
         }
     }

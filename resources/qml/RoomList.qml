@@ -729,6 +729,15 @@ Page {
                             }
                         }
 
+                        Platform.MenuItem {
+                            text: qsTr("Create a new community")
+                            onTriggered: {
+                                var createRoom = createRoomComponent.createObject(timelineRoot, { "space": true });
+                                createRoom.show();
+                                timelineRoot.destroyOnClose(createRoom);
+                            }
+                        }
+
                     }
 
                 }
