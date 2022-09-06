@@ -154,8 +154,8 @@ modules:
   - buildsystem: meson
     name: gstreamer
     sources:
-      - commit: f0b045a69bb0b36515b84e3b64df9dc30c8f1e1a
-        tag: 1.20.0
+      - commit: ccf22e315cedf81e0075ab179ffb1b733da5206e
+        tag: 1.20.3
         type: git
         url: https://gitlab.freedesktop.org/gstreamer/gstreamer.git
     config-opts:
