@@ -175,6 +175,7 @@ modules:
       - -Dgst-plugins-bad:srtp=enabled
       - -Dgst-plugins-bad:webrtc=enabled
       - -Dgst-plugins-bad:flite=disabled
+      - --default-library=static
   - buildsystem: qmake
     name: qt-jdenticon
     no-make-install: true
