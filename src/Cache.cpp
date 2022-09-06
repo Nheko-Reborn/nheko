@@ -1841,10 +1841,11 @@ Cache::saveState(const mtx::responses::Sync &res)
                         }
                     }
                     if (userReceipts.count(mtx::events::ephemeral::Receipt::ReadPrivate)) {
-                        auto ts = userReceipts.at(mtx::events::ephemeral::Receipt::ReadPrivate)
-                                    .users.at(local_user_id);
-                        if (ts.ts != 0)
-                            receipts[event_id][local_user_id] = ts.ts;
+                        const auto &users =
+                          userReceipts.at(mtx::events::ephemeral::Receipt::ReadPrivate).users;
+                        if (auto ts = users.find(local_user_id);
+                            ts != users.end() && ts->second.ts != 0)
+                            receipts[event_id][local_user_id] = ts->second.ts;
                     }
                 }
                 updateReadReceipt(txn, room.first, receipts);
