@@ -582,13 +582,13 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        a00a04adaddf856feaa21087217608e05b9c7ed3
+		GIT_TAG        v0.8.1
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.8.0 REQUIRED)
+	find_package(MatrixClient 0.8.1 REQUIRED)
 endif()
 
 if (VOIP)
