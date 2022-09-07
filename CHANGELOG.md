@@ -1,5 +1,57 @@
 # Changelog
 
+## [0.10.1] -- 2022-09-07
+
+### Highlights
+
+- Community editing support 🤼
+  - You can now create communities.
+  - You can add and remove rooms to and from communities in various ways.
+- Prettier joins ✨
+  - You can now see the avatar, title, topic and member count of the room you
+    are trying to join.
+  - You can see if a room requires knocking or can be joined directly.
+  - Requires MSC3266 support from your server.
+
+### Features
+
+- Add a discrete edit button to room profiles. (Hiers)
+- Don't escape the summary tags on sending.
+- Focus message area when pressing Escape. (Forest)
+- Barebones spoiler support on desktop platforms.
+- Enable encryption for DMs started from a profile by default.
+- Enable option to disable notification sounds and badges on macOS.
+- Speed up the completion trie. (nenomius)
+
+### Translations
+
+- Polish (Romanik, luff)
+- Dutch (Thulinma)
+- Finnish (Lurkki)
+- Estonian (Priit)
+
+### Bugfixes
+
+- Fix crash on empty private receipts sent by some servers.
+- Don't set a transient parent for child chat windows.
+- Validate roomid, state_key, event_id and userids sent by the server.
+- Fix empty widgets showing up in the widget list.
+- Clean up linter config. (Forest)
+- Use the right palette colors for reactions. (Forest)
+- Fix groups sidebar's grammar. (Forest)
+- Fix version position. (Zirnc)
+- Properly validate urls in image tags.
+- Case insensitive member search.
+- Fix crash on global profiles.
+- Fix crash on incomplete identity keys.
+- Fix message notification format on Windows.
+- Fix room members menu opening profiles for the wrong room.
+
+### Notes
+
+Requires mtxclient 0.8.1 and fixes a few crashes that can be abused by remote
+users.
+
 ## [0.10.0] -- 2022-07-22
 
 ### Highlights
