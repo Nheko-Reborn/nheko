@@ -2162,7 +2162,7 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished">Część zarezerwowanej przestrzeni nazw.</translation>
+        <translation>Część zarezerwowanej przestrzeni nazw.</translation>
     </message>
 </context>
 <context>
