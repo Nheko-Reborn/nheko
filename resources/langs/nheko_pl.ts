@@ -363,7 +363,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation>Podaj powód wyrzucenia %1 (%2) lub wciśnij enter aby nie podawać&#xa0;powodu:</translation>
+        <translation>Podaj powód wyrzucenia %1 (%2) lub wciśnij enter aby nie podawać powodu:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -464,22 +464,22 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+643"/>
         <source>Failed to update space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się zaktualizować przestrzeni podrzędnej: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się skasować przestrzeni podrzędnej: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Failed to update space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się zaktualizować przestrzeni nadrzędnej: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się skasować przestrzeni nadrzędnej: %1</translation>
     </message>
 </context>
 <context>
@@ -487,41 +487,41 @@ Możesz podać powód pukania:</translation>
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź dołączenie do społeczności</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Potwierdź dołączenie do pokoju</translation>
     </message>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n członek</numerusform>
-            <numerusform>%n członkowie</numerusform>
+            <numerusform>%n członków</numerusform>
             <numerusform>%n członków</numerusform>
         </translation>
     </message>
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Do tego pokoju nie można dołączyć bezpośrednio. Możesz do niego zapukać, aby jego członkowie mogli zaakceptować lub odrzucić tę prośbę o dołączenie. Dodatkowo możesz podać powód, dla którego członkowie mieliby cię przyjąć:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Czy chcesz dołączyć do tego pokoju? Możesz podać powód, dla którego członkowie mieliby cię przyjąć:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Zapukaj</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołącz</translation>
     </message>
 </context>
 <context>
@@ -562,12 +562,12 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="-27"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowa społeczność</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Nowy pokój</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -734,7 +734,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation>Wyświetlane emoji mogą różnić się&#xa0;wyglądem między klientami, jeśli używana jest inna czcionka. Ich nazwy mogą też być przetłumaczone na inny język. Niemniej jednak powinny one przedstawiać jedno z 64 różnych obiektów lub zwierząt. Dla przykładu lew i kot są różnymi emoji, zaś twarz kota w jednym kliencie i cały kot w drugim są tak samo traktowane jako emoji kota.</translation>
+        <translation>Wyświetlane emoji mogą różnić się wyglądem między klientami, jeśli używana jest inna czcionka. Ich nazwy mogą też być przetłumaczone na inny język. Niemniej jednak powinny one przedstawiać jedno z 64 różnych obiektów lub zwierząt. Dla przykładu lew i kot są różnymi emoji, zaś twarz kota w jednym kliencie i cały kot w drugim są tak samo traktowane jako emoji kota.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -913,7 +913,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation>Wysyłane gdy moderator zostanie dodany lub usunięty, bądź gdy uprawnienia pokoju ulegną&#xa0;zmianie.</translation>
+        <translation>Wysyłane gdy moderator zostanie dodany lub usunięty, bądź gdy uprawnienia pokoju ulegną zmianie.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -998,7 +998,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+10"/>
         <source>Body</source>
-        <translation>Treść</translation>
+        <translation>Zawartość</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -1041,7 +1041,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Paczka z nadrzędnej społeczności</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1136,7 +1136,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Dołącz</translation>
     </message>
 </context>
 <context>
@@ -2259,7 +2259,7 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location line="+10"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj lub usuń z przestrzeni</translation>
     </message>
     <message>
         <location line="+263"/>
@@ -2332,7 +2332,7 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>Stwórz nową społeczność</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2430,7 +2430,7 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location line="+2"/>
         <source>This user has unverified devices!</source>
-        <translation>Ten użytkownik ma urządzenie, które nie zostały zweryfikowane!</translation>
+        <translation>Ten użytkownik ma urządzenia, które nie zostały zweryfikowane!</translation>
     </message>
 </context>
 <context>
@@ -2443,7 +2443,7 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zmień awatar pokoju.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2805,7 +2805,7 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
         <translation>Witaj w sieci Matrix!
-Wygląda na to, że jesteś tu nowy(-a). Zanim będzie można bezpiecznie szyfrować Twoje wiadomości, musimy skonfigurować parę drobiazgów. Możesz od razu kliknąć &quot;akceptuj&quot; lub dostosować niektóre opcje. Postaramy się także wyjaśnić kilka podstaw. Możesz pominąć ten samouczek, choć może on okazać się&#xa0;pomocny!</translation>
+Wygląda na to, że jesteś tu nowy(-a). Zanim będzie można bezpiecznie szyfrować Twoje wiadomości, musimy skonfigurować parę drobiazgów. Możesz od razu kliknąć &quot;akceptuj&quot; lub dostosować niektóre opcje. Postaramy się także wyjaśnić kilka podstaw. Możesz pominąć ten samouczek, choć może on okazać się pomocny!</translation>
     </message>
     <message>
         <location line="+124"/>
@@ -2894,37 +2894,37 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Dodaj lub usuń z przestrzeni</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Oficjalna społeczność tego pokoju</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Powiązana społeczność tego pokoju</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>Widoczna tylko dla członków społeczności</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Widoczna tylko dla członków pokoju</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>Niezwiązana</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>Podspołeczności</translation>
     </message>
 </context>
 <context>
@@ -3093,7 +3093,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation>%1 może teraz wyrzucać&#xa0;członków tego pokoju.</translation>
+        <translation>%1 może teraz wyrzucać członków tego pokoju.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4022,7 +4022,7 @@ Powód: %4</translation>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation>Ustaw maksymalną szerokość&#xa0;wiadomości na osi czasu (w pikselach). Może to poprawić czytelność na szerokich ekranach, gdy Nheko zostanie zmaksymalizowany.</translation>
+        <translation>Ustaw maksymalną szerokość wiadomości na osi czasu (w pikselach). Może to poprawić czytelność na szerokich ekranach, gdy Nheko zostanie zmaksymalizowany.</translation>
     </message>
     <message>
         <location line="+3"/>
