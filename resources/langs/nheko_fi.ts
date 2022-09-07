@@ -463,22 +463,22 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+643"/>
         <source>Failed to update space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Spacen lapsen päivitys epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Spacen lapsen poistaminen epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Failed to update space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Spacen vanhemman päivitys epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Spacen vanhemman poistaminen epäonnistui: %1</translation>
     </message>
 </context>
 <context>
@@ -486,17 +486,17 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Vahvista liittyminen yhteisöön</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Vahvista liittyminen huoneeseen</translation>
     </message>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n jäsen</numerusform>
             <numerusform>%n jäsentä</numerusform>
         </translation>
@@ -504,22 +504,22 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tähän huoneeseen ei voi liittyä suoraan. Voit kuitenkin koputtaa huoneeseen, jolloin huoneen jäsenet voivat käsitellä liittymispyyntösi. Voit myös antaa syyn liittymispyyntöösi alhaalla:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Haluatko liittyä tähän huoneeseen? Voit antaa valinnaisen syyn alhaalla:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Koputa</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liity</translation>
     </message>
 </context>
 <context>
@@ -560,12 +560,12 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="-27"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusi yhteisö</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusi huone</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1039,7 +1039,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Pakkaus yhteisövanhemmasta</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1134,7 +1134,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liity</translation>
     </message>
 </context>
 <context>
@@ -2256,7 +2256,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location line="+10"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää tai poista spacesta</translation>
     </message>
     <message>
         <location line="+263"/>
@@ -2329,7 +2329,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo uusi yhteisö</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2439,7 +2439,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaihda huoneen avataria.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2889,37 +2889,37 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää tai poista spacesta</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämän huoneen virallinen yhteisö</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Tähän huoneeseen liittyvä yhteisö</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>Listattu vain yhteisön jäsenille</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Listattu vain huoneen jäsenille</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei-liittyvä</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliyhteisöt</translation>
     </message>
 </context>
 <context>
