@@ -102,7 +102,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2724"/>
+        <location filename="../../src/Cache.cpp" line="+2733"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 en %n ander</numerusform>
@@ -188,18 +188,18 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+120"/>
+        <location filename="../../src/ChatPage.cpp" line="+121"/>
         <source>Failed to invite user: %1</source>
         <translation>Gebruiker uitnodigen mislukt: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+737"/>
+        <location line="+739"/>
         <source>Invited user: %1</source>
         <translation>Gebruiker uitgenodigd: %1</translation>
     </message>
     <message>
-        <location line="-511"/>
+        <location line="-513"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Het migreren can de cache naar de huidige versie is mislukt. Dit kan verscheidene redenen hebben. Maak a.u.b een issue aan en probeer in de tussentijd een oudere versie. Je kan ook proberen de cache handmatig te verwijderen.</translation>
     </message>
@@ -214,7 +214,7 @@
         <translation>Kon database niet openen, je wordt uitgelogd!</translation>
     </message>
     <message>
-        <location line="+302"/>
+        <location line="+304"/>
         <source>Knock on room</source>
         <translation>Aankloppen</translation>
     </message>
@@ -231,22 +231,12 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <translation>Wil je echt aankloppen bij %1? Je mag optioneel nog een reden opgeven:</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Failed to knock room: %1</source>
         <translation>Kon niet aankloppen: %1</translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>Confirm join</source>
-        <translation>Bevestig deelname</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to join %1?</source>
-        <translation>Weet je zeker dat je %1 wil binnen gaan?</translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
         <translation>Kamer aanmaken mislukt: slechte alias</translation>
     </message>
@@ -312,7 +302,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <translation>Weet je zeker dat je een privé chat wil beginnen met %1?</translation>
     </message>
     <message>
-        <location line="-967"/>
+        <location line="-969"/>
         <source>Cache migration failed!</source>
         <translation>Migreren van de cache is mislukt!</translation>
     </message>
@@ -345,7 +335,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <translation>Probeer a.u.b. opnieuw in te loggen: %1</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+86"/>
         <source>Failed to join room: %1</source>
         <translation>Kamer binnengaan mislukt: %1</translation>
     </message>
@@ -421,7 +411,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
 <context>
     <name>CommunitiesModel</name>
     <message>
-        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+72"/>
+        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+81"/>
         <source>All rooms</source>
         <translation>Alle kamers</translation>
     </message>
@@ -470,6 +460,67 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <source>Messages from your server or administrator.</source>
         <translation>Berichten van je server of beheerder.</translation>
     </message>
+    <message>
+        <location line="+643"/>
+        <source>Failed to update space child: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Failed to delete space child: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Failed to update space parent: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Failed to delete space parent: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConfirmJoinRoomDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
+        <source>Confirm community join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Confirm room join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+67"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n deelnemer</numerusform>
+            <numerusform>%n deelnemers</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Do you want to join this room? You can optionally add a reason below:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Knock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateDirect</name>
@@ -497,18 +548,27 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
 <context>
     <name>CreateRoom</name>
     <message>
-        <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
-        <location line="+125"/>
+        <location filename="../qml/dialogs/CreateRoom.qml" line="+147"/>
         <source>Create Room</source>
         <translation>Kamer aanmaken</translation>
     </message>
     <message>
-        <location line="-98"/>
+        <location line="-102"/>
         <source>Name</source>
         <translation>Naam</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-27"/>
+        <source>New community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>New Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
         <source>No name</source>
         <translation>Naamloos</translation>
     </message>
@@ -538,7 +598,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <translation>Publieke kamers kunnen door iedereen worden betreden, privé kamers hebben een expliciete uitnodig nodig.</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Trusted</source>
         <translation>Vertrouwd</translation>
     </message>
@@ -548,7 +608,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <translation>Alle uitgenodigde deelnemers krijgen hetzelfde machtsniveau als de maker</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>Encryption</source>
         <translation>Versleuteling</translation>
     </message>
@@ -967,7 +1027,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <translation>Nieuw afbeeldingspakket voor kamer</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>Private pack</source>
         <translation>Privé afbeeldingspakket</translation>
     </message>
@@ -975,6 +1035,11 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <location line="+2"/>
         <source>Pack from this room</source>
         <translation>Afbeeldingspakket uit deze kamer</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Pack from parent community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1015,7 +1080,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <translation>Alle bestanden (*)</translation>
     </message>
     <message>
-        <location line="+764"/>
+        <location line="+806"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Versturen van &apos;%1&apos; misluk</translation>
     </message>
@@ -1065,6 +1130,11 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
         <location line="+21"/>
         <source>Room ID or alias</source>
         <translation>Kamer ID of alias</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1415,7 +1485,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Opties</translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+427"/>
         <source>Reason for removal</source>
         <translation>Reden voor verwijdering</translation>
     </message>
@@ -1588,7 +1658,6 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location filename="../../src/notifications/Manager.cpp" line="+23"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+46"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="+75"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 stuurde een versleuteld bericht</translation>
     </message>
@@ -1600,7 +1669,6 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
         <translation>%1 antwoordde met een versleuteld bericht</translation>
     </message>
@@ -2128,7 +2196,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1971"/>
+        <location filename="../../src/Cache.cpp" line="+2026"/>
         <source>no version stored</source>
         <translation>geen versie opgeslagen</translation>
     </message>
@@ -2136,7 +2204,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+128"/>
+        <location filename="../qml/RoomList.qml" line="+141"/>
         <source>New tag</source>
         <translation>Nieuwe markering</translation>
     </message>
@@ -2161,12 +2229,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Kopieer kamerlink</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Tag room as:</source>
         <translation>Markeer kamer als:</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+13"/>
         <source>Favourite</source>
         <translation>Favoriet</translation>
     </message>
@@ -2186,7 +2254,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Maak nieuwe markering…</translation>
     </message>
     <message>
-        <location line="+264"/>
+        <location line="+10"/>
+        <source>Add or remove from space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+263"/>
         <source>Status Message</source>
         <translation>Statusbericht</translation>
     </message>
@@ -2252,6 +2325,11 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <location line="+9"/>
         <source>Start a direct chat</source>
         <translation>Begin een privégesprek</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Create a new community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2359,7 +2437,12 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
         <translation>Kamerinstellingen</translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+38"/>
+        <source>Change room avatar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+93"/>
         <source>Change name of this room</source>
         <translation>Naam van deze kamer veranderen</translation>
     </message>
@@ -2598,7 +2681,7 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+358"/>
+        <location filename="../qml/Root.qml" line="+372"/>
         <source>Please enter your login password to continue:</source>
         <translation>Voer a.u.b. je wachtwoord in om door te gaan:</translation>
     </message>
@@ -2680,7 +2763,7 @@ Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translat
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4514"/>
+        <location filename="../../src/Cache.cpp" line="-4570"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbinden met geheimopslag mislukt</translation>
     </message>
@@ -2778,7 +2861,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+271"/>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+272"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
         <translation>Kon afbeeldingspakket niet updaten: %1</translation>
@@ -2799,6 +2882,44 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <location line="+29"/>
         <source>Failed to upload image: %1</source>
         <translation>Kon afbeelding niet uploaden: %1</translation>
+    </message>
+</context>
+<context>
+    <name>SpaceMenuLevel</name>
+    <message>
+        <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
+        <source>Add or remove from space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Official community for this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Affiliated community for this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Listed only for community members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Listed only for room members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Not related</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Subcommunities</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2885,7 +3006,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>Bestand opslaan</translation>
     </message>
     <message numerus="yes">
-        <location line="+262"/>
+        <location line="+258"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3107,7 +3228,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>%1 veranderde de stickers en emoji in deze kamer.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+35"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
         <translation>%1 schakelde de regel uit om deelnemers die voldoen aan %2 te verbannen.</translation>
     </message>
@@ -3117,7 +3238,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>%1 voegde een regel toe aan &apos;%3&apos; om deelnemers te verbannen die voldoen aan %2.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+22"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
         <translation>%1 schakelde de regel uit om kamers te verbannen die voldoen aan %2.</translation>
     </message>
@@ -3127,7 +3248,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>%1 voegde een regel toe aan &apos;%3&apos; om kamers te verbannen die voldoen aan %2.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+22"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
         <translation>%1 schakelde de regel uit om servers te verbannen die voldoen aan %2.</translation>
     </message>
@@ -3219,12 +3340,12 @@ Reden: %4</translation>
         <translation>%1 heeft het aankloppen ingetrokken.</translation>
     </message>
     <message>
-        <location line="-1497"/>
+        <location line="-1528"/>
         <source>You joined this room.</source>
         <translation>Je neemt nu deel aan deze kamer.</translation>
     </message>
     <message>
-        <location line="+1449"/>
+        <location line="+1480"/>
         <source>%1 invited %2.</source>
         <translation>%1 heeft %2 uitgenodigd.</translation>
     </message>
@@ -4187,7 +4308,7 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
 <context>
     <name>VerificationManager</name>
     <message>
-        <location filename="../../src/encryption/VerificationManager.cpp" line="+133"/>
+        <location filename="../../src/encryption/VerificationManager.cpp" line="+139"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Geen versleutelde chat gevonden met deze gebruiker. Maak een versleutelde chat aan met deze gebruiker en probeer het opnieuw.</translation>
     </message>

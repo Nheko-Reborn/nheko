@@ -102,7 +102,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2724"/>
+        <location filename="../../src/Cache.cpp" line="+2733"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 和另外 %n 人</numerusform>
@@ -187,18 +187,18 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+120"/>
+        <location filename="../../src/ChatPage.cpp" line="+121"/>
         <source>Failed to invite user: %1</source>
         <translation>邀请用户失败：%1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+737"/>
+        <location line="+739"/>
         <source>Invited user: %1</source>
         <translation>邀请已发送：%1</translation>
     </message>
     <message>
-        <location line="-511"/>
+        <location line="-513"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>无法迁移缓存到目前版本，可能有多种原因引发此类问题。您可以新建一个议题并继续使用之前版本，或者您可以尝试手动删除缓存。</translation>
     </message>
@@ -213,7 +213,7 @@
         <translation>无法打开数据库，账户将登出！</translation>
     </message>
     <message>
-        <location line="+302"/>
+        <location line="+304"/>
         <source>Knock on room</source>
         <translation>请求加入聊天室</translation>
     </message>
@@ -230,22 +230,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>你真的想请求加入 %1 吗？你可以选择提供一个理由让其他人接受你的加入请求：</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Failed to knock room: %1</source>
         <translation>未能请求加入聊天室：%1</translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>Confirm join</source>
-        <translation>确认加入</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to join %1?</source>
-        <translation>你真的想要加入 %1 吗？</translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
         <translation>创建聊天室失败：别名错误</translation>
     </message>
@@ -311,7 +301,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>是否确认与 %1 开始私密聊天？</translation>
     </message>
     <message>
-        <location line="-967"/>
+        <location line="-969"/>
         <source>Cache migration failed!</source>
         <translation>缓存迁移失败！</translation>
     </message>
@@ -344,7 +334,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>请尝试再次登录：%1</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+86"/>
         <source>Failed to join room: %1</source>
         <translation>未能加入聊天室：%1</translation>
     </message>
@@ -420,7 +410,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CommunitiesModel</name>
     <message>
-        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+72"/>
+        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+81"/>
         <source>All rooms</source>
         <translation>所有聊天室</translation>
     </message>
@@ -469,6 +459,66 @@ You may optionally provide a reason for others to accept your knock:</source>
         <source>Messages from your server or administrator.</source>
         <translation>来自服务器或管理员的消息。</translation>
     </message>
+    <message>
+        <location line="+643"/>
+        <source>Failed to update space child: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Failed to delete space child: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Failed to update space parent: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Failed to delete space parent: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConfirmJoinRoomDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
+        <source>Confirm community join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Confirm room join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+67"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n 个成员</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Do you want to join this room? You can optionally add a reason below:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Knock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateDirect</name>
@@ -496,18 +546,27 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CreateRoom</name>
     <message>
-        <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
-        <location line="+125"/>
+        <location filename="../qml/dialogs/CreateRoom.qml" line="+147"/>
         <source>Create Room</source>
         <translation>创建聊天室</translation>
     </message>
     <message>
-        <location line="-98"/>
+        <location line="-102"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-27"/>
+        <source>New community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>New Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
         <source>No name</source>
         <translation>没有名称</translation>
     </message>
@@ -537,7 +596,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>任何人都可以加入公共聊天室，私人聊天室则需要明确的邀请。</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Trusted</source>
         <translation>可信</translation>
     </message>
@@ -547,7 +606,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>所有被邀请者都被赋予与创建者相同的权限等级</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>Encryption</source>
         <translation>加密</translation>
     </message>
@@ -966,7 +1025,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>创建和聊天室关联的表情包</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>Private pack</source>
         <translation>私有表情包</translation>
     </message>
@@ -974,6 +1033,11 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+2"/>
         <source>Pack from this room</source>
         <translation>来自此聊天室的表情包</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Pack from parent community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1014,7 +1078,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>所有文件 (*)</translation>
     </message>
     <message>
-        <location line="+764"/>
+        <location line="+806"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>上传 “%1” 失败</translation>
     </message>
@@ -1064,6 +1128,11 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+21"/>
         <source>Room ID or alias</source>
         <translation>聊天室 ID 或别名</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1414,7 +1483,7 @@ Example: https://server.my:8787</source>
         <translation>选项</translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+427"/>
         <source>Reason for removal</source>
         <translation>移除原因</translation>
     </message>
@@ -1587,7 +1656,6 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/notifications/Manager.cpp" line="+23"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+46"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="+75"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 发送了一条加密消息</translation>
     </message>
@@ -1599,7 +1667,6 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
         <translation>%1 回复了一条加密消息</translation>
     </message>
@@ -2127,7 +2194,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1971"/>
+        <location filename="../../src/Cache.cpp" line="+2026"/>
         <source>no version stored</source>
         <translation>没有存储版本</translation>
     </message>
@@ -2135,7 +2202,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+128"/>
+        <location filename="../qml/RoomList.qml" line="+141"/>
         <source>New tag</source>
         <translation>新标签</translation>
     </message>
@@ -2160,12 +2227,12 @@ Example: https://server.my:8787</source>
         <translation>复制聊天室链接</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Tag room as:</source>
         <translation>为聊天室添加标签：</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+13"/>
         <source>Favourite</source>
         <translation>收藏</translation>
     </message>
@@ -2185,7 +2252,12 @@ Example: https://server.my:8787</source>
         <translation>创建新标签…</translation>
     </message>
     <message>
-        <location line="+264"/>
+        <location line="+10"/>
+        <source>Add or remove from space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+263"/>
         <source>Status Message</source>
         <translation>状态信息</translation>
     </message>
@@ -2251,6 +2323,11 @@ Example: https://server.my:8787</source>
         <location line="+9"/>
         <source>Start a direct chat</source>
         <translation>开始直接聊天</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Create a new community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2357,7 +2434,12 @@ Example: https://server.my:8787</source>
         <translation>聊天室设置</translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+38"/>
+        <source>Change room avatar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+93"/>
         <source>Change name of this room</source>
         <translation>更改此聊天室的名称</translation>
     </message>
@@ -2595,7 +2677,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+358"/>
+        <location filename="../qml/Root.qml" line="+372"/>
         <source>Please enter your login password to continue:</source>
         <translation>请输入你的登录密码以继续：</translation>
     </message>
@@ -2677,7 +2759,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4514"/>
+        <location filename="../../src/Cache.cpp" line="-4570"/>
         <source>Failed to connect to secret storage</source>
         <translation>未能连接秘密存储</translation>
     </message>
@@ -2775,7 +2857,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+271"/>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+272"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
         <translation>未能更新表情包：%1</translation>
@@ -2796,6 +2878,44 @@ If you choose verify, you need to have the other device available. If you choose
         <location line="+29"/>
         <source>Failed to upload image: %1</source>
         <translation>未能上传图片：%1</translation>
+    </message>
+</context>
+<context>
+    <name>SpaceMenuLevel</name>
+    <message>
+        <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
+        <source>Add or remove from space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Official community for this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Affiliated community for this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Listed only for community members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Listed only for room members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Not related</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Subcommunities</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2882,7 +3002,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>保存文件</translation>
     </message>
     <message numerus="yes">
-        <location line="+262"/>
+        <location line="+258"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3099,7 +3219,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 更改了此聊天室中的贴纸和表情。</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+35"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
         <translation>%1 禁用了封禁与 %2 匹配的用户的规则。</translation>
     </message>
@@ -3109,7 +3229,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 为 “%3” 添加了封禁与 %2 匹配的用户的规则。</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+22"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
         <translation>%1 禁用了封禁与 %2 匹配的聊天室的规则。</translation>
     </message>
@@ -3119,7 +3239,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 为 “%3” 添加了封禁与 %2 匹配的聊天室的规则。</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+22"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
         <translation>%1 禁用了封禁与 %2 匹配的服务器的规则。</translation>
     </message>
@@ -3211,12 +3331,12 @@ Reason: %4</source>
         <translation>%1 删除了其加入请求。</translation>
     </message>
     <message>
-        <location line="-1497"/>
+        <location line="-1528"/>
         <source>You joined this room.</source>
         <translation>你已加入此聊天室。</translation>
     </message>
     <message>
-        <location line="+1449"/>
+        <location line="+1480"/>
         <source>%1 invited %2.</source>
         <translation>%1 邀请了 %2。</translation>
     </message>
@@ -4177,7 +4297,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>VerificationManager</name>
     <message>
-        <location filename="../../src/encryption/VerificationManager.cpp" line="+133"/>
+        <location filename="../../src/encryption/VerificationManager.cpp" line="+139"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>未找到与该用户的加密私人聊天。创建与该用户的加密私人聊天，然后重试。</translation>
     </message>

@@ -102,7 +102,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2724"/>
+        <location filename="../../src/Cache.cpp" line="+2733"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 i jeszcze %n inny</numerusform>
@@ -189,18 +189,18 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+120"/>
+        <location filename="../../src/ChatPage.cpp" line="+121"/>
         <source>Failed to invite user: %1</source>
         <translation>Nie udało się zaprosić użytkownika: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+737"/>
+        <location line="+739"/>
         <source>Invited user: %1</source>
         <translation>Zaproszono użytkownika: %1</translation>
     </message>
     <message>
-        <location line="-511"/>
+        <location line="-513"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation>Migracja pamięci podręcznej do obecnej wersji zakończyła się niepowodzeniem. Przyczyny mogą być różne. Prosimy zgłosić błąd i w międzyczasie spróbować używać starszej wersji. Możesz również spróbować usunąć pamięć podręczną ręcznie.</translation>
     </message>
@@ -215,7 +215,7 @@
         <translation>Nie udało się otworzyć bazy danych, następuje wylogowanie!</translation>
     </message>
     <message>
-        <location line="+302"/>
+        <location line="+304"/>
         <source>Knock on room</source>
         <translation>Zapukaj do pokoju</translation>
     </message>
@@ -232,22 +232,12 @@ Możesz podać powód pukania:</translation>
         <translation>Czy na pewno chcesz zapukać do %1? Możesz podać powód pukania:</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Failed to knock room: %1</source>
         <translation>Nie udało się zapukać do pokoju: %1</translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>Confirm join</source>
-        <translation>Potwierdź dołączenie</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to join %1?</source>
-        <translation>Czy na pewno chcesz dołączyć do %1?</translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
         <translation>Nie udało się utworzyć pokoju: niepoprawny alias</translation>
     </message>
@@ -313,7 +303,7 @@ Możesz podać powód pukania:</translation>
         <translation>Czy na pewno chcesz rozpocząć prywatny czat z %1?</translation>
     </message>
     <message>
-        <location line="-967"/>
+        <location line="-969"/>
         <source>Cache migration failed!</source>
         <translation>Nie udało się przenieść pamięci podręcznej!</translation>
     </message>
@@ -346,7 +336,7 @@ Możesz podać powód pukania:</translation>
         <translation>Spróbuj zalogować się ponownie: %1</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+86"/>
         <source>Failed to join room: %1</source>
         <translation>Nie udało się dołączyć do pokoju: %1</translation>
     </message>
@@ -373,7 +363,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation>Podaj powód wyrzucenia %1 (%2) lub wciśnij enter aby nie podawać powodu:</translation>
+        <translation>Podaj powód wyrzucenia %1 (%2) lub wciśnij enter aby nie podawać&#xa0;powodu:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -422,7 +412,7 @@ Możesz podać powód pukania:</translation>
 <context>
     <name>CommunitiesModel</name>
     <message>
-        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+72"/>
+        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+81"/>
         <source>All rooms</source>
         <translation>Wszystkie pokoje</translation>
     </message>
@@ -471,6 +461,68 @@ Możesz podać powód pukania:</translation>
         <source>Messages from your server or administrator.</source>
         <translation>Wiadomości od twojego serwera lub administratora.</translation>
     </message>
+    <message>
+        <location line="+643"/>
+        <source>Failed to update space child: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Failed to delete space child: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Failed to update space parent: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Failed to delete space parent: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConfirmJoinRoomDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
+        <source>Confirm community join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Confirm room join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+67"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform>%n członek</numerusform>
+            <numerusform>%n członkowie</numerusform>
+            <numerusform>%n członków</numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Do you want to join this room? You can optionally add a reason below:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Knock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateDirect</name>
@@ -498,18 +550,27 @@ Możesz podać powód pukania:</translation>
 <context>
     <name>CreateRoom</name>
     <message>
-        <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
-        <location line="+125"/>
+        <location filename="../qml/dialogs/CreateRoom.qml" line="+147"/>
         <source>Create Room</source>
         <translation>Utwórz pokój</translation>
     </message>
     <message>
-        <location line="-98"/>
+        <location line="-102"/>
         <source>Name</source>
         <translation>Nazwa</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-27"/>
+        <source>New community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>New Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
         <source>No name</source>
         <translation>Bez nazwy</translation>
     </message>
@@ -539,7 +600,7 @@ Możesz podać powód pukania:</translation>
         <translation>Do publicznych pokoi może dołączyć każdy, zaś prywatne pokoje wymagają zaproszenia.</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Trusted</source>
         <translation>Zaufany</translation>
     </message>
@@ -549,7 +610,7 @@ Możesz podać powód pukania:</translation>
         <translation>Wszyscy zaproszeni otrzymają taki sam poziom mocy jak autor</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>Encryption</source>
         <translation>Szyfrowanie</translation>
     </message>
@@ -673,7 +734,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation>Wyświetlane emoji mogą różnić się wyglądem między klientami, jeśli używana jest inna czcionka. Ich nazwy mogą też być przetłumaczone na inny język. Niemniej jednak powinny one przedstawiać jedno z 64 różnych obiektów lub zwierząt. Dla przykładu lew i kot są różnymi emoji, zaś twarz kota w jednym kliencie i cały kot w drugim są tak samo traktowane jako emoji kota.</translation>
+        <translation>Wyświetlane emoji mogą różnić się&#xa0;wyglądem między klientami, jeśli używana jest inna czcionka. Ich nazwy mogą też być przetłumaczone na inny język. Niemniej jednak powinny one przedstawiać jedno z 64 różnych obiektów lub zwierząt. Dla przykładu lew i kot są różnymi emoji, zaś twarz kota w jednym kliencie i cały kot w drugim są tak samo traktowane jako emoji kota.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -852,7 +913,7 @@ Możesz podać powód pukania:</translation>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation>Wysyłane gdy moderator zostanie dodany lub usunięty, bądź gdy uprawnienia pokoju ulegną zmianie.</translation>
+        <translation>Wysyłane gdy moderator zostanie dodany lub usunięty, bądź gdy uprawnienia pokoju ulegną&#xa0;zmianie.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -968,7 +1029,7 @@ Możesz podać powód pukania:</translation>
         <translation>Nowa paczka pokoju</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>Private pack</source>
         <translation>Prywatna paczka</translation>
     </message>
@@ -976,6 +1037,11 @@ Możesz podać powód pukania:</translation>
         <location line="+2"/>
         <source>Pack from this room</source>
         <translation>Paczka z tego pokoju</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Pack from parent community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1016,7 +1082,7 @@ Możesz podać powód pukania:</translation>
         <translation>Wszystkie pliki (*)</translation>
     </message>
     <message>
-        <location line="+764"/>
+        <location line="+806"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Wysyłanie &apos;%1&apos; nie powiodło się</translation>
     </message>
@@ -1066,6 +1132,11 @@ Możesz podać powód pukania:</translation>
         <location line="+21"/>
         <source>Room ID or alias</source>
         <translation>ID pokoju lub alias</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1416,7 +1487,7 @@ Przykład: https://serwer.mój:8787</translation>
         <translation>Opcje</translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+427"/>
         <source>Reason for removal</source>
         <translation>Powód usunięcia</translation>
     </message>
@@ -1589,7 +1660,6 @@ Przykład: https://serwer.mój:8787</translation>
     <message>
         <location filename="../../src/notifications/Manager.cpp" line="+23"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+46"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="+75"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 wysłał(a) zaszyfrowaną wiadomość</translation>
     </message>
@@ -1602,7 +1672,6 @@ Przykład: https://serwer.mój:8787</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
         <translation>%1 odpisał(a) zaszyfrowaną wiadomością</translation>
     </message>
@@ -2130,7 +2199,7 @@ Przykład: https://serwer.mój:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1971"/>
+        <location filename="../../src/Cache.cpp" line="+2026"/>
         <source>no version stored</source>
         <translation>brak zapisanej wersji</translation>
     </message>
@@ -2138,7 +2207,7 @@ Przykład: https://serwer.mój:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+128"/>
+        <location filename="../qml/RoomList.qml" line="+141"/>
         <source>New tag</source>
         <translation>Nowy tag</translation>
     </message>
@@ -2163,12 +2232,12 @@ Przykład: https://serwer.mój:8787</translation>
         <translation>Skopiuj link do pokoju</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Tag room as:</source>
         <translation>Oznacz pokój tagiem:</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+13"/>
         <source>Favourite</source>
         <translation>Ulubione</translation>
     </message>
@@ -2188,7 +2257,12 @@ Przykład: https://serwer.mój:8787</translation>
         <translation>Utwórz nowy tag…</translation>
     </message>
     <message>
-        <location line="+264"/>
+        <location line="+10"/>
+        <source>Add or remove from space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+263"/>
         <source>Status Message</source>
         <translation>Wiadomość Statusowa</translation>
     </message>
@@ -2254,6 +2328,11 @@ Przykład: https://serwer.mój:8787</translation>
         <location line="+9"/>
         <source>Start a direct chat</source>
         <translation>Rozpocznij czat bezpośredni</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Create a new community</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2362,7 +2441,12 @@ Przykład: https://serwer.mój:8787</translation>
         <translation>Ustawienia pokoju</translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+38"/>
+        <source>Change room avatar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+93"/>
         <source>Change name of this room</source>
         <translation>Zmień nazwę tego pokoju</translation>
     </message>
@@ -2602,7 +2686,7 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+358"/>
+        <location filename="../qml/Root.qml" line="+372"/>
         <source>Please enter your login password to continue:</source>
         <translation>Wprowadź swoje hasło do konta, aby kontynuować:</translation>
     </message>
@@ -2684,7 +2768,7 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4514"/>
+        <location filename="../../src/Cache.cpp" line="-4570"/>
         <source>Failed to connect to secret storage</source>
         <translation>Błąd połączenia do menadżera sekretów</translation>
     </message>
@@ -2721,7 +2805,7 @@ Zwróć uwagę, iż nie będzie ono mogło zostać wyłączone.</translation>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
         <translation>Witaj w sieci Matrix!
-Wygląda na to, że jesteś tu nowy(-a). Zanim będzie można bezpiecznie szyfrować Twoje wiadomości, musimy skonfigurować parę drobiazgów. Możesz od razu kliknąć &quot;akceptuj&quot; lub dostosować niektóre opcje. Postaramy się także wyjaśnić kilka podstaw. Możesz pominąć ten samouczek, choć może on okazać się pomocny!</translation>
+Wygląda na to, że jesteś tu nowy(-a). Zanim będzie można bezpiecznie szyfrować Twoje wiadomości, musimy skonfigurować parę drobiazgów. Możesz od razu kliknąć &quot;akceptuj&quot; lub dostosować niektóre opcje. Postaramy się także wyjaśnić kilka podstaw. Możesz pominąć ten samouczek, choć może on okazać się&#xa0;pomocny!</translation>
     </message>
     <message>
         <location line="+124"/>
@@ -2782,7 +2866,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+271"/>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+272"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
         <translation>Nie udało się uaktualnić paczki obrazów: %1</translation>
@@ -2803,6 +2887,44 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <location line="+29"/>
         <source>Failed to upload image: %1</source>
         <translation>Nie udało się wysłać obrazu: %1</translation>
+    </message>
+</context>
+<context>
+    <name>SpaceMenuLevel</name>
+    <message>
+        <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
+        <source>Add or remove from space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Official community for this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Affiliated community for this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Listed only for community members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Listed only for room members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Not related</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Subcommunities</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2889,7 +3011,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <translation>Zapisz plik</translation>
     </message>
     <message numerus="yes">
-        <location line="+262"/>
+        <location line="+258"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -2971,7 +3093,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation>%1 może teraz wyrzucać członków tego pokoju.</translation>
+        <translation>%1 może teraz wyrzucać&#xa0;członków tego pokoju.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3116,7 +3238,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <translation>%1 zmienił(a) naklejki i emotikony w tym pokoju.</translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+35"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
         <translation>%1 wyłączył(a) regułę banowania użytkowników pasujących do %2.</translation>
     </message>
@@ -3126,7 +3248,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <translation>%1 dodał(a) regułę banowania użytkowników pasujących do %2 z powodu &apos;%3&apos;.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+22"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
         <translation>%1 wyłączył(a) regułę banowania pokojów pasujących do %2.</translation>
     </message>
@@ -3136,7 +3258,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <translation>%1 dodał(a) regułę banowania pokojów pasujących do %2 z powodu &apos;%3&apos;.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+22"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
         <translation>%1 wyłączył(a) regułę banowania serwerów pasujących do %2.</translation>
     </message>
@@ -3228,12 +3350,12 @@ Powód: %4</translation>
         <translation>Użytkownik %1 ocenzurował własne pukanie.</translation>
     </message>
     <message>
-        <location line="-1497"/>
+        <location line="-1528"/>
         <source>You joined this room.</source>
         <translation>Dołączyłeś(-aś) do tego pokoju.</translation>
     </message>
     <message>
-        <location line="+1449"/>
+        <location line="+1480"/>
         <source>%1 invited %2.</source>
         <translation>%1 zaprosił(a) %2.</translation>
     </message>
@@ -3900,7 +4022,7 @@ Powód: %4</translation>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation>Ustaw maksymalną szerokość wiadomości na osi czasu (w pikselach). Może to poprawić czytelność na szerokich ekranach, gdy Nheko zostanie zmaksymalizowany.</translation>
+        <translation>Ustaw maksymalną szerokość&#xa0;wiadomości na osi czasu (w pikselach). Może to poprawić czytelność na szerokich ekranach, gdy Nheko zostanie zmaksymalizowany.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4196,7 +4318,7 @@ To ustawienie wejdzie w życie po restarcie aplikacji.</translation>
 <context>
     <name>VerificationManager</name>
     <message>
-        <location filename="../../src/encryption/VerificationManager.cpp" line="+133"/>
+        <location filename="../../src/encryption/VerificationManager.cpp" line="+139"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Nie znaleziono zaszyfrowanego prywatnego czatu z tym użytkownikiem. Utwórz nowy zaszyfrowany prywatny czat z tym użytkownikiem i spróbuj ponownie.</translation>
     </message>

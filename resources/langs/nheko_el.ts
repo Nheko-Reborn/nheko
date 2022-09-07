@@ -102,7 +102,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2724"/>
+        <location filename="../../src/Cache.cpp" line="+2733"/>
         <source>%1 and %n other(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -188,18 +188,18 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+120"/>
+        <location filename="../../src/ChatPage.cpp" line="+121"/>
         <source>Failed to invite user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+737"/>
+        <location line="+739"/>
         <source>Invited user: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-511"/>
+        <location line="-513"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -214,7 +214,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+302"/>
+        <location line="+304"/>
         <source>Knock on room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -230,22 +230,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Failed to knock room: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+25"/>
-        <source>Confirm join</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Do you really want to join %1?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+34"/>
+        <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
         <translation type="unfinished"></translation>
     </message>
@@ -311,7 +301,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-967"/>
+        <location line="-969"/>
         <source>Cache migration failed!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -344,7 +334,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+86"/>
         <source>Failed to join room: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -420,7 +410,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CommunitiesModel</name>
     <message>
-        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+72"/>
+        <location filename="../../src/timeline/CommunitiesModel.cpp" line="+81"/>
         <source>All rooms</source>
         <translation type="unfinished"></translation>
     </message>
@@ -469,6 +459,67 @@ You may optionally provide a reason for others to accept your knock:</source>
         <source>Messages from your server or administrator.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+643"/>
+        <source>Failed to update space child: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Failed to delete space child: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Failed to update space parent: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Failed to delete space parent: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ConfirmJoinRoomDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
+        <source>Confirm community join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Confirm room join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message numerus="yes">
+        <location line="+67"/>
+        <source>%n member(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Do you want to join this room? You can optionally add a reason below:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Knock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>CreateDirect</name>
@@ -496,18 +547,27 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CreateRoom</name>
     <message>
-        <location filename="../qml/dialogs/CreateRoom.qml" line="+15"/>
-        <location line="+125"/>
+        <location filename="../qml/dialogs/CreateRoom.qml" line="+147"/>
         <source>Create Room</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-98"/>
+        <location line="-102"/>
         <source>Name</source>
         <translation type="unfinished">Όνομα</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-27"/>
+        <source>New community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>New Room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+28"/>
         <source>No name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -537,7 +597,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Trusted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -547,7 +607,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+15"/>
         <source>Encryption</source>
         <translation type="unfinished"></translation>
     </message>
@@ -966,13 +1026,18 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>Private pack</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Pack from parent community</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1014,7 +1079,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished">Όλα τα αρχεία (*)</translation>
     </message>
     <message>
-        <location line="+764"/>
+        <location line="+806"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1064,6 +1129,11 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+21"/>
         <source>Room ID or alias</source>
         <translation type="unfinished">ID ή όνομα συνομιλίας</translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>Join</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1410,7 +1480,7 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+426"/>
+        <location line="+427"/>
         <source>Reason for removal</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1583,7 +1653,6 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/notifications/Manager.cpp" line="+23"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+46"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="+75"/>
         <source>%1 sent an encrypted message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1595,7 +1664,6 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
-        <location filename="../../src/notifications/ManagerWin.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2123,7 +2191,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1971"/>
+        <location filename="../../src/Cache.cpp" line="+2026"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2131,7 +2199,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+128"/>
+        <location filename="../qml/RoomList.qml" line="+141"/>
         <source>New tag</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2156,12 +2224,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>Tag room as:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+13"/>
         <source>Favourite</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2181,7 +2249,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+264"/>
+        <location line="+10"/>
+        <source>Add or remove from space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+263"/>
         <source>Status Message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2246,6 +2319,11 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Create a new community</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2354,7 +2432,12 @@ Example: https://server.my:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+38"/>
+        <source>Change room avatar.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+93"/>
         <source>Change name of this room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2592,7 +2675,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+358"/>
+        <location filename="../qml/Root.qml" line="+372"/>
         <source>Please enter your login password to continue:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2674,7 +2757,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4514"/>
+        <location filename="../../src/Cache.cpp" line="-4570"/>
         <source>Failed to connect to secret storage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2770,7 +2853,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+271"/>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+272"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
         <translation type="unfinished"></translation>
@@ -2790,6 +2873,44 @@ If you choose verify, you need to have the other device available. If you choose
         <location line="-15"/>
         <location line="+29"/>
         <source>Failed to upload image: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SpaceMenuLevel</name>
+    <message>
+        <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
+        <source>Add or remove from space</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Official community for this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Affiliated community for this room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Listed only for community members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Listed only for room members</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Not related</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Subcommunities</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2877,7 +2998,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+262"/>
+        <location line="+258"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
@@ -3099,7 +3220,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
+        <location line="+35"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3109,7 +3230,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+22"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3119,7 +3240,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+22"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3210,12 +3331,12 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1497"/>
+        <location line="-1528"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1449"/>
+        <location line="+1480"/>
         <source>%1 invited %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4162,7 +4283,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>VerificationManager</name>
     <message>
-        <location filename="../../src/encryption/VerificationManager.cpp" line="+133"/>
+        <location filename="../../src/encryption/VerificationManager.cpp" line="+139"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation type="unfinished"></translation>
     </message>
