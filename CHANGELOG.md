@@ -29,6 +29,7 @@
 - Dutch (Thulinma)
 - Finnish (Lurkki)
 - Estonian (Priit)
+- Indonesian (Linerly)
 
 ### Bugfixes
 
