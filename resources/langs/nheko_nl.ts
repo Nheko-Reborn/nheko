@@ -81,12 +81,12 @@
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation>Publiceer als een alias in deze kamer</translation>
+        <translation>Publiceer in kamerlijst</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation>Publiceer als een alias in deze kamer</translation>
+        <translation>Verwijder deze alias</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -463,22 +463,22 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
     <message>
         <location line="+643"/>
         <source>Failed to update space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon groepskind niet veranderen: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon groepskind niet verwijderen: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Failed to update space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon groepsouder niet bijwerken: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon groepsouder niet verwijderen: %1</translation>
     </message>
 </context>
 <context>
@@ -486,17 +486,17 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevestig groep binnentreden</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevestig kamer binnentreden</translation>
     </message>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n deelnemer</numerusform>
             <numerusform>%n deelnemers</numerusform>
         </translation>
@@ -504,22 +504,22 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer kan niet direct binnengegaan worden. Je kan wel aankloppen, en dan kunnen deelnemers je binnenlaten of weigeren. Je kan optioneel hieronder een reden om je binnen te laten invoeren:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wil je deze kamer binnentreden? Je kan optioneel hieronder een reden opgeven:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Aankloppen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Binnentreden</translation>
     </message>
 </context>
 <context>
@@ -560,12 +560,12 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
     <message>
         <location line="-27"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe groep</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe kamer</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1039,7 +1039,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Pakket van een groepsouder</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1134,7 +1134,7 @@ Je kan optioneel een reden voor het aankloppen opgeven:</translation>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Binnentreden</translation>
     </message>
 </context>
 <context>
@@ -1208,7 +1208,7 @@ Als Nheko je thuisserver niet kan vinden, zal er een veld verschijnen om de serv
         <source>The address that can be used to contact you homeservers client API.
 Example: https://server.my:8787</source>
         <translation>Het adres dat gebruikt kan worden om contact te zoeken met je thuisserver&apos;s gebruikers API.
-Voorbeeld: https://mijnserver.nl:8787</translation>
+Voorbeeld: https://server.my:8787</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -2256,7 +2256,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+10"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen of verwijderen aan/uit groep</translation>
     </message>
     <message>
         <location line="+263"/>
@@ -2329,7 +2329,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>Maak een nieuwe groep</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2439,7 +2439,7 @@ Voorbeeld: https://mijnserver.nl:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander kamerafbeelding.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2889,37 +2889,37 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen aan of verwijderen uit groep</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Officiële community voor deze kamer</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerelateerde community voor deze kamer</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen voor groepsdeelnemers zichtbaar</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen voor kamer deelnemers zichtbaar</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongerelateerd</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>Deelgroepen</translation>
     </message>
 </context>
 <context>
