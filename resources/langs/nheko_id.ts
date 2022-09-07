@@ -81,12 +81,12 @@
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation>Promosikan sebagai sebuah alias di ruangan ini</translation>
+        <translation>Publikasikan di direktori ruangan</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation>Promosikan sebagai sebuah alias di ruangan ini</translation>
+        <translation>Hapus alias ini</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -462,22 +462,22 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     <message>
         <location line="+643"/>
         <source>Failed to update space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal memperbarui anak space: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal menghapus anak space: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Failed to update space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal memperbarui induk space: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal menghapus induk space: %1</translation>
     </message>
 </context>
 <context>
@@ -485,39 +485,39 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmasi pergabungan komunitas</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmasi pergabungan ruangan</translation>
     </message>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n anggota</numerusform>
         </translation>
     </message>
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan ini tidak bisa digabung secara langsung. Tetapi kamu bisa mengetuk pada ruangan dan anggota ruangan bisa menerima atau menolak permintaan pergabungan ini. Kamu bisa menambahkan alasan secara opsional untuk membuat mereka terima di bawah:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Apakah kamu ingin bergabung ke ruangan ini? Kamu bisa menambahkan alasan secara opsional di bawah:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Ketuk</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Bergabung</translation>
     </message>
 </context>
 <context>
@@ -558,12 +558,12 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     <message>
         <location line="-27"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Komunitas baru</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan baru</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1037,7 +1037,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Paket dari induk komunitas</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1132,7 +1132,7 @@ Kamu dapat memberikan alasan secara opsional untuk lainnya untuk menerima ketuka
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Bergabung</translation>
     </message>
 </context>
 <context>
@@ -2254,7 +2254,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+10"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan atau hilangkan dari space</translation>
     </message>
     <message>
         <location line="+263"/>
@@ -2327,7 +2327,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>Buat sebuah komunitas baru</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2436,7 +2436,7 @@ Misalnya: https://server.id:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah avatar ruangan.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2885,37 +2885,37 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan atau hilangkan dari space</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Komunitas resmi untuk ruangan ini</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Komunitas berafiliasi untuk ruangan ini</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>Hanya didaftarkan untuk anggota komunitas</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Hanya didaftarkan untuk anggota ruangan</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak terkait</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>Subkomunitas</translation>
     </message>
 </context>
 <context>
