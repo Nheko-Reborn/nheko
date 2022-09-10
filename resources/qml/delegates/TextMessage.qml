@@ -34,7 +34,7 @@ MatrixText {
         border: 1px solid " + Nheko.colors.text + ";
     }
     blockquote { margin-left: 1em; }
-    " + (enabled ? "span[data-mx-spoiler] {
+    " + (!Settings.mobileMode ? "span[data-mx-spoiler] {
         color: transparent;
         background-color: " + Nheko.colors.text + ";
     }" : "") +  // TODO(Nico): Figure out how to support mobile
