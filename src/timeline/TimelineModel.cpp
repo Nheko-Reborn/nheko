@@ -1376,7 +1376,7 @@ void
 TimelineModel::updateLastReadId(QString currentRoomId)
 {
     if (currentRoomId == room_id_) {
-        last_event_id = cache::getLastFullyReadEventId(room_id_.toStdString());
+        last_event_id = cache::getFullyReadEventId(room_id_.toStdString());
         auto lastVisibleEventIndexAndId =
           cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
         if (lastVisibleEventIndexAndId) {
