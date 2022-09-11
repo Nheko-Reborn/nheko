@@ -458,6 +458,7 @@ Item {
                 encryptionError: wrapper.encryptionError
                 timestamp: wrapper.timestamp
                 status: wrapper.status
+                index: wrapper.index
                 relatedEventCacheBuster: wrapper.relatedEventCacheBuster
                 y: section.visible && section.active ? section.y + section.height : 0
 

@@ -116,7 +116,7 @@ public slots:
     {
         currentRoom_ = nullptr;
         currentRoomPreview_.reset();
-        emit currentRoomChanged();
+        emit currentRoomChanged("");
     }
 
 private slots:
@@ -124,7 +124,7 @@ private slots:
 
 signals:
     void totalUnreadMessageCountUpdated(int unreadMessages);
-    void currentRoomChanged();
+    void currentRoomChanged(QString currentRoomId);
     void fetchedPreview(QString roomid, RoomInfo info);
 
 private:
@@ -218,7 +218,7 @@ public slots:
     void updateHiddenTagsAndSpaces();
 
 signals:
-    void currentRoomChanged();
+    void currentRoomChanged(QString currentRoomId);
 
 private:
     short int calculateImportance(const QModelIndex &idx) const;

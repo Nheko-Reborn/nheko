@@ -74,6 +74,9 @@ public:
 
     void startChat(QString userid, std::optional<bool> encryptionEnabled);
 
+    //! Check if the given room is currently open.
+    bool isRoomActive(const QString &room_id);
+
 public slots:
     bool handleMatrixUri(QString uri);
     bool handleMatrixUri(const QUrl &uri);
@@ -192,9 +195,6 @@ private:
     void removeOldFallbackKey();
     void getProfileInfo();
     void getBackupVersion();
-
-    //! Check if the given room is currently open.
-    bool isRoomActive(const QString &room_id);
 
     using UserID      = QString;
     using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;

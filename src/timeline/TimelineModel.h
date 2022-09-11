@@ -189,6 +189,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QStringList widgetLinks READ widgetLinks NOTIFY widgetLinksChanged)
     Q_PROPERTY(int roomMemberCount READ roomMemberCount NOTIFY roomMemberCountChanged)
     Q_PROPERTY(bool isEncrypted READ isEncrypted NOTIFY encryptionChanged)
+    Q_PROPERTY(QString fullyReadEventId READ fullyReadEventId NOTIFY fullyReadEventIdChanged)
     Q_PROPERTY(bool isSpace READ isSpace CONSTANT)
     Q_PROPERTY(int trustlevel READ trustlevel NOTIFY trustlevelChanged)
     Q_PROPERTY(bool isDirect READ isDirect NOTIFY isDirectChanged)
@@ -325,6 +326,7 @@ public:
 
     bool isSpace() const { return isSpace_; }
     bool isEncrypted() const { return isEncrypted_; }
+    QString fullyReadEventId() const { return QString::fromStdString(fullyReadEventId_); }
     crypto::Trust trustlevel() const;
     int roomMemberCount() const;
     bool isDirect() const { return roomMemberCount() <= 2; }
@@ -344,6 +346,9 @@ public slots:
     int currentIndex() const { return idToIndex(currentId); }
     void eventShown();
     void markEventsAsRead(const std::vector<QString> &event_ids);
+    void updateLastReadId(QString currentRoomId);
+    void lastReadIdOnWindowFocus();
+    void checkAfterFetch();
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
     void updateTypingUsers(const std::vector<QString> &users)
     {
@@ -427,6 +432,7 @@ signals:
     void updateFlowEventId(std::string event_id);
 
     void encryptionChanged();
+    void fullyReadEventIdChanged();
     void trustlevelChanged();
     void roomNameChanged();
     void roomTopicChanged();
@@ -480,6 +486,8 @@ private:
     bool m_paginationInProgress = false;
     bool isSpace_               = false;
     bool isEncrypted_           = false;
+    std::string last_event_id;
+    std::string fullyReadEventId_;
 };
 
 template<class T>
@@ -497,6 +505,7 @@ TimelineModel::sendMessageEvent(const T &content, mtx::events::EventType eventTy
         msgCopy.type                      = eventType;
         emit newMessageToSend(msgCopy);
     }
+
     resetReply();
     resetEdit();
 }

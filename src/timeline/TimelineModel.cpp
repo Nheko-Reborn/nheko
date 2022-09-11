@@ -427,6 +427,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         setPaginationInProgress(false);
         updateLastMessage();
     });
+    connect(&events, &EventStore::fetchedMore, this, &TimelineModel::checkAfterFetch);
     connect(&events,
             &EventStore::startDMVerification,
             this,
@@ -977,6 +978,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
             emit encryptionChanged();
         }
     }
+
     updateLastMessage();
 }
 
@@ -1370,6 +1372,48 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
     }
 }
 
+void
+TimelineModel::updateLastReadId(QString currentRoomId)
+{
+    if (currentRoomId == room_id_) {
+        last_event_id = cache::getFullyReadEventId(room_id_.toStdString());
+        auto lastVisibleEventIndexAndId =
+          cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
+        if (lastVisibleEventIndexAndId) {
+            fullyReadEventId_ = lastVisibleEventIndexAndId->second;
+            emit fullyReadEventIdChanged();
+        }
+    }
+}
+
+void
+TimelineModel::lastReadIdOnWindowFocus()
+{
+    /* this stops it from removing the line when focusing another window
+     * and from removing the line when refocusing nheko */
+    if (ChatPage::instance()->isRoomActive(room_id_) &&
+        cache::calculateRoomReadStatus(room_id_.toStdString())) {
+        updateLastReadId(room_id_);
+    }
+}
+
+/*
+ * if the event2order db didn't have the messages we needed when the room was opened
+ * try again after these new messages were fetched
+ */
+void
+TimelineModel::checkAfterFetch()
+{
+    if (fullyReadEventId_.empty()) {
+        auto lastVisibleEventIndexAndId =
+          cache::lastVisibleEvent(room_id_.toStdString(), last_event_id);
+        if (lastVisibleEventIndexAndId) {
+            fullyReadEventId_ = lastVisibleEventIndexAndId->second;
+            emit fullyReadEventIdChanged();
+        }
+    }
+}
+
 template<typename T>
 void
 TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType)
@@ -1550,6 +1594,9 @@ TimelineModel::addPendingMessage(mtx::events::collections::TimelineEvents event)
       event);
 
     std::visit(SendMessageVisitor{this}, event);
+
+    fullyReadEventId_ = this->EventId;
+    emit fullyReadEventIdChanged();
 }
 
 void

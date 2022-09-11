@@ -1537,6 +1537,21 @@ Cache::updateReadReceipt(lmdb::txn &txn, const std::string &room_id, const Recei
     }
 }
 
+std::string
+Cache::getFullyReadEventId(const std::string &room_id)
+{
+    auto txn = ro_txn(env_);
+
+    if (auto ev = getAccountData(txn, mtx::events::EventType::FullyRead, room_id)) {
+        if (auto fr =
+              std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(
+                &ev.value())) {
+            return fr->content.event_id;
+        }
+    }
+    return std::string();
+}
+
 void
 Cache::calculateRoomReadStatus()
 {
@@ -1561,14 +1576,7 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
         const auto last_event_id = getLastEventId(txn, room_id);
         const auto localUser     = utils::localUser().toStdString();
 
-        std::string fullyReadEventId;
-        if (auto ev = getAccountData(txn, mtx::events::EventType::FullyRead, room_id)) {
-            if (auto fr =
-                  std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::FullyRead>>(
-                    &ev.value())) {
-                fullyReadEventId = fr->content.event_id;
-            }
-        }
+        std::string fullyReadEventId = getFullyReadEventId(room_id);
 
         if (last_event_id.empty() || fullyReadEventId.empty())
             return true;
@@ -2499,6 +2507,50 @@ Cache::lastInvisibleEventAfter(const std::string &room_id, std::string_view even
         return std::pair{prevIdx, std::string(prevId)};
     } catch (lmdb::runtime_error &e) {
         nhlog::db()->error("Failed to get last invisible event after {}", event_id, e.what());
+        return {};
+    }
+}
+
+std::optional<std::pair<uint64_t, std::string>>
+Cache::lastVisibleEvent(const std::string &room_id, std::string_view event_id)
+{
+    if (room_id.empty() || event_id.empty())
+        return {};
+
+    auto txn = ro_txn(env_);
+    lmdb::dbi orderDb;
+    lmdb::dbi eventOrderDb;
+    lmdb::dbi timelineDb;
+    try {
+        orderDb      = getEventToOrderDb(txn, room_id);
+        eventOrderDb = getEventOrderDb(txn, room_id);
+        timelineDb   = getMessageToOrderDb(txn, room_id);
+
+        std::string_view indexVal;
+
+        bool success = orderDb.get(txn, event_id, indexVal);
+        if (!success) {
+            return {};
+        }
+
+        uint64_t idx = lmdb::from_sv<uint64_t>(indexVal);
+        std::string evId{event_id};
+
+        auto cursor = lmdb::cursor::open(txn, eventOrderDb);
+        if (cursor.get(indexVal, event_id, MDB_SET)) {
+            do {
+                evId = nlohmann::json::parse(event_id)["event_id"].get<std::string>();
+                std::string_view temp;
+                idx = lmdb::from_sv<uint64_t>(indexVal);
+                if (timelineDb.get(txn, evId, temp)) {
+                    return std::pair{idx, evId};
+                }
+            } while (cursor.get(indexVal, event_id, MDB_PREV));
+        }
+
+        return std::pair{idx, evId};
+    } catch (lmdb::runtime_error &e) {
+        nhlog::db()->error("Failed to get last visible event after {}", event_id, e.what());
         return {};
     }
 }
@@ -5317,6 +5369,12 @@ lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id)
     return instance_->lastInvisibleEventAfter(room_id, event_id);
 }
 
+std::optional<std::pair<uint64_t, std::string>>
+lastVisibleEvent(const std::string &room_id, std::string_view event_id)
+{
+    return instance_->lastVisibleEvent(room_id, event_id);
+}
+
 RoomInfo
 singleRoomInfo(const std::string &room_id)
 {
@@ -5336,6 +5394,11 @@ getRoomInfo(const std::vector<std::string> &rooms)
 
 //! Calculates which the read status of a room.
 //! Whether all the events in the timeline have been read.
+std::string
+getFullyReadEventId(const std::string &room_id)
+{
+    return instance_->getFullyReadEventId(room_id);
+}
 bool
 calculateRoomReadStatus(const std::string &room_id)
 {

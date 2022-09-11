@@ -108,6 +108,8 @@ Page {
                     timelineRoot: timelineView
                     windowTarget: roomWindowW
                 }
+
+                onActiveChanged: { room.lastReadIdOnWindowFocus(); }
             }
 
         }

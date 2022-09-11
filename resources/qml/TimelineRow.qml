@@ -44,12 +44,13 @@ AbstractButton {
     required property int duration
     required property var timestamp
     required property int status
+    required property int index
     required property int relatedEventCacheBuster
 
     hoverEnabled: true
 
     width: parent.width
-    height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )
+    height: row.height+(reactionRow.height > 0 ? reactionRow.height-2 : 0 )+unreadRow.height
 
     Rectangle {
         color: (Settings.messageHoverHighlight && hovered) ? Nheko.colors.alternateBase : "transparent"
@@ -277,6 +278,7 @@ AbstractButton {
             }
         }
     }
+
     Reactions {
         anchors {
             top: row.bottom
@@ -291,5 +293,18 @@ AbstractButton {
 
         reactions: r.reactions
         eventId: r.eventId
+    }
+
+    Rectangle {
+        id: unreadRow
+        anchors {
+            top: reactionRow.bottom
+            topMargin: 5
+        }
+        color: Nheko.colors.highlight
+        width: row.maxWidth
+        visible: (r.index > 0 && (chat.model.fullyReadEventId == r.eventId))
+        height: visible ? 3 : 0
+
     }
 }

@@ -169,6 +169,7 @@ public:
 
     //! Calculates which the read status of a room.
     //! Whether all the events in the timeline have been read.
+    std::string getFullyReadEventId(const std::string &room_id);
     bool calculateRoomReadStatus(const std::string &room_id);
     void calculateRoomReadStatus();
 
@@ -212,6 +213,8 @@ public:
     std::optional<uint64_t> getEventIndex(const std::string &room_id, std::string_view event_id);
     std::optional<std::pair<uint64_t, std::string>>
     lastInvisibleEventAfter(const std::string &room_id, std::string_view event_id);
+    std::optional<std::pair<uint64_t, std::string>>
+    lastVisibleEvent(const std::string &room_id, std::string_view event_id);
     std::optional<std::string> getTimelineEventId(const std::string &room_id, uint64_t index);
     std::optional<uint64_t> getArrivalIndex(const std::string &room_id, std::string_view event_id);
 
