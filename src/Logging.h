@@ -6,11 +6,15 @@
 #pragma once
 
 #include <memory>
-#include <spdlog/logger.h>
+#include <string>
+
+#include <QString>
+
+#include "spdlog/logger.h"
 
 namespace nhlog {
 void
-init(const std::string &file);
+init(const QString &level, const QString &path, bool to_stderr);
 
 std::shared_ptr<spdlog::logger>
 ui();
@@ -27,5 +31,4 @@ crypto();
 std::shared_ptr<spdlog::logger>
 qml();
 
-extern bool enable_debug_log_from_commandline;
 }
