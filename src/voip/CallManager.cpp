@@ -21,7 +21,6 @@
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include <mtxclient/utils.hpp>
 
 #include "mtx/responses/turn_server.hpp"
 
@@ -70,8 +69,8 @@ CallManager::CallManager(QObject *parent)
           nhlog::ui()->debug("WebRTC: call id: {} - sending offer", callid_);
           emit newMessage(
             roomid_,
-            CallInvite{callid_, partyid_, SDO{sdp, SDO::Type::Offer}, "0", timeoutms_, invitee_});
-          emit newMessage(roomid_, CallCandidates{callid_, partyid_, candidates, "0"});
+            CallInvite{callid_, partyid_, SDO{sdp, SDO::Type::Offer}, callPartyVersion_, timeoutms_, invitee_});
+          emit newMessage(roomid_, CallCandidates{callid_, partyid_, candidates, callPartyVersion_});
           std::string callid(callid_);
           QTimer::singleShot(timeoutms_, this, [this, callid]() {
               if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
@@ -88,8 +87,8 @@ CallManager::CallManager(QObject *parent)
       this,
       [this](const std::string &sdp, const std::vector<CallCandidates::Candidate> &candidates) {
           nhlog::ui()->debug("WebRTC: call id: {} - sending answer", callid_);
-          emit newMessage(roomid_, CallAnswer{callid_, partyid_, "0", SDO{sdp, SDO::Type::Answer}});
-          emit newMessage(roomid_, CallCandidates{callid_, partyid_, candidates, "0"});
+          emit newMessage(roomid_, CallAnswer{callid_, partyid_, callPartyVersion_, SDO{sdp, SDO::Type::Answer}});
+          emit newMessage(roomid_, CallCandidates{callid_, partyid_, candidates, callPartyVersion_});
       });
 
     connect(&session_,
@@ -97,7 +96,7 @@ CallManager::CallManager(QObject *parent)
             this,
             [this](const CallCandidates::Candidate &candidate) {
                 nhlog::ui()->debug("WebRTC: call id: {} - sending ice candidate", callid_);
-                emit newMessage(roomid_, CallCandidates{callid_, partyid_, {candidate}, "0"});
+                emit newMessage(roomid_, CallCandidates{callid_, partyid_, {candidate}, callPartyVersion_});
             });
 
     connect(&turnServerTimer_, &QTimer::timeout, this, &CallManager::retrieveTurnServer);
@@ -166,9 +165,6 @@ CallManager::CallManager(QObject *parent)
                     break;
                 }
             });
-    
-    // generate party id(?) 
-    generatePartyID();
 }
 
 void
@@ -207,6 +203,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     std::string strCallType =
       callType_ == CallType::VOICE ? "voice" : (callType_ == CallType::VIDEO ? "video" : "screen");
     nhlog::ui()->debug("WebRTC: call id: {} - creating {} invite", callid_, strCallType);
+    
     std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
     const RoomMember *callee;
     if(roomInfo.member_count == 1)
@@ -214,7 +211,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     else if(roomInfo.member_count == 2)
       callee = members.front().user_id == utils::localUser() ? &members.back() : &members.front();
     else {
-        // drop down or something
+        emit ChatPage::instance()->showNotification(QStringLiteral("Calls are limited to rooms with less than two members."));
+        return;
     }
 
     callParty_            = callee->user_id;
@@ -261,7 +259,23 @@ CallManager::hangUp(CallHangUp::Reason reason)
     if (!callid_.empty()) {
         nhlog::ui()->debug(
           "WebRTC: call id: {} - hanging up ({})", callid_, callHangUpReasonString(reason));
-        emit newMessage(roomid_, CallHangUp{callid_, partyid_, "1", reason});
+        emit newMessage(roomid_, CallHangUp{callid_, partyid_, callPartyVersion_, reason});
+        endCall();
+    }
+}
+
+void
+CallManager::rejectCall()
+{
+    if(callPartyVersion_ == "0")
+    {
+        hangUp();
+        return;
+    }
+    if(!callid_.empty()){
+        nhlog::ui()->debug(
+          "WebRTC: call id: {} - rejecting call", callid_);
+        emit newMessage(roomid_, CallReject{callid_, partyid_, callPartyVersion_});
         endCall();
     }
 }
@@ -271,7 +285,9 @@ CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 {
 #ifdef GSTREAMER_AVAILABLE
     if (handleEvent<CallInvite>(event) || handleEvent<CallCandidates>(event) ||
-        handleEvent<CallAnswer>(event) || handleEvent<CallHangUp>(event))
+        handleEvent<CallNegotiate>(event) || handleEvent<CallAnswer>(event) || 
+        handleEvent<CallReject>(event) || handleEvent<CallHangUp>(event) || 
+        handleEvent<CallSelectAnswer>(event))
         return;
 #else
     (void)event;
@@ -306,60 +322,77 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                        callInviteEvent.content.call_id,
                        (isVideo ? "video" : "voice"),
                        callInviteEvent.sender);
+    
 
     if (callInviteEvent.content.call_id.empty())
         return;
 
     auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
+    callPartyVersion_ = callInviteEvent.content.version;
+
     if(isOnCall())
     {
         emit newMessage(
         QString::fromStdString(callInviteEvent.room_id),
         CallHangUp{
-            callInviteEvent.content.call_id, partyid_, "1", CallHangUp::Reason::UserBusy});
+            callInviteEvent.content.call_id, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
         return;
     }
+
     const QString &ringtone = UserSettings::instance()->ringtone();
-    if(callInviteEvent.content.version == "0")
+    bool sharesRoom = true;
+
+    std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
+    const RoomMember &caller = *std::find_if(members.begin(), members.end(), 
+                                                [&](RoomMember member){
+                                                    return member.user_id.toStdString() == callInviteEvent.sender;
+                                                });
+
+    if(callPartyVersion_ == "0")
     {
         if (roomInfo.member_count != 2) {
             emit newMessage(
             QString::fromStdString(callInviteEvent.room_id),
             CallHangUp{
-                callInviteEvent.content.call_id, partyid_, "1", CallHangUp::Reason::InviteTimeOut});
+                callInviteEvent.content.call_id, partyid_, callPartyVersion_, CallHangUp::Reason::InviteTimeOut});
             return;
         }
     }
-    else // for voip v1 and up
+    else 
     {
-        std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
-        const RoomMember &caller = *std::find_if(members.begin(), members.end(), 
-                                                    [&](RoomMember member){
-                                                        return member.user_id.toStdString() == callInviteEvent.sender;
-                                                    });
-        callParty_            = caller.user_id;
-        callPartyDisplayName_ = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
-        callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
-        if  (roomInfo.member_count == 2 || 
-            (roomInfo.member_count == 1 && partyid_ != callInviteEvent.content.party_id) || 
-            callInviteEvent.content.invitee == "" || 
-            callInviteEvent.content.invitee == utils::localUser().toStdString())
+        if  (caller.user_id == utils::localUser() && callInviteEvent.content.party_id == partyid_) // remote echo
+            return;
+
+        if  (roomInfo.member_count == 2 || // general call in room with two members
+            (roomInfo.member_count == 1 && partyid_ != callInviteEvent.content.party_id) || // self call, ring if not the same party_id
+            callInviteEvent.content.invitee == "" || // empty, meant for everyone
+            callInviteEvent.content.invitee == utils::localUser().toStdString()) // meant specifically for local user
         {
-            bool sharesRoom = true;
             if(roomInfo.member_count > 2)
             {
-                
+                //check if shares room
             }
-            // ring if not mute or does not have direct message room
-            if (ringtone != QLatin1String("Mute") && sharesRoom)
-                playRingtone(ringtone == QLatin1String("Default")
-                            ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
-                            : QUrl::fromLocalFile(ringtone),
-                            true);
         }
         else
+        {
+            emit newMessage(
+            QString::fromStdString(callInviteEvent.room_id),
+            CallHangUp{
+                callInviteEvent.content.call_id, partyid_, callPartyVersion_, CallHangUp::Reason::InviteTimeOut});
             return;
+        }
     }
+
+    // ring if not mute or does not have direct message room
+    if (ringtone != QLatin1String("Mute") && sharesRoom)
+        playRingtone(ringtone == QLatin1String("Default")
+                    ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
+                    : QUrl::fromLocalFile(ringtone),
+                    true);
+
+    callParty_            = caller.user_id;
+    callPartyDisplayName_ = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
+    callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
 
     roomid_ = QString::fromStdString(callInviteEvent.room_id);
     callid_ = callInviteEvent.content.call_id;
@@ -383,7 +416,7 @@ CallManager::acceptInvite()
     if (!session_.havePlugins(false, &errorMessage) ||
         (callType_ == CallType::VIDEO && !session_.havePlugins(true, &errorMessage))) {
         emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
-        hangUp();
+        hangUp(CallHangUp::Reason::UserMediaFailed);
         return;
     }
 
@@ -460,8 +493,6 @@ CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
         endCall();
 }
 
-// msc2756
-
 void
 CallManager::handleEvent(const RoomEvent<CallSelectAnswer> &callSelectAnswerEvent)
 {
@@ -471,7 +502,7 @@ CallManager::handleEvent(const RoomEvent<CallSelectAnswer> &callSelectAnswerEven
                     
     if(partyid_ != callSelectAnswerEvent.content.selected_party_id) {
         emit ChatPage::instance()->showNotification(
-                    QStringLiteral("The call was answered elsewhere."));
+                    QStringLiteral("Call answered/rejected on another device."));
         haveCallInvite_ = false;
         endCall();
     }
@@ -485,8 +516,12 @@ CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
                        callRejectEvent.sender);
     if(isOnCall())
         return;
-    
-    // emit call_select_answer with selected party id = party id
+
+    // send selectAnswer with party id of call reject 
+    emit newMessage(roomid_, CallSelectAnswer{callid_, partyid_, callPartyVersion_, callRejectEvent.content.party_id}); 
+
+    // end call
+    endCall();
 }
 
 void
@@ -499,13 +534,18 @@ CallManager::handleEvent(const RoomEvent<CallNegotiate> &callNegotiateEvent)
     if(selectedpartyid_ != callNegotiateEvent.content.party_id || callParty_.toStdString() != callNegotiateEvent.sender)
         return;
 
-    if(partyid_ == callNegotiateEvent.content.party_id)
+    if(partyid_ == callNegotiateEvent.content.party_id && callNegotiateEvent.sender == utils::localUser().toStdString())
         return;
 
     remoteICECandidates_.clear();
-    inviteSDP_      = callNegotiateEvent.content.description.sdp;
-    emit newInviteState();
-
+    std::string negotiateSDP_      = callNegotiateEvent.content.description.sdp;
+    if (!session_.acceptNegotiation(negotiateSDP_)) {
+        emit ChatPage::instance()->showNotification(QStringLiteral("Problem updating call candidates"));
+        hangUp();
+        return;
+    }
+    session_.acceptICECandidates(remoteICECandidates_);
+    remoteICECandidates_.clear();
 }
 
 void
@@ -553,12 +593,6 @@ CallManager::generateCallID()
     using namespace std::chrono;
     uint64_t ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
     callid_     = "c" + std::to_string(ms);
-}
-
-void
-CallManager::generatePartyID()
-{
-    partyid_ = mtx::client::utils::random_token(8, false);
 }
 
 void

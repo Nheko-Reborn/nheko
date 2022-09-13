@@ -18,6 +18,7 @@
 #include "WebRTCSession.h"
 #include "mtx/events/collections.hpp"
 #include "mtx/events/voip.hpp"
+#include <mtxclient/utils.hpp>
 
 namespace mtx::responses {
 struct TurnServer;
@@ -69,6 +70,8 @@ public slots:
     void acceptInvite();
     void
       hangUp(mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::User);
+    void
+      rejectCall();
     QStringList windowList();
     void previewWindow(unsigned int windowIndex) const;
 
@@ -77,6 +80,9 @@ signals:
     void newMessage(const QString &roomid, const mtx::events::voip::CallCandidates &);
     void newMessage(const QString &roomid, const mtx::events::voip::CallAnswer &);
     void newMessage(const QString &roomid, const mtx::events::voip::CallHangUp &);
+    void newMessage(const QString &roomid, const mtx::events::voip::CallSelectAnswer &);
+    void newMessage(const QString &roomid, const mtx::events::voip::CallReject &);
+    void newMessage(const QString &roomid, const mtx::events::voip::CallNegotiate &);
     void newInviteState();
     void newCallState();
     void micMuteChanged();
@@ -92,8 +98,9 @@ private:
     QString callParty_;
     QString callPartyDisplayName_;
     QString callPartyAvatarUrl_;
+    std::string callPartyVersion_ = "1";
     std::string callid_;
-    std::string partyid_       = "";
+    std::string partyid_       = mtx::client::utils::random_token(8, false);
     std::string selectedpartyid_       = "";
     std::string invitee_       = "";
     const uint32_t timeoutms_  = 120000;
@@ -117,7 +124,6 @@ private:
     void handleEvent(const mtx::events::RoomEvent<mtx::events::voip::CallNegotiate> &);
     void answerInvite(const mtx::events::voip::CallInvite &, bool isVideo);
     void generateCallID();
-    void generatePartyID();
     QStringList devices(bool isVideo) const;
     void clear();
     void endCall();

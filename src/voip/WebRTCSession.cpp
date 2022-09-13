@@ -700,6 +700,13 @@ WebRTCSession::acceptOffer(const std::string &sdp)
 }
 
 bool
+WebRTCSession::acceptNegotiation(const std::string &sdp)
+{
+    nhlog::ui()->debug("WebRTC: received negotiation offer:\n{}", sdp);
+    return false;
+}
+
+bool
 WebRTCSession::acceptAnswer(const std::string &sdp)
 {
     nhlog::ui()->debug("WebRTC: received answer:\n{}", sdp);
