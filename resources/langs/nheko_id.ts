@@ -2291,7 +2291,7 @@ Misalnya: https://server.id:8787</translation>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation>Login yang belum diverifikasi</translation>
+        <translation>Login belum diverifikasi</translation>
     </message>
     <message>
         <location line="+3"/>
