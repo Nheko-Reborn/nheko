@@ -1665,8 +1665,15 @@ isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &)
 {
     return true;
 }
+
 auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
+{
+    return true;
+}
+
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &)
 {
     return true;
 }

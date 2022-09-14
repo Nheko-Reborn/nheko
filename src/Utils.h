@@ -110,6 +110,7 @@ messageDescription(const QString &username = QString(),
     using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
     using CallAnswer = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
     using CallHangUp = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
+    using CallReject = mtx::events::RoomEvent<mtx::events::voip::CallReject>;
     using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
     if (std::is_same<T, Audio>::value) {
@@ -184,6 +185,12 @@ messageDescription(const QString &username = QString(),
             return QCoreApplication::translate("message-description sent:", "You ended a call");
         else
             return QCoreApplication::translate("message-description sent:", "%1 ended a call")
+              .arg(username);
+    } else if (std::is_same<T, CallReject>::value) {
+        if (isLocal)
+            return QCoreApplication::translate("message-description sent:", "You rejected a call");
+        else
+            return QCoreApplication::translate("message-description sent:", "%1 rejected a call")
               .arg(username);
     } else {
         return QCoreApplication::translate("utils", "Unknown Message Type");

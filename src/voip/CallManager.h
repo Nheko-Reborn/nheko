@@ -71,7 +71,7 @@ public slots:
     void
       hangUp(mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::User);
     void
-      rejectCall();
+      rejectInvite();
     QStringList windowList();
     void previewWindow(unsigned int windowIndex) const;
 

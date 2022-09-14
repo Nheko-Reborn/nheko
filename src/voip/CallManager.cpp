@@ -202,7 +202,6 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     generateCallID();
     std::string strCallType =
       callType_ == CallType::VOICE ? "voice" : (callType_ == CallType::VIDEO ? "video" : "screen");
-    nhlog::ui()->debug("WebRTC: call id: {} - creating {} invite", callid_, strCallType);
     
     std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
     const RoomMember *callee;
@@ -215,6 +214,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
         return;
     }
 
+    nhlog::ui()->debug("WebRTC: call id: {} - creating {} invite", callid_, strCallType);
     callParty_            = callee->user_id;
     callPartyDisplayName_ = callee->display_name.isEmpty() ? callee->user_id : callee->display_name;
     callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
@@ -265,22 +265,6 @@ CallManager::hangUp(CallHangUp::Reason reason)
 }
 
 void
-CallManager::rejectCall()
-{
-    if(callPartyVersion_ == "0")
-    {
-        hangUp();
-        return;
-    }
-    if(!callid_.empty()){
-        nhlog::ui()->debug(
-          "WebRTC: call id: {} - rejecting call", callid_);
-        emit newMessage(roomid_, CallReject{callid_, partyid_, callPartyVersion_});
-        endCall();
-    }
-}
-
-void
 CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 {
 #ifdef GSTREAMER_AVAILABLE
@@ -318,10 +302,6 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                                    return std::tolower(c1) == std::tolower(c2);
                                }) != sdp.cend();
 
-    nhlog::ui()->debug("WebRTC: call id: {} - incoming {} CallInvite from {}",
-                       callInviteEvent.content.call_id,
-                       (isVideo ? "video" : "voice"),
-                       callInviteEvent.sender);
     
 
     if (callInviteEvent.content.call_id.empty())
@@ -329,6 +309,11 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
 
     auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
     callPartyVersion_ = callInviteEvent.content.version;
+    nhlog::ui()->debug("WebRTC: call id: {} - incoming {} CallInvite(V{}) from {} ",
+                       callInviteEvent.content.call_id,
+                       (isVideo ? "video" : "voice"),
+                       callPartyVersion_,
+                       callInviteEvent.sender);
 
     if(isOnCall())
     {
@@ -433,6 +418,22 @@ CallManager::acceptInvite()
 }
 
 void
+CallManager::rejectInvite()
+{
+    if(callPartyVersion_ == "0")
+    {
+        hangUp();
+        return;
+    }
+    if(!callid_.empty()){
+        nhlog::ui()->debug(
+          "WebRTC: call id: {} - rejecting call", callid_);
+        emit newMessage(roomid_, CallReject{callid_, partyid_, callPartyVersion_});
+        endCall();
+    }
+}
+
+void
 CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
 {
     if (callCandidatesEvent.sender == utils::localUser().toStdString())
@@ -515,13 +516,13 @@ CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
                        callRejectEvent.content.call_id,
                        callRejectEvent.sender);
     if(isOnCall())
-        return;
-
+    {
+        // end call here?
+        endCall();
+    }
+    
     // send selectAnswer with party id of call reject 
     emit newMessage(roomid_, CallSelectAnswer{callid_, partyid_, callPartyVersion_, callRejectEvent.content.party_id}); 
-
-    // end call
-    endCall();
 }
 
 void

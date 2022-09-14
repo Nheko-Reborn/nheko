@@ -252,6 +252,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
     connectCallMessage<mtx::events::voip::CallCandidates>();
     connectCallMessage<mtx::events::voip::CallAnswer>();
     connectCallMessage<mtx::events::voip::CallHangUp>();
+    connectCallMessage<mtx::events::voip::CallSelectAnswer>();
+    connectCallMessage<mtx::events::voip::CallReject>();
+    connectCallMessage<mtx::events::voip::CallNegotiate>();
 }
 
 void

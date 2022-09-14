@@ -379,6 +379,20 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.CallReject
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: qsTr("%1 rejected the call.").arg(d.userName)
+            }
+
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.CallHangUp
 
             NoticeMessage {

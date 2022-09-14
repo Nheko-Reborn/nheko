@@ -133,10 +133,21 @@ struct RoomEventType
     {
         return qml_mtx_events::EventType::CallHangUp;
     }
-    qml_mtx_events::EventType
-    operator()(const mtx::events::Event<mtx::events::voip::CallCandidates> &)
+    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::voip::CallCandidates> &)
     {
         return qml_mtx_events::EventType::CallCandidates;
+    }
+    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::voip::CallSelectAnswer> &)
+    {
+        return qml_mtx_events::EventType::CallSelectAnswer;
+    }
+    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::voip::CallReject> &)
+    {
+        return qml_mtx_events::EventType::CallReject;
+    }
+    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::voip::CallNegotiate> &)
+    {
+        return qml_mtx_events::EventType::CallNegotiate;
     }
     // ::EventType::Type operator()(const Event<mtx::events::msg::Location> &e) { return
     // ::EventType::LocationMessage; }
@@ -258,6 +269,15 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     /// m.call.candidates
     case qml_mtx_events::CallCandidates:
         return mtx::events::EventType::CallCandidates;
+    /// m.call.select_answer
+    case qml_mtx_events::CallSelectAnswer:
+        return mtx::events::EventType::CallSelectAnswer;
+    /// m.call.reject
+    case qml_mtx_events::CallReject:
+        return mtx::events::EventType::CallReject;
+    /// m.call.negotiate
+    case qml_mtx_events::CallNegotiate:
+        return mtx::events::EventType::CallNegotiate;
     /// m.room.canonical_alias
     case qml_mtx_events::CanonicalAlias:
         return mtx::events::EventType::RoomCanonicalAlias;
@@ -922,14 +942,19 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         }
 
         if (std::holds_alternative<RoomEvent<voip::CallCandidates>>(e) ||
+            std::holds_alternative<RoomEvent<voip::CallNegotiate>>(e) ||
             std::holds_alternative<RoomEvent<voip::CallInvite>>(e) ||
             std::holds_alternative<RoomEvent<voip::CallAnswer>>(e) ||
+            std::holds_alternative<RoomEvent<voip::CallSelectAnswer>>(e) ||
+            std::holds_alternative<RoomEvent<voip::CallReject>>(e) ||
             std::holds_alternative<RoomEvent<voip::CallHangUp>>(e))
             std::visit(
               [this](auto &event) {
                   event.room_id = room_id_.toStdString();
                   if constexpr (std::is_same_v<std::decay_t<decltype(event)>,
                                                RoomEvent<voip::CallAnswer>> ||
+                                std::is_same_v<std::decay_t<decltype(event)>,
+                                               RoomEvent<voip::CallReject>> ||
                                 std::is_same_v<std::decay_t<decltype(event)>,
                                                RoomEvent<voip::CallHangUp>>)
                       emit newCallEvent(event);
@@ -1003,6 +1028,12 @@ isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &)
 }
 auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
+{
+    return true;
+}
+
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &)
 {
     return true;
 }
@@ -1501,6 +1532,21 @@ struct SendMessageVisitor
     void operator()(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &event)
     {
         sendRoomEvent<mtx::events::voip::CallHangUp, mtx::events::EventType::CallHangUp>(event);
+    }
+
+    void operator()(const mtx::events::RoomEvent<mtx::events::voip::CallSelectAnswer> &event)
+    {
+        sendRoomEvent<mtx::events::voip::CallSelectAnswer, mtx::events::EventType::CallSelectAnswer>(event);
+    }
+
+    void operator()(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &event)
+    {
+        sendRoomEvent<mtx::events::voip::CallReject, mtx::events::EventType::CallReject>(event);
+    }
+
+    void operator()(const mtx::events::RoomEvent<mtx::events::voip::CallNegotiate> &event)
+    {
+        sendRoomEvent<mtx::events::voip::CallNegotiate, mtx::events::EventType::CallNegotiate>(event);
     }
 
     void operator()(const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg)

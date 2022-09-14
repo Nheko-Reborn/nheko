@@ -219,6 +219,7 @@ utils::getMessageDescription(const TimelineEvent &event,
     using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
     using CallAnswer = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
     using CallHangUp = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
+    using CallReject = mtx::events::RoomEvent<mtx::events::voip::CallReject>;
     using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
     if (std::holds_alternative<Audio>(event)) {
@@ -241,6 +242,8 @@ utils::getMessageDescription(const TimelineEvent &event,
         return createDescriptionInfo<CallAnswer>(event, localUser, displayName);
     } else if (std::holds_alternative<CallHangUp>(event)) {
         return createDescriptionInfo<CallHangUp>(event, localUser, displayName);
+    } else if (std::holds_alternative<CallReject>(event)) {
+        return createDescriptionInfo<CallReject>(event, localUser, displayName);
     } else if (std::holds_alternative<mtx::events::Sticker>(event)) {
         return createDescriptionInfo<mtx::events::Sticker>(event, localUser, displayName);
     } else if (auto msg = std::get_if<Encrypted>(&event); msg != nullptr) {
