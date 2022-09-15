@@ -3740,7 +3740,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation>Animiete Bilder nur abspielen, wenn die Maus über diesen ist</translation>
+        <translation>Animierte Bilder nur abspielen, wenn die Maus darüber ist</translation>
     </message>
     <message>
         <location line="+2"/>
