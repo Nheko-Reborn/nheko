@@ -223,7 +223,7 @@ Rectangle {
                                 return;
                             }
                         }
-                        if (!Qt.inputMethod.visible) {
+                        if (!Qt.inputMethod.visible || Qt.platform.os === "windows") {
                             room.input.send();
                             event.accepted = true;
                         }
