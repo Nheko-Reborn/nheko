@@ -131,8 +131,14 @@ utils::replaceEmoji(const QString &body)
     QVector<uint> utf32_string = body.toUcs4();
 
     bool insideFontBlock = false;
+    bool insideTag       = false;
     for (auto &code : utf32_string) {
-        if (utils::codepointIsEmoji(code)) {
+        if (code == U'<')
+            insideTag = true;
+        else if (code == U'>')
+            insideTag = false;
+
+        if (!insideTag && utils::codepointIsEmoji(code)) {
             if (!insideFontBlock) {
                 fmtBody += QStringLiteral("<font face=\"") % UserSettings::instance()->emojiFont() %
                            QStringLiteral("\">");
