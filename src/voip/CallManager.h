@@ -69,7 +69,7 @@ public slots:
     void toggleLocalPiP() { session_.toggleLocalPiP(); }
     void acceptInvite();
     void
-      hangUp(mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::User);
+      hangUp(mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::UserHangUp);
     void
       rejectInvite();
     QStringList windowList();
@@ -106,6 +106,7 @@ private:
     const uint32_t timeoutms_  = 120000;
     webrtc::CallType callType_ = webrtc::CallType::VOICE;
     bool haveCallInvite_       = false;
+    bool answerSelected_       = false;
     std::string inviteSDP_;
     std::vector<mtx::events::voip::CallCandidates::Candidate> remoteICECandidates_;
     std::vector<std::string> turnURIs_;

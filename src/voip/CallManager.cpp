@@ -268,10 +268,10 @@ void
 CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 {
 #ifdef GSTREAMER_AVAILABLE
-    if (handleEvent<CallInvite>(event) || handleEvent<CallCandidates>(event) ||
-        handleEvent<CallNegotiate>(event) || handleEvent<CallAnswer>(event) || 
-        handleEvent<CallReject>(event) || handleEvent<CallHangUp>(event) || 
-        handleEvent<CallSelectAnswer>(event))
+    if (handleEvent<CallInvite>(event) || 
+        handleEvent<CallCandidates>(event) || handleEvent<CallNegotiate>(event) || 
+        handleEvent<CallSelectAnswer>(event) || 
+        handleEvent<CallAnswer>(event) || handleEvent<CallReject>(event) || handleEvent<CallHangUp>(event))
         return;
 #else
     (void)event;
@@ -423,7 +423,7 @@ CallManager::rejectInvite()
     if(callPartyVersion_ == "0")
     {
         hangUp();
-        return;
+        emit newMessage(roomid_, CallReject{callid_, partyid_, callPartyVersion_});
     }
     if(!callid_.empty()){
         nhlog::ui()->debug(
@@ -457,9 +457,12 @@ CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
 void
 CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
 {
+    if(answerSelected_)
+        return;
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallAnswer from {}",
                        callAnswerEvent.content.call_id,
                        callAnswerEvent.sender);
+
 
     if (callAnswerEvent.sender == utils::localUser().toStdString() &&
         callid_ == callAnswerEvent.content.call_id) {
@@ -480,11 +483,16 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
             hangUp();
         }
     }
+    emit newMessage(roomid_, CallSelectAnswer{callid_, partyid_, callPartyVersion_, 
+                    callAnswerEvent.content.party_id}); 
+    answerSelected_ = true;
 }
 
 void
 CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
 {
+    if(!isOnCall())
+        return;
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallHangUp ({}) from {}",
                        callHangUpEvent.content.call_id,
                        callHangUpReasonString(callHangUpEvent.content.reason),
@@ -504,7 +512,6 @@ CallManager::handleEvent(const RoomEvent<CallSelectAnswer> &callSelectAnswerEven
     if(partyid_ != callSelectAnswerEvent.content.selected_party_id) {
         emit ChatPage::instance()->showNotification(
                     QStringLiteral("Call answered/rejected on another device."));
-        haveCallInvite_ = false;
         endCall();
     }
 }
@@ -515,12 +522,12 @@ CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallReject from {}",
                        callRejectEvent.content.call_id,
                        callRejectEvent.sender);
-    if(isOnCall())
-    {
-        // end call here?
-        endCall();
-    }
     
+    if(answerSelected_)
+        return;
+
+    
+    endCall();
     // send selectAnswer with party id of call reject 
     emit newMessage(roomid_, CallSelectAnswer{callid_, partyid_, callPartyVersion_, callRejectEvent.content.party_id}); 
 }
@@ -606,6 +613,7 @@ CallManager::clear()
     callid_.clear();
     callType_       = CallType::VOICE;
     haveCallInvite_ = false;
+    answerSelected_ = false;
     emit newInviteState();
     inviteSDP_.clear();
     remoteICECandidates_.clear();

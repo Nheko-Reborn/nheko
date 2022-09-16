@@ -17,8 +17,14 @@ HiddenEvents::load()
     hiddenEvents.hidden_event_types = std::vector{
       EventType::Reaction,
       EventType::CallCandidates,
+      EventType::CallNegotiate,
       EventType::Unsupported,
     };
+
+    //check if answer selected is by local user
+    bool callLocalUser_ = false;
+    if(callLocalUser_)
+        hiddenEvents.hidden_event_types->push_back(EventType::CallSelectAnswer);
 
     if (auto temp =
           cache::client()->getAccountData(mtx::events::EventType::NhekoHiddenEvents, "")) {
