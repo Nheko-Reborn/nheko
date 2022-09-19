@@ -9,7 +9,7 @@ nheko
 [![AUR: nheko](https://img.shields.io/badge/AUR-nheko-blue.svg)](https://aur.archlinux.org/packages/nheko)
 <a href='https://flathub.org/apps/details/io.github.NhekoReborn.Nheko'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
-![nheko image](https://nheko-reborn.github.io/images/screenshots/chat.png)
+![image showcasing nheko chat user interface](https://nheko-reborn.github.io/images/screenshots/chat.png)
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Element], Telegram etc) and less like an IRC client.
