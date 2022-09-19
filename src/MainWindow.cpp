@@ -148,6 +148,7 @@ MainWindow::registerQmlTypes()
     qRegisterMetaType<mtx::responses::PublicRoom>();
     qRegisterMetaType<mtx::responses::Profile>();
     qRegisterMetaType<CombinedImagePackModel *>();
+    qRegisterMetaType<RoomSettingsAllowedRoomsModel *>();
     qRegisterMetaType<mtx::events::collections::TimelineEvents>();
     qRegisterMetaType<std::vector<DeviceInfo>>();
 

@@ -166,6 +166,7 @@
         <file>qml/dialogs/ReadReceipts.qml</file>
         <file>qml/dialogs/RoomDirectory.qml</file>
         <file>qml/dialogs/RoomMembers.qml</file>
+        <file>qml/dialogs/AllowedRoomsSettingsDialog.qml</file>
         <file>qml/dialogs/RoomSettings.qml</file>
         <file>qml/dialogs/UserProfile.qml</file>
         <file>qml/emoji/EmojiPicker.qml</file>

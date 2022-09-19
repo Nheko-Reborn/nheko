@@ -95,6 +95,22 @@ Pane {
     }
 
     Component {
+        id: allowedRoomSettingsComponent
+
+        AllowedRoomsSettingsDialog {
+        }
+
+    }
+
+    function showAllowedRoomsEditor(settings) {
+        var dialog = allowedRoomSettingsComponent.createObject(timelineRoot, {
+            "roomSettings": settings
+        });
+        dialog.show();
+        destroyOnClose(dialog);
+    }
+
+    Component {
         id: roomMembersComponent
 
         RoomMembers {

@@ -27,6 +27,7 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
   : QObject(parent)
   , roomid_{std::move(roomid)}
 {
+    connect(this, &RoomSettings::accessJoinRulesChanged, &RoomSettings::allowedRoomsChanged);
     retrieveRoomInfo();
 
     // get room setting notifications
@@ -66,22 +67,15 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
       });
 
     // access rules
-    if (info_.join_rule == state::JoinRule::Public) {
-        if (info_.guest_access) {
-            accessRules_ = 0;
-        } else {
-            accessRules_ = 1;
-        }
-    } else if (info_.join_rule == state::JoinRule::Invite) {
-        accessRules_ = 2;
-    } else if (info_.join_rule == state::JoinRule::Knock) {
-        accessRules_ = 3;
-    } else if (info_.join_rule == state::JoinRule::Restricted) {
-        accessRules_ = 4;
-    } else if (info_.join_rule == state::JoinRule::KnockRestricted) {
-        accessRules_ = 5;
-    }
+    this->accessRules_ = cache::client()
+                           ->getStateEvent<mtx::events::state::JoinRules>(roomid_.toStdString())
+                           .value_or(mtx::events::StateEvent<mtx::events::state::JoinRules>{})
+                           .content;
+    using mtx::events::state::AccessState;
+    guestRules_ = info_.guest_access ? AccessState::CanJoin : AccessState::Forbidden;
     emit accessJoinRulesChanged();
+
+    this->allowedRoomsModel = new RoomSettingsAllowedRoomsModel(this);
 }
 
 QString
@@ -158,10 +152,49 @@ RoomSettings::notifications()
     return notifications_;
 }
 
-int
-RoomSettings::accessJoinRules()
+bool
+RoomSettings::privateAccess() const
 {
-    return accessRules_;
+    return accessRules_.join_rule != mtx::events::state::JoinRule::Public;
+}
+
+bool
+RoomSettings::guestAccess() const
+{
+    return guestRules_ == mtx::events::state::AccessState::CanJoin;
+}
+bool
+RoomSettings::knockingEnabled() const
+{
+    return accessRules_.join_rule == mtx::events::state::JoinRule::Knock ||
+           accessRules_.join_rule == mtx::events::state::JoinRule::KnockRestricted;
+}
+bool
+RoomSettings::restrictedEnabled() const
+{
+    return accessRules_.join_rule == mtx::events::state::JoinRule::Restricted ||
+           accessRules_.join_rule == mtx::events::state::JoinRule::KnockRestricted;
+}
+
+QStringList
+RoomSettings::allowedRooms() const
+{
+    QStringList rooms;
+    rooms.reserve(accessRules_.allow.size());
+    for (const auto &e : accessRules_.allow) {
+        if (e.type == mtx::events::state::JoinAllowanceType::RoomMembership)
+            rooms.push_back(QString::fromStdString(e.room_id));
+    }
+    return rooms;
+}
+void
+RoomSettings::setAllowedRooms(QStringList rooms)
+{
+    accessRules_.allow.clear();
+    for (const auto &e : rooms) {
+        accessRules_.allow.push_back(
+          {mtx::events::state::JoinAllowanceType::RoomMembership, e.toStdString()});
+    }
 }
 
 void
@@ -254,24 +287,48 @@ RoomSettings::isEncryptionEnabled() const
 bool
 RoomSettings::supportsKnocking() const
 {
-    return info_.version != "" && info_.version != "1" && info_.version != "2" &&
-           info_.version != "3" && info_.version != "4" && info_.version != "5" &&
-           info_.version != "6";
+    const static std::set<std::string_view> unsupported{
+      "",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+    };
+    return !unsupported.count(info_.version);
 }
 bool
 RoomSettings::supportsRestricted() const
 {
-    return info_.version != "" && info_.version != "1" && info_.version != "2" &&
-           info_.version != "3" && info_.version != "4" && info_.version != "5" &&
-           info_.version != "6" && info_.version != "7";
+    const static std::set<std::string_view> unsupported{
+      "",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+    };
+    return !unsupported.count(info_.version);
 }
 bool
 RoomSettings::supportsKnockRestricted() const
 {
-    return info_.version != "" && info_.version != "1" && info_.version != "2" &&
-           info_.version != "3" && info_.version != "4" && info_.version != "5" &&
-           info_.version != "6" && info_.version != "7" && info_.version != "8" &&
-           info_.version != "9";
+    const static std::set<std::string_view> unsupported{
+      "",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+    };
+    return !unsupported.count(info_.version);
 }
 
 void
@@ -327,47 +384,41 @@ RoomSettings::changeNotifications(int currentIndex)
 }
 
 void
-RoomSettings::changeAccessRules(int index)
+RoomSettings::changeAccessRules(bool private_,
+                                bool guestsAllowed,
+                                bool knockingAllowed,
+                                bool restrictedAllowed)
 {
     using namespace mtx::events::state;
 
-    auto guest_access = [](int index) -> state::GuestAccess {
+    auto guest_access = [guestsAllowed]() -> state::GuestAccess {
         state::GuestAccess event;
 
-        if (index == 0)
+        if (guestsAllowed)
             event.guest_access = state::AccessState::CanJoin;
         else
             event.guest_access = state::AccessState::Forbidden;
 
         return event;
-    }(index);
+    }();
 
-    auto join_rule = [](int index) -> state::JoinRules {
-        state::JoinRules event;
+    auto join_rule = [this, private_, knockingAllowed, restrictedAllowed]() -> state::JoinRules {
+        state::JoinRules event = this->accessRules_;
 
-        switch (index) {
-        case 0:
-        case 1:
+        if (!private_) {
             event.join_rule = state::JoinRule::Public;
-            break;
-        case 2:
-            event.join_rule = state::JoinRule::Invite;
-            break;
-        case 3:
-            event.join_rule = state::JoinRule::Knock;
-            break;
-        case 4:
-            event.join_rule = state::JoinRule::Restricted;
-            break;
-        case 5:
+        } else if (knockingAllowed && restrictedAllowed && supportsKnockRestricted()) {
             event.join_rule = state::JoinRule::KnockRestricted;
-            break;
-        default:
+        } else if (knockingAllowed && supportsKnocking()) {
+            event.join_rule = state::JoinRule::Knock;
+        } else if (restrictedAllowed && supportsRestricted()) {
+            event.join_rule = state::JoinRule::Restricted;
+        } else {
             event.join_rule = state::JoinRule::Invite;
         }
 
         return event;
-    }(index);
+    }();
 
     updateAccessRules(roomid_.toStdString(), join_rule, guest_access);
 }
@@ -445,13 +496,16 @@ RoomSettings::updateAccessRules(const std::string &room_id,
                                 const mtx::events::state::JoinRules &join_rule,
                                 const mtx::events::state::GuestAccess &guest_access)
 {
-    isLoading_ = true;
+    isLoading_            = true;
+    allowedRoomsModified_ = false;
     emit loadingChanged();
+    emit allowedRoomsModifiedChanged();
 
     http::client()->send_state_event(
       room_id,
       join_rule,
-      [this, room_id, guest_access](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+      [this, room_id, guest_access, join_rule](const mtx::responses::EventId &,
+                                               mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->warn("failed to send m.room.join_rule: {} {}",
                                  static_cast<int>(err->status_code),
@@ -465,7 +519,7 @@ RoomSettings::updateAccessRules(const std::string &room_id,
           http::client()->send_state_event(
             room_id,
             guest_access,
-            [this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+            [this, join_rule](const mtx::responses::EventId &, mtx::http::RequestErr err) {
                 if (err) {
                     nhlog::net()->warn("failed to send m.room.guest_access: {} {}",
                                        static_cast<int>(err->status_code),
@@ -475,6 +529,9 @@ RoomSettings::updateAccessRules(const std::string &room_id,
 
                 isLoading_ = false;
                 emit loadingChanged();
+
+                this->accessRules_ = join_rule;
+                emit accessJoinRulesChanged();
             });
       });
 }
@@ -575,4 +632,102 @@ RoomSettings::updateAvatar()
                 emit proxy->stopLoading();
             });
       });
+}
+
+RoomSettingsAllowedRoomsModel::RoomSettingsAllowedRoomsModel(RoomSettings *parent)
+  : QAbstractListModel(parent)
+  , settings(parent)
+{
+    this->allowedRoomIds = settings->allowedRooms();
+
+    auto prIds = cache::client()->getParentRoomIds(settings->roomId().toStdString());
+    for (const auto &prId : prIds) {
+        this->parentSpaces.insert(QString::fromStdString(prId));
+    }
+
+    this->listedRoomIds = QStringList(parentSpaces.begin(), parentSpaces.end());
+
+    for (const auto &e : this->allowedRoomIds) {
+        if (!this->parentSpaces.count(e))
+            this->listedRoomIds.push_back(e);
+    }
+}
+
+QHash<int, QByteArray>
+RoomSettingsAllowedRoomsModel::roleNames() const
+{
+    return {
+      {Roles::Name, "name"},
+      {Roles::IsAllowed, "allowed"},
+      {Roles::IsSpaceParent, "isParent"},
+    };
+}
+
+int
+RoomSettingsAllowedRoomsModel::rowCount(const QModelIndex &) const
+{
+    return listedRoomIds.size();
+}
+
+QVariant
+RoomSettingsAllowedRoomsModel::data(const QModelIndex &index, int role) const
+{
+    if (index.row() < 0 || index.row() > listedRoomIds.size())
+        return {};
+
+    if (role == Roles::IsAllowed) {
+        return allowedRoomIds.contains(listedRoomIds.at(index.row()));
+    } else if (role == Roles::IsSpaceParent) {
+        return parentSpaces.find(listedRoomIds.at(index.row())) != parentSpaces.cend();
+    } else if (role == Roles::Name) {
+        auto id   = listedRoomIds.at(index.row());
+        auto info = cache::client()->getRoomInfo({
+          id.toStdString(),
+        });
+        if (!info.empty())
+            return QString::fromStdString(info[id].name);
+        else
+            return "";
+    } else {
+        return {};
+    }
+}
+
+bool
+RoomSettingsAllowedRoomsModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (index.row() < 0 || index.row() > listedRoomIds.size())
+        return false;
+
+    if (role != Roles::IsAllowed)
+        return false;
+
+    if (value.toBool()) {
+        if (!allowedRoomIds.contains(listedRoomIds.at(index.row())))
+            allowedRoomIds.push_back(listedRoomIds.at(index.row()));
+    } else {
+        allowedRoomIds.removeAll(listedRoomIds.at(index.row()));
+    }
+
+    return true;
+}
+
+void
+RoomSettingsAllowedRoomsModel::addRoom(QString room)
+{
+    if (listedRoomIds.contains(room) || !room.startsWith('!'))
+        return;
+
+    beginInsertRows(QModelIndex(), listedRoomIds.size(), listedRoomIds.size());
+    listedRoomIds.push_back(room);
+    allowedRoomIds.push_back(room);
+    endInsertRows();
+}
+
+void
+RoomSettings::applyAllowedFromModel()
+{
+    this->setAllowedRooms(this->allowedRoomsModel->allowedRoomIds);
+    this->allowedRoomsModified_ = true;
+    emit allowedRoomsModifiedChanged();
 }

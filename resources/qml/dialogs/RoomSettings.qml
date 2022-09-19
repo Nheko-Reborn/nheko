@@ -288,32 +288,98 @@ ApplicationWindow {
                 }
 
                 Label {
-                    text: qsTr("Room access")
+                    text: qsTr("Anyone can join")
                     Layout.fillWidth: true
                     color: Nheko.colors.text
                 }
 
-                ComboBox {
+                ToggleButton {
+                    id: publicRoomButton
+
                     enabled: roomSettings.canChangeJoinRules
-                    model: {
-                        let opts = [qsTr("Anyone and guests"), qsTr("Anyone"), qsTr("Invited users")];
-                        if (roomSettings.supportsKnocking)
-                            opts.push(qsTr("By knocking"));
+                    checked: !roomSettings.privateAccess
+                    Layout.alignment: Qt.AlignRight
+                }
 
-                        if (roomSettings.supportsRestricted)
-                            opts.push(qsTr("Restricted by membership in other rooms"));
-
-                        if (roomSettings.supportsKnockRestricted)
-                            opts.push(qsTr("Restricted by membership in other rooms or by knocking"));
-
-                        return opts;
-                    }
-                    currentIndex: roomSettings.accessJoinRules
-                    onActivated: {
-                        roomSettings.changeAccessRules(index);
-                    }
+                Label {
+                    text: qsTr("Allow knocking")
                     Layout.fillWidth: true
-                    WheelHandler{} // suppress scrolling changing values
+                    color: Nheko.colors.text
+                    visible: knockingButton.visible
+                }
+
+                ToggleButton {
+                    id: knockingButton
+
+                    visible: !publicRoomButton.checked
+                    enabled: roomSettings.canChangeJoinRules && roomSettings.supportsKnocking
+                    checked: roomSettings.knockingEnabled
+                    onCheckedChanged: {
+                        if (checked && !roomSettings.supportsKnockRestricted) restrictedButton.checked = false;
+                    }
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
+                    text: qsTr("Allow joining via other rooms")
+                    Layout.fillWidth: true
+                    color: Nheko.colors.text
+                    visible: restrictedButton.visible
+                }
+
+                ToggleButton {
+                    id: restrictedButton
+
+                    visible: !publicRoomButton.checked
+                    enabled: roomSettings.canChangeJoinRules && roomSettings.supportsRestricted
+                    checked: roomSettings.restrictedEnabled
+                    onCheckedChanged: {
+                        if (checked && !roomSettings.supportsKnockRestricted) knockingButton.checked = false;
+                    }
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
+                    text: qsTr("Rooms to join via")
+                    Layout.fillWidth: true
+                    color: Nheko.colors.text
+                    visible: allowedRoomsButton.visible
+                }
+
+                Button {
+                    id: allowedRoomsButton
+
+                    visible: restrictedButton.checked && restrictedButton.visible
+                    enabled: roomSettings.canChangeJoinRules && roomSettings.supportsRestricted
+
+                    text: qsTr("Change")
+                    ToolTip.text: qsTr("Change the list of rooms users can join this room via. Usually this is the official community of this room.")
+                    onClicked: timelineRoot.showAllowedRoomsEditor(roomSettings)
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
+                    text: qsTr("Allow guests to join")
+                    Layout.fillWidth: true
+                    color: Nheko.colors.text
+                }
+
+                ToggleButton {
+                    id: guestAccessButton
+
+                    enabled: roomSettings.canChangeJoinRules
+                    checked: roomSettings.guestAccess
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Button {
+                    visible: publicRoomButton.checked == roomSettings.privateAccess || knockingButton.checked != roomSettings.knockingEnabled || restrictedButton.checked != roomSettings.restrictedEnabled || guestAccessButton.checked != roomSettings.guestAccess || roomSettings.allowedRoomsModified
+                    enabled: roomSettings.canChangeJoinRules
+
+                    text: qsTr("Apply access rules")
+                    onClicked: roomSettings.changeAccessRules(!publicRoomButton.checked, guestAccessButton.checked, knockingButton.checked, restrictedButton.checked)
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
                 }
 
                 Label {
