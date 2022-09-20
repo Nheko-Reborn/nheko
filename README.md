@@ -146,9 +146,11 @@ guix install nheko
 
 #### Steam Deck
 
-Install nheko via the `Discover` app in Desktop Mode (this installs the flatpak). To also make it work in Game Mode you'll have to add it as a "Non-Steam Game" to steam and than add the following `--env` variables to the `flatpak run` command. This is necessary for nheko to connect to KWallet correctly. The resulting arguments field in the steam settings should look something like this.
-```
-run --env=XDG_CURRENT_DESKTOP=KDE --env=KDE_SESSION_VERSION=5 --branch=stable --arch=x86_64 --command=io.github.NhekoReborn.Nheko --file-forwarding io.github.NhekoReborn.Nheko @@u @@
+Install nheko via the `Discover` app in Desktop Mode (this installs the flatpak). To also make it work in Game Mode you'll have create a wrapper script that starts kwalletd and then nheko. You can create `/home/deck/nheko.sh` with the following content and then add this script as a "Non-Steam Game" to Steam.
+```bash
+#!/bin/sh
+kwalletd5&
+flatpak run --env=XDG_CURRENT_DESKTOP=KDE --env=KDE_SESSION_VERSION=5 --branch=stable --arch=x86_64 --command=io.github.NhekoReborn.Nheko --file-forwarding io.github.NhekoReborn.Nheko @@u @@
 ```
 
 #### macOS (10.14 and above)
