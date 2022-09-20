@@ -49,6 +49,13 @@ Pane {
                 return;
             }
 
+            if (communityLabel.visible && eventPoint.position.y < communityAvatar.height + Nheko.paddingMedium + Nheko.paddingSmall/2) {
+                if (!Communities.trySwitchToSpace(room.parentSpace.roomid))
+                    room.parentSpace.promptJoin();
+                eventPoint.accepted = true
+                return;
+            }
+
             if (room) {
                 let p = topBar.mapToItem(roomTopicC, eventPoint.position.x, eventPoint.position.y);
                 let link = roomTopicC.linkAt(p.x, p.y);
@@ -80,11 +87,46 @@ Pane {
             columnSpacing: Nheko.paddingSmall
             rowSpacing: Nheko.paddingSmall
 
+
+            Avatar {
+                id: communityAvatar
+
+                visible: roomid && room.parentSpace.isLoaded && ("space:"+room.parentSpace.roomid != Communities.currentTagId)
+
+                property string avatarUrl: (Settings.groupView && room && room.parentSpace && room.parentSpace.roomAvatarUrl) || ""
+                property string communityId: (Settings.groupView && room && room.parentSpace && room.parentSpace.roomid) || ""
+                property string communityName: (Settings.groupView && room && room.parentSpace && room.parentSpace.roomName) || ""
+
+                Layout.column: 1
+                Layout.row: 0
+                Layout.alignment: Qt.AlignRight
+                width: fontMetrics.lineSpacing
+                height: fontMetrics.lineSpacing
+                url: avatarUrl.replace("mxc://", "image://MxcImage/")
+                roomid: communityId
+                displayName: communityName
+                enabled: false
+            }
+
+            Label {
+                id: communityLabel
+                visible: communityAvatar.visible
+
+                Layout.column: 2
+                Layout.row: 0
+                Layout.fillWidth: true
+                color: Nheko.colors.text
+                text: qsTr("In %1").arg(communityAvatar.displayName)
+                maximumLineCount: 1
+                elide: Text.ElideRight
+                textFormat: Text.RichText
+            }
+
             ImageButton {
                 id: backToRoomsButton
 
                 Layout.column: 0
-                Layout.row: 0
+                Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
@@ -98,7 +140,7 @@ Pane {
 
             Avatar {
                 Layout.column: 1
-                Layout.row: 0
+                Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.alignment: Qt.AlignVCenter
                 width: Nheko.avatarSize
@@ -113,9 +155,10 @@ Pane {
             Label {
                 Layout.fillWidth: true
                 Layout.column: 2
-                Layout.row: 0
+                Layout.row: 1
                 color: Nheko.colors.text
                 font.pointSize: fontMetrics.font.pointSize * 1.1
+                font.bold: true
                 text: roomName
                 maximumLineCount: 1
                 elide: Text.ElideRight
@@ -126,7 +169,7 @@ Pane {
                 id: roomTopicC
                 Layout.fillWidth: true
                 Layout.column: 2
-                Layout.row: 1
+                Layout.row: 2
                 Layout.maximumHeight: fontMetrics.lineSpacing * 2 // show 2 lines
                 selectByMouse: false
                 enabled: false
@@ -136,7 +179,7 @@ Pane {
 
             AbstractButton {
                 Layout.column: 3
-                Layout.row: 0
+                Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
@@ -179,7 +222,7 @@ Pane {
 
                 visible: !!room && room.pinnedMessages.length > 0
                 Layout.column: 4
-                Layout.row: 0
+                Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
@@ -207,7 +250,7 @@ Pane {
 
                 visible: !!room
                 Layout.column: 5
-                Layout.row: 0
+                Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
@@ -248,7 +291,7 @@ Pane {
             ScrollView {
                 id: pinnedMessages
 
-                Layout.row: 2
+                Layout.row: 3
                 Layout.column: 2
                 Layout.columnSpan: 3
 
@@ -329,7 +372,7 @@ Pane {
             ScrollView {
                 id: widgets
 
-                Layout.row: 3
+                Layout.row: 4
                 Layout.column: 2
                 Layout.columnSpan: 1
 

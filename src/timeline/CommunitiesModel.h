@@ -179,6 +179,7 @@ public slots:
     void clear();
     QString currentTagId() const { return currentTagId_; }
     void setCurrentTagId(const QString &tagId);
+    bool trySwitchToSpace(const QString &spaceId);
     void resetCurrentTagId()
     {
         currentTagId_.clear();

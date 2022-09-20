@@ -69,6 +69,7 @@ public:
     bool isLoaded() const { return room.has_value() || loaded_; }
 
     Q_INVOKABLE void join();
+    Q_INVOKABLE void promptJoin();
 
 signals:
     void loaded();

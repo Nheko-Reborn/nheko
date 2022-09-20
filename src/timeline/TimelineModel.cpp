@@ -915,6 +915,9 @@ TimelineModel::syncState(const mtx::responses::State &s)
         } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
             this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
             emit encryptionChanged();
+        } else if (std::holds_alternative<StateEvent<state::space::Parent>>(e)) {
+            this->parentChecked = false;
+            emit parentSpaceChanged();
         }
     }
 }
@@ -976,6 +979,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
             this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
             emit encryptionChanged();
+        } else if (std::holds_alternative<StateEvent<state::space::Parent>>(e)) {
+            this->parentChecked = false;
+            emit parentSpaceChanged();
         }
     }
 
@@ -2903,4 +2909,23 @@ TimelineModel::directChatOtherUserId() const
         return id;
     } else
         return {};
+}
+
+RoomSummary *
+TimelineModel::parentSpace()
+{
+    if (!parentChecked) {
+        auto parents = cache::client()->getStateEventsWithType<mtx::events::state::space::Parent>(
+          this->room_id_.toStdString());
+
+        for (const auto &p : parents) {
+            if (p.content.canonical and p.content.via and not p.content.via->empty()) {
+                parentSummary.reset(new RoomSummary(p.state_key, *p.content.via, ""));
+                QQmlEngine::setObjectOwnership(parentSummary.get(), QQmlEngine::CppOwnership);
+                break;
+            }
+        }
+    }
+
+    return parentSummary.get();
 }

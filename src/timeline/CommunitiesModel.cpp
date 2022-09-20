@@ -605,6 +605,20 @@ CommunitiesModel::setCurrentTagId(const QString &tagId)
     emit currentTagIdChanged(currentTagId_);
 }
 
+bool
+CommunitiesModel::trySwitchToSpace(const QString &tag)
+{
+    for (const auto &t : spaceOrder_.tree) {
+        if (t.id == tag) {
+            this->currentTagId_ = "space:" + tag;
+            emit currentTagIdChanged(currentTagId_);
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void
 CommunitiesModel::toggleTagId(QString tagId)
 {

@@ -122,7 +122,6 @@ ApplicationWindow {
 
                 placeholderText: qsTr("Enter additional rooms not in the list yet...")
 
-                //font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
                 color: Nheko.colors.text
                 onTextEdited: {
                     roomCompleter.completer.searchString = text;

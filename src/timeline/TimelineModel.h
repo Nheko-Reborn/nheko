@@ -22,6 +22,7 @@
 #include "MemberList.h"
 #include "Permissions.h"
 #include "ReadReceiptsModel.h"
+#include "ui/RoomSummary.h"
 
 namespace mtx::http {
 using RequestErr = const std::optional<mtx::http::ClientError> &;
@@ -197,6 +198,7 @@ class TimelineModel : public QAbstractListModel
       QString directChatOtherUserId READ directChatOtherUserId NOTIFY directChatOtherUserIdChanged)
     Q_PROPERTY(InputBar *input READ input CONSTANT)
     Q_PROPERTY(Permissions *permissions READ permissions NOTIFY permissionsChanged)
+    Q_PROPERTY(RoomSummary *parentSpace READ parentSpace NOTIFY parentSpaceChanged)
 
 public:
     explicit TimelineModel(TimelineViewManager *manager,
@@ -397,6 +399,7 @@ public slots:
     Permissions *permissions() { return &permissions_; }
     QString roomAvatarUrl() const;
     QString roomId() const { return room_id_; }
+    RoomSummary *parentSpace();
 
     bool hasMentions() const { return highlight_count > 0; }
     int notificationCount() const { return notification_count; }
@@ -431,6 +434,7 @@ signals:
     void addPendingMessageToStore(mtx::events::collections::TimelineEvents event);
     void updateFlowEventId(std::string event_id);
 
+    void parentSpaceChanged();
     void encryptionChanged();
     void fullyReadEventIdChanged();
     void trustlevelChanged();
@@ -488,6 +492,9 @@ private:
     bool isEncrypted_           = false;
     std::string last_event_id;
     std::string fullyReadEventId_;
+
+    std::unique_ptr<RoomSummary> parentSummary = nullptr;
+    bool parentChecked                         = false;
 };
 
 template<class T>
