@@ -911,7 +911,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case StartInTray:
             return tr("Start in tray");
         case GroupView:
-            return tr("Groups sidebar");
+            return tr("Communities sidebar");
         case Markdown:
             return tr("Send messages as Markdown");
         case Bubbles:
@@ -1179,7 +1179,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case StartInTray:
             return tr("Start the application in the background without showing the client window.");
         case GroupView:
-            return tr("Show a column containing groups and tags next to the room list.");
+            return tr("Show a column containing communities and tags next to the room list.");
         case Markdown:
             return tr(
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
