@@ -243,7 +243,7 @@ sharing easier.
     - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
 - XCB, XCB-EWMH: For screensharing support on X11. VOIP needs to be enabled. Can be disabled with `-DSCREENSHARE_X11=OFF`.
 - [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support. The bundled version requires libsecret, unless you pass `-DLIBSECRET_SUPPORT=OFF`.)
-- A compiler that supports C++ 17:
+- A compiler that supports C++ 20:
     - Clang 6 (tested on Travis CI)
     - GCC 7 (tested on Travis CI)
     - MSVC 19.13 (tested on AppVeyor)
@@ -344,12 +344,11 @@ brew install qt5 lmdb cmake llvm spdlog boost cmark libolm qtkeychain
 
 ##### Windows
 
-1. Install Visual Studio 2017's "Desktop Development" and "Linux Development with C++"
+1. Install Visual Studio 2022's "Desktop Development" and "Linux Development with C++"
 (for the CMake integration) workloads.
 
 2. Download the latest Qt for windows installer and install it somewhere.
-Make sure to install the `MSVC 2017 64-bit` toolset for at least Qt 5.10
-(lower versions does not support VS2017).
+Make sure to install the `MSVC 2022 64-bit` toolset for at least Qt 5.15.
 
 3. If you don't have openssl installed, you will need to install perl to build it (i.e. Strawberry Perl).
 

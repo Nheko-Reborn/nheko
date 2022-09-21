@@ -3,7 +3,7 @@
 version: 0.10.1-{build}
 
 configuration: Release
-image: Visual Studio 2019
+image: Visual Studio 2022
 platform: x64
 
 environment:
@@ -23,9 +23,7 @@ build:
 
 install:
     - set QT_DIR=C:\Qt\5.15\msvc2019_64
-    - set PATH=Path=C:\Program Files (x86)\Microsoft SDKs\Azure\CLI2\wbin;C:\Program Files\Git\cmd;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\PowerShell\7\;C:\Program Files\7-Zip;C:\Program Files\Microsoft\Web Platform Installer\;C:\Tools\NuGet;C:\Tools\PsTools;C:\Program Files\Git\usr\bin;C:\Program Files\Git LFS;C:\Program Files\Mercurial\;C:\Program Files (x86)\Subversion\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\dotnet\;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\SQLDB\DAC\150;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin;C:\Tools\xUnit;C:\Tools\xUnit20;C:\Tools\NUnit\bin;C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\TestPlatform;C:\Ruby193\bin;C:\Tools\WebDriver;C:\Python27;C:\Python27\Scripts;C:\Program Files\erl10.7\bin;C:\Program Files (x86)\Windows Kits\8.1\Windows Performance Toolkit\;C:\Program Files (x86)\Microsoft DirectX SDK;C:\Program Files\Microsoft Service Fabric\bin\Fabric\Fabric.Code;C:\Program Files\Microsoft SDKs\Service Fabric\Tools\ServiceFabricLocalClusterManager;C:\Tools\Doxygen;C:\Program Files (x86)\CMake\bin;C:\ProgramData\chocolatey\bin;C:\Tools\vcpkg;C:\Tools\Coverity\bin;C:\Program Files (x86)\NSIS;C:\Tools\Octopus;C:\Program Files\Meson\;C:\Tools\GitVersion;C:\Tools\NUnit3\bin;C:\Users\appveyor\AppData\Local\Microsoft\WindowsApps;C:\Users\appveyor\.dotnet\tools;C:\Program Files\AppVeyor\BuildAgent\
     - set PATH=C:\Strawberry\perl\bin;C:\Python39-x64;%QT_DIR%\bin;%PATH%
-    - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
 
 build_script:
     # VERSION format:     branch-master/branch-1.2
@@ -47,7 +45,7 @@ build_script:
     - echo %DATE%
 
     # Build nheko
-    - cmake -G "Visual Studio 16 2019" -A x64 -H. -Bbuild
+    - cmake -G "Visual Studio 17 2022" -A x64 -H. -Bbuild
       -DHUNTER_ROOT="C:\hunter"
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON
       -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release

@@ -9,12 +9,10 @@
 
 #include <algorithm>
 #include <cctype>
+#include <concepts>
 #include <type_traits>
 
 namespace {
-template<template<class...> class Op, class... Args>
-using is_detected = typename nheko::detail::detector<nheko::nonesuch, void, Op, Args...>::value_t;
-
 struct IsStateEvent
 {
     template<class T>
@@ -31,19 +29,13 @@ struct IsStateEvent
 
 struct EventMsgType
 {
-    template<class E>
-    using msgtype_t = decltype(E::msgtype);
     template<class T>
     mtx::events::MessageType operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<msgtype_t, T>::value) {
-            if constexpr (std::is_same_v<std::optional<std::string>,
-                                         std::remove_cv_t<decltype(e.content.msgtype)>>)
-                return mtx::events::getMessageType(e.content.msgtype.value());
-            else if constexpr (std::is_same_v<std::string,
-                                              std::remove_cv_t<decltype(e.content.msgtype)>>)
-                return mtx::events::getMessageType(e.content.msgtype);
-        }
+        if constexpr (requires(decltype(e) t) { t.content.msgtype.value(); })
+            return mtx::events::getMessageType(e.content.msgtype.value());
+        else if constexpr (requires(decltype(e) t) { std::string{t.content.msgtype}; })
+            return mtx::events::getMessageType(e.content.msgtype);
         return mtx::events::MessageType::Unknown;
     }
 };
@@ -94,31 +86,23 @@ struct CallType
 
 struct EventBody
 {
-    template<class C>
-    using body_t = decltype(C::body);
     template<class T>
     std::string operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<body_t, T>::value) {
-            if constexpr (std::is_same_v<std::optional<std::string>,
-                                         std::remove_cv_t<decltype(e.content.body)>>)
-                return e.content.body ? e.content.body.value() : "";
-            else if constexpr (std::is_same_v<std::string,
-                                              std::remove_cv_t<decltype(e.content.body)>>)
-                return e.content.body;
-        }
+        if constexpr (requires(decltype(e) t) { t.content.body.value(); })
+            return e.content.body ? e.content.body.value() : "";
+        else if constexpr (requires(decltype(e) t) { std::string{t.content.body}; })
+            return e.content.body;
         return "";
     }
 };
 
 struct EventFormattedBody
 {
-    template<class C>
-    using formatted_body_t = decltype(C::formatted_body);
     template<class T>
     std::string operator()(const mtx::events::RoomEvent<T> &e)
     {
-        if constexpr (is_detected<formatted_body_t, T>::value) {
+        if constexpr (requires { T::formatted_body; }) {
             if (e.content.format == "org.matrix.custom.html")
                 return e.content.formatted_body;
         }
@@ -128,12 +112,10 @@ struct EventFormattedBody
 
 struct EventFile
 {
-    template<class Content>
-    using file_t = decltype(Content::file);
     template<class T>
     std::optional<mtx::crypto::EncryptedFile> operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<file_t, T>::value)
+        if constexpr (requires { T::file; })
             return e.content.file;
         return std::nullopt;
     }
@@ -141,12 +123,10 @@ struct EventFile
 
 struct EventThumbnailFile
 {
-    template<class Content>
-    using file_t = decltype(Content::info.thumbnail_file);
     template<class T>
     std::optional<mtx::crypto::EncryptedFile> operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<file_t, T>::value)
+        if constexpr (requires { T::thumbnail_file; })
             return e.content.info.thumbnail_file;
         return std::nullopt;
     }
@@ -154,12 +134,10 @@ struct EventThumbnailFile
 
 struct EventUrl
 {
-    template<class Content>
-    using url_t = decltype(Content::url);
     template<class T>
     std::string operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<url_t, T>::value) {
+        if constexpr (requires { T::url; }) {
             if (auto file = EventFile{}(e))
                 return file->url;
             return e.content.url;
@@ -170,12 +148,10 @@ struct EventUrl
 
 struct EventThumbnailUrl
 {
-    template<class Content>
-    using thumbnail_url_t = decltype(Content::info.thumbnail_url);
     template<class T>
     std::string operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<thumbnail_url_t, T>::value) {
+        if constexpr (requires { e.content.info.thumbnail_url; }) {
             if (auto file = EventThumbnailFile{}(e))
                 return file->url;
             return e.content.info.thumbnail_url;
@@ -186,12 +162,10 @@ struct EventThumbnailUrl
 
 struct EventDuration
 {
-    template<class Content>
-    using thumbnail_url_t = decltype(Content::info.duration);
     template<class T>
     uint64_t operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<thumbnail_url_t, T>::value) {
+        if constexpr (requires { e.content.info.duration; }) {
             return e.content.info.duration;
         }
         return 0;
@@ -200,12 +174,10 @@ struct EventDuration
 
 struct EventBlurhash
 {
-    template<class Content>
-    using blurhash_t = decltype(Content::info.blurhash);
     template<class T>
     std::string operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<blurhash_t, T>::value) {
+        if constexpr (requires { e.content.info.blurhash; }) {
             return e.content.info.blurhash;
         }
         return "";
@@ -245,12 +217,10 @@ struct EventFilename
 
 struct EventMimeType
 {
-    template<class Content>
-    using mimetype_t = decltype(Content::info.mimetype);
     template<class T>
     std::string operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<mimetype_t, T>::value) {
+        if constexpr (requires { e.content.info.mimetype; }) {
             return e.content.info.mimetype;
         }
         return "";
@@ -259,12 +229,10 @@ struct EventMimeType
 
 struct EventFilesize
 {
-    template<class Content>
-    using filesize_t = decltype(Content::info.size);
     template<class T>
     int64_t operator()(const mtx::events::RoomEvent<T> &e)
     {
-        if constexpr (is_detected<filesize_t, T>::value) {
+        if constexpr (requires { e.content.info.size; }) {
             return e.content.info.size;
         }
         return 0;
@@ -275,12 +243,10 @@ struct EventRelations
 {
     inline const static mtx::common::Relations empty;
 
-    template<class Content>
-    using related_ev_id_t = decltype(Content::relations);
     template<class T>
     const mtx::common::Relations &operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<related_ev_id_t, T>::value) {
+        if constexpr (requires { T::relations; }) {
             return e.content.relations;
         }
         return empty;
@@ -290,12 +256,10 @@ struct EventRelations
 struct SetEventRelations
 {
     mtx::common::Relations new_relations;
-    template<class Content>
-    using related_ev_id_t = decltype(Content::relations);
     template<class T>
     void operator()(mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<related_ev_id_t, T>::value) {
+        if constexpr (requires { T::relations; }) {
             e.content.relations = std::move(new_relations);
         }
     }
@@ -317,12 +281,10 @@ struct EventTransactionId
 
 struct EventMediaHeight
 {
-    template<class Content>
-    using h_t = decltype(Content::info.h);
     template<class T>
     uint64_t operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<h_t, T>::value) {
+        if constexpr (requires { e.content.info.h; }) {
             return e.content.info.h;
         }
         return -1;
@@ -331,12 +293,10 @@ struct EventMediaHeight
 
 struct EventMediaWidth
 {
-    template<class Content>
-    using w_t = decltype(Content::info.w);
     template<class T>
     uint64_t operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (is_detected<w_t, T>::value) {
+        if constexpr (requires { e.content.info.h; }) {
             return e.content.info.w;
         }
         return -1;
