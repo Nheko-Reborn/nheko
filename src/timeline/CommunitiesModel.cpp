@@ -852,7 +852,8 @@ CommunitiesModel::updateSpaceStatus(QString space,
                           .arg(QString::fromStdString(err->matrix_error.error)));
                       nhlog::net()->error("Failed to update child {} of {}: {}",
                                           room.toStdString(),
-                                          space.toStdString());
+                                          space.toStdString(),
+                                          *err);
                   }
               });
         }
@@ -869,7 +870,8 @@ CommunitiesModel::updateSpaceStatus(QString space,
                           .arg(QString::fromStdString(err->matrix_error.error)));
                       nhlog::net()->error("Failed to delete child {} of {}: {}",
                                           room.toStdString(),
-                                          space.toStdString());
+                                          space.toStdString(),
+                                          *err);
                   }
               });
         }
@@ -891,7 +893,8 @@ CommunitiesModel::updateSpaceStatus(QString space,
                           .arg(QString::fromStdString(err->matrix_error.error)));
                       nhlog::net()->error("Failed to update parent {} of {}: {}",
                                           space.toStdString(),
-                                          room.toStdString());
+                                          room.toStdString(),
+                                          *err);
                   }
               });
         }
@@ -908,7 +911,8 @@ CommunitiesModel::updateSpaceStatus(QString space,
                           .arg(QString::fromStdString(err->matrix_error.error)));
                       nhlog::net()->error("Failed to delete parent {} of {}: {}",
                                           space.toStdString(),
-                                          room.toStdString());
+                                          room.toStdString(),
+                                          *err);
                   }
               });
         }
