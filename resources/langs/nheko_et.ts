@@ -463,22 +463,22 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+643"/>
         <source>Failed to update space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamkogukonna uuendamine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space child: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamkogukonna kustutamine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Failed to update space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ülemkogukonna uuendamine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Failed to delete space parent: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ülemkogukonna kustutamine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -486,17 +486,17 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita liitumine kogukonnaga</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita liitumine jututoaga</translation>
     </message>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n liige</numerusform>
             <numerusform>%n liiget</numerusform>
         </translation>
@@ -509,17 +509,17 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa soovid liituda selle jututoaga? Kui soovid, siis võid siia lisada ka selgituse:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Koputa</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu</translation>
     </message>
 </context>
 <context>
@@ -560,12 +560,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="-27"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus kogukond</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus jututuba</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1134,7 +1134,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu</translation>
     </message>
 </context>
 <context>
@@ -2256,7 +2256,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+10"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa kogukonda või eemalda sealt</translation>
     </message>
     <message>
         <location line="+263"/>
@@ -2329,7 +2329,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo uus kogukond</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2439,7 +2439,7 @@ Näiteks: https://server.minu:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda jututoa tunnuspilti.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2889,37 +2889,37 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from space</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa kogukonda või eemalda sealt</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoa ametlik kogukond</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoaga seotud kogukond</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvatakse vaid kogukonna liikmetele</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvatakse vaid jututoa liikmetele</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>Pole seotud</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamkogukonnad</translation>
     </message>
 </context>
 <context>
