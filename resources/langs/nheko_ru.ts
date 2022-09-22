@@ -761,7 +761,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>При чтении ключа расшифровки произошла внутренняя ошибка.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -771,7 +771,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при анализе сообщения.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -786,7 +786,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+10"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>Запросить ключ</translation>
     </message>
 </context>
 <context>
@@ -1232,12 +1232,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-155"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation>Автообноружение не удалось. Получен поврежденный ответ.</translation>
+        <translation>Автоматическое обнаружение не удалось. Получен некорректный ответ.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation>Автообноружение не удалось. Не известаня ошибка во время запроса .well-known.</translation>
+        <translation>Автоматическое обнаружение не удалось. Получена неизвестная ошибка во время исполнения запроса к .well-known.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -1287,7 +1287,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>SSO LOGIN</source>
-        <translation>SSO ВХОД</translation>
+        <translation>Войти при помощи SSO</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -1297,7 +1297,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+52"/>
         <source>SSO login failed</source>
-        <translation>SSO вход не удался</translation>
+        <translation>Не удалось войти при помощи SSO</translation>
     </message>
 </context>
 <context>
@@ -2010,7 +2010,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+213"/>
         <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation>Создать уникальный профиль, который позволяет вести несколько аккаунтов и запускать множество сущностей nheko. </translation>
+        <translation>Создать уникальный профиль, который позволит одновременно войти в несколько аккаунтов и запустить несколько экземляров Nheko.</translation>
     </message>
     <message>
         <location line="+2"/>
