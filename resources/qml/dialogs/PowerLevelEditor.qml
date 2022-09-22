@@ -272,7 +272,11 @@ ApplicationWindow {
                                         else
                                         userCompleter.down();
                                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
-                                        userCompleter.finishCompletion();
+                                        if (userCompleter.currentCompletion()) {
+                                            userCompleter.finishCompletion();
+                                        } else if (userEntry.text.startsWith("@") && userEntry.text.includes(":")) {
+                                            userCompletionConnections.onCompletionSelected(userEntry.text);
+                                        }
                                         event.accepted = true;
                                     } else if (event.matches(StandardKey.Cancel)) {
                                         typeEntry.visible = false;
@@ -315,6 +319,7 @@ ApplicationWindow {
                             }
 
                             target: userCompleter
+                            id: userCompletionConnections
                         }
 
                         delegate: RowLayout {
