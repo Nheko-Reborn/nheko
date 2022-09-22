@@ -3306,7 +3306,7 @@ Reason: %4</source>
     <message>
         <location line="-32"/>
         <source>%1 changed their avatar.</source>
-        <translation>%1 поменял свой аватар.</translation>
+        <translation>%1 изменил свой аватар.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3346,7 +3346,7 @@ Reason: %4</source>
     <message>
         <location line="-1528"/>
         <source>You joined this room.</source>
-        <translation>Вы присоединились к этой комнате.</translation>
+        <translation>Вы присоединились к комнате.</translation>
     </message>
     <message>
         <location line="+1480"/>
@@ -3367,7 +3367,7 @@ Reason: %4</source>
         <location line="+36"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation>%1 покинул чат, после того, как уже его покинул.</translation>
+        <translation>%1 уже покинул данную комнату.</translation>
     </message>
     <message>
         <location line="+7"/>
