@@ -33,32 +33,65 @@ build-clazy:
     paths:
       - .ccache
 
-build-gcc9:
+build-gcc11:
   stage: build
-  image: ubuntu:20.04
+  image: ubuntu:22.04
   tags: [docker]
   variables:
-    QT_PKG: 515
     TRAVIS_OS_NAME: linux
   before_script:
     - apt-get update
-    - apt-get install -y software-properties-common
-    - add-apt-repository ppa:ubuntu-toolchain-r/test -y
-    - add-apt-repository ppa:beineri/opt-qt-5.15.2-focal -y
-    - apt-get update && apt-get -y install --no-install-recommends build-essential ninja-build qt${QT_PKG}{base,declarative,tools,multimedia,script,quickcontrols2,svg} liblmdb-dev libgl1-mesa-dev libssl-dev git ccache pkg-config libsecret-1-dev cmake asciidoc xsltproc
+    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev 
+        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
+        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
+        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
+        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev 
     # need recommended deps for wget
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
-    - wget https://github.com/Kitware/CMake/releases/download/v3.19.0/cmake-3.19.0-Linux-x86_64.sh && sh cmake-3.19.0-Linux-x86_64.sh  --skip-license  --prefix=/usr/local
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
   script:
-    - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
-    - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
-    - . "/opt/qt${QT_PKG}/bin/qt${QT_PKG}-env.sh" || true
+    - export PATH="/usr/lib/ccache:${PATH}"
     - cmake -GNinja -H. -Bbuild
         -DCMAKE_INSTALL_PREFIX=.deps/usr
         -DHUNTER_ROOT="../.hunter"
-        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_LMDB=OFF
+        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_LMDB=OFF -DUSE_BUNDLED_QTKEYCHAIN=OFF
+        -DVOIP=OFF
+        -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
+        -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
+        -DJSON_ImplicitConversions=OFF
+    - cmake --build build
+  after_script:
+    - mv ../.hunter .hunter
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .hunter/
+      - .ccache
+
+build-gcc10:
+  stage: build
+  image: debian:bullseye
+  tags: [docker]
+  variables:
+    TRAVIS_OS_NAME: linux
+  before_script:
+    - apt-get update
+    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev 
+        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
+        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
+        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
+        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev 
+    # need recommended deps for wget
+    - apt-get -y install wget
+    - /usr/sbin/update-ccache-symlinks
+    - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
+  script:
+    - export PATH="/usr/lib/ccache:${PATH}"
+    - cmake -GNinja -H. -Bbuild
+        -DCMAKE_INSTALL_PREFIX=.deps/usr
+        -DHUNTER_ROOT="../.hunter"
+        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_LMDB=OFF -DUSE_BUNDLED_QTKEYCHAIN=OFF
         -DVOIP=OFF
         -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
         -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
