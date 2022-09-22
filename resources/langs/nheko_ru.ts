@@ -3043,7 +3043,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation>%1 закрыл комнату для доступа гостям.</translation>
+        <translation>%1 закрыл доступ к комнате для гостей.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -3053,7 +3053,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation>%1 сделал историю сообщений видимо для участников с этого момента.</translation>
+        <translation>%1 открыл доступ к истории комнаты для пользователей, присоединившихся к ней начиная с текущего момента.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3069,7 +3069,7 @@ If you choose verify, you need to have the other device available. If you choose
         <location line="+35"/>
         <location line="+244"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation>%1 поменял разрешения для комнаты.</translation>
+        <translation>%1 изменил права доступа комнаты.</translation>
     </message>
     <message>
         <location line="-221"/>
