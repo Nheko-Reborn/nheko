@@ -89,6 +89,7 @@ build-macos:
         -DUSE_BUNDLED_OPENSSL=ON
         -DUSE_BUNDLED_BOOST=ON
         -DCI_BUILD=ON
+        -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
     - cmake --build build
     - (cd build && git clone https://github.com/Nheko-Reborn/qt-jdenticon.git && cd qt-jdenticon && qmake && make -j 4 && cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS)
   after_script:
