@@ -170,7 +170,7 @@
     <message>
         <location line="+14"/>
         <source>Decline</source>
-        <translation>Отказаться</translation>
+        <translation>Отклонить</translation>
     </message>
     <message>
         <location line="-31"/>
@@ -367,7 +367,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+15"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation>Не удалось выгнать %1 из %2: %3</translation>
+        <translation>Не удалось исключить %1 из %2: %3</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -413,7 +413,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+81"/>
         <source>All rooms</source>
-        <translation type="unfinished">Все комнаты</translation>
+        <translation>Все комнаты</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -433,7 +433,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+66"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Избранное</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -443,17 +443,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Low Priority</source>
-        <translation type="unfinished">Низкий Приоритет</translation>
+        <translation>Низкий приоритет</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation type="unfinished"></translation>
+        <translation>Комнаты с низким приоритетом.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Server Notices</source>
-        <translation type="unfinished">Серверные Оповещения</translation>
+        <translation>Оповещения сервера</translation>
     </message>
     <message>
         <location line="+2"/>
