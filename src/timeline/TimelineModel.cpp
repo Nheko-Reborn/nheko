@@ -1313,8 +1313,14 @@ TimelineModel::redactEvent(const QString &id, const QString &reason)
         http::client()->redact_event(
           room_id_.toStdString(),
           id.toStdString(),
-          [this, id](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+          [this, id, reason](const mtx::responses::EventId &, mtx::http::RequestErr err) {
               if (err) {
+                  if (err->status_code == 429 && err->matrix_error.retry_after.count() != 0) {
+                      QTimer::singleShot(err->matrix_error.retry_after, this, [this, id, reason]() {
+                          this->redactEvent(id, reason);
+                      });
+                      return;
+                  }
                   emit redactionFailed(tr("Message redaction failed: %1")
                                          .arg(QString::fromStdString(err->matrix_error.error)));
                   return;
