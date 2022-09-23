@@ -629,7 +629,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation>Введите свой ключ восстановления или пароль для расшифровки секретов: </translation>
+        <translation>Введите ключ восстановления или пароль, чтобы расшифровать ключи шифрования:</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4211,12 +4211,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+419"/>
         <source>Select a file</source>
-        <translation type="unfinished">Выберите файл</translation>
+        <translation>Выберите файл</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Все файлы (*)</translation>
+        <translation>Все файлы (*)</translation>
     </message>
     <message>
         <location line="+89"/>
@@ -4417,22 +4417,22 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/Utils.h" line="+117"/>
         <source>You sent an audio clip</source>
-        <translation>Вы отправили аудио запись</translation>
+        <translation>Вы отправили аудиозапись</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation>%1 отправил аудио запись</translation>
+        <translation>%1 отправил аудиозапись</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent an image</source>
-        <translation>Вы отправили картинку</translation>
+        <translation>Вы отправили изображение</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent an image</source>
-        <translation>%1 отправил картинку</translation>
+        <translation>%1 отправил изображение</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4467,12 +4467,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+4"/>
         <source>You sent a notification</source>
-        <translation>Вы отправили оповещение</translation>
+        <translation>Вы отправили уведомление</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation>%1 отправил оповещение</translation>
+        <translation>%1 отправил уведомление</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4530,7 +4530,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+3"/>
         <source>Unknown Message Type</source>
-        <translation>Неизвестный Тип Сообщения</translation>
+        <translation>Неизвестный тип сообщения</translation>
     </message>
 </context>
 </TS>
