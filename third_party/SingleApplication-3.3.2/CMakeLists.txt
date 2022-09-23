@@ -2,13 +2,12 @@ cmake_minimum_required(VERSION 3.7.0)
 
 project(SingleApplication LANGUAGES CXX)
 
-set(CMAKE_AUTOMOC ON)
-
 add_library(${PROJECT_NAME} STATIC
     singleapplication.cpp
     singleapplication_p.cpp
 )
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
+set_target_properties(${PROJECT_NAME} PROPERTIES AUTOMOC ON)
 
 if(NOT QT_DEFAULT_MAJOR_VERSION)
     set(QT_DEFAULT_MAJOR_VERSION 5 CACHE STRING "Qt version to use (5 or 6), defaults to 5")

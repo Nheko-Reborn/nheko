@@ -21,7 +21,6 @@ set(
 set(CMAKE_CXX_STANDARD 20 CACHE STRING "C++ standard")
 set(CMAKE_CXX_STANDARD_REQUIRED ON CACHE BOOL "Require C++ standard to be supported")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
-set(CMAKE_AUTOMOC ON)
 
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
@@ -664,6 +663,11 @@ else()
 	endif()
 endif()
 
+set_target_properties(nheko
+	PROPERTIES
+		CMAKE_SKIP_INSTALL_RPATH TRUE
+		AUTOMOC ON)
+
 if(APPLE)
 	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
 elseif(WIN32)
@@ -756,8 +760,6 @@ endif()
 if(MAN)
 	add_subdirectory(man)
 endif()
-
-set_target_properties(nheko PROPERTIES CMAKE_SKIP_INSTALL_RPATH TRUE)
 
 if(UNIX AND NOT APPLE)
 	if(FLATPAK)
