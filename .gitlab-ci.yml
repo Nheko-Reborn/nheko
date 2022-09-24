@@ -96,7 +96,6 @@ build-macos:
   artifacts:
     paths:
       - build/nheko.app
-      - /tmp/notarize*
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos-app
     expose_as: 'macos-app'
     public: false
@@ -125,9 +124,8 @@ codesign-macos:
   artifacts:
     paths:
       - artifacts/nheko-${CI_COMMIT_SHORT_SHA}.dmg
+      - /tmp/notarize*
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos
-    expose_as: 'macos-dmg'
-
 
 build-flatpak-amd64:
   stage: build
