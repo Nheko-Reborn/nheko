@@ -96,6 +96,7 @@ build-macos:
   artifacts:
     paths:
       - build/nheko.app
+      - /tmp/notarize*
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos-app
     expose_as: 'macos-app'
     public: false

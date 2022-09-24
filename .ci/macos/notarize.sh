@@ -36,8 +36,8 @@ done
 
 codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "build/nheko.app"
 
-NOTARIZE_SUBMIT_LOG=$(mktemp -t notarize-submit)
-NOTARIZE_STATUS_LOG=$(mktemp -t notarize-status)
+NOTARIZE_SUBMIT_LOG=$(mktemp /tmp/notarize-submit.XXXXXX)
+NOTARIZE_STATUS_LOG=$(mktemp /tmp/notarize-status.XXXXXX)
 
 finish() {
   rm "$NOTARIZE_SUBMIT_LOG" "$NOTARIZE_STATUS_LOG"
