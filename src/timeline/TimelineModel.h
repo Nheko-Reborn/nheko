@@ -493,8 +493,8 @@ private:
     std::string last_event_id;
     std::string fullyReadEventId_;
 
-    std::unique_ptr<RoomSummary> parentSummary = nullptr;
-    bool parentChecked                         = false;
+    std::unique_ptr<RoomSummary, DeleteLaterDeleter> parentSummary = nullptr;
+    bool parentChecked                                             = false;
 };
 
 template<class T>

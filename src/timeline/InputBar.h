@@ -25,6 +25,15 @@ class CombinedImagePackModel;
 class QMimeData;
 class QDropEvent;
 
+struct DeleteLaterDeleter
+{
+    void operator()(QObject *p)
+    {
+        if (p)
+            p->deleteLater();
+    }
+};
+
 enum class MarkdownOverride
 {
     NOT_SPECIFIED, // no override set
@@ -278,14 +287,6 @@ private:
     bool uploading_      = false;
     bool containsAtRoom_ = false;
 
-    struct DeleteLaterDeleter
-    {
-        void operator()(QObject *p)
-        {
-            if (p)
-                p->deleteLater();
-        }
-    };
     using UploadHandle = std::unique_ptr<MediaUpload, DeleteLaterDeleter>;
     std::vector<UploadHandle> unconfirmedUploads;
     std::vector<UploadHandle> runningUploads;
