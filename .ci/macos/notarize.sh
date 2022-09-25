@@ -65,7 +65,7 @@ while sleep 60 && date; do
   #isSuccess=$(grep "success" "$NOTARIZE_STATUS_LOG")
   #isFailure=$(grep "invalid" "$NOTARIZE_STATUS_LOG")
 
-  if [ "${sub_status}" = "Approved" ]; then
+  if [ "${sub_status}" = "Accepted" ]; then
       echo "Notarization done!"
       xcrun stapler staple -v nheko.dmg
       echo "Stapler done!"
