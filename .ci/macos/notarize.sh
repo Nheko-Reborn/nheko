@@ -56,10 +56,10 @@ xcrun notarytool submit nheko.dmg --apple-id "${APPLE_DEV_USER}" --password "${A
 requestUUID="$(awk -F ': ' '/id/ {print $2}' "$NOTARIZE_SUBMIT_LOG" | head -1)"
 
 if [ -z "${requestUUID}" ]; then
-  echo "Received requestUUID: \"${requestUUID}\""
-else
   echo "Something went wrong when submitting the request... we don't have a UUID"
   exit 1
+else
+  echo "Received requestUUID: \"${requestUUID}\""
 fi
 
 while sleep 60 && date; do
