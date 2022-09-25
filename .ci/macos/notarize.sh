@@ -27,8 +27,8 @@ security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
 )
 
 echo "[INFO] Signing app contents"
-find "build/nheko.app/Contents"|while read fname; do
-    if [[ -f $fname ]]; then
+find "build/nheko.app/Contents"|while read -r fname; do
+    if [ -f "$fname" ]; then
         echo "[INFO] Signing $fname"
         codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "$fname"
     fi
@@ -50,24 +50,27 @@ user=$(id -nu)
 chown "${user}" nheko.dmg
 
 echo "--> Start Notarization process"
-xcrun altool -t osx -f nheko.dmg --primary-bundle-id "io.github.nheko-reborn.nheko" --notarize-app -u "${APPLE_DEV_USER}" -p "${APPLE_DEV_PASS}" > "$NOTARIZE_SUBMIT_LOG" 2>&1
-requestUUID="$(awk -F ' = ' '/RequestUUID/ {print $2}' "$NOTARIZE_SUBMIT_LOG")"
+# OLD altool usage: xcrun altool -t osx -f nheko.dmg --primary-bundle-id "io.github.nheko-reborn.nheko" --notarize-app -u "${APPLE_DEV_USER}" -p "${APPLE_DEV_PASS}" > "$NOTARIZE_SUBMIT_LOG" 2>&1
+xcrun notarytool submit nheko.dmg --apple-id "${APPLE_DEV_USER}" --password "${APPLE_DEV_PASS}" --team-id "${APPLE_TEAM_ID}" > "$NOTARIZE_SUBMIT_LOG" 2>&1
+requestUUID="$(awk -F ' = ' '/RequestUUID/ {print $2}' "$NOTARIZE_SUBMIT_LOG" | head -1)"
 
 while sleep 60 && date; do
   echo "--> Checking notarization status for ${requestUUID}"
 
-  xcrun altool --notarization-info "${requestUUID}" -u "${APPLE_DEV_USER}" -p "${APPLE_DEV_PASS}" > "$NOTARIZE_STATUS_LOG" 2>&1
+  # OLD altool usage: xcrun altool --notarization-info "${requestUUID}" -u "${APPLE_DEV_USER}" -p "${APPLE_DEV_PASS}" > "$NOTARIZE_STATUS_LOG" 2>&1
+  xcrun notarytool info "${requestUUID}" --apple-id "${APPLE_DEV_USER}" --password "${APPLE_DEV_PASS}" --team-id "${APPLE_TEAM_ID}" > "$NOTARIZE_STATUS_LOG" 2>&1
 
-  isSuccess=$(grep "success" "$NOTARIZE_STATUS_LOG")
-  isFailure=$(grep "invalid" "$NOTARIZE_STATUS_LOG")
+  sub_status="$(awk -F ':' '/status/ {print $2}' "$NOTARIZE_STATUS_LOG")"
+  #isSuccess=$(grep "success" "$NOTARIZE_STATUS_LOG")
+  #isFailure=$(grep "invalid" "$NOTARIZE_STATUS_LOG")
 
-  if [ -n "${isSuccess}" ]; then
+  if [ "${sub_status}" = "Approved" ]; then
       echo "Notarization done!"
       xcrun stapler staple -v nheko.dmg
       echo "Stapler done!"
       break
   fi
-  if [ -n "${isFailure}" ]; then
+  if [ "${sub_status}" = "Invalid" ] || [ "${sub_status}" = "Rejected" ]; then
       echo "Notarization failed"
       cat "$NOTARIZE_STATUS_LOG" 1>&2
       exit 1
