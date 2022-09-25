@@ -96,7 +96,8 @@ struct MegolmSessionIndex
     MegolmSessionIndex(std::string room_id_, const mtx::events::msg::Encrypted &e)
       : room_id(std::move(room_id_))
       , session_id(e.session_id)
-    {}
+    {
+    }
 
     //! The room in which this session exists.
     std::string room_id;

@@ -1467,7 +1467,8 @@ struct SendMessageVisitor
 {
     explicit SendMessageVisitor(TimelineModel *model)
       : model_(model)
-    {}
+    {
+    }
 
     template<typename T, mtx::events::EventType Event>
     void sendRoomEvent(mtx::events::RoomEvent<T> msg)
@@ -1491,7 +1492,8 @@ struct SendMessageVisitor
     // Do-nothing operator for all unhandled events
     template<typename T>
     void operator()(const mtx::events::Event<T> &)
-    {}
+    {
+    }
 
     // Operator for m.room.message events that contain a msgtype in their content
     template<typename T,

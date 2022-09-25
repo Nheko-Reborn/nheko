@@ -20,7 +20,8 @@ public:
 
     UIA(QObject *parent = nullptr)
       : QObject(parent)
-    {}
+    {
+    }
 
     mtx::http::UIAHandler genericHandler(QString context);
 
