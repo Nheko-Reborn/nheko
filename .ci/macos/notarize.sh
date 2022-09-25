@@ -55,6 +55,13 @@ xcrun notarytool submit nheko.dmg --apple-id "${APPLE_DEV_USER}" --password "${A
 # OLD altool usage: requestUUID="$(awk -F ' = ' '/RequestUUID/ {print $2}' "$NOTARIZE_SUBMIT_LOG")"
 requestUUID="$(awk -F ': ' '/id/ {print $2}' "$NOTARIZE_SUBMIT_LOG" | head -1)"
 
+if [ -z "${requestUUID}" ]; then
+  echo "Received requestUUID: ${requestUUID}"
+else
+  echo "Something went wrong when submitting the request... we don't have a UUID"
+  exit 1
+fi
+
 while sleep 60 && date; do
   echo "--> Checking notarization status for ${requestUUID}"
 
@@ -64,6 +71,8 @@ while sleep 60 && date; do
   sub_status="$(awk -F ':' '/status/ {print $2}' "$NOTARIZE_STATUS_LOG")"
   #isSuccess=$(grep "success" "$NOTARIZE_STATUS_LOG")
   #isFailure=$(grep "invalid" "$NOTARIZE_STATUS_LOG")
+
+  echo "Status for submission ${requestUUID}: ${sub_status}" 
 
   if [ "${sub_status}" = "Accepted" ]; then
       echo "Notarization done!"
