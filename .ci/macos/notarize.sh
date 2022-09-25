@@ -52,7 +52,8 @@ chown "${user}" nheko.dmg
 echo "--> Start Notarization process"
 # OLD altool usage: xcrun altool -t osx -f nheko.dmg --primary-bundle-id "io.github.nheko-reborn.nheko" --notarize-app -u "${APPLE_DEV_USER}" -p "${APPLE_DEV_PASS}" > "$NOTARIZE_SUBMIT_LOG" 2>&1
 xcrun notarytool submit nheko.dmg --apple-id "${APPLE_DEV_USER}" --password "${APPLE_DEV_PASS}" --team-id "${APPLE_TEAM_ID}" > "$NOTARIZE_SUBMIT_LOG" 2>&1
-requestUUID="$(awk -F ' = ' '/RequestUUID/ {print $2}' "$NOTARIZE_SUBMIT_LOG" | head -1)"
+# OLD altool usage: requestUUID="$(awk -F ' = ' '/RequestUUID/ {print $2}' "$NOTARIZE_SUBMIT_LOG")"
+requestUUID="$(awk -F ':' '/id/ {print $2}' "$NOTARIZE_SUBMIT_LOG" | head -1)"
 
 while sleep 60 && date; do
   echo "--> Checking notarization status for ${requestUUID}"
