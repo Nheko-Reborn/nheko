@@ -494,7 +494,11 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
 
                     attrStart = consumeSpaces(attrEnd);
 
-                    if (attrStart < attrsEnd) {
+                    if (attrName.isEmpty()) {
+                        buffer.append(QUrl::toPercentEncoding(QString(QByteArray(attrStart, 1))));
+                        attrStart++;
+                        continue;
+                    } else if (attrStart < attrsEnd) {
                         if (*attrStart == '=') {
                             attrStart = consumeSpaces(attrStart + 1);
 
