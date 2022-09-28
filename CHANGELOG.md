@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.10.2] -- 2022-09-22
+
+### Security release
+
+- Fixes potential secret poisoning by the homeserver
+- A crash when validation malicious html
+
+Thanks to the matrix.org security team for disclosing this issue.
+
+An update is highly recommended. Otherwise you can temporarily protect against
+this issue by not verifying your own devices and not pressing the request button
+in the setting.
+
 ## [0.10.1] -- 2022-09-07
 
 ### Highlights
