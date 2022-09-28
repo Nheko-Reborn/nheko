@@ -4,8 +4,12 @@
 
 #include "PowerlevelsEditModels.h"
 
+#include <QCoreApplication>
+#include <QTimer>
+
 #include <algorithm>
 #include <set>
+#include <unordered_set>
 
 #include "Cache.h"
 #include "Cache_p.h"
@@ -76,7 +80,7 @@ PowerlevelsTypeListModel::PowerlevelsTypeListModel(const std::string &rid,
 }
 
 std::map<std::string, mtx::events::state::power_level_t, std::less<>>
-PowerlevelsTypeListModel::toEvents()
+PowerlevelsTypeListModel::toEvents() const
 {
     std::map<std::string, mtx::events::state::power_level_t, std::less<>> m;
     for (const auto &[key, pl] : qAsConst(types))
@@ -85,7 +89,7 @@ PowerlevelsTypeListModel::toEvents()
     return m;
 }
 mtx::events::state::power_level_t
-PowerlevelsTypeListModel::kick()
+PowerlevelsTypeListModel::kick() const
 {
     for (const auto &[key, pl] : qAsConst(types))
         if (key == "kick")
@@ -93,7 +97,7 @@ PowerlevelsTypeListModel::kick()
     return powerLevels_.users_default;
 }
 mtx::events::state::power_level_t
-PowerlevelsTypeListModel::invite()
+PowerlevelsTypeListModel::invite() const
 {
     for (const auto &[key, pl] : qAsConst(types))
         if (key == "invite")
@@ -101,7 +105,7 @@ PowerlevelsTypeListModel::invite()
     return powerLevels_.users_default;
 }
 mtx::events::state::power_level_t
-PowerlevelsTypeListModel::ban()
+PowerlevelsTypeListModel::ban() const
 {
     for (const auto &[key, pl] : qAsConst(types))
         if (key == "ban")
@@ -109,7 +113,7 @@ PowerlevelsTypeListModel::ban()
     return powerLevels_.users_default;
 }
 mtx::events::state::power_level_t
-PowerlevelsTypeListModel::eventsDefault()
+PowerlevelsTypeListModel::eventsDefault() const
 {
     for (const auto &[key, pl] : qAsConst(types))
         if (key == "zdefault_events")
@@ -117,7 +121,7 @@ PowerlevelsTypeListModel::eventsDefault()
     return powerLevels_.users_default;
 }
 mtx::events::state::power_level_t
-PowerlevelsTypeListModel::stateDefault()
+PowerlevelsTypeListModel::stateDefault() const
 {
     for (const auto &[key, pl] : qAsConst(types))
         if (key == "zdefault_states")
@@ -390,7 +394,7 @@ PowerlevelsUserListModel::PowerlevelsUserListModel(const std::string &rid,
 }
 
 std::map<std::string, mtx::events::state::power_level_t, std::less<>>
-PowerlevelsUserListModel::toUsers()
+PowerlevelsUserListModel::toUsers() const
 {
     std::map<std::string, mtx::events::state::power_level_t, std::less<>> m;
     for (const auto &[key, pl] : qAsConst(users))
@@ -399,7 +403,7 @@ PowerlevelsUserListModel::toUsers()
     return m;
 }
 mtx::events::state::power_level_t
-PowerlevelsUserListModel::usersDefault()
+PowerlevelsUserListModel::usersDefault() const
 {
     for (const auto &[key, pl] : qAsConst(users))
         if (key == "default")
@@ -565,6 +569,7 @@ PowerlevelEditingModels::PowerlevelEditingModels(QString room_id, QObject *paren
                    .content)
   , types_(room_id.toStdString(), powerLevels_, this)
   , users_(room_id.toStdString(), powerLevels_, this)
+  , spaces_(room_id.toStdString(), powerLevels_, this)
   , room_id_(room_id.toStdString())
 {
     connect(&types_,
@@ -581,17 +586,31 @@ PowerlevelEditingModels::PowerlevelEditingModels(QString room_id, QObject *paren
             &PowerlevelEditingModels::defaultUserLevelChanged);
 }
 
+bool
+PowerlevelEditingModels::isSpace() const
+{
+    return cache::singleRoomInfo(room_id_).is_space;
+}
+
+mtx::events::state::PowerLevels
+PowerlevelEditingModels::calculateNewPowerlevel() const
+{
+    auto newPl           = powerLevels_;
+    newPl.events         = types_.toEvents();
+    newPl.kick           = types_.kick();
+    newPl.invite         = types_.invite();
+    newPl.ban            = types_.ban();
+    newPl.events_default = types_.eventsDefault();
+    newPl.state_default  = types_.stateDefault();
+    newPl.users          = users_.toUsers();
+    newPl.users_default  = users_.usersDefault();
+    return newPl;
+}
+
 void
 PowerlevelEditingModels::commit()
 {
-    powerLevels_.events         = types_.toEvents();
-    powerLevels_.kick           = types_.kick();
-    powerLevels_.invite         = types_.invite();
-    powerLevels_.ban            = types_.ban();
-    powerLevels_.events_default = types_.eventsDefault();
-    powerLevels_.state_default  = types_.stateDefault();
-    powerLevels_.users          = users_.toUsers();
-    powerLevels_.users_default  = users_.usersDefault();
+    powerLevels_ = calculateNewPowerlevel();
 
     http::client()->send_state_event(
       room_id_, powerLevels_, [](const mtx::responses::EventId &, mtx::http::RequestErr e) {
@@ -605,6 +624,13 @@ PowerlevelEditingModels::commit()
 }
 
 void
+PowerlevelEditingModels::updateSpacesModel()
+{
+    powerLevels_            = calculateNewPowerlevel();
+    spaces_.newPowerlevels_ = powerLevels_;
+}
+
+void
 PowerlevelEditingModels::addRole(int pl)
 {
     for (const auto &e : qAsConst(types_.types))
@@ -613,4 +639,185 @@ PowerlevelEditingModels::addRole(int pl)
 
     types_.addRole(pl);
     users_.addRole(pl);
+}
+
+static bool
+samePl(const mtx::events::state::PowerLevels &a, const mtx::events::state::PowerLevels &b)
+{
+    return std::tie(a.events,
+                    a.users_default,
+                    a.users,
+                    a.state_default,
+                    a.users_default,
+                    a.events_default,
+                    a.ban,
+                    a.kick,
+                    a.invite,
+                    a.notifications,
+                    a.redact) == std::tie(b.events,
+                                          b.users_default,
+                                          b.users,
+                                          b.state_default,
+                                          b.users_default,
+                                          b.events_default,
+                                          b.ban,
+                                          b.kick,
+                                          b.invite,
+                                          b.notifications,
+                                          b.redact);
+}
+
+PowerlevelsSpacesListModel::PowerlevelsSpacesListModel(const std::string &room_id_,
+                                                       const mtx::events::state::PowerLevels &pl,
+                                                       QObject *parent)
+  : QAbstractListModel(parent)
+  , room_id(std::move(room_id_))
+  , oldPowerLevels_(std::move(pl))
+{
+    beginResetModel();
+
+    spaces.push_back(Entry{room_id, oldPowerLevels_, true});
+
+    std::unordered_set<std::string> visited;
+
+    std::function<void(const std::string &)> addChildren;
+    addChildren = [this, &addChildren, &visited](const std::string &space) {
+        if (visited.count(space))
+            return;
+        else
+            visited.insert(space);
+
+        for (const auto &s : cache::client()->getChildRoomIds(space)) {
+            auto parent =
+              cache::client()->getStateEvent<mtx::events::state::space::Parent>(s, space);
+            if (parent && parent->content.via && !parent->content.via->empty() &&
+                parent->content.canonical) {
+                auto parent = cache::client()->getStateEvent<mtx::events::state::PowerLevels>(s);
+
+                spaces.push_back(
+                  Entry{s, parent ? parent->content : mtx::events::state::PowerLevels{}, false});
+                addChildren(s);
+            }
+        }
+    };
+
+    addChildren(room_id);
+
+    endResetModel();
+
+    updateToDefaults();
+}
+
+struct PowerLevelApplier
+{
+    std::vector<std::string> spaces;
+    mtx::events::state::PowerLevels pl;
+
+    void next()
+    {
+        if (spaces.empty())
+            return;
+
+        auto room_id_ = spaces.back();
+        http::client()->send_state_event(
+          room_id_,
+          pl,
+          [self = *this](const mtx::responses::EventId &, mtx::http::RequestErr e) mutable {
+              if (e) {
+                  if (e->status_code == 429 && e->matrix_error.retry_after.count() != 0) {
+                      QTimer::singleShot(e->matrix_error.retry_after,
+                                         [self = std::move(self)]() mutable { self.next(); });
+                      return;
+                  }
+
+                  nhlog::net()->error("Failed to send PL event: {}", *e);
+                  ChatPage::instance()->showNotification(
+                    QCoreApplication::translate("PowerLevels", "Failed to update powerlevel: %1")
+                      .arg(QString::fromStdString(e->matrix_error.error)));
+              }
+              self.spaces.pop_back();
+              self.next();
+          });
+    }
+};
+
+void
+PowerlevelsSpacesListModel::commit()
+{
+    std::vector<std::string> spacesToApplyTo;
+
+    for (const auto &s : spaces)
+        if (s.apply)
+            spacesToApplyTo.push_back(s.roomid);
+
+    PowerLevelApplier context{std::move(spacesToApplyTo), newPowerlevels_};
+    context.next();
+}
+
+void
+PowerlevelsSpacesListModel::updateToDefaults()
+{
+    for (int i = 1; i < spaces.size(); i++) {
+        spaces[i].apply =
+          applyToChildren_ && data(index(i), Roles::IsEditable).toBool() &&
+          !data(index(i), Roles::IsAlreadyUpToDate).toBool() &&
+          (overwriteDiverged_ || !data(index(i), Roles::IsDifferentFromBase).toBool());
+    }
+
+    if (spaces.size() > 1)
+        emit dataChanged(index(1), index(spaces.size() - 1), {Roles::ApplyPermissions});
+}
+
+bool
+PowerlevelsSpacesListModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (role != Roles::ApplyPermissions || index.row() < 0 || index.row() >= spaces.size())
+        return false;
+
+    spaces[index.row()].apply = value.toBool();
+    return true;
+}
+
+QVariant
+PowerlevelsSpacesListModel::data(QModelIndex const &index, int role) const
+{
+    auto row = index.row();
+    if (row >= spaces.size() && row < 0)
+        return {};
+
+    if (role == Roles::DisplayName || role == Roles::AvatarUrl || role == Roles::IsSpace) {
+        auto info = cache::singleRoomInfo(spaces.at(row).roomid);
+        if (role == Roles::DisplayName)
+            return QString::fromStdString(info.name);
+        else if (role == Roles::AvatarUrl)
+            return QString::fromStdString(info.avatar_url);
+        else
+            return info.is_space;
+    }
+
+    auto entry = spaces.at(row);
+    switch (role) {
+    case Roles::IsEditable:
+        return entry.pl.user_level(http::client()->user_id().to_string()) >=
+               entry.pl.state_level(to_string(mtx::events::EventType::RoomPowerLevels));
+    case Roles::IsDifferentFromBase:
+        return !samePl(entry.pl, oldPowerLevels_);
+    case Roles::IsAlreadyUpToDate:
+        return samePl(entry.pl, newPowerlevels_);
+    case Roles::ApplyPermissions:
+        return entry.apply;
+    }
+    return {};
+}
+QHash<int, QByteArray>
+PowerlevelsSpacesListModel::roleNames() const
+{
+    return {
+      {DisplayName, "displayName"},
+      {AvatarUrl, "avatarUrl"},
+      {IsEditable, "isEditable"},
+      {IsDifferentFromBase, "isDifferentFromBase"},
+      {IsAlreadyUpToDate, "isAlreadyUpToDate"},
+      {ApplyPermissions, "applyPermissions"},
+    };
 }

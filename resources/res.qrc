@@ -162,6 +162,7 @@
         <file>qml/dialogs/LogoutDialog.qml</file>
         <file>qml/dialogs/PhoneNumberInputDialog.qml</file>
         <file>qml/dialogs/PowerLevelEditor.qml</file>
+        <file>qml/dialogs/PowerLevelSpacesApplyDialog.qml</file>
         <file>qml/dialogs/RawMessageDialog.qml</file>
         <file>qml/dialogs/ReadReceipts.qml</file>
         <file>qml/dialogs/RoomDirectory.qml</file>

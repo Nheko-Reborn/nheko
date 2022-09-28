@@ -79,6 +79,22 @@ Pane {
     }
 
     Component {
+        id: plApplyPrompt
+
+        PowerLevelSpacesApplyDialog {
+        }
+    }
+
+    function showSpacePLApplyPrompt(settings, editingModel) {
+        var dialog = plApplyPrompt.createObject(timelineRoot, {
+            "roomSettings": settings,
+            "editingModel": editingModel
+        });
+        dialog.show();
+        destroyOnClose(dialog);
+    }
+
+    Component {
         id: plEditor
 
         PowerLevelEditor {

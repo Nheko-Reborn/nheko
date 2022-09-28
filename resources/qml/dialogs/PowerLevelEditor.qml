@@ -397,8 +397,15 @@ ApplicationWindow {
 
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         onAccepted: {
-            editingModel.commit();
-            plEditorW.close();
+            if (editingModel.isSpace) {
+                // TODO(Nico): Replace with showing a list of spaces to apply to
+                editingModel.updateSpacesModel();
+                plEditorW.close();
+                timelineRoot.showSpacePLApplyPrompt(roomSettings, editingModel)
+            } else {
+                editingModel.commit();
+                plEditorW.close();
+            }
         }
         onRejected: plEditorW.close();
     }
