@@ -692,10 +692,10 @@ PowerlevelsSpacesListModel::PowerlevelsSpacesListModel(const std::string &room_i
               cache::client()->getStateEvent<mtx::events::state::space::Parent>(s, space);
             if (parent && parent->content.via && !parent->content.via->empty() &&
                 parent->content.canonical) {
-                auto parent = cache::client()->getStateEvent<mtx::events::state::PowerLevels>(s);
+                auto parentPl = cache::client()->getStateEvent<mtx::events::state::PowerLevels>(s);
 
-                spaces.push_back(
-                  Entry{s, parent ? parent->content : mtx::events::state::PowerLevels{}, false});
+                spaces.push_back(Entry{
+                  s, parentPl ? parentPl->content : mtx::events::state::PowerLevels{}, false});
                 addChildren(s);
             }
         }
@@ -726,6 +726,7 @@ struct PowerLevelApplier
               if (e) {
                   if (e->status_code == 429 && e->matrix_error.retry_after.count() != 0) {
                       QTimer::singleShot(e->matrix_error.retry_after,
+                                         ChatPage::instance(),
                                          [self = std::move(self)]() mutable { self.next(); });
                       return;
                   }
@@ -746,7 +747,7 @@ PowerlevelsSpacesListModel::commit()
 {
     std::vector<std::string> spacesToApplyTo;
 
-    for (const auto &s : spaces)
+    for (const auto &s : qAsConst(spaces))
         if (s.apply)
             spacesToApplyTo.push_back(s.roomid);
 
