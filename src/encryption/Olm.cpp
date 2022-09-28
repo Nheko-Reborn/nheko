@@ -342,10 +342,13 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                 if (msg.sender != local_user.to_string())
                     return;
 
-                auto secret_name = request_id_to_secret_name.find(e->content.request_id);
+                auto secret_name_it = request_id_to_secret_name.find(e->content.request_id);
 
-                if (secret_name != request_id_to_secret_name.end()) {
-                    nhlog::crypto()->info("Received secret: {}", secret_name->second);
+                if (secret_name_it != request_id_to_secret_name.end()) {
+                    auto secret_name = secret_name_it->second;
+                    request_id_to_secret_name.erase(secret_name_it);
+
+                    nhlog::crypto()->info("Received secret: {}", secret_name);
 
                     mtx::events::msg::SecretRequest secretRequest{};
                     secretRequest.action = mtx::events::msg::RequestAction::Cancellation;
@@ -358,14 +361,23 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                         return;
 
                     auto deviceKeys = cache::userKeys(local_user.to_string());
+                    if (!deviceKeys)
+                        return;
+
                     std::string sender_device_id;
-                    if (deviceKeys) {
-                        for (auto &[dev, key] : deviceKeys->device_keys) {
-                            if (key.keys["curve25519:" + dev] == msg.sender_key) {
-                                sender_device_id = dev;
-                                break;
-                            }
+                    for (auto &[dev, key] : deviceKeys->device_keys) {
+                        if (key.keys["curve25519:" + dev] == msg.sender_key) {
+                            sender_device_id = dev;
+                            break;
                         }
+                    }
+                    if (!verificationStatus->verified_devices.count(sender_device_id) ||
+                        !verificationStatus->verified_device_keys.count(msg.sender_key) ||
+                        verificationStatus->verified_device_keys.at(msg.sender_key) !=
+                          crypto::Trust::Verified) {
+                        nhlog::net()->critical(
+                          "Received secret from unverified device {}! Ignoring!", sender_device_id);
+                        return;
                     }
 
                     std::map<mtx::identifiers::User,
@@ -380,19 +392,17 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                     http::client()->send_to_device<mtx::events::msg::SecretRequest>(
                       http::client()->generate_txn_id(),
                       body,
-                      [name = secret_name->second](mtx::http::RequestErr err) {
+                      [secret_name](mtx::http::RequestErr err) {
                           if (err) {
                               nhlog::net()->error("Failed to send request cancellation "
                                                   "for secrect "
                                                   "'{}'",
-                                                  name);
+                                                  secret_name);
                           }
                       });
 
-                    nhlog::crypto()->info("Storing secret {}", secret_name->second);
-                    cache::client()->storeSecret(secret_name->second, e->content.secret);
-
-                    request_id_to_secret_name.erase(secret_name);
+                    nhlog::crypto()->info("Storing secret {}", secret_name);
+                    cache::client()->storeSecret(secret_name, e->content.secret);
                 }
 
             } else if (auto sec_req = std::get_if<DeviceEvent<msg::SecretRequest>>(&device_event)) {
