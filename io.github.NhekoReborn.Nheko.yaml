@@ -23,17 +23,11 @@ cleanup:
   - /bin/mdb*
   - '*.a'
   - /libexec
-  - /lib/girepository-1.0/
-  - /lib/gst-validate-launcher/
-  - /lib/gstreamer-1.0/include/
-  - /lib/gstreamer-1.0/validate/
   - /lib/cmake/
-  - /bin/gst-*
   - /bin/cmark
   - /bin/event_rpcgen.py
   - /bin/playout
   - /bin/secret-tool
-  - /share/gir-1.0
 modules:
   - name: lmdb
     sources:
@@ -151,30 +145,6 @@ modules:
       - sha256: 1155fd1a83049767360e9a120c43c578145db3204d2b309eba49fbbedd0f4ed3
         type: archive
         url: https://github.com/nlohmann/json/archive/v3.10.4.tar.gz
-  - buildsystem: meson
-    name: gstreamer
-    sources:
-      - commit: ccf22e315cedf81e0075ab179ffb1b733da5206e
-        tag: 1.20.3
-        type: git
-        url: https://gitlab.freedesktop.org/gstreamer/gstreamer.git
-    config-opts:
-      - -Dcompositor=enabled
-      - -Dgl=enabled
-      - -Dgood=enabled
-      - -Dgst-plugins-good:pulse=enabled
-      - -Dgst-plugins-good:qt5=enabled
-      - -Dgst-plugins-good:rtp=enabled
-      - -Dgst-plugins-good:rtpmanager=enabled
-      - -Dgst-plugins-good:vpx=enabled
-      - -Dbad=enabled
-      - -Dgst-plugins-bad:dtls=enabled
-      - -Dgst-plugins-bad:gl=enabled
-      - -Dgst-plugins-bad:openh264=enabled
-      - -Dgst-plugins-bad:opus=enabled
-      - -Dgst-plugins-bad:srtp=enabled
-      - -Dgst-plugins-bad:webrtc=enabled
-      - -Dgst-plugins-bad:flite=disabled
   - buildsystem: qmake
     name: qt-jdenticon
     no-make-install: true
