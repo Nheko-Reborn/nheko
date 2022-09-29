@@ -402,6 +402,7 @@ Item {
                 keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
                 formatted: qsTr("%1 select answer").arg(d.userName)
+                // formatted: qsTr("Call answered elsewhere")
             }
         }
 

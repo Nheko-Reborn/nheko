@@ -46,14 +46,14 @@ Rectangle {
 
         ImageButton {
             visible: CallManager.callsSupported && showAllButtons
-            opacity: CallManager.haveCallInvite ? 0.3 : 1
+            opacity: (CallManager.haveCallInvite || CallManager.isOnCallOnOtherDevice) ? 0.3 : 1
             Layout.alignment: Qt.AlignBottom
             hoverEnabled: true
             width: 22
             height: 22
             image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.svg" : ":/icons/icons/ui/place-call.svg"
             ToolTip.visible: hovered
-            ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : qsTr("Place a call")
+            ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : (CallManager.isOnCallOnOtherDevice ? qsTr("Already on a call") : qsTr("Place a call"))
             Layout.margins: 8
             onClicked: {
                 if (room) {
@@ -61,7 +61,11 @@ Rectangle {
                         return ;
                     } else if (CallManager.isOnCall) {
                         CallManager.hangUp();
-                    } else {
+                    } 
+                    else if(CallManager.isOnCallOnOtherDevice) {
+                        return;
+                    }
+                    else {
                         var dialog = placeCallDialog.createObject(timelineRoot);
                         dialog.open();
                         timelineRoot.destroyOnClose(dialog);

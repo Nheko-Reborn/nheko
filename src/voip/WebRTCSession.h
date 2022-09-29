@@ -64,6 +64,7 @@ public:
     bool createOffer(webrtc::CallType, uint32_t shareWindowId);
     bool acceptOffer(const std::string &sdp);
     bool acceptAnswer(const std::string &sdp);
+    bool acceptGlareAnswer(const std::string &sdp);
     bool acceptNegotiation(const std::string &sdp);
     void acceptICECandidates(const std::vector<mtx::events::voip::CallCandidates::Candidate> &);
 

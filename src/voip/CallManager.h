@@ -31,6 +31,7 @@ class CallManager : public QObject
     Q_OBJECT
     Q_PROPERTY(bool haveCallInvite READ haveCallInvite NOTIFY newInviteState)
     Q_PROPERTY(bool isOnCall READ isOnCall NOTIFY newCallState)
+    Q_PROPERTY(bool isOnCallOnOtherDevice READ isOnCallOnOtherDevice NOTIFY newCallDeviceState)
     Q_PROPERTY(webrtc::CallType callType READ callType NOTIFY newInviteState)
     Q_PROPERTY(webrtc::State callState READ callState NOTIFY newCallState)
     Q_PROPERTY(QString callParty READ callParty NOTIFY newInviteState)
@@ -47,7 +48,9 @@ public:
     CallManager(QObject *);
 
     bool haveCallInvite() const { return haveCallInvite_; }
-    bool isOnCall() const { return session_.state() != webrtc::State::DISCONNECTED; }
+    bool isOnCall() const { return (session_.state() != webrtc::State::DISCONNECTED); }
+    bool isOnCallOnOtherDevice() const { return (isOnCallOnOtherDevice_ != ""); }
+    bool checkSharesRoom(QString roomid_, std::string invitee) const;
     webrtc::CallType callType() const { return callType_; }
     webrtc::State callState() const { return session_.state(); }
     QString callParty() const { return callParty_; }
@@ -85,6 +88,7 @@ signals:
     void newMessage(const QString &roomid, const mtx::events::voip::CallNegotiate &);
     void newInviteState();
     void newCallState();
+    void newCallDeviceState();
     void micMuteChanged();
     void devicesChanged();
     void turnServerRetrieved(const mtx::responses::TurnServer &);
@@ -107,12 +111,14 @@ private:
     webrtc::CallType callType_ = webrtc::CallType::VOICE;
     bool haveCallInvite_       = false;
     bool answerSelected_       = false;
+    std::string isOnCallOnOtherDevice_       = "";
     std::string inviteSDP_;
     std::vector<mtx::events::voip::CallCandidates::Candidate> remoteICECandidates_;
     std::vector<std::string> turnURIs_;
     QTimer turnServerTimer_;
     QMediaPlayer player_;
     std::vector<std::pair<QString, uint32_t>> windows_;
+    std::vector<std::string> rejectCallPartyIDs_;
 
     template<typename T>
     bool handleEvent(const mtx::events::collections::TimelineEvents &event);
@@ -126,8 +132,8 @@ private:
     void answerInvite(const mtx::events::voip::CallInvite &, bool isVideo);
     void generateCallID();
     QStringList devices(bool isVideo) const;
-    void clear();
-    void endCall();
+    void clear(bool endAllCalls = true);
+    void endCall(bool endAllCalls = true);
     void playRingtone(const QUrl &ringtone, bool repeat);
     void stopRingtone();
 };

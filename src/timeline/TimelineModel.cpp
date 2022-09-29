@@ -954,6 +954,10 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                   if constexpr (std::is_same_v<std::decay_t<decltype(event)>,
                                                RoomEvent<voip::CallAnswer>> ||
                                 std::is_same_v<std::decay_t<decltype(event)>,
+                                               RoomEvent<voip::CallInvite>> ||
+                                std::is_same_v<std::decay_t<decltype(event)>,
+                                               RoomEvent<voip::CallSelectAnswer>> ||
+                                std::is_same_v<std::decay_t<decltype(event)>,
                                                RoomEvent<voip::CallReject>> ||
                                 std::is_same_v<std::decay_t<decltype(event)>,
                                                RoomEvent<voip::CallHangUp>>)
@@ -1034,6 +1038,11 @@ isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
 
 auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &)
+{
+    return true;
+}
+auto
+isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallSelectAnswer> &)
 {
     return true;
 }
