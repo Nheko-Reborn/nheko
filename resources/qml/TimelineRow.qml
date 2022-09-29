@@ -64,8 +64,6 @@ AbstractButton {
         }
     }
 
-
-    onPressAndHold: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
     onDoubleClicked: chat.model.reply = eventId
 
     DragHandler {

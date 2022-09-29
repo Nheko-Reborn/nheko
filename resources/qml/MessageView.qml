@@ -82,6 +82,7 @@ Item {
                 id: row
 
                 property var model
+                property int buttonSize: Settings.mobileMode? 22 : 16
 
                 spacing: messageActions.padding
 
@@ -95,6 +96,7 @@ Item {
 
                         Layout.preferredHeight: fontMetrics.height
                         font.family: Settings.emojiFont
+                        font.pointSize: fontMetrics.font.pointSize*(Settings.mobileMode? 1.5 : 1)
 
                         text: modelData
                         onClicked: {
@@ -109,7 +111,8 @@ Item {
 
                     visible: !!row.model && row.model.isEditable
                     buttonTextColor: Nheko.colors.buttonText
-                    width: 16
+                    width: row.buttonSize
+                    height: row.buttonSize
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
                     ToolTip.visible: hovered
@@ -126,7 +129,8 @@ Item {
                     id: reactButton
 
                     visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
-                    width: 16
+                    width: row.buttonSize
+                    height: row.buttonSize
                     hoverEnabled: true
                     image: ":/icons/icons/ui/smile.svg"
                     ToolTip.visible: hovered
@@ -143,7 +147,8 @@ Item {
                     id: replyButton
 
                     visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
-                    width: 16
+                    width: row.buttonSize
+                    height: row.buttonSize
                     hoverEnabled: true
                     image: ":/icons/icons/ui/reply.svg"
                     ToolTip.visible: hovered
@@ -155,7 +160,8 @@ Item {
                 ImageButton {
                     id: optionsButton
 
-                    width: 16
+                    width: row.buttonSize
+                    height: row.buttonSize
                     hoverEnabled: true
                     image: ":/icons/icons/ui/options.svg"
                     ToolTip.visible: hovered
@@ -470,6 +476,19 @@ Item {
                         }
                     }
                 }
+                onPressAndHold: {
+                    messageActions.attached = timelinerow;
+                    messageActions.model = timelinerow;
+                }
+                onActiveFocusChanged: {
+                    messageActions.attached = null
+                    messageActions.model = null
+                }
+                onPressed: {
+                    messageActions.attached = null
+                    messageActions.model = null
+                }
+
                 background: Rectangle {
                     id: scrollHighlight
 
