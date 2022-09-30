@@ -33,6 +33,7 @@ AbstractButton {
     required property bool isEdited
     required property bool isStateEvent
     required property string replyTo
+    required property string threadId
     required property string userId
     required property string userName
     required property string roomTopic
@@ -58,14 +59,14 @@ AbstractButton {
         // this looks better without margins
         TapHandler {
             acceptedButtons: Qt.RightButton
-            onSingleTapped: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+            onSingleTapped: messageContextMenu.show(eventId, threadId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
             gesturePolicy: TapHandler.ReleaseWithinBounds
             acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
         }
     }
 
 
-    onPressAndHold: messageContextMenu.show(eventId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
+    onPressAndHold: messageContextMenu.show(eventId, threadId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
     onDoubleClicked: chat.model.reply = eventId
 
     DragHandler {
@@ -227,6 +228,20 @@ AbstractButton {
                     status: r.status
                     eventId: r.eventId
                     anchors.verticalCenter: ts.verticalCenter
+                }
+
+                ImageButton {
+                    visible: threadId
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    height: parent.iconSize
+                    width: parent.iconSize
+                    image: ":/icons/icons/ui/thread.svg"
+                    buttonTextColor: TimelineManager.userColor(threadId, Nheko.colors.base)
+                    ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Part of a thread")
+                    anchors.verticalCenter: ts.verticalCenter
+                    onClicked: room.thread = threadId
                 }
 
                 Image {

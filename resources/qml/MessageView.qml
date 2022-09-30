@@ -116,9 +116,7 @@ Item {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Edit")
                     onClicked: {
-                        if (row.model.isEditable)
-                        chat.model.editAction(row.model.eventId);
-
+                        if (row.model.isEditable) chat.model.edit = row.model.eventId;
                     }
                 }
 
@@ -140,6 +138,19 @@ Item {
                 }
 
                 ImageButton {
+                    id: threadButton
+
+                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
+                    width: 16
+                    hoverEnabled: true
+                    image: row.model.threadId ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
+                    ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: row.model.threadId ? qsTr("Reply in thread") : qsTr("New thread")
+                    onClicked: chat.model.thread = (row.model.threadId || row.model.eventId)
+                }
+
+                ImageButton {
                     id: replyButton
 
                     visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
@@ -149,7 +160,7 @@ Item {
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Reply")
-                    onClicked: chat.model.replyAction(row.model.eventId)
+                    onClicked: chat.model.reply = row.model.eventId
                 }
 
                 ImageButton {
@@ -161,7 +172,7 @@ Item {
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Options")
-                    onClicked: messageContextMenu.show(row.model.eventId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
+                    onClicked: messageContextMenu.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
 
             }
@@ -196,8 +207,10 @@ Item {
                     room.input.declineUploads();
                 else if(chat.model.reply)
                     chat.model.reply = undefined;
-                else
+                else if (chat.model.edit)
                     chat.model.edit = undefined;
+                else
+                    chat.model.thread = undefined
                 TimelineManager.focusMessageInput();
             }
         }
@@ -383,6 +396,7 @@ Item {
             required property bool isStateEvent
             required property bool previousMessageIsStateEvent
             required property string replyTo
+            required property string threadId
             required property string userId
             required property string roomTopic
             required property string roomName
@@ -448,6 +462,7 @@ Item {
                 isEdited: wrapper.isEdited
                 isStateEvent: wrapper.isStateEvent
                 replyTo: wrapper.replyTo
+                threadId: wrapper.threadId
                 userId: wrapper.userId
                 userName: wrapper.userName
                 roomTopic: wrapper.roomTopic
@@ -554,6 +569,7 @@ Item {
         id: messageContextMenu
 
         property string eventId
+        property string threadId
         property string link
         property string text
         property int eventType
@@ -561,8 +577,9 @@ Item {
         property bool isEditable
         property bool isSender
 
-        function show(eventId_, eventType_, isSender_, isEncrypted_, isEditable_, link_, text_, showAt_) {
+        function show(eventId_, threadId_, eventType_, isSender_, isEncrypted_, isEditable_, link_, text_, showAt_) {
             eventId = eventId_;
+            threadId = threadId_;
             eventType = eventType_;
             isEncrypted = isEncrypted_;
             isEditable = isEditable_;
@@ -623,14 +640,21 @@ Item {
         Platform.MenuItem {
             visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
             text: qsTr("Repl&y")
-            onTriggered: room.replyAction(messageContextMenu.eventId)
+            onTriggered: room.reply = (messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
             visible: messageContextMenu.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
             enabled: visible
             text: qsTr("&Edit")
-            onTriggered: room.editAction(messageContextMenu.eventId)
+            onTriggered: room.edit = (messageContextMenu.eventId)
+        }
+
+        Platform.MenuItem {
+            visible: (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
+            enabled: visible
+            text: qsTr("&Thread")
+            onTriggered: room.thread = (messageContextMenu.threadId || messageContextMenu.eventId)
         }
 
         Platform.MenuItem {
@@ -641,7 +665,7 @@ Item {
         }
 
         Platform.MenuItem {
-            text: qsTr("Read receip&ts")
+            text: qsTr("&Read receipts")
             onTriggered: room.showReadReceipts(messageContextMenu.eventId)
         }
 

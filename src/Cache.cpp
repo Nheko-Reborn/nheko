@@ -2229,7 +2229,7 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
 }
 
 std::optional<mtx::events::collections::TimelineEvent>
-Cache::getEvent(const std::string &room_id, const std::string &event_id)
+Cache::getEvent(const std::string &room_id, std::string_view event_id)
 {
     auto txn      = ro_txn(env_);
     auto eventsDb = getEventsDb(txn, room_id);
@@ -2553,30 +2553,6 @@ Cache::lastVisibleEvent(const std::string &room_id, std::string_view event_id)
         nhlog::db()->error("Failed to get last visible event after {}", event_id, e.what());
         return {};
     }
-}
-
-std::optional<uint64_t>
-Cache::getArrivalIndex(const std::string &room_id, std::string_view event_id)
-{
-    auto txn = ro_txn(env_);
-
-    lmdb::dbi orderDb;
-    try {
-        orderDb = getEventToOrderDb(txn, room_id);
-    } catch (lmdb::runtime_error &e) {
-        nhlog::db()->error(
-          "Can't open db for room '{}', probably doesn't exist yet. ({})", room_id, e.what());
-        return {};
-    }
-
-    std::string_view val;
-
-    bool success = orderDb.get(txn, event_id, val);
-    if (!success) {
-        return {};
-    }
-
-    return lmdb::from_sv<uint64_t>(val);
 }
 
 std::optional<std::string>

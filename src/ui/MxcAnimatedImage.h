@@ -6,7 +6,7 @@
 #pragma once
 
 #include <QBuffer>
-#include <QMovie>
+#include <QImageReader>
 #include <QObject>
 #include <QQuickItem>
 
@@ -24,10 +24,11 @@ class MxcAnimatedImage : public QQuickItem
 public:
     MxcAnimatedImage(QQuickItem *parent = nullptr)
       : QQuickItem(parent)
+      , movie(new QImageReader())
     {
         connect(this, &MxcAnimatedImage::eventIdChanged, &MxcAnimatedImage::startDownload);
         connect(this, &MxcAnimatedImage::roomChanged, &MxcAnimatedImage::startDownload);
-        connect(&movie, &QMovie::frameChanged, this, &MxcAnimatedImage::newFrame);
+        connect(&frameTimer, &QTimer::timeout, this, &MxcAnimatedImage::newFrame);
         setFlag(QQuickItem::ItemHasContents);
         // setAcceptHoverEvents(true);
     }
@@ -55,7 +56,10 @@ public:
     {
         if (play_ != newPlay) {
             play_ = newPlay;
-            movie.setPaused(!play_);
+            if (play_)
+                frameTimer.start();
+            else
+                frameTimer.stop();
             emit playChanged();
         }
     }
@@ -73,10 +77,16 @@ signals:
 
 private slots:
     void startDownload();
-    void newFrame(int frame)
+    void newFrame()
     {
-        currentFrame = frame;
-        imageDirty   = true;
+        if (movie->currentImageNumber() > 0 && !movie->canRead() && movie->imageCount() > 1) {
+            buffer.seek(0);
+            movie.reset(new QImageReader(movie->device(), movie->format()));
+            if (height() != 0 && width() != 0)
+                movie->setScaledSize(this->size().toSize());
+        }
+        movie->read(&currentFrame);
+        imageDirty = true;
         update();
     }
 
@@ -86,8 +96,9 @@ private:
     QString filename_;
     bool animatable_ = false;
     QBuffer buffer;
-    QMovie movie;
-    int currentFrame = 0;
-    bool imageDirty  = true;
-    bool play_       = true;
+    std::unique_ptr<QImageReader> movie;
+    bool imageDirty = true;
+    bool play_      = true;
+    QTimer frameTimer;
+    QImage currentFrame;
 };

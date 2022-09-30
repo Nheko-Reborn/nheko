@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QMimeDatabase>
+#include <QMovie>
 #include <QQuickWindow>
 #include <QSGImageNode>
 #include <QStandardPaths>
@@ -34,8 +35,12 @@ MxcAnimatedImage::startDownload()
 
     QByteArray mimeType = QString::fromStdString(mtx::accessors::mimetype(*event)).toUtf8();
 
-    static const auto formats = QMovie::supportedFormats();
-    animatable_               = formats.contains(mimeType.split('/').back());
+    static const auto movieFormats = QMovie::supportedFormats();
+    QByteArray imageFormat;
+    const auto imageFormats = QImageReader::imageFormatsForMimeType(mimeType);
+    if (!imageFormats.isEmpty())
+        imageFormat = imageFormats.front();
+    animatable_ = movieFormats.contains(imageFormat);
     animatableChanged();
 
     if (!animatable_)
@@ -66,14 +71,14 @@ MxcAnimatedImage::startDownload()
 
     QPointer<MxcAnimatedImage> self = this;
 
-    auto processBuffer = [this, mimeType, encryptionInfo, self](QIODevice &device) {
+    auto processBuffer = [this, imageFormat, encryptionInfo, self](QIODevice &device) {
         if (!self)
             return;
 
         try {
             if (buffer.isOpen()) {
-                movie.stop();
-                movie.setDevice(nullptr);
+                frameTimer.stop();
+                movie->setDevice(nullptr);
                 buffer.close();
             }
 
@@ -92,21 +97,22 @@ MxcAnimatedImage::startDownload()
             nhlog::net()->error("Failed to setup animated image buffer: {}", e.what());
         }
 
-        QTimer::singleShot(0, this, [this, mimeType] {
+        QTimer::singleShot(0, this, [this, imageFormat] {
             nhlog::ui()->info(
               "Playing movie with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
-            movie.setFormat(mimeType);
-            movie.setDevice(&buffer);
+            movie->setFormat(imageFormat);
+            movie->setDevice(&buffer);
 
             if (height() != 0 && width() != 0)
-                movie.setScaledSize(this->size().toSize());
-            if (buffer.bytesAvailable() <
-                4LL * 1024 * 1024 * 1024) // cache images smaller than 4MB in RAM
-                movie.setCacheMode(QMovie::CacheAll);
+                movie->setScaledSize(this->size().toSize());
+
+            if (movie->supportsAnimation())
+                frameTimer.setInterval(movie->nextImageDelay());
+
             if (play_)
-                movie.start();
+                frameTimer.start();
             else
-                movie.jumpToFrame(0);
+                movie->jumpToImage(0);
             emit loadedChanged();
             update();
         });
@@ -159,9 +165,9 @@ MxcAnimatedImage::geometryChanged(const QRectF &newGeometry, const QRectF &oldGe
 
     if (newGeometry.size() != oldGeometry.size()) {
         if (height() != 0 && width() != 0) {
-            QSizeF r = movie.scaledSize();
+            QSizeF r = movie->scaledSize();
             r.scale(newGeometry.size(), Qt::KeepAspectRatio);
-            movie.setScaledSize(r.toSize());
+            movie->setScaledSize(r.toSize());
             imageDirty = true;
             update();
         }
@@ -184,16 +190,15 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
         n->setFlags(QSGNode::OwnedByParent);
     }
 
-    auto img = movie.currentImage();
-    n->setSourceRect(img.rect());
-    if (!img.isNull())
-        n->setTexture(window()->createTextureFromImage(std::move(img)));
+    n->setSourceRect(currentFrame.rect());
+    if (!currentFrame.isNull())
+        n->setTexture(window()->createTextureFromImage(currentFrame));
     else {
         delete n;
         return nullptr;
     }
 
-    QSizeF r = img.size();
+    QSizeF r = currentFrame.size();
     r.scale(size(), Qt::KeepAspectRatio);
 
     n->setRect((width() - r.width()) / 2, (height() - r.height()) / 2, r.width(), r.height());

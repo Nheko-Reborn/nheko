@@ -13,9 +13,9 @@ Rectangle {
     id: replyPopup
 
     Layout.fillWidth: true
-    visible: room && (room.reply || room.edit)
+    visible: room && (room.reply || room.edit || room.thread)
     // Height of child, plus margins, plus border
-    implicitHeight: (room && room.reply ? replyPreview.height : closeEditButton.height) + Nheko.paddingSmall
+    implicitHeight: (room && room.reply ? replyPreview.height : Math.max(closeEditButton.height, closeThreadButton.height)) + Nheko.paddingSmall
     color: Nheko.colors.window
     z: 3
 
@@ -71,7 +71,7 @@ Rectangle {
         id: closeEditButton
 
         visible: room && room.edit
-        anchors.right: parent.right
+        anchors.right: closeThreadButton.left
         anchors.margins: 8
         anchors.top: parent.top
         hoverEnabled: true
@@ -81,6 +81,23 @@ Rectangle {
         ToolTip.visible: closeEditButton.hovered
         ToolTip.text: qsTr("Cancel Edit")
         onClicked: room.edit = undefined
+    }
+
+    ImageButton {
+        id: closeThreadButton
+
+        visible: room && room.thread
+        anchors.right: parent.right
+        anchors.margins: 8
+        anchors.top: parent.top
+        hoverEnabled: true
+        buttonTextColor: TimelineManager.userColor(room.thread, Nheko.colors.base)
+        image: ":/icons/icons/ui/dismiss_thread.svg"
+        width: 22
+        height: 22
+        ToolTip.visible: closeThreadButton.hovered
+        ToolTip.text: qsTr("Cancel Thread")
+        onClicked: room.thread = undefined
     }
 
 }

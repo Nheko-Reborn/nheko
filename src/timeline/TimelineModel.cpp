@@ -508,6 +508,7 @@ TimelineModel::roleNames() const
       {Trustlevel, "trustlevel"},
       {EncryptionError, "encryptionError"},
       {ReplyTo, "replyTo"},
+      {ThreadId, "threadId"},
       {Reactions, "reactions"},
       {RoomId, "roomId"},
       {RoomName, "roomName"},
@@ -725,8 +726,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case EncryptionError:
         return events.decryptionError(event_id(event));
 
-    case ReplyTo:
-        return QVariant(QString::fromStdString(relations(event).reply_to().value_or("")));
+    case ReplyTo: {
+        const auto &rels = relations(event);
+        return QVariant(QString::fromStdString(rels.reply_to(!rels.thread()).value_or("")));
+    }
+    case ThreadId:
+        return QVariant(QString::fromStdString(relations(event).thread().value_or("")));
     case Reactions: {
         auto id = relations(event).replaces().value_or(event_id(event));
         return QVariant::fromValue(events.reactions(id));
@@ -1206,12 +1211,6 @@ TimelineModel::openUserProfile(QString userid)
 }
 
 void
-TimelineModel::replyAction(const QString &id)
-{
-    setReply(id);
-}
-
-void
 TimelineModel::unpin(const QString &id)
 {
     auto pinned =
@@ -1263,12 +1262,6 @@ TimelineModel::pin(const QString &id)
           else
               nhlog::net()->debug("Pinned {}", idStr);
       });
-}
-
-void
-TimelineModel::editAction(QString id)
-{
-    setEdit(id);
 }
 
 RelatedInfo
@@ -2673,6 +2666,26 @@ TimelineModel::formatMemberEvent(const QString &id)
 }
 
 void
+TimelineModel::setThread(const QString &id)
+{
+    if (id.isEmpty()) {
+        resetThread();
+        return;
+    } else if (id != thread_) {
+        thread_ = id;
+        emit threadChanged(thread_);
+    }
+}
+void
+TimelineModel::resetThread()
+{
+    if (!thread_.isEmpty()) {
+        thread_.clear();
+        emit threadChanged(thread_);
+    }
+}
+
+void
 TimelineModel::setEdit(const QString &newEdit)
 {
     if (newEdit.isEmpty()) {
@@ -2693,6 +2706,7 @@ TimelineModel::setEdit(const QString &newEdit)
         if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
             auto e = *ev;
             setReply(QString::fromStdString(mtx::accessors::relations(e).reply_to().value_or("")));
+            setThread(QString::fromStdString(mtx::accessors::relations(e).thread().value_or("")));
 
             auto msgType = mtx::accessors::msg_type(e);
             if (msgType == mtx::events::MessageType::Text ||

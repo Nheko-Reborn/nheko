@@ -23,6 +23,9 @@
         <file>icons/ui/microphone-mute.svg</file>
         <file>icons/ui/microphone-unmute.svg</file>
         <file>icons/ui/music.svg</file>
+        <file>icons/ui/thread.svg</file>
+        <file>icons/ui/new-thread.svg</file>
+        <file>icons/ui/dismiss_thread.svg</file>
         <file>icons/ui/options.svg</file>
         <file>icons/ui/pause-symbol.svg</file>
         <file>icons/ui/people.svg</file>
