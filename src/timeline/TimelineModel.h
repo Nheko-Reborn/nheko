@@ -363,16 +363,7 @@ public slots:
     std::vector<QString> typingUsers() const { return typingUsers_; }
     bool paginationInProgress() const { return m_paginationInProgress; }
     QString reply() const { return reply_; }
-    void setReply(const QString &newReply)
-    {
-        if (edit_.startsWith('m'))
-            return;
-
-        if (reply_ != newReply) {
-            reply_ = newReply;
-            emit replyChanged(reply_);
-        }
-    }
+    void setReply(const QString &newReply);
     void resetReply()
     {
         if (!reply_.isEmpty()) {

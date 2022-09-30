@@ -2684,6 +2684,19 @@ TimelineModel::resetThread()
         emit threadChanged(thread_);
     }
 }
+void
+TimelineModel::setReply(const QString &newReply)
+{
+    if (reply_ != newReply) {
+        reply_ = newReply;
+
+        if (auto ev = events.get(reply_.toStdString(), "", false, true))
+            setThread(QString::fromStdString(
+              mtx::accessors::relations(*ev).thread().value_or(thread_.toStdString())));
+
+        emit replyChanged(reply_);
+    }
+}
 
 void
 TimelineModel::setEdit(const QString &newEdit)
