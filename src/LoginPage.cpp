@@ -60,7 +60,7 @@ LoginPage::showError(const QString &msg)
 }
 
 void
-LoginPage::setHomeserver(QString hs)
+LoginPage::setHomeserver(const QString &hs)
 {
     if (hs != homeserver_) {
         homeserver_      = hs;
@@ -261,9 +261,9 @@ LoginPage::versionOk(bool passwordSupported, bool ssoSupported, QVariantList idp
 
 void
 LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
-                                QString userid,
-                                QString password,
-                                QString deviceName)
+                                const QString &userid,
+                                const QString &password,
+                                const QString &deviceName)
 {
     clearErrors();
 
@@ -306,7 +306,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
     } else {
         auto sso = new SSOHandler();
         connect(
-          sso, &SSOHandler::ssoSuccess, this, [this, sso, userid, deviceName](std::string token) {
+          sso, &SSOHandler::ssoSuccess, this, [this, sso, userid, deviceName](const std::string &token) {
               mtx::requests::Login req{};
               req.token = token;
               req.type  = mtx::user_interactive::auth_types::token;

@@ -27,7 +27,7 @@ RegisterPage::RegisterPage(QObject *parent)
 }
 
 void
-RegisterPage::setError(QString err)
+RegisterPage::setError(const QString &err)
 {
     registrationError_ = err;
     emit errorChanged();
@@ -35,7 +35,7 @@ RegisterPage::setError(QString err)
     emit registeringChanged();
 }
 void
-RegisterPage::setHsError(QString err)
+RegisterPage::setHsError(const QString &err)
 {
     hsError_ = err;
     emit hsErrorChanged();
@@ -50,7 +50,7 @@ RegisterPage::initialDeviceName() const
 }
 
 void
-RegisterPage::setServer(QString server)
+RegisterPage::setServer(const QString &server)
 {
     if (server == lastServer)
         return;
@@ -165,7 +165,7 @@ RegisterPage::versionsCheck()
 }
 
 void
-RegisterPage::checkUsername(QString name)
+RegisterPage::checkUsername(const QString &name)
 {
     usernameAvailable_ = usernameUnavailable_ = false;
     usernameError_.clear();
@@ -197,7 +197,7 @@ RegisterPage::checkUsername(QString name)
 }
 
 void
-RegisterPage::startRegistration(QString username, QString password, QString devicename)
+RegisterPage::startRegistration(const QString &username, const QString &password, const QString &devicename)
 {
     // These inputs should still be alright, but check just in case
     if (!username.isEmpty() && !password.isEmpty() && usernameAvailable_ && supported_) {
@@ -206,7 +206,7 @@ RegisterPage::startRegistration(QString username, QString password, QString devi
         registering_ = true;
         emit registeringChanged();
 
-        connect(UIA::instance(), &UIA::error, this, [this](QString msg) {
+        connect(UIA::instance(), &UIA::error, this, [this](const QString &msg) {
             setError(msg);
             disconnect(UIA::instance(), &UIA::error, this, nullptr);
         });

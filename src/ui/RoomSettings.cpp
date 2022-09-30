@@ -35,14 +35,14 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
       "global",
       "override",
       roomid_.toStdString(),
-      [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr &err) {
+      [this](const mtx::pushrules::PushRule &rule, const mtx::http::RequestErr &err) {
           if (err) {
               if (err->status_code == 404)
                   http::client()->get_pushrules(
                     "global",
                     "room",
                     roomid_.toStdString(),
-                    [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr &err) {
+                    [this](const mtx::pushrules::PushRule &rule, const mtx::http::RequestErr &err) {
                         if (err) {
                             notifications_ = 2; // all messages
                             emit notificationsChanged();
@@ -424,7 +424,7 @@ RoomSettings::changeAccessRules(bool private_,
 }
 
 void
-RoomSettings::changeName(QString name)
+RoomSettings::changeName(const QString &name)
 {
     // Check if the values are changed from the originals.
     auto newName = name.trimmed().toStdString();
@@ -435,7 +435,7 @@ RoomSettings::changeName(QString name)
 
     using namespace mtx::events;
     auto proxy = std::make_shared<ThreadProxy>();
-    connect(proxy.get(), &ThreadProxy::nameEventSent, this, [this](QString newRoomName) {
+    connect(proxy.get(), &ThreadProxy::nameEventSent, this, [this](const QString &newRoomName) {
         this->info_.name = newRoomName.toStdString();
         emit roomNameChanged();
     });
@@ -458,7 +458,7 @@ RoomSettings::changeName(QString name)
 }
 
 void
-RoomSettings::changeTopic(QString topic)
+RoomSettings::changeTopic(const QString &topic)
 {
     // Check if the values are changed from the originals.
     auto newTopic = topic.trimmed().toStdString();
@@ -469,7 +469,7 @@ RoomSettings::changeTopic(QString topic)
 
     using namespace mtx::events;
     auto proxy = std::make_shared<ThreadProxy>();
-    connect(proxy.get(), &ThreadProxy::topicEventSent, this, [this](QString newRoomTopic) {
+    connect(proxy.get(), &ThreadProxy::topicEventSent, this, [this](const QString &newRoomTopic) {
         this->info_.topic = newRoomTopic.toStdString();
         emit roomTopicChanged();
     });

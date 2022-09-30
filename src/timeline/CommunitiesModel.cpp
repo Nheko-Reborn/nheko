@@ -693,7 +693,7 @@ enum Categories
 };
 
 Categories
-tagIdToCat(QString tagId)
+tagIdToCat(const QString &tagId)
 {
     if (tagId.isEmpty())
         return World;
@@ -757,7 +757,7 @@ FilteredCommunitiesModel::filterAcceptsRow(int sourceRow, const QModelIndex &) c
 }
 
 QVariantList
-CommunitiesModel::spaceChildrenListFromIndex(QString room, int idx) const
+CommunitiesModel::spaceChildrenListFromIndex(const QString &room, int idx) const
 {
     if (idx < -1)
         return {};

@@ -74,7 +74,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
       this,
       &CompletionProxyModel::newSearchString,
       this,
-      [this](QString s) {
+      [this](const QString &s) {
           searchString_ = s.toLower();
           invalidate();
       },
@@ -167,7 +167,7 @@ CompletionProxyModel::completionAt(int i) const
 }
 
 void
-CompletionProxyModel::setSearchString(QString s)
+CompletionProxyModel::setSearchString(const QString &s)
 {
     emit newSearchString(s);
 }

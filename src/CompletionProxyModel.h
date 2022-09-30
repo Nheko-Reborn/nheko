@@ -182,7 +182,7 @@ public:
 public slots:
     QVariant completionAt(int i) const;
 
-    void setSearchString(QString s);
+    void setSearchString(const QString &s);
     QString searchString() const { return searchString_; }
 
 signals:

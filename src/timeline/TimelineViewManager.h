@@ -54,8 +54,8 @@ public:
     Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
     bool isConnected() const { return isConnected_; }
     Q_INVOKABLE void openImageOverlay(TimelineModel *room,
-                                      QString mxcUrl,
-                                      QString eventId,
+                                      const QString &mxcUrl,
+                                      const QString &eventId,
                                       double originalWidth,
                                       double proportionalHeight);
     Q_INVOKABLE void openImagePackSettings(QString roomid);
@@ -112,7 +112,7 @@ public slots:
 
     void setVideoCallItem();
 
-    QObject *completerFor(QString completerName, QString roomId = QLatin1String(QLatin1String("")));
+    QObject *completerFor(const QString &completerName, const QString &roomId = QLatin1String(QLatin1String("")));
     void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
     RoomlistModel *rooms() { return rooms_; }

@@ -137,9 +137,9 @@ Nheko::setTransientParent(QWindow *window, QWindow *parentWindow) const
 
 void
 Nheko::createRoom(bool space,
-                  QString name,
-                  QString topic,
-                  QString aliasLocalpart,
+                  const QString &name,
+                  const QString &topic,
+                  const QString &aliasLocalpart,
                   bool isEncrypted,
                   int preset)
 {

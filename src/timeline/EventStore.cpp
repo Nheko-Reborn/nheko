@@ -44,7 +44,7 @@ EventStore::EventStore(std::string room_id, QObject *)
       &EventStore::eventFetched,
       this,
       [this](
-        std::string id, std::string relatedTo, mtx::events::collections::TimelineEvents timeline) {
+        const std::string &id, const std::string &relatedTo, mtx::events::collections::TimelineEvents timeline) {
           cache::client()->storeEvent(room_id_, id, {timeline});
 
           if (!relatedTo.empty()) {

@@ -21,18 +21,17 @@
 #include "timeline/TimelineViewManager.h"
 #include "ui/UIA.h"
 
-UserProfile::UserProfile(QString roomid,
-                         QString userid,
+UserProfile::UserProfile(const QString &roomid,
+                         const QString &userid,
                          TimelineViewManager *manager_,
                          TimelineModel *parent)
   : QObject(parent)
   , roomid_(roomid)
   , userid_(userid)
+  , globalAvatarUrl{QLatin1String("")}
   , manager(manager_)
   , model(parent)
 {
-    globalAvatarUrl = QLatin1String("");
-
     connect(this,
             &UserProfile::globalUsernameRetrieved,
             this,
@@ -325,7 +324,7 @@ UserProfile::startChat()
 }
 
 void
-UserProfile::changeUsername(QString username)
+UserProfile::changeUsername(const QString &username)
 {
     if (isGlobalUserProfile()) {
         // change global
@@ -349,7 +348,7 @@ UserProfile::changeUsername(QString username)
 }
 
 void
-UserProfile::changeDeviceName(QString deviceID, QString deviceName)
+UserProfile::changeDeviceName(const QString &deviceID, const QString &deviceName)
 {
     http::client()->set_device_name(
       deviceID.toStdString(), deviceName.toStdString(), [this](mtx::http::RequestErr err) {
@@ -372,7 +371,7 @@ UserProfile::verify(QString device)
 }
 
 void
-UserProfile::unverify(QString device)
+UserProfile::unverify(const QString &device)
 {
     cache::markDeviceUnverified(userid_.toStdString(), device.toStdString());
 }

@@ -25,7 +25,7 @@ public:
     };
     Q_ENUM(Status)
 
-    Q_INVOKABLE void setupCrosssigning(bool useSSSS, QString password, bool useOnlineKeyBackup);
+    Q_INVOKABLE void setupCrosssigning(bool useSSSS, const QString &password, bool useOnlineKeyBackup);
     Q_INVOKABLE void verifyMasterKey();
     Q_INVOKABLE void verifyMasterKeyWithPassphrase();
     Q_INVOKABLE void verifyUnverifiedDevices();

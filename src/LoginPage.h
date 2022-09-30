@@ -79,7 +79,7 @@ public:
     QString error() { return error_; }
     QString mxidError() { return mxidError_; }
 
-    void setHomeserver(QString hs);
+    void setHomeserver(const QString &hs);
     void setMxid(QString id)
     {
         if (id != mxid_) {
@@ -130,9 +130,9 @@ public slots:
 
     // Callback for the login button.
     void onLoginButtonClicked(LoginMethod loginMethod,
-                              QString userid,
-                              QString password,
-                              QString deviceName);
+                              const QString &userid,
+                              const QString &password,
+                              const QString &deviceName);
 
     // Callback for errors produced during server probing
     void versionError(const QString &error_message);

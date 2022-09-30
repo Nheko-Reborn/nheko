@@ -110,22 +110,22 @@ public:
     NewInRoomVerification(QObject *parent_,
                           TimelineModel *timelineModel_,
                           const mtx::events::msg::KeyVerificationRequest &msg,
-                          QString other_user_,
-                          QString event_id_);
+                          const QString &other_user_,
+                          const QString &event_id_);
     static QSharedPointer<DeviceVerificationFlow>
     NewToDeviceVerification(QObject *parent_,
                             const mtx::events::msg::KeyVerificationRequest &msg,
-                            QString other_user_,
-                            QString txn_id_);
+                            const QString &other_user_,
+                            const QString &txn_id_);
     static QSharedPointer<DeviceVerificationFlow>
     NewToDeviceVerification(QObject *parent_,
                             const mtx::events::msg::KeyVerificationStart &msg,
-                            QString other_user_,
-                            QString txn_id_);
+                            const QString &other_user_,
+                            const QString &txn_id_);
     static QSharedPointer<DeviceVerificationFlow>
-    InitiateUserVerification(QObject *parent_, TimelineModel *timelineModel_, QString userid);
+    InitiateUserVerification(QObject *parent_, TimelineModel *timelineModel_, const QString &userid);
     static QSharedPointer<DeviceVerificationFlow>
-    InitiateDeviceVerification(QObject *parent, QString userid, std::vector<QString> devices);
+    InitiateDeviceVerification(QObject *parent, const QString &userid, const std::vector<QString> &devices);
 
     // getters
     QString state();
@@ -137,7 +137,7 @@ public:
     QString transactionId() { return QString::fromStdString(this->transaction_id); }
     // setters
     void setDeviceId(QString deviceID);
-    void setEventId(std::string event_id);
+    void setEventId(const std::string &event_id);
     bool isDeviceVerification() const
     {
         return this->type == DeviceVerificationFlow::Type::ToDevice;
@@ -164,8 +164,8 @@ private:
     DeviceVerificationFlow(QObject *,
                            DeviceVerificationFlow::Type flow_type,
                            TimelineModel *model,
-                           QString userID,
-                           std::vector<QString> deviceIds_);
+                           const QString &userID,
+                           const std::vector<QString> &deviceIds_);
     void setState(State state)
     {
         if (state != state_) {

@@ -814,8 +814,8 @@ InputBar::command(const QString &command, QString args)
 }
 
 MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
-                         QString mimetype,
-                         QString originalFilename,
+                         const QString &mimetype,
+                         const QString &originalFilename,
                          bool encrypt,
                          QObject *parent)
   : QObject(parent)
@@ -922,7 +922,7 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         connect(mediaPlayer,
                 qOverload<const QString &, const QVariant &>(&QMediaPlayer::metaDataChanged),
                 this,
-                [this, mediaPlayer](QString t, QVariant) {
+                [this, mediaPlayer](const QString &t, const QVariant &) {
                     nhlog::ui()->debug("Got metadata {}", t.toStdString());
 
                     if (mediaPlayer->duration() > 0)
@@ -1040,7 +1040,7 @@ MediaUpload::startUpload()
 }
 
 void
-InputBar::finalizeUpload(MediaUpload *upload, QString url)
+InputBar::finalizeUpload(MediaUpload *upload, const QString &url)
 {
     auto mime          = upload->mimetype();
     auto filename      = upload->filename();

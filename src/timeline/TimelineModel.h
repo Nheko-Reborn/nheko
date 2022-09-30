@@ -281,11 +281,11 @@ public:
     Q_INVOKABLE void forwardMessage(const QString &eventId, QString roomId);
     Q_INVOKABLE void viewDecryptedRawMessage(const QString &id);
     Q_INVOKABLE void openUserProfile(QString userid);
-    Q_INVOKABLE void editAction(QString id);
+    Q_INVOKABLE void editAction(const QString &id);
     Q_INVOKABLE void replyAction(const QString &id);
     Q_INVOKABLE void unpin(const QString &id);
     Q_INVOKABLE void pin(const QString &id);
-    Q_INVOKABLE void showReadReceipts(QString id);
+    Q_INVOKABLE void showReadReceipts(const QString &id);
     Q_INVOKABLE void redactEvent(const QString &id, const QString &reason = "");
     Q_INVOKABLE void redactAllFromUser(const QString &userid, const QString &reason = "");
     Q_INVOKABLE int idToIndex(const QString &id) const;
@@ -349,7 +349,7 @@ public slots:
     int currentIndex() const { return idToIndex(currentId); }
     void eventShown();
     void markEventsAsRead(const std::vector<QString> &event_ids);
-    void updateLastReadId(QString currentRoomId);
+    void updateLastReadId(const QString &currentRoomId);
     void lastReadIdOnWindowFocus();
     void checkAfterFetch();
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;

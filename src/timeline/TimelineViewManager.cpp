@@ -246,8 +246,8 @@ TimelineViewManager::escapeEmoji(QString str) const
 
 void
 TimelineViewManager::openImageOverlay(TimelineModel *room,
-                                      QString mxcUrl,
-                                      QString eventId,
+                                      const QString &mxcUrl,
+                                      const QString &eventId,
                                       double originalWidth,
                                       double proportionalHeight)
 {
@@ -384,7 +384,7 @@ TimelineViewManager::focusMessageInput()
 }
 
 QObject *
-TimelineViewManager::completerFor(QString completerName, QString roomId)
+TimelineViewManager::completerFor(const QString &completerName, const QString &roomId)
 {
     if (completerName == QLatin1String("user")) {
         auto userModel = new UsersModel(roomId.toStdString());

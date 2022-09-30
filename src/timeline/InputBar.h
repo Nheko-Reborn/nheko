@@ -83,8 +83,8 @@ public:
     Q_ENUM(MediaType)
 
     explicit MediaUpload(std::unique_ptr<QIODevice> data,
-                         QString mimetype,
-                         QString originalFilename,
+                         const QString &mimetype,
+                         const QString &originalFilename,
                          bool encrypt,
                          QObject *parent = nullptr);
 
@@ -218,7 +218,7 @@ private slots:
     void startTyping();
     void stopTyping();
 
-    void finalizeUpload(MediaUpload *upload, QString url);
+    void finalizeUpload(MediaUpload *upload, const QString &url);
     void removeRunUpload(MediaUpload *upload);
 
 signals:

@@ -29,9 +29,9 @@ class RegisterPage : public QObject
 public:
     RegisterPage(QObject *parent = nullptr);
 
-    Q_INVOKABLE void setServer(QString server);
-    Q_INVOKABLE void checkUsername(QString name);
-    Q_INVOKABLE void startRegistration(QString username, QString password, QString deviceName);
+    Q_INVOKABLE void setServer(const QString &server);
+    Q_INVOKABLE void checkUsername(const QString &name);
+    Q_INVOKABLE void startRegistration(const QString &username, const QString &password, const QString &deviceName);
     Q_INVOKABLE QString initialDeviceName() const;
 
     bool registering() const { return registering_; }
@@ -58,8 +58,8 @@ signals:
 private:
     void versionsCheck();
 
-    void setHsError(QString err);
-    void setError(QString err);
+    void setHsError(const QString &err);
+    void setError(const QString &err);
 
     QString registrationError_, hsError_, usernameError_;
 

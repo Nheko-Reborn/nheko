@@ -249,7 +249,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
 }
 
 void
-RoomlistModel::updateReadStatus(const std::map<QString, bool> roomReadStatus_)
+RoomlistModel::updateReadStatus(const std::map<QString, bool> &roomReadStatus_)
 {
     std::vector<int> roomsToUpdate;
     roomsToUpdate.resize(roomReadStatus_.size());
@@ -657,7 +657,7 @@ RoomlistModel::clear()
 }
 
 void
-RoomlistModel::joinPreview(QString roomid)
+RoomlistModel::joinPreview(const QString &roomid)
 {
     if (previewedRooms.contains(roomid)) {
         ChatPage::instance()->joinRoomVia(
@@ -742,7 +742,7 @@ RoomlistModel::getRoomPreviewById(QString roomid) const
 }
 
 void
-RoomlistModel::setCurrentRoom(QString roomid)
+RoomlistModel::setCurrentRoom(const QString &roomid)
 {
     if ((currentRoom_ && currentRoom_->roomId() == roomid) ||
         (currentRoomPreview_ && currentRoomPreview_->roomid() == roomid))
@@ -1078,7 +1078,7 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
 }
 
 void
-FilteredRoomlistModel::toggleTag(QString roomid, QString tag, bool on)
+FilteredRoomlistModel::toggleTag(const QString &roomid, const QString &tag, bool on)
 {
     if (on) {
         http::client()->put_tag(
