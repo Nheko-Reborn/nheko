@@ -91,7 +91,7 @@ Item {
                     delegate: TextButton {
                         required property string modelData
 
-                        visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
+                        visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
 
                         Layout.preferredHeight: fontMetrics.height
                         font.family: Settings.emojiFont
@@ -116,14 +116,14 @@ Item {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Edit")
                     onClicked: {
-                        if (row.model.isEditable) chat.model.edit = row.model.eventId;
+                        if (row.model.isEditable) room.edit = row.model.eventId;
                     }
                 }
 
                 ImageButton {
                     id: reactButton
 
-                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.Reaction) : false
+                    visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/smile.svg"
@@ -140,27 +140,27 @@ Item {
                 ImageButton {
                     id: threadButton
 
-                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
+                    visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
                     width: 16
                     hoverEnabled: true
-                    image: row.model.threadId ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
+                    image: (row.model && row.model.threadId) ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: row.model.threadId ? qsTr("Reply in thread") : qsTr("New thread")
-                    onClicked: chat.model.thread = (row.model.threadId || row.model.eventId)
+                    ToolTip.text: (row.model && row.model.threadId) ? qsTr("Reply in thread") : qsTr("New thread")
+                    onClicked: room.thread = (row.model.threadId || row.model.eventId)
                 }
 
                 ImageButton {
                     id: replyButton
 
-                    visible: chat.model ? chat.model.permissions.canSend(MtxEvent.TextMessage) : false
+                    visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/reply.svg"
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Reply")
-                    onClicked: chat.model.reply = row.model.eventId
+                    onClicked: room.reply = row.model.eventId
                 }
 
                 ImageButton {
@@ -205,37 +205,37 @@ Item {
             onActivated: {
                 if(room.input.uploads.length > 0)
                     room.input.declineUploads();
-                else if(chat.model.reply)
-                    chat.model.reply = undefined;
-                else if (chat.model.edit)
-                    chat.model.edit = undefined;
+                else if(room.reply)
+                    room.reply = undefined;
+                else if (room.edit)
+                    room.edit = undefined;
                 else
-                    chat.model.thread = undefined
+                    room.thread = undefined
                 TimelineManager.focusMessageInput();
             }
         }
 
         Shortcut {
             sequence: "Alt+Up"
-            onActivated: chat.model.reply = chat.model.indexToId(chat.model.reply ? chat.model.idToIndex(chat.model.reply) + 1 : 0)
+            onActivated: room.reply = chat.model.indexToId(room.reply ? chat.model.idToIndex(room.reply) + 1 : 0)
         }
 
         Shortcut {
             sequence: "Alt+Down"
             onActivated: {
-                var idx = chat.model.reply ? chat.model.idToIndex(chat.model.reply) - 1 : -1;
-                chat.model.reply = idx >= 0 ? chat.model.indexToId(idx) : null;
+                var idx = room.reply ? chat.model.idToIndex(room.reply) - 1 : -1;
+                room.reply = idx >= 0 ? chat.model.indexToId(idx) : null;
             }
         }
 
         Shortcut {
             sequence: "Alt+F"
             onActivated: {
-                if (chat.model.reply) {
+                if (room.reply) {
                     var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
-                    forwardMess.setMessageEventId(chat.model.reply);
+                    forwardMess.setMessageEventId(room.reply);
                     forwardMess.open();
-                    chat.model.reply = null;
+                    room.reply = null;
                     timelineRoot.destroyOnClose(forwardMess);
                 }
             }
@@ -244,7 +244,7 @@ Item {
         Shortcut {
             sequence: "Ctrl+E"
             onActivated: {
-                chat.model.edit = chat.model.reply;
+                room.edit = room.reply;
             }
         }
 
@@ -255,8 +255,8 @@ Item {
 
             // force current read index to update
             onTriggered: {
-                if (chat.model)
-                chat.model.setCurrentIndex(chat.model.currentIndex);
+                if (room)
+                room.setCurrentIndex(room.currentIndex);
 
             }
             interval: 1000
@@ -314,14 +314,14 @@ Item {
 
                     Connections {
                         function onRoomAvatarUrlChanged() {
-                            messageUserAvatar.url = chat.model.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
+                            messageUserAvatar.url = room.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
                         }
 
                         function onScrollToIndex(index) {
                             chat.positionViewAtIndex(index, ListView.Center);
                         }
 
-                        target: chat.model
+                        target: room
                     }
                     property int remainingWidth: chat.delegateMaxWidth - spacing - messageUserAvatar.width
                     AbstractButton {
@@ -335,7 +335,7 @@ Item {
                         ToolTip.visible: hovered
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
-                        onClicked: chat.model.openUserProfile(userId)
+                        onClicked: room.openUserProfile(userId)
                         leftInset: 0
                         rightInset: 0
                         leftPadding: 0
@@ -412,7 +412,7 @@ Item {
             required property string day
             required property string previousMessageDay
             required property string userName
-            property bool scrolledToThis: eventId === chat.model.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+            property bool scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
 
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
@@ -523,7 +523,7 @@ Item {
                             }
 
                             ScriptAction {
-                                script: chat.model.eventShown()
+                                script: room.eventShown()
                             }
 
                         }
@@ -548,7 +548,7 @@ Item {
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: Nheko.paddingLarge
-            visible: chat.model && chat.model.paginationInProgress
+            visible: room && room.paginationInProgress
             // hacky, but works
             height: loadingSpinner.height + 2 * Nheko.paddingLarge
 
@@ -557,7 +557,7 @@ Item {
 
                 anchors.centerIn: parent
                 anchors.margins: Nheko.paddingLarge
-                running: chat.model && chat.model.paginationInProgress
+                running: room && room.paginationInProgress
                 foreground: Nheko.colors.mid
                 z: 3
             }
@@ -772,7 +772,7 @@ Item {
             visible: true
             enabled: visible
             text: qsTr("&Go to quoted message")
-            onTriggered: chat.model.showEvent(replyContextMenu.eventId)
+            onTriggered: room.showEvent(replyContextMenu.eventId)
         }
 
     }

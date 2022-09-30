@@ -67,7 +67,7 @@ AbstractButton {
 
 
     onPressAndHold: messageContextMenu.show(eventId, threadId, type, isSender, isEncrypted, isEditable, contentItem.child.hoveredLink, contentItem.child.copyText)
-    onDoubleClicked: chat.model.reply = eventId
+    onDoubleClicked: room.reply = eventId
 
     DragHandler {
         id: draghandler
@@ -76,7 +76,7 @@ AbstractButton {
         xAxis.minimum: -100
         onActiveChanged: {
             if(!active && (x < -70 || x > 70))
-                chat.model.reply = eventId
+                room.reply = eventId
         }
     }
     states: State {
@@ -245,13 +245,13 @@ AbstractButton {
                 }
 
                 Image {
-                    visible: isEdited || eventId == chat.model.edit
+                    visible: isEdited || eventId == room.edit
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
                     height: parent.iconSize
                     width: parent.iconSize
                     sourceSize.width: parent.iconSize * Screen.devicePixelRatio
                     sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-                    source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == chat.model.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                    source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == room.edit) ? Nheko.colors.highlight : Nheko.colors.buttonText)
                     ToolTip.visible: editHovered.hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Edited")
@@ -318,7 +318,7 @@ AbstractButton {
         }
         color: Nheko.colors.highlight
         width: row.maxWidth
-        visible: (r.index > 0 && (chat.model.fullyReadEventId == r.eventId))
+        visible: (r.index > 0 && (room.fullyReadEventId == r.eventId))
         height: visible ? 3 : 0
 
     }
