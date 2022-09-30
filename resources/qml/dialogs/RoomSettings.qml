@@ -451,7 +451,7 @@ ApplicationWindow {
 
                 Button {
                     text: qsTr("Change")
-                    ToolTip.text: qsTr("Change what packs are enabled, remove packs or create new ones")
+                    ToolTip.text: qsTr("Change what packs are enabled, remove packs, or create new ones")
                     onClicked: TimelineManager.openImagePackSettings(roomSettings.roomId)
                     Layout.alignment: Qt.AlignRight
                 }

@@ -709,7 +709,7 @@ ChatPage::knockRoom(const QString &room,
           tr("Knock on room"),
           // clang-format off
       failedJoin
-        ? tr("You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?\nYou may optionally provide a reason for others to accept your knock:").arg(room)
+        ? tr("You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?\nYou may optionally provide a reason for others to accept your knock:").arg(room)
         : tr("Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:").arg(room),
           // clang-format on
           QLineEdit::Normal,

@@ -1971,7 +1971,7 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
     case mtx::events::state::JoinRule::Public:
         return tr("%1 opened the room to the public.").arg(name);
     case mtx::events::state::JoinRule::Invite:
-        return tr("%1 made this room require and invitation to join.").arg(name);
+        return tr("%1 made this room require an invitation to join.").arg(name);
     case mtx::events::state::JoinRule::Knock:
         return tr("%1 allowed to join this room by knocking.").arg(name);
     case mtx::events::state::JoinRule::Restricted: {
