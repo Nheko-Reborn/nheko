@@ -350,9 +350,9 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                               tr("Cache migration failed!"),
                               tr("Migrating the cache to the current version failed. "
                                  "This can have different reasons. Please open an "
-                                 "issue and try to use an older version in the mean "
-                                 "time. Alternatively you can try deleting the cache "
-                                 "manually."));
+                                 "issue at https://github.com/Nheko-Reborn/nheko and try to use an "
+                                 "older version in the meantime. Alternatively you can try "
+                                 "deleting the cache manually."));
                             QCoreApplication::quit();
                         }
                         loadStateFromCache();
