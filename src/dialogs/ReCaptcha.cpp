@@ -66,10 +66,10 @@ ReCaptcha::ReCaptcha(const QString &session, QWidget *parent)
 
     connect(confirmBtn_, &QPushButton::clicked, this, [this]() {
         emit confirmation();
-        emit close();
+        close();
     });
     connect(cancelBtn_, &QPushButton::clicked, this, [this]() {
         emit cancel();
-        emit close();
+        close();
     });
 }
