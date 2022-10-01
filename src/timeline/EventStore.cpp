@@ -547,8 +547,8 @@ EventStore::edits(const std::string &event_id)
               edits.end(),
               [this, c](const mtx::events::collections::TimelineEvents &a,
                         const mtx::events::collections::TimelineEvents &b) {
-                  return c->getArrivalIndex(this->room_id_, mtx::accessors::event_id(a)) <
-                         c->getArrivalIndex(this->room_id_, mtx::accessors::event_id(b));
+                  return c->getEventIndex(this->room_id_, mtx::accessors::event_id(a)) <
+                         c->getEventIndex(this->room_id_, mtx::accessors::event_id(b));
               });
 
     return edits;

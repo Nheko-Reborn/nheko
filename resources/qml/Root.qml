@@ -47,46 +47,24 @@ Pane {
         model: TimelineManager.completerFor("allemoji", "")
     }
 
-    Component {
-        id: userProfileComponent
-
-        UserProfile {
-        }
-
-    }
-
     function showAliasEditor(settings) {
-        var dialog = aliasEditor.createObject(timelineRoot, {
+        var dialog = Qt.createComponent("qrc:/qml/dialogs/AliasEditor.qml").createObject(timelineRoot, {
             "roomSettings": settings
         });
         dialog.show();
         destroyOnClose(dialog);
-    }
-
-    Component {
-        id: aliasEditor
-
-        AliasEditor {
-        }
     }
 
     function showPLEditor(settings) {
-        var dialog = plEditor.createObject(timelineRoot, {
+        var dialog = Qt.createComponent("qrc:/qml/dialogs/PowerLevelEditor.qml").createObject(timelineRoot, {
             "roomSettings": settings
         });
         dialog.show();
         destroyOnClose(dialog);
     }
 
-    Component {
-        id: plApplyPrompt
-
-        PowerLevelSpacesApplyDialog {
-        }
-    }
-
     function showSpacePLApplyPrompt(settings, editingModel) {
-        var dialog = plApplyPrompt.createObject(timelineRoot, {
+        var dialog = Qt.createComponent("qrc:/qml/dialogs/PowerLevelSpacesApplyDialog.qml").createObject(timelineRoot, {
             "roomSettings": settings,
             "editingModel": editingModel
         });
@@ -94,32 +72,8 @@ Pane {
         destroyOnClose(dialog);
     }
 
-    Component {
-        id: plEditor
-
-        PowerLevelEditor {
-        }
-    }
-
-
-    Component {
-        id: roomSettingsComponent
-
-        RoomSettings {
-        }
-
-    }
-
-    Component {
-        id: allowedRoomSettingsComponent
-
-        AllowedRoomsSettingsDialog {
-        }
-
-    }
-
     function showAllowedRoomsEditor(settings) {
-        var dialog = allowedRoomSettingsComponent.createObject(timelineRoot, {
+        var dialog = Qt.createComponent("qrc:/qml/dialogs/AllowedRoomsSettingsDialog.qml").createObject(timelineRoot, {
             "roomSettings": settings
         });
         dialog.show();
@@ -127,113 +81,9 @@ Pane {
     }
 
     Component {
-        id: roomMembersComponent
-
-        RoomMembers {
-        }
-
-    }
-
-    Component {
-        id: mobileCallInviteDialog
-
-        CallInvite {
-        }
-
-    }
-
-    Component {
-        id: quickSwitcherComponent
-
-        QuickSwitcher {
-        }
-
-    }
-
-    Component {
-        id: deviceVerificationDialog
-
-        DeviceVerification {
-        }
-
-    }
-
-    Component {
-        id: inviteDialog
-
-        InviteDialog {
-        }
-
-    }
-
-    Component {
-        id: packSettingsComponent
-
-        ImagePackSettingsDialog {
-        }
-
-    }
-
-    Component {
         id: readReceiptsDialog
 
         ReadReceipts {
-        }
-
-    }
-
-    Component {
-        id: rawMessageDialog
-
-        RawMessageDialog {
-        }
-
-    }
-
-    Component {
-        id: logoutDialog
-
-        LogoutDialog {
-        }
-
-    }
-
-    Component {
-        id: joinRoomDialog
-
-        JoinRoomDialog {
-        }
-
-    }
-
-    Component {
-        id: confirmJoinRoomDialog
-
-        ConfirmJoinRoomDialog {
-        }
-
-    }
-
-    Component {
-        id: leaveRoomComponent
-
-        LeaveRoomDialog {
-        }
-
-    }
-
-    Component {
-        id: imageOverlay
-
-        ImageOverlay {
-        }
-
-    }
-
-    Component {
-        id: userSettingsPage
-
-        UserSettingsPage {
         }
 
     }
@@ -246,7 +96,7 @@ Pane {
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
-            var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
+            var quickSwitch = Qt.createComponent("qrc:/qml/QuickSwitcher.qml").createObject(timelineRoot);
             quickSwitch.open();
             destroyOnClosed(quickSwitch);
         }
@@ -270,19 +120,19 @@ Pane {
 
     Connections {
         function onOpenLogoutDialog() {
-            var dialog = logoutDialog.createObject(timelineRoot);
+            var dialog = Qt.createComponent("qrc:/qml/dialogs/LogoutDialog.qml").createObject(timelineRoot);
             dialog.open();
             destroyOnClose(dialog);
         }
 
         function onOpenJoinRoomDialog() {
-            var dialog = joinRoomDialog.createObject(timelineRoot);
+            var dialog = Qt.createComponent("qrc:/qml/dialogs/JoinRoomDialog.qml").createObject(timelineRoot);
             dialog.show();
             destroyOnClose(dialog);
         }
 
         function onShowRoomJoinPrompt(summary) {
-            var dialog = confirmJoinRoomDialog.createObject(timelineRoot, {"summary": summary});
+            var dialog = Qt.createComponent("qrc:/qml/dialogs/ConfirmJoinRoomDialog.qml").createObject(timelineRoot, {"summary": summary});
             dialog.show();
             destroyOnClose(dialog);
         }
@@ -292,7 +142,7 @@ Pane {
 
     Connections {
         function onNewDeviceVerificationRequest(flow) {
-            var dialog = deviceVerificationDialog.createObject(timelineRoot, {
+            var dialog = Qt.createComponent("qrc:/qml/device-verification/DeviceVerification.qml").createObject(timelineRoot, {
                 "flow": flow
             });
             dialog.show();
@@ -313,7 +163,7 @@ Pane {
 
     Connections {
         function onOpenProfile(profile) {
-            var userProfile = userProfileComponent.createObject(timelineRoot, {
+            var userProfile = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml").createObject(timelineRoot, {
                 "profile": profile
             });
             userProfile.show();
@@ -321,7 +171,7 @@ Pane {
         }
 
         function onShowImagePackSettings(room, packlist) {
-            var packSet = packSettingsComponent.createObject(timelineRoot, {
+            var packSet = Qt.createComponent("qrc:/qml/dialogs/ImagePackSettingsDialog.qml").createObject(timelineRoot, {
                 "room": room,
                 "packlist": packlist
             });
@@ -330,7 +180,7 @@ Pane {
         }
 
         function onOpenRoomMembersDialog(members, room) {
-            var membersDialog = roomMembersComponent.createObject(timelineRoot, {
+            var membersDialog = Qt.createComponent("qrc:/qml/dialogs/RoomMembers.qml").createObject(timelineRoot, {
                 "members": members,
                 "room": room
             });
@@ -339,7 +189,7 @@ Pane {
         }
 
         function onOpenRoomSettingsDialog(settings) {
-            var roomSettings = roomSettingsComponent.createObject(timelineRoot, {
+            var roomSettings = Qt.createComponent("qrc:/qml/dialogs/RoomSettings.qml").createObject(timelineRoot, {
                 "roomSettings": settings
             });
             roomSettings.show();
@@ -347,7 +197,7 @@ Pane {
         }
 
         function onOpenInviteUsersDialog(invitees) {
-            var dialog = inviteDialog.createObject(timelineRoot, {
+            var dialog = Qt.createComponent("qrc:/qml/dialogs/InviteDialog.qml").createObject(timelineRoot, {
                 "roomId": Rooms.currentRoom.roomId,
                 "plainRoomName": Rooms.currentRoom.plainRoomName,
                 "invitees": invitees
@@ -357,7 +207,7 @@ Pane {
         }
 
         function onOpenLeaveRoomDialog(roomid, reason) {
-            var dialog = leaveRoomComponent.createObject(timelineRoot, {
+            var dialog = Qt.createComponent("qrc:/qml/dialogs/LeaveRoomDialog.qml").createObject(timelineRoot, {
                 "roomId": roomid,
                 "reason": reason
             });
@@ -366,7 +216,7 @@ Pane {
         }
 
         function onShowImageOverlay(room, eventId, url, originalWidth, proportionalHeight) {
-            var dialog = imageOverlay.createObject(timelineRoot, {
+            var dialog = Qt.createComponent("qrc:/qml/dialogs/ImageOverlay.qml").createObject(timelineRoot, {
                 "room": room,
                 "eventId": eventId,
                 "url": url,
@@ -384,7 +234,7 @@ Pane {
     Connections {
         function onNewInviteState() {
             if (CallManager.haveCallInvite && Settings.mobileMode) {
-                var dialog = mobileCallInviteDialog.createObject(timelineRoot);
+                var dialog = Qt.createComponent("qrc:/qml/voip/CallInvite.qml").createObject(timelineRoot);
                 dialog.open();
                 destroyOnClose(dialog);
             }
@@ -515,6 +365,15 @@ Pane {
         RegisterPage {
         }
     }
+
+    Component {
+        id: userSettingsPage
+
+        UserSettingsPage {
+        }
+
+    }
+
 
     Snackbar { id: snackbar }
 

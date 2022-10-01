@@ -210,9 +210,9 @@ PowerlevelsTypeListModel::data(const QModelIndex &index, int role) const
             return tr("Ban servers using policy rules");
 
         else if (type.type == "m.space.child")
-            return tr("Edit child rooms");
+            return tr("Edit child communities and rooms");
         else if (type.type == "m.space.parent")
-            return tr("Change parent spaces");
+            return tr("Change parent communities");
 
         else if (type.type == "m.call.invite")
             return tr("Start a call");

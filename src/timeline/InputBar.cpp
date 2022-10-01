@@ -23,9 +23,11 @@
 #include <mtx/responses/media.hpp>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "CombinedImagePackModel.h"
 #include "Config.h"
+#include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "TimelineModel.h"
@@ -36,6 +38,28 @@
 #include "blurhash.hpp"
 
 static constexpr size_t INPUT_HISTORY_SIZE = 10;
+
+std::string
+threadFallbackEventId(const std::string &room_id, const std::string &thread_id)
+{
+    auto event_ids = cache::client()->relatedEvents(room_id, thread_id);
+
+    std::map<uint64_t, std::string_view, std::greater<>> orderedEvents;
+
+    for (const auto &e : event_ids) {
+        if (auto index = cache::client()->getTimelineIndex(room_id, e))
+            orderedEvents.emplace(*index, e);
+    }
+
+    for (const auto &[index, event_id] : orderedEvents) {
+        (void)index;
+        if (auto event = cache::client()->getEvent(room_id, event_id)) {
+            if (mtx::accessors::relations(event->data).thread() == thread_id)
+                return std::string(event_id);
+        }
+    }
+    return thread_id;
+}
 
 QUrl
 MediaUpload::thumbnailDataUrl() const
@@ -384,6 +408,31 @@ replaceMatrixToMarkdownLink(QString input)
     return input;
 }
 
+mtx::common::Relations
+InputBar::generateRelations() const
+{
+    mtx::common::Relations relations;
+    if (!room->thread().isEmpty()) {
+        relations.relations.push_back(
+          {mtx::common::RelationType::Thread, room->thread().toStdString()});
+        if (room->reply().isEmpty())
+            relations.relations.push_back(
+              {mtx::common::RelationType::InReplyTo,
+               threadFallbackEventId(room->roomId().toStdString(), room->thread().toStdString()),
+               std::nullopt,
+               true});
+    }
+    if (!room->reply().isEmpty()) {
+        relations.relations.push_back(
+          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
+    }
+    if (!room->edit().isEmpty()) {
+        relations.relations.push_back(
+          {mtx::common::RelationType::Replace, room->edit().toStdString()});
+    }
+    return relations;
+}
+
 void
 InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbowify)
 {
@@ -404,16 +453,8 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
             text.format = "org.matrix.custom.html";
     }
 
-    if (!room->edit().isEmpty()) {
-        if (!room->reply().isEmpty()) {
-            text.relations.relations.push_back(
-              {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-        }
-
-        text.relations.relations.push_back(
-          {mtx::common::RelationType::Replace, room->edit().toStdString()});
-
-    } else if (!room->reply().isEmpty()) {
+    text.relations = generateRelations();
+    if (!room->reply().isEmpty() && room->thread().isEmpty() && room->edit().isEmpty()) {
         auto related = room->relatedInfo(room->reply());
 
         // Skip reply fallbacks to users who would cause a room ping with the fallback.
@@ -448,9 +489,6 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
                 text.formatted_body =
                   utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
         }
-
-        text.relations.relations.push_back(
-          {mtx::common::RelationType::InReplyTo, related.related_event});
     }
 
     room->sendMessageEvent(text, mtx::events::EventType::RoomMessage);
@@ -471,14 +509,7 @@ InputBar::emote(const QString &msg, bool rainbowify)
         emote.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
     }
 
-    if (!room->reply().isEmpty()) {
-        emote.relations.relations.push_back(
-          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-    }
-    if (!room->edit().isEmpty()) {
-        emote.relations.relations.push_back(
-          {mtx::common::RelationType::Replace, room->edit().toStdString()});
-    }
+    emote.relations = generateRelations();
 
     room->sendMessageEvent(emote, mtx::events::EventType::RoomMessage);
 }
@@ -498,14 +529,7 @@ InputBar::notice(const QString &msg, bool rainbowify)
         notice.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
     }
 
-    if (!room->reply().isEmpty()) {
-        notice.relations.relations.push_back(
-          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-    }
-    if (!room->edit().isEmpty()) {
-        notice.relations.relations.push_back(
-          {mtx::common::RelationType::Replace, room->edit().toStdString()});
-    }
+    notice.relations = generateRelations();
 
     room->sendMessageEvent(notice, mtx::events::EventType::RoomMessage);
 }
@@ -548,14 +572,7 @@ InputBar::image(const QString &filename,
         image.info.thumbnail_info.mimetype = "image/png";
     }
 
-    if (!room->reply().isEmpty()) {
-        image.relations.relations.push_back(
-          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-    }
-    if (!room->edit().isEmpty()) {
-        image.relations.relations.push_back(
-          {mtx::common::RelationType::Replace, room->edit().toStdString()});
-    }
+    image.relations = generateRelations();
 
     room->sendMessageEvent(image, mtx::events::EventType::RoomMessage);
 }
@@ -577,14 +594,7 @@ InputBar::file(const QString &filename,
     else
         file.url = url.toStdString();
 
-    if (!room->reply().isEmpty()) {
-        file.relations.relations.push_back(
-          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-    }
-    if (!room->edit().isEmpty()) {
-        file.relations.relations.push_back(
-          {mtx::common::RelationType::Replace, room->edit().toStdString()});
-    }
+    file.relations = generateRelations();
 
     room->sendMessageEvent(file, mtx::events::EventType::RoomMessage);
 }
@@ -611,14 +621,7 @@ InputBar::audio(const QString &filename,
     else
         audio.url = url.toStdString();
 
-    if (!room->reply().isEmpty()) {
-        audio.relations.relations.push_back(
-          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-    }
-    if (!room->edit().isEmpty()) {
-        audio.relations.relations.push_back(
-          {mtx::common::RelationType::Replace, room->edit().toStdString()});
-    }
+    audio.relations = generateRelations();
 
     room->sendMessageEvent(audio, mtx::events::EventType::RoomMessage);
 }
@@ -667,14 +670,7 @@ InputBar::video(const QString &filename,
         video.info.thumbnail_info.mimetype = "image/png";
     }
 
-    if (!room->reply().isEmpty()) {
-        video.relations.relations.push_back(
-          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-    }
-    if (!room->edit().isEmpty()) {
-        video.relations.relations.push_back(
-          {mtx::common::RelationType::Replace, room->edit().toStdString()});
-    }
+    video.relations = generateRelations();
 
     room->sendMessageEvent(video, mtx::events::EventType::RoomMessage);
 }
@@ -699,14 +695,7 @@ InputBar::sticker(CombinedImagePackModel *model, int row)
     sticker.info.thumbnail_info.h        = sticker.info.h;
     sticker.info.thumbnail_info.w        = sticker.info.w;
 
-    if (!room->reply().isEmpty()) {
-        sticker.relations.relations.push_back(
-          {mtx::common::RelationType::InReplyTo, room->reply().toStdString()});
-    }
-    if (!room->edit().isEmpty()) {
-        sticker.relations.relations.push_back(
-          {mtx::common::RelationType::Replace, room->edit().toStdString()});
-    }
+    sticker.relations = generateRelations();
 
     room->sendMessageEvent(sticker, mtx::events::EventType::Sticker);
 }

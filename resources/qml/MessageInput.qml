@@ -378,6 +378,10 @@ Rectangle {
                         messageInput.forceActiveFocus();
                     }
 
+                    function onThreadChanged() {
+                        messageInput.forceActiveFocus();
+                    }
+
                     ignoreUnknownSignals: true
                     target: room
                 }

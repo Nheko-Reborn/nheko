@@ -48,14 +48,14 @@ Page {
             }
 
             Platform.MenuItem {
-                text: qsTr("Do not show notification counts for this space or tag.")
+                text: qsTr("Do not show notification counts for this community or tag.")
                 checkable: true
                 checked: communityContextMenu.muted
                 onTriggered: Communities.toggleTagMute(communityContextMenu.tagId)
             }
 
             Platform.MenuItem {
-                text: qsTr("Hide rooms with this tag or from this space by default.")
+                text: qsTr("Hide rooms with this tag or from this community by default.")
                 checkable: true
                 checked: communityContextMenu.hidden
                 onTriggered: Communities.toggleTagId(communityContextMenu.tagId)

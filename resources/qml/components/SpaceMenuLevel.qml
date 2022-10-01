@@ -13,7 +13,7 @@ Platform.Menu {
     property Component childMenu
 
     property int position: modelData == undefined ? -2 : modelData.treeIndex
-    title: modelData != undefined ? modelData.name : qsTr("Add or remove from space")
+    title: modelData != undefined ? modelData.name : qsTr("Add or remove from community")
     property bool loadChildren: false
 
     onAboutToShow: loadChildren = true

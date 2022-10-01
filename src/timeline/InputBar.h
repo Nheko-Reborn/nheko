@@ -266,6 +266,8 @@ private:
                const QSize &thumbnailDimensions,
                const QString &blurhash);
 
+    mtx::common::Relations generateRelations() const;
+
     void startUploadFromPath(const QString &path);
     void startUploadFromMimeData(const QMimeData &source, const QString &format);
     void startUpload(std::unique_ptr<QIODevice> dev, const QString &orgPath, const QString &format);

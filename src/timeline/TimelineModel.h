@@ -180,6 +180,7 @@ class TimelineModel : public QAbstractListModel
     Q_PROPERTY(QString scrollTarget READ scrollTarget NOTIFY scrollTargetChanged)
     Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
     Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
+    Q_PROPERTY(QString thread READ thread WRITE setThread NOTIFY threadChanged RESET resetThread)
     Q_PROPERTY(
       bool paginationInProgress READ paginationInProgress NOTIFY paginationInProgressChanged)
     Q_PROPERTY(QString roomId READ roomId CONSTANT)
@@ -240,6 +241,7 @@ public:
         Trustlevel,
         EncryptionError,
         ReplyTo,
+        ThreadId,
         Reactions,
         RoomId,
         RoomName,
@@ -281,8 +283,6 @@ public:
     Q_INVOKABLE void forwardMessage(const QString &eventId, QString roomId);
     Q_INVOKABLE void viewDecryptedRawMessage(const QString &id);
     Q_INVOKABLE void openUserProfile(QString userid);
-    Q_INVOKABLE void editAction(const QString &id);
-    Q_INVOKABLE void replyAction(const QString &id);
     Q_INVOKABLE void unpin(const QString &id);
     Q_INVOKABLE void pin(const QString &id);
     Q_INVOKABLE void showReadReceipts(const QString &id);
@@ -363,16 +363,7 @@ public slots:
     std::vector<QString> typingUsers() const { return typingUsers_; }
     bool paginationInProgress() const { return m_paginationInProgress; }
     QString reply() const { return reply_; }
-    void setReply(const QString &newReply)
-    {
-        if (edit_.startsWith('m'))
-            return;
-
-        if (reply_ != newReply) {
-            reply_ = newReply;
-            emit replyChanged(reply_);
-        }
-    }
+    void setReply(const QString &newReply);
     void resetReply()
     {
         if (!reply_.isEmpty()) {
@@ -383,6 +374,9 @@ public slots:
     QString edit() const { return edit_; }
     void setEdit(const QString &newEdit);
     void resetEdit();
+    QString thread() const { return thread_; }
+    void setThread(const QString &newThread);
+    void resetThread();
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
     void clearTimeline() { events.clearTimeline(); }
     void resetState();
@@ -420,6 +414,7 @@ signals:
     void typingUsersChanged(std::vector<QString> users);
     void replyChanged(QString reply);
     void editChanged(QString reply);
+    void threadChanged(QString id);
     void openReadReceiptsDialog(ReadReceiptsProxy *rr);
     void showRawMessageDialog(QString rawMessage);
     void paginationInProgressChanged(const bool);
@@ -466,7 +461,7 @@ private:
     mutable EventStore events;
 
     QString currentId, currentReadId;
-    QString reply_, edit_;
+    QString reply_, edit_, thread_;
     QString textBeforeEdit, replyBeforeEdit;
     std::vector<QString> typingUsers_;
 

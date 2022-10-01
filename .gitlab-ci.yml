@@ -96,6 +96,7 @@ build-gcc10:
         -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
         -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
         -DJSON_ImplicitConversions=OFF
+        -DMAN=OFF
     - cmake --build build
   after_script:
     - mv ../.hunter .hunter
