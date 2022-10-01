@@ -91,7 +91,7 @@ Rectangle {
         anchors.margins: 8
         anchors.top: parent.top
         hoverEnabled: true
-        buttonTextColor: room ? TimelineManager.userColor(room.thread, Nheko.colors.base) : undefined
+        buttonTextColor: room ? TimelineManager.userColor(room.thread, Nheko.colors.base) : Nheko.colors.buttonText
         image: ":/icons/icons/ui/dismiss_thread.svg"
         width: 22
         height: 22
