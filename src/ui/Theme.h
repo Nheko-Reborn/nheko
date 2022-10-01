@@ -15,6 +15,7 @@ class Theme : public QPalette
     Q_PROPERTY(QColor alternateButton READ alternateButton CONSTANT)
     Q_PROPERTY(QColor separator READ separator CONSTANT)
     Q_PROPERTY(QColor red READ red CONSTANT)
+    Q_PROPERTY(QColor green READ green CONSTANT)
     Q_PROPERTY(QColor error READ error CONSTANT)
     Q_PROPERTY(QColor orange READ orange CONSTANT)
 public:
@@ -26,9 +27,10 @@ public:
     QColor alternateButton() const { return alternateButton_; }
     QColor separator() const { return separator_; }
     QColor red() const { return red_; }
-    QColor error() const { return QColor(0xdd, 0x3d, 0x3d); }
+    QColor green() const { return green_; }
+    QColor error() const { return error_; }
     QColor orange() const { return orange_; }
 
 private:
-    QColor sidebarBackground_, separator_, red_, orange_, alternateButton_;
+    QColor sidebarBackground_, separator_, red_, green_, error_, orange_, alternateButton_;
 };

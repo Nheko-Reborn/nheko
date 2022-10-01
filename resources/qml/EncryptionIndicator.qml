@@ -40,7 +40,7 @@ Image {
         if (encrypted) {
             switch (trust) {
             case Crypto.Verified:
-                return sourceUrl + "green";
+                return sourceUrl + Nheko.theme.green;
             case Crypto.TOFU:
                 return sourceUrl + Nheko.colors.buttonText;
             default:
