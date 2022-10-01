@@ -96,7 +96,7 @@ Pane {
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
-            var quickSwitch = Qt.createComponent("qrc:/qml/dialogs/QuickSwitcher.qml").createObject(timelineRoot);
+            var quickSwitch = Qt.createComponent("qrc:/qml/QuickSwitcher.qml").createObject(timelineRoot);
             quickSwitch.open();
             destroyOnClosed(quickSwitch);
         }
@@ -142,7 +142,7 @@ Pane {
 
     Connections {
         function onNewDeviceVerificationRequest(flow) {
-            var dialog = Qt.createComponent("qrc:/qml/dialogs/DeviceVerification.qml").createObject(timelineRoot, {
+            var dialog = Qt.createComponent("qrc:/qml/device-verification/DeviceVerification.qml").createObject(timelineRoot, {
                 "flow": flow
             });
             dialog.show();
@@ -234,7 +234,7 @@ Pane {
     Connections {
         function onNewInviteState() {
             if (CallManager.haveCallInvite && Settings.mobileMode) {
-                var dialog = Qt.createComponent("qrc:/qml/dialogs/CallInvite.qml").createObject(timelineRoot);
+                var dialog = Qt.createComponent("qrc:/qml/voip/CallInvite.qml").createObject(timelineRoot);
                 dialog.open();
                 destroyOnClose(dialog);
             }
