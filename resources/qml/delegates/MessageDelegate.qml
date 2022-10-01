@@ -322,7 +322,7 @@ Item {
                 isReply: d.isReply
                 keepFullText: d.keepFullText
                 isStateEvent: d.isStateEvent
-                formatted: qsTr("%1 changed the parent spaces for this room.").arg(d.userName)
+                formatted: qsTr("%1 changed the parent communities for this room.").arg(d.userName)
             }
 
         }

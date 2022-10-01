@@ -808,7 +808,7 @@ CommunitiesModel::spaceChildrenListFromIndex(QString room, int idx) const
         }
     }
 
-    nhlog::ui()->critical("Returning {} spaces", ret.size());
+    // nhlog::ui()->critical("Returning {} spaces", ret.size());
     return ret;
 }
 
@@ -848,7 +848,7 @@ CommunitiesModel::updateSpaceStatus(QString space,
               [space, room](mtx::responses::EventId, mtx::http::RequestErr err) {
                   if (err) {
                       ChatPage::instance()->showNotification(
-                        tr("Failed to update space child: %1")
+                        tr("Failed to update community: %1")
                           .arg(QString::fromStdString(err->matrix_error.error)));
                       nhlog::net()->error("Failed to update child {} of {}: {}",
                                           room.toStdString(),
@@ -866,7 +866,7 @@ CommunitiesModel::updateSpaceStatus(QString space,
               [space, room](mtx::responses::EventId, mtx::http::RequestErr err) {
                   if (err) {
                       ChatPage::instance()->showNotification(
-                        tr("Failed to delete space child: %1")
+                        tr("Failed to delete room from community: %1")
                           .arg(QString::fromStdString(err->matrix_error.error)));
                       nhlog::net()->error("Failed to delete child {} of {}: {}",
                                           room.toStdString(),
@@ -889,7 +889,7 @@ CommunitiesModel::updateSpaceStatus(QString space,
               [space, room](mtx::responses::EventId, mtx::http::RequestErr err) {
                   if (err) {
                       ChatPage::instance()->showNotification(
-                        tr("Failed to update space parent: %1")
+                        tr("Failed to update community for room: %1")
                           .arg(QString::fromStdString(err->matrix_error.error)));
                       nhlog::net()->error("Failed to update parent {} of {}: {}",
                                           space.toStdString(),
@@ -907,7 +907,7 @@ CommunitiesModel::updateSpaceStatus(QString space,
               [space, room](mtx::responses::EventId, mtx::http::RequestErr err) {
                   if (err) {
                       ChatPage::instance()->showNotification(
-                        tr("Failed to delete space parent: %1")
+                        tr("Failed to remove community from room: %1")
                           .arg(QString::fromStdString(err->matrix_error.error)));
                       nhlog::net()->error("Failed to delete parent {} of {}: {}",
                                           space.toStdString(),

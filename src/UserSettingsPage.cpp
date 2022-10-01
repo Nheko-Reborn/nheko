@@ -945,7 +945,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case DecryptSidebar:
             return tr("Decrypt messages in sidebar");
         case SpaceNotifications:
-            return tr("Show message counts for spaces");
+            return tr("Show message counts for communities and tags");
         case PrivacyScreen:
             return tr("Privacy Screen");
         case PrivacyScreenTimeout:
@@ -1234,8 +1234,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
                       "encrypted chats.");
         case SpaceNotifications:
-            return tr(
-              "Choose where to show the total number of notifications contained within a space.");
+            return tr("Choose where to show the total number of notifications contained within a "
+                      "community or tag.");
         case PrivacyScreen:
             return tr("When the window loses focus, the timeline will\nbe blurred.");
         case MobileMode:

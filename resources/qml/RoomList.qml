@@ -211,7 +211,7 @@ Page {
 
                 roomid: roomContextMenu.roomid
                 position: -1
-                title: qsTr("Add or remove from space")
+                title: qsTr("Add or remove from community...")
                 childMenu: nestedSpaceMenuLevel
             }
         }
