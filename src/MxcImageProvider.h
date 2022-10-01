@@ -9,7 +9,6 @@
 #include <QQuickImageResponse>
 
 #include <QImage>
-//#include <QThreadPool>
 
 #include <functional>
 
