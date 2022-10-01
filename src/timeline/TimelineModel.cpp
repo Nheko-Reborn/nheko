@@ -2849,7 +2849,7 @@ TimelineModel::pinnedMessages() const
         return {};
 
     QStringList list;
-    list.reserve(pinned->content.pinned.size());
+    list.reserve((qsizetype)pinned->content.pinned.size());
     for (const auto &p : pinned->content.pinned)
         list.push_back(QString::fromStdString(p));
 
@@ -2880,7 +2880,7 @@ TimelineModel::widgetLinks() const
         theme.clear();
     user = QUrl::toPercentEncoding(user);
 
-    list.reserve(evs.size());
+    list.reserve((qsizetype)evs.size());
     for (const auto &p : evs) {
         auto url = QString::fromStdString(p.content.url);
 

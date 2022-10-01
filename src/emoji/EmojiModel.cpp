@@ -45,7 +45,7 @@ EmojiModel::roleNames() const
 int
 EmojiModel::rowCount(const QModelIndex &parent) const
 {
-    return parent == QModelIndex() ? Provider::emoji.size() : 0;
+    return parent == QModelIndex() ? (qsizetype)Provider::emoji.size() : 0;
 }
 
 QVariant
