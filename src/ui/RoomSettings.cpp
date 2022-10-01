@@ -42,7 +42,7 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
                     "global",
                     "room",
                     roomid_.toStdString(),
-                    [this](const mtx::pushrules::PushRule &rule, const mtx::http::RequestErr &err) {
+                    [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr err) {
                         if (err) {
                             notifications_ = 2; // all messages
                             emit notificationsChanged();
