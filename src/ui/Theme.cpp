@@ -69,22 +69,22 @@ Theme::Theme(QStringView theme)
         sidebarBackground_ = QColor(0x23, 0x36, 0x49);
         alternateButton_   = QColor(0xcc, 0xcc, 0xcc);
         red_               = QColor(0xa8, 0x23, 0x53);
-        green_             = QColor("green");
+        green_             = QColor(Qt::GlobalColor::green);
         orange_            = QColor(0xfc, 0xbe, 0x05);
-        error_             = QColor("#dd3d3d");
+        error_             = QColor(0xdd, 0x3d, 0x3d);
     } else if (theme == u"dark") {
         sidebarBackground_ = QColor(0x2d, 0x31, 0x39);
         alternateButton_   = QColor(0x41, 0x4A, 0x59);
         red_               = QColor(0xa8, 0x23, 0x53);
-        green_             = QColor("green");
+        green_             = QColor(Qt::GlobalColor::green);
         orange_            = QColor(0xfc, 0xc5, 0x3a);
-        error_             = QColor("#dd3d3d");
+        error_             = QColor(0xdd, 0x3d, 0x3d);
     } else {
         sidebarBackground_ = p.window().color();
         alternateButton_   = p.dark().color();
         red_               = QColor(Qt::GlobalColor::red);
-        green_             = QColor("green");
+        green_             = QColor(Qt::GlobalColor::green);
         orange_            = QColor(0xff, 0xa5, 0x00); // SVG orange
-        error_             = QColor("#dd3d3d");
+        error_             = QColor(0xdd, 0x3d, 0x3d);
     }
 }
