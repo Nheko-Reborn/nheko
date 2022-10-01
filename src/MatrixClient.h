@@ -33,7 +33,7 @@ struct fmt::formatter<mtx::http::ClientError>
     bool print_matrix_error  = false;
 
     // Parses format specifications of the form ['f' | 'e'].
-    constexpr auto parse(format_parse_context &ctx) -> decltype(ctx.begin())
+    constexpr auto parse(fmt::format_parse_context &ctx) -> decltype(ctx.begin())
     {
         // [ctx.begin(), ctx.end()) is a character range that contains a part of
         // the format string starting from the format specifications to be parsed,
@@ -72,7 +72,7 @@ struct fmt::formatter<mtx::http::ClientError>
 
         // Check if reached the end of the range:
         if (it != end && *it != '}')
-            throw format_error("invalid format");
+            throw fmt::format_error("invalid format");
 
         // Return an iterator past the end of the parsed range:
         return it;
@@ -85,24 +85,24 @@ struct fmt::formatter<mtx::http::ClientError>
     {
         // ctx.out() is an output iterator to write to.
         bool prepend_comma = false;
-        format_to(ctx.out(), "(");
+        fmt::format_to(ctx.out(), "(");
         if (print_network_error || e.error_code) {
-            format_to(ctx.out(), "connection: {}", e.error_code_string());
+            fmt::format_to(ctx.out(), "connection: {}", e.error_code_string());
             prepend_comma = true;
         }
 
         if (print_http_error ||
             (e.status_code != 0 && (e.status_code < 200 || e.status_code >= 300))) {
             if (prepend_comma)
-                format_to(ctx.out(), ", ");
-            format_to(ctx.out(), "http: {}", e.status_code);
+                fmt::format_to(ctx.out(), ", ");
+            fmt::format_to(ctx.out(), "http: {}", e.status_code);
             prepend_comma = true;
         }
 
         if (print_parser_error || !e.parse_error.empty()) {
             if (prepend_comma)
-                format_to(ctx.out(), ", ");
-            format_to(ctx.out(), "parser: {}", e.parse_error);
+                fmt::format_to(ctx.out(), ", ");
+            fmt::format_to(ctx.out(), "parser: {}", e.parse_error);
             prepend_comma = true;
         }
 
@@ -110,14 +110,14 @@ struct fmt::formatter<mtx::http::ClientError>
             (e.matrix_error.errcode != mtx::errors::ErrorCode::M_UNRECOGNIZED &&
              !e.matrix_error.error.empty())) {
             if (prepend_comma)
-                format_to(ctx.out(), ", ");
-            format_to(ctx.out(),
-                      "matrix: {}:'{}'",
-                      to_string(e.matrix_error.errcode),
-                      e.matrix_error.error);
+                fmt::format_to(ctx.out(), ", ");
+            fmt::format_to(ctx.out(),
+                           "matrix: {}:'{}'",
+                           to_string(e.matrix_error.errcode),
+                           e.matrix_error.error);
         }
 
-        return format_to(ctx.out(), ")");
+        return fmt::format_to(ctx.out(), ")");
     }
 };
 
@@ -129,7 +129,7 @@ struct fmt::formatter<std::optional<mtx::http::ClientError>> : formatter<mtx::ht
     auto format(std::optional<mtx::http::ClientError> c, FormatContext &ctx)
     {
         if (!c)
-            return format_to(ctx.out(), "(no error)");
+            return fmt::format_to(ctx.out(), "(no error)");
         else
             return formatter<mtx::http::ClientError>::format(*c, ctx);
     }
