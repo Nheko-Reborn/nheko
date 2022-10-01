@@ -3873,9 +3873,10 @@ Cache::spaces()
                 std::string_view room_data;
                 if (roomsDb_.get(txn, space_id, room_data)) {
                     RoomInfo tmp = nlohmann::json::parse(std::move(room_data)).get<RoomInfo>();
-                    ret.insert(QString::fromUtf8(space_id.data(), space_id.size()), tmp);
+                    ret.insert(QString::fromUtf8(space_id.data(), (qsizetype)space_id.size()), tmp);
                 } else {
-                    ret.insert(QString::fromUtf8(space_id.data(), space_id.size()), std::nullopt);
+                    ret.insert(QString::fromUtf8(space_id.data(), (qsizetype)space_id.size()),
+                               std::nullopt);
                 }
             }
         }

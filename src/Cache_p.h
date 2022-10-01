@@ -490,13 +490,13 @@ private:
                     if (!eventsDb.get(
                           txn, nlohmann::json::parse(data)["id"].get<std::string>(), value))
                         return std::nullopt;
-                } catch (std::exception &e) {
+                } catch (std::exception &) {
                     return std::nullopt;
                 }
             }
 
             return nlohmann::json::parse(value).get<mtx::events::StateEvent<T>>();
-        } catch (std::exception &e) {
+        } catch (std::exception &) {
             return std::nullopt;
         }
     }

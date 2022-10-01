@@ -59,7 +59,7 @@ public:
         return room && room->membership == mtx::events::state::Membership::Invite;
     }
     bool isSpace() const { return room && room->room_type == mtx::events::state::room_type::space; }
-    int memberCount() const { return room ? room->num_joined_members : 0; }
+    int memberCount() const { return room ? (int)room->num_joined_members : 0; }
     bool isKnockOnly() const
     {
         return room && (room->join_rule == mtx::events::state::JoinRule::Knock ||
