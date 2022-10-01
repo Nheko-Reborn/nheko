@@ -79,9 +79,9 @@ AbstractButton {
         function updatePresence() {
             switch (Presence.userPresence(userid)) {
             case "online":
-                return Nheko.theme.green;
+                return Nheko.theme.online;
             case "unavailable":
-                return Nheko.theme.red;
+                return Nheko.theme.unavailable;
             case "offline":
             default:
                 // return "#a82353" don't show anything if offline, since it is confusing, if presence is disabled
