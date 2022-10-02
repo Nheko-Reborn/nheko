@@ -619,7 +619,7 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
             nhlog::net()->warn("Duplicate sync, dropping");
             return;
         }
-    } catch (const lmdb::error &e) {
+    } catch (const lmdb::error &) {
         nhlog::db()->warn("Logged out in the mean time, dropping sync");
         return;
     }

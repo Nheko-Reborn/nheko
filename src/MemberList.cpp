@@ -31,7 +31,7 @@ MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
         // HACK: due to QTBUG-1020169, we'll load a big chunk to speed things up
         auto members = cache::getMembers(room_id_.toStdString(), 0, -1);
         addUsers(members);
-        numUsersLoaded_ = members.size();
+        numUsersLoaded_ = (int)members.size();
     } catch (const lmdb::error &e) {
         nhlog::db()->critical("Failed to retrieve members from cache: {}", e.what());
     }
@@ -40,7 +40,8 @@ MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
 void
 MemberListBackend::addUsers(const std::vector<RoomMember> &members)
 {
-    beginInsertRows(QModelIndex{}, m_memberList.count(), m_memberList.count() + members.size() - 1);
+    beginInsertRows(
+      QModelIndex{}, m_memberList.count(), m_memberList.count() + (int)members.size() - 1);
 
     for (const auto &member : members)
         m_memberList.push_back(
@@ -113,7 +114,7 @@ MemberListBackend::fetchMore(const QModelIndex &)
 
     auto members = cache::getMembers(room_id_.toStdString(), rowCount());
     addUsers(members);
-    numUsersLoaded_ += members.size();
+    numUsersLoaded_ += (int)members.size();
     emit numUsersLoadedChanged();
 
     loadingMoreMembers_ = false;
