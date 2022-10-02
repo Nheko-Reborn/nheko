@@ -52,6 +52,7 @@ build_script:
 
     - cmake --build build --config Release
 
+    - call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
     - git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
     - cd qt-jdenticon
     - qmake
