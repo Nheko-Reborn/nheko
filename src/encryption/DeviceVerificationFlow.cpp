@@ -336,14 +336,30 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                                 static_cast<int>(err->status_code));
                         }
 
-                        for (const auto &[user_id, tmp] : res.errors)
-                            for (const auto &[key_id, e] : tmp)
+                        // MSVC bug, error C3493: 'key_id' cannot be implicitly captured because no
+                        // default capture mode has been specified
+                        // for (const auto &[user_id, tmp] : res.errors)
+                        //     for (const auto &[key_id, e] : tmp)
+                        //         nhlog::net()->error("signature error for user {} and key "
+                        //                             "id {}: {}, {}",
+                        //                             user_id,
+                        //                             key_id,
+                        //                             mtx::errors::to_string(e.errcode),
+                        //                             e.error);
+                        for (const auto &error : res.errors) {
+                            const auto &user_id = error.first;
+                            for (const auto &key_error : error.second) {
+                                const auto &key_id = key_error.first;
+                                const auto &e      = key_error.second;
+
                                 nhlog::net()->error("signature error for user {} and key "
                                                     "id {}: {}, {}",
                                                     user_id,
                                                     key_id,
                                                     mtx::errors::to_string(e.errcode),
                                                     e.error);
+                            }
+                        }
                     });
               }
 
