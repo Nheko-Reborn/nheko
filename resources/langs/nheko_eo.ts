@@ -100,9 +100,37 @@
     </message>
 </context>
 <context>
+    <name>AllowedRoomsSettingsDialog</name>
+    <message>
+        <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+27"/>
+        <source>Allowed rooms settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Parent community</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Other room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
+        <source>Enter additional rooms not in the list yet...</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2733"/>
+        <location filename="../../src/Cache.cpp" line="+2761"/>
         <source>%1 and %n other(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -199,12 +227,7 @@
         <translation>Invitita uzanto: %1</translation>
     </message>
     <message>
-        <location line="-513"/>
-        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue and try to use an older version in the mean time. Alternatively you can try deleting the cache manually.</source>
-        <translation>Malsukcesis migrado de kaŝmemoro al nuna versio. Tio povas havi diversajn kialojn. Bonvolu raporti eraron kaj dume provi malpli novan version. Alternative, vi povas provi forigi la kaŝmemoron permane.</translation>
-    </message>
-    <message>
-        <location line="+13"/>
+        <location line="-500"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
         <translation>La kaŝmemoro sur via disko pli novas, ol tio, kion povas subteni ĉi tiu versio de Nheko. Bonvolu ĝisdatigi Nhekon aŭ vakigi vian kaŝmemoron.</translation>
     </message>
@@ -219,13 +242,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?
-You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
+        <location line="+4"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -307,7 +324,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Malsukcesis migrado de kaŝmemoro!</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+1"/>
+        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Incompatible cache version</source>
         <translation>Neakorda versio de kaŝmemoro</translation>
     </message>
@@ -335,7 +357,13 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Bonvolu provi resaluti: %1</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+34"/>
+        <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
+You may optionally provide a reason for others to accept your knock:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+52"/>
         <source>Failed to join room: %1</source>
         <translation>Malsukcesis aliĝi al ĉambro: %1</translation>
     </message>
@@ -389,13 +417,13 @@ You may optionally provide a reason for others to accept your knock:</source>
     <name>CommunitiesList</name>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+51"/>
-        <source>Do not show notification counts for this space or tag.</source>
+        <source>Do not show notification counts for this community or tag.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+7"/>
-        <source>Hide rooms with this tag or from this space by default.</source>
-        <translation>Implicite kaŝi ĉambrojn kun ĉi tiu etikedo aŭ de ĉi tiu aro.</translation>
+        <source>Hide rooms with this tag or from this community by default.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+86"/>
@@ -461,23 +489,23 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Mesaĝoj de via servilo aŭ administranto.</translation>
     </message>
     <message>
-        <location line="+643"/>
-        <source>Failed to update space child: %1</source>
+        <location line="+657"/>
+        <source>Failed to update community: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Failed to delete space child: %1</source>
+        <location line="+18"/>
+        <source>Failed to delete room from community: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
-        <source>Failed to update space parent: %1</source>
+        <location line="+23"/>
+        <source>Failed to update community for room: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Failed to delete space parent: %1</source>
+        <location line="+18"/>
+        <source>Failed to remove community from room: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -503,12 +531,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+25"/>
-        <source>This room can&apos;t be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
+        <source>Do you want to join this room? You can optionally add a reason below:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>Do you want to join this room? You can optionally add a reason below:</source>
+        <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -594,7 +622,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+6"/>
-        <source>Public rooms can be joined by anyone, private rooms need explicit invites.</source>
+        <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1070,7 +1098,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+338"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+362"/>
         <source>Select a file</source>
         <translation>Elektu dosieron</translation>
     </message>
@@ -1080,7 +1108,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
-        <location line="+806"/>
+        <location line="+771"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1164,14 +1192,11 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>Your login name. A mxid should start with @ followed by the user id. After the user id you need to include your server name after a :.
-You can also put your homeserver address there, if your server doesn&apos;t support .well-known lookup.
+        <source>Your login name. A mxid should start with @ followed by the user ID. After the user ID you need to include your server name after a :.
+You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>Via saluta nomo. Matriksa identigilo devus komenciĝi per @ sekvata de la identigilo de uzanto. Post la identigilo, vi devas meti nomon de via servilo post :.
-Vi ankaŭ povas enmeti adreson de via hejmservilo, se via servilo ne subtenas bone-konatan trovmanieron.
-Ekzemplo: @uzanto:servilo.mia
-Se Nheko malsukcesas trovi vian hejmservilon, ĝi montros kampon por ĝia permana aldono.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1190,12 +1215,17 @@ Se Nheko malsukcesas trovi vian hejmservilon, ĝi montros kampon por ĝia perman
     </message>
     <message>
         <location line="+2"/>
-        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translatorcomment>Wow, I had to use dictionaries a lot to get this, so there may be a number of mistakes :P</translatorcomment>
-        <translation>Nomo por ĉi tiu aparato, montrota al aliuloj, kiam oni kontrolos viajn aparatojn. Se vi neniun donos, uziĝos nomo implicita.</translation>
+        <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
+        <source>The address that can be used to contact you homeserver&apos;s client API.
+Example: https://server.my:8787</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-4"/>
         <source>Homeserver address</source>
         <translation>Adreso de hejmservilo</translation>
     </message>
@@ -1205,15 +1235,7 @@ Se Nheko malsukcesas trovi vian hejmservilon, ĝi montros kampon por ĝia perman
         <translation>servilo.mia:8787</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>The address that can be used to contact you homeservers client API.
-Example: https://server.my:8787</source>
-        <translatorcomment>API should be valid for the EO translation of application programming interface.</translatorcomment>
-        <translation>La adreso per kiu kontakteblas la klienta API de via hejmservilo.
-Ekzemplo: https://servilo.mia:8787</translation>
-    </message>
-    <message>
-        <location line="+32"/>
+        <location line="+35"/>
         <source>LOGIN</source>
         <translatorcomment>Maybe shouldn&apos;t be imperative?</translatorcomment>
         <translation>SALUTI</translation>
@@ -1227,12 +1249,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <location filename="../../src/LoginPage.cpp" line="+86"/>
         <location line="+6"/>
         <location line="+58"/>
-        <location line="+125"/>
+        <location line="+126"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
         <translation>Vi enigis nevalidan identigilon de Matrikso  ekz. @tacuo:matrix.org</translation>
     </message>
     <message>
-        <location line="-155"/>
+        <location line="-156"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Malsukcesis memaga trovado. Ricevis misformitan respondon.</translation>
     </message>
@@ -1257,8 +1279,8 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Okazis nekonata eraro. Certiĝu, ke retnomo de la hejmservilo estas valida.</translation>
     </message>
     <message>
-        <location line="+14"/>
-        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t sign in.</source>
+        <location line="+15"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.4). You can&apos;t sign in.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1297,7 +1319,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Malplena pasvorto</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+55"/>
         <source>SSO login failed</source>
         <translation>Malsukcesis ununura saluto</translation>
     </message>
@@ -1378,7 +1400,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+14"/>
-        <source>%1 changed the parent spaces for this room.</source>
+        <source>%1 changed the parent communities for this room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1445,7 +1467,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Skribu mesaĝon…</translation>
     </message>
     <message>
-        <location line="+277"/>
+        <location line="+281"/>
         <source>Stickers</source>
         <translation>Glumarkoj</translation>
     </message>
@@ -1473,12 +1495,22 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Redakti</translation>
     </message>
     <message>
-        <location line="+17"/>
+        <location line="+15"/>
         <source>React</source>
         <translation>Reagi</translation>
     </message>
     <message>
         <location line="+17"/>
+        <source>Reply in thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>New thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Reply</source>
         <translation>Respondi</translation>
     </message>
@@ -1488,7 +1520,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Elektebloj</translation>
     </message>
     <message>
-        <location line="+427"/>
+        <location line="+434"/>
         <source>Reason for removal</source>
         <translation>Kialo de forigo</translation>
     </message>
@@ -1499,18 +1531,18 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+134"/>
+        <location line="+141"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopii</translation>
     </message>
     <message>
-        <location line="-127"/>
-        <location line="+134"/>
+        <location line="-134"/>
+        <location line="+141"/>
         <source>Copy &amp;link location</source>
         <translation>Kopii celon de &amp;ligilo</translation>
     </message>
     <message>
-        <location line="-126"/>
+        <location line="-133"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;agi</translation>
     </message>
@@ -1526,6 +1558,11 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+7"/>
+        <source>&amp;Thread</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Un&amp;pin</source>
         <translation>Mal&amp;fiksi</translation>
     </message>
@@ -1536,8 +1573,8 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+5"/>
-        <source>Read receip&amp;ts</source>
-        <translation>K&amp;vitancoj</translation>
+        <source>&amp;Read receipts</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1599,13 +1636,13 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+14"/>
-        <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation>Por lasi aliajn uzantojn vidi, kiuj el viaj aparatoj vere apartenas al vi, vi povas kontroli ilin. Tio ankaŭ permesas, ke savkopiado de ŝlosiloj funkciu memage. Ĉu vi volas kontroli nekontrolitan aparaton nun? (Bonvolu certigi, ke unu el tiaj aparatoj disponeblas al vi.)</translation>
+        <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>To allow other users to see, which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation>Por vidigi al aliuloj, kiuj viaj aparatoj vere apartenas al vi, vi povas ilin kontroli. Tio ankaŭ funkciigus memagan savkopiadon de ŝlosiloj. Ĉu vi volas kontroli aparaton %1 nun?</translation>
+        <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1756,29 +1793,29 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+22"/>
-        <location line="+235"/>
+        <location line="+240"/>
         <source>Administrator (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-233"/>
-        <location line="+235"/>
+        <location line="-238"/>
+        <location line="+240"/>
         <source>Moderator (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-233"/>
+        <location line="-238"/>
         <source>User (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <location line="+233"/>
+        <location line="+238"/>
         <source>Custom (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-220"/>
+        <location line="-225"/>
         <source>Remove event type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1803,7 +1840,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+137"/>
+        <location line="+142"/>
         <source>Remove user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1814,9 +1851,60 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
 </context>
 <context>
+    <name>PowerLevelSpacesApplyDialog</name>
+    <message>
+        <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+28"/>
+        <source>Apply permission changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Apply permissions recursively</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Overwrite exisiting modifications in rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+46"/>
+        <source>No permissions to apply the new permissions here</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>No changes needed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Existing modifications to the permissions in this room will be overwritten</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Permissions synchronized with community</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PowerLevels</name>
+    <message>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+736"/>
+        <source>Failed to update powerlevel: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>PowerlevelEditingModels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+601"/>
+        <location line="-116"/>
         <source>Failed to update powerlevel: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1824,7 +1912,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location line="-450"/>
+        <location line="-465"/>
         <source>Other events</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1965,12 +2053,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+3"/>
-        <source>Edit child rooms</source>
+        <source>Edit child communities and rooms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Change parent spaces</source>
+        <source>Change parent communities</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2010,9 +2098,9 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+213"/>
-        <source>Create a unique profile, which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation>Krei unikan profilon, kiu permesos al vi saluti kelkajn kontojn samtempe, kaj startigi plurajn Nhekojn.</translation>
+        <location filename="../../src/main.cpp" line="+230"/>
+        <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2023,6 +2111,34 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <location line="+1"/>
         <source>profile name</source>
         <translation>nomo de profilo</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location line="-26"/>
+        <source>Alias for &apos;--log-level trace&apos;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Set the global log level, or a comma-separated list of &lt;component&gt;=&lt;level&gt; pairs, or both. For example, to set the default log level to &apos;warn&apos; but disable logging for the &apos;ui&apos; component, pass &apos;warn,ui=off&apos;. levels:{trace,debug,info,warning,error,critical,off} components:{crypto,db,mtx,net,qml,ui}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>level</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>type</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2075,7 +2191,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Pasvorta konfirmo</translation>
     </message>
     <message>
-        <location line="-90"/>
+        <location line="+19"/>
+        <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-109"/>
         <source>Homeserver</source>
         <translation>Hejmservilo</translation>
     </message>
@@ -2100,12 +2221,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished">Aparata nomo</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.</source>
-        <translation type="unfinished">Nomo por ĉi tiu aparato, montrota al aliuloj, kiam oni kontrolos viajn aparatojn. Se vi neniun donos, uziĝos nomo implicita.</translation>
-    </message>
-    <message>
-        <location line="+31"/>
+        <location line="+33"/>
         <source>REGISTER</source>
         <translation>REGISTRIĜI</translation>
     </message>
@@ -2135,8 +2251,8 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Okazis nekonata eraro. Certiĝu, ke retnomo de la hejmservilo estas valida.</translation>
     </message>
     <message>
-        <location line="+15"/>
-        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1, v1.2 or v1.3). You can&apos;t register.</source>
+        <location line="+16"/>
+        <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.4). You can&apos;t register.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2177,6 +2293,11 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <source>Cancel Edit</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+17"/>
+        <source>Cancel Thread</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RoomDirectory</name>
@@ -2199,7 +2320,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2026"/>
+        <location filename="../../src/Cache.cpp" line="+2027"/>
         <source>no version stored</source>
         <translation>neniu versio konservita</translation>
     </message>
@@ -2207,7 +2328,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+141"/>
+        <location filename="../qml/RoomList.qml" line="+143"/>
         <source>New tag</source>
         <translation>Nova etikedo</translation>
     </message>
@@ -2258,7 +2379,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+10"/>
-        <source>Add or remove from space</source>
+        <source>Add or remove from community...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2498,42 +2619,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Ĉiuj mesaĝoj</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>Room access</source>
-        <translation>Aliro al ĉambro</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Anyone and guests</source>
-        <translation>Ĉiu ajn, inkluzive gastojn</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Anyone</source>
-        <translation>Ĉiu ajn</translation>
-    </message>
-    <message>
-        <location line="+0"/>
-        <source>Invited users</source>
-        <translation>Invititoj</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>By knocking</source>
-        <translation>Per frapado</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Restricted by membership in other rooms</source>
-        <translation>Limigita de aneco en aliaj ĉambroj</translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Restricted by membership in other rooms or by knocking</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
+        <location line="+105"/>
         <source>Encryption</source>
         <translation>Ĉifrado</translation>
     </message>
@@ -2569,17 +2655,13 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Agordoj de glumarkoj kaj mienetoj</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="-93"/>
+        <location line="+98"/>
         <source>Change</source>
         <translation>Ŝanĝi</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Change what packs are enabled, remove packs or create new ones</source>
-        <translation>Ŝalti, forigi, aŭ krei novajn pakojn</translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Hidden events</source>
         <translation>Kaŝitaj okazoj</translation>
     </message>
@@ -2591,12 +2673,52 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation>Agordi</translation>
     </message>
     <message>
-        <location line="-35"/>
+        <location line="-180"/>
+        <source>Anyone can join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>Allow knocking</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Allow joining via other rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Rooms to join via</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Allow guests to join</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Apply access rules</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Aliases</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+36"/>
+        <location line="+18"/>
+        <source>Change what packs are enabled, remove packs, or create new ones</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
         <source>Select events to hide in this room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2631,12 +2753,12 @@ Ekzemplo: https://servilo.mia:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+182"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+215"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Malsukcesis ŝalti ĉifradon: %1</translation>
     </message>
     <message>
-        <location line="+320"/>
+        <location line="+344"/>
         <source>Select an avatar</source>
         <translation>Elektu bildon de ĉambro</translation>
     </message>
@@ -2683,7 +2805,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+372"/>
+        <location filename="../qml/Root.qml" line="+254"/>
         <source>Please enter your login password to continue:</source>
         <translation>Bonvolu enigi vian pasvorton por daŭrigi:</translation>
     </message>
@@ -2699,8 +2821,8 @@ Ekzemplo: https://servilo.mia:8787</translation>
     </message>
     <message>
         <location line="+10"/>
-        <source>Please enter the token, which has been sent to you:</source>
-        <translation>Bonvolu enigi la pecon, kiu sendiĝis al vi:</translation>
+        <source>Please enter the token which has been sent to you:</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2765,7 +2887,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4570"/>
+        <location filename="../../src/Cache.cpp" line="-4599"/>
         <source>Failed to connect to secret storage</source>
         <translation>Malsukcesis konektiĝi al sekreta deponejo</translation>
     </message>
@@ -2830,7 +2952,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+44"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+46"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation>Malsukcesis krei delege subskribajn ŝlosilojn!</translation>
     </message>
@@ -2855,7 +2977,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
         <translation>Starigo de ĉifrado malsukcesis: %1</translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+156"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
         <translation>Identiga ŝlosilo ŝanĝiĝis. Tio rompas tutvojan ĉifradon, kaj tial la programo nun adiaŭas.</translation>
     </message>
@@ -2890,7 +3012,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
     <name>SpaceMenuLevel</name>
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
-        <source>Add or remove from space</source>
+        <source>Add or remove from community</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2977,19 +3099,19 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1310"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1311"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Malsukcesis redaktado de mesaĝo: %1</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+116"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
         <translation>Malsukcesis ĉifri okazon; sendado nuliĝis!</translation>
     </message>
     <message>
-        <location line="+174"/>
+        <location line="+179"/>
         <source>Save image</source>
         <translation>Konservi bildon</translation>
     </message>
@@ -3023,12 +3145,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
         <translation>%1 malfermis la ĉambron al publiko.</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>%1 made this room require and invitation to join.</source>
-        <translation>%1 ekpostulis inviton por aliĝoj al la ĉamrbo.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>%1 allowed to join this room by knocking.</source>
         <translation>%1 permesis aliĝi al ĉi tiu ĉambro per frapado.</translation>
     </message>
@@ -3344,12 +3461,17 @@ Kialo: %4</translation>
         <translation>%1 forigis sian frapon.</translation>
     </message>
     <message>
-        <location line="-1528"/>
+        <location line="-1569"/>
         <source>You joined this room.</source>
         <translation>Vi aliĝis ĉi tiun ĉambron.</translation>
     </message>
     <message>
-        <location line="+1480"/>
+        <location line="+893"/>
+        <source>%1 made this room require an invitation to join.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+628"/>
         <source>%1 invited %2.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3383,9 +3505,14 @@ Kialo: %4</translation>
 <context>
     <name>TimelineRow</name>
     <message>
-        <location filename="../qml/TimelineRow.qml" line="+241"/>
+        <location filename="../qml/TimelineRow.qml" line="+243"/>
         <source>Edited</source>
         <translation>Redaktita</translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>Part of a thread</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -3442,17 +3569,22 @@ Kialo: %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+95"/>
+        <location filename="../qml/TopBar.qml" line="+137"/>
         <source>Back to room list</source>
         <translation>Reen al listo de ĉambroj</translation>
     </message>
     <message>
-        <location line="-76"/>
+        <location line="-118"/>
         <source>No room selected</source>
         <translation>Neniu ĉambro estas elektita</translation>
     </message>
     <message>
-        <location line="+140"/>
+        <location line="+100"/>
+        <source>In %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+83"/>
         <source>Show room members.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3650,7 +3782,7 @@ Kialo: %4</translation>
         <translation>Malkontroli</translation>
     </message>
     <message>
-        <location filename="../../src/ui/UserProfile.cpp" line="+155"/>
+        <location filename="../../src/ui/UserProfile.cpp" line="+154"/>
         <source>Sign out device %1</source>
         <translation>Adiaŭigi aparaton %1</translation>
     </message>
@@ -3722,12 +3854,7 @@ Kialo: %4</translation>
         <translation>Komenci ete sur pleto</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Groups sidebar</source>
-        <translation>Flanka breto de grupoj</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Send messages as Markdown</source>
         <translation>Sendi mesaĝojn Markdaŭne</translation>
     </message>
@@ -3807,12 +3934,7 @@ Kialo: %4</translation>
         <translation>Malĉifri mesaĝojn en flanka breto</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Show message counts for spaces</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Privacy Screen</source>
         <translation>Privateca ŝirmilo</translation>
     </message>
@@ -3894,7 +4016,7 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Identigilo de uzanto</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4012,13 +4134,7 @@ Kialo: %4</translation>
         <translation>Agordi sciigan sonon, kiu aŭdiĝos je invito al voko</translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation>Agordas maksimuman larĝecon por mesaĝoj en la historio (en bilderoj).
-Tio povas helpi legeblecon sur larĝaj ekranoj, kiam la fenestro de Nheko grandas.</translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+10"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
@@ -4048,12 +4164,7 @@ Maksimuma valoro estas 1 horo (3600 sekundoj)</translation>
         <translation>Ekigi la aplikaĵon fone sen montro de la klienta fenestro.</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Show a column containing groups and tags next to the room list.</source>
-        <translation>Montras kolumnon kun grupoj kaj etikedoj apud la listo de ĉambroj.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
         <translation>Permesas uzon de Markdaŭno en mesaĝoj.
@@ -4082,20 +4193,7 @@ This will also enable or disable sending typing notifications to others.</source
 Ĉi tio ankaŭ ŝaltos sciigadon pri via tajpado al aliaj.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Display rooms with new messages first.
-If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
-If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation>Montras ĉambrojn kun novaj mesaĝoj kiel la unuajn.
-Kun ĉi tio malŝaltita, la listo de ĉambroj ordiĝos nur laŭ
-tempo de la lasta mesaĝo en ĉambro.
-Kun ĉi tio ŝaltita, ĉambroj kun aktivaj sciigoj (eta cirklo
-kun nombro skribita ene) estos ordigitaj plej supre. Ĉambroj,
-kiujn vi silentigis, ankoraŭ estos ordigitaj laŭ tempo, ĉar vi
-probable ne pensas ilin same gravaj kiel la aliaj ĉambroj.</translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+12"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
         <translation>Montras butonojn apud ĉiu mesaĝo, por rapide respondi, reagi,
 aŭ meti aliajn elekteblojn.</translation>
@@ -4112,7 +4210,17 @@ OFF - square, ON - circle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+63"/>
+        <location line="+16"/>
+        <source>Choose where to show the total number of notifications contained within a community or tag.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4124,7 +4232,34 @@ This usually causes the application icon in the task bar to animate in some fash
 Ĉi tio kutime movbildigas la simbolbildon sur la pleto iumaniere.</translation>
     </message>
     <message>
-        <location line="-6"/>
+        <location line="-303"/>
+        <source>Communities sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+34"/>
+        <source>Show message counts for communities and tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+215"/>
+        <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Show a column containing communities and tags next to the room list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Display rooms with new messages first.
+If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
+If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
@@ -4155,12 +4290,7 @@ Only affects messages in encrypted chats.</source>
 Influas nur sur mesaĝoj en ĉifritaj babiloj.</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Choose where to show the total number of notifications contained within a space.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
         <translation>Kiam la fenestro ne estos fokusata, la historio
@@ -4187,12 +4317,7 @@ malklariĝos.</translation>
         <translation>Postulas, ke uzanto estu kontrolita, por ke ĝi povu ricevi mesaĝojn. Ĉi tio plibonigas sekurecon, sed iom maloportunigas tutvojan ĉifradon.</translation>
     </message>
     <message>
-        <location line="+3"/>
-        <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation>Memage respondas al petoj de aliaj uzantoj je ŝlosiloj, se tiuj uzantoj estas kontrolitaj, eĉ se la aparato ne povus aliri tiujn ŝlosilojn alie.</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+7"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
         <translation>Elŝutu ĉifrajn ŝlosilojn por mesaĝoj de la ĉifrita enreta deponejo de ŝlosiloj, aŭ alŝutu ilin tien.</translation>
     </message>
@@ -4312,7 +4437,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>VerificationManager</name>
     <message>
-        <location filename="../../src/encryption/VerificationManager.cpp" line="+139"/>
+        <location filename="../../src/encryption/VerificationManager.cpp" line="+140"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
         <translation>Neniu ĉifrita privata babilo kun ĉi tiu uzanto troviĝis. Kreu ĉifritan privatan babilon kun ĉi tiu uzanto kaj reprovu.</translation>
     </message>
@@ -4372,7 +4497,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+194"/>
+        <location filename="../../src/Utils.cpp" line="+200"/>
         <source>Yesterday</source>
         <translation>Hieraŭ</translation>
     </message>
@@ -4396,8 +4521,8 @@ This setting will take effect upon restart.</source>
     </message>
     <message>
         <location line="+12"/>
-        <source>Open the fallback, follow the steps and confirm after completing them.</source>
-        <translation>Iru al la alternativa metodo, sekvu la paŝojn, kaj fininte ilin, konfirmu.</translation>
+        <source>Open the fallback, follow the steps, and confirm after completing them.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
