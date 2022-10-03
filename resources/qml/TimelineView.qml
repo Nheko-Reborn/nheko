@@ -311,7 +311,7 @@ Item {
         }
 
         function onShowRawMessageDialog(rawMessage) {
-            var dialog = rawMessageDialog.createObject(timelineRoot, {
+            var dialog = Qt.createComponent("qrc:/qml/dialogs/RawMessageDialog.qml").createObject(timelineRoot, {
                 "rawMessage": rawMessage
             });
             dialog.show();
