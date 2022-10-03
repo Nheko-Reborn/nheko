@@ -44,8 +44,11 @@ MemberListBackend::addUsers(const std::vector<RoomMember> &members)
       QModelIndex{}, m_memberList.count(), m_memberList.count() + (int)members.size() - 1);
 
     auto thisRoom = ChatPage::instance()->timelineManager()->rooms()->getRoomById(room_id_);
-    for (const auto &member : members)
-        m_memberList.push_back({member, thisRoom->avatarUrl(member.user_id)});
+    if (thisRoom.isNull())
+        nhlog::ui()->error("Could not load the current room");
+    else
+        for (const auto &member : members)
+            m_memberList.push_back({member, thisRoom->avatarUrl(member.user_id)});
 
     endInsertRows();
 }
