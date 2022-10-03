@@ -197,7 +197,9 @@ RegisterPage::checkUsername(const QString &name)
 }
 
 void
-RegisterPage::startRegistration(const QString &username, const QString &password, const QString &devicename)
+RegisterPage::startRegistration(const QString &username,
+                                const QString &password,
+                                const QString &devicename)
 {
     // These inputs should still be alright, but check just in case
     if (!username.isEmpty() && !password.isEmpty() && usernameAvailable_ && supported_) {

@@ -119,7 +119,7 @@ send_megolm_key_to_device(const std::string &user_id,
 //! Send encrypted to device messages, targets is a map from userid to device ids or {} for all
 //! devices
 void
-send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::string> > &targets,
+send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::string>> &targets,
                                   const mtx::events::collections::DeviceEvents &event,
                                   bool force_new_session = false);
 

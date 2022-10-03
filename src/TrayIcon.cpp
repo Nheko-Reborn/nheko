@@ -19,8 +19,8 @@
 #endif
 
 MsgCountComposedIcon::MsgCountComposedIcon(const QString &filename)
-  : QIconEngine(),
-    icon_{QIcon{filename}}
+  : QIconEngine()
+  , icon_{QIcon{filename}}
 {
 }
 

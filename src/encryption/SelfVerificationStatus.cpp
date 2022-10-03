@@ -33,7 +33,9 @@ SelfVerificationStatus::SelfVerificationStatus(QObject *o)
 }
 
 void
-SelfVerificationStatus::setupCrosssigning(bool useSSSS, const QString &password, bool useOnlineKeyBackup)
+SelfVerificationStatus::setupCrosssigning(bool useSSSS,
+                                          const QString &password,
+                                          bool useOnlineKeyBackup)
 {
     nhlog::db()->info("Clicked setup crossigning");
 

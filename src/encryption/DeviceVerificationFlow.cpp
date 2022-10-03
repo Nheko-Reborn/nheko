@@ -86,12 +86,14 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
       });
 
     if (model) {
-        connect(
-          this->model_, &TimelineModel::updateFlowEventId, this, [this](const std::string &event_id_) {
-              this->relation.rel_type = mtx::common::RelationType::Reference;
-              this->relation.event_id = event_id_;
-              this->transaction_id    = event_id_;
-          });
+        connect(this->model_,
+                &TimelineModel::updateFlowEventId,
+                this,
+                [this](const std::string &event_id_) {
+                    this->relation.rel_type = mtx::common::RelationType::Reference;
+                    this->relation.event_id = event_id_;
+                    this->transaction_id    = event_id_;
+                });
     }
 
     connect(timeout, &QTimer::timeout, this, [this]() {

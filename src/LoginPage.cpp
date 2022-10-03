@@ -305,31 +305,34 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
           });
     } else {
         auto sso = new SSOHandler();
-        connect(
-          sso, &SSOHandler::ssoSuccess, this, [this, sso, userid, deviceName](const std::string &token) {
-              mtx::requests::Login req{};
-              req.token = token;
-              req.type  = mtx::user_interactive::auth_types::token;
-              req.initial_device_display_name =
-                deviceName.trimmed().isEmpty() ? initialDeviceName_() : deviceName.toStdString();
-              http::client()->login(
-                req, [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
-                    if (err) {
-                        showError(QString::fromStdString(err->matrix_error.error));
-                        emit errorOccurred();
-                        return;
-                    }
+        connect(sso,
+                &SSOHandler::ssoSuccess,
+                this,
+                [this, sso, userid, deviceName](const std::string &token) {
+                    mtx::requests::Login req{};
+                    req.token                       = token;
+                    req.type                        = mtx::user_interactive::auth_types::token;
+                    req.initial_device_display_name = deviceName.trimmed().isEmpty()
+                                                        ? initialDeviceName_()
+                                                        : deviceName.toStdString();
+                    http::client()->login(
+                      req, [this](const mtx::responses::Login &res, mtx::http::RequestErr err) {
+                          if (err) {
+                              showError(QString::fromStdString(err->matrix_error.error));
+                              emit errorOccurred();
+                              return;
+                          }
 
-                    if (res.well_known) {
-                        http::client()->set_server(res.well_known->homeserver.base_url);
-                        nhlog::net()->info("Login requested to use server: " +
-                                           res.well_known->homeserver.base_url);
-                    }
+                          if (res.well_known) {
+                              http::client()->set_server(res.well_known->homeserver.base_url);
+                              nhlog::net()->info("Login requested to use server: " +
+                                                 res.well_known->homeserver.base_url);
+                          }
 
-                    emit loginOk(res);
+                          emit loginOk(res);
+                      });
+                    sso->deleteLater();
                 });
-              sso->deleteLater();
-          });
         connect(sso, &SSOHandler::ssoFailed, this, [this, sso]() {
             showError(tr("SSO login failed"));
             emit errorOccurred();

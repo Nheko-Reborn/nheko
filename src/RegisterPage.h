@@ -31,7 +31,8 @@ public:
 
     Q_INVOKABLE void setServer(const QString &server);
     Q_INVOKABLE void checkUsername(const QString &name);
-    Q_INVOKABLE void startRegistration(const QString &username, const QString &password, const QString &deviceName);
+    Q_INVOKABLE void
+    startRegistration(const QString &username, const QString &password, const QString &deviceName);
     Q_INVOKABLE QString initialDeviceName() const;
 
     bool registering() const { return registering_; }
