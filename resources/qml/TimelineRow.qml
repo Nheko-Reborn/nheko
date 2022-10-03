@@ -230,20 +230,6 @@ AbstractButton {
                     anchors.verticalCenter: ts.verticalCenter
                 }
 
-                ImageButton {
-                    visible: threadId
-                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    height: parent.iconSize
-                    width: parent.iconSize
-                    image: ":/icons/icons/ui/thread.svg"
-                    buttonTextColor: TimelineManager.userColor(threadId, Nheko.colors.base)
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Part of a thread")
-                    anchors.verticalCenter: ts.verticalCenter
-                    onClicked: room.thread = threadId
-                }
-
                 Image {
                     visible: isEdited || eventId == room.edit
                     Layout.alignment: Qt.AlignRight | Qt.AlignTop
@@ -261,6 +247,20 @@ AbstractButton {
                         id: editHovered
                     }
 
+                }
+
+                ImageButton {
+                    visible: threadId
+                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    height: parent.iconSize
+                    width: parent.iconSize
+                    image: ":/icons/icons/ui/thread.svg"
+                    buttonTextColor: TimelineManager.userColor(threadId, Nheko.colors.base)
+                    ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Part of a thread")
+                    anchors.verticalCenter: ts.verticalCenter
+                    onClicked: room.thread = threadId
                 }
 
                 EncryptionIndicator {
