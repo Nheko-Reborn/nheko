@@ -136,7 +136,7 @@ RegisterPage::versionsCheck()
                     return supported.count(v) != 0;
                 }) == versions.versions.cend()) {
               emit setHsError(
-                tr("The selected server does not support a version of the Matrix protocol, that "
+                tr("The selected server does not support a version of the Matrix protocol that "
                    "this client understands (v1.1, v1.2 or v1.3). You can't register."));
               emit hsErrorChanged();
               return;

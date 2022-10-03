@@ -227,7 +227,7 @@ main(int argc, char *argv[])
     // option and thereby crashing the app.
     QCommandLineOption configName(
       QStringList() << QStringLiteral("p") << QStringLiteral("profile"),
-      QCoreApplication::tr("Create a unique profile, which allows you to log into several "
+      QCoreApplication::tr("Create a unique profile which allows you to log into several "
                            "accounts at the same time and start multiple instances of nheko."),
       QCoreApplication::tr("profile"),
       QCoreApplication::tr("profile name"));

@@ -96,7 +96,7 @@
     <message>
         <location line="+11"/>
         <source>Add</source>
-        <translation type="unfinished">Aldoni</translation>
+        <translation>Aldoni</translation>
     </message>
 </context>
 <context>
@@ -496,7 +496,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n ano</numerusform>
             <numerusform>%n anoj</numerusform>
         </translation>
@@ -519,7 +519,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliĝi</translation>
     </message>
 </context>
 <context>
@@ -537,12 +537,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@uzanto:servilo.retnomo</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Encryption</source>
-        <translation type="unfinished">Ĉifrado</translation>
+        <translation>Ĉifrado</translation>
     </message>
 </context>
 <context>
@@ -550,12 +550,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+147"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Krei Ĉambron</translation>
     </message>
     <message>
         <location line="-102"/>
         <source>Name</source>
-        <translation type="unfinished">Nomo</translation>
+        <translation>Nomo</translation>
     </message>
     <message>
         <location line="-27"/>
@@ -565,27 +565,27 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Nova Ĉambro</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Neniu nomo</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished">Temo</translation>
+        <translation>Temo</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Neniu temo</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation type="unfinished">Kromnomo</translation>
+        <translation>Kromnomo</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -610,7 +610,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation type="unfinished">Ĉifrado</translation>
+        <translation>Ĉifrado</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -916,7 +916,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished">Glumarkoj</translation>
+        <translation>Glumarkoj</translation>
     </message>
 </context>
 <context>
@@ -1134,7 +1134,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliĝi</translation>
     </message>
 </context>
 <context>
@@ -1795,7 +1795,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished">Aldoni</translation>
+        <translation>Aldoni</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2004,7 +2004,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+217"/>
         <source>Other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliaj uzantoj</translation>
     </message>
 </context>
 <context>
@@ -2384,7 +2384,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Identigilo de uzanto</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2409,7 +2409,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Uzanto: %1</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3403,12 +3403,12 @@ Kialo: %4</translation>
     <message>
         <location line="+9"/>
         <source>Settings</source>
-        <translation type="unfinished">Agordoj</translation>
+        <translation>Agordoj</translation>
     </message>
     <message numerus="yes">
         <location line="+12"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n ano</numerusform>
             <numerusform>%n anoj</numerusform>
         </translation>
@@ -3694,42 +3694,42 @@ Kialo: %4</translation>
     <message>
         <location line="+404"/>
         <source>Theme</source>
-        <translation type="unfinished">Haŭto</translation>
+        <translation>Haŭto</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scale factor</source>
-        <translation type="unfinished">Skala obligo</translation>
+        <translation>Skala obligo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished">Emfazi mesaĝojn sub musmontrilo</translation>
+        <translation>Emfazi mesaĝojn sub musmontrilo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished">Grandaj bildosignoj en historio</translation>
+        <translation>Grandaj bildosignoj en historio</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished">Etigi al plato</translation>
+        <translation>Etigi al plato</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Start in tray</source>
-        <translation type="unfinished">Komenci ete sur pleto</translation>
+        <translation>Komenci ete sur pleto</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Groups sidebar</source>
-        <translation type="unfinished">Flanka breto de grupoj</translation>
+        <translation>Flanka breto de grupoj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished">Sendi mesaĝojn Markdaŭne</translation>
+        <translation>Sendi mesaĝojn Markdaŭne</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3744,52 +3744,52 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished">Ludi movbildojn nur sub musmontrilo</translation>
+        <translation>Ludi movbildojn nur sub musmontrilo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished">Sciigoj pri tajpado</translation>
+        <translation>Sciigoj pri tajpado</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished">Ordigi ĉambrojn laŭ nelegiteco</translation>
+        <translation>Ordigi ĉambrojn laŭ nelegiteco</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished">Montri butonojn en historio</translation>
+        <translation>Montri butonojn en historio</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished">Limigi larĝecon de historio</translation>
+        <translation>Limigi larĝecon de historio</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Kvitancoj</translation>
+        <translation>Kvitancoj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished">Labortablaj sciigoj</translation>
+        <translation>Labortablaj sciigoj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Alert on notification</source>
-        <translation type="unfinished">Atentigi pri sciigoj</translation>
+        <translation>Atentigi pri sciigoj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished">Rondaj profilbildoj</translation>
+        <translation>Rondaj profilbildoj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Use identicons</source>
-        <translation type="unfinished">Uzi identigajn bildojn</translation>
+        <translation>Uzi identigajn bildojn</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3804,7 +3804,7 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished">Malĉifri mesaĝojn en flanka breto</translation>
+        <translation>Malĉifri mesaĝojn en flanka breto</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3814,77 +3814,77 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished">Privateca ŝirmilo</translation>
+        <translation>Privateca ŝirmilo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished">Atendo ĝis privateca ŝirmilo (0–3600 sekundoj)</translation>
+        <translation>Atendo ĝis privateca ŝirmilo (0–3600 sekundoj)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished">Tuŝekrana reĝimo</translation>
+        <translation>Tuŝekrana reĝimo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font size</source>
-        <translation type="unfinished">Tipara grando</translation>
+        <translation>Tipara grando</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font Family</source>
-        <translation type="unfinished">Tipara familio</translation>
+        <translation>Tipara familio</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished">Bildosigna tiparo</translation>
+        <translation>Bildosigna tiparo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ringtone</source>
-        <translation type="unfinished">Sonoro</translation>
+        <translation>Sonoro</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Microphone</source>
-        <translation type="unfinished">Mikrofono</translation>
+        <translation>Mikrofono</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera</source>
-        <translation type="unfinished">Filmilo</translation>
+        <translation>Filmilo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera resolution</source>
-        <translation type="unfinished">Distingumo de filmilo</translation>
+        <translation>Distingumo de filmilo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished">Filmerrapido de filmilo</translation>
+        <translation>Filmerrapido de filmilo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished">Permesi repaŝan asistan servilon por vokoj</translation>
+        <translation>Permesi repaŝan asistan servilon por vokoj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished">Sendi ĉifritajn mesaĝojn nur al kontrolitaj uzantoj</translation>
+        <translation>Sendi ĉifritajn mesaĝojn nur al kontrolitaj uzantoj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished">Havigi ŝlosilojn al kontrolitaj uzantoj kaj aparatoj</translation>
+        <translation>Havigi ŝlosilojn al kontrolitaj uzantoj kaj aparatoj</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished">Enreta savkopiado de ŝlosiloj</translation>
+        <translation>Enreta savkopiado de ŝlosiloj</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3904,17 +3904,17 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>Device ID</source>
-        <translation type="unfinished">Identigilo de aparato</translation>
+        <translation>Identigilo de aparato</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished">Fingrospuro de aparato</translation>
+        <translation>Fingrospuro de aparato</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Homeserver</source>
-        <translation type="unfinished">Hejmservilo</translation>
+        <translation>Hejmservilo</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3929,7 +3929,7 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>GENERAL</source>
-        <translation type="unfinished">ĜENERALAJ</translation>
+        <translation>ĜENERALAJ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3954,22 +3954,22 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>CALLS</source>
-        <translation type="unfinished">VOKOJ</translation>
+        <translation>VOKOJ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished">ĈIFRADO</translation>
+        <translation>ĈIFRADO</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>INFO</source>
-        <translation type="unfinished">INFORMOJ</translation>
+        <translation>INFORMOJ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Session Keys</source>
-        <translation type="unfinished">Ŝlosiloj de salutaĵo</translation>
+        <translation>Ŝlosiloj de salutaĵo</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3984,17 +3984,17 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>Self signing key</source>
-        <translation type="unfinished">Mem-subskriba ŝlosilo</translation>
+        <translation>Mem-subskriba ŝlosilo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User signing key</source>
-        <translation type="unfinished">Uzanto-subskriba ŝlosilo</translation>
+        <translation>Uzanto-subskriba ŝlosilo</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Master signing key</source>
-        <translation type="unfinished">Ĉefa subskriba ŝlosilo</translation>
+        <translation>Ĉefa subskriba ŝlosilo</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4004,17 +4004,17 @@ Kialo: %4</translation>
     <message>
         <location line="+97"/>
         <source>Default</source>
-        <translation type="unfinished">Implicita</translation>
+        <translation>Implicita</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished">Agordi sciigan sonon, kiu aŭdiĝos je invito al voko</translation>
+        <translation>Agordi sciigan sonon, kiu aŭdiĝos je invito al voko</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen, when Nheko is maximised</source>
-        <translation type="unfinished">Agordas maksimuman larĝecon por mesaĝoj en la historio (en bilderoj).
+        <translation>Agordas maksimuman larĝecon por mesaĝoj en la historio (en bilderoj).
 Tio povas helpi legeblecon sur larĝaj ekranoj, kiam la fenestro de Nheko grandas.</translation>
     </message>
     <message>
@@ -4022,7 +4022,7 @@ Tio povas helpi legeblecon sur larĝaj ekranoj, kiam la fenestro de Nheko granda
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished">Tempo de atendo (en sekundoj) ekde senfokusiĝo
+        <translation>Tempo de atendo (en sekundoj) ekde senfokusiĝo
 de la fenestro, post kiu la enhavo malklariĝos.
 Agordu al 0 por malklarigi enhavon tuj post senfokusiĝo.
 Maksimuma valoro estas 1 horo (3600 sekundoj)</translation>
@@ -4030,33 +4030,33 @@ Maksimuma valoro estas 1 horo (3600 sekundoj)</translation>
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished">Ŝanĝi fonkoloron de mesaĝoj sub musmontrilo.</translation>
+        <translation>Ŝanĝi fonkoloron de mesaĝoj sub musmontrilo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished">Grandigi tiparon se montriĝas mesaĝoj kun nur kelkaj bildosignoj.</translation>
+        <translation>Grandigi tiparon se montriĝas mesaĝoj kun nur kelkaj bildosignoj.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished">Daŭrigi la aplikaĵon fone post fermo de la klienta fenestro.</translation>
+        <translation>Daŭrigi la aplikaĵon fone post fermo de la klienta fenestro.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished">Ekigi la aplikaĵon fone sen montro de la klienta fenestro.</translation>
+        <translation>Ekigi la aplikaĵon fone sen montro de la klienta fenestro.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show a column containing groups and tags next to the room list.</source>
-        <translation type="unfinished">Montras kolumnon kun grupoj kaj etikedoj apud la listo de ĉambroj.</translation>
+        <translation>Montras kolumnon kun grupoj kaj etikedoj apud la listo de ĉambroj.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished">Permesas uzon de Markdaŭno en mesaĝoj.
+        <translation>Permesas uzon de Markdaŭno en mesaĝoj.
 Kun ĉi tio malŝaltita, ĉiuj mesaĝoj sendiĝas en plata teksto.</translation>
     </message>
     <message>
@@ -4072,13 +4072,13 @@ Kun ĉi tio malŝaltita, ĉiuj mesaĝoj sendiĝas en plata teksto.</translation>
     <message>
         <location line="+2"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished">Ludas vidaŭdaĵojn kiel GIF-ojn aŭ WEBP-ojn nur sub musmontrilo.</translation>
+        <translation>Ludas vidaŭdaĵojn kiel GIF-ojn aŭ WEBP-ojn nur sub musmontrilo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished">Montri, kiu tajpas en ĉambro.
+        <translation>Montri, kiu tajpas en ĉambro.
 Ĉi tio ankaŭ ŝaltos sciigadon pri via tajpado al aliaj.</translation>
     </message>
     <message>
@@ -4086,7 +4086,7 @@ This will also enable or disable sending typing notifications to others.</source
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms, that you have muted, will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished">Montras ĉambrojn kun novaj mesaĝoj kiel la unuajn.
+        <translation>Montras ĉambrojn kun novaj mesaĝoj kiel la unuajn.
 Kun ĉi tio malŝaltita, la listo de ĉambroj ordiĝos nur laŭ
 tempo de la lasta mesaĝo en ĉambro.
 Kun ĉi tio ŝaltita, ĉambroj kun aktivaj sciigoj (eta cirklo
@@ -4097,7 +4097,7 @@ probable ne pensas ilin same gravaj kiel la aliaj ĉambroj.</translation>
     <message>
         <location line="+8"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished">Montras butonojn apud ĉiu mesaĝo, por rapide respondi, reagi,
+        <translation>Montras butonojn apud ĉiu mesaĝo, por rapide respondi, reagi,
 aŭ meti aliajn elekteblojn.</translation>
     </message>
     <message>
@@ -4120,7 +4120,7 @@ OFF - square, ON - circle.</source>
         <location line="-67"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished">Atentigas je ricevo de mesaĝo.
+        <translation>Atentigas je ricevo de mesaĝo.
 Ĉi tio kutime movbildigas la simbolbildon sur la pleto iumaniere.</translation>
     </message>
     <message>
@@ -4133,7 +4133,7 @@ Warning: If your homeserver does not support this, your rooms will never be mark
     <message>
         <location line="+13"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished">Montras identigan bildon anstataŭ litero, kiam ne disponeblas profilbildo.</translation>
+        <translation>Montras identigan bildon anstataŭ litero, kiam ne disponeblas profilbildo.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4151,7 +4151,7 @@ Note that when this option is ON, opened files are left unencrypted on disk and 
         <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished">Malĉifras mesaĝojn montratajn en la flanka breto.
+        <translation>Malĉifras mesaĝojn montratajn en la flanka breto.
 Influas nur sur mesaĝoj en ĉifritaj babiloj.</translation>
     </message>
     <message>
@@ -4163,53 +4163,53 @@ Influas nur sur mesaĝoj en ĉifritaj babiloj.</translation>
         <location line="+3"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished">Kiam la fenestro ne estos fokusata, la historio
+        <translation>Kiam la fenestro ne estos fokusata, la historio
 malklariĝos.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished">Malhelpos elkton de teksto en historio por faciligi rulumadon per tuŝoj.</translation>
+        <translation>Malhelpos elkton de teksto en historio por faciligi rulumadon per tuŝoj.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished">Ŝanĝas skalan obligon de la tuta fasado.</translation>
+        <translation>Ŝanĝas skalan obligon de la tuta fasado.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished">Uzos la servilon turn.matrix.org kiel asistanton, kiam via hejma servilo ne disponigos propran.</translation>
+        <translation>Uzos la servilon turn.matrix.org kiel asistanton, kiam via hejma servilo ne disponigos propran.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished">Postulas, ke uzanto estu kontrolita, por ke ĝi povu ricevi mesaĝojn. Ĉi tio plibonigas sekurecon, sed iom maloportunigas tutvojan ĉifradon.</translation>
+        <translation>Postulas, ke uzanto estu kontrolita, por ke ĝi povu ricevi mesaĝojn. Ĉi tio plibonigas sekurecon, sed iom maloportunigas tutvojan ĉifradon.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Automatically replies to key requests from other users, if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished">Memage respondas al petoj de aliaj uzantoj je ŝlosiloj, se tiuj uzantoj estas kontrolitaj, eĉ se la aparato ne povus aliri tiujn ŝlosilojn alie.</translation>
+        <translation>Memage respondas al petoj de aliaj uzantoj je ŝlosiloj, se tiuj uzantoj estas kontrolitaj, eĉ se la aparato ne povus aliri tiujn ŝlosilojn alie.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished">Elŝutu ĉifrajn ŝlosilojn por mesaĝoj de la ĉifrita enreta deponejo de ŝlosiloj, aŭ alŝutu ilin tien.</translation>
+        <translation>Elŝutu ĉifrajn ŝlosilojn por mesaĝoj de la ĉifrita enreta deponejo de ŝlosiloj, aŭ alŝutu ilin tien.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished">La ŝlosilo por malĉifrado de enretaj savkopioj de ŝlosiloj. Se ĝi estas kaŝmemorata, vi povas ŝalti enretan savkopiadon de ŝlosiloj por deponi ŝlosilojn sekure ĉifritajn al la servilo.</translation>
+        <translation>La ŝlosilo por malĉifrado de enretaj savkopioj de ŝlosiloj. Se ĝi estas kaŝmemorata, vi povas ŝalti enretan savkopiadon de ŝlosiloj por deponi ŝlosilojn sekure ĉifritajn al la servilo.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished">Ŝlosilo por kontrolado de aliaj uzantoj. Se ĝi estas kaŝmemorata, kontrolo de uzanto kontrolos ankaŭ ĉiujn ĝiajn aparatojn.</translation>
+        <translation>Ŝlosilo por kontrolado de aliaj uzantoj. Se ĝi estas kaŝmemorata, kontrolo de uzanto kontrolos ankaŭ ĉiujn ĝiajn aparatojn.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished">Via plej grava ŝlosilo. Vi ne bezonas kaŝmemori ĝin, ĉar de kaŝmemoro ĝi povus esti pli facile ŝtelebla, kaj vi bezonas ĝin nur por ŝanĝado de aliaj viaj subskribaj ŝlosiloj.</translation>
+        <translation>Via plej grava ŝlosilo. Vi ne bezonas kaŝmemori ĝin, ĉar de kaŝmemoro ĝi povus esti pli facile ŝtelebla, kaj vi bezonas ĝin nur por ŝanĝado de aliaj viaj subskribaj ŝlosiloj.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4221,17 +4221,17 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+419"/>
         <source>Select a file</source>
-        <translation type="unfinished">Elektu dosieron</translation>
+        <translation>Elektu dosieron</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Ĉiuj dosieroj (*)</translation>
+        <translation>Ĉiuj dosieroj (*)</translation>
     </message>
     <message>
         <location line="+89"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished">Malfermi dosieron kun salutaĵoj</translation>
+        <translation>Malfermi dosieron kun salutaĵoj</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4241,34 +4241,34 @@ This setting will take effect upon restart.</source>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished">Eraro</translation>
+        <translation>Eraro</translation>
     </message>
     <message>
         <location line="-64"/>
         <location line="+26"/>
         <source>File Password</source>
-        <translation type="unfinished">Pasvorto de dosiero</translation>
+        <translation>Pasvorto de dosiero</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished">Enigu pasfrazon por malĉifri la dosieron:</translation>
+        <translation>Enigu pasfrazon por malĉifri la dosieron:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+26"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished">La pasvorto ne povas esti malplena</translation>
+        <translation>La pasvorto ne povas esti malplena</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished">Enigu pasfrazon por ĉifri ŝlosilojn de via salutaĵo:</translation>
+        <translation>Enigu pasfrazon por ĉifri ŝlosilojn de via salutaĵo:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished">Dosiero, kien konserviĝos la elportitaj ŝloslioj de salutaĵo</translation>
+        <translation>Dosiero, kien konserviĝos la elportitaj ŝloslioj de salutaĵo</translation>
     </message>
 </context>
 <context>
@@ -4296,7 +4296,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+49"/>
         <source>Back</source>
-        <translation type="unfinished">Reen</translation>
+        <translation>Reen</translation>
     </message>
     <message>
         <location line="-42"/>

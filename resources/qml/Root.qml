@@ -281,7 +281,7 @@ Pane {
         id: uiaTokenPrompt
 
         title: UIA.title
-        prompt: qsTr("Please enter the token, which has been sent to you:")
+        prompt: qsTr("Please enter the token which has been sent to you:")
         onAccepted: (t) => {
             return UIA.submit3pidToken(t);
         }

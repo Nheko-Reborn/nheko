@@ -49,7 +49,7 @@ FallbackAuth::FallbackAuth(const QString &authType, const QString &session, QWid
     font.setPointSizeF(font.pointSizeF() * conf::modals::LABEL_MEDIUM_SIZE_RATIO);
 
     auto label = new QLabel(
-      tr("Open the fallback, follow the steps and confirm after completing them."), this);
+      tr("Open the fallback, follow the steps, and confirm after completing them."), this);
     label->setFont(font);
 
     layout->addWidget(label);

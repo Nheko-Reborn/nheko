@@ -60,7 +60,7 @@ Item {
                     placeholderText: qsTr("e.g @joe:matrix.org")
                     onEditingFinished: login.mxid = text
 
-                    ToolTip.text: qsTr("Your login name. A mxid should start with @ followed by the user id. After the user id you need to include your server name after a :.\nYou can also put your homeserver address there, if your server doesn't support .well-known lookup.\nExample: @user:server.my\nIf Nheko fails to discover your homeserver, it will show you a field to enter the server manually.")
+                    ToolTip.text: qsTr("Your login name. A mxid should start with @ followed by the user ID. After the user ID you need to include your server name after a :.\nYou can also put your homeserver address there if your server doesn't support .well-known lookup.\nExample: @user:server.my\nIf Nheko fails to discover your homeserver, it will show you a field to enter the server manually.")
                     Keys.forwardTo: [pwBtn, ssoRepeater]
                 }
 
@@ -99,7 +99,7 @@ Item {
                 Layout.fillWidth: true
                 label: qsTr("Device name")
                 placeholderText: login.initialDeviceName()
-                ToolTip.text: qsTr("A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.")
+                ToolTip.text: qsTr("A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.")
                 Keys.forwardTo: [pwBtn, ssoRepeater]
             }
 
@@ -113,7 +113,7 @@ Item {
                 placeholderText: qsTr("server.my:8787")
                 text: login.homeserver
                 onEditingFinished: login.homeserver = text
-                ToolTip.text: qsTr("The address that can be used to contact you homeservers client API.\nExample: https://server.my:8787")
+                ToolTip.text: qsTr("The address that can be used to contact you homeserver's client API.\nExample: https://server.my:8787")
                 Keys.forwardTo: [pwBtn, ssoRepeater]
             }
 

@@ -88,7 +88,7 @@ ApplicationWindow {
                 id: privateHover
             }
             ToolTip.visible: privateHover.hovered
-            ToolTip.text: qsTr("Public rooms can be joined by anyone, private rooms need explicit invites.")
+            ToolTip.text: qsTr("Public rooms can be joined by anyone; private rooms need explicit invites.")
             ToolTip.delay: Nheko.tooltipDelay
         }
         ToggleButton {

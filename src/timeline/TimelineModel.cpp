@@ -585,22 +585,16 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
 
         auto ascent = QFontMetrics(UserSettings::instance()->font()).ascent();
 
-        bool isReply = utils::isReply(event);
+        bool isReply = mtx::accessors::relations(event).reply_to(false).has_value();
 
         auto formattedBody_ = QString::fromStdString(formatted_body(event));
         if (formattedBody_.isEmpty()) {
-            auto body_ = QString::fromStdString(body(event));
-
-            if (isReply) {
-                while (body_.startsWith(QLatin1String("> ")))
-                    body_ = body_.right(body_.size() - body_.indexOf('\n') - 1);
-                if (body_.startsWith('\n'))
-                    body_ = body_.right(body_.size() - 1);
-            }
-            formattedBody_ = body_.toHtmlEscaped().replace('\n', QLatin1String("<br>"));
-        } else {
-            if (isReply)
-                formattedBody_ = formattedBody_.remove(replyFallback);
+            // NOTE(Nico): replies without html can't have a fallback. If they do, eh, who cares.
+            formattedBody_ = QString::fromStdString(body(event))
+                               .toHtmlEscaped()
+                               .replace('\n', QLatin1String("<br>"));
+        } else if (isReply) {
+            formattedBody_ = formattedBody_.remove(replyFallback);
         }
         formattedBody_ = utils::escapeBlacklistedHtml(formattedBody_);
 
@@ -1964,7 +1958,7 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
     case mtx::events::state::JoinRule::Public:
         return tr("%1 opened the room to the public.").arg(name);
     case mtx::events::state::JoinRule::Invite:
-        return tr("%1 made this room require and invitation to join.").arg(name);
+        return tr("%1 made this room require an invitation to join.").arg(name);
     case mtx::events::state::JoinRule::Knock:
         return tr("%1 allowed to join this room by knocking.").arg(name);
     case mtx::events::state::JoinRule::Restricted: {
@@ -2849,7 +2843,7 @@ TimelineModel::pinnedMessages() const
         return {};
 
     QStringList list;
-    list.reserve(pinned->content.pinned.size());
+    list.reserve((qsizetype)pinned->content.pinned.size());
     for (const auto &p : pinned->content.pinned)
         list.push_back(QString::fromStdString(p));
 
@@ -2880,7 +2874,7 @@ TimelineModel::widgetLinks() const
         theme.clear();
     user = QUrl::toPercentEncoding(user);
 
-    list.reserve(evs.size());
+    list.reserve((qsizetype)evs.size());
     for (const auto &p : evs) {
         auto url = QString::fromStdString(p.content.url);
 

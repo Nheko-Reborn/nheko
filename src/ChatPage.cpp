@@ -350,9 +350,9 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                               tr("Cache migration failed!"),
                               tr("Migrating the cache to the current version failed. "
                                  "This can have different reasons. Please open an "
-                                 "issue and try to use an older version in the mean "
-                                 "time. Alternatively you can try deleting the cache "
-                                 "manually."));
+                                 "issue at https://github.com/Nheko-Reborn/nheko and try to use an "
+                                 "older version in the meantime. Alternatively you can try "
+                                 "deleting the cache manually."));
                             QCoreApplication::quit();
                         }
                         loadStateFromCache();
@@ -619,7 +619,7 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
             nhlog::net()->warn("Duplicate sync, dropping");
             return;
         }
-    } catch (const lmdb::error &e) {
+    } catch (const lmdb::error &) {
         nhlog::db()->warn("Logged out in the mean time, dropping sync");
         return;
     }
@@ -709,7 +709,7 @@ ChatPage::knockRoom(const QString &room,
           tr("Knock on room"),
           // clang-format off
       failedJoin
-        ? tr("You failed to join %1. You can try to knock, so that others can invite you in. Do you want to do so?\nYou may optionally provide a reason for others to accept your knock:").arg(room)
+        ? tr("You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?\nYou may optionally provide a reason for others to accept your knock:").arg(room)
         : tr("Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:").arg(room),
           // clang-format on
           QLineEdit::Normal,

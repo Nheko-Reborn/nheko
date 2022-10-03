@@ -165,7 +165,7 @@ Item {
                 Layout.fillWidth: true
                 label: qsTr("Device name")
                 placeholderText: regis.initialDeviceName()
-                ToolTip.text: qsTr("A name for this device, which will be shown to others, when verifying your devices. If none is provided a default is used.")
+                ToolTip.text: qsTr("A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.")
             }
 
             Item {

@@ -1161,7 +1161,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return {};
         case TimelineMaxWidth:
             return tr("Set the max width of messages in the timeline (in pixels). This can help "
-                      "readability on wide screen, when Nheko is maximised");
+                      "readability on wide screen when Nheko is maximized");
         case PrivacyScreenTimeout:
             return tr(
               "Set timeout (in seconds) for how long after window loses\nfocus before the screen"
@@ -1201,7 +1201,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "be sorted by the timestamp of the last message in a room.\nIf this is on, rooms "
               "which "
               "have active notifications (the small circle with a number in it) will be sorted on "
-              "top. Rooms, that you have muted, will still be sorted by timestamp, since you don't "
+              "top. Rooms that you have muted will still be sorted by timestamp, since you don't "
               "seem to consider them as important as the other rooms.");
         case ButtonsInTimeline:
             return tr(
@@ -1251,7 +1251,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
                       "improves safety but makes E2EE more tedious.");
         case ShareKeysWithTrustedUsers:
             return tr(
-              "Automatically replies to key requests from other users, if they are verified, "
+              "Automatically replies to key requests from other users if they are verified, "
               "even if that device shouldn't have access to those keys otherwise.");
         case UseOnlineKeyBackup:
             return tr(
