@@ -109,7 +109,7 @@ ApplicationWindow {
         Label {
             id: promptLabel
 
-            text: summary.isKnockOnly ? qsTr("This room can't be joined directly. You can however knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:") : qsTr("Do you want to join this room? You can optionally add a reason below:")
+            text: summary.isKnockOnly ? qsTr("This room can't be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:") : qsTr("Do you want to join this room? You can optionally add a reason below:")
             color: Nheko.colors.text
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
