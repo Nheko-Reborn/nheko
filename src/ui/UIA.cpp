@@ -164,7 +164,7 @@ UIA::genericHandler(QString context)
 }
 
 void
-UIA::continuePassword(QString password)
+UIA::continuePassword(const QString &password)
 {
     mtx::user_interactive::auth::Password p{};
     p.identifier_type = mtx::user_interactive::auth::Password::UserId;
@@ -176,7 +176,7 @@ UIA::continuePassword(QString password)
 }
 
 void
-UIA::continueEmail(QString email)
+UIA::continueEmail(const QString &email)
 {
     mtx::requests::RequestEmailToken r{};
     r.client_secret = this->client_secret = mtx::client::utils::random_token(128, false);
@@ -207,7 +207,7 @@ UIA::continueEmail(QString email)
       });
 }
 void
-UIA::continuePhoneNumber(QString countryCode, QString phoneNumber)
+UIA::continuePhoneNumber(const QString &countryCode, const QString &phoneNumber)
 {
     mtx::requests::RequestMSISDNToken r{};
     r.client_secret = this->client_secret = mtx::client::utils::random_token(128, false);
@@ -257,7 +257,7 @@ UIA::continue3pidReceived()
 }
 
 void
-UIA::submit3pidToken(QString token)
+UIA::submit3pidToken(const QString &token)
 {
     mtx::requests::IdentitySubmitToken t{};
     t.client_secret = this->client_secret;

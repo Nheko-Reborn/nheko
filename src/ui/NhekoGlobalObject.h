@@ -57,9 +57,9 @@ public:
     Q_INVOKABLE void showUserSettingsPage() const;
     Q_INVOKABLE void logout() const;
     Q_INVOKABLE void createRoom(bool space,
-                                QString name,
-                                QString topic,
-                                QString aliasLocalpart,
+                                const QString &name,
+                                const QString &topic,
+                                const QString &aliasLocalpart,
                                 bool isEncrypted,
                                 int preset);
     Q_INVOKABLE PowerlevelEditingModels *editPowerlevels(QString room_id_) const

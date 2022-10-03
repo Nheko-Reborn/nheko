@@ -134,8 +134,8 @@ class UserProfile : public QObject
     Q_PROPERTY(bool isSelf READ isSelf CONSTANT)
     Q_PROPERTY(TimelineModel *room READ room CONSTANT)
 public:
-    UserProfile(QString roomid,
-                QString userid,
+    UserProfile(const QString &roomid,
+                const QString &userid,
                 TimelineViewManager *manager_,
                 TimelineModel *parent = nullptr);
 
@@ -152,7 +152,7 @@ public:
     TimelineModel *room() const { return model; }
 
     Q_INVOKABLE void verify(QString device = QLatin1String(""));
-    Q_INVOKABLE void unverify(QString device = QLatin1String(""));
+    Q_INVOKABLE void unverify(const QString &device = QLatin1String(""));
     Q_INVOKABLE void fetchDeviceList(const QString &userID);
     Q_INVOKABLE void refreshDevices();
     Q_INVOKABLE void banUser();
@@ -161,8 +161,8 @@ public:
     Q_INVOKABLE void kickUser();
     Q_INVOKABLE void startChat();
     Q_INVOKABLE void startChat(bool encryptionEnabled);
-    Q_INVOKABLE void changeUsername(QString username);
-    Q_INVOKABLE void changeDeviceName(QString deviceID, QString deviceName);
+    Q_INVOKABLE void changeUsername(const QString &username);
+    Q_INVOKABLE void changeDeviceName(const QString &deviceID, const QString &deviceName);
     Q_INVOKABLE void changeAvatar();
     Q_INVOKABLE void openGlobalProfile();
 

@@ -138,8 +138,8 @@ public:
                                        bool knockingAllowed,
                                        bool restrictedAllowed);
     Q_INVOKABLE void changeNotifications(int currentIndex);
-    Q_INVOKABLE void changeTopic(QString topic);
-    Q_INVOKABLE void changeName(QString name);
+    Q_INVOKABLE void changeTopic(const QString &topic);
+    Q_INVOKABLE void changeName(const QString &name);
 
     Q_INVOKABLE void applyAllowedFromModel();
 

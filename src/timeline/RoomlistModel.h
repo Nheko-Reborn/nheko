@@ -96,7 +96,7 @@ public slots:
     void initializeRooms();
     void sync(const mtx::responses::Sync &sync_);
     void clear();
-    int roomidToIndex(QString roomid)
+    int roomidToIndex(const QString &roomid)
     {
         for (int i = 0; i < (int)roomids.size(); i++) {
             if (roomids[i] == roomid)
@@ -105,13 +105,13 @@ public slots:
 
         return -1;
     }
-    void joinPreview(QString roomid);
+    void joinPreview(const QString &roomid);
     void acceptInvite(QString roomid);
     void declineInvite(QString roomid);
     void leave(QString roomid, QString reason = "");
     TimelineModel *currentRoom() const { return currentRoom_.get(); }
     RoomPreview currentRoomPreview() const { return currentRoomPreview_.value_or(RoomPreview{}); }
-    void setCurrentRoom(QString roomid);
+    void setCurrentRoom(const QString &roomid);
     void resetCurrentRoom()
     {
         currentRoom_ = nullptr;
@@ -120,7 +120,7 @@ public slots:
     }
 
 private slots:
-    void updateReadStatus(const std::map<QString, bool> roomReadStatus_);
+    void updateReadStatus(const std::map<QString, bool> &roomReadStatus_);
 
 signals:
     void totalUnreadMessageCountUpdated(int unreadMessages);
@@ -173,7 +173,7 @@ public slots:
     void acceptInvite(QString roomid) { roomlistmodel->acceptInvite(roomid); }
     void declineInvite(QString roomid) { roomlistmodel->declineInvite(roomid); }
     void leave(QString roomid, QString reason = "") { roomlistmodel->leave(roomid, reason); }
-    void toggleTag(QString roomid, QString tag, bool on);
+    void toggleTag(const QString &roomid, const QString &tag, bool on);
     void copyLink(QString roomid);
 
     TimelineModel *currentRoom() const { return roomlistmodel->currentRoom(); }

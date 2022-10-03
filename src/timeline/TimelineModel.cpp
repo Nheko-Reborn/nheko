@@ -1269,7 +1269,7 @@ TimelineModel::relatedInfo(const QString &id)
 }
 
 void
-TimelineModel::showReadReceipts(QString id)
+TimelineModel::showReadReceipts(const QString &id)
 {
     emit openReadReceiptsDialog(new ReadReceiptsProxy{id, roomId(), this});
 }
@@ -1372,7 +1372,7 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
 }
 
 void
-TimelineModel::updateLastReadId(QString currentRoomId)
+TimelineModel::updateLastReadId(const QString &currentRoomId)
 {
     if (currentRoomId == room_id_) {
         last_event_id = cache::getFullyReadEventId(room_id_.toStdString());

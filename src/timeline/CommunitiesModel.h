@@ -167,7 +167,7 @@ public:
         return false;
     }
 
-    Q_INVOKABLE QVariantList spaceChildrenListFromIndex(QString room, int idx = -1) const;
+    Q_INVOKABLE QVariantList spaceChildrenListFromIndex(const QString &room, int idx = -1) const;
     Q_INVOKABLE void updateSpaceStatus(QString space,
                                        QString room,
                                        bool setParent,

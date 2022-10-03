@@ -28,10 +28,10 @@ public:
     QString title() const { return title_; }
 
 public slots:
-    void continuePassword(QString password);
-    void continueEmail(QString email);
-    void continuePhoneNumber(QString countryCode, QString phoneNumber);
-    void submit3pidToken(QString token);
+    void continuePassword(const QString &password);
+    void continueEmail(const QString &email);
+    void continuePhoneNumber(const QString &countryCode, const QString &phoneNumber);
+    void submit3pidToken(const QString &token);
     void continue3pidReceived();
 
 signals:

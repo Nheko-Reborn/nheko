@@ -31,8 +31,8 @@ key_verification_mac(mtx::crypto::SAS *sas,
 DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                                DeviceVerificationFlow::Type flow_type,
                                                TimelineModel *model,
-                                               QString userID,
-                                               std::vector<QString> deviceIds_)
+                                               const QString &userID,
+                                               const std::vector<QString> &deviceIds_)
   : sender(false)
   , type(flow_type)
   , deviceIds(std::move(deviceIds_))
@@ -86,12 +86,14 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
       });
 
     if (model) {
-        connect(
-          this->model_, &TimelineModel::updateFlowEventId, this, [this](std::string event_id_) {
-              this->relation.rel_type = mtx::common::RelationType::Reference;
-              this->relation.event_id = event_id_;
-              this->transaction_id    = event_id_;
-          });
+        connect(this->model_,
+                &TimelineModel::updateFlowEventId,
+                this,
+                [this](const std::string &event_id_) {
+                    this->relation.rel_type = mtx::common::RelationType::Reference;
+                    this->relation.event_id = event_id_;
+                    this->transaction_id    = event_id_;
+                });
     }
 
     connect(timeout, &QTimer::timeout, this, [this]() {
@@ -548,7 +550,7 @@ DeviceVerificationFlow::isSelfVerification() const
 }
 
 void
-DeviceVerificationFlow::setEventId(std::string event_id_)
+DeviceVerificationFlow::setEventId(const std::string &event_id_)
 {
     this->relation.rel_type = mtx::common::RelationType::Reference;
     this->relation.event_id = event_id_;
@@ -864,8 +866,8 @@ QSharedPointer<DeviceVerificationFlow>
 DeviceVerificationFlow::NewInRoomVerification(QObject *parent_,
                                               TimelineModel *timelineModel_,
                                               const mtx::events::msg::KeyVerificationRequest &msg,
-                                              QString other_user_,
-                                              QString event_id_)
+                                              const QString &other_user_,
+                                              const QString &event_id_)
 {
     QSharedPointer<DeviceVerificationFlow> flow(
       new DeviceVerificationFlow(parent_,
@@ -887,8 +889,8 @@ DeviceVerificationFlow::NewInRoomVerification(QObject *parent_,
 QSharedPointer<DeviceVerificationFlow>
 DeviceVerificationFlow::NewToDeviceVerification(QObject *parent_,
                                                 const mtx::events::msg::KeyVerificationRequest &msg,
-                                                QString other_user_,
-                                                QString txn_id_)
+                                                const QString &other_user_,
+                                                const QString &txn_id_)
 {
     QSharedPointer<DeviceVerificationFlow> flow(new DeviceVerificationFlow(
       parent_, Type::ToDevice, nullptr, other_user_, {QString::fromStdString(msg.from_device)}));
@@ -905,8 +907,8 @@ DeviceVerificationFlow::NewToDeviceVerification(QObject *parent_,
 QSharedPointer<DeviceVerificationFlow>
 DeviceVerificationFlow::NewToDeviceVerification(QObject *parent_,
                                                 const mtx::events::msg::KeyVerificationStart &msg,
-                                                QString other_user_,
-                                                QString txn_id_)
+                                                const QString &other_user_,
+                                                const QString &txn_id_)
 {
     QSharedPointer<DeviceVerificationFlow> flow(new DeviceVerificationFlow(
       parent_, Type::ToDevice, nullptr, other_user_, {QString::fromStdString(msg.from_device)}));
@@ -919,7 +921,7 @@ DeviceVerificationFlow::NewToDeviceVerification(QObject *parent_,
 QSharedPointer<DeviceVerificationFlow>
 DeviceVerificationFlow::InitiateUserVerification(QObject *parent_,
                                                  TimelineModel *timelineModel_,
-                                                 QString userid)
+                                                 const QString &userid)
 {
     QSharedPointer<DeviceVerificationFlow> flow(
       new DeviceVerificationFlow(parent_, Type::RoomMsg, timelineModel_, userid, {}));
@@ -928,8 +930,8 @@ DeviceVerificationFlow::InitiateUserVerification(QObject *parent_,
 }
 QSharedPointer<DeviceVerificationFlow>
 DeviceVerificationFlow::InitiateDeviceVerification(QObject *parent_,
-                                                   QString userid,
-                                                   std::vector<QString> devices)
+                                                   const QString &userid,
+                                                   const std::vector<QString> &devices)
 {
     assert(!devices.empty());
 

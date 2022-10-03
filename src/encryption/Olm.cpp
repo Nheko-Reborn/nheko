@@ -951,7 +951,7 @@ download_full_keybackup()
       });
 }
 void
-lookup_keybackup(const std::string room, const std::string session_id)
+lookup_keybackup(const std::string &room, const std::string &session_id)
 {
     if (!UserSettings::instance()->useOnlineKeyBackup()) {
         // Online key backup disabled
@@ -1283,7 +1283,7 @@ calculate_trust(const std::string &user_id, const MegolmSessionIndex &index)
 //! Send encrypted to device messages, targets is a map from userid to device ids or {} for all
 //! devices
 void
-send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::string>> targets,
+send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::string>> &targets,
                                   const mtx::events::collections::DeviceEvents &event,
                                   bool force_new_session)
 {

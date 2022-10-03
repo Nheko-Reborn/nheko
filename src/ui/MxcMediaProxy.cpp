@@ -42,7 +42,7 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
     });
     connect(this,
             qOverload<const QString &, const QVariant &>(&MxcMediaProxy::metaDataChanged),
-            [this](QString t, QVariant) {
+            [this](const QString &t, const QVariant &) {
                 if (t == QMediaMetaData::Orientation)
                     emit orientationChanged();
             });
