@@ -104,27 +104,27 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+27"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Sallittujen huoneiden asetukset</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista huoneista, jonka jäsenyys takaa pääsyn tähän huoneeseen.</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteisövanhempi</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Toinen huone</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Syötä huoneita, jotka puuttuvat vielä listasta...</translation>
     </message>
 </context>
 <context>
@@ -325,7 +325,7 @@
     <message>
         <location line="+1"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Välimuistin siirtäminen nykyiseen versioon epäonnistui. Tähän voi olla eri syitä. Luothan raportin sivulla https://github.com/Nheko-Reborn/nheko ja kokeile sillä välin vanhaa versiota. Voit myös kokeilla käsin välimuistin poistamista.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -359,7 +359,8 @@
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Liittymisesi huoneeseen %1 epäonnistui. Voit yrittää koputtaa, jotta muut voivat päästää sinut sisään. Haluatko tehdä sen?
+Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -417,12 +418,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+51"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Älä näytä ilmoitusmääriä tästä yhteisöstä tai tagista.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Piilota huoneet tällä tagilla oletuksena tästä yhteisöstä.</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -490,22 +491,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+657"/>
         <source>Failed to update community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteisön päivitys epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen poistaminen yhteisöstä epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen yhteisön päivitys epäonnistui: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteisön poistaminen huoneesta epäonnistui: %1</translation>
     </message>
 </context>
 <context>
@@ -536,7 +537,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tähän huoneeseen ei voi liittyä suoraan. Voit kuitenkin koputtaa huoneeseen, jolloin jäsenet voivat hyväksyä tai evätä liittymispyyntösi. Voit lisäksi antaa syyn heidän hyväksyäkseen liittymisesi alhaalla:</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -622,7 +623,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Julkisiin huoneisiin voi liittyä kuka tahansa; yksityisiin huoneisiin vaaditaan erillinen kutsu.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1195,7 +1196,9 @@ You may optionally provide a reason for others to accept your knock:</source>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjautumistunnuksesi. Mxid:n on alettava @:lla, jonka perään käyttäjätunnus. Käyttäjätunnuksen perään tarvitset palvelimesi nimen :-merkin jälkeen,
+esimerkiksi @nimi:palvelime.ni.
+Jos Nheko ei löydä kotipalvelintasi .well-known -haun kautta, voit syöttää käsin palvelimesi osoitteen.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1215,13 +1218,14 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi tälle laitteelle, joka näytetään muille laitteitasi vahvistaessa. Jos et syötä mitään, käytetään oletusarvoa.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Osoite, jonka kautta otetaan yhteys kotipalvelimesi asiakasohjelmarajapintaan.
+Esimerkki: https://palvelime.ni:8787</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -1279,7 +1283,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.4). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valittu palvelin ei tue mitään tämän ohjelman tukemaa versiota Matrix-protokollasta (v.1.1:stä v.1.4:ään). Et voi kirjautua sisään.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1399,7 +1403,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutti tämän huoneen yhteisövanhempia.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1500,12 +1504,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Reply in thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa viestiketjussa</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Uusi viestiketju</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1557,7 +1561,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>&amp;Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Viestiketju</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1572,7 +1576,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>&amp;Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>%Lukukuittaukset</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1635,12 +1639,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Jotta muut käyttäjät näkisivät, mitkä laitteet oikeasti kuuluvat sinulle, voit vahvistaa ne. Se sallii myös avainvarmuuskopion automaattisen toiminnan. Vahvistatko vahvistamattoman laitteen nyt? (Varmistathan, että jokin niistä on saatavilla.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Jotta muut käyttäjät näkisivät, mitkä laitteet oikeasti kuuluvat sinulle, voit vahvistaa ne. Se sallii myös avainvarmuuskopion automaattisen toiminnan. Vahvistatko laitteen %1 nyt?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1853,42 +1857,42 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+28"/>
         <source>Apply permission changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Saata oikeusmuutokset voimaan</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
-        <translation type="unfinished"></translation>
+        <translation>Mihin aliyhteisöihin ja huoneisiin pitäisi soveltaa näitä oikeuksia?</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Apply permissions recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Saata oikeudet voimaan rekursiivisesti</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Overwrite exisiting modifications in rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjoita huoneissa olemassaolevien muutosten päälle</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei oikeuksia saattaa täällä voimaan uusia oikeuksia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No changes needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei vaadita muutoksia</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Existing modifications to the permissions in this room will be overwritten</source>
-        <translation type="unfinished"></translation>
+        <translation>Tässä huoneessa olemassaolevat muutokset oikeuksiin päällekirjoitetaan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Permissions synchronized with community</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytetään samoja oikeuksia kuin yhteisössä</translation>
     </message>
 </context>
 <context>
@@ -1896,7 +1900,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+736"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished">Oikeustason päivitys epäonnistui: %1</translation>
+        <translation>Oikeustason päivitys epäonnistui: %1</translation>
     </message>
 </context>
 <context>
@@ -2052,12 +2056,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>Edit child communities and rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Muokkaa aliyhteisöjä ja -huoneita</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta yhteisövanhempia</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2098,7 +2102,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+230"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Luo ainutkertainen profiili, jonka kautta voit kirjautua sisään samanaikaisesti usealla käyttäjällä, sekä käynnistää Nhekosta monta ilmentymää.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2116,27 +2120,27 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-26"/>
         <source>Alias for &apos;--log-level trace&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisänimi optiolle &apos;--log-level trace&apos;.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set the global log level, or a comma-separated list of &lt;component&gt;=&lt;level&gt; pairs, or both. For example, to set the default log level to &apos;warn&apos; but disable logging for the &apos;ui&apos; component, pass &apos;warn,ui=off&apos;. levels:{trace,debug,info,warning,error,critical,off} components:{crypto,db,mtx,net,qml,ui}</source>
-        <translation type="unfinished"></translation>
+        <translation>Aseta komponenttien laajuinen lokitaso, tai pilkuilla eroteltu lista koostuen &lt;komponentti&gt;=&lt;taso&gt; -pareista, tai molemmat. Esimerkiksi oletuslokitason asettaminen tasoon &apos;warn&apos;, mutta komponentin &apos;ui&apos; lokin kirjaamisen ottamiseen pois päältä, syötä &apos;warn,ui=off&apos;. Tasot ovat {trace,debug,info,warning,error,critical,off}, komponentit {crypto,db,mtx,net,qml,ui}</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>level</source>
-        <translation type="unfinished"></translation>
+        <translation>taso</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
-        <translation type="unfinished"></translation>
+        <translation>Aseta lokin ulostulotyyppi. Sallitaan pilkuilla eritelty lista. Oletusarvo on &apos;file,stderr&apos;. types:{file,stderr,none}</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>type</source>
-        <translation type="unfinished"></translation>
+        <translation>tyyppi</translation>
     </message>
 </context>
 <context>
@@ -2191,7 +2195,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi tälle laitteelle, joka näytetään muille laitteitasi vahvistaessa. Jos et syötä mitään, käytetään oletusarvoa.</translation>
     </message>
     <message>
         <location line="-109"/>
@@ -2251,7 +2255,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.4). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valittu palvelin ei tue mitään tämän ohjelman tukemaa versiota Matrix-protokollasta (v.1.1:stä v.1.4:ään). Et voi rekisteröityä.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2294,7 +2298,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Cancel Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Peru viestiketju</translation>
     </message>
 </context>
 <context>
@@ -2378,7 +2382,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää tai poista yhteisöstä...</translation>
     </message>
     <message>
         <location line="+263"/>
@@ -2561,7 +2565,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation>Vaihda huoneen avataria.</translation>
+        <translation>Muuta huoneen avataria.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -2674,37 +2678,37 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="-180"/>
         <source>Anyone can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuka tahansa voi liittyä</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Salli koputtaminen</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Allow joining via other rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Salli liittyminen muiden huoneiden kautta</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Rooms to join via</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneet, joiden kautta voi liittyä</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta listaa huoneista, joiden kautta tähän huoneeseen voi liittyä. Se on yleensä tämän huoneen virallinen yhteisö.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation type="unfinished"></translation>
+        <translation>Salli vieraiden liittyminen</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Saata pääsysäännöt voimaan</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -2714,7 +2718,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="+18"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuta käytössä olevia paketteja, poista tai luo uusia paketteja</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -2821,7 +2825,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
     <message>
         <location line="+10"/>
         <source>Please enter the token which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Syötä sinulle lähetetty tunnisteväline:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3012,7 +3016,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from community</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisää tai poista yhteisöstä</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3465,7 +3469,7 @@ Syy: %4</translation>
     <message>
         <location line="+893"/>
         <source>%1 made this room require an invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 teki tämän huoneen vaatimaan kutsun liittymiseen.</translation>
     </message>
     <message>
         <location line="+628"/>
@@ -3509,7 +3513,7 @@ Syy: %4</translation>
     <message>
         <location line="+18"/>
         <source>Part of a thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Osa viestiketjua</translation>
     </message>
 </context>
 <context>
@@ -3578,7 +3582,7 @@ Syy: %4</translation>
     <message>
         <location line="+100"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Osa yhteisöä %1</translation>
     </message>
     <message>
         <location line="+83"/>
@@ -3666,12 +3670,12 @@ Syy: %4</translation>
     <message>
         <location line="-27"/>
         <source>Please enter a valid registration token.</source>
-        <translation>Anna kelvollinen rekisteröitymispoletti.</translation>
+        <translation>Anna kelvollinen rekisteröitymistunnisteväline.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation>Virheellinen poletti</translation>
+        <translation>Virheellinen tunnisteväline</translation>
     </message>
 </context>
 <context>
@@ -4018,7 +4022,7 @@ Syy: %4</translation>
     <message>
         <location line="+2"/>
         <source>Accesstoken</source>
-        <translation>Pääsypoletti</translation>
+        <translation>Pääsytunnisteväline</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4208,12 +4212,12 @@ POIS - neliö, PÄÄLLÄ - ympyrä.</translation>
     <message>
         <location line="+16"/>
         <source>Choose where to show the total number of notifications contained within a community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse, missä yhteisön tai tagin ilmoitusten kokonaismäärä näytetään.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa automaattisesti muiden vahvistettujen käyttäjien avainpyyntöihin, vaikka kyseisellä laitteella ei muuten pitäisi olla pääsyä avaimiin.</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -4230,29 +4234,31 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
     <message>
         <location line="-303"/>
         <source>Communities sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Yhteisösivupalkki</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Show message counts for communities and tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä yhteisöjen ja tagien viestimäärät</translation>
     </message>
     <message>
         <location line="+215"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation type="unfinished"></translation>
+        <translation>Aseta viestien maksimileveys aikajanalla (pikseleinä). Voi auttaa luettavuudessa, kun Nheko on suurennettuna</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Show a column containing communities and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä yhteisöt ja tagit sisältävä sarake huonelistan vieressä.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä ensin huoneet, joissa on uusia viestejä.
+Jos tämä on pois päältä, huonelista lajitellaan pelkästään huoneiden viimeisimmän viestin aikaleiman perusteella.
+Jos tämä on päällä, huoneet joissa on voimassa olevia ilmoituksia (pieni ympyrä, jossa numero sisällä) lajitellaan päällimmäisiksi. Mykistämäsi huoneet lajitellaan silti aikaleiman perusteella, koska et ilmeisesti pidä niitä yhtä tärkeinä.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4523,7 +4529,7 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avaa varajärjestely, seuraa ohjeita, ja vahvista ne suoritettuasi.</translation>
     </message>
 </context>
 <context>
