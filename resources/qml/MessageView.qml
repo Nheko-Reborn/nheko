@@ -38,7 +38,14 @@ Item {
 
         displayMarginBeginning: height / 2
         displayMarginEnd: height / 2
-        model: room
+
+        TimelineFilter {
+            id: filteredTimeline
+            source: room
+            filterByThread: room ? room.thread : ""
+        }
+
+        model: filteredTimeline.filterByThread ? filteredTimeline : room
         // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
         //onModelChanged: if (room) room.sendReset()
         //reuseItems: true
@@ -215,16 +222,18 @@ Item {
             }
         }
 
+        // These shortcuts use the room timeline because switching to threads and out is annoying otherwise.
+        // Better solution welcome.
         Shortcut {
             sequence: "Alt+Up"
-            onActivated: room.reply = chat.model.indexToId(room.reply ? chat.model.idToIndex(room.reply) + 1 : 0)
+            onActivated: room.reply = room.indexToId(room.reply ? room.idToIndex(room.reply) + 1 : 0)
         }
 
         Shortcut {
             sequence: "Alt+Down"
             onActivated: {
-                var idx = room.reply ? chat.model.idToIndex(room.reply) - 1 : -1;
-                room.reply = idx >= 0 ? chat.model.indexToId(idx) : null;
+                var idx = room.reply ? room.idToIndex(room.reply) - 1 : -1;
+                room.reply = idx >= 0 ? room.indexToId(idx) : null;
             }
         }
 

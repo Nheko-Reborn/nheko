@@ -46,6 +46,7 @@
 #include "encryption/DeviceVerificationFlow.h"
 #include "encryption/SelfVerificationStatus.h"
 #include "timeline/DelegateChooser.h"
+#include "timeline/TimelineFilter.h"
 #include "timeline/TimelineViewManager.h"
 #include "ui/HiddenEvents.h"
 #include "ui/MxcAnimatedImage.h"
@@ -186,6 +187,7 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
     qmlRegisterType<RegisterPage>("im.nheko", 1, 0, "Registration");
     qmlRegisterType<HiddenEvents>("im.nheko", 1, 0, "HiddenEvents");
+    qmlRegisterType<TimelineFilter>("im.nheko", 1, 0, "TimelineFilter");
     qmlRegisterUncreatableType<RoomSummary>(
       "im.nheko",
       1,
