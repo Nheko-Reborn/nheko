@@ -108,7 +108,13 @@ LoginPage::onMatrixIdEntered()
         emit homeserverChanged();
 
         http::client()->well_known(
-          [this](const mtx::responses::WellKnown &res, mtx::http::RequestErr err) {
+          [this, orginal_hostname = user.hostname()](const mtx::responses::WellKnown &res,
+                                                     mtx::http::RequestErr err) {
+              // Ignore if server changed
+              auto currentUser = parse<User>(mxid_.toStdString());
+              if (currentUser.hostname() != orginal_hostname)
+                  return;
+
               if (err) {
                   if (err->status_code == 404) {
                       nhlog::net()->info("Autodiscovery: No .well-known.");

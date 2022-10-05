@@ -67,7 +67,11 @@ RegisterPage::setServer(const QString &server)
     emit lookingUpHsChanged();
 
     http::client()->well_known(
-      [this](const mtx::responses::WellKnown &res, mtx::http::RequestErr err) {
+      [this, prevServer = server](const mtx::responses::WellKnown &res, mtx::http::RequestErr err) {
+          // server changed in between
+          if (lastServer != prevServer)
+              return;
+
           if (err) {
               if (err->status_code == 404) {
                   nhlog::net()->info("Autodiscovery: No .well-known.");
