@@ -455,7 +455,7 @@ Page {
 
             function openUserProfile() {
                 Nheko.updateUserProfile();
-                var userProfile = userProfileComponent.createObject(timelineRoot, {
+                var userProfile = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml").createObject(timelineRoot, {
                     "profile": Nheko.currentUser
                 });
                 userProfile.show();
