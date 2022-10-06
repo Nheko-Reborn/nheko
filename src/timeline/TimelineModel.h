@@ -214,12 +214,9 @@ public:
         IsOnlyEmoji,
         Body,
         FormattedBody,
-        PreviousMessageUserId,
         IsSender,
         UserId,
         UserName,
-        PreviousMessageDay,
-        PreviousMessageIsStateEvent,
         Day,
         Timestamp,
         Url,
@@ -257,6 +254,10 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     QVariant data(const mtx::events::collections::TimelineEvents &event, int role) const;
     Q_INVOKABLE QVariant dataById(const QString &id, int role, const QString &relatedTo);
+    Q_INVOKABLE QVariant dataByIndex(int i, int role = Qt::DisplayRole) const
+    {
+        return data(index(i), role);
+    }
 
     bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;

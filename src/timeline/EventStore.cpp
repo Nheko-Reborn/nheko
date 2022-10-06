@@ -898,6 +898,7 @@ EventStore::fetchMore()
     mtx::http::MessagesOpts opts;
     opts.room_id = room_id_;
     opts.from    = cache::client()->previousBatchToken(room_id_);
+    opts.limit   = 80;
 
     nhlog::ui()->debug("Paginating room {}, token {}", opts.room_id, opts.from);
 

@@ -25,6 +25,14 @@ Pane {
     property bool isDirect: room ? room.isDirect : false
     property string directChatOtherUserId: room ? room.directChatOtherUserId : ""
 
+    property string searchString: ""
+
+    onRoomIdChanged: {
+        searchString = "";
+        searchButton.searchActive = false;
+        searchField.text = ""
+    }
+
     Layout.fillWidth: true
     implicitHeight: topLayout.height + Nheko.paddingMedium * 2
     z: 3
@@ -177,12 +185,42 @@ Pane {
                 text: roomTopic
             }
 
-            AbstractButton {
+            ImageButton {
+                id: pinButton
+
+                property bool pinsShown: !Settings.hiddenPins.includes(roomId)
+
+                visible: !!room && room.pinnedMessages.length > 0
                 Layout.column: 3
                 Layout.row: 1
                 Layout.rowSpan: 2
+                Layout.alignment: Qt.AlignVCenter
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
+                image: pinsShown ? ":/icons/icons/ui/pin.svg" : ":/icons/icons/ui/pin-off.svg"
+                ToolTip.visible: hovered
+                ToolTip.text: qsTr("Show or hide pinned messages")
+                onClicked: {
+                    var ps = Settings.hiddenPins;
+                    if (pinsShown) {
+                        ps.push(roomId);
+                    } else {
+                        const index = ps.indexOf(roomId);
+                        if (index > -1) {
+                            ps.splice(index, 1);
+                        }
+                    }
+                    Settings.hiddenPins = ps;
+                }
+
+            }
+
+            AbstractButton {
+                Layout.column: 4
+                Layout.row: 1
+                Layout.rowSpan: 2
+                Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
+                Layout.maximumWidth: Nheko.avatarSize - Nheko.paddingMedium
 
                 contentItem: EncryptionIndicator {
                     sourceSize.height: parent.Layout.preferredHeight * Screen.devicePixelRatio
@@ -216,40 +254,37 @@ Pane {
             }
 
             ImageButton {
-                id: pinButton
+                id: searchButton
 
-                property bool pinsShown: !Settings.hiddenPins.includes(roomId)
+                property bool searchActive: false
 
-                visible: !!room && room.pinnedMessages.length > 0
-                Layout.column: 4
+                visible: !!room
+                Layout.column: 5
                 Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.alignment: Qt.AlignVCenter
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
-                image: pinsShown ? ":/icons/icons/ui/pin.svg" : ":/icons/icons/ui/pin-off.svg"
+                image: ":/icons/icons/ui/search.svg"
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("Show or hide pinned messages")
+                ToolTip.text: qsTr("Search this room")
                 onClicked: {
-                    var ps = Settings.hiddenPins;
-                    if (pinsShown) {
-                        ps.push(roomId);
-                    } else {
-                        const index = ps.indexOf(roomId);
-                        if (index > -1) {
-                            ps.splice(index, 1);
-                        }
+                    searchActive = !searchActive
+                    if (searchActive) {
+                        searchField.forceActiveFocus();
                     }
-                    Settings.hiddenPins = ps;
+                    else {
+                        searchField.clear();
+                        topBar.searchString = "";
+                    }
                 }
-
             }
 
             ImageButton {
                 id: roomOptionsButton
 
                 visible: !!room
-                Layout.column: 5
+                Layout.column: 6
                 Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.alignment: Qt.AlignVCenter
@@ -293,7 +328,7 @@ Pane {
 
                 Layout.row: 3
                 Layout.column: 2
-                Layout.columnSpan: 3
+                Layout.columnSpan: 4
 
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.min(contentHeight, Nheko.avatarSize * 4)
@@ -374,7 +409,7 @@ Pane {
 
                 Layout.row: 4
                 Layout.column: 2
-                Layout.columnSpan: 1
+                Layout.columnSpan: 4
 
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.min(contentHeight, Nheko.avatarSize * 1.5)
@@ -403,6 +438,20 @@ Pane {
                         enabled: !Settings.mobileMode
                     }
                 }
+            }
+
+            MatrixTextField {
+                id: searchField
+                visible: searchButton.searchActive
+
+                Layout.row: 5
+                Layout.column: 2
+                Layout.columnSpan: 4
+
+                Layout.fillWidth: true
+
+                placeholderText: qsTr("Enter search query")
+                onAccepted: topBar.searchString = text
             }
         }
 

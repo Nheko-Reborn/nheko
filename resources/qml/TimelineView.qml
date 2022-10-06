@@ -66,6 +66,8 @@ Item {
         spacing: 0
 
         TopBar {
+            id: topBar
+
             showBackButton: timelineView.showBackButton
         }
 
@@ -102,6 +104,7 @@ Item {
 
                     MessageView {
                         implicitHeight: msgView.height - typingIndicator.height
+                        searchString: topBar.searchString
                         Layout.fillWidth: true
                     }
 

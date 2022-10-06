@@ -481,12 +481,9 @@ TimelineModel::roleNames() const
       {IsOnlyEmoji, "isOnlyEmoji"},
       {Body, "body"},
       {FormattedBody, "formattedBody"},
-      {PreviousMessageUserId, "previousMessageUserId"},
       {IsSender, "isSender"},
       {UserId, "userId"},
       {UserName, "userName"},
-      {PreviousMessageDay, "previousMessageDay"},
-      {PreviousMessageIsStateEvent, "previousMessageIsStateEvent"},
       {Day, "day"},
       {Timestamp, "timestamp"},
       {Url, "url"},
@@ -803,22 +800,6 @@ TimelineModel::data(const QModelIndex &index, int role) const
 
     if (!event)
         return "";
-
-    if (role == PreviousMessageDay || role == PreviousMessageUserId ||
-        role == PreviousMessageIsStateEvent) {
-        int prevIdx = rowCount() - index.row() - 2;
-        if (prevIdx < 0)
-            return {};
-        auto tempEv = events.get(prevIdx);
-        if (!tempEv)
-            return {};
-        if (role == PreviousMessageUserId)
-            return data(*tempEv, UserId);
-        else if (role == PreviousMessageDay)
-            return data(*tempEv, Day);
-        else
-            return data(*tempEv, IsStateEvent);
-    }
 
     return data(*event, role);
 }

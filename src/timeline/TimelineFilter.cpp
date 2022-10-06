@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include "TimelineFilter.h"
 
 #include "Logging.h"
@@ -17,6 +21,17 @@ TimelineFilter::setThreadId(const QString &t)
         invalidateFilter();
     }
     emit threadIdChanged();
+}
+
+void
+TimelineFilter::setContentFilter(const QString &c)
+{
+    nhlog::ui()->debug("Filtering by content '{}'", c.toStdString());
+    if (this->contentFilter != c) {
+        this->contentFilter = c;
+        invalidateFilter();
+    }
+    emit contentFilterChanged();
 }
 
 void
@@ -62,11 +77,20 @@ TimelineFilter::currentIndex() const
 bool
 TimelineFilter::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
-    if (threadId.isEmpty())
+    if (threadId.isEmpty() && contentFilter.isEmpty())
         return true;
 
     if (auto s = sourceModel()) {
         auto idx = s->index(source_row, 0);
+        if (!contentFilter.isEmpty() && !s->data(idx, TimelineModel::Body)
+                                           .toString()
+                                           .contains(contentFilter, Qt::CaseInsensitive)) {
+            return false;
+        }
+
+        if (threadId.isEmpty())
+            return true;
+
         return s->data(idx, TimelineModel::EventId) == threadId ||
                s->data(idx, TimelineModel::ThreadId) == threadId;
     } else {

@@ -22,6 +22,8 @@ Item {
 
     property int availableWidth: width
 
+    property string searchString: ""
+
     ScrollBar {
         id: scrollbar
         parent: chat.parent
@@ -43,9 +45,10 @@ Item {
             id: filteredTimeline
             source: room
             filterByThread: room ? room.thread : ""
+            filterByContent: chatRoot.searchString
         }
 
-        model: filteredTimeline.filterByThread ? filteredTimeline : room
+        model: (filteredTimeline.filterByThread || filteredTimeline.filterByContent) ? filteredTimeline : room
         // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
         //onModelChanged: if (room) room.sendReset()
         //reuseItems: true
@@ -403,7 +406,7 @@ Item {
             required property bool isEditable
             required property bool isEdited
             required property bool isStateEvent
-            required property bool previousMessageIsStateEvent
+            property bool previousMessageIsStateEvent: chat.model.dataByIndex(index+1, Room.IsStateEvent)
             required property string replyTo
             required property string threadId
             required property string userId
@@ -417,9 +420,9 @@ Item {
             required property int status
             required property int index
             required property int relatedEventCacheBuster
-            required property string previousMessageUserId
             required property string day
-            required property string previousMessageDay
+            property string previousMessageUserId: chat.model.dataByIndex(index+1, Room.UserId)
+            property string previousMessageDay: chat.model.dataByIndex(index+1, Room.Day)
             required property string userName
             property bool scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
 
