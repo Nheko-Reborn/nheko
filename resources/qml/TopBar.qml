@@ -33,6 +33,11 @@ Pane {
         searchField.text = ""
     }
 
+    Shortcut {
+        sequence: StandardKey.Find
+        onActivated: searchButton.searchActive = !searchButton.searchActive
+    }
+
     Layout.fillWidth: true
     implicitHeight: topLayout.height + Nheko.paddingMedium * 2
     z: 3
@@ -268,8 +273,9 @@ Pane {
                 image: ":/icons/icons/ui/search.svg"
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Search this room")
-                onClicked: {
-                    searchActive = !searchActive
+                onClicked: searchActive = !searchActive
+
+                onSearchActiveChanged: {
                     if (searchActive) {
                         searchField.forceActiveFocus();
                     }
