@@ -13,8 +13,9 @@ class Emoji(object):
         self.unicodename = unicodename
 
 def generate_qml_list(**kwargs):
+    entrycount = sum([len(c[1]) for c in kwargs.items()])
     tmpl = Template('''
-const std::array<Emoji, {{ sum([len(c[1]) for c in kwargs.items()]) }}> emoji::Provider::emoji = {
+const std::array<Emoji, {{ entrycount }} > emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
@@ -23,7 +24,7 @@ const std::array<Emoji, {{ sum([len(c[1]) for c in kwargs.items()]) }}> emoji::P
     {%- endfor %}
 };
     ''')
-    d = dict(kwargs=kwargs)
+    d = dict(kwargs=kwargs, entrycount=entrycount)
     print(tmpl.render(d))
 if __name__ == '__main__':
     if len(sys.argv) < 3:
