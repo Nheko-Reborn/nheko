@@ -657,20 +657,24 @@ CallManager::handleEvent(const RoomEvent<CallNegotiate> &callNegotiateEvent)
 }
 
 bool
-CallManager::checkSharesRoom(QString roomid_, std::string invitee) const
+CallManager::checkSharesRoom(QString roomid, std::string invitee) const
 {
     /*
         IMPLEMENTATION REQUIRED
         Check if room is shared to determine whether to ring or not.
         Called from handle callInvite event
     */
-    if (invitee == "") {
-        // check all members
+    if (roomid.toStdString() != "") {
+        if (invitee == "") {
+            // check all members
+            return true;
+        } else {
+            return true;
+            // check if invitee shares a direct room with local user
+        }
         return true;
-    } else {
-        return true;
-        // check if invitee shares a direct room with local user
     }
+
     return true;
 }
 
