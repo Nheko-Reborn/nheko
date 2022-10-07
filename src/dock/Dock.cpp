@@ -82,10 +82,8 @@ Dock::unitySetNotificationCount(const int count)
 #else
 Dock::Dock(QObject *parent)
   : QObject(parent)
-{
-}
+{}
 void
 Dock::setUnreadCount(const int)
-{
-}
+{}
 #endif

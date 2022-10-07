@@ -19,8 +19,7 @@
 NhekoDBusBackend::NhekoDBusBackend(RoomlistModel *parent)
   : QObject{parent}
   , m_parent{parent}
-{
-}
+{}
 
 namespace {
 struct RoomReplyState

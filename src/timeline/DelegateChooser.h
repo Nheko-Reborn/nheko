@@ -74,8 +74,7 @@ private:
         DelegateIncubator(DelegateChooser &parent)
           : QQmlIncubator(QQmlIncubator::AsynchronousIfNested)
           , chooser(parent)
-        {
-        }
+        {}
         void statusChanged(QQmlIncubator::Status status) override;
 
         DelegateChooser &chooser;

@@ -19,8 +19,7 @@ class PresenceEmitter : public QObject
 public:
     PresenceEmitter(QObject *p = nullptr)
       : QObject(p)
-    {
-    }
+    {}
 
     void sync(const std::vector<mtx::events::Event<mtx::events::presence::Presence>> &presences);
 

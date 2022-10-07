@@ -83,8 +83,7 @@ JdenticonRunnable::JdenticonRunnable(const QString &key,
   , m_crop{crop}
   , m_radius{radius}
   , m_requestedSize(requestedSize.isValid() ? requestedSize : QSize(100, 100))
-{
-}
+{}
 
 void
 JdenticonRunnable::run()

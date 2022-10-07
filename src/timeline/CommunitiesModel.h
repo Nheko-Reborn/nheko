@@ -62,8 +62,7 @@ public:
       , canonical(canonical_)
       , canEditParent(canEditParent_)
       , canEditChild(canEditChild_)
-    {
-    }
+    {}
 
     QString roomid, name;
     int treeIndex   = 0;

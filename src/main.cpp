@@ -102,8 +102,7 @@ registerSignalHandlers()
 // No implementation for systems with no stacktrace support.
 void
 registerSignalHandlers()
-{
-}
+{}
 
 #endif
 

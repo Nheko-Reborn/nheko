@@ -18,8 +18,7 @@ class FetchPublishedAliasesJob : public QObject
 public:
     explicit FetchPublishedAliasesJob(QObject *p = nullptr)
       : QObject(p)
-    {
-    }
+    {}
 
 signals:
     void aliasFetched(std::string alias, std::string target);

@@ -44,8 +44,7 @@ init()
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
-{
-}
+{}
 
 void
 NotificationsManager::postNotification(const mtx::responses::Notification &notification,

@@ -20,8 +20,7 @@ extern "C"
 
 CallDevices::CallDevices()
   : QObject()
-{
-}
+{}
 
 #ifdef GSTREAMER_AVAILABLE
 namespace {

@@ -71,10 +71,9 @@ public slots:
     void toggleMicMute();
     void toggleLocalPiP() { session_.toggleLocalPiP(); }
     void acceptInvite();
-    void
-      hangUp(mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::UserHangUp);
-    void
-      rejectInvite();
+    void hangUp(
+      mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::UserHangUp);
+    void rejectInvite();
     QStringList windowList();
     void previewWindow(unsigned int windowIndex) const;
 
@@ -104,14 +103,14 @@ private:
     QString callPartyAvatarUrl_;
     std::string callPartyVersion_ = "1";
     std::string callid_;
-    std::string partyid_       = mtx::client::utils::random_token(8, false);
+    std::string partyid_               = mtx::client::utils::random_token(8, false);
     std::string selectedpartyid_       = "";
-    std::string invitee_       = "";
-    const uint32_t timeoutms_  = 120000;
-    webrtc::CallType callType_ = webrtc::CallType::VOICE;
-    bool haveCallInvite_       = false;
-    bool answerSelected_       = false;
-    std::string isOnCallOnOtherDevice_       = "";
+    std::string invitee_               = "";
+    const uint32_t timeoutms_          = 120000;
+    webrtc::CallType callType_         = webrtc::CallType::VOICE;
+    bool haveCallInvite_               = false;
+    bool answerSelected_               = false;
+    std::string isOnCallOnOtherDevice_ = "";
     std::string inviteSDP_;
     std::vector<mtx::events::voip::CallCandidates::Candidate> remoteICECandidates_;
     std::vector<std::string> turnURIs_;

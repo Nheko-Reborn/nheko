@@ -679,7 +679,7 @@ DeviceVerificationFlow::startVerificationRequest()
     req.hashes                       = {"sha256"};
     req.message_authentication_codes = {"hkdf-hmac-sha256"};
     req.short_authentication_string  = {mtx::events::msg::SASMethods::Decimal,
-                                        mtx::events::msg::SASMethods::Emoji};
+                                       mtx::events::msg::SASMethods::Emoji};
 
     if (this->type == DeviceVerificationFlow::Type::ToDevice) {
         mtx::requests::ToDeviceMessages<mtx::events::msg::KeyVerificationStart> body;

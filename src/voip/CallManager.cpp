@@ -24,13 +24,9 @@
 
 #include "mtx/responses/turn_server.hpp"
 
-
 /*
-* Select Answer when one instance of the client supports v0
-*/
-
-
-
+ * Select Answer when one instance of the client supports v0
+ */
 
 #ifdef XCB_AVAILABLE
 #include <xcb/xcb.h>
@@ -75,10 +71,15 @@ CallManager::CallManager(QObject *parent)
       this,
       [this](const std::string &sdp, const std::vector<CallCandidates::Candidate> &candidates) {
           nhlog::ui()->debug("WebRTC: call id: {} - sending offer", callid_);
-          emit newMessage(
-            roomid_,
-            CallInvite{callid_, partyid_, SDO{sdp, SDO::Type::Offer}, callPartyVersion_, timeoutms_, invitee_});
-          emit newMessage(roomid_, CallCandidates{callid_, partyid_, candidates, callPartyVersion_});
+          emit newMessage(roomid_,
+                          CallInvite{callid_,
+                                     partyid_,
+                                     SDO{sdp, SDO::Type::Offer},
+                                     callPartyVersion_,
+                                     timeoutms_,
+                                     invitee_});
+          emit newMessage(roomid_,
+                          CallCandidates{callid_, partyid_, candidates, callPartyVersion_});
           std::string callid(callid_);
           QTimer::singleShot(timeoutms_, this, [this, callid]() {
               if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
@@ -95,8 +96,10 @@ CallManager::CallManager(QObject *parent)
       this,
       [this](const std::string &sdp, const std::vector<CallCandidates::Candidate> &candidates) {
           nhlog::ui()->debug("WebRTC: call id: {} - sending answer", callid_);
-          emit newMessage(roomid_, CallAnswer{callid_, partyid_, callPartyVersion_, SDO{sdp, SDO::Type::Answer}});
-          emit newMessage(roomid_, CallCandidates{callid_, partyid_, candidates, callPartyVersion_});
+          emit newMessage(
+            roomid_, CallAnswer{callid_, partyid_, callPartyVersion_, SDO{sdp, SDO::Type::Answer}});
+          emit newMessage(roomid_,
+                          CallCandidates{callid_, partyid_, candidates, callPartyVersion_});
       });
 
     connect(&session_,
@@ -104,7 +107,8 @@ CallManager::CallManager(QObject *parent)
             this,
             [this](const CallCandidates::Candidate &candidate) {
                 nhlog::ui()->debug("WebRTC: call id: {} - sending ice candidate", callid_);
-                emit newMessage(roomid_, CallCandidates{callid_, partyid_, {candidate}, callPartyVersion_});
+                emit newMessage(roomid_,
+                                CallCandidates{callid_, partyid_, {candidate}, callPartyVersion_});
             });
 
     connect(&turnServerTimer_, &QTimer::timeout, this, &CallManager::retrieveTurnServer);
@@ -178,10 +182,10 @@ CallManager::CallManager(QObject *parent)
 void
 CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int windowIndex)
 {
-    if (isOnCall() || isOnCallOnOtherDevice())
-    {
-        if(isOnCallOnOtherDevice_ != "")
-            emit ChatPage::instance()->showNotification(QStringLiteral("User is already in a call"));
+    if (isOnCall() || isOnCallOnOtherDevice()) {
+        if (isOnCallOnOtherDevice_ != "")
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("User is already in a call"));
         return;
     }
 
@@ -196,19 +200,19 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     }
 
     callType_ = callType;
-    roomid_   = roomid; 
+    roomid_   = roomid;
     generateCallID();
     std::vector<RoomMember> members(cache::getMembers(roomid.toStdString()));
     const RoomMember *callee;
-    if(roomInfo.member_count == 1)
-      callee = &members.front();
-    else if(roomInfo.member_count == 2)
-      callee = members.front().user_id == utils::localUser() ? &members.back() : &members.front();
+    if (roomInfo.member_count == 1)
+        callee = &members.front();
+    else if (roomInfo.member_count == 2)
+        callee = members.front().user_id == utils::localUser() ? &members.back() : &members.front();
     else {
-        emit ChatPage::instance()->showNotification(QStringLiteral("Calls are limited to rooms with less than two members"));
+        emit ChatPage::instance()->showNotification(
+          QStringLiteral("Calls are limited to rooms with less than two members"));
         return;
     }
-
 
     if (callType == CallType::SCREEN) {
         if (!screenShareSupported())
@@ -219,21 +223,25 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
         }
     }
 
-    if (haveCallInvite_)
-    {
-        nhlog::ui()->debug("WebRTC: Discarding outbound call for inbound call. localUser is polite party");
-        if(callParty_ == callee->user_id)
-        {
-            if(callType == callType_)
+    if (haveCallInvite_) {
+        nhlog::ui()->debug(
+          "WebRTC: Discarding outbound call for inbound call. localUser is polite party");
+        if (callParty_ == callee->user_id) {
+            if (callType == callType_)
                 acceptInvite();
             else {
-                emit ChatPage::instance()->showNotification(QStringLiteral("Can't place call. Call types do not match"));
-                emit newMessage(roomid_, CallHangUp{callid_, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
+                emit ChatPage::instance()->showNotification(
+                  QStringLiteral("Can't place call. Call types do not match"));
+                emit newMessage(
+                  roomid_,
+                  CallHangUp{callid_, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
             }
-        }
-        else{
-            emit ChatPage::instance()->showNotification(QStringLiteral("Already on a call with a different user"));
-            emit newMessage(roomid_, CallHangUp{callid_, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
+        } else {
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("Already on a call with a different user"));
+            emit newMessage(
+              roomid_,
+              CallHangUp{callid_, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
         }
         return;
     }
@@ -246,7 +254,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     callParty_            = callee->user_id;
     callPartyDisplayName_ = callee->display_name.isEmpty() ? callee->user_id : callee->display_name;
     callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
-    invitee_ = callParty_.toStdString();
+    invitee_              = callParty_.toStdString();
     emit newInviteState();
     playRingtone(QUrl(QStringLiteral("qrc:/media/media/ringback.ogg")), true);
     if (!session_.createOffer(callType,
@@ -296,10 +304,10 @@ void
 CallManager::syncEvent(const mtx::events::collections::TimelineEvents &event)
 {
 #ifdef GSTREAMER_AVAILABLE
-    if (handleEvent<CallInvite>(event) || 
-        handleEvent<CallCandidates>(event) || handleEvent<CallNegotiate>(event) || 
-        handleEvent<CallSelectAnswer>(event) || 
-        handleEvent<CallAnswer>(event) || handleEvent<CallReject>(event) || handleEvent<CallHangUp>(event))
+    if (handleEvent<CallInvite>(event) || handleEvent<CallCandidates>(event) ||
+        handleEvent<CallNegotiate>(event) || handleEvent<CallSelectAnswer>(event) ||
+        handleEvent<CallAnswer>(event) || handleEvent<CallReject>(event) ||
+        handleEvent<CallHangUp>(event))
         return;
 #else
     (void)event;
@@ -335,16 +343,13 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                        callInviteEvent.sender,
                        callInviteEvent.content.party_id);
 
-
     if (callInviteEvent.content.call_id.empty())
         return;
 
-    if(callInviteEvent.sender == utils::localUser().toStdString())
-    {
-        if(callInviteEvent.content.party_id == partyid_)
+    if (callInviteEvent.sender == utils::localUser().toStdString()) {
+        if (callInviteEvent.content.party_id == partyid_)
             return;
-        else
-        {
+        else {
             isOnCallOnOtherDevice_ = callInviteEvent.content.call_id;
             emit newCallDeviceState();
             nhlog::ui()->debug("WebRTC: User is on call on other device.");
@@ -352,31 +357,28 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         }
     }
 
-    auto roomInfo = cache::singleRoomInfo(callInviteEvent.room_id);
+    auto roomInfo     = cache::singleRoomInfo(callInviteEvent.room_id);
     callPartyVersion_ = callInviteEvent.content.version;
 
     const QString &ringtone = UserSettings::instance()->ringtone();
-    bool sharesRoom = true;
+    bool sharesRoom         = true;
 
     std::vector<RoomMember> members(cache::getMembers(callInviteEvent.room_id));
-    const RoomMember &caller = *std::find_if(members.begin(), members.end(), 
-                                                [&](RoomMember member){
-                                                    return member.user_id.toStdString() == callInviteEvent.sender;
-                                                });
-    if(isOnCall() || isOnCallOnOtherDevice())
-    {
-        if(isOnCallOnOtherDevice_ != "")
+    const RoomMember &caller =
+      *std::find_if(members.begin(), members.end(), [&](RoomMember member) {
+          return member.user_id.toStdString() == callInviteEvent.sender;
+      });
+    if (isOnCall() || isOnCallOnOtherDevice()) {
+        if (isOnCallOnOtherDevice_ != "")
             return;
-        if(callParty_.toStdString() == callInviteEvent.sender)
-        {
-            if(session_.state() == webrtc::State::OFFERSENT)
-            {
-                if(callid_ > callInviteEvent.content.call_id)
-                {
+        if (callParty_.toStdString() == callInviteEvent.sender) {
+            if (session_.state() == webrtc::State::OFFERSENT) {
+                if (callid_ > callInviteEvent.content.call_id) {
                     endCall();
-                    callParty_            = caller.user_id;
-                    callPartyDisplayName_ = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
-                    callPartyAvatarUrl_   = QString::fromStdString(roomInfo.avatar_url);
+                    callParty_ = caller.user_id;
+                    callPartyDisplayName_ =
+                      caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
+                    callPartyAvatarUrl_ = QString::fromStdString(roomInfo.avatar_url);
 
                     roomid_ = QString::fromStdString(callInviteEvent.room_id);
                     callid_ = callInviteEvent.content.call_id;
@@ -388,49 +390,47 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
                     acceptInvite();
                 }
                 return;
-            }
-            else if(session_.state() < webrtc::State::OFFERSENT)
+            } else if (session_.state() < webrtc::State::OFFERSENT)
                 endCall();
             else
                 return;
-        }
-        else 
+        } else
             return;
     }
 
-
-    if(callPartyVersion_ == "0")
-    {
+    if (callPartyVersion_ == "0") {
         if (roomInfo.member_count != 2) {
-            emit newMessage(
-            QString::fromStdString(callInviteEvent.room_id),
-            CallHangUp{
-                callInviteEvent.content.call_id, partyid_, callPartyVersion_, CallHangUp::Reason::InviteTimeOut});
+            emit newMessage(QString::fromStdString(callInviteEvent.room_id),
+                            CallHangUp{callInviteEvent.content.call_id,
+                                       partyid_,
+                                       callPartyVersion_,
+                                       CallHangUp::Reason::InviteTimeOut});
             return;
         }
-    }
-    else 
-    {
-        if  (caller.user_id == utils::localUser() && callInviteEvent.content.party_id == partyid_) // remote echo
+    } else {
+        if (caller.user_id == utils::localUser() &&
+            callInviteEvent.content.party_id == partyid_) // remote echo
             return;
 
-        if  (roomInfo.member_count == 2 || // general call in room with two members
-            (roomInfo.member_count == 1 && partyid_ != callInviteEvent.content.party_id) || // self call, ring if not the same party_id
+        if (roomInfo.member_count == 2 || // general call in room with two members
+            (roomInfo.member_count == 1 &&
+             partyid_ !=
+               callInviteEvent.content.party_id) ||  // self call, ring if not the same party_id
             callInviteEvent.content.invitee == "" || // empty, meant for everyone
-            callInviteEvent.content.invitee == utils::localUser().toStdString()) // meant specifically for local user
+            callInviteEvent.content.invitee ==
+              utils::localUser().toStdString()) // meant specifically for local user
         {
-            if(roomInfo.member_count > 2)
-            {
-                //check if shares room
-                sharesRoom = checkSharesRoom(QString::fromStdString(callInviteEvent.room_id), callInviteEvent.content.invitee);
+            if (roomInfo.member_count > 2) {
+                // check if shares room
+                sharesRoom = checkSharesRoom(QString::fromStdString(callInviteEvent.room_id),
+                                             callInviteEvent.content.invitee);
             }
-        }
-        else
-        {
-            emit newMessage(
-            QString::fromStdString(callInviteEvent.room_id),
-            CallHangUp{
-                callInviteEvent.content.call_id, partyid_, callPartyVersion_, CallHangUp::Reason::InviteTimeOut});
+        } else {
+            emit newMessage(QString::fromStdString(callInviteEvent.room_id),
+                            CallHangUp{callInviteEvent.content.call_id,
+                                       partyid_,
+                                       callPartyVersion_,
+                                       CallHangUp::Reason::InviteTimeOut});
             return;
         }
     }
@@ -438,9 +438,9 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
     // ring if not mute or does not have direct message room
     if (ringtone != QLatin1String("Mute") && sharesRoom)
         playRingtone(ringtone == QLatin1String("Default")
-                    ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
-                    : QUrl::fromLocalFile(ringtone),
-                    true);
+                       ? QUrl(QStringLiteral("qrc:/media/media/ring.ogg"))
+                       : QUrl::fromLocalFile(ringtone),
+                     true);
 
     callParty_            = caller.user_id;
     callPartyDisplayName_ = caller.display_name.isEmpty() ? caller.user_id : caller.display_name;
@@ -449,12 +449,11 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
     roomid_ = QString::fromStdString(callInviteEvent.room_id);
     callid_ = callInviteEvent.content.call_id;
     remoteICECandidates_.clear();
-    
+
     haveCallInvite_ = true;
     callType_       = isVideo ? CallType::VIDEO : CallType::VOICE;
     inviteSDP_      = callInviteEvent.content.offer.sdp;
     emit newInviteState();
-
 }
 
 void
@@ -462,7 +461,7 @@ CallManager::acceptInvite()
 {
     // if call was accepted/rejected elsewhere and m.call.select_answer is received
     // before acceptInvite
-    if (!haveCallInvite_) 
+    if (!haveCallInvite_)
         return;
 
     stopRingtone();
@@ -489,15 +488,13 @@ CallManager::acceptInvite()
 void
 CallManager::rejectInvite()
 {
-    if(callPartyVersion_ == "0")
-    {
+    if (callPartyVersion_ == "0") {
         hangUp();
         // send m.call.reject after sending hangup as mentioned in MSC2746
         emit newMessage(roomid_, CallReject{callid_, partyid_, callPartyVersion_});
     }
-    if(!callid_.empty()){
-        nhlog::ui()->debug(
-          "WebRTC: call id: {} - rejecting call", callid_);
+    if (!callid_.empty()) {
+        nhlog::ui()->debug("WebRTC: call id: {} - rejecting call", callid_);
         emit newMessage(roomid_, CallReject{callid_, partyid_, callPartyVersion_});
         endCall(false);
     }
@@ -532,9 +529,8 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
                        callAnswerEvent.content.call_id,
                        callAnswerEvent.sender,
                        callAnswerEvent.content.party_id);
-    if(answerSelected_)
+    if (answerSelected_)
         return;
-
 
     if (callAnswerEvent.sender == utils::localUser().toStdString() &&
         callid_ == callAnswerEvent.content.call_id) {
@@ -543,8 +539,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
               QStringLiteral("Call answered on another device."));
             stopRingtone();
             haveCallInvite_ = false;
-            if(callPartyVersion_ != "1")
-            {
+            if (callPartyVersion_ != "1") {
                 isOnCallOnOtherDevice_ = callid_;
                 emit newCallDeviceState();
             }
@@ -560,10 +555,11 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
             hangUp();
         }
     }
-    emit newMessage(roomid_, CallSelectAnswer{callid_, partyid_, callPartyVersion_, 
-                    callAnswerEvent.content.party_id}); 
+    emit newMessage(
+      roomid_,
+      CallSelectAnswer{callid_, partyid_, callPartyVersion_, callAnswerEvent.content.party_id});
     selectedpartyid_ = callAnswerEvent.content.party_id;
-    answerSelected_ = true;
+    answerSelected_  = true;
 }
 
 void
@@ -575,51 +571,47 @@ CallManager::handleEvent(const RoomEvent<CallHangUp> &callHangUpEvent)
                        callHangUpEvent.sender,
                        callHangUpEvent.content.party_id);
 
-    if (callid_ == callHangUpEvent.content.call_id || isOnCallOnOtherDevice_ == callHangUpEvent.content.call_id)
+    if (callid_ == callHangUpEvent.content.call_id ||
+        isOnCallOnOtherDevice_ == callHangUpEvent.content.call_id)
         endCall();
-    
 }
 
 void
 CallManager::handleEvent(const RoomEvent<CallSelectAnswer> &callSelectAnswerEvent)
 {
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallSelectAnswer from ({}, {})",
-                        callSelectAnswerEvent.content.call_id,
-                        callSelectAnswerEvent.sender,
-                        callSelectAnswerEvent.content.party_id);
-    if(callSelectAnswerEvent.sender == utils::localUser().toStdString())
-    {
-        if(callSelectAnswerEvent.content.party_id != partyid_)
-        {
-            if(std::find(rejectCallPartyIDs_.begin(), rejectCallPartyIDs_.begin(),
-                            callSelectAnswerEvent.content.selected_party_id) != rejectCallPartyIDs_.end())
+                       callSelectAnswerEvent.content.call_id,
+                       callSelectAnswerEvent.sender,
+                       callSelectAnswerEvent.content.party_id);
+    if (callSelectAnswerEvent.sender == utils::localUser().toStdString()) {
+        if (callSelectAnswerEvent.content.party_id != partyid_) {
+            if (std::find(rejectCallPartyIDs_.begin(),
+                          rejectCallPartyIDs_.begin(),
+                          callSelectAnswerEvent.content.selected_party_id) !=
+                rejectCallPartyIDs_.end())
                 endCall();
-            else
-            {
+            else {
                 nhlog::ui()->debug("WebRTC: call id: {} - user is on call with this user!",
-                                    callSelectAnswerEvent.content.call_id);
+                                   callSelectAnswerEvent.content.call_id);
                 isOnCallOnOtherDevice_ = callSelectAnswerEvent.content.call_id;
                 emit newCallDeviceState();
             }
         }
         return;
-    }
-    else if(callid_ == callSelectAnswerEvent.content.call_id)
-    {
-        if(callSelectAnswerEvent.content.selected_party_id != partyid_)
-        {
+    } else if (callid_ == callSelectAnswerEvent.content.call_id) {
+        if (callSelectAnswerEvent.content.selected_party_id != partyid_) {
             bool endAllCalls = false;
-            if(std::find(rejectCallPartyIDs_.begin(), rejectCallPartyIDs_.begin(),
-                        callSelectAnswerEvent.content.selected_party_id) != rejectCallPartyIDs_.end())
+            if (std::find(rejectCallPartyIDs_.begin(),
+                          rejectCallPartyIDs_.begin(),
+                          callSelectAnswerEvent.content.selected_party_id) !=
+                rejectCallPartyIDs_.end())
                 endAllCalls = true;
-            else
-            {
+            else {
                 isOnCallOnOtherDevice_ = callid_;
                 emit newCallDeviceState();
             }
             endCall(endAllCalls);
-        }
-        else if(session_.state() == webrtc::State::DISCONNECTED)
+        } else if (session_.state() == webrtc::State::DISCONNECTED)
             endCall();
     }
 }
@@ -628,31 +620,30 @@ void
 CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
 {
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallReject from ({}, {})",
-                                callRejectEvent.content.call_id,
-                                callRejectEvent.sender,
-                                callRejectEvent.content.party_id);
-    if(answerSelected_)
+                       callRejectEvent.content.call_id,
+                       callRejectEvent.sender,
+                       callRejectEvent.content.party_id);
+    if (answerSelected_)
         return;
 
     rejectCallPartyIDs_.push_back(callRejectEvent.content.party_id);
     // check remote echo
-    if(callRejectEvent.sender == utils::localUser().toStdString())
-    {
-        if(callRejectEvent.content.party_id != partyid_)
-            emit ChatPage::instance()->showNotification(QStringLiteral("Call rejected on another device."));
+    if (callRejectEvent.sender == utils::localUser().toStdString()) {
+        if (callRejectEvent.content.party_id != partyid_)
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("Call rejected on another device."));
         return;
     }
 
-    if(callRejectEvent.content.call_id == callid_)
-    {
-        if(session_.state() == webrtc::State::OFFERSENT) 
-        {
+    if (callRejectEvent.content.call_id == callid_) {
+        if (session_.state() == webrtc::State::OFFERSENT) {
             // only accept reject if webrtc is in OFFERSENT state, else call has been accepted
-            emit newMessage(roomid_, CallSelectAnswer{callid_, partyid_, callPartyVersion_, 
-                            callRejectEvent.content.party_id});
+            emit newMessage(
+              roomid_,
+              CallSelectAnswer{
+                callid_, partyid_, callPartyVersion_, callRejectEvent.content.party_id});
             endCall();
         }
-
     }
 }
 
@@ -660,26 +651,23 @@ void
 CallManager::handleEvent(const RoomEvent<CallNegotiate> &callNegotiateEvent)
 {
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallNegotiate from ({}, {})",
-                                callNegotiateEvent.content.call_id,
-                                callNegotiateEvent.sender,
-                                callNegotiateEvent.content.party_id);
+                       callNegotiateEvent.content.call_id,
+                       callNegotiateEvent.sender,
+                       callNegotiateEvent.content.party_id);
 }
 
-bool 
-CallManager::checkSharesRoom (QString roomid_, std::string invitee) const
+bool
+CallManager::checkSharesRoom(QString roomid_, std::string invitee) const
 {
     /*
         IMPLEMENTATION REQUIRED
         Check if room is shared to determine whether to ring or not.
         Called from handle callInvite event
     */
-    if(invitee == "")
-    {
+    if (invitee == "") {
         // check all members
         return true;
-    }
-    else 
-    {
+    } else {
         return true;
         // check if invitee shares a direct room with local user
     }
@@ -744,8 +732,7 @@ CallManager::clear(bool endAllCalls)
     callType_       = CallType::VOICE;
     haveCallInvite_ = false;
     answerSelected_ = false;
-    if(endAllCalls)
-    {
+    if (endAllCalls) {
         isOnCallOnOtherDevice_ = "";
         rejectCallPartyIDs_.clear();
         emit newCallDeviceState();

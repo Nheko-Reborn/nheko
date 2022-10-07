@@ -18,8 +18,7 @@ class HiddenEvents : public QObject
 public:
     explicit HiddenEvents(QObject *p = nullptr)
       : QObject(p)
-    {
-    }
+    {}
 
     Q_INVOKABLE void toggle(int type);
     Q_INVOKABLE void save();

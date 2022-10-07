@@ -21,13 +21,14 @@ HiddenEvents::load()
       EventType::Unsupported,
     };
 
-    //check if selected answer is from to local user
+    // check if selected answer is from to local user
     /*
-        * localUser accepts/rejects the call and it is selected by caller - No message
-        * Another User accepts/rejects the call and it is selected by caller - "Call answered/rejected elsewhere"
-    */
+     * localUser accepts/rejects the call and it is selected by caller - No message
+     * Another User accepts/rejects the call and it is selected by caller - "Call answered/rejected
+     * elsewhere"
+     */
     bool callLocalUser_ = true;
-    if(callLocalUser_)
+    if (callLocalUser_)
         hiddenEvents.hidden_event_types->push_back(EventType::CallSelectAnswer);
 
     if (auto temp =

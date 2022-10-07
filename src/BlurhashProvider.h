@@ -20,8 +20,7 @@ public:
     BlurhashRunnable(const QString &id, const QSize &requestedSize)
       : m_id(id)
       , m_requestedSize(requestedSize)
-    {
-    }
+    {}
 
     void run() override;
 signals:
