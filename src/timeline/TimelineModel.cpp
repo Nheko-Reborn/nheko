@@ -549,7 +549,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case Day: {
         QDateTime prevDate = origin_server_ts(event);
         prevDate.setTime(QTime());
-        return {prevDate.toMSecsSinceEpoch()};
+        return QVariant(prevDate.toMSecsSinceEpoch());
     }
     case Timestamp:
         return QVariant(origin_server_ts(event));

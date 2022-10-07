@@ -406,7 +406,7 @@ Item {
             required property bool isEditable
             required property bool isEdited
             required property bool isStateEvent
-            property bool previousMessageIsStateEvent: chat.model.dataByIndex(index+1, Room.IsStateEvent)
+            property bool previousMessageIsStateEvent:  (index + 1) >= chat.count ? true : chat.model.dataByIndex(index+1, Room.IsStateEvent)
             required property string replyTo
             required property string threadId
             required property string userId
@@ -420,9 +420,9 @@ Item {
             required property int status
             required property int index
             required property int relatedEventCacheBuster
-            required property string day
-            property string previousMessageUserId: chat.model.dataByIndex(index+1, Room.UserId)
-            property string previousMessageDay: chat.model.dataByIndex(index+1, Room.Day)
+            required property var day
+            property string previousMessageUserId: (index + 1) >= chat.count ? "" : chat.model.dataByIndex(index+1, Room.UserId)
+            property var previousMessageDay:  (index + 1) >= chat.count ? 0 : chat.model.dataByIndex(index+1, Room.Day)
             required property string userName
             property bool scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
 
@@ -436,8 +436,8 @@ Item {
                 property int parentWidth: parent.width
                 property string userId: wrapper.userId
                 property string previousMessageUserId: wrapper.previousMessageUserId
-                property string day: wrapper.day
-                property string previousMessageDay: wrapper.previousMessageDay
+                property var day: wrapper.day
+                property var previousMessageDay: wrapper.previousMessageDay
                 property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
                 property bool isStateEvent: wrapper.isStateEvent
                 property bool isSender: wrapper.isSender
@@ -445,7 +445,7 @@ Item {
                 property date timestamp: wrapper.timestamp
 
                 z: 4
-                active: previousMessageUserId !== undefined && previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
+                active: previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
                 //asynchronous: true
                 sourceComponent: sectionHeader
                 visible: status == Loader.Ready
