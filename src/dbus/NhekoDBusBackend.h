@@ -27,7 +27,9 @@ public slots:
     //! Get the nheko version.
     Q_SCRIPTABLE QString nhekoVersion() const { return nheko::version; }
     //! Call this function to get a list of all joined rooms.
-    Q_SCRIPTABLE QVector<nheko::dbus::RoomInfoItem> rooms(const QDBusMessage &message);
+    Q_SCRIPTABLE QVector<nheko::dbus::RoomInfoItem> rooms() const;
+    //! Call this function to convert a URI into an image
+    Q_SCRIPTABLE QImage image(const QString &uri, const QDBusMessage &message) const;
     //! Activates a currently joined room.
     Q_SCRIPTABLE void activateRoom(const QString &alias) const;
     //! Joins a room. It is your responsibility to ask for confirmation (if desired).

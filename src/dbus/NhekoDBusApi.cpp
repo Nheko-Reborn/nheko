@@ -35,14 +35,14 @@ apiVersionIsCompatible(const QVersionNumber &clientAppVersion)
 RoomInfoItem::RoomInfoItem(const QString &roomId,
                            const QString &alias,
                            const QString &title,
-                           const QImage &image,
+                           const QString &avatarUrl,
                            const int unreadNotifications,
                            QObject *parent)
   : QObject{parent}
   , roomId_{roomId}
   , alias_{alias}
   , roomName_{title}
-  , image_{image}
+  , avatarUrl_{avatarUrl}
   , unreadNotifications_{unreadNotifications}
 {
 }
@@ -52,7 +52,7 @@ RoomInfoItem::RoomInfoItem(const RoomInfoItem &other)
   , roomId_{other.roomId_}
   , alias_{other.alias_}
   , roomName_{other.roomName_}
-  , image_{other.image_}
+  , avatarUrl_{other.avatarUrl_}
   , unreadNotifications_{other.unreadNotifications_}
 {
 }
@@ -63,7 +63,7 @@ RoomInfoItem::operator=(const RoomInfoItem &other)
     roomId_              = other.roomId_;
     alias_               = other.alias_;
     roomName_            = other.roomName_;
-    image_               = other.image_;
+    avatarUrl_           = other.avatarUrl_;
     unreadNotifications_ = other.unreadNotifications_;
     return *this;
 }
@@ -72,7 +72,7 @@ QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item)
 {
     arg.beginStructure();
-    arg << item.roomId_ << item.alias_ << item.roomName_ << item.image_
+    arg << item.roomId_ << item.alias_ << item.roomName_ << item.avatarUrl_
         << item.unreadNotifications_;
     arg.endStructure();
     return arg;
@@ -82,10 +82,8 @@ const QDBusArgument &
 operator>>(const QDBusArgument &arg, RoomInfoItem &item)
 {
     arg.beginStructure();
-    arg >> item.roomId_ >> item.alias_ >> item.roomName_ >> item.image_ >>
+    arg >> item.roomId_ >> item.alias_ >> item.roomName_ >> item.avatarUrl_ >>
       item.unreadNotifications_;
-    if (item.image_.isNull())
-        item.image_ = QImage{QStringLiteral(":/icons/ui/speech-bubbles.svg")};
 
     arg.endStructure();
     return arg;
@@ -117,6 +115,16 @@ rooms()
     if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
         interface.isValid())
         return QDBusReply<QVector<RoomInfoItem>>{interface.call(QStringLiteral("rooms"))}.value();
+    else
+        return {};
+}
+
+QImage
+image(const QString &mxcuri)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        return QDBusReply<QImage>{interface.call(QStringLiteral("image"), mxcuri)}.value();
     else
         return {};
 }

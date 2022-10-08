@@ -18,7 +18,7 @@ init();
 
 //! The nheko D-Bus API version provided by this file. The API version number follows semantic
 //! versioning as defined by https://semver.org.
-const QVersionNumber dbusApiVersion{0, 0, 1};
+const QVersionNumber dbusApiVersion{1, 0, 0};
 
 //! Compare the installed Nheko API to the version that your client app targets to see if they
 //! are compatible.
@@ -33,7 +33,7 @@ public:
     RoomInfoItem(const QString &roomId         = QString{},
                  const QString &alias          = QString{},
                  const QString &title          = QString{},
-                 const QImage &image           = QImage{},
+                 const QString &avatarUrl      = QString{},
                  const int unreadNotifications = 0,
                  QObject *parent               = nullptr);
 
@@ -42,7 +42,7 @@ public:
     const QString &roomId() const { return roomId_; }
     const QString &alias() const { return alias_; }
     const QString &roomName() const { return roomName_; }
-    const QImage &image() const { return image_; }
+    const QString &avatarUrl() const { return avatarUrl_; }
     int unreadNotifications() const { return unreadNotifications_; }
 
     RoomInfoItem &operator=(const RoomInfoItem &other);
@@ -54,7 +54,7 @@ private:
     QString roomId_;
     QString alias_;
     QString roomName_;
-    QImage image_;
+    QString avatarUrl_;
     int unreadNotifications_;
 };
 
@@ -67,6 +67,9 @@ nhekoVersion();
 //! Call this function to get a list of all joined rooms.
 QVector<RoomInfoItem>
 rooms();
+//! Fetch an image using a matrix URI
+QImage
+image(const QString &uri);
 //! Activates a currently joined room.
 void
 activateRoom(const QString &alias);
