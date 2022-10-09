@@ -248,6 +248,9 @@ SingleImagePackModel::setIsStickerPack(bool val)
     using mtx::events::msc2545::PackUsage;
     if (val != pack.pack->is_sticker()) {
         pack.pack->usage.set(PackUsage::Sticker, val);
+        if (!val)
+            pack.pack->usage.set(PackUsage::Emoji, true);
+        emit isEmotePackChanged();
         emit isStickerPackChanged();
     }
 }
@@ -258,7 +261,10 @@ SingleImagePackModel::setIsEmotePack(bool val)
     using mtx::events::msc2545::PackUsage;
     if (val != pack.pack->is_emoji()) {
         pack.pack->usage.set(PackUsage::Emoji, val);
+        if (!val)
+            pack.pack->usage.set(PackUsage::Sticker, true);
         emit isEmotePackChanged();
+        emit isStickerPackChanged();
     }
 }
 
