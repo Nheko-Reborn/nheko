@@ -104,27 +104,27 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+27"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan ruangan yang diperbolehkan</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Daftar ruangan yang memperbolehkan akses ke ruangan ini. Siapa pun yang berada di ruangan apa pun itu dapat bergabung ruangan ini.</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Induk komunitas</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan lainnya</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan ruangan tambahan yang belum ada di daftar ini...</translation>
     </message>
 </context>
 <context>
@@ -228,7 +228,7 @@
     <message>
         <location line="-500"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation>Cache pada diskmu lebih baru daripada versi yang didukung Nheko ini. Harap perbarui Nheko atau bersihkan cachemu.</translation>
+        <translation>Tembolok pada diskmu lebih baru daripada versi yang didukung Nheko ini. Harap perbarui Nheko atau bersihkan tembolokmu.</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -319,17 +319,17 @@
     <message>
         <location line="-969"/>
         <source>Cache migration failed!</source>
-        <translation>Migrasi cache gagal!</translation>
+        <translation>Migrasi tembolok gagal!</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Migrasi tembolok ke versi saat ini gagal. Ini dapat memiliki alasan yang berbeda. Silakan buka sebuah masalah di https://github.com/Nheko-Reborn/nheko dan coba menggunakan versi yang lama untuk saat ini. Secara alternatif kamu bisa menghapus tembolok secara manual.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Incompatible cache version</source>
-        <translation>Versi cache tidak kompatibel</translation>
+        <translation>Versi tembolok tidak kompatibel</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -358,7 +358,8 @@
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamu gagal bergabung %1. Kamu bisa mengetuk supaya yang lain bisa mengundangmu. Apakah kamu ingin melakukannya?
+Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -416,12 +417,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+51"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jangan tampilkan jumlah notifikasi untuk komunitas atau tag ini.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sembunyikan ruangan dengan tag atau komunitas ini secara bawaan.</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -489,22 +490,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+657"/>
         <source>Failed to update community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal memperbarui komunitas: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal menghapus ruangan dari komunitas: %1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal memperbarui komunitas untuk ruangan: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal menghapus komunitas dari ruangan: %1</translation>
     </message>
 </context>
 <context>
@@ -534,7 +535,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan ini tidak bisa digabung secara langsung. Kamu dapat mengetuk pada ruangan dan anggota ruangan dapat menerima atau menolak permintaan bergabungan ini. Kamu bisa menambahkan alasan untuk mereka untuk menambahkan kamu di bawah:</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -620,7 +621,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan publik dapat digabung oleh siapa pun; ruangan privat membutuhkan undangan eksplisit.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1193,7 +1194,10 @@ You may optionally provide a reason for others to accept your knock:</source>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nama masuk kamu. Sebuah MXID seharusnya mulai dengan @ diikuti dengan ID pengguna. Setelah ID pengguna kamu harus menambahkan nama servermu setelah :.
+Kamu juga bisa meletakkan alamat homeserver kamu di situ jika server kamu tidak mendukung pencarian .well-known.
+Contoh: @pengguna:server.saya
+Jika Nheko gagal menemukan homeserver kamu, sebuah kolom akan ditampilkan untuk memasukkan server secara manual.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1213,13 +1217,14 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebuah nama untuk perangkat ini yang akan ditampilkan kepada orang lain ketika memverifikasi perangkatmu. Jika tidak ada yang disediakan, sebuah bawaan akan digunakan.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamat yang dapat digunakan untuk menghubungi API klien homeserver kamu.
+Contoh: https://server.saya:8787</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -1277,7 +1282,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.4). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server yang dipilih tidak mendukung sebuah versi protokol Matrix yang klien ini mengerti (v1.1 sampai v1.4). Kamu tidak bisa masuk.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1432,7 +1437,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-51"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengubah komunitas induk untuk ruangan.</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1498,12 +1503,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Reply in thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Balas dalam utasan</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Utasan baru</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1555,7 +1560,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>&amp;Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Utasan</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1570,7 +1575,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>&amp;Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Laporan dibaca</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1633,12 +1638,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Untuk memungkinkan pengguna lain melihat perangkat apa saja yang sebenarnya milikmu, kamu bisa memverifikasinya. Ini juga memungkinkan pencadangan kunci untuk bekerja secara otomatis. Verifikasi sebuah perangkat yang belum diverifikasi? (Pastikan kamu memiliki salah satu perangkat tersedia.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Untuk memungkinkan pengguna lain untuk melihat perangkat apa saja yang sebenarnya milikmu, kamu bisa memverifikasinya. Ini juga memungkinkan pencadangan kunci untuk bekerja secara otomatis. Verifikasi %1 sekarang?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1851,42 +1856,42 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+28"/>
         <source>Apply permission changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Terapkan perubahan izin</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
-        <translation type="unfinished"></translation>
+        <translation>Subkomunitas dan ruangan apa saja yang seharusnya diterapkan oleh izin ini?</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Apply permissions recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Terapkan izin secara rekursif</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Overwrite exisiting modifications in rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Timpa perubahan yang sudah ada dalam ruangan</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada izin untuk diterapkan ke izin yang baru di sini</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No changes needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak ada perubahan yang dibutuhkan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Existing modifications to the permissions in this room will be overwritten</source>
-        <translation type="unfinished"></translation>
+        <translation>Perubahan yang sudah ada ke izin di ruangan ini akan ditimpa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Permissions synchronized with community</source>
-        <translation type="unfinished"></translation>
+        <translation>Izin disinkronkan dengan komunitas</translation>
     </message>
 </context>
 <context>
@@ -2050,12 +2055,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>Edit child communities and rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Edit komunitas dan ruangan anak</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah induk komunitas</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2096,7 +2101,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+230"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Buat sebuah profil unik yang memungkinkan kamu untuk masuk ke beberapa akun secara bersamaan dan mulai beberapa instansi Nheko.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2114,27 +2119,27 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-26"/>
         <source>Alias for &apos;--log-level trace&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias untuk &apos;--log-level trace&apos;.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set the global log level, or a comma-separated list of &lt;component&gt;=&lt;level&gt; pairs, or both. For example, to set the default log level to &apos;warn&apos; but disable logging for the &apos;ui&apos; component, pass &apos;warn,ui=off&apos;. levels:{trace,debug,info,warning,error,critical,off} components:{crypto,db,mtx,net,qml,ui}</source>
-        <translation type="unfinished"></translation>
+        <translation>Tetapkan tingkat pencatatan global, atau daftar &lt;komponen&gt;=&lt;tingkat&gt; yang dipisahkan oleh koma, atau keduanya. Misalnya, untuk menetapkan tingkat pencatatan ke &apos;warn&apos; tetapi menonaktifkan pencatatan untuk komponen &apos;ui&apos;, tambahkan &apos;warn,ui=off&apos;. tingkat={trace,debug,info,warning,error,critical,off} komponen:[crypto,db,mtx,net,qml,ui}</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>level</source>
-        <translation type="unfinished"></translation>
+        <translation>tingkat</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
-        <translation type="unfinished"></translation>
+        <translation>Tetapkan jenis keluaran catatan. Daftar yang dipisahkan oleh koma diperbolehkan. Bawaan adalah &apos;file,stderr&apos;. tipe:{file,stderr,none}</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>type</source>
-        <translation type="unfinished"></translation>
+        <translation>jenis</translation>
     </message>
 </context>
 <context>
@@ -2189,7 +2194,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sebuah nama untuk perangkat ini yang akan ditampilkan kepada orang lain ketika memverifikasi perangkatmu. Jika tidak ada, bawaan akan digunakan.</translation>
     </message>
     <message>
         <location line="-109"/>
@@ -2249,7 +2254,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.4). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server yang dipilih tidak mendukung sebuah versi protokol Matrix yang klien ini mengerti (v1.1 ke v1.4). Kamu tidak bisa mendaftar.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2292,7 +2297,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Cancel Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Batalkan Utasan</translation>
     </message>
 </context>
 <context>
@@ -2376,7 +2381,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan atau hapus dari komunitas...</translation>
     </message>
     <message>
         <location line="+263"/>
@@ -2670,37 +2675,37 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="-180"/>
         <source>Anyone can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Siapa pun dapat bergabung</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Perbolehkan pengetukan</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Allow joining via other rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Perbolehkan bergabung dari ruangan lain</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Rooms to join via</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan untuk digabung dari</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah daftar ruangan yang bisa digabung oleh ruangan dari. Biasanya ini komunitas resmi dari ruangan ini.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation type="unfinished"></translation>
+        <translation>Perbolehkan tamu untuk bergabung</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Terapkan aturan pengaksesan</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -2710,7 +2715,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+18"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah paket apa yang diaktifkan, hapus paket, atau buat yang baru</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -2817,7 +2822,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+10"/>
         <source>Please enter the token which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Silakan masukkan token yang dikirim ke kamu:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3008,7 +3013,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from community</source>
-        <translation type="unfinished"></translation>
+        <translation>Tambahkan atau hapus dari komunitas</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3456,7 +3461,7 @@ Alasan: %4</translation>
     <message>
         <location line="+893"/>
         <source>%1 made this room require an invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 membuat ruangan ini membutuhkan undangan untuk bergabung.</translation>
     </message>
     <message>
         <location line="+628"/>
@@ -3500,7 +3505,7 @@ Alasan: %4</translation>
     <message>
         <location line="+18"/>
         <source>Part of a thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Bagian dari sebuah utasan</translation>
     </message>
 </context>
 <context>
@@ -3568,7 +3573,7 @@ Alasan: %4</translation>
     <message>
         <location line="+100"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Dalam %1</translation>
     </message>
     <message>
         <location line="+83"/>
@@ -4197,17 +4202,17 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+16"/>
         <source>Choose where to show the total number of notifications contained within a community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih di mana untuk menampilkan jumlah notifikasi di dalam sebuah komunitas atau tag.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>Secara otomatis membalas permintaan kunci dari pengguna lain jika mereka terverifikasi, bahkan jika perangkat itu seharusnya tidak memiliki akses ke kunci itu bagaimanapun.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation>Kunci untuk memverifikasi perangkat-perangkatmu. Jika dicache, memverifikasi salah satu perangkatmu akan menandainya sebagai terverifikasi untuk perangkatmu yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
+        <translation>Kunci untuk memverifikasi perangkatmu. Jika disimpan, memverifikasi salah satu perangkatmu akan menandainya sebagai terverifikasi untuk perangkatmu yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
     </message>
     <message>
         <location line="-67"/>
@@ -4219,29 +4224,31 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
     <message>
         <location line="-303"/>
         <source>Communities sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilah samping komunitas</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Show message counts for communities and tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan hitungan pesan untuk komunitas dan tag</translation>
     </message>
     <message>
         <location line="+215"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation type="unfinished"></translation>
+        <translation>Tetapkan lebar pesan di linimasa (dalam pixel). Ini dapat membantu keterbacaan di layar lebar ketika Nheko dimaksimalkan</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Show a column containing communities and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan sebuah kolom berisi komunitas dan tag di samping daftar ruangan.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan ruangan dengan pesan baru terlebih dahulu.
+Jika dinonaktifkan, daftar ruangan hany akan diurutkan berdasarkan stempel waktu dari pesan terakhir di sebuah ruangan.
+Jika diaktifkan, ruangan yang memiliki notifikasi aktif (lingkaran kecil dengan nomor) akan diurutkan di atas. Ruangan yang kamu telah bisukan akan masih diurutkan berdasarkan stempel waktu, yang kamu tidak menganggapnya sebagai penting dengan ruangan yang lain.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4313,17 +4320,17 @@ akan diburamkan.</translation>
     <message>
         <location line="+23"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation>Kunci untuk mendekripsikan cadangan kunci daring. Jika dicache, kamu bisa mengaktifkan kunci cadangan daring untuk menyimpan kunci enkripsi yang dienkripsi secara aman di servernya.</translation>
+        <translation>Kunci untuk mendekripsikan cadangan kunci daring. Jika disimpan, kamu bisa mengaktifkan kunci cadangan daring untuk menyimpan kunci enkripsi yang dienkripsi secara aman di servernya.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation>Kunci untuk memverifikasi pengguna lain. Jika dicache, memverifikasi sebuah pengguna akan memverifikasi semua perangkat mereka.</translation>
+        <translation>Kunci untuk memverifikasi pengguna lain. Jika disimpan, memverifikasi sebuah pengguna akan memverifikasi semua perangkat mereka.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation>Kuncimu yang paling penting. Kamu tidak perlu menyimpannya dalam cache, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatangananmu yang lain.</translation>
+        <translation>Kuncimu yang paling penting. Kamu tidak perlu menyimpannya dalam tembolok, karena tidak menyimpannya akan memperkecil kemungkinannya untuk dicuri dan hanya diperlukan untuk memutar kunci penandatanganan kamu yang lain.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4402,12 +4409,12 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="-20"/>
         <source>CACHED</source>
-        <translation>DICACHE</translation>
+        <translation>DISIMPAN</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>NOT CACHED</source>
-        <translation>TIDAK DICACHE</translation>
+        <translation>TIDAK DISIMPAN</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -4512,7 +4519,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Buka munduran, ikuti petunjuknya, dan konfirmasi setelah menyelesaikannya.</translation>
     </message>
 </context>
 <context>
