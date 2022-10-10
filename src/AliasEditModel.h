@@ -11,7 +11,7 @@
 
 #include "CacheStructs.h"
 
-class FetchPublishedAliasesJob : public QObject
+class FetchPublishedAliasesJob final : public QObject
 {
     Q_OBJECT
 
@@ -26,7 +26,7 @@ signals:
     void advertizedAliasesFetched(std::vector<std::string> aliases);
 };
 
-class AliasEditingModel : public QAbstractListModel
+class AliasEditingModel final : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(bool canAdvertize READ canAdvertize CONSTANT)

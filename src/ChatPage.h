@@ -48,7 +48,7 @@ struct Rooms;
 
 using SecretsToDecrypt = std::map<std::string, mtx::secret_storage::AesHmacSha2EncryptedData>;
 
-class ChatPage : public QObject
+class ChatPage final : public QObject
 {
     Q_OBJECT
 

@@ -9,7 +9,7 @@
 #include <QAbstractListModel>
 #include <QVector>
 
-class Invitee : public QObject
+class Invitee final : public QObject
 {
     Q_OBJECT
 
@@ -27,7 +27,7 @@ private:
     friend class InviteesModel;
 };
 
-class InviteesModel : public QAbstractListModel
+class InviteesModel final : public QAbstractListModel
 {
     Q_OBJECT
 

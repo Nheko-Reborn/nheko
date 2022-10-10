@@ -61,7 +61,7 @@ using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
  *      We are the bigger mxid and deviceid (since we discard our start message). <- GLARE RESOLUTION
  */
 // clang-format on
-class DeviceVerificationFlow : public QObject
+class DeviceVerificationFlow final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString state READ state NOTIFY stateChanged)

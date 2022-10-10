@@ -11,7 +11,7 @@ class QPushButton;
 
 namespace dialogs {
 
-class ReCaptcha : public QWidget
+class ReCaptcha final : public QWidget
 {
     Q_OBJECT
 

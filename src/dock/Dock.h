@@ -10,7 +10,7 @@
 #include <QtDBus/QDBusInterface>
 #endif
 
-class Dock : public QObject
+class Dock final : public QObject
 {
     Q_OBJECT
 public:

@@ -11,7 +11,7 @@
 
 using AvatarCallback = std::function<void(QPixmap)>;
 
-class AvatarProxy : public QObject
+class AvatarProxy final : public QObject
 {
     Q_OBJECT
 

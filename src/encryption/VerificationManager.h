@@ -18,7 +18,7 @@ class TimelineModel;
 class TimelineViewManager;
 class RoomlistModel;
 
-class VerificationManager : public QObject
+class VerificationManager final : public QObject
 {
     Q_OBJECT
 

@@ -39,7 +39,7 @@ class MemberList;
 class ReCaptcha;
 }
 
-class MainWindow : public QQuickView
+class MainWindow final : public QQuickView
 {
     Q_OBJECT
 

@@ -10,7 +10,7 @@
 
 #include <mtx/responses/public_rooms.hpp>
 
-class RoomSummaryProxy : public QObject
+class RoomSummaryProxy final : public QObject
 {
     Q_OBJECT
 
@@ -21,7 +21,7 @@ signals:
     void failed();
 };
 
-class RoomSummary : public QObject
+class RoomSummary final : public QObject
 {
     Q_OBJECT
 

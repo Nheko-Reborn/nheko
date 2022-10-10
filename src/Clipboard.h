@@ -8,7 +8,7 @@
 #include <QObject>
 #include <QString>
 
-class Clipboard : public QObject
+class Clipboard final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString text READ text WRITE setText NOTIFY textChanged)

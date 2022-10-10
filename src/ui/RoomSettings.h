@@ -19,7 +19,7 @@
 
 /// Convenience class which connects events emmited from threads
 /// outside of main with the UI code.
-class ThreadProxy : public QObject
+class ThreadProxy final : public QObject
 {
     Q_OBJECT
 
@@ -32,7 +32,7 @@ signals:
 
 class RoomSettings;
 
-class RoomSettingsAllowedRoomsModel : public QAbstractListModel
+class RoomSettingsAllowedRoomsModel final : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -67,7 +67,7 @@ private:
     RoomSettings *settings;
 };
 
-class RoomSettings : public QObject
+class RoomSettings final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString roomId READ roomId CONSTANT)

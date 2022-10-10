@@ -12,7 +12,7 @@
 #include <mtx/events.hpp>
 #include <mtx/events/presence.hpp>
 
-class PresenceEmitter : public QObject
+class PresenceEmitter final : public QObject
 {
     Q_OBJECT
 

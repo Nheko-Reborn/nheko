@@ -33,7 +33,7 @@ namespace mtx::responses {
 struct Messages;
 }
 
-class Cache : public QObject
+class Cache final : public QObject
 {
     Q_OBJECT
 

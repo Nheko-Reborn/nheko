@@ -19,7 +19,7 @@
 #include "Reaction.h"
 #include "encryption/Olm.h"
 
-class EventStore : public QObject
+class EventStore final : public QObject
 {
     Q_OBJECT
 

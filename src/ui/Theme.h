@@ -8,7 +8,7 @@
 #include <QColor>
 #include <QPalette>
 
-class Theme : public QPalette
+class Theme final : public QPalette
 {
     Q_GADGET
     Q_PROPERTY(QColor sidebarBackground READ sidebarBackground CONSTANT)

@@ -11,7 +11,7 @@
 
 #include "CacheStructs.h"
 
-class PowerlevelsTypeListModel : public QAbstractListModel
+class PowerlevelsTypeListModel final : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -68,7 +68,7 @@ public:
     mtx::events::state::PowerLevels powerLevels_;
 };
 
-class PowerlevelsUserListModel : public QAbstractListModel
+class PowerlevelsUserListModel final : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -122,7 +122,7 @@ public:
     mtx::events::state::PowerLevels powerLevels_;
 };
 
-class PowerlevelsSpacesListModel : public QAbstractListModel
+class PowerlevelsSpacesListModel final : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(bool applyToChildren READ applyToChildren WRITE setApplyToChildren NOTIFY
@@ -192,7 +192,7 @@ public:
     bool applyToChildren_ = true, overwriteDiverged_ = false;
 };
 
-class PowerlevelEditingModels : public QObject
+class PowerlevelEditingModels final : public QObject
 {
     Q_OBJECT
 

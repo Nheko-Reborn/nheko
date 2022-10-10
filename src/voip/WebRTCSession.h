@@ -42,7 +42,7 @@ enum class State
 Q_ENUM_NS(State)
 }
 
-class WebRTCSession : public QObject
+class WebRTCSession final : public QObject
 {
     Q_OBJECT
 

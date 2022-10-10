@@ -8,7 +8,7 @@
 #include <QObject>
 #include <string>
 
-class SSOHandler : public QObject
+class SSOHandler final : public QObject
 {
     Q_OBJECT
 

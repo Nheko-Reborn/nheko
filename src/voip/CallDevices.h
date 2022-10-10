@@ -13,7 +13,7 @@
 
 typedef struct _GstDevice GstDevice;
 
-class CallDevices : public QObject
+class CallDevices final : public QObject
 {
     Q_OBJECT
 

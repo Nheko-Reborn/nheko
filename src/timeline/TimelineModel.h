@@ -171,7 +171,7 @@ struct DecryptionResult
 
 class TimelineViewManager;
 
-class TimelineModel : public QAbstractListModel
+class TimelineModel final : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)

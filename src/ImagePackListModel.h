@@ -10,7 +10,7 @@
 #include <QSharedPointer>
 
 class SingleImagePackModel;
-class ImagePackListModel : public QAbstractListModel
+class ImagePackListModel final : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(bool containsAccountPack READ containsAccountPack CONSTANT)

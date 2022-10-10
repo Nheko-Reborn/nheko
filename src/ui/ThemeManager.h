@@ -7,7 +7,7 @@
 
 #include <QCommonStyle>
 
-class ThemeManager : public QCommonStyle
+class ThemeManager final : public QCommonStyle
 {
     Q_OBJECT
 

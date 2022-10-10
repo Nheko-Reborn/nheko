@@ -9,7 +9,7 @@
 
 #include <mtx/events/mscs/image_packs.hpp>
 
-class CombinedImagePackModel : public QAbstractListModel
+class CombinedImagePackModel final : public QAbstractListModel
 {
     Q_OBJECT
 public:

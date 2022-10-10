@@ -12,7 +12,7 @@ class QLabel;
 
 namespace dialogs {
 
-class FallbackAuth : public QWidget
+class FallbackAuth final : public QWidget
 {
     Q_OBJECT
 

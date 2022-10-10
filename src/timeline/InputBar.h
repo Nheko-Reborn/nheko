@@ -41,7 +41,7 @@ enum class MarkdownOverride
     OFF,
 };
 
-class InputVideoSurface : public QAbstractVideoSurface
+class InputVideoSurface final : public QAbstractVideoSurface
 {
     Q_OBJECT
 
@@ -60,7 +60,7 @@ signals:
     void newImage(QImage img);
 };
 
-class MediaUpload : public QObject
+class MediaUpload final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(int mediaType READ type NOTIFY mediaTypeChanged)
@@ -168,7 +168,7 @@ public:
     bool encrypt_;
 };
 
-class InputBar : public QObject
+class InputBar final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool uploading READ uploading NOTIFY uploadingChanged)

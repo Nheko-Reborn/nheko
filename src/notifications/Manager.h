@@ -28,7 +28,7 @@ operator==(const roomEventId &a, const roomEventId &b)
     return a.roomId == b.roomId && a.eventId == b.eventId;
 }
 
-class NotificationsManager : public QObject
+class NotificationsManager final : public QObject
 {
     Q_OBJECT
 public:

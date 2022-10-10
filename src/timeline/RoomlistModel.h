@@ -46,7 +46,7 @@ public:
     bool isInvite_ = false;
 };
 
-class RoomlistModel : public QAbstractListModel
+class RoomlistModel final : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(
@@ -152,7 +152,7 @@ private:
     friend class FilteredRoomlistModel;
 };
 
-class FilteredRoomlistModel : public QSortFilterProxyModel
+class FilteredRoomlistModel final : public QSortFilterProxyModel
 {
     Q_OBJECT
     Q_PROPERTY(

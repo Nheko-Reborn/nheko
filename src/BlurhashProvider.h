@@ -11,7 +11,7 @@
 #include <QImage>
 #include <QThreadPool>
 
-class BlurhashRunnable
+class BlurhashRunnable final
   : public QObject
   , public QRunnable
 {
@@ -33,7 +33,7 @@ private:
     QSize m_requestedSize;
 };
 
-class BlurhashResponse : public QQuickImageResponse
+class BlurhashResponse final : public QQuickImageResponse
 {
 public:
     BlurhashResponse(const QString &id, const QSize &requestedSize)

@@ -11,7 +11,7 @@
 
 class TimelineModel;
 
-class Permissions : public QObject
+class Permissions final : public QObject
 {
     Q_OBJECT
 

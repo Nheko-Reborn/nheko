@@ -9,7 +9,7 @@
 
 #include <mtxclient/http/client.hpp>
 
-class UIA : public QObject
+class UIA final : public QObject
 {
     Q_OBJECT
 

@@ -14,7 +14,7 @@
 
 #include "jdenticoninterface.h"
 
-class JdenticonRunnable
+class JdenticonRunnable final
   : public QObject
   , public QRunnable
 {
@@ -34,7 +34,7 @@ private:
     QSize m_requestedSize;
 };
 
-class JdenticonResponse : public QQuickImageResponse
+class JdenticonResponse final : public QQuickImageResponse
 {
 public:
     JdenticonResponse(const QString &key, bool crop, double radius, const QSize &requestedSize);

@@ -13,7 +13,7 @@
 
 #include "CacheStructs.h"
 
-class SingleImagePackModel : public QAbstractListModel
+class SingleImagePackModel final : public QAbstractListModel
 {
     Q_OBJECT
 

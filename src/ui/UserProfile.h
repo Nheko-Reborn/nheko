@@ -32,7 +32,7 @@ Q_ENUM_NS(Status)
 class DeviceVerificationFlow;
 class TimelineViewManager;
 
-class UserProfileFetchProxy : public QObject
+class UserProfileFetchProxy final : public QObject
 {
     Q_OBJECT
 
@@ -83,7 +83,7 @@ public:
     qlonglong lastTs;
 };
 
-class DeviceInfoModel : public QAbstractListModel
+class DeviceInfoModel final : public QAbstractListModel
 {
     Q_OBJECT
 public:
@@ -120,7 +120,7 @@ private:
     friend class UserProfile;
 };
 
-class UserProfile : public QObject
+class UserProfile final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString displayName READ displayName NOTIFY displayNameChanged)

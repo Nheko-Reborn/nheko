@@ -69,7 +69,7 @@ signals:
     void childChanged();
 
 private:
-    struct DelegateIncubator : public QQmlIncubator
+    struct DelegateIncubator final : public QQmlIncubator
     {
         DelegateIncubator(DelegateChooser &parent)
           : QQmlIncubator(QQmlIncubator::AsynchronousIfNested)

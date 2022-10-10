@@ -34,7 +34,7 @@ namespace mtx::responses {
 struct Sync;
 }
 
-class TimelineViewManager : public QObject
+class TimelineViewManager final : public QObject
 {
     Q_OBJECT
 

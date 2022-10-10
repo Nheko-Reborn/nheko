@@ -12,7 +12,7 @@
 
 #include "CacheStructs.h"
 
-class MemberListBackend : public QAbstractListModel
+class MemberListBackend final : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -77,7 +77,7 @@ private:
     friend class MemberList;
 };
 
-class MemberList : public QSortFilterProxyModel
+class MemberList final : public QSortFilterProxyModel
 {
     Q_OBJECT
 

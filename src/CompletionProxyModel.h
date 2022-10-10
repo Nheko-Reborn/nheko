@@ -156,7 +156,7 @@ struct trie
     }
 };
 
-class CompletionProxyModel : public QAbstractProxyModel
+class CompletionProxyModel final : public QAbstractProxyModel
 {
     Q_OBJECT
     Q_PROPERTY(QString searchString READ searchString WRITE setSearchString NOTIFY newSearchString)

@@ -5,7 +5,7 @@
 
 #include <QQuickImageProvider>
 
-class ColorImageProvider : public QQuickImageProvider
+class ColorImageProvider final : public QQuickImageProvider
 {
 public:
     ColorImageProvider()

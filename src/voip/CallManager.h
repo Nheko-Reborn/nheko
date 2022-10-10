@@ -25,7 +25,7 @@ struct TurnServer;
 
 class QUrl;
 
-class CallManager : public QObject
+class CallManager final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool haveCallInvite READ haveCallInvite NOTIFY newInviteState)

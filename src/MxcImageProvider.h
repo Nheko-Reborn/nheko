@@ -14,7 +14,7 @@
 
 #include <mtx/common.hpp>
 
-class MxcImageRunnable : public QObject
+class MxcImageRunnable final : public QObject
 {
     Q_OBJECT
 
@@ -38,7 +38,7 @@ public:
     bool m_crop;
     double m_radius;
 };
-class MxcImageResponse : public QQuickImageResponse
+class MxcImageResponse final : public QQuickImageResponse
 {
 public:
     MxcImageResponse(const QString &id, bool crop, double radius, const QSize &requestedSize)

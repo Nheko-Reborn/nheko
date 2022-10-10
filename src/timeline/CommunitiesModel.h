@@ -19,7 +19,7 @@
 
 class CommunitiesModel;
 
-class FilteredCommunitiesModel : public QSortFilterProxyModel
+class FilteredCommunitiesModel final : public QSortFilterProxyModel
 {
     Q_OBJECT
 
@@ -71,7 +71,7 @@ public:
     bool canEditParent = false, canEditChild = false;
 };
 
-class CommunitiesModel : public QAbstractListModel
+class CommunitiesModel final : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(QString currentTagId READ currentTagId WRITE setCurrentTagId NOTIFY

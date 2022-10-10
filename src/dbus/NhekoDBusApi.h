@@ -25,7 +25,7 @@ const QVersionNumber dbusApiVersion{1, 0, 0};
 bool
 apiVersionIsCompatible(const QVersionNumber &clientAppVersion);
 
-class RoomInfoItem : public QObject
+class RoomInfoItem final : public QObject
 {
     Q_OBJECT
 

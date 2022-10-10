@@ -14,7 +14,7 @@
 class QAction;
 class QPainter;
 
-class MsgCountComposedIcon : public QIconEngine
+class MsgCountComposedIcon final : public QIconEngine
 {
 public:
     MsgCountComposedIcon(const QString &filename);
@@ -36,7 +36,7 @@ private:
     QIcon icon_;
 };
 
-class TrayIcon : public QSystemTrayIcon
+class TrayIcon final : public QSystemTrayIcon
 {
     Q_OBJECT
 public:

@@ -7,7 +7,7 @@
 
 #include <QAbstractListModel>
 
-class UsersModel : public QAbstractListModel
+class UsersModel final : public QAbstractListModel
 {
 public:
     enum Roles

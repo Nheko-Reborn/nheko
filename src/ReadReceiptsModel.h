@@ -12,7 +12,7 @@
 #include <QSortFilterProxyModel>
 #include <QString>
 
-class ReadReceiptsModel : public QAbstractListModel
+class ReadReceiptsModel final : public QAbstractListModel
 {
     Q_OBJECT
 
@@ -51,7 +51,7 @@ private:
     QVector<QPair<QString, QDateTime>> readReceipts_;
 };
 
-class ReadReceiptsProxy : public QSortFilterProxyModel
+class ReadReceiptsProxy final : public QSortFilterProxyModel
 {
     Q_OBJECT
 

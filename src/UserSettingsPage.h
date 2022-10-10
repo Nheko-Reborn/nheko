@@ -26,7 +26,7 @@ constexpr int OptionMargin       = 6;
 constexpr int LayoutTopMargin    = 50;
 constexpr int LayoutBottomMargin = LayoutTopMargin;
 
-class UserSettings : public QObject
+class UserSettings final : public QObject
 {
     Q_OBJECT
 
@@ -393,7 +393,7 @@ private:
     static QSharedPointer<UserSettings> instance_;
 };
 
-class UserSettingsModel : public QAbstractListModel
+class UserSettingsModel final : public QAbstractListModel
 {
     Q_OBJECT
 

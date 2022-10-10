@@ -10,7 +10,7 @@
 #include <QAbstractListModel>
 #include <QString>
 
-class RoomsModel : public QAbstractListModel
+class RoomsModel final : public QAbstractListModel
 {
 public:
     enum Roles
