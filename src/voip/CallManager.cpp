@@ -350,10 +350,13 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         if (callInviteEvent.content.party_id == partyid_)
             return;
         else {
-            isOnCallOnOtherDevice_ = callInviteEvent.content.call_id;
-            emit newCallDeviceState();
-            nhlog::ui()->debug("WebRTC: User is on call on other device.");
-            return;
+            if(callInviteEvent.content.invitee != utils::localUser().toStdString())
+            {
+                isOnCallOnOtherDevice_ = callInviteEvent.content.call_id;
+                emit newCallDeviceState();
+                nhlog::ui()->debug("WebRTC: User is on call on other device.");
+                return;
+            }
         }
     }
 
@@ -503,7 +506,8 @@ CallManager::rejectInvite()
 void
 CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
 {
-    if (callCandidatesEvent.sender == utils::localUser().toStdString())
+    if (callCandidatesEvent.sender == utils::localUser().toStdString() && 
+        callCandidatesEvent.content.party_id == partyid_)
         return;
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallCandidates from ({}, {})",
                        callCandidatesEvent.content.call_id,
@@ -534,6 +538,9 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
 
     if (callAnswerEvent.sender == utils::localUser().toStdString() &&
         callid_ == callAnswerEvent.content.call_id) {
+        if(partyid_ == callAnswerEvent.content.party_id)
+            return;
+
         if (!isOnCall()) {
             emit ChatPage::instance()->showNotification(
               QStringLiteral("Call answered on another device."));
@@ -545,7 +552,8 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
             }
             emit newInviteState();
         }
-        return;
+        if(callParty_ != utils::localUser())
+            return;
     }
 
     if (isOnCall() && callid_ == callAnswerEvent.content.call_id) {
@@ -585,12 +593,15 @@ CallManager::handleEvent(const RoomEvent<CallSelectAnswer> &callSelectAnswerEven
                        callSelectAnswerEvent.content.party_id);
     if (callSelectAnswerEvent.sender == utils::localUser().toStdString()) {
         if (callSelectAnswerEvent.content.party_id != partyid_) {
+
             if (std::find(rejectCallPartyIDs_.begin(),
                           rejectCallPartyIDs_.begin(),
                           callSelectAnswerEvent.content.selected_party_id) !=
                 rejectCallPartyIDs_.end())
                 endCall();
             else {
+                if(callSelectAnswerEvent.content.selected_party_id == partyid_)
+                    return;
                 nhlog::ui()->debug("WebRTC: call id: {} - user is on call with this user!",
                                    callSelectAnswerEvent.content.call_id);
                 isOnCallOnOtherDevice_ = callSelectAnswerEvent.content.call_id;
@@ -629,9 +640,10 @@ CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
     rejectCallPartyIDs_.push_back(callRejectEvent.content.party_id);
     // check remote echo
     if (callRejectEvent.sender == utils::localUser().toStdString()) {
-        if (callRejectEvent.content.party_id != partyid_)
+        if (callRejectEvent.content.party_id != partyid_ && callParty_ != utils::localUser())
             emit ChatPage::instance()->showNotification(
               QStringLiteral("Call rejected on another device."));
+        endCall();
         return;
     }
 
@@ -654,6 +666,15 @@ CallManager::handleEvent(const RoomEvent<CallNegotiate> &callNegotiateEvent)
                        callNegotiateEvent.content.call_id,
                        callNegotiateEvent.sender,
                        callNegotiateEvent.content.party_id);
+
+    std::string negotiationSDP_ = callNegotiateEvent.content.description.sdp;
+    if (!session_.acceptNegotiation(negotiationSDP_)) {
+        emit ChatPage::instance()->showNotification(QStringLiteral("Problem accepting new SDP"));
+        hangUp();
+        return;
+    }
+    session_.acceptICECandidates(remoteICECandidates_);
+    remoteICECandidates_.clear();
 }
 
 bool

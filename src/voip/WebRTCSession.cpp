@@ -703,6 +703,8 @@ bool
 WebRTCSession::acceptNegotiation(const std::string &sdp)
 {
     nhlog::ui()->debug("WebRTC: received negotiation offer:\n{}", sdp);
+    if (state_ == State::DISCONNECTED)
+        return false;
     return false;
 }
 
@@ -718,27 +720,6 @@ WebRTCSession::acceptAnswer(const std::string &sdp)
         end();
         return false;
     }
-
-    if (callType_ != CallType::VOICE) {
-        int unused;
-        if (!getMediaAttributes(
-              answer->sdp, "video", "vp8", unused, isRemoteVideoRecvOnly_, isRemoteVideoSendOnly_))
-            isRemoteVideoRecvOnly_ = true;
-    }
-
-    g_signal_emit_by_name(webrtc_, "set-remote-description", answer, nullptr);
-    gst_webrtc_session_description_free(answer);
-    return true;
-}
-
-bool
-WebRTCSession::acceptGlareAnswer(const std::string &sdp)
-{
-    nhlog::ui()->debug("WebRTC: received answer:\n{}", sdp);
-    if (state_ != State::OFFERSENT)
-        return false;
-
-    GstWebRTCSessionDescription *answer = parseSDP(sdp, GST_WEBRTC_SDP_TYPE_ANSWER);
 
     if (callType_ != CallType::VOICE) {
         int unused;

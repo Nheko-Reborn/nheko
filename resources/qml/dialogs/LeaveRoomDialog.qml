@@ -25,10 +25,6 @@ P.MessageDialog {
             callManager.rejectInvite();
         } else if (CallManager.isOnCall) {
             CallManager.hangUp();
-        } else {
-            var dialog = placeCallDialog.createObject(timelineRoot);
-            dialog.open();
-            timelineRoot.destroyOnClose(dialog);
         }
         Rooms.leave(roomId, reason)
     }
