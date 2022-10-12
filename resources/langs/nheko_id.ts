@@ -1691,7 +1691,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+33"/>
         <source>You are about to notify the whole room</source>
-        <translation>Kamu akan memberitahu seluruh ruangan</translation>
+        <translation>Kamu akan memberi tahu seluruh ruangan</translation>
     </message>
 </context>
 <context>
@@ -1899,7 +1899,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+736"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished">Gagal memperbarui tingkat daya: %1</translation>
+        <translation>Gagal memperbarui tingkat daya: %1</translation>
     </message>
 </context>
 <context>
@@ -3897,7 +3897,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Alert on notification</source>
-        <translation>Beritahu saat ada notifikasi</translation>
+        <translation>Beri tahu saat ada notifikasi</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4190,7 +4190,7 @@ Ini akan mengaktifkan atau menonaktifkan pengiriman pemberitahuan pengetikan ke 
     <message>
         <location line="+8"/>
         <source>Notify about received messages when the client is not currently focused.</source>
-        <translation>Beritahu tentang pesan-pesan yang diterima saat klien tidak difokuskan.</translation>
+        <translation>Beri tahu tentang pesan yang diterima saat klien tidak difokuskan.</translation>
     </message>
     <message>
         <location line="+6"/>
