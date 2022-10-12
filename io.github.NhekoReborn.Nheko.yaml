@@ -145,6 +145,15 @@ modules:
       - sha256: 1155fd1a83049767360e9a120c43c578145db3204d2b309eba49fbbedd0f4ed3
         type: archive
         url: https://github.com/nlohmann/json/archive/v3.10.4.tar.gz
+  - buildsystem: simple
+    build-commands:
+      - make static
+      - make prefix=/app static-install
+    name: re2
+    sources:
+      - sha256: f89c61410a072e5cbcf8c27e3a778da7d6fd2f2b5b1445cd4f4508bee946ab0f
+        type: archive
+        url: https://github.com/google/re2/archive/refs/tags/2022-06-01.tar.gz
   - buildsystem: qmake
     name: qt-jdenticon
     no-make-install: true
@@ -173,7 +182,7 @@ modules:
     buildsystem: cmake-ninja
     name: mtxclient
     sources:
-      - commit: 5ef4460c26acb02f24530db1c6058534b87014f6
+      - commit: fc10a689fd6dbcd8e99e45903d0bd6351577f300
         #tag: v0.8.2
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git

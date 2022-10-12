@@ -61,6 +61,7 @@ option(USE_BUNDLED_COEURL "Use a bundled version of the Curl wrapper"
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_LIBEVENT "Use the bundled version of libevent." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LIBCURL "Use the bundled version of libcurl." ${HUNTER_ENABLED})
+option(USE_BUNDLED_RE2 "Use the bundled version of re2." ${HUNTER_ENABLED})
 
 include(CMakeDependentOption)
 set(VOIP_DEFAULT ON)
@@ -207,6 +208,15 @@ endif()
 if (NOT COEURL_TARGET_NAME)
 	message(ERROR "Couldn't find coeurl")
 endif()
+
+if(USE_BUNDLED_RE2)
+	hunter_add_package(re2)
+	find_package(re2 CONFIG REQUIRED)
+else()
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(re2 REQUIRED IMPORTED_TARGET re2)
+endif()
+
 
 #
 # LMDB
@@ -583,7 +593,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        5ef4460c26acb02f24530db1c6058534b87014f6
+		GIT_TAG        fc10a689fd6dbcd8e99e45903d0bd6351577f300
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
