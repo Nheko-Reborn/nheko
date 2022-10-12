@@ -27,12 +27,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation>Включить Микрофон</translation>
+        <translation>Включить микрофон</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation>Выключить Микрофон</translation>
+        <translation>Выключить микрофон</translation>
     </message>
 </context>
 <context>
@@ -43,12 +43,12 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось отменить публикацию псевдонима %1: %2</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось обновить псевдонимы: %1</translation>
     </message>
 </context>
 <context>
@@ -56,7 +56,7 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+26"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Псевдонимы для %1</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1761,7 +1761,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+12"/>
         <source>unimplemented event: </source>
-        <translation>не реализованное событие</translation>
+        <translation>нереализованное событие: </translation>
     </message>
 </context>
 <context>
@@ -3491,7 +3491,7 @@ Reason: %4</source>
         <location line="+36"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation>%1 уже покинул данную комнату.</translation>
+        <translation>%1 покинул чат, уже покинув его!</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4190,7 +4190,8 @@ When disabled, all messages are sent as a plain text.</source>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished">Отображать кто печатает в комнате.</translation>
+        <translation>Отображать кто печатает в комнате.
+Другие участники также будут видеть когда печатаете Вы.</translation>
     </message>
     <message>
         <location line="+12"/>
