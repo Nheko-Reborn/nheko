@@ -36,6 +36,8 @@ public:
 
     void postNotification(const mtx::responses::Notification &notification, const QImage &icon);
 
+    void removeNotification(const QString &roomId, const QString &eventId);
+
 signals:
     void notificationClicked(const QString roomId, const QString eventId);
     void sendNotificationReply(const QString roomId, const QString eventId, const QString body);
@@ -46,7 +48,7 @@ signals:
                                   const QImage &icon);
 
 public slots:
-    void removeNotification(const QString &roomId, const QString &eventId);
+    void removeNotifications(const QString &roomId, const std::vector<QString> &eventId);
 
 #if defined(NHEKO_DBUS_SYS)
 public:
@@ -61,9 +63,6 @@ private:
                                 const QString &text,
                                 const QImage &icon);
     void closeNotification(uint id);
-
-    // notification ID to (room ID, event ID)
-    QMap<uint, roomEventId> notificationIds;
 
     const bool hasMarkup_;
     const bool hasImages_;
@@ -96,6 +95,10 @@ private slots:
 
 private:
     QString getMessageTemplate(const mtx::responses::Notification &notification);
+
+    // notification ID to (room ID, event ID)
+    // Only populated on Linux atm
+    QMap<uint, roomEventId> notificationIds;
 };
 
 #if defined(NHEKO_DBUS_SYS)

@@ -14,6 +14,7 @@
 #include <mtx/events.hpp>
 #include <mtx/events/encrypted.hpp>
 #include <mtx/events/member.hpp>
+#include <mtx/events/policy_rules.hpp>
 #include <mtx/events/presence.hpp>
 #include <mtx/secret_storage.hpp>
 
@@ -108,9 +109,6 @@ signals:
     void connectionLost();
     void connectionRestored();
 
-    void notificationsRetrieved(const mtx::responses::Notifications &);
-    void highlightedNotifsRetrieved(const mtx::responses::Notifications &, const QPoint widgetPos);
-
     void contentLoaded();
     void closing();
     void changeWindowTitle(const int);
@@ -135,7 +133,6 @@ signals:
 
     void initializeViews(const mtx::responses::Sync &rooms);
     void initializeEmptyViews();
-    void initializeMentions(const QMap<QString, mtx::responses::Notifications> &notifs);
     void syncUI(const mtx::responses::Sync &sync);
     void dropToLoginPageCb(const QString &msg);
 
@@ -206,9 +203,6 @@ private:
     template<class Collection>
     Memberships getMemberships(const std::vector<Collection> &events) const;
 
-    //! Send desktop notification for the received messages.
-    void sendNotifications(const mtx::responses::Notifications &);
-
     template<typename T>
     void connectCallMessage();
 
@@ -222,6 +216,8 @@ private:
 
     NotificationsManager *notificationsManager;
     CallManager *callManager_;
+
+    std::unique_ptr<mtx::pushrules::PushRuleEvaluator> pushrules;
 };
 
 template<class Collection>

@@ -138,7 +138,6 @@ public:
     bool runMigrations();
 
     std::vector<QString> roomIds();
-    QMap<QString, mtx::responses::Notifications> getTimelineMentions();
 
     //! Retrieve all the user ids from a room.
     std::vector<std::string> roomMembers(const std::string &room_id);
@@ -178,9 +177,6 @@ public:
     void removeReadNotification(const std::string &event_id);
     //! Check if we have sent a desktop notification for the given event id.
     bool isNotificationSent(const std::string &event_id);
-
-    //! Add all notifications containing a user mention to the db.
-    void saveTimelineMentions(const mtx::responses::Notifications &res);
 
     //! retrieve events in timeline and related functions
     struct Messages
@@ -318,7 +314,6 @@ public:
 signals:
     void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
     void roomReadStatus(const std::map<QString, bool> &status);
-    void removeNotification(const QString &room_id, const QString &event_id);
     void userKeysUpdate(const std::string &sync_token, const mtx::responses::QueryKeys &keyQuery);
     void userKeysUpdateFinalize(const std::string &user_id);
     void verificationStatusChanged(const std::string &userid);
@@ -334,15 +329,6 @@ private:
                     lmdb::dbi &statesdb,
                     lmdb::dbi &membersdb,
                     const mtx::responses::InvitedRoom &room);
-
-    //! Add a notification containing a user mention to the db.
-    void saveTimelineMentions(lmdb::txn &txn,
-                              const std::string &room_id,
-                              const QList<mtx::responses::Notification> &res);
-
-    //! Get timeline items that a user was mentions in for a given room
-    mtx::responses::Notifications
-    getTimelineMentionsForRoom(lmdb::txn &txn, const std::string &room_id);
 
     QString getInviteRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb);
     QString getInviteRoomTopic(lmdb::txn &txn, lmdb::dbi &statesdb);
@@ -640,11 +626,6 @@ private:
     lmdb::dbi getMembersDb(lmdb::txn &txn, const std::string &room_id)
     {
         return lmdb::dbi::open(txn, std::string(room_id + "/members").c_str(), MDB_CREATE);
-    }
-
-    lmdb::dbi getMentionsDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/mentions").c_str(), MDB_CREATE);
     }
 
     lmdb::dbi getUserKeysDb(lmdb::txn &txn) { return lmdb::dbi::open(txn, "user_key", MDB_CREATE); }

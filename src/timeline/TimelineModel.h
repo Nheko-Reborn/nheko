@@ -336,6 +336,8 @@ public:
     bool isDirect() const { return roomMemberCount() <= 2; }
     QString directChatOtherUserId() const;
 
+    mtx::pushrules::PushRuleEvaluator::RoomContext pushrulesRoomContext() const;
+
     std::optional<mtx::events::collections::TimelineEvents> eventById(const QString &id)
     {
         auto e = events.get(id.toStdString(), "");

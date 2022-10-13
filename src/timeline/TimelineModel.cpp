@@ -2921,6 +2921,17 @@ TimelineModel::directChatOtherUserId() const
         return {};
 }
 
+mtx::pushrules::PushRuleEvaluator::RoomContext
+TimelineModel::pushrulesRoomContext() const
+{
+    return mtx::pushrules::PushRuleEvaluator::RoomContext{
+      .user_display_name =
+        cache::displayName(room_id_.toStdString(), http::client()->user_id().to_string()),
+      .member_count = cache::client()->memberCount(room_id_.toStdString()),
+      .power_levels = permissions_.powerlevelEvent(),
+    };
+}
+
 RoomSummary *
 TimelineModel::parentSpace()
 {

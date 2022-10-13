@@ -136,18 +136,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
             Qt::QueuedConnection);
     connect(this, &ChatPage::leftRoom, this, &ChatPage::removeRoom);
     connect(this, &ChatPage::changeToRoom, this, &ChatPage::changeRoom, Qt::QueuedConnection);
-    connect(this, &ChatPage::notificationsRetrieved, this, &ChatPage::sendNotifications);
-    connect(this,
-            &ChatPage::highlightedNotifsRetrieved,
-            this,
-            [](const mtx::responses::Notifications &notif) {
-                try {
-                    cache::saveTimelineMentions(notif);
-                } catch (const lmdb::error &e) {
-                    nhlog::db()->error("failed to save mentions: {}", e.what());
-                }
-            });
-
     connect(notificationsManager,
             &NotificationsManager::notificationClicked,
             this,
@@ -208,18 +196,140 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
         // No need to check amounts for this section, as this function internally checks for
         // duplicates.
         if (notificationCount && userSettings_->hasNotifications())
-            http::client()->notifications(
-              5,
-              "",
-              "",
-              [this](const mtx::responses::Notifications &res, mtx::http::RequestErr err) {
-                  if (err) {
-                      nhlog::net()->warn("failed to retrieve notifications: {}", err);
-                      return;
-                  }
+            for (const auto &e : sync.account_data.events) {
+                if (auto newRules =
+                      std::get_if<mtx::events::AccountDataEvent<mtx::pushrules::GlobalRuleset>>(&e))
+                    pushrules =
+                      std::make_unique<mtx::pushrules::PushRuleEvaluator>(newRules->content.global);
+            }
+        if (!pushrules) {
+            auto eventInDb = cache::client()->getAccountData(mtx::events::EventType::PushRules);
+            if (eventInDb) {
+                if (auto newRules =
+                      std::get_if<mtx::events::AccountDataEvent<mtx::pushrules::GlobalRuleset>>(
+                        &*eventInDb))
+                    pushrules =
+                      std::make_unique<mtx::pushrules::PushRuleEvaluator>(newRules->content.global);
+            }
+        }
+        if (pushrules) {
+            const auto local_user = utils::localUser().toStdString();
 
-                  emit notificationsRetrieved(std::move(res));
-              });
+            for (const auto &[room_id, room] : sync.rooms.join) {
+                // clear old notifications
+                for (const auto &e : room.ephemeral.events) {
+                    if (auto receiptsEv =
+                          std::get_if<mtx::events::EphemeralEvent<mtx::events::ephemeral::Receipt>>(
+                            &e)) {
+                        std::vector<QString> receipts;
+
+                        for (const auto &[event_id, userReceipts] : receiptsEv->content.receipts) {
+                            if (auto r = userReceipts.find(mtx::events::ephemeral::Receipt::Read);
+                                r != userReceipts.end()) {
+                                for (const auto &[user_id, receipt] : r->second.users) {
+                                    (void)receipt;
+
+                                    if (user_id == local_user) {
+                                        receipts.push_back(QString::fromStdString(event_id));
+                                        break;
+                                    }
+                                }
+                            }
+                            if (auto r =
+                                  userReceipts.find(mtx::events::ephemeral::Receipt::ReadPrivate);
+                                r != userReceipts.end()) {
+                                for (const auto &[user_id, receipt] : r->second.users) {
+                                    (void)receipt;
+
+                                    if (user_id == local_user) {
+                                        receipts.push_back(QString::fromStdString(event_id));
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if (!receipts.empty())
+                            notificationsManager->removeNotifications(
+                              QString::fromStdString(room_id), receipts);
+                    }
+                }
+
+                // calculate new notifications
+                if (!room.timeline.events.empty() &&
+                    (room.unread_notifications.notification_count ||
+                     room.unread_notifications.highlight_count)) {
+                    auto roomModel =
+                      view_manager_->rooms()->getRoomById(QString::fromStdString(room_id));
+
+                    if (!roomModel) {
+                        continue;
+                    }
+
+                    auto currentReadMarker =
+                      cache::getEventIndex(room_id, cache::client()->getFullyReadEventId(room_id));
+
+                    auto ctx = roomModel->pushrulesRoomContext();
+                    for (const auto &event : room.timeline.events) {
+                        mtx::events::collections::TimelineEvent te{event};
+                        std::visit([room_id = room_id](auto &event_) { event_.room_id = room_id; },
+                                   te.data);
+
+                        if (auto encryptedEvent =
+                              std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                                &event)) {
+                            MegolmSessionIndex index(room_id, encryptedEvent->content);
+
+                            auto result = olm::decryptEvent(index, *encryptedEvent);
+                            if (result.event)
+                                te.data = result.event.value();
+                        }
+
+                        auto actions = pushrules->evaluate(te, ctx);
+                        if (std::find(actions.begin(),
+                                      actions.end(),
+                                      mtx::pushrules::actions::Action{
+                                        mtx::pushrules::actions::notify{}}) != actions.end()) {
+                            auto event_id = mtx::accessors::event_id(event);
+
+                            // skip already read events
+                            if (currentReadMarker &&
+                                currentReadMarker > cache::getEventIndex(room_id, event_id))
+                                continue;
+
+                            if (!cache::isNotificationSent(event_id)) {
+                                // We should only send one notification per event.
+                                cache::markSentNotification(event_id);
+
+                                // Don't send a notification when the current room is opened.
+                                if (isRoomActive(roomModel->roomId()))
+                                    continue;
+
+                                if (userSettings_->hasDesktopNotifications()) {
+                                    auto info = cache::singleRoomInfo(room_id);
+
+                                    AvatarProvider::resolve(
+                                      roomModel->roomAvatarUrl(),
+                                      96,
+                                      this,
+                                      [this, te, room_id = room_id, actions](QPixmap image) {
+                                          notificationsManager->postNotification(
+                                            mtx::responses::Notification{
+                                              .actions     = actions,
+                                              .event       = te.data,
+                                              .read        = false,
+                                              .profile_tag = "",
+                                              .room_id     = room_id,
+                                              .ts          = 0,
+                                            },
+                                            image.toImage());
+                                      });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     });
 
     connect(
@@ -394,12 +504,6 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 &Cache::newReadReceipts,
                 view_manager_,
                 &TimelineViewManager::updateReadReceipts);
-
-        connect(cache::client(),
-                &Cache::removeNotification,
-                notificationsManager,
-                &NotificationsManager::removeNotification);
-
     } catch (const lmdb::error &e) {
         nhlog::db()->critical("failure during boot: {}", e.what());
         emit dropToLoginPageCb(tr("Failed to open database, logging out!"));
@@ -415,7 +519,6 @@ ChatPage::loadStateFromCache()
         olm::client()->load(cache::restoreOlmAccount(), cache::client()->pickleSecret());
 
         emit initializeEmptyViews();
-        emit initializeMentions(cache::getTimelineMentions());
 
         cache::calculateRoomReadStatus();
 
@@ -461,46 +564,6 @@ ChatPage::removeRoom(const QString &room_id)
     } catch (const lmdb::error &e) {
         nhlog::db()->critical("failure while removing room: {}", e.what());
         // TODO: Notify the user.
-    }
-}
-
-void
-ChatPage::sendNotifications(const mtx::responses::Notifications &res)
-{
-    for (const auto &item : res.notifications) {
-        const auto event_id = mtx::accessors::event_id(item.event);
-
-        try {
-            if (item.read) {
-                cache::removeReadNotification(event_id);
-                continue;
-            }
-
-            if (!cache::isNotificationSent(event_id)) {
-                const auto room_id = QString::fromStdString(item.room_id);
-
-                // We should only send one notification per event.
-                cache::markSentNotification(event_id);
-
-                // Don't send a notification when the current room is opened.
-                if (isRoomActive(room_id))
-                    continue;
-
-                if (userSettings_->hasDesktopNotifications()) {
-                    auto info = cache::singleRoomInfo(item.room_id);
-
-                    AvatarProvider::resolve(QString::fromStdString(info.avatar_url),
-                                            96,
-                                            this,
-                                            [this, item](QPixmap image) {
-                                                notificationsManager->postNotification(
-                                                  item, image.toImage());
-                                            });
-                }
-            }
-        } catch (const lmdb::error &e) {
-            nhlog::db()->warn("error while sending notification: {}", e.what());
-        }
     }
 }
 
@@ -596,7 +659,6 @@ ChatPage::startInitialSync()
                 olm::handle_to_device_messages(res.to_device.events);
 
                 emit initializeViews(std::move(res));
-                emit initializeMentions(cache::getTimelineMentions());
 
                 cache::calculateRoomReadStatus();
             } catch (const lmdb::error &e) {

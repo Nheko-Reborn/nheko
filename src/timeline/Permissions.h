@@ -34,6 +34,8 @@ public:
 
     void invalidate();
 
+    const mtx::events::state::PowerLevels &powerlevelEvent() const { return pl; };
+
 private:
     QString roomId_;
     mtx::events::state::PowerLevels pl;

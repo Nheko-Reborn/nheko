@@ -7,6 +7,7 @@
 
 #include "Cache.h"
 #include "EventAccessors.h"
+#include "Logging.h"
 #include "Utils.h"
 
 QString
@@ -31,5 +32,26 @@ NotificationsManager::getMessageTemplate(const mtx::responses::Notification &not
           .arg(sender);
     } else {
         return QStringLiteral("%1: %2").arg(sender);
+    }
+}
+
+void
+NotificationsManager::removeNotifications(const QString &roomId,
+                                          const std::vector<QString> &eventIds)
+{
+    std::string room_id = roomId.toStdString();
+
+    std::uint64_t markerPos = 0;
+    for (const auto &e : eventIds) {
+        markerPos = std::max(markerPos, cache::getEventIndex(room_id, e.toStdString()).value_or(0));
+    }
+
+    for (const auto &[roomId, eventId] : this->notificationIds) {
+        if (roomId != roomId)
+            continue;
+        auto idx = cache::getEventIndex(room_id, eventId.toStdString());
+        if (!idx || markerPos >= idx) {
+            removeNotification(roomId, eventId);
+        }
     }
 }

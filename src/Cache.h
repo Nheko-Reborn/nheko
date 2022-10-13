@@ -118,9 +118,6 @@ setCurrentFormat();
 bool
 runMigrations();
 
-QMap<QString, mtx::responses::Notifications>
-getTimelineMentions();
-
 //! Retrieve all the user ids from a room.
 std::vector<std::string>
 roomMembers(const std::string &room_id);
@@ -177,10 +174,6 @@ removeReadNotification(const std::string &event_id);
 //! Check if we have sent a desktop notification for the given event id.
 bool
 isNotificationSent(const std::string &event_id);
-
-//! Add all notifications containing a user mention to the db.
-void
-saveTimelineMentions(const mtx::responses::Notifications &res);
 
 //! Remove old unused data.
 void
