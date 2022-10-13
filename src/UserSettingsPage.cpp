@@ -88,6 +88,8 @@ UserSettings::load(std::optional<QString> profile)
     openImageExternal_ = settings.value(QStringLiteral("user/open_image_external"), false).toBool();
     openVideoExternal_ = settings.value(QStringLiteral("user/open_video_external"), false).toBool();
     decryptSidebar_    = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
+    decryptNotifications_ =
+      settings.value(QStringLiteral("user/decrypt_notifications"), true).toBool();
     spaceNotifications_ = settings.value(QStringLiteral("user/space_notifications"), true).toBool();
     privacyScreen_      = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
@@ -422,6 +424,16 @@ UserSettings::setDecryptSidebar(bool state)
         return;
     decryptSidebar_ = state;
     emit decryptSidebarChanged(state);
+    save();
+}
+
+void
+UserSettings::setDecryptNotifications(bool state)
+{
+    if (state == decryptNotifications_)
+        return;
+    decryptNotifications_ = state;
+    emit decryptNotificationsChanged(state);
     save();
 }
 
@@ -796,6 +808,7 @@ UserSettings::save()
 
     settings.setValue(QStringLiteral("avatar_circles"), avatarCircles_);
     settings.setValue(QStringLiteral("decrypt_sidebar"), decryptSidebar_);
+    settings.setValue(QStringLiteral("decrypt_notificatons"), decryptNotifications_);
     settings.setValue(QStringLiteral("space_notifications"), spaceNotifications_);
     settings.setValue(QStringLiteral("privacy_screen"), privacyScreen_);
     settings.setValue(QStringLiteral("privacy_screen_timeout"), privacyScreenTimeout_);
@@ -944,6 +957,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Open videos with external program");
         case DecryptSidebar:
             return tr("Decrypt messages in sidebar");
+        case DecryptNotifications:
+            return tr("Decrypt notifications");
         case SpaceNotifications:
             return tr("Show message counts for communities and tags");
         case PrivacyScreen:
@@ -1076,6 +1091,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->openVideoExternal();
         case DecryptSidebar:
             return i->decryptSidebar();
+        case DecryptNotifications:
+            return i->decryptNotifications();
         case SpaceNotifications:
             return i->spaceNotifications();
         case PrivacyScreen:
@@ -1233,6 +1250,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case DecryptSidebar:
             return tr("Decrypt the messages shown in the sidebar.\nOnly affects messages in "
                       "encrypted chats.");
+        case DecryptNotifications:
+            return tr("Decrypt messages shown in notifications for encrypted chats.");
         case SpaceNotifications:
             return tr("Choose where to show the total number of notifications contained within a "
                       "community or tag.");
@@ -1338,6 +1357,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case OpenImageExternal:
         case OpenVideoExternal:
         case DecryptSidebar:
+        case DecryptNotifications:
         case PrivacyScreen:
         case MobileMode:
         case UseStunServer:
@@ -1653,7 +1673,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
-            return i->decryptSidebar();
+        case DecryptNotifications: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setDecryptNotifications(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         case SpaceNotifications: {
             if (value.userType() == QMetaType::Bool) {
                 i->setSpaceNotifications(value.toBool());
@@ -1972,6 +1998,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::decryptSidebarChanged, this, [this]() {
         emit dataChanged(index(DecryptSidebar), index(DecryptSidebar), {Value});
+    });
+    connect(s.get(), &UserSettings::decryptNotificationsChanged, this, [this]() {
+        emit dataChanged(index(DecryptNotifications), index(DecryptNotifications), {Value});
     });
     connect(s.get(), &UserSettings::spaceNotificationsChanged, this, [this] {
         emit dataChanged(index(SpaceNotifications), index(SpaceNotifications), {Value});

@@ -58,6 +58,8 @@ class UserSettings final : public QObject
       bool avatarCircles READ avatarCircles WRITE setAvatarCircles NOTIFY avatarCirclesChanged)
     Q_PROPERTY(
       bool decryptSidebar READ decryptSidebar WRITE setDecryptSidebar NOTIFY decryptSidebarChanged)
+    Q_PROPERTY(bool decryptNotifications READ decryptNotifications WRITE setDecryptNotifications
+                 NOTIFY decryptNotificationsChanged)
     Q_PROPERTY(bool spaceNotifications READ spaceNotifications WRITE setSpaceNotifications NOTIFY
                  spaceNotificationsChanged)
     Q_PROPERTY(
@@ -164,6 +166,7 @@ public:
     void setAlertOnNotification(bool state);
     void setAvatarCircles(bool state);
     void setDecryptSidebar(bool state);
+    void setDecryptNotifications(bool state);
     void setSpaceNotifications(bool state);
     void setPrivacyScreen(bool state);
     void setPrivacyScreenTimeout(int state);
@@ -206,6 +209,7 @@ public:
     bool groupView() const { return groupView_; }
     bool avatarCircles() const { return avatarCircles_; }
     bool decryptSidebar() const { return decryptSidebar_; }
+    bool decryptNotifications() const { return decryptNotifications_; }
     bool spaceNotifications() const { return spaceNotifications_; }
     bool privacyScreen() const { return privacyScreen_; }
     int privacyScreenTimeout() const { return privacyScreenTimeout_; }
@@ -284,6 +288,7 @@ signals:
     void alertOnNotificationChanged(bool state);
     void avatarCirclesChanged(bool state);
     void decryptSidebarChanged(bool state);
+    void decryptNotificationsChanged(bool state);
     void spaceNotificationsChanged(bool state);
     void privacyScreenChanged(bool state);
     void privacyScreenTimeoutChanged(int state);
@@ -347,6 +352,7 @@ private:
     bool hasAlertOnNotification_;
     bool avatarCircles_;
     bool decryptSidebar_;
+    bool decryptNotifications_;
     bool spaceNotifications_;
     bool privacyScreen_;
     int privacyScreenTimeout_;
@@ -442,6 +448,7 @@ class UserSettingsModel final : public QAbstractListModel
         NotificationsSection,
         DesktopNotifications,
         AlertOnNotification,
+        DecryptNotifications,
 
         VoipSection,
         UseStunServer,

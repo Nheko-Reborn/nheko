@@ -276,7 +276,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
 
                         if (auto encryptedEvent =
                               std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-                                &event)) {
+                                &event);
+                            encryptedEvent && userSettings_->decryptNotifications()) {
                             MegolmSessionIndex index(room_id, encryptedEvent->content);
 
                             auto result = olm::decryptEvent(index, *encryptedEvent);

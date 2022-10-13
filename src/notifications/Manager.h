@@ -6,6 +6,7 @@
 #pragma once
 
 #include <QImage>
+#include <QMap>
 #include <QObject>
 #include <QString>
 

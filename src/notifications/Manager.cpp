@@ -36,18 +36,18 @@ NotificationsManager::getMessageTemplate(const mtx::responses::Notification &not
 }
 
 void
-NotificationsManager::removeNotifications(const QString &roomId,
+NotificationsManager::removeNotifications(const QString &roomId_,
                                           const std::vector<QString> &eventIds)
 {
-    std::string room_id = roomId.toStdString();
+    std::string room_id = roomId_.toStdString();
 
     std::uint64_t markerPos = 0;
     for (const auto &e : eventIds) {
         markerPos = std::max(markerPos, cache::getEventIndex(room_id, e.toStdString()).value_or(0));
     }
 
-    for (const auto &[roomId, eventId] : this->notificationIds) {
-        if (roomId != roomId)
+    for (const auto &[roomId, eventId] : qAsConst(this->notificationIds)) {
+        if (roomId != roomId_)
             continue;
         auto idx = cache::getEventIndex(room_id, eventId.toStdString());
         if (!idx || markerPos >= idx) {
