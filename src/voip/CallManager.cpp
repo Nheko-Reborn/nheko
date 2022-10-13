@@ -350,8 +350,7 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
         if (callInviteEvent.content.party_id == partyid_)
             return;
         else {
-            if(callInviteEvent.content.invitee != utils::localUser().toStdString())
-            {
+            if (callInviteEvent.content.invitee != utils::localUser().toStdString()) {
                 isOnCallOnOtherDevice_ = callInviteEvent.content.call_id;
                 emit newCallDeviceState();
                 nhlog::ui()->debug("WebRTC: User is on call on other device.");
@@ -506,7 +505,7 @@ CallManager::rejectInvite()
 void
 CallManager::handleEvent(const RoomEvent<CallCandidates> &callCandidatesEvent)
 {
-    if (callCandidatesEvent.sender == utils::localUser().toStdString() && 
+    if (callCandidatesEvent.sender == utils::localUser().toStdString() &&
         callCandidatesEvent.content.party_id == partyid_)
         return;
     nhlog::ui()->debug("WebRTC: call id: {} - incoming CallCandidates from ({}, {})",
@@ -538,7 +537,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
 
     if (callAnswerEvent.sender == utils::localUser().toStdString() &&
         callid_ == callAnswerEvent.content.call_id) {
-        if(partyid_ == callAnswerEvent.content.party_id)
+        if (partyid_ == callAnswerEvent.content.party_id)
             return;
 
         if (!isOnCall()) {
@@ -552,7 +551,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
             }
             emit newInviteState();
         }
-        if(callParty_ != utils::localUser())
+        if (callParty_ != utils::localUser())
             return;
     }
 
@@ -593,14 +592,13 @@ CallManager::handleEvent(const RoomEvent<CallSelectAnswer> &callSelectAnswerEven
                        callSelectAnswerEvent.content.party_id);
     if (callSelectAnswerEvent.sender == utils::localUser().toStdString()) {
         if (callSelectAnswerEvent.content.party_id != partyid_) {
-
             if (std::find(rejectCallPartyIDs_.begin(),
                           rejectCallPartyIDs_.begin(),
                           callSelectAnswerEvent.content.selected_party_id) !=
                 rejectCallPartyIDs_.end())
                 endCall();
             else {
-                if(callSelectAnswerEvent.content.selected_party_id == partyid_)
+                if (callSelectAnswerEvent.content.selected_party_id == partyid_)
                     return;
                 nhlog::ui()->debug("WebRTC: call id: {} - user is on call with this user!",
                                    callSelectAnswerEvent.content.call_id);
