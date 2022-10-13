@@ -1148,7 +1148,7 @@ WebRTCSession::createOffer(webrtc::CallType, uint32_t)
 // clang-format on
 
 bool
-WebRTCSession::acceptNegotiation(const std::string &sdp)
+WebRTCSession::acceptNegotiation(const std::string &)
 {
     return false;
 }
