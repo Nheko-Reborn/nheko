@@ -153,7 +153,7 @@ Popup {
                 implicitWidth: buttonLayout.buttonSize
                 implicitHeight: buttonLayout.buttonSize
                 onClicked: {
-                    CallManager.hangUp();
+                    CallManager.rejectInvite();
                     close();
                 }
 

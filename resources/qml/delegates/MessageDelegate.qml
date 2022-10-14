@@ -379,6 +379,34 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.CallReject
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: qsTr("%1 rejected the call.").arg(d.userName)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.CallSelectAnswer
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: qsTr("%1 select answer").arg(d.userName)
+                // formatted: qsTr("Call answered elsewhere")
+            }
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.CallHangUp
 
             NoticeMessage {
@@ -394,6 +422,20 @@ Item {
 
         DelegateChoice {
             roleValue: MtxEvent.CallCandidates
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: qsTr("%1 is negotiating the call...").arg(d.userName)
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.CallNegotiate
 
             NoticeMessage {
                 body: formatted

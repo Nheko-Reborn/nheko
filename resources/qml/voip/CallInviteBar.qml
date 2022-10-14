@@ -129,7 +129,7 @@ Rectangle {
             text: qsTr("Decline")
             palette: Nheko.colors
             onClicked: {
-                CallManager.hangUp();
+                CallManager.rejectInvite();
             }
         }
 

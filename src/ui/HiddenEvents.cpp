@@ -17,8 +17,19 @@ HiddenEvents::load()
     hiddenEvents.hidden_event_types = std::vector{
       EventType::Reaction,
       EventType::CallCandidates,
+      EventType::CallNegotiate,
       EventType::Unsupported,
     };
+
+    // check if selected answer is from to local user
+    /*
+     * localUser accepts/rejects the call and it is selected by caller - No message
+     * Another User accepts/rejects the call and it is selected by caller - "Call answered/rejected
+     * elsewhere"
+     */
+    bool callLocalUser_ = true;
+    if (callLocalUser_)
+        hiddenEvents.hidden_event_types->push_back(EventType::CallSelectAnswer);
 
     if (auto temp =
           cache::client()->getAccountData(mtx::events::EventType::NhekoHiddenEvents, "")) {

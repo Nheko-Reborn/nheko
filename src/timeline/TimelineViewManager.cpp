@@ -378,6 +378,28 @@ TimelineViewManager::queueCallMessage(const QString &roomid,
 }
 
 void
+TimelineViewManager::queueCallMessage(const QString &roomid,
+                                      const mtx::events::voip::CallSelectAnswer &callSelectAnswer)
+{
+    if (auto room = rooms_->getRoomById(roomid))
+        room->sendMessageEvent(callSelectAnswer, mtx::events::EventType::CallSelectAnswer);
+}
+void
+TimelineViewManager::queueCallMessage(const QString &roomid,
+                                      const mtx::events::voip::CallReject &callReject)
+{
+    if (auto room = rooms_->getRoomById(roomid))
+        room->sendMessageEvent(callReject, mtx::events::EventType::CallReject);
+}
+void
+TimelineViewManager::queueCallMessage(const QString &roomid,
+                                      const mtx::events::voip::CallNegotiate &callNegotiate)
+{
+    if (auto room = rooms_->getRoomById(roomid))
+        room->sendMessageEvent(callNegotiate, mtx::events::EventType::CallNegotiate);
+}
+
+void
 TimelineViewManager::focusMessageInput()
 {
     emit focusInput();

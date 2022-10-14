@@ -58,6 +58,12 @@ enum EventType
     CallHangUp,
     /// m.call.candidates
     CallCandidates,
+    /// m.call.select_answer
+    CallSelectAnswer,
+    /// m.call.reject
+    CallReject,
+    /// m.call.negotiate
+    CallNegotiate,
     /// m.room.canonical_alias
     CanonicalAlias,
     /// m.room.create

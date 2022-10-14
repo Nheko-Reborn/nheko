@@ -700,6 +700,15 @@ WebRTCSession::acceptOffer(const std::string &sdp)
 }
 
 bool
+WebRTCSession::acceptNegotiation(const std::string &sdp)
+{
+    nhlog::ui()->debug("WebRTC: received negotiation offer:\n{}", sdp);
+    if (state_ == State::DISCONNECTED)
+        return false;
+    return false;
+}
+
+bool
 WebRTCSession::acceptAnswer(const std::string &sdp)
 {
     nhlog::ui()->debug("WebRTC: received answer:\n{}", sdp);
@@ -1137,6 +1146,12 @@ WebRTCSession::createOffer(webrtc::CallType, uint32_t)
     return false;
 }
 // clang-format on
+
+bool
+WebRTCSession::acceptNegotiation(const std::string &)
+{
+    return false;
+}
 
 bool
 WebRTCSession::acceptOffer(const std::string &)

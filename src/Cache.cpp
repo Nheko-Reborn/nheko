@@ -184,8 +184,18 @@ Cache::isHiddenEvent(lmdb::txn &txn,
     hiddenEvents.hidden_event_types = std::vector{
       EventType::Reaction,
       EventType::CallCandidates,
+      EventType::CallNegotiate,
       EventType::Unsupported,
     };
+    // check if selected answer is from to local user
+    /*
+     * localUser accepts/rejects the call and it is selected by caller - No message
+     * Another User accepts/rejects the call and it is selected by caller - "Call answered/rejected
+     * elsewhere"
+     */
+    bool callLocalUser_ = true;
+    if (callLocalUser_)
+        hiddenEvents.hidden_event_types->push_back(EventType::CallSelectAnswer);
 
     if (auto temp = getAccountData(txn, mtx::events::EventType::NhekoHiddenEvents, "")) {
         auto h = std::get<
@@ -1661,11 +1671,18 @@ isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &)
 {
     return true;
 }
+
 auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
 {
     return true;
 }
+
+// auto
+// isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &)
+// {
+//     return true;
+// }
 }
 
 void

@@ -222,6 +222,8 @@ PowerlevelsTypeListModel::data(const QModelIndex &index, int role) const
             return tr("Answer a call");
         else if (type.type == "m.call.hangup")
             return tr("Hang up a call");
+        else if (type.type == "m.call.reject")
+            return tr("Reject a call");
         else if (type.type == "im.ponies.room_emotes")
             return tr("Change the room emotes");
         return QString::fromStdString(type.type);
