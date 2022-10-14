@@ -15,7 +15,8 @@
 VerificationManager::VerificationManager(TimelineViewManager *o)
   : QObject(o)
   , rooms_(o->rooms())
-{}
+{
+}
 
 static bool
 isValidTime(std::optional<uint64_t> t)
