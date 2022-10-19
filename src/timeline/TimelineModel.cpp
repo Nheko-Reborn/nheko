@@ -3003,6 +3003,7 @@ TimelineModel::parentSpace()
                 break;
             }
         }
+        parentChecked = true;
     }
 
     return parentSummary.get();
