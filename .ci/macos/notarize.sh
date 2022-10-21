@@ -19,12 +19,12 @@ if [ "${CI_PIPELINE_TRIGGERED}" ]; then
   unzip binaries.zip
   # we zip 'build/nheko.app' in cirrus ci, cirrus itself puts it in a 'build' directory
   # so move it to the right place for the rest of the process.
-  mv build/build/nheko.app build
-  # get rid of the extra build directory
-  rm -r build/build
+  ( cd build || exit
+    unzip nheko.zip
+  )
 fi
 
-if [ -d "build/nheko.app" ]; then
+if [ ! -d "build/nheko.app" ]; then
   echo "nheko.app is missing, you did something wrong!"
   exit 1
 fi
