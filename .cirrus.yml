@@ -5,8 +5,9 @@ task:
   homebrew_script:
     - brew bundle --file .ci/macos/Brewfile
   build_script:
-    - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
-    - export CMAKE_PREFIX_PATH=/usr/local/opt/qt@5
+    - export PATH="$(brew --prefix qt5)/bin/:${PATH}"
+    - export CMAKE_PREFIX_PATH="$(brew --prefix qt5)"
+    - echo "$(brew --prefix qt5)"
     - cmake -GNinja -S. -Bbuild
         -DCMAKE_BUILD_TYPE=RelWithDebInfo
         -DCMAKE_INSTALL_PREFIX=.deps/usr
@@ -14,11 +15,11 @@ task:
         -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
         -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo
         -DUSE_BUNDLED_OPENSSL=ON
-        -DQT_PATH=/usr/local/opt/qt@5/,
-        -DQt5_DIR:PATH=/usr/local/opt/qt@5/lib/cmake/Qt5,
-        -DQt5MacExtras_DIR:PATH=/usr/local/opt/qt@5/lib/cmake/Qt5MacExtras,
-        -DQt5DBus_DIR:PATH=/usr/local/opt/qt@5/lib/cmake/Qt5DBus,
-        -DQt5QuickCompiler_DIR:PATH=/usr/local/opt/qt@5/lib/cmake/Qt5QuickCompiler,
+        -DQT_PATH="$(brew --prefix qt5)",
+        -DQt5_DIR:PATH="$(brew --prefix qt5)/lib/cmake/Qt5",
+        -DQt5MacExtras_DIR:PATH="$(brew --prefix qt5)/lib/cmake/Qt5MacExtras",
+        -DQt5DBus_DIR:PATH="$(brew --prefix qt5)/lib/cmake/Qt5DBus",
+        -DQt5QuickCompiler_DIR:PATH="$(brew --prefix qt5)/lib/cmake/Qt5QuickCompiler",
         -DCI_BUILD=ON
         -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
     - cmake --build build
