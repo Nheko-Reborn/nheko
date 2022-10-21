@@ -13,6 +13,15 @@ security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
 if [ "${CI_PIPELINE_TRIGGERED}" ]; then
   echo "cirrus build id: ${TRIGGER_BUILD_ID}"
   cat "${TRIGGER_PAYLOAD}"
+  # download the build artifacts from cirrus api
+  wget "https://api.cirrus-ci.com/v1/artifact/build/${TRIGGER_BUILD_ID}/binaries.zip"
+  # cirrus ci artifacts task name is 'binaries' so that's the zip name.
+  unzip binaries.zip
+  # we zip 'build/nheko.app' in cirrus ci, cirrus itself puts it in a 'build' directory
+  # so move it to the right place for the rest of the process.
+  mv build/build/nheko.app build
+  # get rid of the extra build directory
+  rm -r build/build
 fi
 
 ( cd build || exit
