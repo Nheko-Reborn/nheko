@@ -7,14 +7,18 @@ task:
   build_script:
     - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
     - export CMAKE_PREFIX_PATH=/usr/local/opt/qt@5
-    - cmake -GNinja -H. -Bbuild
+    - cmake -GNinja -S. -Bbuild
         -DCMAKE_BUILD_TYPE=RelWithDebInfo
         -DCMAKE_INSTALL_PREFIX=.deps/usr
         -DHUNTER_ROOT="../.hunter"
         -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
         -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo
         -DUSE_BUNDLED_OPENSSL=ON
-        -DUSE_BUNDLED_BOOST=ON
+        -DQT_PATH=/usr/local/opt/qt@5/,
+        -DQt5_DIR:PATH=/usr/local/opt/qt@5/lib/cmake/Qt5,
+        -DQt5MacExtras_DIR:PATH=/usr/local/opt/qt@5/lib/cmake/Qt5MacExtras,
+        -DQt5DBus_DIR:PATH=/usr/local/opt/qt@5/lib/cmake/Qt5DBus,
+        -DQt5QuickCompiler_DIR:PATH=/usr/local/opt/qt@5/lib/cmake/Qt5QuickCompiler,
         -DCI_BUILD=ON
         -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
     - cmake --build build
