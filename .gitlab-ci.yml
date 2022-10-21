@@ -4,6 +4,11 @@ variables:
   # prevent configure tzdata hanging apt install commands
   DEBIAN_FRONTEND: noninteractive
 
+# default to not running jobs when pipeline is triggered from a webhook.
+default:
+  rules:
+  - if : '!$CI_PIPELINE_TRIGGERED'
+
 build-clazy:
   stage: build
   image: ubuntu:22.04
@@ -14,10 +19,10 @@ build-clazy:
   before_script:
     - apt-get update
     - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake liblmdb-dev libre2-dev
-        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
-        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
-        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
-        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev 
+        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
+        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev
+        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform
+        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev
   script:
     - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
     - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
@@ -41,11 +46,11 @@ build-gcc11:
     TRAVIS_OS_NAME: linux
   before_script:
     - apt-get update
-    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev 
-        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
-        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
-        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
-        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev 
+    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev
+        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
+        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev
+        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform
+        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev
     # need recommended deps for wget
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
@@ -77,11 +82,11 @@ build-gcc10:
     TRAVIS_OS_NAME: linux
   before_script:
     - apt-get update
-    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev 
-        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
-        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
-        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
-        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev 
+    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev
+        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
+        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev
+        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform
+        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev
     # need recommended deps for wget
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
@@ -143,6 +148,8 @@ build-macos:
 codesign-macos:
   stage: deploy
   tags: [macos]
+  variables:
+    PLAT: "intel"
   before_script:
     - 'brew upgrade qt@5'
     - pip3 install dmgbuild
@@ -150,15 +157,19 @@ codesign-macos:
     - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
     - ./.ci/macos/notarize.sh
   after_script:
-    - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}.dmg
+    - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}_${PLAT}.dmg
   needs:
-    - build-macos
+    - job: build-macos
+      optional: true # optional since we want to be able to also trigger this job from cirrus ci for apple silicon builds.
   rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+    - if : '$CI_COMMIT_BRANCH == "master"'
     - if : $CI_COMMIT_TAG
+    - if : $CI_PIPELINE_TRIGGERED
+      variables:
+        PLAT: "m1"
   artifacts:
     paths:
-      - artifacts/nheko-${CI_COMMIT_SHORT_SHA}.dmg
+      - artifacts/nheko-${CI_COMMIT_SHORT_SHA}_${PLAT}.dmg
       - /tmp/notarize*
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos
 

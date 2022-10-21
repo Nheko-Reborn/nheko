@@ -10,10 +10,14 @@ PATH="/usr/local/opt/qt@5/bin/:${PATH}"
 
 security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
 
+if [ "${CI_PIPELINE_TRIGGERED}" ]; then
+  cat "${TRIGGER_PAYLOAD}"
+fi
+
 ( cd build || exit
   # macdeployqt does not copy symlinks over.
   # this specifically addresses icu4c issues but nothing else.
-  # We might not even need this any longer... 
+  # We might not even need this any longer...
   # ICU_LIB="$(brew --prefix icu4c)/lib"
   # export ICU_LIB
   # mkdir -p nheko.app/Contents/Frameworks
@@ -72,7 +76,7 @@ while sleep 60 && date; do
   #isSuccess=$(grep "success" "$NOTARIZE_STATUS_LOG")
   #isFailure=$(grep "invalid" "$NOTARIZE_STATUS_LOG")
 
-  echo "Status for submission \"${requestUUID}\": \"${sub_status}\"" 
+  echo "Status for submission \"${requestUUID}\": \"${sub_status}\""
 
   if [ "${sub_status}" = "Accepted" ]; then
       echo "Notarization done!"
@@ -91,7 +95,7 @@ done
 VERSION=${CI_COMMIT_SHORT_SHA}
 
 if [ -n "$VERSION" ]; then
-    mv nheko.dmg "nheko-${VERSION}.dmg"
+    mv nheko.dmg "nheko-${VERSION}_${PLAT}.dmg"
     mkdir artifacts
-    cp "nheko-${VERSION}.dmg" artifacts/
+    cp "nheko-${VERSION}_${PLAT}.dmg" artifacts/
 fi

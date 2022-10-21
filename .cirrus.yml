@@ -1,0 +1,23 @@
+task:
+  macos_instance:
+    image: ghcr.io/cirruslabs/macos-monterey-xcode:13
+  name: Build - macOS Apple Silicon
+  homebrew_script:
+    - brew bundle --file .ci/macos/Brewfile
+  build_script:
+    - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
+    - export CMAKE_PREFIX_PATH=/usr/local/opt/qt@5
+    - cmake -GNinja -H. -Bbuild
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo
+        -DCMAKE_INSTALL_PREFIX=.deps/usr
+        -DHUNTER_ROOT="../.hunter"
+        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
+        -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo
+        -DUSE_BUNDLED_OPENSSL=ON
+        -DUSE_BUNDLED_BOOST=ON
+        -DCI_BUILD=ON
+        -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
+    - cmake --build build
+    - (cd build && git clone https://github.com/Nheko-Reborn/qt-jdenticon.git && cd qt-jdenticon && qmake && make -j 4 && cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS)
+  binaries_artifacts:
+    path: build/nheko.app
