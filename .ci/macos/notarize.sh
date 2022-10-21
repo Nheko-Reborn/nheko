@@ -11,6 +11,7 @@ PATH="/usr/local/opt/qt@5/bin/:${PATH}"
 security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
 
 if [ "${CI_PIPELINE_TRIGGERED}" ]; then
+  echo "cirrus build id: ${TRIGGER_BUILD_ID}"
   cat "${TRIGGER_PAYLOAD}"
 fi
 

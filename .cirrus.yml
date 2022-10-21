@@ -2,6 +2,9 @@ task:
   macos_instance:
     image: ghcr.io/cirruslabs/macos-monterey-xcode:13
   name: Build - macOS Apple Silicon
+  only_if: $CIRRUS_REPO_OWNER == 'Nheko-Reborn'
+  environment:
+    GITLAB_TRIGGER_TOKEN: ENCRYPTED[!5fb4bbdecbde3b2c766ac7383dca573cd5ec8b815c5ac9bede0cadfe9ad70ecd3e64b1728f7840da087099f3fc1fd4f7!]
   homebrew_script:
     - brew bundle --file .ci/macos/Brewfile
   build_script:
@@ -24,5 +27,14 @@ task:
         -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
     - cmake --build build
     - (cd build && git clone https://github.com/Nheko-Reborn/qt-jdenticon.git && cd qt-jdenticon && qmake && make -j 4 && cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS)
+  zip_script:
+    - zip -r build/nheko.app build/nheko.zip
+  gitlab_script:
+    - curl -X POST
+        --fail
+        -F token="${GITLAB_TRIGGER_TOKEN}"
+        -F ref="${CIRRUS_BRANCH}"
+        -F "variables[TRIGGER_BUILD_ID]=${CIRRUS_BUILD_ID}"
+        "https://nheko.im/api/v4/projects/2/trigger/pipeline"
   binaries_artifacts:
-    path: build/nheko.app
+    path: build/nheko.zip
