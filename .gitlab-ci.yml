@@ -248,27 +248,14 @@ appimage-amd64:
     
   script:
     - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
-    - cmake -H. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -GNinja
-      -DHUNTER_ROOT=".hunter"
-      -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF
-      -DVOIP=OFF
-      -DMAN=OFF
-      -DCI_BUILD=ON
-      -DHUNTER_CONFIGURATION_TYPES=Release
-      -DUSE_BUNDLED_SPDLOG=OFF
-      -DUSE_BUNDLED_OLM=ON
-      -DUSE_BUNDLED_GTEST=OFF
-      -DUSE_BUNDLED_CMARK=ON
-      -DUSE_BUNDLED_JSON=ON
-      -DUSE_BUNDLED_OPENSSL=OFF
-      -DUSE_BUNDLED_MTXCLIENT=ON
-      -DUSE_BUNDLED_LMDB=OFF
-      -DUSE_BUNDLED_LMDBXX=ON
-      -DUSE_BUNDLED_QTKEYCHAIN=OFF
-      -DUSE_BUNDLED_LIBEVENT=OFF
-      -DUSE_BUNDLED_LIBCURL=OFF
-      -DUSE_BUNDLED_COEURL=ON
-      -DJSON_ImplicitConversions=OFF
+    - cmake -GNinja -H. -Bbuild
+        -DCMAKE_INSTALL_PREFIX=/usr
+        -DHUNTER_ROOT=".hunter"
+        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_LMDB=OFF -DUSE_BUNDLED_QTKEYCHAIN=OFF
+        -DVOIP=OFF -DMAN=OFF
+        -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
+        -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
+        -DJSON_ImplicitConversions=OFF
     - DESTDIR=`pwd`/AppDir ninja -C build install/local
     - DESTDIR=`pwd`/AppDir ninja -C build _deps/cmark-build/src/install
     - mkdir -p AppDir/usr/lib/x86_64-linux-gnu AppDir/lib/x86_64-linux-gnu
@@ -298,4 +285,3 @@ linting:
   script:
     - make lint
     - make license
-
