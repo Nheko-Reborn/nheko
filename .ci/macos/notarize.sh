@@ -14,7 +14,7 @@ if [ "${CI_PIPELINE_TRIGGERED}" ]; then
   echo "cirrus build id: ${TRIGGER_BUILD_ID}"
   cat "${TRIGGER_PAYLOAD}"
   # download the build artifacts from cirrus api
-  wget "https://api.cirrus-ci.com/v1/artifact/build/${TRIGGER_BUILD_ID}/binaries.zip"
+  curl "https://api.cirrus-ci.com/v1/artifact/build/${TRIGGER_BUILD_ID}/binaries.zip" -o binaries.zip
   # cirrus ci artifacts task name is 'binaries' so that's the zip name.
   unzip binaries.zip
   # we zip 'build/nheko.app' in cirrus ci, cirrus itself puts it in a 'build' directory
@@ -22,6 +22,11 @@ if [ "${CI_PIPELINE_TRIGGERED}" ]; then
   mv build/build/nheko.app build
   # get rid of the extra build directory
   rm -r build/build
+fi
+
+if [ -d "build/nheko.app" ]; then
+  echo "nheko.app is missing, you did something wrong!"
+  exit 1
 fi
 
 ( cd build || exit
