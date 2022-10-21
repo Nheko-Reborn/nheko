@@ -28,7 +28,7 @@ task:
     - cmake --build build
     - (cd build && git clone https://github.com/Nheko-Reborn/qt-jdenticon.git && cd qt-jdenticon && qmake && make -j 4 && cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS)
   zip_script:
-    - zip -r build/nheko.app build/nheko.zip
+    - zip -r build/nheko.zip build/nheko.app
   gitlab_script:
     - curl -X POST
         --fail
