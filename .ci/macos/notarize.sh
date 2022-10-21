@@ -21,6 +21,8 @@ if [ "${CI_PIPELINE_TRIGGERED}" ]; then
   # so move it to the right place for the rest of the process.
   ( cd build || exit
     unzip nheko.zip
+    mv build/nheko.app .
+    rm -rf build
   )
 fi
 
