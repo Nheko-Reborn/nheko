@@ -222,6 +222,7 @@ appimage-amd64:
   stage: build
   image: ubuntu:22.04
   tags: [docker]
+  allow_failure: true
   before_script:
     # Installing the packages needed to download and install third-party tools
     - apt-get update && apt-get install -y software-properties-common git wget curl
@@ -254,18 +255,18 @@ appimage-amd64:
       -DMAN=OFF
       -DCI_BUILD=ON
       -DHUNTER_CONFIGURATION_TYPES=Release
-      -DUSE_BUNDLED_SPDLOG=ON
+      -DUSE_BUNDLED_SPDLOG=OFF
       -DUSE_BUNDLED_OLM=ON
       -DUSE_BUNDLED_GTEST=OFF
       -DUSE_BUNDLED_CMARK=ON
       -DUSE_BUNDLED_JSON=ON
-      -DUSE_BUNDLED_OPENSSL=ON
+      -DUSE_BUNDLED_OPENSSL=OFF
       -DUSE_BUNDLED_MTXCLIENT=ON
       -DUSE_BUNDLED_LMDB=OFF
       -DUSE_BUNDLED_LMDBXX=ON
       -DUSE_BUNDLED_QTKEYCHAIN=OFF
-      -DUSE_BUNDLED_LIBEVENT=ON
-      -DUSE_BUNDLED_LIBCURL=ON
+      -DUSE_BUNDLED_LIBEVENT=OFF
+      -DUSE_BUNDLED_LIBCURL=OFF
       -DUSE_BUNDLED_COEURL=ON
       -DJSON_ImplicitConversions=OFF
     - DESTDIR=`pwd`/AppDir ninja -C build install/local
