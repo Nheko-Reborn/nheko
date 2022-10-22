@@ -796,9 +796,9 @@ RoomlistModel::setCurrentRoom(const QString &roomid)
 namespace {
 enum NotificationImportance : short
 {
-    ImportanceDisabled = -3,
-    NoPreview          = -2,
-    Preview            = -1,
+    NoPreview          = -3,
+    Preview            = -2,
+    ImportanceDisabled = -1,
     AllEventsRead      = 0,
     NewMessage         = 1,
     NewMentions        = 2,
