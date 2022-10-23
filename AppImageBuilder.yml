@@ -26,9 +26,7 @@ AppDir:
     # idk, need there ca-certificates, but some systems may not have
     - ca-certificates
     - gstreamer1.0-libav
-    - gstreamer1.0-plugins-bad
     - gstreamer1.0-plugins-base
-    - gstreamer1.0-plugins-good
     - gstreamer1.0-pulseaudio
     - gstreamer1.0-x
     - kimageformat-plugins
@@ -55,16 +53,8 @@ AppDir:
     - qml-module-qtquick-controls2
     - qml-module-qtquick-layouts
     - qml-module-qtquick-window2
-    - gstreamer1.0-nice
-    - gstreamer1.0-qt5
-    - gstreamer1.0-vaapi
     - libcmark0.30.2
     - libfmt8
-    - libgcc-s1
-    - libglib2.0-0
-    - libgstreamer-plugins-bad1.0-0
-    - libgstreamer-plugins-base1.0-0
-    - libgstreamer1.0-0
     - libolm3
     - libqt5core5a
     - libqt5dbus5
@@ -84,8 +74,6 @@ AppDir:
     - librubberband2
     - libsm6
     - libsnappy1v5
-    - libsystemd0
-    - libwayland-server0
     - libxau6
     - libxcb-render-util0
     - libxcb-sync1
