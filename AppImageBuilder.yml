@@ -25,11 +25,7 @@ AppDir:
     include:
     # idk, need there ca-certificates, but some systems may not have
     - ca-certificates
-    - gstreamer1.0-libav
-    - gstreamer1.0-plugins-base
-    - gstreamer1.0-pulseaudio
-    - gstreamer1.0-x
-    - kimageformat-plugins
+    - gstreamer1.0-plugins-good
     - libbs2b0
     - libbz2-1.0
     - libcurl4
@@ -44,7 +40,6 @@ AppDir:
     - libnorm1
     - libnss-mdns
     - libpcre3
-    - libqt5keychain1
     - qml-module-qt-labs-platform
     - qml-module-qt-labs-settings
     - qml-module-qtgraphicaleffects
@@ -63,8 +58,6 @@ AppDir:
     - libqt5multimedia5
     - libqt5multimedia5-plugins
     - libqt5network5
-    - libqt5qml5
-    - libqt5quick5
     - libqt5quickwidgets5
     - libqt5svg5
     - libqt5widgets5
@@ -93,10 +86,6 @@ AppDir:
     exclude:
     - usr/share/man
     - usr/share/doc
-    - opt/qt515/examples
-    - opt/qt515/bin
-    - opt/qt515/include
-    - opt/qt515/mkspecs
   test:
     fedora:
       image: appimagecrafters/tests-env:fedora-30
