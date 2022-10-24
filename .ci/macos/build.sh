@@ -27,6 +27,5 @@ cmake --build build
   git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
   cd qt-jdenticon && qmake && make -j 4
   cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS
+  macdeployqt nheko.app -always-overwrite -qmldir=../resources/qml/
 )
-
-macdeployqt nheko.app -always-overwrite -qmldir=../resources/qml/
