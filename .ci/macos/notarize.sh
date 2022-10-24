@@ -7,6 +7,7 @@ set -u
 
 # Add Qt binaries to path
 PATH="/usr/local/opt/qt@5/bin/:${PATH}"
+export PATH
 
 security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
 
@@ -30,22 +31,6 @@ if [ ! -d "build/nheko.app" ]; then
   echo "nheko.app is missing, you did something wrong!"
   exit 1
 fi
-
-( cd build || exit
-  # macdeployqt does not copy symlinks over.
-  # this specifically addresses icu4c issues but nothing else.
-  # We might not even need this any longer...
-  # ICU_LIB="$(brew --prefix icu4c)/lib"
-  # export ICU_LIB
-  # mkdir -p nheko.app/Contents/Frameworks
-  # find "${ICU_LIB}" -type l -name "*.dylib" -exec cp -a -n {} nheko.app/Contents/Frameworks/ \; || true
-
-  #macdeployqt nheko.app -dmg -always-overwrite -qmldir=../resources/qml/ -sign-for-notarization="${APPLE_DEV_IDENTITY}"
-  macdeployqt nheko.app -always-overwrite -qmldir=../resources/qml/
-
-  # user=$(id -nu)
-  # chown "${user}" nheko.dmg
-)
 
 echo "[INFO] Signing app contents"
 find "build/nheko.app/Contents"|while read -r fname; do
