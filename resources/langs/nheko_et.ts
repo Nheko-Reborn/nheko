@@ -1896,7 +1896,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+736"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished">Õiguste muutmine ei õnnestunud: %1</translation>
+        <translation>Õiguste muutmine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
