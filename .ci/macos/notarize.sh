@@ -41,6 +41,7 @@ find "build/nheko.app/Contents"|while read -r fname; do
 done
 
 codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "build/nheko.app"
+codesign -vvv --deep --strict "build/nheko.app"
 
 NOTARIZE_SUBMIT_LOG=$(mktemp /tmp/notarize-submit.XXXXXX)
 NOTARIZE_STATUS_LOG=$(mktemp /tmp/notarize-status.XXXXXX)
@@ -52,6 +53,8 @@ trap finish EXIT
 
 dmgbuild -s .ci/macos/settings.json "Nheko" nheko.dmg
 codesign -s "${APPLE_DEV_IDENTITY}" nheko.dmg
+codesign -vvv --deep --strict nheko.dmg
+
 user=$(id -nu)
 chown "${user}" nheko.dmg
 
