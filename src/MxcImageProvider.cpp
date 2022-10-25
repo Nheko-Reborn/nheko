@@ -172,7 +172,7 @@ MxcImageProvider::download(const QString &id,
         opts.width   = static_cast<uint8_t>(requestedSize.width() > 0 ? requestedSize.width() : -1);
         opts.height =
           static_cast<uint8_t>(requestedSize.height() > 0 ? requestedSize.height() : -1);
-        opts.method  = crop ? "crop" : "scale";
+        opts.method = crop ? "crop" : "scale";
         http::client()->get_thumbnail(
           opts,
           [fileInfo, requestedSize, radius, then, id, crop, cropLocally](

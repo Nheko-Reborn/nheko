@@ -1074,7 +1074,7 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
                 c->second > std::numeric_limits<std::uint16_t>::max()
                   ? std::numeric_limits<std::uint16_t>::max()
                   : static_cast<std::uint16_t>(c->second);
-              count                                      = c->second;
+              count = c->second;
           }
 
           nhlog::crypto()->info(

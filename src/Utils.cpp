@@ -557,7 +557,7 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                                                                        attrValueEnds.end());
                                     auto val      = sanitizeValue(QByteArray(
                                       attrStart, static_cast<int>(valueEnd - attrStart)));
-                                    attrStart = consumeSpaces(valueEnd);
+                                    attrStart     = consumeSpaces(valueEnd);
 
                                     if (val.contains('"'))
                                         continue;
