@@ -132,7 +132,7 @@ RoomSettings::roomAvatarUrl()
 int
 RoomSettings::memberCount() const
 {
-    return info_.member_count;
+    return static_cast<int>(info_.member_count);
 }
 
 void
@@ -180,7 +180,8 @@ QStringList
 RoomSettings::allowedRooms() const
 {
     QStringList rooms;
-    rooms.reserve(accessRules_.allow.size());
+    assert(accessRules_.allow.size() < std::numeric_limits<int>::max());
+    rooms.reserve(static_cast<int>(accessRules_.allow.size()));
     for (const auto &e : accessRules_.allow) {
         if (e.type == mtx::events::state::JoinAllowanceType::RoomMembership)
             rooms.push_back(QString::fromStdString(e.room_id));

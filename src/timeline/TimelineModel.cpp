@@ -679,7 +679,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         if (w == 0)
             w = 1;
 
-        double prop = media_height(event) / (double)w;
+        double prop = (double)media_height(event) / (double)w;
 
         return {prop > 0 ? prop : 1.};
     }
@@ -2881,7 +2881,7 @@ TimelineModel::pinnedMessages() const
         return {};
 
     QStringList list;
-    list.reserve((qsizetype)pinned->content.pinned.size());
+    list.reserve((int)pinned->content.pinned.size());
     for (const auto &p : pinned->content.pinned)
         list.push_back(QString::fromStdString(p));
 
@@ -2912,7 +2912,7 @@ TimelineModel::widgetLinks() const
         theme.clear();
     user = QUrl::toPercentEncoding(user);
 
-    list.reserve((qsizetype)evs.size());
+    list.reserve((int)evs.size());
     for (const auto &p : evs) {
         auto url = QString::fromStdString(p.content.url);
 

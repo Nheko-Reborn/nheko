@@ -61,7 +61,7 @@ stacktraceHandler(int signum)
     // see
     // https://stackoverflow.com/questions/77005/how-to-automatically-generate-a-stacktrace-when-my-program-crashes/77336#77336
     void *array[50];
-    size_t size;
+    int size;
 
     // get void*'s for all entries on the stack
     size = backtrace(array, 50);

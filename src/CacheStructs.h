@@ -93,8 +93,8 @@ struct RoomInfo
     //! Use the TimelineModel::lastMessage for an accurate timestamp.
     uint64_t approximate_last_modification_ts = 0;
 
-    uint16_t highlight_count    = 0;
-    uint16_t notification_count = 0;
+    uint64_t highlight_count    = 0;
+    uint64_t notification_count = 0;
 };
 
 void

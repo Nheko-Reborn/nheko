@@ -153,7 +153,8 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             int count = 0;
             auto end  = spaceOrder_.lastChild(index.row() - 2);
             for (int i = index.row() - 2; i <= end; i++)
-                count += spaceOrder_.tree[i].notificationCounts.notification_count;
+                count +=
+                  static_cast<int>(spaceOrder_.tree[i].notificationCounts.notification_count);
             return count;
         }
         case CommunitiesModel::Roles::HasLoudNotification: {

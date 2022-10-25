@@ -169,8 +169,9 @@ MxcImageProvider::download(const QString &id,
 
         mtx::http::ThumbOpts opts;
         opts.mxc_url = "mxc://" + id.toStdString();
-        opts.width   = requestedSize.width() > 0 ? requestedSize.width() : -1;
-        opts.height  = requestedSize.height() > 0 ? requestedSize.height() : -1;
+        opts.width   = static_cast<uint8_t>(requestedSize.width() > 0 ? requestedSize.width() : -1);
+        opts.height =
+          static_cast<uint8_t>(requestedSize.height() > 0 ? requestedSize.height() : -1);
         opts.method  = crop ? "crop" : "scale";
         http::client()->get_thumbnail(
           opts,

@@ -1144,7 +1144,7 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
     }
 
     bool shouldSeeKeys    = false;
-    uint64_t minimumIndex = -1;
+    uint32_t minimumIndex = -1;
     if (sessionData->currently.keys.count(req.sender)) {
         if (sessionData->currently.keys.at(req.sender)
               .deviceids.count(req.content.requesting_device_id)) {

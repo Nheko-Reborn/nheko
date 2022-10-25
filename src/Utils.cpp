@@ -354,8 +354,8 @@ utils::scaleImageToPixmap(const QImage &img, int size)
 
     // Deprecated in 5.13: const double sz =
     //  std::ceil(QApplication::desktop()->screen()->devicePixelRatioF() * (double)size);
-    const double sz =
-      std::ceil(QGuiApplication::primaryScreen()->devicePixelRatio() * (double)size);
+    const int sz = static_cast<int>(
+      std::ceil(QGuiApplication::primaryScreen()->devicePixelRatio() * (double)size));
     return QPixmap::fromImage(img.scaled(sz, sz, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
 }
 
@@ -376,8 +376,8 @@ utils::scaleDown(uint64_t maxWidth, uint64_t maxHeight, const QPixmap &source)
         w = source.width();
         h = source.height();
     } else {
-        w = source.width() * minAspectRatio;
-        h = source.height() * minAspectRatio;
+        w = static_cast<int>(static_cast<double>(source.width()) * minAspectRatio);
+        h = static_cast<int>(static_cast<double>(source.height()) * minAspectRatio);
     }
 
     return source.scaled(w, h, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
@@ -452,7 +452,7 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
     const auto end = data.cend();
     for (auto pos = data.cbegin(); pos < end;) {
         auto tagStart = std::find(pos, end, '<');
-        buffer.append(pos, tagStart - pos);
+        buffer.append(pos, static_cast<int>(tagStart - pos));
         if (tagStart == end)
             break;
 
@@ -460,14 +460,15 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
         const auto tagNameEnd =
           std::find_first_of(tagNameStart, end, tagNameEnds.begin(), tagNameEnds.end());
 
-        if (allowedTags.find(QByteArray(tagNameStart, tagNameEnd - tagNameStart).toLower()) ==
+        if (allowedTags.find(
+              QByteArray(tagNameStart, static_cast<int>(tagNameEnd - tagNameStart)).toLower()) ==
             allowedTags.end()) {
             // not allowed -> escape
             buffer.append("&lt;");
             pos = tagNameStart;
             continue;
         } else {
-            buffer.append(tagStart, tagNameEnd - tagStart);
+            buffer.append(tagStart, static_cast<int>(tagNameEnd - tagStart));
 
             pos = tagNameEnd;
 
@@ -492,7 +493,8 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                     auto attrEnd = std::find_first_of(
                       attrStart, attrsEnd, attrNameEnds.begin(), attrNameEnds.end());
 
-                    auto attrName = QByteArray(attrStart, attrEnd - attrStart).toLower();
+                    auto attrName =
+                      QByteArray(attrStart, static_cast<int>(attrEnd - attrStart)).toLower();
 
                     auto sanitizeValue = [&attrName](QByteArray val) {
                         if (attrName == QByteArrayLiteral("src") && !val.startsWith("mxc://"))
@@ -520,8 +522,8 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                                     if (valueEnd == attrsEnd)
                                         break;
 
-                                    auto val =
-                                      sanitizeValue(QByteArray(attrStart, valueEnd - attrStart));
+                                    auto val  = sanitizeValue(QByteArray(
+                                      attrStart, static_cast<int>(valueEnd - attrStart)));
                                     attrStart = consumeSpaces(valueEnd + 1);
                                     if (!val.isEmpty()) {
                                         buffer.append(' ');
@@ -537,8 +539,8 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                                     if (valueEnd == attrsEnd)
                                         break;
 
-                                    auto val =
-                                      sanitizeValue(QByteArray(attrStart, valueEnd - attrStart));
+                                    auto val  = sanitizeValue(QByteArray(
+                                      attrStart, static_cast<int>(valueEnd - attrStart)));
                                     attrStart = consumeSpaces(valueEnd + 1);
                                     if (!val.isEmpty()) {
                                         buffer.append(' ');
@@ -553,8 +555,8 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                                                                        attrsEnd,
                                                                        attrValueEnds.begin(),
                                                                        attrValueEnds.end());
-                                    auto val =
-                                      sanitizeValue(QByteArray(attrStart, valueEnd - attrStart));
+                                    auto val      = sanitizeValue(QByteArray(
+                                      attrStart, static_cast<int>(valueEnd - attrStart)));
                                     attrStart = consumeSpaces(valueEnd);
 
                                     if (val.contains('"'))
@@ -772,15 +774,15 @@ utils::generateContrastingHexColor(const QString &input, const QColor &backgroun
     auto hash = hashQString(input);
     // create a hue value based on the hash of the input.
     // Adapted to make Nico blue
-    auto userHue =
-      static_cast<int>(static_cast<double>(hash - static_cast<uint32_t>(0x60'00'00'00)) /
-                       std::numeric_limits<uint32_t>::max() * 360.);
+    auto userHue = static_cast<double>(hash - static_cast<uint32_t>(0x60'00'00'00)) /
+                   std::numeric_limits<uint32_t>::max() * 360.;
     // start with moderate saturation and lightness values.
-    auto sat       = 230;
-    auto lightness = 125;
+    auto sat       = 230.;
+    auto lightness = 125.;
 
     // converting to a QColor makes the luminance calc easier.
-    QColor inputColor = QColor::fromHsl(userHue, sat, lightness);
+    QColor inputColor = QColor::fromHsl(
+      static_cast<int>(userHue), static_cast<int>(sat), static_cast<int>(lightness));
 
     // calculate the initial luminance and contrast of the
     // generated color.  It's possible that no additional
@@ -798,7 +800,9 @@ utils::generateContrastingHexColor(const QString &input, const QColor &backgroun
         if (lightness >= 242 || lightness <= 13) {
             qreal newSat = qBound(26.0, sat * 1.25, 242.0);
 
-            inputColor.setHsl(userHue, qFloor(newSat), lightness);
+            inputColor.setHsl(static_cast<int>(userHue),
+                              static_cast<int>(qFloor(newSat)),
+                              static_cast<int>(lightness));
             auto tmpLum         = luminance(inputColor);
             auto higherContrast = computeContrast(tmpLum, backgroundLum);
             if (higherContrast > contrast) {
@@ -806,7 +810,9 @@ utils::generateContrastingHexColor(const QString &input, const QColor &backgroun
                 sat      = newSat;
             } else {
                 newSat = qBound(26.0, sat / 1.25, 242.0);
-                inputColor.setHsl(userHue, qFloor(newSat), lightness);
+                inputColor.setHsl(static_cast<int>(userHue),
+                                  static_cast<int>(qFloor(newSat)),
+                                  static_cast<int>(lightness));
                 tmpLum             = luminance(inputColor);
                 auto lowerContrast = computeContrast(tmpLum, backgroundLum);
                 if (lowerContrast > contrast) {
@@ -817,7 +823,9 @@ utils::generateContrastingHexColor(const QString &input, const QColor &backgroun
         } else {
             qreal newLightness = qBound(13.0, lightness * 1.25, 242.0);
 
-            inputColor.setHsl(userHue, sat, qFloor(newLightness));
+            inputColor.setHsl(static_cast<int>(userHue),
+                              static_cast<int>(sat),
+                              static_cast<int>(qFloor(newLightness)));
 
             auto tmpLum         = luminance(inputColor);
             auto higherContrast = computeContrast(tmpLum, backgroundLum);
@@ -829,7 +837,9 @@ utils::generateContrastingHexColor(const QString &input, const QColor &backgroun
                 // otherwise, try going the other way instead.
             } else {
                 newLightness = qBound(13.0, lightness / 1.25, 242.0);
-                inputColor.setHsl(userHue, sat, qFloor(newLightness));
+                inputColor.setHsl(static_cast<int>(userHue),
+                                  static_cast<int>(sat),
+                                  static_cast<int>(qFloor(newLightness)));
                 tmpLum             = luminance(inputColor);
                 auto lowerContrast = computeContrast(tmpLum, backgroundLum);
                 if (lowerContrast > contrast) {
@@ -888,8 +898,8 @@ utils::centerWidget(QWidget *widget, QWindow *parent)
     }
 
     auto findCenter = [childRect = widget->rect()](QRect hostRect) -> QPoint {
-        return QPoint(hostRect.center().x() - (childRect.width() * 0.5),
-                      hostRect.center().y() - (childRect.height() * 0.5));
+        return QPoint(static_cast<int>(hostRect.center().x() - (childRect.width() * 0.5)),
+                      static_cast<int>(hostRect.center().y() - (childRect.height() * 0.5)));
     };
     widget->move(findCenter(QGuiApplication::primaryScreen()->geometry()));
 }

@@ -82,7 +82,7 @@ MxcAnimatedImage::startDownload()
                 std::string temp(ba.constData(), ba.size());
                 temp =
                   mtx::crypto::to_string(mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
-                buffer.setData(temp.data(), temp.size());
+                buffer.setData(temp.data(), static_cast<int>(temp.size()));
             } else {
                 buffer.setData(device.readAll());
             }

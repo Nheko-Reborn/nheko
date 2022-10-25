@@ -124,10 +124,10 @@ CallManager::CallManager(QObject *parent)
           // Request new credentials close to expiry
           // See https://tools.ietf.org/html/draft-uberti-behave-turn-rest-00
           turnURIs_    = getTurnURIs(res);
-          uint32_t ttl = std::max(res.ttl, UINT32_C(3600));
+          uint32_t ttl = std::max(res.ttl, std::uint32_t{3600});
           if (res.ttl < 3600)
               nhlog::net()->warn("Setting ttl to 1 hour");
-          turnServerTimer_.setInterval(ttl * 1000 * 0.9);
+          turnServerTimer_.setInterval(std::chrono::seconds(ttl) * 10 / 9);
       });
 
     connect(&session_, &WebRTCSession::stateChanged, this, [this](webrtc::State state) {
@@ -728,7 +728,8 @@ CallManager::devices(bool isVideo) const
       isVideo ? UserSettings::instance()->camera() : UserSettings::instance()->microphone();
     std::vector<std::string> devices =
       CallDevices::instance().names(isVideo, defaultDevice.toStdString());
-    ret.reserve(devices.size());
+    assert(devices.size() < std::numeric_limits<int>::max());
+    ret.reserve(static_cast<int>(devices.size()));
     std::transform(devices.cbegin(), devices.cend(), std::back_inserter(ret), [](const auto &d) {
         return QString::fromStdString(d);
     });
@@ -867,7 +868,8 @@ CallManager::windowList()
     }
 #endif
     QStringList ret;
-    ret.reserve(windows_.size());
+    assert(windows_.size() < std::numeric_limits<int>::max());
+    ret.reserve(static_cast<int>(windows_.size()));
     for (const auto &w : windows_)
         ret.append(w.first);
 

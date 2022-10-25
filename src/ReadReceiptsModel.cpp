@@ -85,8 +85,9 @@ ReadReceiptsModel::addUsers(
     auto newReceipts = users.size() - readReceipts_.size();
 
     if (newReceipts > 0) {
-        beginInsertRows(
-          QModelIndex{}, readReceipts_.size(), readReceipts_.size() + newReceipts - 1);
+        beginInsertRows(QModelIndex{},
+                        static_cast<int>(readReceipts_.size()),
+                        static_cast<int>(readReceipts_.size() + newReceipts - 1));
 
         for (const auto &user : users) {
             QPair<QString, QDateTime> item = {QString::fromStdString(user.second),

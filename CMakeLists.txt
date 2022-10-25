@@ -275,6 +275,7 @@ if(NOT MSVC)
 		"${CMAKE_CXX_FLAGS} \
 		-Wall \
 		-Wextra \
+		-Wconversion \
 		-pedantic \
 		-fsized-deallocation \
 		-fdiagnostics-color=always \

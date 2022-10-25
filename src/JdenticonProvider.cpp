@@ -104,7 +104,8 @@ JdenticonRunnable::run()
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
     try {
-        QSvgRenderer renderer{jdenticon->generate(m_key, m_requestedSize.width()).toUtf8()};
+        QSvgRenderer renderer{
+          jdenticon->generate(m_key, static_cast<std::uint16_t>(m_requestedSize.width())).toUtf8()};
         renderer.render(&painter);
     } catch (std::exception &e) {
         nhlog::ui()->error(

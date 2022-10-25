@@ -406,7 +406,7 @@ public slots:
     RoomSummary *parentSpace();
 
     bool hasMentions() const { return highlight_count > 0; }
-    int notificationCount() const { return notification_count; }
+    int notificationCount() const { return static_cast<int>(notification_count); }
 
     QString scrollTarget() const;
 

@@ -33,7 +33,7 @@ struct DeviceKeysToMsgIndex
     // map from device key to message_index
     // Using the device id is safe because we check for reuse on device list updates
     // Using the device id makes our logic much easier to read.
-    std::map<std::string, uint64_t> deviceids;
+    std::map<std::string, uint32_t> deviceids;
 };
 
 struct SharedWithUsers
@@ -45,8 +45,8 @@ struct SharedWithUsers
 // Extra information associated with an outbound megolm session.
 struct GroupSessionData
 {
-    uint64_t message_index = 0;
     uint64_t timestamp     = 0;
+    uint32_t message_index = 0;
 
     // If we got the session via key sharing or forwarding, we can usually trust it.
     // If it came from asymmetric key backup, it is not trusted.

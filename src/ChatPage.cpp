@@ -179,7 +179,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
         static unsigned int prevNotificationCount = 0;
         unsigned int notificationCount            = 0;
         for (const auto &room : sync.rooms.join) {
-            notificationCount += room.second.unread_notifications.notification_count;
+            notificationCount +=
+              static_cast<unsigned int>(room.second.unread_notifications.notification_count);
         }
 
         // HACK: If we had less notifications last time we checked, send an alert if the
@@ -1064,12 +1065,15 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
           }
 
           std::map<std::string, uint16_t> key_counts;
-          auto count = 0;
+          std::uint64_t count = 0;
           if (auto c = res.one_time_key_counts.find(mtx::crypto::SIGNED_CURVE25519);
               c == res.one_time_key_counts.end()) {
               key_counts[mtx::crypto::SIGNED_CURVE25519] = 0;
           } else {
-              key_counts[mtx::crypto::SIGNED_CURVE25519] = c->second;
+              key_counts[mtx::crypto::SIGNED_CURVE25519] =
+                c->second > std::numeric_limits<std::uint16_t>::max()
+                  ? std::numeric_limits<std::uint16_t>::max()
+                  : static_cast<std::uint16_t>(c->second);
               count                                      = c->second;
           }
 
