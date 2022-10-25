@@ -19,13 +19,15 @@ cmake -GNinja -S. -Bbuild \
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
       -DUSE_BUNDLED_OPENSSL=ON \
-      -DUSE_BUNDLED_BOOST=ON \
       -DCI_BUILD=ON \
       -DCMAKE_OSX_DEPLOYMENT_TARGET=10.15
 cmake --build build
 ( cd build || exit 
   git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
-  cd qt-jdenticon && qmake && make -j 4
-  cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS
+  ( cd qt-jdenticon || exit 
+    qmake
+    make -j 4
+    cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS
+  )
   macdeployqt nheko.app -always-overwrite -qmldir=../resources/qml/
 )
