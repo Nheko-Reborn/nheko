@@ -11,7 +11,7 @@ task:
     - export PATH="$(brew --prefix qt5)/bin/:${PATH}"
     - ./.ci/macos/build.sh
   zip_script:
-    - zip -r build/nheko.zip build/nheko.app
+    - ditto -c -k --sequesterRsrc --keepParent build/nheko.app build/nheko.zip
   gitlab_script:
     - curl -X POST
         --fail
