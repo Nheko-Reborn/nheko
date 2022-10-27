@@ -11,7 +11,7 @@ export PATH
 
 security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
 
-if [ "${CI_PIPELINE_TRIGGERED}" ]; then
+if [ "${CI_PIPELINE_TRIGGERED}" ] && [ "${TRIGGERED_BY}" = "cirrus" ]; then
   echo "cirrus build id: ${TRIGGER_BUILD_ID}"
   cat "${TRIGGER_PAYLOAD}"
   # download the build artifacts from cirrus api
@@ -39,7 +39,6 @@ find "build/nheko.app/Contents"|while read -r fname; do
 done
 
 codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "build/nheko.app"
-codesign -vvv --deep --strict "build/nheko.app"
 
 NOTARIZE_SUBMIT_LOG=$(mktemp /tmp/notarize-submit.XXXXXX)
 NOTARIZE_STATUS_LOG=$(mktemp /tmp/notarize-status.XXXXXX)
@@ -51,7 +50,6 @@ trap finish EXIT
 
 dmgbuild -s .ci/macos/settings.json "Nheko" nheko.dmg
 codesign -s "${APPLE_DEV_IDENTITY}" nheko.dmg
-codesign -vvv --deep --strict nheko.dmg
 
 user=$(id -nu)
 chown "${user}" nheko.dmg
@@ -89,6 +87,7 @@ while sleep 60 && date; do
   fi
   if [ "${sub_status}" = "Invalid" ] || [ "${sub_status}" = "Rejected" ]; then
       echo "Notarization failed"
+      xcrun notarytool log "${requestUUID}" --apple-id "${APPLE_DEV_USER}" --password "${APPLE_DEV_PASS}" --team-id "${APPLE_TEAM_ID}" > "$NOTARIZE_STATUS_LOG" 2>&1
       cat "$NOTARIZE_STATUS_LOG" 1>&2
       exit 1
   fi
