@@ -151,11 +151,11 @@ codesign-macos:
     - job: build-macos
       optional: true # optional since we want to be able to also trigger this job from cirrus ci for apple silicon builds.
   rules:
-    - if : '$CI_COMMIT_BRANCH == "master"'
-    - if : $CI_COMMIT_TAG
     - if : '$CI_PIPELINE_TRIGGERED && $CI_COMMIT_REF_PROTECTED == "true"'
       variables:
         PLAT: "m1"
+    - if : '$CI_COMMIT_BRANCH == "master"'
+    - if : $CI_COMMIT_TAG
   artifacts:
     paths:
       - artifacts/nheko-${CI_COMMIT_SHORT_SHA}_${PLAT}.dmg
