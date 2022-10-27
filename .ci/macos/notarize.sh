@@ -11,7 +11,7 @@ export PATH
 
 security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
 
-if [ "${CI_PIPELINE_TRIGGERED}" ] && [ "${TRIGGERED_BY}" = "cirrus" ]; then
+if [ -n "${CI_PIPELINE_TRIGGERED:-}" ] && [ "${TRIGGERED_BY:-}" = "cirrus" ]; then
   echo "cirrus build id: ${TRIGGER_BUILD_ID}"
   cat "${TRIGGER_PAYLOAD}"
   # download the build artifacts from cirrus api

@@ -153,7 +153,7 @@ codesign-macos:
   rules:
     - if : '$CI_COMMIT_BRANCH == "master"'
     - if : $CI_COMMIT_TAG
-    - if : '$CI_PIPELINE_TRIGGERED && $CI_COMMIT_REF_PROTECTED'
+    - if : '$CI_PIPELINE_TRIGGERED && $CI_COMMIT_REF_PROTECTED == "true"'
       variables:
         PLAT: "m1"
   artifacts:
