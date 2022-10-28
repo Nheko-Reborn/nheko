@@ -28,5 +28,5 @@ cmake --build build
     make -j 4
     cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS
   )
-  macdeployqt nheko.app -always-overwrite -qmldir=../resources/qml/
+  "$(brew --prefix qt5)/bin/macdeployqt" nheko.app -always-overwrite -qmldir=../resources/qml/
 )
