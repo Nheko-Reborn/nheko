@@ -61,12 +61,12 @@
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Список псевдонимов (альтернативных имён) данной комнаты. Обычно, Вы можете задать псевдонимы лишь на своём домашнем сервере. Комнаты могут иметь лишь одно каноническое имя и множество псевдонимов.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Основное имя</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -76,17 +76,17 @@
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Представиться в данной комнате под псевдонимом</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Опубликовать в списке комнат</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить псевдоним</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -96,7 +96,7 @@
     <message>
         <location line="+11"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить</translation>
     </message>
 </context>
 <context>
@@ -240,22 +240,22 @@
     <message>
         <location line="+304"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation>Попросить приглашение</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите попросить приглашение войти? Вы можете добавить причину Вашего визита (необязательно):</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Failed to knock room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось попросить приглашение в комнату: %1</translation>
     </message>
     <message>
         <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать комнату: недопустимый псевдоним</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -385,7 +385,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+56"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Причина исключения</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -400,7 +400,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+13"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Причина блокировки</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -410,7 +410,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/ChatPage.qml" line="+37"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Отсутствует подключение к сети</translation>
     </message>
 </context>
 <context>
@@ -428,12 +428,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+86"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Развернуть</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Свернуть</translation>
     </message>
 </context>
 <context>
@@ -451,12 +451,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+23"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Личные чаты</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать личные чаты.</translation>
     </message>
     <message>
         <location line="+66"/>
@@ -466,7 +466,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation type="unfinished"></translation>
+        <translation>Комнаты, которые Вы отметили как «Избранные».</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -486,7 +486,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Messages from your server or administrator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сообщения от вашего сервера или администратора.</translation>
     </message>
     <message>
         <location line="+657"/>
@@ -524,10 +524,10 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n участник</numerusform>
+            <numerusform>%n участника</numerusform>
+            <numerusform>%n участников</numerusform>
         </translation>
     </message>
     <message>
@@ -4286,7 +4286,8 @@ Note that when this option is ON, opened files are left unencrypted on disk and 
         <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished">Дешифровывать сообщение отображающиеся в сайдбаре. Действует только на шифрованные чаты.</translation>
+        <translation>Отображать расшифрованные сообщения в боковой панели (списке комнат).
+Актуально только для комнат, в которых включено шифрование.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -4473,7 +4474,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../qml/pages/WelcomePage.qml" line="+29"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Добро пожаловать в Nheko, клиент для протокола Matrix!</translation>
+        <translation>Добро пожаловать в Nheko, клиент для протокола Matrix.</translation>
     </message>
     <message>
         <location line="+10"/>
