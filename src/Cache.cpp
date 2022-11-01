@@ -913,6 +913,29 @@ Cache::getMegolmSessionData(const MegolmSessionIndex &index)
 //
 
 void
+Cache::saveOlmSessions(std::vector<std::pair<std::string, mtx::crypto::OlmSessionPtr>> sessions,
+                       uint64_t timestamp)
+{
+    using namespace mtx::crypto;
+
+    auto txn = lmdb::txn::begin(env_);
+    for (const auto &[curve25519, session] : sessions) {
+        auto db = getOlmSessionsDb(txn, curve25519);
+
+        const auto pickled    = pickle<SessionObject>(session.get(), pickle_secret_);
+        const auto session_id = mtx::crypto::session_id(session.get());
+
+        StoredOlmSession stored_session;
+        stored_session.pickled_session = pickled;
+        stored_session.last_message_ts = timestamp;
+
+        db.put(txn, session_id, nlohmann::json(stored_session).dump());
+    }
+
+    txn.commit();
+}
+
+void
 Cache::saveOlmSession(const std::string &curve25519,
                       mtx::crypto::OlmSessionPtr session,
                       uint64_t timestamp)

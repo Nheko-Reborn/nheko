@@ -277,6 +277,8 @@ public:
     void saveOlmSession(const std::string &curve25519,
                         mtx::crypto::OlmSessionPtr session,
                         uint64_t timestamp);
+    void saveOlmSessions(std::vector<std::pair<std::string, mtx::crypto::OlmSessionPtr>> sessions,
+                         uint64_t timestamp);
     std::vector<std::string> getOlmSessions(const std::string &curve25519);
     std::optional<mtx::crypto::OlmSessionPtr>
     getOlmSession(const std::string &curve25519, const std::string &session_id);
