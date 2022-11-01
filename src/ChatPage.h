@@ -78,6 +78,11 @@ public:
     //! Check if the given room is currently open.
     bool isRoomActive(const QString &room_id);
 
+    const std::unique_ptr<mtx::pushrules::PushRuleEvaluator> &pushruleEvaluator() const
+    {
+        return pushrules;
+    }
+
 public slots:
     bool handleMatrixUri(QString uri);
     bool handleMatrixUri(const QUrl &uri);

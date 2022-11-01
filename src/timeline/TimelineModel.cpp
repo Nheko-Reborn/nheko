@@ -526,6 +526,7 @@ TimelineModel::roleNames() const
       {IsEncrypted, "isEncrypted"},
       {IsStateEvent, "isStateEvent"},
       {Trustlevel, "trustlevel"},
+      {Notificationlevel, "notificationlevel"},
       {EncryptionError, "encryptionError"},
       {ReplyTo, "replyTo"},
       {ThreadId, "threadId"},
@@ -735,6 +736,26 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             }
         }
         return crypto::Trust::Unverified;
+    }
+
+    case Notificationlevel: {
+        const auto &push = ChatPage::instance()->pushruleEvaluator();
+        if (push) {
+            auto actions = push->evaluate({event}, pushrulesRoomContext());
+            if (std::find(actions.begin(),
+                          actions.end(),
+                          mtx::pushrules::actions::Action{
+                            mtx::pushrules::actions::set_tweak_highlight{}}) != actions.end()) {
+                return qml_mtx_events::NotificationLevel::Highlight;
+            }
+            if (std::find(actions.begin(),
+                          actions.end(),
+                          mtx::pushrules::actions::Action{mtx::pushrules::actions::notify{}}) !=
+                actions.end()) {
+                return qml_mtx_events::NotificationLevel::Notify;
+            }
+        }
+        return qml_mtx_events::NotificationLevel::Nothing;
     }
 
     case EncryptionError:

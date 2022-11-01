@@ -415,6 +415,7 @@ Item {
             required property string callType
             required property var reactions
             required property int trustlevel
+            required property int notificationlevel
             required property int encryptionError
             required property var timestamp
             required property int status
@@ -482,6 +483,7 @@ Item {
                 callType: wrapper.callType
                 reactions: wrapper.reactions
                 trustlevel: wrapper.trustlevel
+                notificationlevel: wrapper.notificationlevel
                 encryptionError: wrapper.encryptionError
                 timestamp: wrapper.timestamp
                 status: wrapper.status

@@ -151,6 +151,14 @@ enum EventState
     Empty,
 };
 Q_ENUM_NS(EventState)
+
+enum NotificationLevel
+{
+    Nothing,
+    Notify,
+    Highlight,
+};
+Q_ENUM_NS(NotificationLevel)
 }
 
 class StateKeeper
@@ -242,6 +250,7 @@ public:
         IsEncrypted,
         IsStateEvent,
         Trustlevel,
+        Notificationlevel,
         EncryptionError,
         ReplyTo,
         ThreadId,
