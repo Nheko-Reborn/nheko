@@ -962,19 +962,20 @@ Cache::getOlmSession(const std::string &curve25519, const std::string &session_i
 {
     using namespace mtx::crypto;
 
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getOlmSessionsDb(txn, curve25519);
+    try {
+        auto txn = ro_txn(env_);
+        auto db = getOlmSessionsDb(txn, curve25519);
 
-    std::string_view pickled;
-    bool found = db.get(txn, session_id, pickled);
+        std::string_view pickled;
+        bool found = db.get(txn, session_id, pickled);
 
-    txn.commit();
+        if (found) {
+            auto data = nlohmann::json::parse(pickled).get<StoredOlmSession>();
+            return unpickle<SessionObject>(data.pickled_session, pickle_secret_);
+        }
 
-    if (found) {
-        auto data = nlohmann::json::parse(pickled).get<StoredOlmSession>();
-        return unpickle<SessionObject>(data.pickled_session, pickle_secret_);
+    } catch (...) {
     }
-
     return std::nullopt;
 }
 
@@ -983,26 +984,28 @@ Cache::getLatestOlmSession(const std::string &curve25519)
 {
     using namespace mtx::crypto;
 
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getOlmSessionsDb(txn, curve25519);
+    try {
+        auto txn = ro_txn(env_);
+        auto db = getOlmSessionsDb(txn, curve25519);
 
-    std::string_view session_id, pickled_session;
+        std::string_view session_id, pickled_session;
 
-    std::optional<StoredOlmSession> currentNewest;
+        std::optional<StoredOlmSession> currentNewest;
 
-    auto cursor = lmdb::cursor::open(txn, db);
-    while (cursor.get(session_id, pickled_session, MDB_NEXT)) {
-        auto data = nlohmann::json::parse(pickled_session).get<StoredOlmSession>();
-        if (!currentNewest || currentNewest->last_message_ts < data.last_message_ts)
-            currentNewest = data;
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(session_id, pickled_session, MDB_NEXT)) {
+            auto data = nlohmann::json::parse(pickled_session).get<StoredOlmSession>();
+            if (!currentNewest || currentNewest->last_message_ts < data.last_message_ts)
+                currentNewest = data;
+        }
+        cursor.close();
+
+        return currentNewest ? std::optional(unpickle<SessionObject>(currentNewest->pickled_session,
+                                                                     pickle_secret_))
+                             : std::nullopt;
+    } catch (...) {
+        return std::nullopt;
     }
-    cursor.close();
-
-    txn.commit();
-
-    return currentNewest ? std::optional(unpickle<SessionObject>(currentNewest->pickled_session,
-                                                                 pickle_secret_))
-                         : std::nullopt;
 }
 
 std::vector<std::string>
