@@ -775,9 +775,9 @@ Page {
                     ToolTip.text: qsTr("Search rooms (Ctrl+K)")
                     Layout.margins: Nheko.paddingMedium
                     onClicked: {
-                        var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
+                        var quickSwitch = Qt.createComponent("qrc:/qml/QuickSwitcher.qml").createObject(timelineRoot);
                         quickSwitch.open();
-                        timelineRoot.destroyOnClose(quickSwitch);
+                        destroyOnClosed(quickSwitch);
                     }
                 }
 
