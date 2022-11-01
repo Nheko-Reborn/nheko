@@ -964,7 +964,7 @@ Cache::getOlmSession(const std::string &curve25519, const std::string &session_i
 
     try {
         auto txn = ro_txn(env_);
-        auto db = getOlmSessionsDb(txn, curve25519);
+        auto db  = getOlmSessionsDb(txn, curve25519);
 
         std::string_view pickled;
         bool found = db.get(txn, session_id, pickled);
@@ -986,7 +986,7 @@ Cache::getLatestOlmSession(const std::string &curve25519)
 
     try {
         auto txn = ro_txn(env_);
-        auto db = getOlmSessionsDb(txn, curve25519);
+        auto db  = getOlmSessionsDb(txn, curve25519);
 
         std::string_view session_id, pickled_session;
 
