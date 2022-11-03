@@ -449,6 +449,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     connect(&events, &EventStore::fetchedMore, this, [this]() {
         setPaginationInProgress(false);
         updateLastMessage();
+        emit fetchedMore();
     });
     connect(&events, &EventStore::fetchedMore, this, &TimelineModel::checkAfterFetch);
     connect(&events,

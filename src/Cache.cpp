@@ -1013,20 +1013,22 @@ Cache::getOlmSessions(const std::string &curve25519)
 {
     using namespace mtx::crypto;
 
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getOlmSessionsDb(txn, curve25519);
+    try {
+        auto txn = ro_txn(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
 
-    std::string_view session_id, unused;
-    std::vector<std::string> res;
+        std::string_view session_id, unused;
+        std::vector<std::string> res;
 
-    auto cursor = lmdb::cursor::open(txn, db);
-    while (cursor.get(session_id, unused, MDB_NEXT))
-        res.emplace_back(session_id);
-    cursor.close();
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(session_id, unused, MDB_NEXT))
+            res.emplace_back(session_id);
+        cursor.close();
 
-    txn.commit();
-
-    return res;
+        return res;
+    } catch (...) {
+        return {};
+    }
 }
 
 void
@@ -2173,18 +2175,22 @@ Cache::roomIds()
 std::string
 Cache::previousBatchToken(const std::string &room_id)
 {
-    auto txn     = lmdb::txn::begin(env_, nullptr);
-    auto orderDb = getEventOrderDb(txn, room_id);
+    auto txn = ro_txn(env_);
+    try {
+        auto orderDb = getEventOrderDb(txn, room_id);
 
-    auto cursor = lmdb::cursor::open(txn, orderDb);
-    std::string_view indexVal, val;
-    if (!cursor.get(indexVal, val, MDB_FIRST)) {
+        auto cursor = lmdb::cursor::open(txn, orderDb);
+        std::string_view indexVal, val;
+        if (!cursor.get(indexVal, val, MDB_FIRST)) {
+            return "";
+        }
+
+        auto j = nlohmann::json::parse(val);
+
+        return j.value("prev_batch", "");
+    } catch (...) {
         return "";
     }
-
-    auto j = nlohmann::json::parse(val);
-
-    return j.value("prev_batch", "");
 }
 
 Cache::Messages
@@ -3206,10 +3212,10 @@ Cache::pendingEvents(const std::string &room_id)
 std::optional<mtx::events::collections::TimelineEvent>
 Cache::firstPendingMessage(const std::string &room_id)
 {
-    auto txn     = lmdb::txn::begin(env_);
+    auto txn     = ro_txn(env_);
     auto pending = getPendingMessagesDb(txn, room_id);
 
-    {
+    try {
         auto pendingCursor = lmdb::cursor::open(txn, pending);
         std::string_view tsIgnored, pendingTxn;
         while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
@@ -3225,7 +3231,6 @@ Cache::firstPendingMessage(const std::string &room_id)
                 from_json(nlohmann::json::parse(event), te);
 
                 pendingCursor.close();
-                txn.commit();
                 return te;
             } catch (std::exception &e) {
                 nhlog::db()->error("Failed to parse message from cache {}", e.what());
@@ -3233,10 +3238,8 @@ Cache::firstPendingMessage(const std::string &room_id)
                 continue;
             }
         }
+    } catch (const lmdb::error &e) {
     }
-
-    txn.commit();
-
     return std::nullopt;
 }
 
@@ -3998,33 +4001,36 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
     using namespace mtx::events;
     using namespace mtx::events::state;
 
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getStatesDb(txn, room_id);
+    auto txn = ro_txn(env_);
+    try {
+        auto db = getStatesDb(txn, room_id);
 
-    int64_t min_event_level = std::numeric_limits<int64_t>::max();
-    int64_t user_level      = std::numeric_limits<int64_t>::min();
+        int64_t min_event_level = std::numeric_limits<int64_t>::max();
+        int64_t user_level      = std::numeric_limits<int64_t>::min();
 
-    std::string_view event;
-    bool res = db.get(txn, to_string(EventType::RoomPowerLevels), event);
+        std::string_view event;
+        bool res = db.get(txn, to_string(EventType::RoomPowerLevels), event);
 
-    if (res) {
-        try {
-            StateEvent<PowerLevels> msg =
-              nlohmann::json::parse(std::string_view(event.data(), event.size()))
-                .get<StateEvent<PowerLevels>>();
+        if (res) {
+            try {
+                StateEvent<PowerLevels> msg =
+                  nlohmann::json::parse(std::string_view(event.data(), event.size()))
+                    .get<StateEvent<PowerLevels>>();
 
-            user_level = msg.content.user_level(user_id);
+                user_level = msg.content.user_level(user_id);
 
-            for (const auto &ty : eventTypes)
-                min_event_level = std::min(min_event_level, msg.content.state_level(to_string(ty)));
-        } catch (const nlohmann::json::exception &e) {
-            nhlog::db()->warn("failed to parse m.room.power_levels event: {}", e.what());
+                for (const auto &ty : eventTypes)
+                    min_event_level =
+                      std::min(min_event_level, msg.content.state_level(to_string(ty)));
+            } catch (const nlohmann::json::exception &e) {
+                nhlog::db()->warn("failed to parse m.room.power_levels event: {}", e.what());
+            }
         }
+
+        return user_level >= min_event_level;
+    } catch (...) {
+        return false;
     }
-
-    txn.commit();
-
-    return user_level >= min_event_level;
 }
 
 std::vector<std::string>

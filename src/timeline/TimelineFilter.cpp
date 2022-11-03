@@ -19,8 +19,10 @@ TimelineFilter::setThreadId(const QString &t)
     if (this->threadId != t) {
         this->threadId = t;
         invalidateFilter();
+
+        fetchMore({});
+        emit threadIdChanged();
     }
-    emit threadIdChanged();
 }
 
 void
@@ -30,21 +32,45 @@ TimelineFilter::setContentFilter(const QString &c)
     if (this->contentFilter != c) {
         this->contentFilter = c;
         invalidateFilter();
+
+        fetchMore({});
+        emit contentFilterChanged();
     }
-    emit contentFilterChanged();
+}
+
+void
+TimelineFilter::fetchAgain()
+{
+    if (threadId.isEmpty() && contentFilter.isEmpty())
+        return;
+
+    if (auto s = source()) {
+        if (rowCount() == cachedCount && s->canFetchMore(QModelIndex()))
+            s->fetchMore(QModelIndex());
+        else
+            cachedCount = rowCount();
+    }
 }
 
 void
 TimelineFilter::setSource(TimelineModel *s)
 {
     if (auto orig = this->source(); orig != s) {
-        if (orig)
+        cachedCount = 0;
+
+        if (orig) {
             disconnect(orig,
                        &TimelineModel::currentIndexChanged,
                        this,
                        &TimelineFilter::currentIndexChanged);
+            disconnect(orig, &TimelineModel::fetchedMore, this, &TimelineFilter::fetchAgain);
+        }
+
         this->setSourceModel(s);
+
         connect(s, &TimelineModel::currentIndexChanged, this, &TimelineFilter::currentIndexChanged);
+        connect(s, &TimelineModel::fetchedMore, this, &TimelineFilter::fetchAgain);
+
         emit sourceChanged();
         invalidateFilter();
     }

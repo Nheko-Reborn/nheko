@@ -465,6 +465,8 @@ signals:
 
     void scrollTargetChanged();
 
+    void fetchedMore();
+
 private:
     template<typename T>
     void sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType);

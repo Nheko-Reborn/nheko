@@ -45,9 +45,13 @@ signals:
     void sourceChanged();
     void currentIndexChanged();
 
+private slots:
+    void fetchAgain();
+
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
     QString threadId, contentFilter;
+    int cachedCount = 0;
 };
