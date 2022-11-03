@@ -118,7 +118,7 @@ AbstractButton {
         property color bgColor: Nheko.colors.base
         color: (Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
         radius: 4
-        border.width: r.notificationlevel == MtxEvent.Highlight ? 2 : 0
+        border.width: r.notificationlevel == MtxEvent.Highlight ? 1 : 0
         border.color: Nheko.theme.red
 
         GridLayout {
