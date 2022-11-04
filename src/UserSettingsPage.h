@@ -41,6 +41,8 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool markdown READ markdown WRITE setMarkdown NOTIFY markdownChanged)
     Q_PROPERTY(bool bubbles READ bubbles WRITE setBubbles NOTIFY bubblesChanged)
     Q_PROPERTY(bool smallAvatars READ smallAvatars WRITE setSmallAvatars NOTIFY smallAvatarsChanged)
+    Q_PROPERTY(
+      bool invertEnterKey READ invertEnterKey WRITE setInvertEnterKey NOTIFY invertEnterKeyChanged)
     Q_PROPERTY(bool animateImagesOnHover READ animateImagesOnHover WRITE setAnimateImagesOnHover
                  NOTIFY animateImagesOnHoverChanged)
     Q_PROPERTY(bool typingNotifications READ typingNotifications WRITE setTypingNotifications NOTIFY
@@ -154,6 +156,7 @@ public:
     void setMarkdown(bool state);
     void setBubbles(bool state);
     void setSmallAvatars(bool state);
+    void setInvertEnterKey(bool state);
     void setAnimateImagesOnHover(bool state);
     void setReadReceipts(bool state);
     void setTypingNotifications(bool state);
@@ -216,6 +219,7 @@ public:
     bool markdown() const { return markdown_; }
     bool bubbles() const { return bubbles_; }
     bool smallAvatars() const { return smallAvatars_; }
+    bool invertEnterKey() const { return invertEnterKey_; }
     bool animateImagesOnHover() const { return animateImagesOnHover_; }
     bool typingNotifications() const { return typingNotifications_; }
     bool sortByImportance() const { return sortByImportance_; }
@@ -280,6 +284,7 @@ signals:
     void markdownChanged(bool state);
     void bubblesChanged(bool state);
     void smallAvatarsChanged(bool state);
+    void invertEnterKeyChanged(bool state);
     void animateImagesOnHoverChanged(bool state);
     void typingNotificationsChanged(bool state);
     void buttonInTimelineChanged(bool state);
@@ -343,6 +348,7 @@ private:
     bool markdown_;
     bool bubbles_;
     bool smallAvatars_;
+    bool invertEnterKey_;
     bool animateImagesOnHover_;
     bool typingNotifications_;
     bool sortByImportance_;
@@ -435,6 +441,7 @@ class UserSettingsModel final : public QAbstractListModel
         Markdown,
         Bubbles,
         SmallAvatars,
+        InvertEnterKey,
         SidebarSection,
         GroupView,
         SortByImportance,
