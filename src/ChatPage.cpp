@@ -152,16 +152,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
     connect(notificationsManager,
             &NotificationsManager::sendNotificationReply,
             this,
-            [this](const QString &roomid, const QString &eventid, const QString &body) {
-                view_manager_->queueReply(roomid, eventid, body);
-                auto exWin = MainWindow::instance()->windowForRoom(roomid);
-                if (exWin) {
-                    exWin->requestActivate();
-                } else {
-                    view_manager_->rooms()->setCurrentRoom(roomid);
-                    MainWindow::instance()->requestActivate();
-                }
-            });
+            &ChatPage::sendNotificationReply);
 
     connect(
       this,
@@ -1581,6 +1572,19 @@ ChatPage::handleMatrixUri(QString uri)
         return false;
     }
     return false;
+}
+
+void
+ChatPage::sendNotificationReply(const QString &roomid, const QString &eventid, const QString &body)
+{
+    view_manager_->queueReply(roomid, eventid, body);
+    auto exWin = MainWindow::instance()->windowForRoom(roomid);
+    if (exWin) {
+        exWin->requestActivate();
+    } else {
+        view_manager_->rooms()->setCurrentRoom(roomid);
+        MainWindow::instance()->requestActivate();
+    }
 }
 
 bool

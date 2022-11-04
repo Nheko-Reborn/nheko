@@ -629,9 +629,9 @@ set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")
-	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm src/emoji/MacHelper.h)
+	set(SRC_FILES ${SRC_FILES} src/notifications/NotificationManagerProxy.h src/notifications/MacNotificationDelegate.h src/notifications/MacNotificationDelegate.mm src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm src/emoji/MacHelper.h)
 	if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
-		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm src/emoji/MacHelper.h PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+		set_source_files_properties( src/notifications/NotificationManagerProxy.h src/notifications/MacNotificationDelegate.h src/notifications/MacNotificationDelegate.mm src/notifications/ManagerMac.mm src/emoji/MacHelper.mm src/emoji/MacHelper.h PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 	endif()
 elseif (WIN32)
 	file(DOWNLOAD

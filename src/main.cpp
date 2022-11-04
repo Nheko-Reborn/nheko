@@ -33,6 +33,7 @@
 
 #if defined(Q_OS_MAC)
 #include "emoji/MacHelper.h"
+#include "notifications/Manager.h"
 #endif
 
 #if defined(GSTREAMER_AVAILABLE) && (defined(Q_OS_MAC) || defined(Q_OS_WINDOWS))
@@ -389,6 +390,10 @@ main(int argc, char *argv[])
     // Temporary solution for the emoji picker until
     // nheko has a proper menu bar with more functionality.
     MacHelper::initializeMenus();
+
+    // Need to set up notification delegate so users can respond to messages from within the
+    // notification itself.
+    NotificationsManager::attachToMacNotifCenter();
 #endif
 
     nhlog::ui()->info("starting nheko {}", nheko::version);

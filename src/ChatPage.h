@@ -110,6 +110,7 @@ public slots:
     void receivedSessionKey(const std::string &room_id, const std::string &session_id);
     void decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
                                   const SecretsToDecrypt &secrets);
+    void sendNotificationReply(const QString &roomid, const QString &eventid, const QString &body);
 signals:
     void connectionLost();
     void connectionRestored();
