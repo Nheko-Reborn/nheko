@@ -216,6 +216,11 @@ Rectangle {
                         popup.close();
                     } else if (event.matches(StandardKey.InsertLineSeparator)) {
                         if (popup.opened) popup.close();
+
+                        if (Settings.invertEnterKey && !Qt.inputMethod.visible || Qt.platform.os === "windows") {
+                            room.input.send();
+                            event.accepted = true;
+                        }
                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                         if (popup.opened) {
                             var currentCompletion = completer.currentCompletion();
@@ -227,7 +232,7 @@ Rectangle {
                                 return;
                             }
                         }
-                        if (!Qt.inputMethod.visible || Qt.platform.os === "windows") {
+                        if (!Settings.invertEnterKey && !Qt.inputMethod.visible || Qt.platform.os === "windows") {
                             room.input.send();
                             event.accepted = true;
                         }
