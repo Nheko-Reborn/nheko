@@ -78,7 +78,13 @@ private:
                                 const QString &event_id,
                                 const QString &subtitle,
                                 const QString &informativeText,
-                                const QString &bodyImagePath);
+                                const QString &bodyImagePath,
+                                const QString &respondStr,
+                                const QString &sendStr,
+                                const QString &placeholder);
+
+public:
+    static void attachToMacNotifCenter();
 #endif
 
 #if defined(Q_OS_WINDOWS)
