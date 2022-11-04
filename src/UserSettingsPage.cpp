@@ -71,9 +71,9 @@ UserSettings::load(std::optional<QString> profile)
     enlargeEmojiOnlyMessages_ =
       settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
     markdown_       = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
+    invertEnterKey_ = settings.value(QStringLiteral("user/invert_enter_key"), false).toBool();
     bubbles_        = settings.value(QStringLiteral("user/bubbles_enabled"), false).toBool();
     smallAvatars_   = settings.value(QStringLiteral("user/small_avatars_enabled"), false).toBool();
-    invertEnterKey_ = settings.value(QStringLiteral("user/invert_enter_key"), false).toBool();
     animateImagesOnHover_ =
       settings.value(QStringLiteral("user/animate_images_on_hover"), false).toBool();
     typingNotifications_ =
@@ -291,6 +291,17 @@ UserSettings::setMarkdown(bool state)
 }
 
 void
+UserSettings::setInvertEnterKey(bool state)
+{
+    if (state == invertEnterKey_)
+        return;
+
+    invertEnterKey_ = state;
+    emit invertEnterKeyChanged(state);
+    save();
+}
+
+void
 UserSettings::setBubbles(bool state)
 {
     if (state == bubbles_)
@@ -307,17 +318,6 @@ UserSettings::setSmallAvatars(bool state)
         return;
     smallAvatars_ = state;
     emit smallAvatarsChanged(state);
-    save();
-}
-
-void
-UserSettings::setInvertEnterKey(bool state)
-{
-    if (state == invertEnterKey_)
-        return;
-
-    invertEnterKey_ = state;
-    emit invertEnterKeyChanged(state);
     save();
 }
 
@@ -832,9 +832,9 @@ UserSettings::save()
     settings.setValue(QStringLiteral("read_receipts"), readReceipts_);
     settings.setValue(QStringLiteral("group_view"), groupView_);
     settings.setValue(QStringLiteral("markdown_enabled"), markdown_);
+    settings.setValue(QStringLiteral("invert_enter_key"), invertEnterKey_);
     settings.setValue(QStringLiteral("bubbles_enabled"), bubbles_);
     settings.setValue(QStringLiteral("small_avatars_enabled"), smallAvatars_);
-    settings.setValue(QStringLiteral("invert_enter_key"), invertEnterKey_);
     settings.setValue(QStringLiteral("animate_images_on_hover"), animateImagesOnHover_);
     settings.setValue(QStringLiteral("desktop_notifications"), hasDesktopNotifications_);
     settings.setValue(QStringLiteral("alert_on_notification"), hasAlertOnNotification_);
@@ -940,12 +940,12 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Communities sidebar");
         case Markdown:
             return tr("Send messages as Markdown");
+        case InvertEnterKey:
+            return tr("Use shift+enter to send and enter to start a new line");
         case Bubbles:
             return tr("Enable message bubbles");
         case SmallAvatars:
             return tr("Enable small Avatars");
-        case InvertEnterKey:
-            return tr("Use shift+enter to send and enter to start a new line");
         case AnimateImagesOnHover:
             return tr("Play animated images only on hover");
         case TypingNotifications:
@@ -1076,12 +1076,12 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->groupView();
         case Markdown:
             return i->markdown();
+        case InvertEnterKey:
+            return i->invertEnterKey();
         case Bubbles:
             return i->bubbles();
         case SmallAvatars:
             return i->smallAvatars();
-        case InvertEnterKey:
-            return i->invertEnterKey();
         case AnimateImagesOnHover:
             return i->animateImagesOnHover();
         case TypingNotifications:
@@ -1218,15 +1218,15 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr(
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
               "text.");
+        case InvertEnterKey:
+            return tr(
+              "Invert the behavior of the enter key in the text input, making it send the message "
+              "when shift+enter is pressed and starting a new line when enter is pressed.");
         case Bubbles:
             return tr(
               "Messages get a bubble background. This also triggers some layout changes (WIP).");
         case SmallAvatars:
             return tr("Avatars are resized to fit above the message.");
-        case InvertEnterKey:
-            return tr(
-              "Invert the behavior of the enter key in the text input, making it send the message "
-              "when shift+enter is pressed and starting a new line when enter is pressed.");
         case AnimateImagesOnHover:
             return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
         case TypingNotifications:
@@ -1364,9 +1364,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case StartInTray:
         case GroupView:
         case Markdown:
+        case InvertEnterKey:
         case Bubbles:
         case SmallAvatars:
-        case InvertEnterKey:
         case AnimateImagesOnHover:
         case TypingNotifications:
         case SortByImportance:
@@ -1590,6 +1590,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
+        case InvertEnterKey: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setInvertEnterKey(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         case Bubbles: {
             if (value.userType() == QMetaType::Bool) {
                 i->setBubbles(value.toBool());
@@ -1600,13 +1607,6 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case SmallAvatars: {
             if (value.userType() == QMetaType::Bool) {
                 i->setSmallAvatars(value.toBool());
-                return true;
-            } else
-                return false;
-        }
-        case InvertEnterKey: {
-            if (value.userType() == QMetaType::Bool) {
-                i->setInvertEnterKey(value.toBool());
                 return true;
             } else
                 return false;
@@ -2013,14 +2013,14 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     connect(s.get(), &UserSettings::markdownChanged, this, [this]() {
         emit dataChanged(index(Markdown), index(Markdown), {Value});
     });
+    connect(s.get(), &UserSettings::invertEnterKeyChanged, this, [this]() {
+        emit dataChanged(index(InvertEnterKey), index(InvertEnterKey), {Value});
+    });
     connect(s.get(), &UserSettings::bubblesChanged, this, [this]() {
         emit dataChanged(index(Bubbles), index(Bubbles), {Value});
     });
     connect(s.get(), &UserSettings::smallAvatarsChanged, this, [this]() {
         emit dataChanged(index(SmallAvatars), index(SmallAvatars), {Value});
-    });
-    connect(s.get(), &UserSettings::invertEnterKeyChanged, this, [this]() {
-        emit dataChanged(index(InvertEnterKey), index(InvertEnterKey), {Value});
     });
     connect(s.get(), &UserSettings::groupViewStateChanged, this, [this]() {
         emit dataChanged(index(GroupView), index(GroupView), {Value});
