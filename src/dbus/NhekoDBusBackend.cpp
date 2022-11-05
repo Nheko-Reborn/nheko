@@ -101,6 +101,12 @@ NhekoDBusBackend::directChat(const QString &userId) const
 }
 
 void
+NhekoDBusBackend::setStatusMessage(const QString &message)
+{
+    ChatPage::instance()->setStatus(message);
+}
+
+void
 NhekoDBusBackend::bringWindowToTop() const
 {
     MainWindow::instance()->show();

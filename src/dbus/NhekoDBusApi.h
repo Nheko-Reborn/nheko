@@ -80,6 +80,9 @@ joinRoom(const QString &alias);
 //! desired).
 void
 directChat(const QString &userId);
+//! Sets the user's status message (if supported by the homeserver).
+void
+setStatusMessage(const QString &message);
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item);
