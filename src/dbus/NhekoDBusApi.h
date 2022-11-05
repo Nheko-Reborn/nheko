@@ -18,7 +18,7 @@ init();
 
 //! The nheko D-Bus API version provided by this file. The API version number follows semantic
 //! versioning as defined by https://semver.org.
-const QVersionNumber dbusApiVersion{1, 0, 0};
+const QVersionNumber dbusApiVersion{1, 0, 1};
 
 //! Compare the installed Nheko API to the version that your client app targets to see if they
 //! are compatible.
