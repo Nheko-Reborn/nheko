@@ -378,6 +378,20 @@ ChatPage::dropToLoginPage(const QString &msg)
     http::client()->shutdown();
     connectivityTimer_.stop();
 
+    auto btn = QMessageBox::warning(
+      nullptr,
+      tr("Confirm logout"),
+      tr("Because of the following reason Nheko wants to drop you to the login page:\n%1\nIf you "
+         "think this is a mistake, you can close Nheko instead to possibly recover your encrpytion "
+         "keys. After you have been dropped to the login page, you can sign in again using your "
+         "usual methods."),
+      QMessageBox::StandardButton::Close | QMessageBox::StandardButton::Ok,
+      QMessageBox::StandardButton::Ok);
+    if (btn == QMessageBox::StandardButton::Close) {
+        QCoreApplication::exit(1);
+        exit(1);
+    }
+
     resetUI();
     deleteConfigs();
 

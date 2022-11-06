@@ -361,7 +361,8 @@ fatalSecretError()
         "have multiple reasons. Check if your D-Bus service is running and you have configured a "
         "service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If "
         "you are having trouble, feel free to open an issue here: "
-        "https://github.com/Nheko-Reborn/nheko/issues"));
+        "https://github.com/Nheko-Reborn/nheko/issues"),
+      QMessageBox::StandardButton::Close);
 
     QCoreApplication::exit(1);
     exit(1);
