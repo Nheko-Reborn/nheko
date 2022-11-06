@@ -384,7 +384,8 @@ ChatPage::dropToLoginPage(const QString &msg)
       tr("Because of the following reason Nheko wants to drop you to the login page:\n%1\nIf you "
          "think this is a mistake, you can close Nheko instead to possibly recover your encrpytion "
          "keys. After you have been dropped to the login page, you can sign in again using your "
-         "usual methods."),
+         "usual methods.")
+        .arg(msg),
       QMessageBox::StandardButton::Close | QMessageBox::StandardButton::Ok,
       QMessageBox::StandardButton::Ok);
     if (btn == QMessageBox::StandardButton::Close) {

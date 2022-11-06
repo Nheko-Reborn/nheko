@@ -6,6 +6,7 @@
 #include "Olm.h"
 
 #include <QObject>
+#include <QRandomGenerator>
 #include <QTimer>
 
 #include <nlohmann/json.hpp>
@@ -98,13 +99,19 @@ handle_secret_request(const mtx::events::DeviceEvent<mtx::events::msg::SecretReq
         return;
     secretSend.content.secret = secret.value();
 
-    send_encrypted_to_device_messages(
-      {{local_user.to_string(), {{e->content.requesting_device_id}}}}, secretSend);
+    // Randomly delay reply to workaround olm session generation races
+    QTimer::singleShot(QRandomGenerator::global()->bounded(0, 3000),
+                       ChatPage::instance(),
+                       [local_user, e = *e, secretSend] {
+                           send_encrypted_to_device_messages(
+                             {{local_user.to_string(), {{e.content.requesting_device_id}}}},
+                             secretSend);
 
-    nhlog::net()->info("Sent secret '{}' to ({},{})",
-                       e->content.name,
-                       local_user.to_string(),
-                       e->content.requesting_device_id);
+                           nhlog::net()->info("Sent secret '{}' to ({},{})",
+                                              e.content.name,
+                                              local_user.to_string(),
+                                              e.content.requesting_device_id);
+                       });
 }
 
 void

@@ -291,9 +291,9 @@ public:
     void deleteBackupVersion();
     std::optional<OnlineBackupVersion> backupVersion();
 
-    void storeSecret(const std::string name, const std::string secret, bool internal = false);
-    void deleteSecret(const std::string name, bool internal = false);
-    std::optional<std::string> secret(const std::string name, bool internal = false);
+    void storeSecret(const std::string &name, const std::string &secret, bool internal = false);
+    void deleteSecret(const std::string &name, bool internal = false);
+    std::optional<std::string> secret(const std::string &name, bool internal = false);
 
     std::string pickleSecret();
 
@@ -324,7 +324,12 @@ signals:
     void databaseReady();
 
 private:
-    void loadSecrets(std::vector<std::pair<std::string, bool>> toLoad);
+    void loadSecretsFromStore(
+      std::vector<std::pair<std::string, bool>> toLoad,
+      std::function<void(const std::string &name, bool internal, const std::string &value)>
+        callback);
+    void storeSecretInStore(const std::string name, const std::string secret);
+    void deleteSecretFromStore(const std::string name, bool internal);
 
     //! Save an invited room.
     void saveInvite(lmdb::txn &txn,
@@ -685,7 +690,6 @@ private:
     std::string pickle_secret_;
 
     VerificationStorage verification_storage;
-    SecretsStorage secret_storage;
 
     bool databaseReady_ = false;
 };

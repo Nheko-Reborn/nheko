@@ -39,7 +39,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION{"2022.04.08"};
+static const std::string CURRENT_CACHE_FORMAT_VERSION{"2022.11.06"};
 
 //! Keys used for the DB
 static const std::string_view NEXT_BATCH_KEY("next_batch");
@@ -340,13 +340,13 @@ Cache::setup()
 
     txn.commit();
 
-    loadSecrets({
-      {mtx::secret_storage::secrets::cross_signing_master, false},
-      {mtx::secret_storage::secrets::cross_signing_self_signing, false},
-      {mtx::secret_storage::secrets::cross_signing_user_signing, false},
-      {mtx::secret_storage::secrets::megolm_backup_v1, false},
-      {"pickle_secret", true},
-    });
+    loadSecretsFromStore(
+      {
+        {"pickle_secret", true},
+      },
+      [this](const std::string &, bool, const std::string &value) {
+          this->pickle_secret_ = value;
+      });
 }
 
 static void
@@ -380,7 +380,9 @@ secretName(std::string name, bool internal)
 }
 
 void
-Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
+Cache::loadSecretsFromStore(
+  std::vector<std::pair<std::string, bool>> toLoad,
+  std::function<void(const std::string &name, bool internal, const std::string &value)> callback)
 {
     auto settings = UserSettings::instance()->qsettings();
 
@@ -398,12 +400,11 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
             if (value.isEmpty()) {
                 nhlog::db()->info("Restored empty secret '{}'.", name.toStdString());
             } else {
-                std::unique_lock lock(secret_storage.mtx);
-                secret_storage.secrets[name.toStdString()] = value.toStdString();
+                callback(name_, internal, value.toStdString());
             }
         }
         // if we emit the databaseReady signal directly it won't be received
-        QTimer::singleShot(0, this, [this] { loadSecrets({}); });
+        QTimer::singleShot(0, this, [this, callback] { loadSecretsFromStore({}, callback); });
         return;
     }
 
@@ -419,7 +420,7 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
     connect(job,
             &QKeychain::ReadPasswordJob::finished,
             this,
-            [this, name, toLoad, job](QKeychain::Job *) mutable {
+            [this, name, toLoad, job, name_, internal, callback](QKeychain::Job *) mutable {
                 nhlog::db()->debug("Finished reading '{}'", toLoad.begin()->first);
                 const QString secret = job->textData();
                 if (job->error() && job->error() != QKeychain::Error::EntryNotFound) {
@@ -433,40 +434,72 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
                 if (secret.isEmpty()) {
                     nhlog::db()->debug("Restored empty secret '{}'.", name.toStdString());
                 } else {
-                    std::unique_lock lock(secret_storage.mtx);
-                    secret_storage.secrets[name.toStdString()] = secret.toStdString();
+                    callback(name_, internal, secret.toStdString());
                 }
 
                 // load next secret
                 toLoad.erase(toLoad.begin());
 
                 // You can't start a job from the finish signal of a job.
-                QTimer::singleShot(0, this, [this, toLoad] { loadSecrets(toLoad); });
+                QTimer::singleShot(
+                  0, this, [this, toLoad, callback] { loadSecretsFromStore(toLoad, callback); });
             });
     nhlog::db()->debug("Reading '{}'", name_);
     job->start();
 }
 
 std::optional<std::string>
-Cache::secret(const std::string name_, bool internal)
+Cache::secret(const std::string &name_, bool internal)
 {
     auto name = secretName(name_, internal);
-    std::unique_lock lock(secret_storage.mtx);
-    if (auto secret = secret_storage.secrets.find(name.toStdString());
-        secret != secret_storage.secrets.end())
-        return secret->second;
-    else
+
+    auto txn = ro_txn(env_);
+    std::string_view value;
+    auto db_name = "secret." + name.toStdString();
+    if (!syncStateDb_.get(txn, db_name, value))
         return std::nullopt;
+
+    mtx::secret_storage::AesHmacSha2EncryptedData data = nlohmann::json::parse(value);
+
+    auto decrypted = mtx::crypto::decrypt(data, mtx::crypto::to_binary_buf(pickle_secret_), name_);
+    if (decrypted.empty())
+        return std::nullopt;
+    else
+        return decrypted;
 }
 
 void
-Cache::storeSecret(const std::string name_, const std::string secret, bool internal)
+Cache::storeSecret(const std::string &name_, const std::string &secret, bool internal)
 {
     auto name = secretName(name_, internal);
-    {
-        std::unique_lock lock(secret_storage.mtx);
-        secret_storage.secrets[name.toStdString()] = secret;
-    }
+
+    auto txn = lmdb::txn::begin(env_);
+
+    auto encrypted =
+      mtx::crypto::encrypt(secret, mtx::crypto::to_binary_buf(pickle_secret_), name_);
+
+    auto db_name = "secret." + name.toStdString();
+    syncStateDb_.put(txn, db_name, nlohmann::json(encrypted).dump());
+    txn.commit();
+    emit secretChanged(name_);
+}
+
+void
+Cache::deleteSecret(const std::string &name_, bool internal)
+{
+    auto name = secretName(name_, internal);
+
+    auto txn = lmdb::txn::begin(env_);
+    std::string_view value;
+    auto db_name = "secret." + name.toStdString();
+    syncStateDb_.del(txn, db_name, value);
+    txn.commit();
+}
+
+void
+Cache::storeSecretInStore(const std::string name_, const std::string secret)
+{
+    auto name = secretName(name_, true);
 
     auto settings = UserSettings::instance()->qsettings();
     if (settings->value(QStringLiteral("run_without_secure_secrets_service"), false).toBool()) {
@@ -507,13 +540,9 @@ Cache::storeSecret(const std::string name_, const std::string secret, bool inter
 }
 
 void
-Cache::deleteSecret(const std::string name, bool internal)
+Cache::deleteSecretFromStore(const std::string name, bool internal)
 {
     auto name_ = secretName(name, internal);
-    {
-        std::unique_lock lock(secret_storage.mtx);
-        secret_storage.secrets.erase(name_.toStdString());
-    }
 
     auto settings = UserSettings::instance()->qsettings();
     if (settings->value(QStringLiteral("run_without_secure_secrets_service"), false).toBool()) {
@@ -539,13 +568,8 @@ std::string
 Cache::pickleSecret()
 {
     if (pickle_secret_.empty()) {
-        auto s = secret("pickle_secret", true);
-        if (!s) {
-            this->pickle_secret_ = mtx::client::utils::random_token(64, true);
-            storeSecret("pickle_secret", pickle_secret_, true);
-        } else {
-            this->pickle_secret_ = *s;
-        }
+        this->pickle_secret_ = mtx::client::utils::random_token(64, true);
+        storeSecretInStore("pickle_secret", pickle_secret_);
     }
 
     return pickle_secret_;
@@ -1179,11 +1203,7 @@ Cache::deleteData()
             nhlog::db()->info("deleted cache files from disk");
         }
 
-        deleteSecret(mtx::secret_storage::secrets::megolm_backup_v1);
-        deleteSecret(mtx::secret_storage::secrets::cross_signing_master);
-        deleteSecret(mtx::secret_storage::secrets::cross_signing_user_signing);
-        deleteSecret(mtx::secret_storage::secrets::cross_signing_self_signing);
-        deleteSecret("pickle_secret", true);
+        deleteSecretFromStore("pickle_secret", true);
     }
 }
 
@@ -1392,7 +1412,8 @@ Cache::runMigrations()
        }},
       {"2021.08.31",
        [this]() {
-           storeSecret("pickle_secret", "secret", true);
+           storeSecretInStore("pickle_secret", "secret");
+           this->pickle_secret_ = "secret";
            return true;
        }},
       {"2022.04.08",
@@ -1447,6 +1468,22 @@ Cache::runMigrations()
                  "Failed to migrate stored megolm session to have no sender key: {}", e.what());
                return false;
            }
+       }},
+      {"2022.11.06",
+       [this]() {
+           loadSecretsFromStore(
+             {
+               {mtx::secret_storage::secrets::cross_signing_master, false},
+               {mtx::secret_storage::secrets::cross_signing_self_signing, false},
+               {mtx::secret_storage::secrets::cross_signing_user_signing, false},
+               {mtx::secret_storage::secrets::megolm_backup_v1, false},
+             },
+             [this](const std::string &name, bool internal, const std::string &value) {
+                 this->storeSecret(name, value, internal);
+                 QTimer::singleShot(
+                   0, this, [this, name, internal] { deleteSecretFromStore(name, internal); });
+             });
+           return true;
        }},
     };
 
