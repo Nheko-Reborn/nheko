@@ -420,7 +420,8 @@ Cache::loadSecretsFromStore(
     connect(job,
             &QKeychain::ReadPasswordJob::finished,
             this,
-            [this, name, toLoad, job, name_, internal, callback](QKeychain::Job *) mutable {
+            [this, name, toLoad, job, name_ = name_, internal = internal, callback](
+              QKeychain::Job *) mutable {
                 nhlog::db()->debug("Finished reading '{}'", toLoad.begin()->first);
                 const QString secret = job->textData();
                 if (job->error() && job->error() != QKeychain::Error::EntryNotFound) {
