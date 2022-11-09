@@ -128,6 +128,7 @@ AbstractButton {
                 right: parent.right
                 margins: (Settings.bubbles && ! isStateEvent)? 4 : 2
                 leftMargin: 4
+                rightMargin: 4
             }
             id: msg
             rowSpacing: 0
@@ -300,7 +301,7 @@ AbstractButton {
     Reactions {
         anchors {
             top: row.bottom
-            topMargin: -2
+            topMargin: -4
             left: row.bubbleOnRight? undefined : row.left
             right: row.bubbleOnRight? row.right : undefined
         }
