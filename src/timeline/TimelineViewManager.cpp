@@ -445,8 +445,8 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
         stickerModel->setParent(proxy);
         return proxy;
     } else if (completerName == QLatin1String("command")) {
-        static auto commandCompleter = new CommandCompleter();
-        auto proxy                   = new CompletionProxyModel(commandCompleter);
+        auto commandCompleter = new CommandCompleter();
+        auto proxy            = new CompletionProxyModel(commandCompleter);
         commandCompleter->setParent(proxy);
         return proxy;
     }
