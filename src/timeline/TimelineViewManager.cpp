@@ -12,6 +12,7 @@
 
 #include "ChatPage.h"
 #include "CombinedImagePackModel.h"
+#include "CommandCompleter.h"
 #include "CompletionProxyModel.h"
 #include "EventAccessors.h"
 #include "ImagePackListModel.h"
@@ -442,6 +443,11 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
         auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), false);
         auto proxy        = new CompletionProxyModel(stickerModel);
         stickerModel->setParent(proxy);
+        return proxy;
+    } else if (completerName == QLatin1String("command")) {
+        static auto commandCompleter = new CommandCompleter();
+        auto proxy                   = new CompletionProxyModel(commandCompleter);
+        commandCompleter->setParent(proxy);
         return proxy;
     }
     return nullptr;

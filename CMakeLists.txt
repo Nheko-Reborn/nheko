@@ -451,6 +451,8 @@ set(SRC_FILES
 	src/ColorImageProvider.h
 	src/CombinedImagePackModel.cpp
 	src/CombinedImagePackModel.h
+	src/CommandCompleter.cpp
+	src/CommandCompleter.h
 	src/CompletionModelRoles.h
 	src/CompletionProxyModel.cpp
 	src/CompletionProxyModel.h

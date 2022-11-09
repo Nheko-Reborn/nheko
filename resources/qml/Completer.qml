@@ -210,6 +210,30 @@ Control {
                 }
 
                 DelegateChoice {
+                    roleValue: "command"
+
+                    RowLayout {
+                        id: del
+
+                        anchors.centerIn: parent
+                        spacing: rowSpacing
+
+                        Label {
+                            text: model.name
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            font.bold: true
+                        }
+
+                        Label {
+                            text: model.description
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                        }
+
+                    }
+
+                }
+
+                DelegateChoice {
                     roleValue: "customEmoji"
 
                     RowLayout {

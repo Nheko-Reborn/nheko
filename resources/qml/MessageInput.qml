@@ -168,6 +168,8 @@ Rectangle {
                         messageInput.openCompleter(selectionStart-1, "roomAliases");
                     } else if (lastChar == "~") {
                         messageInput.openCompleter(selectionStart-1, "customEmoji");
+                    } else if (lastChar == "/" && cursorPosition == 1) {
+                        messageInput.openCompleter(selectionStart-1, "command");
                     }
                 }
                 onCursorPositionChanged: {
