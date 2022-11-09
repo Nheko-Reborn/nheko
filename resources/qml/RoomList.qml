@@ -160,6 +160,11 @@ Page {
             }
 
             Platform.MenuItem {
+                text: qsTr("Room settings")
+                onTriggered: TimelineManager.openRoomSettings(roomContextMenu.roomid)
+            }
+
+            Platform.MenuItem {
                 text: qsTr("Leave room")
                 onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
             }
