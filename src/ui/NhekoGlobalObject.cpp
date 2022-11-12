@@ -6,6 +6,8 @@
 #include "NhekoGlobalObject.h"
 
 #include <QApplication>
+#include <QDBusConnection>
+#include <QDBusError>
 #include <QDesktopServices>
 #include <QStyle>
 #include <QUrl>
@@ -21,6 +23,17 @@ Nheko::Nheko()
 {
     connect(
       UserSettings::instance().get(), &UserSettings::themeChanged, this, &Nheko::colorsChanged);
+#ifdef NHEKO_DBUS_SYS
+    nhlog::ui()->debug("got a bus? {}",
+    QDBusConnection::sessionBus().connect(QLatin1String("org.freedesktop.portal.Desktop"),
+                                          QLatin1String("/org/freedesktop/portal/desktop"),
+                                          QLatin1String("org.freedesktop.portal.Settings"),
+                                          QLatin1String("SettingChanged"),
+                                          this,
+                                          SLOT(handleThemeChange(QString,QString,QVariant))));
+    auto x = QDBusConnection::sessionBus().lastError();
+    nhlog::ui()->debug(x.message().toStdString());
+#endif
     connect(ChatPage::instance(), &ChatPage::contentLoaded, this, &Nheko::updateUserProfile);
     connect(ChatPage::instance(), &ChatPage::showRoomJoinPrompt, this, &Nheko::showRoomJoinPrompt);
     connect(this, &Nheko::joinRoom, ChatPage::instance(), &ChatPage::joinRoom);
@@ -36,6 +49,18 @@ Nheko::updateUserProfile()
         currentUser_.reset();
     emit profileChanged();
 }
+
+#ifdef NHEKO_DBUS_SYS
+void
+Nheko::handleThemeChange(QString interface, QString setting, QVariant)
+//Nheko::handleThemeChange(const QString &interface, const QString &setting, const QVariant &)
+{
+    nhlog::ui()->debug("theme change {} {}", interface.toStdString(), setting.toStdString());
+    if (interface == QLatin1String("org.freedesktop.appearance") &&
+        setting == QLatin1String("color-scheme"))
+        emit colorsChanged();
+}
+#endif
 
 QPalette
 Nheko::colors() const

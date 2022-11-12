@@ -74,6 +74,9 @@ public:
 
 public slots:
     void updateUserProfile();
+#ifdef NHEKO_DBUS_SYS
+    void handleThemeChange(QString interface, QString setting, QVariant);
+#endif
 
 signals:
     void colorsChanged();
