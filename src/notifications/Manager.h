@@ -81,7 +81,8 @@ private:
                                 const QString &bodyImagePath,
                                 const QString &respondStr,
                                 const QString &sendStr,
-                                const QString &placeholder);
+                                const QString &placeholder,
+                                const bool playSound);
 
 public:
     static void attachToMacNotifCenter();

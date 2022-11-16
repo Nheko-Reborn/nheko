@@ -47,13 +47,29 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
     const auto sendStr     = QObject::tr("Send");
     const auto placeholder = QObject::tr("Write a message...");
 
+    auto playSound = false;
+
+    if (std::find(notification.actions.begin(),
+                  notification.actions.end(),
+                  mtx::pushrules::actions::Action{mtx::pushrules::actions::set_tweak_sound{
+                    .value = "default"}}) != notification.actions.end()) {
+        playSound = true;
+    }
     if (isEncrypted) {
         // TODO: decrypt this message if the decryption setting is on in the UserSettings
         const QString messageInfo = (isReply ? tr("%1 replied with an encrypted message")
                                              : tr("%1 sent an encrypted message"))
                                       .arg(sender);
-        objCxxPostNotification(
-          room_name, room_id, event_id, messageInfo, "", "", respondStr, sendStr, placeholder);
+        objCxxPostNotification(room_name,
+                               room_id,
+                               event_id,
+                               messageInfo,
+                               "",
+                               "",
+                               respondStr,
+                               sendStr,
+                               placeholder,
+                               playSound);
     } else {
         const QString messageInfo =
           (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
@@ -69,7 +85,8 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                messageInfo,
                respondStr,
                sendStr,
-               placeholder](QString, QSize, QImage, QString imgPath) {
+               placeholder,
+               playSound](QString, QSize, QImage, QString imgPath) {
                   objCxxPostNotification(room_name,
                                          room_id,
                                          event_id,
@@ -78,7 +95,8 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                                          imgPath,
                                          respondStr,
                                          sendStr,
-                                         placeholder);
+                                         placeholder,
+                                         playSound);
               });
         else
             objCxxPostNotification(room_name,
@@ -89,6 +107,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                                    "",
                                    respondStr,
                                    sendStr,
-                                   placeholder);
+                                   placeholder,
+                                   playSound);
     }
 }

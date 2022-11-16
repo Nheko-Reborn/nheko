@@ -75,7 +75,8 @@ void NotificationsManager::objCxxPostNotification(
     const QString& bodyImagePath,
     const QString& respondStr,
     const QString& sendStr,
-    const QString& placeholder)
+    const QString& placeholder,
+    const bool enableSound)
 {
     // Request permissions for alerts (the generic type of notification), sound playback,
     // and badges (which allows the Nheko app icon to show the little red bubble with unread count).
@@ -128,7 +129,9 @@ void NotificationsManager::objCxxPostNotification(
             content.title = title;
             content.subtitle = sub;
             content.body = body;
-            content.sound = [UNNotificationSound defaultSound];
+            if (enableSound) {
+                content.sound = [UNNotificationSound defaultSound];
+            }
             content.threadIdentifier = threadIdentifier;
             content.categoryIdentifier = @"ReplyCategory";
 
