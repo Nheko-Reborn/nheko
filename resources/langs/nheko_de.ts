@@ -104,27 +104,27 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+27"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaubte Raumeinstellungen</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste der Räume, die Zugriff zu diesem Raum erlauben. Personen in einem dieser Räume können diesen Raum betreten.</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Übergeordnete Community</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Anderer Raum</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Weitere Räume eingeben, die noch nicht in der Liste sind…</translation>
     </message>
 </context>
 <context>
@@ -2704,7 +2704,7 @@ Die Verschlüsselung des Raumes kann nach Aktivierung nicht mehr deaktiviert wer
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Zugriffsregeln anwenden</translation>
     </message>
     <message>
         <location line="+57"/>
