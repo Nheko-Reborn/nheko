@@ -10,6 +10,7 @@
 
 #include <QMetaType>
 #include <QObject>
+#include <QStandardPaths>
 #include <QString>
 
 #include "nlohmann/json.hpp"
@@ -33,7 +34,13 @@ namespace http {
 mtx::http::Client *
 client()
 {
-    static auto client_ = std::make_shared<mtx::http::Client>();
+    static auto client_ = [] {
+        auto c = std::make_shared<mtx::http::Client>();
+        c->alt_svc_cache_path((QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
+                               "/curl_alt_svc_cache.txt")
+                                .toStdString());
+        return c;
+    }();
     return client_.get();
 }
 

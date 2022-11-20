@@ -25,9 +25,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.24.3.tar.gz"
-    SHA1 "10738b59e539818a01090e64c2d09896247530c7"
-		LOCAL
+    URL "https://github.com/cpp-pm/hunter/archive/v0.24.8.tar.gz"
+    SHA1 "ca7838dded9a1811b04ffd56175f629e0af82d3d"
+    LOCAL
 )
 
 macro(hunter_add_package_safe)
@@ -186,7 +186,7 @@ if(USE_BUNDLED_COEURL)
 	FetchContent_Declare(
 		coeurl
 		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        v0.2.1
+		GIT_TAG        f989f3c54c1ca15e29c5bd6b1ce4efbcb3fd8078
 		)
 	FetchContent_MakeAvailable(coeurl)
 	set(COEURL_TARGET_NAME coeurl::coeurl)
@@ -595,7 +595,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
 		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        a1b7b81ce00ef5808eac0fdd895a95044e1b07ed
+		GIT_TAG        c7a13e79289ae35c4e2a9bccb3fdeb2bc03a925d
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
