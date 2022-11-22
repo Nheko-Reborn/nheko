@@ -880,6 +880,9 @@ TimelineModel::setPaginationInProgress(const bool paginationInProgress)
 
     m_paginationInProgress = paginationInProgress;
     emit paginationInProgressChanged(m_paginationInProgress);
+
+    if (m_paginationInProgress)
+        events.fetchMore();
 }
 
 void
@@ -891,8 +894,6 @@ TimelineModel::fetchMore(const QModelIndex &)
     }
 
     setPaginationInProgress(true);
-
-    events.fetchMore();
 }
 
 void

@@ -69,7 +69,8 @@ TimelineFilter::setSource(TimelineModel *s)
         this->setSourceModel(s);
 
         connect(s, &TimelineModel::currentIndexChanged, this, &TimelineFilter::currentIndexChanged);
-        connect(s, &TimelineModel::fetchedMore, this, &TimelineFilter::fetchAgain);
+        connect(
+          s, &TimelineModel::fetchedMore, this, &TimelineFilter::fetchAgain, Qt::QueuedConnection);
 
         emit sourceChanged();
         invalidateFilter();
