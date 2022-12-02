@@ -19,6 +19,14 @@ Rectangle {
     property bool collapsed: width < collapsePoint
     color: Nheko.colors.window
 
+    Platform.MessageDialog {
+        id: needsRestartDlg
+
+        buttons: Platform.MessageDialog.Ok
+        text: qsTr("This setting will take effect the next time Nheko is started")
+        title: qsTr("Restart required")
+    }
+
     ScrollView {
         id: scroll
 
@@ -48,6 +56,7 @@ Rectangle {
                     rows: collapsed? 2: 1
                     required property var model
                     id: r
+//                    onModelChanged: if (model.needsRestart) restartWarning.visible = true;
 
                     Label {
                         Layout.alignment: Qt.AlignLeft
@@ -71,6 +80,25 @@ Rectangle {
                         ToolTip.delay: Nheko.tooltipDelay
                         wrapMode: Text.Wrap
                     }
+
+//                    Label {
+//                        id: restartWarning
+
+//                        Layout.alignment: Qt.AlignLeft
+//                        visible: false//model.needsRestart
+//                        color: Nheko.theme.red
+//                        text: qsTr("Restart required")
+//                        font.italic: true
+//                        ToolTip.text: qsTr("This setting will take effect the next time Nheko is started")
+
+////                        Connections {
+////                            enabled: model.needsRestart
+////                            target: r
+////                            function onModelChanged() {
+////                                restartWarning.visible = true;
+////                            }
+////                        }
+//                    }
 
                     DelegateChooser {
                         id: chooser

@@ -907,6 +907,7 @@ UserSettingsModel::roleNames() const
       {Values, "values"},
       {Good, "good"},
       {Enabled, "enabled"},
+      {NeedsRestart, "needsRestart"},
     };
 
     return roles;
@@ -1514,6 +1515,13 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return JdenticonProvider::isAvailable();
         default:
             return true;
+        }
+    } else if (role == NeedsRestart) {
+        switch (index.row()) {
+        case ExposeDBusApi:
+            return true;
+        default:
+            return false;
         }
     }
 

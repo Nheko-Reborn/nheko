@@ -523,6 +523,7 @@ public:
         Values,
         Good,
         Enabled,
+        NeedsRestart,
     };
 
     UserSettingsModel(QObject *parent = nullptr);
