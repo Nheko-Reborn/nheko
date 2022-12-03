@@ -59,7 +59,6 @@ Item {
         onCountChanged: {
             // Mark timeline as read
             if (atYEnd && room) model.currentIndex = 0;
-
         }
 
         ScrollBar.vertical: scrollbar

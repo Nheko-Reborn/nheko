@@ -1025,6 +1025,10 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         } else if (std::holds_alternative<StateEvent<state::space::Parent>>(e)) {
             this->parentChecked = false;
             emit parentSpaceChanged();
+        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Text>>(e)) {
+            // I couldn't be bothered to try to get this working with std::string, QString is better
+            if (QString::fromStdString(std::get<RoomEvent<mtx::events::msg::Text>>(e).content.body).contains("🎉"))
+                emit newConfettiMessage();
         }
     }
 

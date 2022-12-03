@@ -438,6 +438,7 @@ signals:
     void paginationInProgressChanged(const bool);
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
+    void newConfettiMessage();
 
     void lastMessageChanged();
     void notificationsChanged();

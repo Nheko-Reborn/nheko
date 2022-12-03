@@ -13,6 +13,7 @@ import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
+import QtQuick.Particles 2.15
 import QtQuick.Window 2.13
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
@@ -296,6 +297,66 @@ Item {
         ToolTip.visible: hovered
         ToolTip.text: qsTr("Back to room list")
         onClicked: Rooms.resetCurrentRoom()
+    }
+
+    ParticleSystem { id: confettiParticleSystem }
+
+    Emitter {
+        id: confettiEmitter
+
+        width: parent.width * 3/4
+        enabled: false
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: parent.height
+        emitRate: Math.min(400 * Math.sqrt(parent.width * parent.height) / 870, 1000)
+        lifeSpan: 15000
+        system: confettiParticleSystem
+        velocityFromMovement: 8
+        size: 16
+        sizeVariation: 4
+        velocity: PointDirection {
+            x: 0
+            y: -Math.min(450 * parent.height / 700, 1000)
+            xVariation: Math.min(4 * parent.width / 7, 450)
+            yVariation: 250
+        }
+
+        ImageParticle {
+            system: confettiParticleSystem
+            source: "qrc:/confettiparticle.png"
+            rotationVelocity: 0
+            rotationVelocityVariation: 360
+            colorVariation: 1
+            color: "white"
+            entryEffect: ImageParticle.None
+            xVector: PointDirection {
+                x: 1
+                y: 0
+                xVariation: 0.2
+                yVariation: 0.2
+            }
+            yVector: PointDirection {
+                x: 0
+                y: 0.5
+                xVariation: 0.2
+                yVariation: 0.2
+            }
+        }
+    }
+
+    Gravity {
+        system: confettiParticleSystem
+        anchors.fill: parent
+        magnitude: 350
+        angle: 90
+    }
+
+    Connections {
+        target: room
+        function onNewConfettiMessage()
+        {
+            confettiEmitter.pulse(parent.height * 2)
+        }
     }
 
     NhekoDropArea {
