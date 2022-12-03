@@ -261,6 +261,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                       cache::getEventIndex(room_id, cache::client()->getFullyReadEventId(room_id));
 
                     auto ctx = roomModel->pushrulesRoomContext();
+                    std::vector<
+                      std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvent>>
+                      relatedEvents;
+
                     for (const auto &event : room.timeline.events) {
                         mtx::events::collections::TimelineEvent te{event};
                         std::visit([room_id = room_id](auto &event_) { event_.room_id = room_id; },
@@ -277,7 +281,25 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                                 te.data = result.event.value();
                         }
 
-                        auto actions = pushrules->evaluate(te, ctx);
+                        relatedEvents.clear();
+                        for (const auto &r : mtx::accessors::relations(te.data).relations) {
+                            auto related = cache::client()->getEvent(room_id, r.event_id);
+                            if (related) {
+                                relatedEvents.emplace_back(r, *related);
+                                if (auto encryptedEvent = std::get_if<
+                                      mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                                      &related->data);
+                                    encryptedEvent && userSettings_->decryptNotifications()) {
+                                    MegolmSessionIndex index(room_id, encryptedEvent->content);
+
+                                    auto result = olm::decryptEvent(index, *encryptedEvent);
+                                    if (result.event)
+                                        relatedEvents.back().second.data = result.event.value();
+                                }
+                            }
+                        }
+
+                        auto actions = pushrules->evaluate(te, ctx, relatedEvents);
                         if (std::find(actions.begin(),
                                       actions.end(),
                                       mtx::pushrules::actions::Action{

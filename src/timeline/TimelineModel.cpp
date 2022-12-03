@@ -742,7 +742,18 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case Notificationlevel: {
         const auto &push = ChatPage::instance()->pushruleEvaluator();
         if (push) {
-            auto actions = push->evaluate({event}, pushrulesRoomContext());
+            const auto &id = event_id(event);
+            std::vector<std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvent>>
+              relatedEvents;
+            for (const auto &r : mtx::accessors::relations(event).relations) {
+                auto related = events.get(r.event_id, id);
+                if (related) {
+                    relatedEvents.emplace_back(r,
+                                               mtx::events::collections::TimelineEvent{*related});
+                }
+            }
+
+            auto actions = push->evaluate({event}, pushrulesRoomContext(), relatedEvents);
             if (std::find(actions.begin(),
                           actions.end(),
                           mtx::pushrules::actions::Action{
