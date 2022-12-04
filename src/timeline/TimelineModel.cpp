@@ -969,6 +969,8 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 
     using namespace mtx::events;
 
+    bool needsConfetti{false};
+
     for (auto e : timeline.events) {
         if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
             MegolmSessionIndex index(room_id_.toStdString(), encryptedEvent->content);
@@ -1027,10 +1029,14 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
             emit parentSpaceChanged();
         } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Text>>(e)) {
             // I couldn't be bothered to try to get this working with std::string, QString is better
-            if (QString::fromStdString(std::get<RoomEvent<mtx::events::msg::Text>>(e).content.body).contains("🎉"))
-                emit newConfettiMessage();
+            auto msg = QString::fromStdString(std::get<RoomEvent<mtx::events::msg::Text>>(e).content.body);
+            if (msg.contains("🎉") || msg.contains("🎊"))
+                needsConfetti = true;
         }
     }
+
+    if (needsConfetti)
+        emit newConfettiMessage();
 
     updateLastMessage();
 }
