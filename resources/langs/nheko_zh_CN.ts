@@ -2134,7 +2134,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>type</source>
-        <translation type="unfinished"></translation>
+        <translation>类型</translation>
     </message>
 </context>
 <context>
