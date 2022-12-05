@@ -34,8 +34,8 @@ Image {
 
     width: 16
     height: 16
-    sourceSize.height: height * Screen.devicePixelRatio
-    sourceSize.width: width * Screen.devicePixelRatio
+    sourceSize.height: height
+    sourceSize.width: width
     source: {
         if (encrypted) {
             switch (trust) {
