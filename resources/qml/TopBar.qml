@@ -228,8 +228,6 @@ Pane {
                 Layout.maximumWidth: Nheko.avatarSize - Nheko.paddingMedium
 
                 contentItem: EncryptionIndicator {
-                    sourceSize.height: parent.Layout.preferredHeight * Screen.devicePixelRatio
-                    sourceSize.width: parent.Layout.preferredWidth * Screen.devicePixelRatio
                     encrypted: isEncrypted
                     trust: trustlevel
                     enabled: false
