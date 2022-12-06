@@ -26,6 +26,8 @@ Item {
     property bool showBackButton: false
     clip: true
 
+    onRoomChanged: room.triggerSpecialEffects()
+
     Shortcut {
         sequence: StandardKey.Close
         onActivated: Rooms.resetCurrentRoom()
@@ -351,14 +353,6 @@ Item {
         angle: 90
     }
 
-    Connections {
-        target: room
-        function onNewConfettiMessage()
-        {
-            confettiEmitter.pulse(parent.height * 2)
-        }
-    }
-
     NhekoDropArea {
         anchors.fill: parent
         roomid: room ? room.roomId : ""
@@ -380,6 +374,11 @@ Item {
             });
             dialog.show();
             timelineRoot.destroyOnClose(dialog);
+        }
+
+        function onConfetti()
+        {
+            confettiEmitter.pulse(parent.height * 2)
         }
 
         target: room

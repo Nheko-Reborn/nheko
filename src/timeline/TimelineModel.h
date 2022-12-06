@@ -100,6 +100,7 @@ enum EventType
     Widget,
     /// m.room.message
     AudioMessage,
+    ConfettiMessage,
     EmoteMessage,
     FileMessage,
     ImageMessage,
@@ -311,6 +312,7 @@ public:
     Q_INVOKABLE bool saveMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
     Q_INVOKABLE void copyLinkToEvent(const QString &eventId) const;
+    Q_INVOKABLE void triggerSpecialEffects();
 
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
@@ -438,7 +440,7 @@ signals:
     void paginationInProgressChanged(const bool);
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
-    void newConfettiMessage();
+    void confetti();
 
     void lastMessageChanged();
     void notificationsChanged();
@@ -509,6 +511,9 @@ private:
     bool isEncrypted_           = false;
     std::string last_event_id;
     std::string fullyReadEventId_;
+
+    // TODO (Loren): This should hopefully handle more than just confetti in the future
+    bool needsSpecialEffects_ = false;
 
     std::unique_ptr<RoomSummary, DeleteLaterDeleter> parentSummary = nullptr;
     bool parentChecked                                             = false;
