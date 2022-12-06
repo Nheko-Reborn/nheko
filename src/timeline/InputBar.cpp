@@ -534,14 +534,16 @@ InputBar::notice(const QString &msg, bool rainbowify)
     room->sendMessageEvent(notice, mtx::events::EventType::RoomMessage);
 }
 
-void InputBar::confetti(const QString &body, bool rainbowify)
+void
+InputBar::confetti(const QString &body, bool rainbowify)
 {
     auto html = utils::markdownToHtml(body, rainbowify);
 
     mtx::events::msg::Confetti confetti;
     confetti.body = body.trimmed().toStdString();
 
-    if (html != body.trimmed().toHtmlEscaped() && ChatPage::instance()->userSettings()->markdown()) {
+    if (html != body.trimmed().toHtmlEscaped() &&
+        ChatPage::instance()->userSettings()->markdown()) {
         confetti.formatted_body = html.toStdString();
         confetti.format         = "org.matrix.custom.html";
         // Remove markdown links by completer

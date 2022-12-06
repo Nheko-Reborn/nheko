@@ -312,7 +312,6 @@ public:
     Q_INVOKABLE bool saveMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
     Q_INVOKABLE void copyLinkToEvent(const QString &eventId) const;
-    Q_INVOKABLE void triggerSpecialEffects();
 
     void
     cacheMedia(const QString &eventId, const std::function<void(const QString filename)> &callback);
@@ -420,6 +419,9 @@ public slots:
     int notificationCount() const { return static_cast<int>(notification_count); }
 
     QString scrollTarget() const;
+
+    void triggerSpecialEffects();
+    void markSpecialEffectsDone();
 
 private slots:
     void addPendingMessage(mtx::events::collections::TimelineEvents event);

@@ -26,7 +26,7 @@ Item {
     property bool showBackButton: false
     clip: true
 
-    onRoomChanged: room.triggerSpecialEffects()
+    onRoomChanged: if (room != null) room.triggerSpecialEffects()
 
     Shortcut {
         sequence: StandardKey.Close
@@ -379,6 +379,7 @@ Item {
         function onConfetti()
         {
             confettiEmitter.pulse(parent.height * 2)
+            room.markSpecialEffectsDone()
         }
 
         target: room

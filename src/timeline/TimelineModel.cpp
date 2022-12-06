@@ -1971,12 +1971,20 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
     QGuiApplication::clipboard()->setText(link);
 }
 
-void TimelineModel::triggerSpecialEffects()
+void
+TimelineModel::triggerSpecialEffects()
 {
     if (needsSpecialEffects_) {
-        emit confetti();
+        // Note (Loren): Without the timer, this apparently emits before QML is ready
+        QTimer::singleShot(1, [this] { emit confetti(); });
         needsSpecialEffects_ = false;
     }
+}
+
+void
+TimelineModel::markSpecialEffectsDone()
+{
+    needsSpecialEffects_ = false;
 }
 
 QString
