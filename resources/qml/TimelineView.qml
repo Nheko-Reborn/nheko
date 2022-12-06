@@ -378,6 +378,9 @@ Item {
 
         function onConfetti()
         {
+            if (!Settings.fancyEffects)
+                return
+
             confettiEmitter.pulse(parent.height * 2)
             room.markSpecialEffectsDone()
         }

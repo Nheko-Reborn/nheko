@@ -64,6 +64,7 @@ class UserSettings final : public QObject
                  NOTIFY decryptNotificationsChanged)
     Q_PROPERTY(bool spaceNotifications READ spaceNotifications WRITE setSpaceNotifications NOTIFY
                  spaceNotificationsChanged)
+    Q_PROPERTY(bool fancyEffects READ fancyEffects WRITE setFancyEffects NOTIFY fancyEffectsChanged)
     Q_PROPERTY(
       bool privacyScreen READ privacyScreen WRITE setPrivacyScreen NOTIFY privacyScreenChanged)
     Q_PROPERTY(int privacyScreenTimeout READ privacyScreenTimeout WRITE setPrivacyScreenTimeout
@@ -171,6 +172,7 @@ public:
     void setDecryptSidebar(bool state);
     void setDecryptNotifications(bool state);
     void setSpaceNotifications(bool state);
+    void setFancyEffects(bool state);
     void setPrivacyScreen(bool state);
     void setPrivacyScreenTimeout(int state);
     void setPresence(Presence state);
@@ -214,6 +216,7 @@ public:
     bool decryptSidebar() const { return decryptSidebar_; }
     bool decryptNotifications() const { return decryptNotifications_; }
     bool spaceNotifications() const { return spaceNotifications_; }
+    bool fancyEffects() const { return fancyEffects_; }
     bool privacyScreen() const { return privacyScreen_; }
     int privacyScreenTimeout() const { return privacyScreenTimeout_; }
     bool markdown() const { return markdown_; }
@@ -295,6 +298,7 @@ signals:
     void decryptSidebarChanged(bool state);
     void decryptNotificationsChanged(bool state);
     void spaceNotificationsChanged(bool state);
+    void fancyEffectsChanged(bool state);
     void privacyScreenChanged(bool state);
     void privacyScreenTimeoutChanged(int state);
     void timelineMaxWidthChanged(int state);
@@ -360,6 +364,7 @@ private:
     bool decryptSidebar_;
     bool decryptNotifications_;
     bool spaceNotifications_;
+    bool fancyEffects_;
     bool privacyScreen_;
     int privacyScreenTimeout_;
     bool shareKeysWithTrustedUsers_;
@@ -442,6 +447,8 @@ class UserSettingsModel final : public QAbstractListModel
         InvertEnterKey,
         Bubbles,
         SmallAvatars,
+        FancyEffects,
+
         SidebarSection,
         GroupView,
         SortByImportance,
