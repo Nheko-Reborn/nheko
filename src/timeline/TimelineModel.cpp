@@ -1976,7 +1976,7 @@ TimelineModel::triggerSpecialEffects()
 {
     if (needsSpecialEffects_) {
         // Note (Loren): Without the timer, this apparently emits before QML is ready
-        QTimer::singleShot(1, [this] { emit confetti(); });
+        QTimer::singleShot(1, this, [this] { emit confetti(); });
         needsSpecialEffects_ = false;
     }
 }
