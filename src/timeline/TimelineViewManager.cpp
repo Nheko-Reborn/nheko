@@ -10,6 +10,7 @@
 #include <QStandardPaths>
 #include <QString>
 
+#include "Cache.h"
 #include "ChatPage.h"
 #include "CombinedImagePackModel.h"
 #include "CommandCompleter.h"
@@ -461,7 +462,7 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
     auto content                                             = mtx::accessors::url(*e);
     std::optional<mtx::crypto::EncryptedFile> encryptionInfo = mtx::accessors::file(*e);
 
-    if (encryptionInfo) {
+    if (encryptionInfo && !cache::isRoomEncrypted(roomId.toStdString())) {
         http::client()->download(
           content,
           [this, roomId, e, encryptionInfo](const std::string &res,
