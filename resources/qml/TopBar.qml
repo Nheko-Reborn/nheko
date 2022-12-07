@@ -225,7 +225,7 @@ Pane {
                 Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
-                Layout.maximumWidth: Nheko.avatarSize - Nheko.paddingMedium
+                Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
 
                 contentItem: EncryptionIndicator {
                     encrypted: isEncrypted
