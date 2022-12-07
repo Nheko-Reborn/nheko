@@ -92,7 +92,7 @@ UserSettings::load(std::optional<QString> profile)
     decryptNotifications_ =
       settings.value(QStringLiteral("user/decrypt_notifications"), true).toBool();
     spaceNotifications_ = settings.value(QStringLiteral("user/space_notifications"), true).toBool();
-    fancyEffects_ = settings.value(QStringLiteral("user/fancy_effects"), true).toBool();
+    fancyEffects_       = settings.value(QStringLiteral("user/fancy_effects"), true).toBool();
     privacyScreen_      = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
       settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
