@@ -100,6 +100,7 @@ enum EventType
     Widget,
     /// m.room.message
     AudioMessage,
+    ConfettiMessage,
     EmoteMessage,
     FileMessage,
     ImageMessage,
@@ -419,6 +420,9 @@ public slots:
 
     QString scrollTarget() const;
 
+    void triggerSpecialEffects();
+    void markSpecialEffectsDone();
+
 private slots:
     void addPendingMessage(mtx::events::collections::TimelineEvents event);
     void scrollTimerEvent();
@@ -438,6 +442,7 @@ signals:
     void paginationInProgressChanged(const bool);
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
+    void confetti();
 
     void lastMessageChanged();
     void notificationsChanged();
@@ -508,6 +513,9 @@ private:
     bool isEncrypted_           = false;
     std::string last_event_id;
     std::string fullyReadEventId_;
+
+    // TODO (Loren): This should hopefully handle more than just confetti in the future
+    bool needsSpecialEffects_ = false;
 
     std::unique_ptr<RoomSummary, DeleteLaterDeleter> parentSummary = nullptr;
     bool parentChecked                                             = false;

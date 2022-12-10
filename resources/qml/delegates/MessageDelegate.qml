@@ -76,6 +76,20 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.ConfettiMessage
+
+            TextMessage {
+                formatted: d.formattedBody
+                body: d.body
+                isOnlyEmoji: d.isOnlyEmoji
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                metadataWidth: d.metadataWidth
+            }
+
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.NoticeMessage
 
             NoticeMessage {

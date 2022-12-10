@@ -53,6 +53,10 @@ struct RoomEventType
     {
         return qml_mtx_events::EventType::AudioMessage;
     }
+    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Confetti> &)
+    {
+        return qml_mtx_events::EventType::ConfettiMessage;
+    }
     qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Emote> &)
     {
         return qml_mtx_events::EventType::EmoteMessage;
@@ -346,6 +350,7 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
         return mtx::events::EventType::SpaceChild;
     /// m.room.message
     case qml_mtx_events::AudioMessage:
+    case qml_mtx_events::ConfettiMessage:
     case qml_mtx_events::EmoteMessage:
     case qml_mtx_events::FileMessage:
     case qml_mtx_events::ImageMessage:
@@ -1025,8 +1030,17 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         } else if (std::holds_alternative<StateEvent<state::space::Parent>>(e)) {
             this->parentChecked = false;
             emit parentSpaceChanged();
-        }
+        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Text>>(e)) {
+            if (auto msg = QString::fromStdString(
+                  std::get<RoomEvent<mtx::events::msg::Text>>(e).content.body);
+                msg.contains("🎉") || msg.contains("🎊"))
+                needsSpecialEffects_ = true;
+        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Confetti>>(e))
+            needsSpecialEffects_ = true;
     }
+
+    if (needsSpecialEffects_)
+        emit confetti();
 
     updateLastMessage();
 }
@@ -1957,6 +1971,22 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
     QGuiApplication::clipboard()->setText(link);
 }
 
+void
+TimelineModel::triggerSpecialEffects()
+{
+    if (needsSpecialEffects_) {
+        // Note (Loren): Without the timer, this apparently emits before QML is ready
+        QTimer::singleShot(1, this, [this] { emit confetti(); });
+        needsSpecialEffects_ = false;
+    }
+}
+
+void
+TimelineModel::markSpecialEffectsDone()
+{
+    needsSpecialEffects_ = false;
+}
+
 QString
 TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor &bg)
 {
@@ -2790,7 +2820,8 @@ TimelineModel::setEdit(const QString &newEdit)
             auto msgType = mtx::accessors::msg_type(e);
             if (msgType == mtx::events::MessageType::Text ||
                 msgType == mtx::events::MessageType::Notice ||
-                msgType == mtx::events::MessageType::Emote) {
+                msgType == mtx::events::MessageType::Emote ||
+                msgType == mtx::events::MessageType::Confetti) {
                 auto relInfo  = relatedInfo(newEdit);
                 auto editText = relInfo.quoted_body;
 
@@ -2811,6 +2842,8 @@ TimelineModel::setEdit(const QString &newEdit)
 
                 if (msgType == mtx::events::MessageType::Emote)
                     input()->setText("/me " + editText);
+                else if (msgType == mtx::events::MessageType::Confetti)
+                    input()->setText("/confetti" + editText);
                 else
                     input()->setText(editText);
             } else {

@@ -44,6 +44,8 @@ public:
         RainbowMe,
         Notice,
         RainbowNotice,
+        Confetti,
+        RainbowConfetti,
         Goto,
         ConvertToDm,
         ConvertToRoom,

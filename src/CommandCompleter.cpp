@@ -82,6 +82,10 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QString("/notice ");
             case RainbowNotice:
                 return QString("/rainbownotice ");
+            case Confetti:
+                return QString("/confetti ");
+            case RainbowConfetti:
+                return QString("/rainbowconfetti ");
             case Goto:
                 return QString("/goto ");
             case ConvertToDm:
@@ -145,6 +149,10 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("/notice [message]");
             case RainbowNotice:
                 return tr("/rainbownotice [message]");
+            case Confetti:
+                return tr("/confetti [message]");
+            case RainbowConfetti:
+                return tr("/rainbowconfetti [message]");
             case Goto:
                 return tr("/goto ($eventid|message index|matrix:r/room/e/event)");
             case ConvertToDm:
@@ -207,6 +215,10 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("Send a bot message.");
             case RainbowNotice:
                 return tr("Send a bot message in rainbow colors.");
+            case Confetti:
+                return tr("Send a message with confetti.");
+            case RainbowConfetti:
+                return tr("Send a message in rainbow colors with confetti.");
             case Goto:
                 return tr("Go to this event or link.");
             case ConvertToDm:

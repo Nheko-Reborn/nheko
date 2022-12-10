@@ -535,6 +535,27 @@ InputBar::notice(const QString &msg, bool rainbowify)
 }
 
 void
+InputBar::confetti(const QString &body, bool rainbowify)
+{
+    auto html = utils::markdownToHtml(body, rainbowify);
+
+    mtx::events::msg::Confetti confetti;
+    confetti.body = body.trimmed().toStdString();
+
+    if (html != body.trimmed().toHtmlEscaped() &&
+        ChatPage::instance()->userSettings()->markdown()) {
+        confetti.formatted_body = html.toStdString();
+        confetti.format         = "org.matrix.custom.html";
+        // Remove markdown links by completer
+        confetti.body = replaceMatrixToMarkdownLink(body.trimmed()).toStdString();
+    }
+
+    confetti.relations = generateRelations();
+
+    room->sendMessageEvent(confetti, mtx::events::EventType::RoomMessage);
+}
+
+void
 InputBar::image(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
@@ -777,6 +798,10 @@ InputBar::command(const QString &command, QString args)
         notice(args, false);
     } else if (command == QLatin1String("rainbownotice")) {
         notice(args, true);
+    } else if (command == QLatin1String("confetti")) {
+        confetti(args, false);
+    } else if (command == QLatin1String("rainbowconfetti")) {
+        confetti(args, true);
     } else if (command == QLatin1String("goto")) {
         // Goto has three different modes:
         // 1 - Going directly to a given event ID

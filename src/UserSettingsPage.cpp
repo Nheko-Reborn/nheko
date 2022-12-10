@@ -92,6 +92,7 @@ UserSettings::load(std::optional<QString> profile)
     decryptNotifications_ =
       settings.value(QStringLiteral("user/decrypt_notifications"), true).toBool();
     spaceNotifications_ = settings.value(QStringLiteral("user/space_notifications"), true).toBool();
+    fancyEffects_       = settings.value(QStringLiteral("user/fancy_effects"), true).toBool();
     privacyScreen_      = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
     privacyScreenTimeout_ =
       settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
@@ -460,6 +461,16 @@ UserSettings::setSpaceNotifications(bool state)
 }
 
 void
+UserSettings::setFancyEffects(bool state)
+{
+    if (state == fancyEffects_)
+        return;
+    fancyEffects_ = state;
+    emit fancyEffectsChanged(state);
+    save();
+}
+
+void
 UserSettings::setPrivacyScreen(bool state)
 {
     if (state == privacyScreen_) {
@@ -822,6 +833,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("decrypt_sidebar"), decryptSidebar_);
     settings.setValue(QStringLiteral("decrypt_notificatons"), decryptNotifications_);
     settings.setValue(QStringLiteral("space_notifications"), spaceNotifications_);
+    settings.setValue(QStringLiteral("fancy_effects"), fancyEffects_);
     settings.setValue(QStringLiteral("privacy_screen"), privacyScreen_);
     settings.setValue(QStringLiteral("privacy_screen_timeout"), privacyScreenTimeout_);
     settings.setValue(QStringLiteral("mobile_mode"), mobileMode_);
@@ -976,6 +988,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Decrypt notifications");
         case SpaceNotifications:
             return tr("Show message counts for communities and tags");
+        case FancyEffects:
+            return tr("Display fancy effects such as confetti");
         case PrivacyScreen:
             return tr("Privacy Screen");
         case PrivacyScreenTimeout:
@@ -1112,6 +1126,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->decryptNotifications();
         case SpaceNotifications:
             return i->spaceNotifications();
+        case FancyEffects:
+            return i->fancyEffects();
         case PrivacyScreen:
             return i->privacyScreen();
         case PrivacyScreenTimeout:
@@ -1276,6 +1292,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case SpaceNotifications:
             return tr("Choose where to show the total number of notifications contained within a "
                       "community or tag.");
+        case FancyEffects:
+            return tr("Some messages can be sent with fancy effects. For example, messages sent "
+                      "with '/confetti' will show confetti on screen.");
         case PrivacyScreen:
             return tr("When the window loses focus, the timeline will\nbe blurred.");
         case MobileMode:
@@ -1388,6 +1407,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case UseOnlineKeyBackup:
         case ExposeDBusApi:
         case SpaceNotifications:
+        case FancyEffects:
             return Toggle;
         case Profile:
         case UserId:
@@ -1716,6 +1736,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
+        case FancyEffects: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setFancyEffects(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         case PrivacyScreen: {
             if (value.userType() == QMetaType::Bool) {
                 i->setPrivacyScreen(value.toBool());
@@ -2036,6 +2063,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::spaceNotificationsChanged, this, [this]() {
         emit dataChanged(index(SpaceNotifications), index(SpaceNotifications), {Value});
+    });
+    connect(s.get(), &UserSettings::fancyEffectsChanged, this, [this]() {
+        emit dataChanged(index(FancyEffects), index(FancyEffects), {Value});
     });
     connect(s.get(), &UserSettings::trayChanged, this, [this]() {
         emit dataChanged(index(Tray), index(Tray), {Value});
