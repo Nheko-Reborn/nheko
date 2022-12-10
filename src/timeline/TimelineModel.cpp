@@ -2842,6 +2842,8 @@ TimelineModel::setEdit(const QString &newEdit)
 
                 if (msgType == mtx::events::MessageType::Emote)
                     input()->setText("/me " + editText);
+                else if (msgType == mtx::events::MessageType::Confetti)
+                    input()->setText("/confetti" + editText);
                 else
                     input()->setText(editText);
             } else {
