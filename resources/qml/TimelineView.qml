@@ -325,7 +325,7 @@ Item {
 
         ImageParticle {
             system: confettiParticleSystem
-            source: "qrc:/confettiparticle.png"
+            source: "qrc:/confettiparticle.svg"
             rotationVelocity: 0
             rotationVelocityVariation: 360
             colorVariation: 1
