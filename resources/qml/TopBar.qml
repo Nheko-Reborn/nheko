@@ -25,6 +25,8 @@ Pane {
     property bool isDirect: room ? room.isDirect : false
     property string directChatOtherUserId: room ? room.directChatOtherUserId : ""
 
+    property bool searchHasFocus: searchField.focus && searchField.enabled
+
     property string searchString: ""
 
     onRoomIdChanged: {
@@ -447,6 +449,7 @@ Pane {
             MatrixTextField {
                 id: searchField
                 visible: searchButton.searchActive
+                enabled: visible
 
                 Layout.row: 5
                 Layout.column: 2

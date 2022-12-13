@@ -28,6 +28,8 @@ Item {
 
     onRoomChanged: if (room != null) room.triggerSpecialEffects()
 
+    Keys.onPressed: if (!topBar.searchHasFocus) TimelineManager.focusMessageInput();
+
     Shortcut {
         sequence: StandardKey.Close
         onActivated: Rooms.resetCurrentRoom()
