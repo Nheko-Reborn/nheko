@@ -287,6 +287,7 @@ public:
     Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, const QColor &bg);
     Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
     Q_INVOKABLE void acceptKnock(const QString &id);
+    Q_INVOKABLE void joinReplacementRoom(const QString &id);
     Q_INVOKABLE QString formatMemberEvent(const QString &id);
     Q_INVOKABLE QString formatJoinRuleEvent(const QString &id);
     Q_INVOKABLE QString formatHistoryVisibilityEvent(const QString &id);

@@ -62,6 +62,33 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.Tombstone
+
+
+            ColumnLayout {
+                width: parent.width
+
+                NoticeMessage {
+                    body: formatted
+                    isOnlyEmoji: false
+                    isReply: d.isReply
+                    keepFullText: d.keepFullText
+                    isStateEvent: d.isStateEvent
+                    Layout.fillWidth: true
+                    formatted: qsTr("This room was replaced for the following reason: %1").arg(d.body)
+                }
+
+                Button {
+                    palette: Nheko.colors
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Go to replacement room")
+                    onClicked: room.joinReplacementRoom(eventId)
+                }
+
+            }
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.TextMessage
 
             TextMessage {
@@ -579,6 +606,7 @@ Item {
                 Button {
                     visible: d.relatedEventCacheBuster, room.showAcceptKnockButton(d.eventId)
                     palette: Nheko.colors
+                    Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Allow them in")
                     onClicked: room.acceptKnock(eventId)
                 }

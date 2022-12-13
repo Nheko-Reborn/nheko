@@ -1489,7 +1489,6 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
     const auto room_id = room_id_.toStdString();
 
     using namespace mtx::events;
-    using namespace mtx::identifiers;
 
     nlohmann::json doc = {{"type", mtx::events::to_string(eventType)},
                           {"content", nlohmann::json(msg.content)},
@@ -2656,6 +2655,32 @@ TimelineModel::showAcceptKnockButton(const QString &id)
 
     using namespace mtx::events::state;
     return event->content.membership == Membership::Knock;
+}
+
+void
+TimelineModel::joinReplacementRoom(const QString &id)
+{
+    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    if (!e)
+        return;
+
+    auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Tombstone>>(e);
+    if (!event)
+        return;
+
+    auto joined_rooms = cache::joinedRooms();
+    for (const auto &roomid : joined_rooms) {
+        if (roomid == event->content.replacement_room) {
+            manager_->rooms()->setCurrentRoom(
+              QString::fromStdString(event->content.replacement_room));
+            return;
+        }
+    }
+
+    ChatPage::instance()->joinRoomVia(
+      event->content.replacement_room,
+      {mtx::identifiers::parse<mtx::identifiers::User>(event->sender).hostname()},
+      true);
 }
 
 QString
