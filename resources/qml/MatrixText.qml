@@ -15,8 +15,10 @@ TextEdit {
     textFormat: TextEdit.RichText
     readOnly: true
     focus: false
+    activeFocusOnPress: false
     wrapMode: Text.Wrap
     selectByMouse: !Settings.mobileMode
+    selectByKeyboard: false
     // this always has to be enabled, otherwise you can't click links anymore!
     //enabled: selectByMouse
     color: Nheko.colors.text
