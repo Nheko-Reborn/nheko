@@ -33,7 +33,7 @@ MxcImageProvider::MxcImageProvider(QObject *parent)
 #endif
 {
     auto timer = new QTimer(this);
-    timer->setInterval(std::chrono::hours(30));
+    timer->setInterval(std::chrono::hours(1));
     connect(timer, &QTimer::timeout, this, [] {
         QThreadPool::globalInstance()->start([] {
             QDir dir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
