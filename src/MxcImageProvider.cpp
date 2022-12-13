@@ -42,7 +42,8 @@ MxcImageProvider::MxcImageProvider(QObject *parent)
                      QDir::SortFlags(QDir::Name | QDir::IgnoreCase),
                      QDir::Filter::Writable | QDir::Filter::NoDotAndDotDot | QDir::Filter::Files);
 
-            for (const auto &fileInfo : dir.entryInfoList()) {
+            auto files = dir.entryInfoList();
+            for (const auto &fileInfo : qAsConst(files)) {
                 if (fileInfo.fileTime(QFile::FileTime::FileAccessTime)
                       .daysTo(QDateTime::currentDateTime()) > 30) {
                     if (QFile::remove(fileInfo.absoluteFilePath()))
