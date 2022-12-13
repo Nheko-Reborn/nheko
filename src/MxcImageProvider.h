@@ -80,6 +80,10 @@ class MxcImageProvider
   public QQuickAsyncImageProvider
 {
     Q_OBJECT
+
+public:
+    MxcImageProvider(QObject *parent = nullptr);
+
 public slots:
     QQuickImageResponse *
     requestImageResponse(const QString &id, const QSize &requestedSize) override;
