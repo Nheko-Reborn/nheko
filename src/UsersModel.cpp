@@ -8,6 +8,7 @@
 #include <QUrl>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "CompletionModelRoles.h"
 #include "UserSettingsPage.h"
 
@@ -15,10 +16,29 @@ UsersModel::UsersModel(const std::string &roomId, QObject *parent)
   : QAbstractListModel(parent)
   , room_id(roomId)
 {
-    roomMembers_ = cache::roomMembers(roomId);
-    for (const auto &m : roomMembers_) {
-        displayNames.push_back(QString::fromStdString(cache::displayName(room_id, m)));
-        userids.push_back(QString::fromStdString(m));
+    // obviously, "friends" isn't a room, but I felt this was the least invasive way
+    if (roomId == "friends") {
+        auto e = cache::client()->getAccountData(mtx::events::EventType::Direct);
+        if (e) {
+            if (auto event =
+                  std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(
+                    &e.value())) {
+                for (const auto &[userId, roomIds] : event->content.user_to_rooms) {
+                    displayNames.push_back(
+                      QString::fromStdString(cache::displayName(roomIds[0], userId)));
+                    userids.push_back(QString::fromStdString(userId));
+                    avatarUrls.push_back(cache::avatarUrl(QString::fromStdString(roomIds[0]),
+                                                          QString::fromStdString(userId)));
+                }
+            }
+        }
+    } else {
+        for (const auto &m : cache::roomMembers(roomId)) {
+            displayNames.push_back(QString::fromStdString(cache::displayName(room_id, m)));
+            userids.push_back(QString::fromStdString(m));
+            avatarUrls.push_back(
+              cache::avatarUrl(QString::fromStdString(room_id), QString::fromStdString(m)));
+        }
     }
 }
 
@@ -58,8 +78,7 @@ UsersModel::data(const QModelIndex &index, int role) const
         case CompletionModel::SearchRole2:
             return userids[index.row()];
         case Roles::AvatarUrl:
-            return cache::avatarUrl(QString::fromStdString(room_id),
-                                    QString::fromStdString(roomMembers_[index.row()]));
+            return avatarUrls[index.row()];
         case Roles::UserID:
             return userids[index.row()].toHtmlEscaped();
         }

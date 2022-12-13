@@ -37,6 +37,7 @@
 #include "RoomsModel.h"
 #include "SingleImagePackModel.h"
 #include "TrayIcon.h"
+#include "UserDirectoryModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "Utils.h"
@@ -69,6 +70,7 @@ Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
 Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
 Q_DECLARE_METATYPE(mtx::responses::PublicRoom)
 Q_DECLARE_METATYPE(mtx::responses::Profile)
+Q_DECLARE_METATYPE(mtx::responses::User)
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -147,6 +149,7 @@ MainWindow::registerQmlTypes()
     qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
     qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
     qRegisterMetaType<mtx::responses::PublicRoom>();
+    qRegisterMetaType<mtx::responses::User>();
     qRegisterMetaType<mtx::responses::Profile>();
     qRegisterMetaType<CombinedImagePackModel *>();
     qRegisterMetaType<RoomSettingsAllowedRoomsModel *>();
@@ -154,7 +157,9 @@ MainWindow::registerQmlTypes()
     qRegisterMetaType<std::vector<DeviceInfo>>();
 
     qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
+    qRegisterMetaType<std::vector<mtx::responses::User>>();
 
+    qRegisterMetaType<mtx::responses::User>();
     qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                      "im.nheko",
                                      1,
@@ -184,6 +189,7 @@ MainWindow::registerQmlTypes()
     qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
     qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
     qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
+    qmlRegisterType<UserDirectoryModel>("im.nheko", 1, 0, "UserDirectoryModel");
     qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
     qmlRegisterType<RegisterPage>("im.nheko", 1, 0, "Registration");
     qmlRegisterType<HiddenEvents>("im.nheko", 1, 0, "HiddenEvents");

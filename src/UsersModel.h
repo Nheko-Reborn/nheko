@@ -22,13 +22,13 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override
     {
         (void)parent;
-        return (int)roomMembers_.size();
+        return (int)userids.size();
     }
     QVariant data(const QModelIndex &index, int role) const override;
 
 private:
     std::string room_id;
-    std::vector<std::string> roomMembers_;
+    std::vector<QString> avatarUrls;
     std::vector<QString> displayNames;
     std::vector<QString> userids;
 };

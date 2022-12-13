@@ -57,7 +57,10 @@ public:
     void showChatPage();
 
 #ifdef NHEKO_DBUS_SYS
-    bool dbusAvailable() const { return dbusAvailable_; }
+    bool dbusAvailable() const
+    {
+        return dbusAvailable_;
+    }
 #endif
 
     Q_INVOKABLE void addPerRoomWindow(const QString &room, QWindow *window);

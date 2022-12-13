@@ -33,6 +33,10 @@ Pane {
         id: publicRooms
     }
 
+    UserDirectoryModel {
+        id: userDirectory
+    }
+
     //Timer {
     //    onTriggered: gc()
     //    interval: 1000

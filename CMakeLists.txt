@@ -493,6 +493,8 @@ set(SRC_FILES
 	src/SingleImagePackModel.h
 	src/TrayIcon.cpp
 	src/TrayIcon.h
+	src/UserDirectoryModel.cpp
+	src/UserDirectoryModel.h
 	src/UserSettingsPage.cpp
 	src/UserSettingsPage.h
 	src/UsersModel.cpp
@@ -594,14 +596,14 @@ if(USE_BUNDLED_MTXCLIENT)
 	include(FetchContent)
 	FetchContent_Declare(
 		MatrixClient
-                GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-                GIT_TAG        d187c63a27710fa87a44ab44d43b7cfa2023132a
+		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
+		GIT_TAG        d187c63a27710fa87a44ab44d43b7cfa2023132a
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.8.1 REQUIRED)
+	find_package(MatrixClient 0.8.3 REQUIRED)
 endif()
 
 if (VOIP)
