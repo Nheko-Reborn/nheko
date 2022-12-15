@@ -46,7 +46,7 @@ class Provider
 {
 public:
     // all emoji for QML purposes
-    static const std::array<Emoji, 3655> emoji;
+    static const std::array<Emoji, 3681> emoji;
 };
 
 } // namespace emoji
