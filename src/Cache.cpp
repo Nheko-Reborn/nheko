@@ -3251,7 +3251,7 @@ Cache::pendingEvents(const std::string &room_id)
 std::optional<mtx::events::collections::TimelineEvent>
 Cache::firstPendingMessage(const std::string &room_id)
 {
-    auto txn     = ro_txn(env_);
+    auto txn     = lmdb::txn::begin(env_);
     auto pending = getPendingMessagesDb(txn, room_id);
 
     try {
