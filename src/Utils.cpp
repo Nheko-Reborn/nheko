@@ -45,16 +45,17 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
 
     const auto username = displayName;
     const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
-    auto body           = utils::event_body(event).trimmed();
+    auto body           = mtx::accessors::body(event);
     if (mtx::accessors::relations(event).reply_to())
-        body = QString::fromStdString(utils::stripReplyFromBody(body.toStdString()));
+        body = utils::stripReplyFromBody(body);
 
-    return DescInfo{QString::fromStdString(msg.event_id),
-                    sender,
-                    utils::messageDescription<T>(username, body, sender == localUser),
-                    utils::descriptiveTime(ts),
-                    msg.origin_server_ts,
-                    ts};
+    return DescInfo{
+      QString::fromStdString(msg.event_id),
+      sender,
+      utils::messageDescription<T>(username, QString::fromStdString(body), sender == localUser),
+      utils::descriptiveTime(ts),
+      msg.origin_server_ts,
+      ts};
 }
 
 std::string
@@ -216,6 +217,7 @@ utils::getMessageDescription(const TimelineEvent &event,
     using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
     using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
     using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
+    using Confetti   = mtx::events::RoomEvent<mtx::events::msg::Confetti>;
     using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
     using CallAnswer = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
     using CallHangUp = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
@@ -236,6 +238,8 @@ utils::getMessageDescription(const TimelineEvent &event,
         return createDescriptionInfo<Text>(event, localUser, displayName);
     } else if (std::holds_alternative<Video>(event)) {
         return createDescriptionInfo<Video>(event, localUser, displayName);
+    } else if (std::holds_alternative<Confetti>(event)) {
+        return createDescriptionInfo<Confetti>(event, localUser, displayName);
     } else if (std::holds_alternative<CallInvite>(event)) {
         return createDescriptionInfo<CallInvite>(event, localUser, displayName);
     } else if (std::holds_alternative<CallAnswer>(event)) {
@@ -322,28 +326,6 @@ utils::levenshtein_distance(const std::string &s1, const std::string &s2)
     }
 
     return *std::min_element(row1.begin(), row1.end());
-}
-
-QString
-utils::event_body(const mtx::events::collections::TimelineEvents &e)
-{
-    using namespace mtx::events;
-    if (auto ev = std::get_if<RoomEvent<msg::Audio>>(&e); ev != nullptr)
-        return QString::fromStdString(ev->content.body);
-    if (auto ev = std::get_if<RoomEvent<msg::Emote>>(&e); ev != nullptr)
-        return QString::fromStdString(ev->content.body);
-    if (auto ev = std::get_if<RoomEvent<msg::File>>(&e); ev != nullptr)
-        return QString::fromStdString(ev->content.body);
-    if (auto ev = std::get_if<RoomEvent<msg::Image>>(&e); ev != nullptr)
-        return QString::fromStdString(ev->content.body);
-    if (auto ev = std::get_if<RoomEvent<msg::Notice>>(&e); ev != nullptr)
-        return QString::fromStdString(ev->content.body);
-    if (auto ev = std::get_if<RoomEvent<msg::Text>>(&e); ev != nullptr)
-        return QString::fromStdString(ev->content.body);
-    if (auto ev = std::get_if<RoomEvent<msg::Video>>(&e); ev != nullptr)
-        return QString::fromStdString(ev->content.body);
-
-    return QString();
 }
 
 QPixmap
