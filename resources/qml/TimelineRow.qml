@@ -319,9 +319,11 @@ AbstractButton {
         anchors {
             top: reactionRow.bottom
             topMargin: 5
+            left: parent.left
+            right: parent.right
         }
         color: Nheko.colors.highlight
-        width: row.maxWidth
+        
         visible: (r.index > 0 && (room.fullyReadEventId == r.eventId))
         height: visible ? 3 : 0
 
