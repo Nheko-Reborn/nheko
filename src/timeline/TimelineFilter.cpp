@@ -61,8 +61,13 @@ TimelineFilter::event(QEvent *ev)
         incrementalSearchIndex += 30;
 
         if (auto s = source(); s) {
+            auto count = s->rowCount();
+            if (incrementalSearchIndex >= count) {
+                incrementalSearchIndex = std::numeric_limits<int>::max();
+            }
+            nhlog::ui()->debug("Filter progress {}/{}", incrementalSearchIndex, count);
             s->dataChanged(s->index(orgIndex),
-                           s->index(std::min(incrementalSearchIndex, s->rowCount() - 1)),
+                           s->index(std::min(incrementalSearchIndex, count - 1)),
                            {FilterRole});
             continueFiltering();
         }
