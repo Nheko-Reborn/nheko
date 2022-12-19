@@ -4,12 +4,59 @@
 
 #include "TimelineFilter.h"
 
+#include <QCoreApplication>
+#include <QEvent>
+
 #include "Logging.h"
+
+static int FilterRole = Qt::UserRole * 3;
+
+static QEvent::Type
+getFilterEventType()
+{
+    static QEvent::Type t = static_cast<QEvent::Type>(QEvent::registerEventType());
+    return t;
+}
 
 TimelineFilter::TimelineFilter(QObject *parent)
   : QSortFilterProxyModel(parent)
 {
     setDynamicSortFilter(true);
+    setFilterRole(FilterRole);
+}
+
+void
+TimelineFilter::startFiltering()
+{
+    incrementalSearchIndex = 0;
+    continueFiltering();
+}
+
+void
+TimelineFilter::continueFiltering()
+{
+    if (auto s = source(); s && s->rowCount() > incrementalSearchIndex) {
+        auto ev = new QEvent(getFilterEventType());
+        QCoreApplication::postEvent(this, ev, Qt::LowEventPriority - 1);
+    }
+}
+
+bool
+TimelineFilter::event(QEvent *ev)
+{
+    if (ev->type() == getFilterEventType()) {
+        int orgIndex = incrementalSearchIndex;
+        incrementalSearchIndex += 30;
+
+        if (auto s = source(); s) {
+            s->dataChanged(s->index(orgIndex),
+                           s->index(std::min(incrementalSearchIndex, s->rowCount() - 1)),
+                           {FilterRole});
+            continueFiltering();
+        }
+        return true;
+    }
+    return QSortFilterProxyModel::event(ev);
 }
 
 void
@@ -18,10 +65,10 @@ TimelineFilter::setThreadId(const QString &t)
     nhlog::ui()->debug("Filtering by thread '{}'", t.toStdString());
     if (this->threadId != t) {
         this->threadId = t;
-        invalidateFilter();
 
-        fetchMore({});
         emit threadIdChanged();
+        startFiltering();
+        fetchMore({});
     }
 }
 
@@ -31,10 +78,10 @@ TimelineFilter::setContentFilter(const QString &c)
     nhlog::ui()->debug("Filtering by content '{}'", c.toStdString());
     if (this->contentFilter != c) {
         this->contentFilter = c;
-        invalidateFilter();
 
-        fetchMore({});
         emit contentFilterChanged();
+        startFiltering();
+        fetchMore({});
     }
 }
 
@@ -53,10 +100,24 @@ TimelineFilter::fetchAgain()
 }
 
 void
+TimelineFilter::sourceDataChanged(const QModelIndex &topLeft,
+                                  const QModelIndex &bottomRight,
+                                  const QVector<int> &roles)
+{
+    if (!roles.contains(TimelineModel::Roles::Body) && !roles.contains(TimelineModel::ThreadId))
+        return;
+
+    if (auto s = source()) {
+        s->dataChanged(topLeft, bottomRight, {FilterRole});
+    }
+}
+
+void
 TimelineFilter::setSource(TimelineModel *s)
 {
     if (auto orig = this->source(); orig != s) {
-        cachedCount = 0;
+        cachedCount            = 0;
+        incrementalSearchIndex = 0;
 
         if (orig) {
             disconnect(orig,
@@ -64,6 +125,7 @@ TimelineFilter::setSource(TimelineModel *s)
                        this,
                        &TimelineFilter::currentIndexChanged);
             disconnect(orig, &TimelineModel::fetchedMore, this, &TimelineFilter::fetchAgain);
+            disconnect(orig, &TimelineModel::dataChanged, this, &TimelineFilter::sourceDataChanged);
         }
 
         this->setSourceModel(s);
@@ -71,7 +133,13 @@ TimelineFilter::setSource(TimelineModel *s)
         connect(s, &TimelineModel::currentIndexChanged, this, &TimelineFilter::currentIndexChanged);
         connect(
           s, &TimelineModel::fetchedMore, this, &TimelineFilter::fetchAgain, Qt::QueuedConnection);
+        connect(s,
+                &TimelineModel::dataChanged,
+                this,
+                &TimelineFilter::sourceDataChanged,
+                Qt::QueuedConnection);
 
+        incrementalSearchIndex = 0;
         emit sourceChanged();
         invalidateFilter();
     }
@@ -104,6 +172,9 @@ TimelineFilter::currentIndex() const
 bool
 TimelineFilter::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
+    if (source_row > incrementalSearchIndex)
+        return true;
+
     if (threadId.isEmpty() && contentFilter.isEmpty())
         return true;
 

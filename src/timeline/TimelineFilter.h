@@ -39,6 +39,8 @@ public:
         return data(index(i, 0), role);
     }
 
+    bool event(QEvent *ev) override;
+
 signals:
     void threadIdChanged();
     void contentFilterChanged();
@@ -47,11 +49,17 @@ signals:
 
 private slots:
     void fetchAgain();
+    void sourceDataChanged(const QModelIndex &topLeft,
+                           const QModelIndex &bottomRight,
+                           const QVector<int> &roles);
 
 protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 
 private:
+    void startFiltering();
+    void continueFiltering();
+
     QString threadId, contentFilter;
-    int cachedCount = 0;
+    int cachedCount = 0, incrementalSearchIndex = 0;
 };
