@@ -9,6 +9,16 @@
 
 #include "Logging.h"
 
+/// Searching currently can be done incrementally. For that we define a specific role to filter on
+/// and then process that role in chunk. This is the `FilterRole`. Of course we need to then also
+/// send proper update signals. Filtering then works as follows:
+///
+/// - At first no range is filtered (incrementalSearchIndex == 0).
+/// - Then, when filtering is requested, we start posting events to the
+/// event loop with lower than low priority (low prio - 1). The only thing those events do is
+/// increment the incrementalSearchIndex and emit a dataChanged for that range of events.
+/// - This then causes those events to be reevaluated if they should be visible.
+
 static int FilterRole = Qt::UserRole * 3;
 
 static QEvent::Type
@@ -37,6 +47,7 @@ TimelineFilter::continueFiltering()
 {
     if (auto s = source(); s && s->rowCount() > incrementalSearchIndex) {
         auto ev = new QEvent(getFilterEventType());
+        // request filtering a new chunk with lower than low priority.
         QCoreApplication::postEvent(this, ev, Qt::LowEventPriority - 1);
     }
 }
@@ -45,6 +56,7 @@ bool
 TimelineFilter::event(QEvent *ev)
 {
     if (ev->type() == getFilterEventType()) {
+        // process the next 30 events by claiming their "filterrole" data has changed.
         int orgIndex = incrementalSearchIndex;
         incrementalSearchIndex += 30;
 
@@ -139,6 +151,7 @@ TimelineFilter::setSource(TimelineModel *s)
                 &TimelineFilter::sourceDataChanged,
                 Qt::QueuedConnection);
 
+        // reset the search index a second time just to be safe.
         incrementalSearchIndex = 0;
         emit sourceChanged();
         invalidateFilter();
@@ -172,6 +185,7 @@ TimelineFilter::currentIndex() const
 bool
 TimelineFilter::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
+    // this chunk is still unfiltered.
     if (source_row > incrementalSearchIndex)
         return true;
 
