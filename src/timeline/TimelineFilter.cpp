@@ -39,6 +39,8 @@ void
 TimelineFilter::startFiltering()
 {
     incrementalSearchIndex = 0;
+    invalidateFilter();
+
     continueFiltering();
 }
 
@@ -61,20 +63,25 @@ bool
 TimelineFilter::event(QEvent *ev)
 {
     if (ev->type() == getFilterEventType()) {
-        // process the next 30 events by claiming their "filterrole" data has changed.
-        int orgIndex = incrementalSearchIndex;
-        incrementalSearchIndex += 30;
+        if (incrementalSearchIndex < std::numeric_limits<int>::max()) {
+            int orgIndex = incrementalSearchIndex;
+            // process the next 100 events by claiming their "filterrole" data has changed.
+            incrementalSearchIndex += 100;
 
-        if (auto s = source(); s) {
-            auto count = s->rowCount();
-            if (incrementalSearchIndex >= count) {
-                incrementalSearchIndex = std::numeric_limits<int>::max();
+            if (auto s = source(); s) {
+                auto count = s->rowCount();
+                if (incrementalSearchIndex >= count) {
+                    incrementalSearchIndex = std::numeric_limits<int>::max();
+                }
+                nhlog::ui()->debug("Filter progress {}/{}", incrementalSearchIndex, count);
+                s->dataChanged(s->index(orgIndex),
+                               s->index(std::min(incrementalSearchIndex, count - 1)),
+                               {FilterRole});
+
+                if (incrementalSearchIndex < count && incrementalSearchIndex > 0) {
+                    continueFiltering();
+                }
             }
-            nhlog::ui()->debug("Filter progress {}/{}", incrementalSearchIndex, count);
-            s->dataChanged(s->index(orgIndex),
-                           s->index(std::min(incrementalSearchIndex, count - 1)),
-                           {FilterRole});
-            continueFiltering();
         }
         return true;
     }
@@ -113,11 +120,11 @@ TimelineFilter::fetchAgain()
     if (threadId.isEmpty() && contentFilter.isEmpty())
         return;
 
-    if (auto s = source()) {
-        if (rowCount() == cachedCount && s->canFetchMore(QModelIndex()))
+    if (auto s = source(); s && incrementalSearchIndex == std::numeric_limits<int>::max()) {
+        if (this->rowCount() == cachedCount && s->canFetchMore(QModelIndex()))
             s->fetchMore(QModelIndex());
         else
-            cachedCount = rowCount();
+            cachedCount = this->rowCount();
     }
 }
 
@@ -163,6 +170,7 @@ TimelineFilter::setSource(TimelineModel *s)
 
         // reset the search index a second time just to be safe.
         incrementalSearchIndex = 0;
+
         emit sourceChanged();
         invalidateFilter();
     }
@@ -197,7 +205,7 @@ TimelineFilter::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
     // this chunk is still unfiltered.
     if (source_row > incrementalSearchIndex)
-        return true;
+        return false;
 
     if (threadId.isEmpty() && contentFilter.isEmpty())
         return true;
