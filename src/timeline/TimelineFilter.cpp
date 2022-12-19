@@ -45,10 +45,15 @@ TimelineFilter::startFiltering()
 void
 TimelineFilter::continueFiltering()
 {
-    if (auto s = source(); s && s->rowCount() > incrementalSearchIndex) {
-        auto ev = new QEvent(getFilterEventType());
-        // request filtering a new chunk with lower than low priority.
-        QCoreApplication::postEvent(this, ev, Qt::LowEventPriority - 1);
+    if (auto s = source(); s) {
+        if (s->rowCount() > incrementalSearchIndex) {
+            auto ev = new QEvent(getFilterEventType());
+            // request filtering a new chunk with lower than low priority.
+            QCoreApplication::postEvent(this, ev, Qt::LowEventPriority - 1);
+        } else {
+            // We reached the end, so fetch more!
+            fetchAgain();
+        }
     }
 }
 
