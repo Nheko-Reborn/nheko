@@ -20,6 +20,7 @@ class TimelineFilter : public QSortFilterProxyModel
                  contentFilterChanged)
     Q_PROPERTY(TimelineModel *source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
+    Q_PROPERTY(bool filteringInProgress READ isFiltering NOTIFY isFilteringChanged)
 
 public:
     explicit TimelineFilter(QObject *parent = nullptr);
@@ -28,6 +29,7 @@ public:
     QString filterByContent() const { return contentFilter; }
     TimelineModel *source() const;
     int currentIndex() const;
+    bool isFiltering() const;
 
     void setThreadId(const QString &t);
     void setContentFilter(const QString &t);
@@ -46,6 +48,7 @@ signals:
     void contentFilterChanged();
     void sourceChanged();
     void currentIndexChanged();
+    void isFilteringChanged();
 
 private slots:
     void fetchAgain();

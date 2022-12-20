@@ -39,6 +39,7 @@ void
 TimelineFilter::startFiltering()
 {
     incrementalSearchIndex = 0;
+    emit isFilteringChanged();
     invalidateFilter();
 
     continueFiltering();
@@ -82,6 +83,7 @@ TimelineFilter::event(QEvent *ev)
                     continueFiltering();
                 }
             }
+            emit isFilteringChanged();
         }
         return true;
     }
@@ -172,6 +174,7 @@ TimelineFilter::setSource(TimelineModel *s)
         incrementalSearchIndex = 0;
 
         emit sourceChanged();
+        emit isFilteringChanged();
         invalidateFilter();
     }
 }
@@ -198,6 +201,12 @@ TimelineFilter::currentIndex() const
         return this->mapFromSource(s->index(s->currentIndex())).row();
     else
         return -1;
+}
+
+bool
+TimelineFilter::isFiltering() const
+{
+    return incrementalSearchIndex != std::numeric_limits<int>::max() && !(threadId.isEmpty() && contentFilter.isEmpty());
 }
 
 bool

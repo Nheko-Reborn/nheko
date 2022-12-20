@@ -38,6 +38,8 @@ Item {
 
         property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < chatRoot.availableWidth) ? Settings.timelineMaxWidth : chatRoot.availableWidth) - chatRoot.padding * 2 - (scrollbar.interactive? scrollbar.width : 0)
 
+        readonly property alias filteringInProgress: filteredTimeline.filteringInProgress
+
         displayMarginBeginning: height / 2
         displayMarginEnd: height / 2
 
@@ -561,7 +563,7 @@ Item {
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: Nheko.paddingLarge
-            visible: room && room.paginationInProgress
+            visible: (room && room.paginationInProgress) || chat.filteringInProgress
             // hacky, but works
             height: loadingSpinner.height + 2 * Nheko.paddingLarge
 
@@ -570,7 +572,7 @@ Item {
 
                 anchors.centerIn: parent
                 anchors.margins: Nheko.paddingLarge
-                running: room && room.paginationInProgress
+                running: (room && room.paginationInProgress) || chat.filteringInProgress
                 foreground: Nheko.colors.mid
                 z: 3
             }

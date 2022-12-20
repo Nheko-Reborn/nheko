@@ -450,6 +450,7 @@ Pane {
                 id: searchField
                 visible: searchButton.searchActive
                 enabled: visible
+                hasClear: true
 
                 Layout.row: 5
                 Layout.column: 2
