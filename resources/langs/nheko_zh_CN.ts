@@ -119,7 +119,7 @@
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>其他房间</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -421,7 +421,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>默认隐藏带有此标签或来自此社区的房间。</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -489,12 +489,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+657"/>
         <source>Failed to update community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法更新社区: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法从社区中删除房间: %1</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -512,18 +512,18 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+20"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>确认加入社区</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>确认加入房间</translation>
     </message>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform>%n 个成员</numerusform>
+        <translation>
+            <numerusform>%n 名成员</numerusform>
         </translation>
     </message>
     <message>
@@ -534,7 +534,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>无法直接加入此房间。但是，您可以敲门，房间成员可以接受或拒绝此加入请求。您还可以在下面提供他们让您进入的理由：</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -544,7 +544,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>加入</translation>
     </message>
 </context>
 <context>
@@ -585,12 +585,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="-27"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>新社区</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>新房间</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -620,7 +620,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>任何人都可以加入公共房间；私人房间需要明确的邀请。</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1159,7 +1159,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>加入</translation>
     </message>
 </context>
 <context>
@@ -1213,13 +1213,14 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>此设备的名称，将在验证您的设备时向其他人显示。如果未提供任何内容，则使用默认值。</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>可联系到您的主服务器客户端 API 的地址。
+示例：https://server.my:8787</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -1277,7 +1278,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.4). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本（v1.1 到 v1.4）。您无法登录。</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1851,7 +1852,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+28"/>
         <source>Apply permission changes</source>
-        <translation type="unfinished"></translation>
+        <translation>应用权限更改</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1861,7 +1862,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>Apply permissions recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>递归应用权限</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1876,7 +1877,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+1"/>
         <source>No changes needed</source>
-        <translation type="unfinished"></translation>
+        <translation>无需更改</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1894,7 +1895,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+736"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished">未能更新权限等级：%1</translation>
+        <translation>未能更新权限等级：%1</translation>
     </message>
 </context>
 <context>
@@ -2124,7 +2125,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>level</source>
-        <translation type="unfinished"></translation>
+        <translation>级别</translation>
     </message>
     <message>
         <location line="+4"/>
