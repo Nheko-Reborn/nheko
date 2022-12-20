@@ -206,7 +206,8 @@ TimelineFilter::currentIndex() const
 bool
 TimelineFilter::isFiltering() const
 {
-    return incrementalSearchIndex != std::numeric_limits<int>::max() && !(threadId.isEmpty() && contentFilter.isEmpty());
+    return incrementalSearchIndex != std::numeric_limits<int>::max() &&
+           !(threadId.isEmpty() && contentFilter.isEmpty());
 }
 
 bool
