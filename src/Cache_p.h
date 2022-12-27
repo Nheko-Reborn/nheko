@@ -410,8 +410,10 @@ private:
                 break;
             }
             }
-            // fallthrough to also store it as state event to eventually migrate away from a
-            // separate members db.
+
+            // BUG(Nico): Ideally we would fall through and store this in the database, but it seems
+            // to currently corrupt the db sometimes, so... let's find that bug first!
+            return;
         } else if (std::holds_alternative<StateEvent<Encryption>>(event)) {
             setEncryptedRoom(txn, room_id);
             return;
