@@ -1669,13 +1669,19 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
 }
 
 void
-Cache::updateState(const std::string &room, const mtx::responses::StateEvents &state)
+Cache::updateState(const std::string &room, const mtx::responses::StateEvents &state, bool wipe)
 {
     auto txn         = lmdb::txn::begin(env_);
     auto statesdb    = getStatesDb(txn, room);
     auto stateskeydb = getStatesKeyDb(txn, room);
     auto membersdb   = getMembersDb(txn, room);
     auto eventsDb    = getEventsDb(txn, room);
+
+    if (wipe) {
+        membersdb.drop(txn);
+        statesdb.drop(txn);
+        stateskeydb.drop(txn);
+    }
 
     saveStateEvents(txn, statesdb, stateskeydb, membersdb, eventsDb, room, state.events);
 

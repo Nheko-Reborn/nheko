@@ -118,7 +118,9 @@ public:
                                                  std::size_t len        = 30);
     size_t memberCount(const std::string &room_id);
 
-    void updateState(const std::string &room, const mtx::responses::StateEvents &state);
+    void updateState(const std::string &room,
+                     const mtx::responses::StateEvents &state,
+                     bool wipe = false);
     void saveState(const mtx::responses::Sync &res);
     bool isInitialized();
     bool isDatabaseReady() { return databaseReady_ && isInitialized(); }

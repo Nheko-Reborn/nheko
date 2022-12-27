@@ -496,7 +496,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 
     connect(this, &TimelineModel::newState, this, [this](mtx::responses::StateEvents events_) {
-        cache::client()->updateState(room_id_.toStdString(), events_);
+        cache::client()->updateState(room_id_.toStdString(), events_, true);
         this->syncState({std::move(events_.events)});
     });
 }
