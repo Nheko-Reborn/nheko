@@ -170,6 +170,7 @@ Item {
         property string roomName: room ? room.roomName : (roomPreview ? roomPreview.roomName : "")
         property string roomTopic: room ? room.roomTopic : (roomPreview ? roomPreview.roomTopic : "")
         property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
+        property string reason: roomPreview ? roomPreview.reason : ""
 
         visible: room != null && room.isSpace || roomPreview != null
         enabled: visible
@@ -275,6 +276,44 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("decline invite")
             onClicked: Rooms.declineInvite(roomPreview.roomid)
+        }
+
+        ScrollView {
+            id: reasonField
+            property bool showReason: false
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.leftMargin: Nheko.paddingLarge
+            Layout.rightMargin: Nheko.paddingLarge
+            visible: preview.reason !== "" && showReason
+
+            TextArea {
+                text: TimelineManager.escapeEmoji(preview.reason)
+                wrapMode: TextEdit.WordWrap
+                textFormat: TextEdit.RichText
+                readOnly: true
+                background: null
+                selectByMouse: true
+                color: Nheko.colors.text
+                horizontalAlignment: TextEdit.AlignHCenter
+            }
+
+        }
+
+        Button {
+            id: showReasonButton
+
+            Layout.alignment: Qt.AlignHCenter
+            //Layout.fillWidth: true
+            Layout.leftMargin: Nheko.paddingLarge
+            Layout.rightMargin: Nheko.paddingLarge
+
+            visible: preview.reason !== ""
+            text: reasonField.showReason ? qsTr("Hide invite reason") : qsTr("Show invite reason")
+            onClicked: {
+                reasonField.showReason = !reasonField.showReason;
+            }
         }
 
         Item {

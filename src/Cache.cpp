@@ -2018,7 +2018,8 @@ Cache::saveInvite(lmdb::txn &txn,
             auto display_name =
               msg->content.display_name.empty() ? msg->state_key : msg->content.display_name;
 
-            MemberInfo tmp{display_name, msg->content.avatar_url, msg->content.is_direct};
+            MemberInfo tmp{
+              display_name, msg->content.avatar_url, msg->content.reason, msg->content.is_direct};
 
             membersdb.put(txn, msg->state_key, nlohmann::json(tmp).dump());
         } else {
@@ -3142,6 +3143,29 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
         nhlog::db()->error("Failed to retrieve members from db in room {}: {}", room_id, e.what());
         return {};
     }
+}
+
+std::optional<MemberInfo>
+Cache::getInviteMember(const std::string &room_id, const std::string &user_id)
+{
+    if (user_id.empty() || !env_.handle())
+        return std::nullopt;
+
+    try {
+        auto txn = ro_txn(env_);
+
+        auto membersdb = getInviteMembersDb(txn, room_id);
+
+        std::string_view info;
+        if (membersdb.get(txn, user_id, info)) {
+            MemberInfo m = nlohmann::json::parse(info).get<MemberInfo>();
+            return m;
+        }
+    } catch (std::exception &e) {
+        nhlog::db()->warn(
+          "Failed to read member ({}) in invite room ({}): {}", user_id, room_id, e.what());
+    }
+    return std::nullopt;
 }
 
 std::vector<RoomMember>
@@ -4959,6 +4983,8 @@ to_json(nlohmann::json &j, const MemberInfo &info)
     j["avatar_url"] = info.avatar_url;
     if (info.is_direct)
         j["is_direct"] = info.is_direct;
+    if (!info.reason.empty())
+        j["reason"] = info.reason;
 }
 
 void
@@ -4967,6 +4993,7 @@ from_json(const nlohmann::json &j, MemberInfo &info)
     info.name       = j.at("name").get<std::string>();
     info.avatar_url = j.at("avatar_url").get<std::string>();
     info.is_direct  = j.value("is_direct", false);
+    info.reason     = j.value("reason", "");
 }
 
 void

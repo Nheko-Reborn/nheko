@@ -31,6 +31,7 @@ class RoomPreview
     Q_PROPERTY(QString roomName READ roomName CONSTANT)
     Q_PROPERTY(QString roomTopic READ roomTopic CONSTANT)
     Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl CONSTANT)
+    Q_PROPERTY(QString reason READ reason CONSTANT)
     Q_PROPERTY(bool isInvite READ isInvite CONSTANT)
 
 public:
@@ -40,9 +41,10 @@ public:
     QString roomName() const { return roomName_; }
     QString roomTopic() const { return roomTopic_; }
     QString roomAvatarUrl() const { return roomAvatarUrl_; }
+    QString reason() const { return reason_; }
     bool isInvite() const { return isInvite_; }
 
-    QString roomid_, roomName_, roomAvatarUrl_, roomTopic_;
+    QString roomid_, roomName_, roomAvatarUrl_, roomTopic_, reason_;
     bool isInvite_ = false;
 };
 

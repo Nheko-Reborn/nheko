@@ -244,6 +244,8 @@ public:
 
     //! Check if a user is a member of the room.
     bool isRoomMember(const std::string &user_id, const std::string &room_id);
+    std::optional<MemberInfo>
+    getInviteMember(const std::string &room_id, const std::string &user_id);
 
     //
     // Outbound Megolm Sessions
@@ -396,7 +398,7 @@ private:
                   e->content.display_name.empty() ? e->state_key : e->content.display_name;
 
                 // Lightweight representation of a member.
-                MemberInfo tmp{display_name, e->content.avatar_url};
+                MemberInfo tmp{display_name, e->content.avatar_url, e->content.reason};
 
                 membersdb.put(txn, e->state_key, nlohmann::json(tmp).dump());
                 break;
@@ -406,8 +408,8 @@ private:
                 break;
             }
             }
-
-            return;
+            // fallthrough to also store it as state event to eventually migrate away from a
+            // separate members db.
         } else if (std::holds_alternative<StateEvent<Encryption>>(event)) {
             setEncryptedRoom(txn, room_id);
             return;

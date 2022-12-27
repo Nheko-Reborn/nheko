@@ -723,6 +723,13 @@ RoomlistModel::getRoomPreviewById(QString roomid) const
         if (invites.contains(roomid)) {
             i                 = invites.value(roomid);
             preview.isInvite_ = true;
+
+            auto member = cache::client()->getInviteMember(roomid.toStdString(),
+                                                           http::client()->user_id().to_string());
+
+            if (member) {
+                preview.reason_ = QString::fromStdString(member->reason);
+            }
         } else {
             i                 = previewedRooms.value(roomid);
             preview.isInvite_ = false;
@@ -769,6 +776,13 @@ RoomlistModel::setCurrentRoom(const QString &roomid)
         if (invites.contains(roomid)) {
             i           = invites.value(roomid);
             p.isInvite_ = true;
+
+            auto member = cache::client()->getInviteMember(roomid.toStdString(),
+                                                           http::client()->user_id().to_string());
+
+            if (member) {
+                p.reason_ = QString::fromStdString(member->reason);
+            }
         } else {
             i           = previewedRooms.value(roomid);
             p.isInvite_ = false;
