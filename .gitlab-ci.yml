@@ -204,9 +204,10 @@ build-flatpak-arm64:
     - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15-22.08
   script:
     - export VERSION=$(git describe)
+    - if [ "$(grep MemTotal /proc/meminfo | tr -cd '[0-9]')" -lt "6000000" ]; then export EXTRA_FLAGS='--jobs=3'; fi
     - mkdir -p build-flatpak
     - cd build-flatpak
-    - flatpak-builder --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for arm64" app ../io.github.NhekoReborn.Nheko.yaml
+    - flatpak-builder --user --disable-rofiles-fuse --ccache $EXTRA_FLAGS --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for arm64" app ../io.github.NhekoReborn.Nheko.yaml
     - flatpak build-bundle repo nheko-arm64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
