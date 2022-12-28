@@ -365,7 +365,7 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
         <location line="+35"/>
         <location line="+112"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor, tente entrar novamente: %1</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -751,12 +751,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+81"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Todas as salas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exibe todas as salas sem filtrar.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -771,22 +771,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+67"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoritos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salas que você favoritou.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Low Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Baixa Prioridade</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salas com prioridade baixa.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -796,7 +796,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Messages from your server or administrator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mensagens do seu servidor ou do administrador.</translation>
     </message>
     <message>
         <location line="+657"/>
@@ -961,12 +961,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+285"/>
         <source>Decrypt secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Descriptografar segredos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Insira sua chave de recuperação ou senha para descriptografar seus segredos:</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -976,12 +976,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+28"/>
         <source>Decryption failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao descriptografar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao descriptografar segredos com a chave de recuperação ou senha inserida</translation>
     </message>
 </context>
 <context>
@@ -989,7 +989,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+12"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Código de Verificação</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -999,12 +999,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+33"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eles não são iguais!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eles são iguais!</translation>
     </message>
 </context>
 <context>
@@ -1012,47 +1012,47 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/emoji/EmojiPicker.qml" line="+70"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesquisar</translation>
     </message>
     <message>
         <location line="+197"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>Pessoas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Natureza</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Comida</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Atividade</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Viagem</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Objetos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Símbolos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Bandeiras</translation>
     </message>
 </context>
 <context>
@@ -1060,12 +1060,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+12"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Código de Verificação</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Por favor verifique o emoji a seguir. Você deve ver o mesmo emoji em ambos os lados. Se eles forem diferentes, por favor aperte &apos;Eles não são iguais!&apos; para abortar a verificação!</translation>
     </message>
     <message>
         <location line="+379"/>
@@ -1075,12 +1075,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+10"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eles não são iguais!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eles são iguais!</translation>
     </message>
 </context>
 <context>
@@ -1088,7 +1088,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+47"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>Não existe uma chave para desbloquear esta mensagem. Nós pedimos pela chave automaticamente, mas você pode tentar pedir novamente se for impaciente.</translation>
     </message>
     <message>
         <location line="+2"/>
