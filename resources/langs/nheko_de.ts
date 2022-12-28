@@ -1509,7 +1509,10 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dein Anmeldename. Eine mxid sollte mit eine @ anfangen gefolgt von der Nutzerid. Nach dem Nutzernamen folgt der servername, getrennt durch ein :.
+Wenn dein Server keinen .well-known unterstützt, kannst du auch eine Serveradresse angeben.
+Beispiel: @nutzer:mein.server
+Wenn Nheko den Server nicht finden kann, wird es dich nach der Serveradresse fragen.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1529,13 +1532,14 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Name für dieses Gerät, den andere sehen, wenn sie deine Geräte verifizieren. Wenn nichts angeben ist, wird ein Standardwert verwendet.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Adresse unter der die Client-API deines Heimservers erreicht wird.
+Beispiel: https://mein.server:8787</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -1593,7 +1597,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+15"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.4). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der ausgewählte Server unterstützt keine der Matrix versionen, die Nheko versteht (v1.1 bis v1.4). Du kannst dich nicht anmelden.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1975,12 +1979,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Damit andere Nutzer sehen können, welche Geräte wirklich dir gehören, kannst du sie verifizieren. Das aktiviert auch den Onlinespeicher für Nachrichtenschlüssel. Willst du ein unverifiziertes Gerät verifizieren? (Stelle sicher, dass du eines der Geräte in deiner Nähe hast.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Damit andere Nutzer sehen können, welche Geräte wirklich dir gehören, kannst du sie verifizieren. Das aktiviert auch den Onlinespeicher für Nachrichtenschlüssel. Willst du %1 verifizieren?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2193,42 +2197,42 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+28"/>
         <source>Apply permission changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigungsänderungen anwenden</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
-        <translation type="unfinished"></translation>
+        <translation>Auf welche Unterguppen und Räume sollen diese Berechtigungen angewandt werden?</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Apply permissions recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigungen rekursiv anwenden</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Overwrite exisiting modifications in rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Existierende Änderungen in den Räumen überschreiben</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Berechtigung die Berechtigungen hier zu verändern</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No changes needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Änderungen notwendig</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Existing modifications to the permissions in this room will be overwritten</source>
-        <translation type="unfinished"></translation>
+        <translation>Existierende Änderungen in diesem Raum werden überschrieben</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Permissions synchronized with community</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigungen mit der Gruppe synchronisiert</translation>
     </message>
 </context>
 <context>
@@ -2466,22 +2470,22 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Set the global log level, or a comma-separated list of &lt;component&gt;=&lt;level&gt; pairs, or both. For example, to set the default log level to &apos;warn&apos; but disable logging for the &apos;ui&apos; component, pass &apos;warn,ui=off&apos;. levels:{trace,debug,info,warning,error,critical,off} components:{crypto,db,mtx,net,qml,ui}</source>
-        <translation type="unfinished"></translation>
+        <translation>Setze das globale loglevel oder eine kommaseparierte liste con &lt;Komponente&gt;=&lt;Level&gt; Paaren oder beides. Z.B. um das Loglevel auf &apos;warn&apos; zu setzen aber für die &apos;ui&apos; Komponente zu deaktivieren, kannst du &apos;warn,ui=off&apos; verwenden. Level: {trace,debug,info,warning,error,critical,off}, Komponenten: {crypto,db,mtx,net,qml,ui}</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>level</source>
-        <translation type="unfinished"></translation>
+        <translation>Level</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
-        <translation type="unfinished"></translation>
+        <translation>Definiere wohin geloggt wird. Eine kommaseparierte Liste kann angegeben werden. Standartwert ist &apos;file,stderr&apos;. Valide Typen: {file,stderr,none}</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
@@ -2611,7 +2615,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.4). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der ausgewählte Server unterstützt keine der Matrix versionen, die Nheko versteht (v1.1 bis v1.4). Du kannst dich nicht registrieren.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2654,7 +2658,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Cancel Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Gesprächsfaden abbrechen</translation>
     </message>
 </context>
 <context>

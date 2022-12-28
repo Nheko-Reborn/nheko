@@ -404,7 +404,7 @@ ChatPage::dropToLoginPage(const QString &msg)
       nullptr,
       tr("Confirm logout"),
       tr("Because of the following reason Nheko wants to drop you to the login page:\n%1\nIf you "
-         "think this is a mistake, you can close Nheko instead to possibly recover your encrpytion "
+         "think this is a mistake, you can close Nheko instead to possibly recover your encryption "
          "keys. After you have been dropped to the login page, you can sign in again using your "
          "usual methods.")
         .arg(msg),
