@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2821"/>
+        <location filename="../../src/Cache.cpp" line="+2828"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 e outro %n</numerusform>
@@ -2675,7 +2675,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1945"/>
+        <location filename="../../src/Cache.cpp" line="+1968"/>
         <source>no version stored</source>
         <translation>nenhuma versão guardada</translation>
     </message>
@@ -3247,7 +3247,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4564"/>
+        <location filename="../../src/Cache.cpp" line="-4594"/>
         <source>Failed to connect to secret storage</source>
         <translation>Falha ao ligar ao armazenamento secreto</translation>
     </message>
@@ -3880,7 +3880,7 @@ Reason: %4</source>
         <translation>Nenhuma sala aberta</translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+158"/>
         <source>No preview available</source>
         <translation>Pré-visualização não disponível</translation>
     </message>
@@ -3918,7 +3918,17 @@ Reason: %4</source>
         <translation>recusar convite</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+36"/>
+        <source>Hide invite reason</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Show invite reason</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Back to room list</source>
         <translation>Voltar à lista de salas</translation>
     </message>

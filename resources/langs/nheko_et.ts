@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2821"/>
+        <location filename="../../src/Cache.cpp" line="+2828"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 ja veel %n teine kasutaja</numerusform>
@@ -2675,7 +2675,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1945"/>
+        <location filename="../../src/Cache.cpp" line="+1968"/>
         <source>no version stored</source>
         <translation>salvestatud versiooni ei leidu</translation>
     </message>
@@ -3248,7 +3248,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4564"/>
+        <location filename="../../src/Cache.cpp" line="-4594"/>
         <source>Failed to connect to secret storage</source>
         <translation>Ühenduse loomine võtmehoidlaga ei õnnestunud</translation>
     </message>
@@ -3882,7 +3882,7 @@ Põhjus: %4</translation>
         <translation>Ühtegi jututuba pole avatud</translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+158"/>
         <source>No preview available</source>
         <translation>Eelvaade pole saadaval</translation>
     </message>
@@ -3920,7 +3920,17 @@ Põhjus: %4</translation>
         <translation>lükka kutse tagasi</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+36"/>
+        <source>Hide invite reason</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Show invite reason</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Back to room list</source>
         <translation>Tagasi jututubade loendisse</translation>
     </message>

@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2821"/>
+        <location filename="../../src/Cache.cpp" line="+2828"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 ja %n muu</numerusform>
@@ -2679,7 +2679,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1945"/>
+        <location filename="../../src/Cache.cpp" line="+1968"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -3252,7 +3252,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4564"/>
+        <location filename="../../src/Cache.cpp" line="-4594"/>
         <source>Failed to connect to secret storage</source>
         <translation>Salattuun tallennustilaan ei saatu yhteyttä</translation>
     </message>
@@ -3886,7 +3886,7 @@ Syy: %4</translation>
         <translation>Yhtäkään huonetta ei ole avattu</translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+158"/>
         <source>No preview available</source>
         <translation>Esikatselu ei saatavilla</translation>
     </message>
@@ -3924,7 +3924,17 @@ Syy: %4</translation>
         <translation>kieltäydy kutsusta</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+36"/>
+        <source>Hide invite reason</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Show invite reason</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Back to room list</source>
         <translation>Takaisin huonelistaan</translation>
     </message>
