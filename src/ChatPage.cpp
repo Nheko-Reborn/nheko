@@ -266,6 +266,18 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                       relatedEvents;
 
                     for (const auto &event : room.timeline.events) {
+                        auto event_id = mtx::accessors::event_id(event);
+
+                        // skip already read events
+                        if (currentReadMarker &&
+                            currentReadMarker > cache::getEventIndex(room_id, event_id))
+                            continue;
+
+                        // skip our messages
+                        auto sender = mtx::accessors::sender(event);
+                        if (sender == http::client()->user_id().to_string())
+                            continue;
+
                         mtx::events::collections::TimelineEvent te{event};
                         std::visit([room_id = room_id](auto &event_) { event_.room_id = room_id; },
                                    te.data);
@@ -304,13 +316,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                                       actions.end(),
                                       mtx::pushrules::actions::Action{
                                         mtx::pushrules::actions::notify{}}) != actions.end()) {
-                            auto event_id = mtx::accessors::event_id(event);
-
-                            // skip already read events
-                            if (currentReadMarker &&
-                                currentReadMarker > cache::getEventIndex(room_id, event_id))
-                                continue;
-
                             if (!cache::isNotificationSent(event_id)) {
                                 // We should only send one notification per event.
                                 cache::markSentNotification(event_id);

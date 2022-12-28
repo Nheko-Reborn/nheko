@@ -747,6 +747,11 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case Notificationlevel: {
         const auto &push = ChatPage::instance()->pushruleEvaluator();
         if (push) {
+            // skip our messages
+            auto sender = mtx::accessors::sender(event);
+            if (sender == http::client()->user_id().to_string())
+                return qml_mtx_events::NotificationLevel::Nothing;
+
             const auto &id = event_id(event);
             std::vector<std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvent>>
               relatedEvents;
