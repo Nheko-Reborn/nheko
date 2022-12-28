@@ -5050,22 +5050,22 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+4"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Você atendeu a chamada</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 atendeu a chamada</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Você encerrou a chamada</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 encerrou a chamada</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5083,7 +5083,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+3"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Tipo de mensagem desconhecido</translation>
     </message>
 </context>
 </TS>
