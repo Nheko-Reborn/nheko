@@ -27,12 +27,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Ligar Microfone</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Desligar Microfone</translation>
     </message>
 </context>
 <context>
@@ -320,7 +320,7 @@
     <message>
         <location line="+378"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation>Deseja realmente iniciar uma conversa privada com %1?</translation>
+        <translation>Você realmente quer iniciar um chat privado com %1?</translation>
     </message>
     <message>
         <location line="-924"/>
@@ -342,7 +342,7 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
     <message>
         <location line="+12"/>
         <source>Incompatible cache version</source>
-        <translation>Versão de cache incompatível</translation>
+        <translation>Versão do cache incompatível</translation>
     </message>
     <message>
         <location line="+54"/>
