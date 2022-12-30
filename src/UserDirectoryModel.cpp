@@ -77,11 +77,11 @@ UserDirectoryModel::data(const QModelIndex &index, int role) const
 void
 UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> results)
 {
-    results_ = results;
     if (results_.empty()) {
         nhlog::net()->error("mtxclient helper thread yielded empty chunk!");
         return;
     }
     beginInsertRows(QModelIndex(), 0, static_cast<int>(results_.size()) - 1);
+    results_ = results;
     endInsertRows();
 }

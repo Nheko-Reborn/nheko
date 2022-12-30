@@ -14,7 +14,10 @@ class Invitee final : public QObject
     Q_OBJECT
 
 public:
-    Invitee(QString mxid, QObject *parent = nullptr);
+    Invitee(QString mxid,
+            QString displayName = "",
+            QString avatarUrl   = "",
+            QObject *parent     = nullptr);
 
 signals:
     void userInfoLoaded();
@@ -43,7 +46,7 @@ public:
 
     InviteesModel(QObject *parent = nullptr);
 
-    Q_INVOKABLE void addUser(QString mxid);
+    Q_INVOKABLE void addUser(QString mxid, QString displayName = "", QString avatarUrl = "");
     Q_INVOKABLE void removeUser(QString mxid);
 
     [[nodiscard]] QHash<int, QByteArray> roleNames() const override;

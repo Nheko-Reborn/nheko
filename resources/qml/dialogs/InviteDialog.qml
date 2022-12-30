@@ -17,15 +17,16 @@ ApplicationWindow {
     property InviteesModel invitees
     property var friendsCompleter
     property var profile
-    minimumWidth: 500
+    minimumWidth: 300
 
     Component.onCompleted: {
         friendsCompleter = TimelineManager.completerFor("user", "friends")
+        width = 600
     }
 
-    function addInvite(mxid) {
+    function addInvite(mxid, displayName, avatarUrl) {
         if (mxid.match("@.+?:.{3,}")) {
-            invitees.addUser(mxid);
+            invitees.addUser(mxid, displayName, avatarUrl);
             if (mxid == inviteeEntry.text)
                 inviteeEntry.clear();
         } else
@@ -34,7 +35,7 @@ ApplicationWindow {
 
     function cleanUpAndClose() {
         if (inviteeEntry.isValidMxid)
-            addInvite(inviteeEntry.text);
+            addInvite(inviteeEntry.text, "", "");
 
         invitees.accept();
         close();
@@ -61,13 +62,40 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: Nheko.paddingMedium
         spacing: Nheko.paddingMedium
+        Flow {
+            layoutDirection: Qt.LeftToRight
+            Layout.fillWidth: true
+            Layout.preferredHeight: implicitHeight
+            spacing: 4
+            Repeater {
+                id: inviteesRepeater
+                model: invitees
+                delegate: ItemDelegate {
+                    onClicked: invitees.removeUser(model.mxid)
+                    id: inviteeButton
+                    visible: !inviteesList.visible
+                    contentItem: Label {
+                        anchors.centerIn: parent
+                        id: inviteeUserid
+                        text: model.displayName
+                        color: inviteeButton.hovered ? Nheko.colors.highlightedText: Nheko.colors.text
+                        maximumLineCount: 1
+                    }
+                    background: Rectangle {
+                        border.color: Nheko.colors.text
+                        color: inviteeButton.hovered ? Nheko.colors.highlight : Nheko.colors.window
+                        border.width: 1
+                        radius: inviteeButton.height / 2
+                    }
+                }
+            }
+        }
 
         Label {
-            text: qsTr("User ID to invite")
+            text: qsTr("User to invite")
             Layout.fillWidth: true
             color: Nheko.colors.text
         }
-
         RowLayout {
             spacing: Nheko.paddingMedium
 
@@ -81,7 +109,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 onAccepted: {
                     if (isValidMxid)
-                        addInvite(text);
+                        addInvite(text, "", "");
 
                 }
                 Component.onCompleted: forceActiveFocus()
@@ -123,7 +151,7 @@ ApplicationWindow {
                 Layout.preferredWidth: inviteDialogRoot.width/2
                 Layout.alignment: Qt.AlignTop
                 Layout.preferredHeight: layout3.implicitHeight + Nheko.paddingSmall * 2
-                onClicked: addInvite(inviteeEntry.text)
+                onClicked: addInvite(inviteeEntry.text, profile? profile.displayName : "", profile? profile.avatarUrl : "")
                 background: Rectangle {
                 color: del3.hovered ? Nheko.colors.dark : inviteDialogRoot.color
                 clip: true
@@ -174,7 +202,7 @@ ApplicationWindow {
                     id: del2
                     width: ListView.view.width
                     height: layout2.implicitHeight + Nheko.paddingSmall * 2
-                    onClicked: addInvite(model.userid)
+                    onClicked: addInvite(model.userid, model.displayName, model.avatarUrl)
                     background: Rectangle {
                     color: del2.hovered ? Nheko.colors.dark : inviteDialogRoot.color
                     }
@@ -221,6 +249,7 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 model: invitees
                 clip: true
+                visible: inviteDialogRoot.width >= 500
 
                 delegate: ItemDelegate {
                     id: del

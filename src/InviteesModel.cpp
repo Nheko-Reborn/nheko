@@ -16,7 +16,7 @@ InviteesModel::InviteesModel(QObject *parent)
 }
 
 void
-InviteesModel::addUser(QString mxid)
+InviteesModel::addUser(QString mxid, QString displayName, QString avatarUrl)
 {
     for (const auto &invitee : qAsConst(invitees_))
         if (invitee->mxid_ == mxid)
@@ -24,7 +24,7 @@ InviteesModel::addUser(QString mxid)
 
     beginInsertRows(QModelIndex(), invitees_.count(), invitees_.count());
 
-    auto invitee        = new Invitee{mxid, this};
+    auto invitee        = new Invitee{mxid, displayName, avatarUrl, this};
     auto indexOfInvitee = invitees_.count();
     connect(invitee, &Invitee::userInfoLoaded, this, [this, indexOfInvitee]() {
         emit dataChanged(index(indexOfInvitee), index(indexOfInvitee));
@@ -84,21 +84,28 @@ InviteesModel::mxids()
     return mxidList;
 }
 
-Invitee::Invitee(QString mxid, QObject *parent)
+Invitee::Invitee(QString mxid, QString displayName, QString avatarUrl, QObject *parent)
   : QObject{parent}
   , mxid_{std::move(mxid)}
 {
-    http::client()->get_profile(
-      mxid_.toStdString(), [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
-          if (err) {
-              nhlog::net()->warn("failed to retrieve profile info");
+    if (displayName == "" || avatarUrl == "") {
+        http::client()->get_profile(
+          mxid_.toStdString(),
+          [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
+              if (err) {
+                  nhlog::net()->warn("failed to retrieve profile info");
+                  emit userInfoLoaded();
+                  return;
+              }
+
+              displayName_ = QString::fromStdString(res.display_name);
+              avatarUrl_   = QString::fromStdString(res.avatar_url);
+
               emit userInfoLoaded();
-              return;
-          }
-
-          displayName_ = QString::fromStdString(res.display_name);
-          avatarUrl_   = QString::fromStdString(res.avatar_url);
-
-          emit userInfoLoaded();
-      });
+          });
+    } else {
+        displayName_ = displayName;
+        avatarUrl_   = avatarUrl;
+        emit userInfoLoaded();
+    }
 }
