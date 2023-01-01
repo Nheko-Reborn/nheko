@@ -228,7 +228,7 @@
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfirmasi keluar dari akun</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -331,7 +331,9 @@
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
+        <translation>Karena alasan berikut Nheko ingin kamu kembali ke laman masuk:
+%1
+Jika kamu pikir bahwa ini adalah kesalahan, kamu bisa menutup Nheko untuk memulihkan kunci enkripsimu. Setelah kamu berada di laman masuk, kamu bisa masuk lagi menggunakan metode biasanya.</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -429,298 +431,298 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+103"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;teks&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/join (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/join (!idruangan|#alias) [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/knock (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/knock (!idruangan|#alias) [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/invite @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/invite @idpengguna [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/kick @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/kick @idpengguna [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/ban @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/ban @idpengguna [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unban @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/unban @idpengguna [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/redact ($eventid|@userid)</source>
-        <translation type="unfinished"></translation>
+        <translation>/redact ($idperistiwa|@idpengguna)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/roomnick &lt;displayname&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/roomnick &lt;namatampilan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/shrug [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/shrug [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/fliptable</source>
-        <translation type="unfinished"></translation>
+        <translation>/fliptable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unfliptable</source>
-        <translation type="unfinished"></translation>
+        <translation>/unfliptable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/sovietflip</source>
-        <translation type="unfinished"></translation>
+        <translation>/sovietflip</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/clear-timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>/clear-timeline</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/reset-state</source>
-        <translation type="unfinished"></translation>
+        <translation>/reset-state</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rotate-megolm-session</source>
-        <translation type="unfinished"></translation>
+        <translation>/rotate-megolm-session</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/md [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/md [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/plain [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/plain [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbow [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbow [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowme [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowme [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/notice [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbownotice [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbownotice [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/confetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/confetti [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowconfetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowconfetti [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto ($idperistiwa|indeks pesan|matrix:r/room/e/event)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/converttodm</source>
-        <translation type="unfinished"></translation>
+        <translation>/converttodm</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/converttoroom</source>
-        <translation type="unfinished"></translation>
+        <translation>/converttoroom</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan mengekspresikan sebuah tindakan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim &lt;teks&gt; sebagai reaksi ketika kamu membalas ke sebuah pesan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bergabung dengan sebuah ruangan. Alasan opsional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bertanya untuk bergabung dengan sebuah ruangan. Alasan opsional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tinggalkan sebuah ruangan. Alasan opsional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Undang seorang pengguna ke ruangan saat ini. Alasan opsional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluarkan seorang pengguna dari ruangan saat ini. Alasan opsional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cekal seorang pengguna dari ruangan saat ini. Alasan opsional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Batalkan cekalan seorang pengguna di ruangan saat ini. Alasan opsional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Redaksi sebuah peristiwa atau semua pesan tembolok lokal pengguna.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change your displayname in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah nama tampilanmu dalam ruangan ini.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>¯\_(ツ)_/¯ with an optional message.</source>
-        <translation type="unfinished"></translation>
+        <translation>¯\_(ツ)_/¯ dengan pesan opsional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>(╯°□°)╯︵ ┻━┻</source>
-        <translation type="unfinished"></translation>
+        <translation>(╯°□°)╯︵ ┻━┻</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>┯━┯╭( º _ º╭)</source>
-        <translation type="unfinished"></translation>
+        <translation>┯━┯╭( º _ º╭)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ノ┬─┬ノ ︵ ( \o°o)\</source>
-        <translation type="unfinished"></translation>
+        <translation>ノ┬─┬ノ ︵ ( \o°o)\</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Clear the currently cached messages in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus pesan yang saat ini ditembolok dalam ruangan ini.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refetch the state in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dapatkan ulang keadaan di ruangan ini.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Putar kunci enkripsi simetris saat ini.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan dengan format markdown (mengabaikan pengaturan global).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan tanpa format (mengabaikan pengaturan global).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan dengan warna pelangi.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim /me dengan warna pelangi.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan bot.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan bot dengan warna pelangi.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan dengan konfeti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan dengan warna pelangi dengan konfeti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to this event or link.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pergi ke perisitwa atau tautan ini.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah ruangan ini ke obrolan langsung.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah obrolan langsung ini ke sebuah ruangan.</translation>
     </message>
 </context>
 <context>
@@ -1573,7 +1575,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+5"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation>Penemuan otomatis gagal. Kesalahan yang tidak diketahu saat meminta .well-known.</translation>
+        <translation>Penemuan otomatis gagal. Kesalahan tidak diketahui saat meminta .well-known.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -1733,12 +1735,12 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+30"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menolak panggilan.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 memilih menjawab</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1759,12 +1761,12 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="-339"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan ini digantikan karena alasan berikut: %1</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished"></translation>
+        <translation>Pergi ke ruangan baru</translation>
     </message>
     <message>
         <location line="+282"/>
@@ -1792,7 +1794,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Sudah ada dalam panggilan</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2422,7 +2424,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+2"/>
         <source>Reject a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Tolak panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2486,17 +2488,17 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
         <source>Respond</source>
-        <translation type="unfinished"></translation>
+        <translation>Tanggapi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Send</source>
-        <translation type="unfinished">Kirim</translation>
+        <translation>Kirim</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Ketik pesan…</translation>
+        <translation>Ketik pesan…</translation>
     </message>
 </context>
 <context>
@@ -2703,7 +2705,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+12"/>
         <source>Room settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pengaturan ruangan</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3917,12 +3919,12 @@ Alasan: %4</translation>
     <message>
         <location line="+36"/>
         <source>Hide invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Sembunyikan alasan undangan</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Show invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan alasan undangan</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -3975,7 +3977,7 @@ Alasan: %4</translation>
     <message>
         <location line="+66"/>
         <source>Search this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari ruangan ini</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -4010,7 +4012,7 @@ Alasan: %4</translation>
     <message>
         <location line="+63"/>
         <source>Enter search query</source>
-        <translation type="unfinished"></translation>
+        <translation>Masukkan kueri pencarian</translation>
     </message>
 </context>
 <context>
@@ -4214,7 +4216,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation>Emoji besar di linimasa</translation>
+        <translation>Emoji besar di lini masa</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4234,7 +4236,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Use shift+enter to send and enter to start a new line</source>
-        <translation type="unfinished"></translation>
+        <translation>Gunakan shift+enter untuk mengirim dan enter untuk memulai baris baru</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4264,12 +4266,12 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation>Tampilkan tombol di linimasa</translation>
+        <translation>Tampilkan tombol di lini masa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation>Batasi lebar linimasa</translation>
+        <translation>Batasi lebar lini masa</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4314,12 +4316,12 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Decrypt notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekripsi notifikasi</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Display fancy effects such as confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan efek mewah seperti konfeti</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4444,7 +4446,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>TIMELINE</source>
-        <translation>LINIMASA</translation>
+        <translation>LINI MASA</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4560,7 +4562,7 @@ Ketika dinonaktifkan, semua pesan akan dikirim sebagai teks biasa.</translation>
     <message>
         <location line="+4"/>
         <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Balikkan perilaku tombol enter dalam masukan teks, membuatnya mengirim pesan ketika shift+enter ditekan dan memulai baris baru ketika enter ditekan.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4604,7 +4606,7 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+16"/>
         <source>Decrypt messages shown in notifications for encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekripsi pesan ditampilkan dalam notifikasi untuk obrolan terenkripsi.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4614,7 +4616,7 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+3"/>
         <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Beberapa pesan dapat dikirim dengan efek mewah. Misalnya, pesan dikirim dengan &apos;/confetti&apos; akan menampilkan konfeti di layar.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4646,7 +4648,7 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
     <message>
         <location line="+223"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation>Tetapkan lebar pesan di linimasa (dalam pixel). Ini dapat membantu keterbacaan di layar lebar ketika Nheko dimaksimalkan</translation>
+        <translation>Tetapkan lebar pesan di lini masa (dalam pixel). Ini dapat membantu keterbacaan di layar lebar ketika Nheko dimaksimalkan</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4701,8 +4703,8 @@ Hanya mempengaruhi pesan di chat terenkripsi.</translation>
         <location line="+11"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation>Ketika jendela kehilangan fokus, linimasanya
-akan diburamkan.</translation>
+        <translation>Ketika jendela kehilangan fokus, lini masanya
+akan buram.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5034,12 +5036,12 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="-11"/>
         <source>You sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamu mengirim beberapa konfeti</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengirim beberapa konfeti</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -5084,12 +5086,12 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="+4"/>
         <source>You rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamu menolak panggilan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 menolak panggilan</translation>
     </message>
 </context>
 <context>
