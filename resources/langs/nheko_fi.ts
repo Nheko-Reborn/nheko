@@ -229,7 +229,7 @@
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Vahvista uloskirjautuminen</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -332,7 +332,9 @@
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko haluaa palauttaa sinut kirjautumissivulle seuraavasta syystä:
+%1
+Jos luulet tätä virheeksi, voit sulkea Nhekon yrittääksesi saada salausavaimet takaisin. Kirjautumissivulle palauduttuasi voit taas kirjautua tavallisilla menetelmillä.</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -430,32 +432,32 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+103"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;viesti&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;teksti&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/join (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/join (!huonetunnus|#alias) [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/knock (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/knock (!huonetunnus|#alias) [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
