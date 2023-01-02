@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2010 David Sansome <me@davidsansome.com>
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
