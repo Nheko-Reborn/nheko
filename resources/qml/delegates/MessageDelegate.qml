@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -62,7 +63,48 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.Tombstone
+
+
+            ColumnLayout {
+                width: parent.width
+
+                NoticeMessage {
+                    body: formatted
+                    isOnlyEmoji: false
+                    isReply: d.isReply
+                    keepFullText: d.keepFullText
+                    isStateEvent: d.isStateEvent
+                    Layout.fillWidth: true
+                    formatted: qsTr("This room was replaced for the following reason: %1").arg(d.body)
+                }
+
+                Button {
+                    palette: Nheko.colors
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Go to replacement room")
+                    onClicked: room.joinReplacementRoom(eventId)
+                }
+
+            }
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.TextMessage
+
+            TextMessage {
+                formatted: d.formattedBody
+                body: d.body
+                isOnlyEmoji: d.isOnlyEmoji
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                metadataWidth: d.metadataWidth
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.ConfettiMessage
 
             TextMessage {
                 formatted: d.formattedBody
@@ -565,6 +607,7 @@ Item {
                 Button {
                     visible: d.relatedEventCacheBuster, room.showAcceptKnockButton(d.eventId)
                     palette: Nheko.colors
+                    Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Allow them in")
                     onClicked: room.acceptKnock(eventId)
                 }

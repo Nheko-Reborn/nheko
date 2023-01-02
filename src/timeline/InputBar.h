@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -230,6 +231,7 @@ signals:
 private:
     void emote(const QString &body, bool rainbowify);
     void notice(const QString &body, bool rainbowify);
+    void confetti(const QString &body, bool rainbowify);
     void command(const QString &name, QString args);
     void image(const QString &filename,
                const std::optional<mtx::crypto::EncryptedFile> &file,

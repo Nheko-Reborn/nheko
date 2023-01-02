@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -80,6 +81,10 @@ class MxcImageProvider
   public QQuickAsyncImageProvider
 {
     Q_OBJECT
+
+public:
+    MxcImageProvider(QObject *parent = nullptr);
+
 public slots:
     QQuickImageResponse *
     requestImageResponse(const QString &id, const QSize &requestedSize) override;

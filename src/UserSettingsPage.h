@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -39,6 +40,8 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool startInTray READ startInTray WRITE setStartInTray NOTIFY startInTrayChanged)
     Q_PROPERTY(bool groupView READ groupView WRITE setGroupView NOTIFY groupViewStateChanged)
     Q_PROPERTY(bool markdown READ markdown WRITE setMarkdown NOTIFY markdownChanged)
+    Q_PROPERTY(
+      bool invertEnterKey READ invertEnterKey WRITE setInvertEnterKey NOTIFY invertEnterKeyChanged)
     Q_PROPERTY(bool bubbles READ bubbles WRITE setBubbles NOTIFY bubblesChanged)
     Q_PROPERTY(bool smallAvatars READ smallAvatars WRITE setSmallAvatars NOTIFY smallAvatarsChanged)
     Q_PROPERTY(bool animateImagesOnHover READ animateImagesOnHover WRITE setAnimateImagesOnHover
@@ -62,6 +65,7 @@ class UserSettings final : public QObject
                  NOTIFY decryptNotificationsChanged)
     Q_PROPERTY(bool spaceNotifications READ spaceNotifications WRITE setSpaceNotifications NOTIFY
                  spaceNotificationsChanged)
+    Q_PROPERTY(bool fancyEffects READ fancyEffects WRITE setFancyEffects NOTIFY fancyEffectsChanged)
     Q_PROPERTY(
       bool privacyScreen READ privacyScreen WRITE setPrivacyScreen NOTIFY privacyScreenChanged)
     Q_PROPERTY(int privacyScreenTimeout READ privacyScreenTimeout WRITE setPrivacyScreenTimeout
@@ -152,6 +156,7 @@ public:
     void setEmojiFontFamily(QString family);
     void setGroupView(bool state);
     void setMarkdown(bool state);
+    void setInvertEnterKey(bool state);
     void setBubbles(bool state);
     void setSmallAvatars(bool state);
     void setAnimateImagesOnHover(bool state);
@@ -168,6 +173,7 @@ public:
     void setDecryptSidebar(bool state);
     void setDecryptNotifications(bool state);
     void setSpaceNotifications(bool state);
+    void setFancyEffects(bool state);
     void setPrivacyScreen(bool state);
     void setPrivacyScreenTimeout(int state);
     void setPresence(Presence state);
@@ -211,9 +217,11 @@ public:
     bool decryptSidebar() const { return decryptSidebar_; }
     bool decryptNotifications() const { return decryptNotifications_; }
     bool spaceNotifications() const { return spaceNotifications_; }
+    bool fancyEffects() const { return fancyEffects_; }
     bool privacyScreen() const { return privacyScreen_; }
     int privacyScreenTimeout() const { return privacyScreenTimeout_; }
     bool markdown() const { return markdown_; }
+    bool invertEnterKey() const { return invertEnterKey_; }
     bool bubbles() const { return bubbles_; }
     bool smallAvatars() const { return smallAvatars_; }
     bool animateImagesOnHover() const { return animateImagesOnHover_; }
@@ -278,6 +286,7 @@ signals:
     void trayChanged(bool state);
     void startInTrayChanged(bool state);
     void markdownChanged(bool state);
+    void invertEnterKeyChanged(bool state);
     void bubblesChanged(bool state);
     void smallAvatarsChanged(bool state);
     void animateImagesOnHoverChanged(bool state);
@@ -290,6 +299,7 @@ signals:
     void decryptSidebarChanged(bool state);
     void decryptNotificationsChanged(bool state);
     void spaceNotificationsChanged(bool state);
+    void fancyEffectsChanged(bool state);
     void privacyScreenChanged(bool state);
     void privacyScreenTimeoutChanged(int state);
     void timelineMaxWidthChanged(int state);
@@ -341,6 +351,7 @@ private:
     bool startInTray_;
     bool groupView_;
     bool markdown_;
+    bool invertEnterKey_;
     bool bubbles_;
     bool smallAvatars_;
     bool animateImagesOnHover_;
@@ -354,6 +365,7 @@ private:
     bool decryptSidebar_;
     bool decryptNotifications_;
     bool spaceNotifications_;
+    bool fancyEffects_;
     bool privacyScreen_;
     int privacyScreenTimeout_;
     bool shareKeysWithTrustedUsers_;
@@ -433,8 +445,11 @@ class UserSettingsModel final : public QAbstractListModel
         TypingNotifications,
         ReadReceipts,
         Markdown,
+        InvertEnterKey,
         Bubbles,
         SmallAvatars,
+        FancyEffects,
+
         SidebarSection,
         GroupView,
         SortByImportance,

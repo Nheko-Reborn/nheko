@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -80,8 +81,8 @@ EventStore::EventStore(std::string room_id, QObject *)
                   emit beginInsertRows(toExternalIdx(newFirst), toExternalIdx(this->first - 1));
                   this->first = newFirst;
                   emit endInsertRows();
-                  emit fetchedMore();
                   emit dataChanged(toExternalIdx(oldFirst), toExternalIdx(oldFirst));
+                  emit fetchedMore();
               } else {
                   auto range = cache::client()->getTimelineRange(room_id_);
 
@@ -725,10 +726,11 @@ EventStore::decryptEvent(const IdIndex &idx,
         case olm::DecryptionErrorCode::ParsingFailed:
             break;
         case olm::DecryptionErrorCode::ReplayAttack:
-            nhlog::crypto()->critical("Reply attack while decryptiong event {} in room {} from {}!",
-                                      e.event_id,
-                                      room_id_,
-                                      e.sender);
+            nhlog::crypto()->critical(
+              "Replay attack while decryptiong event {} in room {} from {}!",
+              e.event_id,
+              room_id_,
+              e.sender);
             break;
         case olm::DecryptionErrorCode::NoError:
             // unreachable

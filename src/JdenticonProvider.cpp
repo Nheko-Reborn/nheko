@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -104,7 +105,8 @@ JdenticonRunnable::run()
     painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
 
     try {
-        QSvgRenderer renderer{jdenticon->generate(m_key, m_requestedSize.width()).toUtf8()};
+        QSvgRenderer renderer{
+          jdenticon->generate(m_key, static_cast<std::uint16_t>(m_requestedSize.width())).toUtf8()};
         renderer.render(&painter);
     } catch (std::exception &e) {
         nhlog::ui()->error(

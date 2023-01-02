@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -33,6 +34,7 @@
 
 #if defined(Q_OS_MAC)
 #include "emoji/MacHelper.h"
+#include "notifications/Manager.h"
 #endif
 
 #if defined(GSTREAMER_AVAILABLE) && (defined(Q_OS_MAC) || defined(Q_OS_WINDOWS))
@@ -61,7 +63,7 @@ stacktraceHandler(int signum)
     // see
     // https://stackoverflow.com/questions/77005/how-to-automatically-generate-a-stacktrace-when-my-program-crashes/77336#77336
     void *array[50];
-    size_t size;
+    int size;
 
     // get void*'s for all entries on the stack
     size = backtrace(array, 50);
@@ -389,6 +391,10 @@ main(int argc, char *argv[])
     // Temporary solution for the emoji picker until
     // nheko has a proper menu bar with more functionality.
     MacHelper::initializeMenus();
+
+    // Need to set up notification delegate so users can respond to messages from within the
+    // notification itself.
+    NotificationsManager::attachToMacNotifCenter();
 #endif
 
     nhlog::ui()->info("starting nheko {}", nheko::version);

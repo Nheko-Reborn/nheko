@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -78,7 +79,14 @@ private:
                                 const QString &event_id,
                                 const QString &subtitle,
                                 const QString &informativeText,
-                                const QString &bodyImagePath);
+                                const QString &bodyImagePath,
+                                const QString &respondStr,
+                                const QString &sendStr,
+                                const QString &placeholder,
+                                const bool playSound);
+
+public:
+    static void attachToMacNotifCenter();
 #endif
 
 #if defined(Q_OS_WINDOWS)

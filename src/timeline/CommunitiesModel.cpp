@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -153,7 +154,8 @@ CommunitiesModel::data(const QModelIndex &index, int role) const
             int count = 0;
             auto end  = spaceOrder_.lastChild(index.row() - 2);
             for (int i = index.row() - 2; i <= end; i++)
-                count += spaceOrder_.tree[i].notificationCounts.notification_count;
+                count +=
+                  static_cast<int>(spaceOrder_.tree[i].notificationCounts.notification_count);
             return count;
         }
         case CommunitiesModel::Roles::HasLoudNotification: {

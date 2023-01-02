@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -78,6 +79,11 @@ public:
     //! Check if the given room is currently open.
     bool isRoomActive(const QString &room_id);
 
+    const std::unique_ptr<mtx::pushrules::PushRuleEvaluator> &pushruleEvaluator() const
+    {
+        return pushrules;
+    }
+
 public slots:
     bool handleMatrixUri(QString uri);
     bool handleMatrixUri(const QUrl &uri);
@@ -105,6 +111,7 @@ public slots:
     void receivedSessionKey(const std::string &room_id, const std::string &session_id);
     void decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescription keyDesc,
                                   const SecretsToDecrypt &secrets);
+    void sendNotificationReply(const QString &roomid, const QString &eventid, const QString &body);
 signals:
     void connectionLost();
     void connectionRestored();

@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -37,6 +38,8 @@ public slots:
     //! Starts or activates a direct chat. It is your responsibility to ask for confirmation (if
     //! desired).
     Q_SCRIPTABLE void directChat(const QString &userId) const;
+    //! Sets the user's status message.
+    Q_SCRIPTABLE void setStatusMessage(const QString &message);
 
 private:
     void bringWindowToTop() const;

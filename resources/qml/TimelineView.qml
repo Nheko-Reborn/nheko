@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -13,6 +14,7 @@ import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
+import QtQuick.Particles 2.15
 import QtQuick.Window 2.13
 import im.nheko 1.0
 import im.nheko.EmojiModel 1.0
@@ -24,6 +26,11 @@ Item {
     property var roomPreview: null
     property bool showBackButton: false
     clip: true
+
+    onRoomChanged: if (room != null) room.triggerSpecialEffects()
+
+    // focus message input on key press, but not on Ctrl-C and such.
+    Keys.onPressed: if (event.text && !topBar.searchHasFocus) TimelineManager.focusMessageInput();
 
     Shortcut {
         sequence: StandardKey.Close
@@ -164,6 +171,7 @@ Item {
         property string roomName: room ? room.roomName : (roomPreview ? roomPreview.roomName : "")
         property string roomTopic: room ? room.roomTopic : (roomPreview ? roomPreview.roomTopic : "")
         property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
+        property string reason: roomPreview ? roomPreview.reason : ""
 
         visible: room != null && room.isSpace || roomPreview != null
         enabled: visible
@@ -271,6 +279,44 @@ Item {
             onClicked: Rooms.declineInvite(roomPreview.roomid)
         }
 
+        ScrollView {
+            id: reasonField
+            property bool showReason: false
+
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            Layout.leftMargin: Nheko.paddingLarge
+            Layout.rightMargin: Nheko.paddingLarge
+            visible: preview.reason !== "" && showReason
+
+            TextArea {
+                text: TimelineManager.escapeEmoji(preview.reason)
+                wrapMode: TextEdit.WordWrap
+                textFormat: TextEdit.RichText
+                readOnly: true
+                background: null
+                selectByMouse: true
+                color: Nheko.colors.text
+                horizontalAlignment: TextEdit.AlignHCenter
+            }
+
+        }
+
+        Button {
+            id: showReasonButton
+
+            Layout.alignment: Qt.AlignHCenter
+            //Layout.fillWidth: true
+            Layout.leftMargin: Nheko.paddingLarge
+            Layout.rightMargin: Nheko.paddingLarge
+
+            visible: preview.reason !== ""
+            text: reasonField.showReason ? qsTr("Hide invite reason") : qsTr("Show invite reason")
+            onClicked: {
+                reasonField.showReason = !reasonField.showReason;
+            }
+        }
+
         Item {
             visible: room != null
             Layout.preferredHeight: Math.ceil(fontMetrics.lineSpacing * 2)
@@ -298,6 +344,58 @@ Item {
         onClicked: Rooms.resetCurrentRoom()
     }
 
+    ParticleSystem { id: confettiParticleSystem }
+
+    Emitter {
+        id: confettiEmitter
+
+        width: parent.width * 3/4
+        enabled: false
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: parent.height
+        emitRate: Math.min(400 * Math.sqrt(parent.width * parent.height) / 870, 1000)
+        lifeSpan: 15000
+        system: confettiParticleSystem
+        velocityFromMovement: 8
+        size: 16
+        sizeVariation: 4
+        velocity: PointDirection {
+            x: 0
+            y: -Math.min(450 * parent.height / 700, 1000)
+            xVariation: Math.min(4 * parent.width / 7, 450)
+            yVariation: 250
+        }
+
+        ImageParticle {
+            system: confettiParticleSystem
+            source: "qrc:/confettiparticle.svg"
+            rotationVelocity: 0
+            rotationVelocityVariation: 360
+            colorVariation: 1
+            color: "white"
+            entryEffect: ImageParticle.None
+            xVector: PointDirection {
+                x: 1
+                y: 0
+                xVariation: 0.2
+                yVariation: 0.2
+            }
+            yVector: PointDirection {
+                x: 0
+                y: 0.5
+                xVariation: 0.2
+                yVariation: 0.2
+            }
+        }
+    }
+
+    Gravity {
+        system: confettiParticleSystem
+        anchors.fill: parent
+        magnitude: 350
+        angle: 90
+    }
+
     NhekoDropArea {
         anchors.fill: parent
         roomid: room ? room.roomId : ""
@@ -319,6 +417,15 @@ Item {
             });
             dialog.show();
             timelineRoot.destroyOnClose(dialog);
+        }
+
+        function onConfetti()
+        {
+            if (!Settings.fancyEffects)
+                return
+
+            confettiEmitter.pulse(parent.height * 2)
+            room.markSpecialEffectsDone()
         }
 
         target: room

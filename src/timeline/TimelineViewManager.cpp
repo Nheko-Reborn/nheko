@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -10,8 +11,10 @@
 #include <QStandardPaths>
 #include <QString>
 
+#include "Cache.h"
 #include "ChatPage.h"
 #include "CombinedImagePackModel.h"
+#include "CommandCompleter.h"
 #include "CompletionProxyModel.h"
 #include "EventAccessors.h"
 #include "ImagePackListModel.h"
@@ -443,6 +446,11 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
         auto proxy        = new CompletionProxyModel(stickerModel);
         stickerModel->setParent(proxy);
         return proxy;
+    } else if (completerName == QLatin1String("command")) {
+        auto commandCompleter = new CommandCompleter();
+        auto proxy            = new CompletionProxyModel(commandCompleter);
+        commandCompleter->setParent(proxy);
+        return proxy;
     }
     return nullptr;
 }
@@ -455,7 +463,7 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
     auto content                                             = mtx::accessors::url(*e);
     std::optional<mtx::crypto::EncryptedFile> encryptionInfo = mtx::accessors::file(*e);
 
-    if (encryptionInfo) {
+    if (encryptionInfo && !cache::isRoomEncrypted(roomId.toStdString())) {
         http::client()->download(
           content,
           [this, roomId, e, encryptionInfo](const std::string &res,

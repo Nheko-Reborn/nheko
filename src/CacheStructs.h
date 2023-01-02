@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -93,8 +94,8 @@ struct RoomInfo
     //! Use the TimelineModel::lastMessage for an accurate timestamp.
     uint64_t approximate_last_modification_ts = 0;
 
-    uint16_t highlight_count    = 0;
-    uint16_t notification_count = 0;
+    uint64_t highlight_count    = 0;
+    uint64_t notification_count = 0;
 };
 
 void
@@ -107,6 +108,7 @@ struct MemberInfo
 {
     std::string name;
     std::string avatar_url;
+    std::string reason;
     bool is_direct = false;
 };
 

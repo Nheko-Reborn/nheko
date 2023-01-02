@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -132,13 +133,17 @@ ApplicationWindow {
             spacing: Nheko.paddingMedium
             Layout.fillWidth: true
 
-            TextField {
+            MatrixTextField {
                 id: newAliasVal
 
+                focus: true
                 Layout.fillWidth: true
-
+                selectByMouse: true
+                font.pixelSize: fontMetrics.font.pixelSize
+                color: Nheko.colors.text
                 placeholderText: qsTr("#new-alias:server.tld")
 
+                Component.onCompleted: forceActiveFocus()
                 Keys.onPressed: {
                     if (event.matches(StandardKey.InsertParagraphSeparator)) {
                         editingModel.addAlias(newAliasVal.text);

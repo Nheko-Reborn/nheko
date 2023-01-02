@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -48,8 +49,8 @@ Page {
                     Layout.fillHeight: true
                     Layout.fillWidth: true
 
-                    sourceSize.height: height
-                    sourceSize.width: width
+                    sourceSize.height: parent.availableHeight - namefield.height
+                    sourceSize.width: parent.availableWidth
                     fillMode: Image.PreserveAspectFit
                     smooth: true
                     mipmap: true
@@ -63,6 +64,7 @@ Page {
                     source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/icons/icons/ui/"+typeStr+".svg?" + Nheko.colors.buttonText)
                 }
                 MatrixTextField {
+                    id: namefield
                     Layout.fillWidth: true
                     text: modelData.filename
                     onTextEdited: modelData.filename = text

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -100,6 +101,7 @@ enum EventType
     Widget,
     /// m.room.message
     AudioMessage,
+    ConfettiMessage,
     EmoteMessage,
     FileMessage,
     ImageMessage,
@@ -151,6 +153,14 @@ enum EventState
     Empty,
 };
 Q_ENUM_NS(EventState)
+
+enum NotificationLevel
+{
+    Nothing,
+    Notify,
+    Highlight,
+};
+Q_ENUM_NS(NotificationLevel)
 }
 
 class StateKeeper
@@ -242,6 +252,7 @@ public:
         IsEncrypted,
         IsStateEvent,
         Trustlevel,
+        Notificationlevel,
         EncryptionError,
         ReplyTo,
         ThreadId,
@@ -277,6 +288,7 @@ public:
     Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, const QColor &bg);
     Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
     Q_INVOKABLE void acceptKnock(const QString &id);
+    Q_INVOKABLE void joinReplacementRoom(const QString &id);
     Q_INVOKABLE QString formatMemberEvent(const QString &id);
     Q_INVOKABLE QString formatJoinRuleEvent(const QString &id);
     Q_INVOKABLE QString formatHistoryVisibilityEvent(const QString &id);
@@ -387,7 +399,11 @@ public slots:
     void setThread(const QString &newThread);
     void resetThread();
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
-    void clearTimeline() { events.clearTimeline(); }
+    void clearTimeline()
+    {
+        events.clearTimeline();
+        setPaginationInProgress(false);
+    }
     void resetState();
     void receivedSessionKey(const std::string &session_key)
     {
@@ -406,9 +422,12 @@ public slots:
     RoomSummary *parentSpace();
 
     bool hasMentions() const { return highlight_count > 0; }
-    int notificationCount() const { return notification_count; }
+    int notificationCount() const { return static_cast<int>(notification_count); }
 
     QString scrollTarget() const;
+
+    void triggerSpecialEffects();
+    void markSpecialEffectsDone();
 
 private slots:
     void addPendingMessage(mtx::events::collections::TimelineEvents event);
@@ -429,6 +448,7 @@ signals:
     void paginationInProgressChanged(const bool);
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
+    void confetti();
 
     void lastMessageChanged();
     void notificationsChanged();
@@ -455,6 +475,8 @@ signals:
     void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
 
     void scrollTargetChanged();
+
+    void fetchedMore();
 
 private:
     template<typename T>
@@ -497,6 +519,9 @@ private:
     bool isEncrypted_           = false;
     std::string last_event_id;
     std::string fullyReadEventId_;
+
+    // TODO (Loren): This should hopefully handle more than just confetti in the future
+    bool needsSpecialEffects_ = false;
 
     std::unique_ptr<RoomSummary, DeleteLaterDeleter> parentSummary = nullptr;
     bool parentChecked                                             = false;

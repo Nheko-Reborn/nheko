@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -191,7 +192,7 @@ AliasEditingModel::makeCanonical(int row)
     auto moveAlias = aliases.at(row).alias;
 
     if (!aliasEvent.alias.empty()) {
-        for (qsizetype i = 0; i < aliases.size(); i++) {
+        for (int i = 0; i < aliases.size(); i++) {
             if (moveAlias == aliases[i].alias) {
                 if (aliases[i].canonical) {
                     aliases[i].canonical = false;
@@ -286,7 +287,7 @@ AliasEditingModel::toggleAdvertize(int row)
 void
 AliasEditingModel::updateAlias(std::string alias, std::string target)
 {
-    for (qsizetype i = 0; i < aliases.size(); i++) {
+    for (int i = 0; i < aliases.size(); i++) {
         auto &e = aliases[i];
         if (e.alias == alias) {
             e.published = (target == room_id);
@@ -300,7 +301,7 @@ AliasEditingModel::updatePublishedAliases(std::vector<std::string> advAliases)
 {
     for (const auto &advAlias : advAliases) {
         bool found = false;
-        for (qsizetype i = 0; i < aliases.size(); i++) {
+        for (int i = 0; i < aliases.size(); i++) {
             auto &alias = aliases[i];
             if (alias.alias == advAlias) {
                 alias.published = true;

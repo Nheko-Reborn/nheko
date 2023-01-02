@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -141,7 +142,8 @@ parseSDP(const std::string &sdp, GstWebRTCSDPType type)
 {
     GstSDPMessage *msg;
     gst_sdp_message_new(&msg);
-    if (gst_sdp_message_parse_buffer((guint8 *)sdp.c_str(), sdp.size(), msg) == GST_SDP_OK) {
+    if (gst_sdp_message_parse_buffer((guint8 *)sdp.c_str(), static_cast<guint>(sdp.size()), msg) ==
+        GST_SDP_OK) {
         return gst_webrtc_session_description_new(type, msg);
     } else {
         nhlog::ui()->error("WebRTC: failed to parse remote session description");
@@ -371,9 +373,12 @@ getResolution(GstElement *pipe, const gchar *elementName, const gchar *padName)
 std::pair<int, int>
 getPiPDimensions(const std::pair<int, int> &resolution, int fullWidth, double scaleFactor)
 {
-    int pipWidth  = fullWidth * scaleFactor;
-    int pipHeight = static_cast<double>(resolution.second) / resolution.first * pipWidth;
-    return {pipWidth, pipHeight};
+    double pipWidth  = fullWidth * scaleFactor;
+    double pipHeight = static_cast<double>(resolution.second) / resolution.first * pipWidth;
+    return {
+      static_cast<int>(std::ceil(pipWidth)),
+      static_cast<int>(std::ceil(pipHeight)),
+    };
 }
 
 void

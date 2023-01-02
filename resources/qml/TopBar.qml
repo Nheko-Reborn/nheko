@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -24,6 +25,8 @@ Pane {
     property int trustlevel: room ? room.trustlevel : Crypto.Unverified
     property bool isDirect: room ? room.isDirect : false
     property string directChatOtherUserId: room ? room.directChatOtherUserId : ""
+
+    property bool searchHasFocus: searchField.focus && searchField.enabled
 
     property string searchString: ""
 
@@ -225,11 +228,9 @@ Pane {
                 Layout.row: 1
                 Layout.rowSpan: 2
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
-                Layout.maximumWidth: Nheko.avatarSize - Nheko.paddingMedium
+                Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
 
                 contentItem: EncryptionIndicator {
-                    sourceSize.height: parent.Layout.preferredHeight * Screen.devicePixelRatio
-                    sourceSize.width: parent.Layout.preferredWidth * Screen.devicePixelRatio
                     encrypted: isEncrypted
                     trust: trustlevel
                     enabled: false
@@ -449,6 +450,8 @@ Pane {
             MatrixTextField {
                 id: searchField
                 visible: searchButton.searchActive
+                enabled: visible
+                hasClear: true
 
                 Layout.row: 5
                 Layout.column: 2

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -89,9 +90,6 @@ firstChar(const QString &input);
 QString
 humanReadableFileSize(uint64_t bytes);
 
-QString
-event_body(const mtx::events::collections::TimelineEvents &event);
-
 //! Match widgets/events with a description message.
 template<class T>
 QString
@@ -107,6 +105,7 @@ messageDescription(const QString &username = QString(),
     using Sticker    = mtx::events::Sticker;
     using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
     using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
+    using Confetti   = mtx::events::RoomEvent<mtx::events::msg::Confetti>;
     using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
     using CallAnswer = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
     using CallHangUp = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
@@ -158,6 +157,23 @@ messageDescription(const QString &username = QString(),
         else
             return QCoreApplication::translate("message-description sent:", "%1: %2")
               .arg(username, body);
+    } else if (std::is_same<T, Confetti>::value) {
+        if (body.isEmpty()) {
+            if (isLocal)
+                return QCoreApplication::translate("message-description sent:",
+                                                   "You sent some confetti");
+            else
+                return QCoreApplication::translate("message-description sent:",
+                                                   "%1 sent some confetti")
+                  .arg(username);
+        } else {
+            if (isLocal)
+                return QCoreApplication::translate("message-description sent:", "You: %1")
+                  .arg(body);
+            else
+                return QCoreApplication::translate("message-description sent:", "%1: %2")
+                  .arg(username, body);
+        }
     } else if (std::is_same<T, Emote>::value) {
         return QStringLiteral("* %1 %2").arg(username, body);
     } else if (std::is_same<T, Encrypted>::value) {

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -41,6 +42,7 @@ AbstractButton {
     required property string callType
     required property var reactions
     required property int trustlevel
+    required property int notificationlevel
     required property int encryptionError
     required property int duration
     required property var timestamp
@@ -117,6 +119,8 @@ AbstractButton {
         property color bgColor: Nheko.colors.base
         color: (Settings.bubbles && !isStateEvent) ? Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.2)) : "#00000000"
         radius: 4
+        border.width: r.notificationlevel == MtxEvent.Highlight ? 1 : 0
+        border.color: Nheko.theme.red
 
         GridLayout {
             anchors {
@@ -125,6 +129,7 @@ AbstractButton {
                 right: parent.right
                 margins: (Settings.bubbles && ! isStateEvent)? 4 : 2
                 leftMargin: 4
+                rightMargin: 4
             }
             id: msg
             rowSpacing: 0
@@ -297,7 +302,7 @@ AbstractButton {
     Reactions {
         anchors {
             top: row.bottom
-            topMargin: -2
+            topMargin: -4
             left: row.bubbleOnRight? undefined : row.left
             right: row.bubbleOnRight? row.right : undefined
         }
@@ -315,9 +320,11 @@ AbstractButton {
         anchors {
             top: reactionRow.bottom
             topMargin: 5
+            left: parent.left
+            right: parent.right
         }
         color: Nheko.colors.highlight
-        width: row.maxWidth
+        
         visible: (r.index > 0 && (room.fullyReadEventId == r.eventId))
         height: visible ? 3 : 0
 

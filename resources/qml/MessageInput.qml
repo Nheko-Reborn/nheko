@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -168,6 +169,8 @@ Rectangle {
                         messageInput.openCompleter(selectionStart-1, "roomAliases");
                     } else if (lastChar == "~") {
                         messageInput.openCompleter(selectionStart-1, "customEmoji");
+                    } else if (lastChar == "/" && cursorPosition == 1) {
+                        messageInput.openCompleter(selectionStart-1, "command");
                     }
                 }
                 onCursorPositionChanged: {
@@ -216,6 +219,11 @@ Rectangle {
                         popup.close();
                     } else if (event.matches(StandardKey.InsertLineSeparator)) {
                         if (popup.opened) popup.close();
+
+                        if (Settings.invertEnterKey && (!Qt.inputMethod.visible || Qt.platform.os === "windows")) {
+                            room.input.send();
+                            event.accepted = true;
+                        }
                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                         if (popup.opened) {
                             var currentCompletion = completer.currentCompletion();
@@ -227,7 +235,7 @@ Rectangle {
                                 return;
                             }
                         }
-                        if (!Qt.inputMethod.visible || Qt.platform.os === "windows") {
+                        if (!Settings.invertEnterKey && (!Qt.inputMethod.visible || Qt.platform.os === "windows")) {
                             room.input.send();
                             event.accepted = true;
                         }

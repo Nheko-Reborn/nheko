@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2019 The nheko authors
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -118,7 +119,9 @@ public:
                                                  std::size_t len        = 30);
     size_t memberCount(const std::string &room_id);
 
-    void updateState(const std::string &room, const mtx::responses::StateEvents &state);
+    void updateState(const std::string &room,
+                     const mtx::responses::StateEvents &state,
+                     bool wipe = false);
     void saveState(const mtx::responses::Sync &res);
     bool isInitialized();
     bool isDatabaseReady() { return databaseReady_ && isInitialized(); }
@@ -244,6 +247,8 @@ public:
 
     //! Check if a user is a member of the room.
     bool isRoomMember(const std::string &user_id, const std::string &room_id);
+    std::optional<MemberInfo>
+    getInviteMember(const std::string &room_id, const std::string &user_id);
 
     //
     // Outbound Megolm Sessions
@@ -277,6 +282,8 @@ public:
     void saveOlmSession(const std::string &curve25519,
                         mtx::crypto::OlmSessionPtr session,
                         uint64_t timestamp);
+    void saveOlmSessions(std::vector<std::pair<std::string, mtx::crypto::OlmSessionPtr>> sessions,
+                         uint64_t timestamp);
     std::vector<std::string> getOlmSessions(const std::string &curve25519);
     std::optional<mtx::crypto::OlmSessionPtr>
     getOlmSession(const std::string &curve25519, const std::string &session_id);
@@ -289,9 +296,9 @@ public:
     void deleteBackupVersion();
     std::optional<OnlineBackupVersion> backupVersion();
 
-    void storeSecret(const std::string name, const std::string secret, bool internal = false);
-    void deleteSecret(const std::string name, bool internal = false);
-    std::optional<std::string> secret(const std::string name, bool internal = false);
+    void storeSecret(const std::string &name, const std::string &secret, bool internal = false);
+    void deleteSecret(const std::string &name, bool internal = false);
+    std::optional<std::string> secret(const std::string &name, bool internal = false);
 
     std::string pickleSecret();
 
@@ -322,7 +329,12 @@ signals:
     void databaseReady();
 
 private:
-    void loadSecrets(std::vector<std::pair<std::string, bool>> toLoad);
+    void loadSecretsFromStore(
+      std::vector<std::pair<std::string, bool>> toLoad,
+      std::function<void(const std::string &name, bool internal, const std::string &value)>
+        callback);
+    void storeSecretInStore(const std::string name, const std::string secret);
+    void deleteSecretFromStore(const std::string name, bool internal);
 
     //! Save an invited room.
     void saveInvite(lmdb::txn &txn,
@@ -389,7 +401,7 @@ private:
                   e->content.display_name.empty() ? e->state_key : e->content.display_name;
 
                 // Lightweight representation of a member.
-                MemberInfo tmp{display_name, e->content.avatar_url};
+                MemberInfo tmp{display_name, e->content.avatar_url, e->content.reason};
 
                 membersdb.put(txn, e->state_key, nlohmann::json(tmp).dump());
                 break;
@@ -400,6 +412,8 @@ private:
             }
             }
 
+            // BUG(Nico): Ideally we would fall through and store this in the database, but it seems
+            // to currently corrupt the db sometimes, so... let's find that bug first!
             return;
         } else if (std::holds_alternative<StateEvent<Encryption>>(event)) {
             setEncryptedRoom(txn, room_id);
@@ -683,7 +697,6 @@ private:
     std::string pickle_secret_;
 
     VerificationStorage verification_storage;
-    SecretsStorage secret_storage;
 
     bool databaseReady_ = false;
 };

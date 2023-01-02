@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -16,12 +17,48 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QStandardPaths>
+#include <QThreadPool>
+#include <QTimer>
 
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Utils.h"
 
 QHash<QString, mtx::crypto::EncryptedFile> infos;
+
+MxcImageProvider::MxcImageProvider(QObject *parent)
+#if QT_VERSION < 0x60000
+  : QObject(parent)
+#else
+  : QQuickAsyncImageProvider(parent)
+#endif
+{
+    auto timer = new QTimer(this);
+    timer->setInterval(std::chrono::hours(1));
+    connect(timer, &QTimer::timeout, this, [] {
+        QThreadPool::globalInstance()->start([] {
+            QDir dir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
+                       "/media_cache",
+                     "",
+                     QDir::SortFlags(QDir::Name | QDir::IgnoreCase),
+                     QDir::Filter::Writable | QDir::Filter::NoDotAndDotDot | QDir::Filter::Files);
+
+            auto files = dir.entryInfoList();
+            for (const auto &fileInfo : qAsConst(files)) {
+                if (fileInfo.fileTime(QFile::FileTime::FileAccessTime)
+                      .daysTo(QDateTime::currentDateTime()) > 30) {
+                    if (QFile::remove(fileInfo.absoluteFilePath()))
+                        nhlog::net()->debug("Deleted stale media '{}'",
+                                            fileInfo.absoluteFilePath().toStdString());
+                    else
+                        nhlog::net()->warn("Failed to delete stale media '{}'",
+                                           fileInfo.absoluteFilePath().toStdString());
+                }
+            }
+        });
+    });
+    timer->start();
+}
 
 QQuickImageResponse *
 MxcImageProvider::requestImageResponse(const QString &id, const QSize &requestedSize)
@@ -97,6 +134,24 @@ clipRadius(QImage img, double radius)
     return out;
 }
 
+static void
+possiblyUpdateAccessTime(const QFileInfo &fileInfo)
+{
+    if (fileInfo.fileTime(QFile::FileTime::FileAccessTime).daysTo(QDateTime::currentDateTime()) >
+        7) {
+        nhlog::net()->debug("Updating file time for '{}'",
+                            fileInfo.absoluteFilePath().toStdString());
+
+        QFile f(fileInfo.absoluteFilePath());
+
+        if (!f.open(QIODevice::ReadWrite) ||
+            !f.setFileTime(QDateTime::currentDateTime(), QFile::FileTime::FileAccessTime)) {
+            nhlog::net()->warn("Failed to update filetime for '{}'",
+                               fileInfo.absoluteFilePath().toStdString());
+        }
+    }
+}
+
 void
 MxcImageProvider::download(const QString &id,
                            const QSize &requestedSize,
@@ -141,6 +196,8 @@ MxcImageProvider::download(const QString &id,
         if (fileInfo.exists()) {
             QImage image = utils::readImageFromFile(fileInfo.absoluteFilePath());
             if (!image.isNull()) {
+                possiblyUpdateAccessTime(fileInfo);
+
                 if (requestedSize.width() <= 0) {
                     image = image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
                 } else {
@@ -169,9 +226,10 @@ MxcImageProvider::download(const QString &id,
 
         mtx::http::ThumbOpts opts;
         opts.mxc_url = "mxc://" + id.toStdString();
-        opts.width   = requestedSize.width() > 0 ? requestedSize.width() : -1;
-        opts.height  = requestedSize.height() > 0 ? requestedSize.height() : -1;
-        opts.method  = crop ? "crop" : "scale";
+        opts.width = static_cast<uint16_t>(requestedSize.width() > 0 ? requestedSize.width() : -1);
+        opts.height =
+          static_cast<uint16_t>(requestedSize.height() > 0 ? requestedSize.height() : -1);
+        opts.method = crop ? "crop" : "scale";
         http::client()->get_thumbnail(
           opts,
           [fileInfo, requestedSize, radius, then, id, crop, cropLocally](
@@ -184,6 +242,8 @@ MxcImageProvider::download(const QString &id,
               auto data    = QByteArray(res.data(), (int)res.size());
               QImage image = utils::readImage(data);
               if (!image.isNull()) {
+                  possiblyUpdateAccessTime(fileInfo);
+
                   if (requestedSize.width() <= 0) {
                       image =
                         image.scaledToHeight(requestedSize.height(), Qt::SmoothTransformation);
@@ -237,6 +297,7 @@ MxcImageProvider::download(const QString &id,
                     QImage image = utils::readImage(data);
                     image.setText(QStringLiteral("mxc url"), "mxc://" + id);
                     if (!image.isNull()) {
+                        possiblyUpdateAccessTime(fileInfo);
                         if (radius != 0) {
                             image = clipRadius(std::move(image), radius);
                         }
@@ -247,6 +308,7 @@ MxcImageProvider::download(const QString &id,
                 } else {
                     QImage image = utils::readImageFromFile(fileInfo.absoluteFilePath());
                     if (!image.isNull()) {
+                        possiblyUpdateAccessTime(fileInfo);
                         if (radius != 0) {
                             image = clipRadius(std::move(image), radius);
                         }

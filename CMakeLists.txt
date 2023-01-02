@@ -25,9 +25,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON CACHE BOOL "compile as PIC by default")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.24.3.tar.gz"
-    SHA1 "10738b59e539818a01090e64c2d09896247530c7"
-		LOCAL
+    URL "https://github.com/cpp-pm/hunter/archive/v0.24.8.tar.gz"
+    SHA1 "ca7838dded9a1811b04ffd56175f629e0af82d3d"
+    LOCAL
 )
 
 macro(hunter_add_package_safe)
@@ -186,7 +186,7 @@ if(USE_BUNDLED_COEURL)
 	FetchContent_Declare(
 		coeurl
 		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        v0.2.1
+		GIT_TAG        f989f3c54c1ca15e29c5bd6b1ce4efbcb3fd8078
 		)
 	FetchContent_MakeAvailable(coeurl)
 	set(COEURL_TARGET_NAME coeurl::coeurl)
@@ -451,6 +451,8 @@ set(SRC_FILES
 	src/ColorImageProvider.h
 	src/CombinedImagePackModel.cpp
 	src/CombinedImagePackModel.h
+	src/CommandCompleter.cpp
+	src/CommandCompleter.h
 	src/CompletionModelRoles.h
 	src/CompletionProxyModel.cpp
 	src/CompletionProxyModel.h
@@ -592,8 +594,8 @@ if(USE_BUNDLED_MTXCLIENT)
 	include(FetchContent)
 	FetchContent_Declare(
 		MatrixClient
-		GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-		GIT_TAG        e139f8b98fb2cfb0d89b44b63af86d037c2f2c55
+                GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
+                GIT_TAG        d187c63a27710fa87a44ab44d43b7cfa2023132a
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -629,9 +631,9 @@ set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
 
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")
-	set(SRC_FILES ${SRC_FILES} src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm src/emoji/MacHelper.h)
+	set(SRC_FILES ${SRC_FILES} src/notifications/NotificationManagerProxy.h src/notifications/MacNotificationDelegate.h src/notifications/MacNotificationDelegate.mm src/notifications/ManagerMac.mm src/notifications/ManagerMac.cpp src/emoji/MacHelper.mm src/emoji/MacHelper.h)
 	if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
-		set_source_files_properties( src/notifications/ManagerMac.mm src/emoji/MacHelper.mm src/emoji/MacHelper.h PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
+		set_source_files_properties( src/notifications/NotificationManagerProxy.h src/notifications/MacNotificationDelegate.h src/notifications/MacNotificationDelegate.mm src/notifications/ManagerMac.mm src/emoji/MacHelper.mm src/emoji/MacHelper.h PROPERTIES SKIP_PRECOMPILE_HEADERS ON)
 	endif()
 elseif (WIN32)
 	file(DOWNLOAD

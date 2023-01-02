@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -157,6 +158,11 @@ Page {
                     roomWindow.showNormal();
                     destroyOnClose(roomWindow);
                 }
+            }
+
+            Platform.MenuItem {
+                text: qsTr("Room settings")
+                onTriggered: TimelineManager.openRoomSettings(roomContextMenu.roomid)
             }
 
             Platform.MenuItem {
@@ -775,9 +781,9 @@ Page {
                     ToolTip.text: qsTr("Search rooms (Ctrl+K)")
                     Layout.margins: Nheko.paddingMedium
                     onClicked: {
-                        var quickSwitch = quickSwitcherComponent.createObject(timelineRoot);
+                        var quickSwitch = Qt.createComponent("qrc:/qml/QuickSwitcher.qml").createObject(timelineRoot);
                         quickSwitch.open();
-                        timelineRoot.destroyOnClose(quickSwitch);
+                        destroyOnClosed(quickSwitch);
                     }
                 }
 

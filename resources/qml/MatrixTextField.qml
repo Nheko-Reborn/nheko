@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -20,6 +21,7 @@ ColumnLayout {
     property alias font: input.font
     property alias echoMode: input.echoMode
     property alias selectByMouse: input.selectByMouse
+    property var hasClear: false
 
     Timer {
         id: timer
@@ -127,6 +129,39 @@ ColumnLayout {
             id: backgroundRect
 
             color: labelC.text ? "transparent" : backgroundColor
+        }
+
+        ToolButton {
+            id: clearText
+            Layout.fillWidth: true
+            visible: c.hasClear && searchField.text !== ''
+            icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearText.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+            focusPolicy: Qt.NoFocus
+            onClicked: {
+                searchField.clear()
+                topBar.searchString = "";
+            }
+            hoverEnabled: true
+            background: null
+            anchors {
+                verticalCenter: parent.verticalCenter
+                right: parent.right
+            }
+            // clear the default hover effects.
+
+            Image {
+                height: parent.height - 2 * Nheko.paddingSmall
+                width: height
+                source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearText.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    right: parent.right
+                    margins: Nheko.paddingSmall
+                }
+
+            }
+
         }
 
     }

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -66,24 +67,24 @@ Permissions::canSend(int eventType)
 int
 Permissions::defaultLevel()
 {
-    return pl.users_default;
+    return static_cast<int>(pl.users_default);
 }
 int
 Permissions::redactLevel()
 {
-    return pl.redact;
+    return static_cast<int>(pl.redact);
 }
 int
 Permissions::changeLevel(int eventType)
 {
-    return pl.state_level(to_string(
-      qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
+    return static_cast<int>(pl.state_level(to_string(
+      qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType)))));
 }
 int
 Permissions::sendLevel(int eventType)
 {
-    return pl.event_level(to_string(
-      qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
+    return static_cast<int>(pl.event_level(to_string(
+      qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType)))));
 }
 
 bool

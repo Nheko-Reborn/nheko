@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2010 David Sansome <me@davidsansome.com>
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -152,6 +153,15 @@ directChat(const QString &userId)
         interface.isValid())
         interface.call(QDBus::NoBlock, QStringLiteral("directChat"), userId);
 }
+
+void
+setStatusMessage(const QString &message)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        interface.call(QDBus::NoBlock, QStringLiteral("setStatusMessage"), message);
+}
+
 } // nheko::dbus
 
 /**
@@ -186,7 +196,7 @@ operator<<(QDBusArgument &arg, const QImage &image)
     int channels = i.hasAlphaChannel() ? 4 : 3;
     arg << i.depth() / channels;
     arg << channels;
-    arg << QByteArray(reinterpret_cast<const char *>(i.bits()), i.sizeInBytes());
+    arg << QByteArray(reinterpret_cast<const char *>(i.bits()), static_cast<int>(i.sizeInBytes()));
     arg.endStructure();
 
     return arg;

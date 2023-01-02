@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -34,8 +35,8 @@ Image {
 
     width: 16
     height: 16
-    sourceSize.height: height * Screen.devicePixelRatio
-    sourceSize.width: width * Screen.devicePixelRatio
+    sourceSize.height: height
+    sourceSize.width: width
     source: {
         if (encrypted) {
             switch (trust) {

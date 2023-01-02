@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -39,7 +40,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION{"2022.04.08"};
+static const std::string CURRENT_CACHE_FORMAT_VERSION{"2022.11.06"};
 
 //! Keys used for the DB
 static const std::string_view NEXT_BATCH_KEY("next_batch");
@@ -293,7 +294,10 @@ Cache::setup()
         // NOTE(Nico): We may want to use (MDB_MAPASYNC | MDB_WRITEMAP) in the future, but
         // it can really mess up our database, so we shouldn't. For now, hopefully
         // NOMETASYNC is fast enough.
-        env_.open(cacheDirectory_.toStdString().c_str(), MDB_NOMETASYNC | MDB_NOSYNC);
+        //
+        // 2022-10-28: Disable the nosync flags again in the hope to crack down on some database
+        // corruption.
+        env_.open(cacheDirectory_.toStdString().c_str()); //, MDB_NOMETASYNC | MDB_NOSYNC);
     } catch (const lmdb::error &e) {
         if (e.code() != MDB_VERSION_MISMATCH && e.code() != MDB_INVALID) {
             throw std::runtime_error("LMDB initialization failed" + std::string(e.what()));
@@ -337,13 +341,13 @@ Cache::setup()
 
     txn.commit();
 
-    loadSecrets({
-      {mtx::secret_storage::secrets::cross_signing_master, false},
-      {mtx::secret_storage::secrets::cross_signing_self_signing, false},
-      {mtx::secret_storage::secrets::cross_signing_user_signing, false},
-      {mtx::secret_storage::secrets::megolm_backup_v1, false},
-      {"pickle_secret", true},
-    });
+    loadSecretsFromStore(
+      {
+        {"pickle_secret", true},
+      },
+      [this](const std::string &, bool, const std::string &value) {
+          this->pickle_secret_ = value;
+      });
 }
 
 static void
@@ -358,7 +362,8 @@ fatalSecretError()
         "have multiple reasons. Check if your D-Bus service is running and you have configured a "
         "service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If "
         "you are having trouble, feel free to open an issue here: "
-        "https://github.com/Nheko-Reborn/nheko/issues"));
+        "https://github.com/Nheko-Reborn/nheko/issues"),
+      QMessageBox::StandardButton::Close);
 
     QCoreApplication::exit(1);
     exit(1);
@@ -376,7 +381,9 @@ secretName(std::string name, bool internal)
 }
 
 void
-Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
+Cache::loadSecretsFromStore(
+  std::vector<std::pair<std::string, bool>> toLoad,
+  std::function<void(const std::string &name, bool internal, const std::string &value)> callback)
 {
     auto settings = UserSettings::instance()->qsettings();
 
@@ -394,12 +401,11 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
             if (value.isEmpty()) {
                 nhlog::db()->info("Restored empty secret '{}'.", name.toStdString());
             } else {
-                std::unique_lock lock(secret_storage.mtx);
-                secret_storage.secrets[name.toStdString()] = value.toStdString();
+                callback(name_, internal, value.toStdString());
             }
         }
         // if we emit the databaseReady signal directly it won't be received
-        QTimer::singleShot(0, this, [this] { loadSecrets({}); });
+        QTimer::singleShot(0, this, [this, callback] { loadSecretsFromStore({}, callback); });
         return;
     }
 
@@ -415,7 +421,8 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
     connect(job,
             &QKeychain::ReadPasswordJob::finished,
             this,
-            [this, name, toLoad, job](QKeychain::Job *) mutable {
+            [this, name, toLoad, job, name_ = name_, internal = internal, callback](
+              QKeychain::Job *) mutable {
                 nhlog::db()->debug("Finished reading '{}'", toLoad.begin()->first);
                 const QString secret = job->textData();
                 if (job->error() && job->error() != QKeychain::Error::EntryNotFound) {
@@ -429,40 +436,72 @@ Cache::loadSecrets(std::vector<std::pair<std::string, bool>> toLoad)
                 if (secret.isEmpty()) {
                     nhlog::db()->debug("Restored empty secret '{}'.", name.toStdString());
                 } else {
-                    std::unique_lock lock(secret_storage.mtx);
-                    secret_storage.secrets[name.toStdString()] = secret.toStdString();
+                    callback(name_, internal, secret.toStdString());
                 }
 
                 // load next secret
                 toLoad.erase(toLoad.begin());
 
                 // You can't start a job from the finish signal of a job.
-                QTimer::singleShot(0, this, [this, toLoad] { loadSecrets(toLoad); });
+                QTimer::singleShot(
+                  0, this, [this, toLoad, callback] { loadSecretsFromStore(toLoad, callback); });
             });
     nhlog::db()->debug("Reading '{}'", name_);
     job->start();
 }
 
 std::optional<std::string>
-Cache::secret(const std::string name_, bool internal)
+Cache::secret(const std::string &name_, bool internal)
 {
     auto name = secretName(name_, internal);
-    std::unique_lock lock(secret_storage.mtx);
-    if (auto secret = secret_storage.secrets.find(name.toStdString());
-        secret != secret_storage.secrets.end())
-        return secret->second;
-    else
+
+    auto txn = ro_txn(env_);
+    std::string_view value;
+    auto db_name = "secret." + name.toStdString();
+    if (!syncStateDb_.get(txn, db_name, value))
         return std::nullopt;
+
+    mtx::secret_storage::AesHmacSha2EncryptedData data = nlohmann::json::parse(value);
+
+    auto decrypted = mtx::crypto::decrypt(data, mtx::crypto::to_binary_buf(pickle_secret_), name_);
+    if (decrypted.empty())
+        return std::nullopt;
+    else
+        return decrypted;
 }
 
 void
-Cache::storeSecret(const std::string name_, const std::string secret, bool internal)
+Cache::storeSecret(const std::string &name_, const std::string &secret, bool internal)
 {
     auto name = secretName(name_, internal);
-    {
-        std::unique_lock lock(secret_storage.mtx);
-        secret_storage.secrets[name.toStdString()] = secret;
-    }
+
+    auto txn = lmdb::txn::begin(env_);
+
+    auto encrypted =
+      mtx::crypto::encrypt(secret, mtx::crypto::to_binary_buf(pickle_secret_), name_);
+
+    auto db_name = "secret." + name.toStdString();
+    syncStateDb_.put(txn, db_name, nlohmann::json(encrypted).dump());
+    txn.commit();
+    emit secretChanged(name_);
+}
+
+void
+Cache::deleteSecret(const std::string &name_, bool internal)
+{
+    auto name = secretName(name_, internal);
+
+    auto txn = lmdb::txn::begin(env_);
+    std::string_view value;
+    auto db_name = "secret." + name.toStdString();
+    syncStateDb_.del(txn, db_name, value);
+    txn.commit();
+}
+
+void
+Cache::storeSecretInStore(const std::string name_, const std::string secret)
+{
+    auto name = secretName(name_, true);
 
     auto settings = UserSettings::instance()->qsettings();
     if (settings->value(QStringLiteral("run_without_secure_secrets_service"), false).toBool()) {
@@ -503,13 +542,9 @@ Cache::storeSecret(const std::string name_, const std::string secret, bool inter
 }
 
 void
-Cache::deleteSecret(const std::string name, bool internal)
+Cache::deleteSecretFromStore(const std::string name, bool internal)
 {
     auto name_ = secretName(name, internal);
-    {
-        std::unique_lock lock(secret_storage.mtx);
-        secret_storage.secrets.erase(name_.toStdString());
-    }
 
     auto settings = UserSettings::instance()->qsettings();
     if (settings->value(QStringLiteral("run_without_secure_secrets_service"), false).toBool()) {
@@ -535,13 +570,8 @@ std::string
 Cache::pickleSecret()
 {
     if (pickle_secret_.empty()) {
-        auto s = secret("pickle_secret", true);
-        if (!s) {
-            this->pickle_secret_ = mtx::client::utils::random_token(64, true);
-            storeSecret("pickle_secret", pickle_secret_, true);
-        } else {
-            this->pickle_secret_ = *s;
-        }
+        this->pickle_secret_ = mtx::client::utils::random_token(64, true);
+        storeSecretInStore("pickle_secret", pickle_secret_);
     }
 
     return pickle_secret_;
@@ -910,6 +940,29 @@ Cache::getMegolmSessionData(const MegolmSessionIndex &index)
 //
 
 void
+Cache::saveOlmSessions(std::vector<std::pair<std::string, mtx::crypto::OlmSessionPtr>> sessions,
+                       uint64_t timestamp)
+{
+    using namespace mtx::crypto;
+
+    auto txn = lmdb::txn::begin(env_);
+    for (const auto &[curve25519, session] : sessions) {
+        auto db = getOlmSessionsDb(txn, curve25519);
+
+        const auto pickled    = pickle<SessionObject>(session.get(), pickle_secret_);
+        const auto session_id = mtx::crypto::session_id(session.get());
+
+        StoredOlmSession stored_session;
+        stored_session.pickled_session = pickled;
+        stored_session.last_message_ts = timestamp;
+
+        db.put(txn, session_id, nlohmann::json(stored_session).dump());
+    }
+
+    txn.commit();
+}
+
+void
 Cache::saveOlmSession(const std::string &curve25519,
                       mtx::crypto::OlmSessionPtr session,
                       uint64_t timestamp)
@@ -936,19 +989,20 @@ Cache::getOlmSession(const std::string &curve25519, const std::string &session_i
 {
     using namespace mtx::crypto;
 
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getOlmSessionsDb(txn, curve25519);
+    try {
+        auto txn = ro_txn(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
 
-    std::string_view pickled;
-    bool found = db.get(txn, session_id, pickled);
+        std::string_view pickled;
+        bool found = db.get(txn, session_id, pickled);
 
-    txn.commit();
+        if (found) {
+            auto data = nlohmann::json::parse(pickled).get<StoredOlmSession>();
+            return unpickle<SessionObject>(data.pickled_session, pickle_secret_);
+        }
 
-    if (found) {
-        auto data = nlohmann::json::parse(pickled).get<StoredOlmSession>();
-        return unpickle<SessionObject>(data.pickled_session, pickle_secret_);
+    } catch (...) {
     }
-
     return std::nullopt;
 }
 
@@ -957,26 +1011,28 @@ Cache::getLatestOlmSession(const std::string &curve25519)
 {
     using namespace mtx::crypto;
 
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getOlmSessionsDb(txn, curve25519);
+    try {
+        auto txn = ro_txn(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
 
-    std::string_view session_id, pickled_session;
+        std::string_view session_id, pickled_session;
 
-    std::optional<StoredOlmSession> currentNewest;
+        std::optional<StoredOlmSession> currentNewest;
 
-    auto cursor = lmdb::cursor::open(txn, db);
-    while (cursor.get(session_id, pickled_session, MDB_NEXT)) {
-        auto data = nlohmann::json::parse(pickled_session).get<StoredOlmSession>();
-        if (!currentNewest || currentNewest->last_message_ts < data.last_message_ts)
-            currentNewest = data;
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(session_id, pickled_session, MDB_NEXT)) {
+            auto data = nlohmann::json::parse(pickled_session).get<StoredOlmSession>();
+            if (!currentNewest || currentNewest->last_message_ts < data.last_message_ts)
+                currentNewest = data;
+        }
+        cursor.close();
+
+        return currentNewest ? std::optional(unpickle<SessionObject>(currentNewest->pickled_session,
+                                                                     pickle_secret_))
+                             : std::nullopt;
+    } catch (...) {
+        return std::nullopt;
     }
-    cursor.close();
-
-    txn.commit();
-
-    return currentNewest ? std::optional(unpickle<SessionObject>(currentNewest->pickled_session,
-                                                                 pickle_secret_))
-                         : std::nullopt;
 }
 
 std::vector<std::string>
@@ -984,20 +1040,22 @@ Cache::getOlmSessions(const std::string &curve25519)
 {
     using namespace mtx::crypto;
 
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getOlmSessionsDb(txn, curve25519);
+    try {
+        auto txn = ro_txn(env_);
+        auto db  = getOlmSessionsDb(txn, curve25519);
 
-    std::string_view session_id, unused;
-    std::vector<std::string> res;
+        std::string_view session_id, unused;
+        std::vector<std::string> res;
 
-    auto cursor = lmdb::cursor::open(txn, db);
-    while (cursor.get(session_id, unused, MDB_NEXT))
-        res.emplace_back(session_id);
-    cursor.close();
+        auto cursor = lmdb::cursor::open(txn, db);
+        while (cursor.get(session_id, unused, MDB_NEXT))
+            res.emplace_back(session_id);
+        cursor.close();
 
-    txn.commit();
-
-    return res;
+        return res;
+    } catch (...) {
+        return {};
+    }
 }
 
 void
@@ -1147,11 +1205,7 @@ Cache::deleteData()
             nhlog::db()->info("deleted cache files from disk");
         }
 
-        deleteSecret(mtx::secret_storage::secrets::megolm_backup_v1);
-        deleteSecret(mtx::secret_storage::secrets::cross_signing_master);
-        deleteSecret(mtx::secret_storage::secrets::cross_signing_user_signing);
-        deleteSecret(mtx::secret_storage::secrets::cross_signing_self_signing);
-        deleteSecret("pickle_secret", true);
+        deleteSecretFromStore("pickle_secret", true);
     }
 }
 
@@ -1360,7 +1414,8 @@ Cache::runMigrations()
        }},
       {"2021.08.31",
        [this]() {
-           storeSecret("pickle_secret", "secret", true);
+           storeSecretInStore("pickle_secret", "secret");
+           this->pickle_secret_ = "secret";
            return true;
        }},
       {"2022.04.08",
@@ -1415,6 +1470,22 @@ Cache::runMigrations()
                  "Failed to migrate stored megolm session to have no sender key: {}", e.what());
                return false;
            }
+       }},
+      {"2022.11.06",
+       [this]() {
+           loadSecretsFromStore(
+             {
+               {mtx::secret_storage::secrets::cross_signing_master, false},
+               {mtx::secret_storage::secrets::cross_signing_self_signing, false},
+               {mtx::secret_storage::secrets::cross_signing_user_signing, false},
+               {mtx::secret_storage::secrets::megolm_backup_v1, false},
+             },
+             [this](const std::string &name, bool internal, const std::string &value) {
+                 this->storeSecret(name, value, internal);
+                 QTimer::singleShot(
+                   0, this, [this, name, internal] { deleteSecretFromStore(name, internal); });
+             });
+           return true;
        }},
     };
 
@@ -1599,13 +1670,19 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
 }
 
 void
-Cache::updateState(const std::string &room, const mtx::responses::StateEvents &state)
+Cache::updateState(const std::string &room, const mtx::responses::StateEvents &state, bool wipe)
 {
     auto txn         = lmdb::txn::begin(env_);
     auto statesdb    = getStatesDb(txn, room);
     auto stateskeydb = getStatesKeyDb(txn, room);
     auto membersdb   = getMembersDb(txn, room);
     auto eventsDb    = getEventsDb(txn, room);
+
+    if (wipe) {
+        membersdb.drop(txn);
+        statesdb.drop(txn);
+        stateskeydb.drop(txn);
+    }
 
     saveStateEvents(txn, statesdb, stateskeydb, membersdb, eventsDb, room, state.events);
 
@@ -1948,7 +2025,8 @@ Cache::saveInvite(lmdb::txn &txn,
             auto display_name =
               msg->content.display_name.empty() ? msg->state_key : msg->content.display_name;
 
-            MemberInfo tmp{display_name, msg->content.avatar_url, msg->content.is_direct};
+            MemberInfo tmp{
+              display_name, msg->content.avatar_url, msg->content.reason, msg->content.is_direct};
 
             membersdb.put(txn, msg->state_key, nlohmann::json(tmp).dump());
         } else {
@@ -2144,18 +2222,22 @@ Cache::roomIds()
 std::string
 Cache::previousBatchToken(const std::string &room_id)
 {
-    auto txn     = lmdb::txn::begin(env_, nullptr);
-    auto orderDb = getEventOrderDb(txn, room_id);
+    auto txn = ro_txn(env_);
+    try {
+        auto orderDb = getEventOrderDb(txn, room_id);
 
-    auto cursor = lmdb::cursor::open(txn, orderDb);
-    std::string_view indexVal, val;
-    if (!cursor.get(indexVal, val, MDB_FIRST)) {
+        auto cursor = lmdb::cursor::open(txn, orderDb);
+        std::string_view indexVal, val;
+        if (!cursor.get(indexVal, val, MDB_FIRST)) {
+            return "";
+        }
+
+        auto j = nlohmann::json::parse(val);
+
+        return j.value("prev_batch", "");
+    } catch (...) {
         return "";
     }
-
-    auto j = nlohmann::json::parse(val);
-
-    return j.value("prev_batch", "");
 }
 
 Cache::Messages
@@ -3070,6 +3152,29 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
     }
 }
 
+std::optional<MemberInfo>
+Cache::getInviteMember(const std::string &room_id, const std::string &user_id)
+{
+    if (user_id.empty() || !env_.handle())
+        return std::nullopt;
+
+    try {
+        auto txn = ro_txn(env_);
+
+        auto membersdb = getInviteMembersDb(txn, room_id);
+
+        std::string_view info;
+        if (membersdb.get(txn, user_id, info)) {
+            MemberInfo m = nlohmann::json::parse(info).get<MemberInfo>();
+            return m;
+        }
+    } catch (std::exception &e) {
+        nhlog::db()->warn(
+          "Failed to read member ({}) in invite room ({}): {}", user_id, room_id, e.what());
+    }
+    return std::nullopt;
+}
+
 std::vector<RoomMember>
 Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, std::size_t len)
 {
@@ -3180,7 +3285,7 @@ Cache::firstPendingMessage(const std::string &room_id)
     auto txn     = lmdb::txn::begin(env_);
     auto pending = getPendingMessagesDb(txn, room_id);
 
-    {
+    try {
         auto pendingCursor = lmdb::cursor::open(txn, pending);
         std::string_view tsIgnored, pendingTxn;
         while (pendingCursor.get(tsIgnored, pendingTxn, MDB_NEXT)) {
@@ -3196,7 +3301,6 @@ Cache::firstPendingMessage(const std::string &room_id)
                 from_json(nlohmann::json::parse(event), te);
 
                 pendingCursor.close();
-                txn.commit();
                 return te;
             } catch (std::exception &e) {
                 nhlog::db()->error("Failed to parse message from cache {}", e.what());
@@ -3204,10 +3308,8 @@ Cache::firstPendingMessage(const std::string &room_id)
                 continue;
             }
         }
+    } catch (const lmdb::error &e) {
     }
-
-    txn.commit();
-
     return std::nullopt;
 }
 
@@ -3777,9 +3879,9 @@ Cache::spaces()
                 std::string_view room_data;
                 if (roomsDb_.get(txn, space_id, room_data)) {
                     RoomInfo tmp = nlohmann::json::parse(std::move(room_data)).get<RoomInfo>();
-                    ret.insert(QString::fromUtf8(space_id.data(), (qsizetype)space_id.size()), tmp);
+                    ret.insert(QString::fromUtf8(space_id.data(), (int)space_id.size()), tmp);
                 } else {
-                    ret.insert(QString::fromUtf8(space_id.data(), (qsizetype)space_id.size()),
+                    ret.insert(QString::fromUtf8(space_id.data(), (int)space_id.size()),
                                std::nullopt);
                 }
             }
@@ -3969,33 +4071,36 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
     using namespace mtx::events;
     using namespace mtx::events::state;
 
-    auto txn = lmdb::txn::begin(env_);
-    auto db  = getStatesDb(txn, room_id);
+    auto txn = ro_txn(env_);
+    try {
+        auto db = getStatesDb(txn, room_id);
 
-    int64_t min_event_level = std::numeric_limits<int64_t>::max();
-    int64_t user_level      = std::numeric_limits<int64_t>::min();
+        int64_t min_event_level = std::numeric_limits<int64_t>::max();
+        int64_t user_level      = std::numeric_limits<int64_t>::min();
 
-    std::string_view event;
-    bool res = db.get(txn, to_string(EventType::RoomPowerLevels), event);
+        std::string_view event;
+        bool res = db.get(txn, to_string(EventType::RoomPowerLevels), event);
 
-    if (res) {
-        try {
-            StateEvent<PowerLevels> msg =
-              nlohmann::json::parse(std::string_view(event.data(), event.size()))
-                .get<StateEvent<PowerLevels>>();
+        if (res) {
+            try {
+                StateEvent<PowerLevels> msg =
+                  nlohmann::json::parse(std::string_view(event.data(), event.size()))
+                    .get<StateEvent<PowerLevels>>();
 
-            user_level = msg.content.user_level(user_id);
+                user_level = msg.content.user_level(user_id);
 
-            for (const auto &ty : eventTypes)
-                min_event_level = std::min(min_event_level, msg.content.state_level(to_string(ty)));
-        } catch (const nlohmann::json::exception &e) {
-            nhlog::db()->warn("failed to parse m.room.power_levels event: {}", e.what());
+                for (const auto &ty : eventTypes)
+                    min_event_level =
+                      std::min(min_event_level, msg.content.state_level(to_string(ty)));
+            } catch (const nlohmann::json::exception &e) {
+                nhlog::db()->warn("failed to parse m.room.power_levels event: {}", e.what());
+            }
         }
+
+        return user_level >= min_event_level;
+    } catch (...) {
+        return false;
     }
-
-    txn.commit();
-
-    return user_level >= min_event_level;
 }
 
 std::vector<std::string>
@@ -4885,6 +4990,8 @@ to_json(nlohmann::json &j, const MemberInfo &info)
     j["avatar_url"] = info.avatar_url;
     if (info.is_direct)
         j["is_direct"] = info.is_direct;
+    if (!info.reason.empty())
+        j["reason"] = info.reason;
 }
 
 void
@@ -4893,6 +5000,7 @@ from_json(const nlohmann::json &j, MemberInfo &info)
     info.name       = j.at("name").get<std::string>();
     info.avatar_url = j.at("avatar_url").get<std::string>();
     info.is_direct  = j.value("is_direct", false);
+    info.reason     = j.value("reason", "");
 }
 
 void
@@ -4938,7 +5046,7 @@ to_json(nlohmann::json &obj, const GroupSessionData &msg)
 void
 from_json(const nlohmann::json &obj, GroupSessionData &msg)
 {
-    msg.message_index = obj.at("message_index").get<uint64_t>();
+    msg.message_index = obj.at("message_index").get<uint32_t>();
     msg.timestamp     = obj.value("ts", 0ULL);
     msg.trusted       = obj.value("trust", true);
 

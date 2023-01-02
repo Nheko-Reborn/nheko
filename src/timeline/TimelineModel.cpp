@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -52,6 +53,10 @@ struct RoomEventType
     qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Audio> &)
     {
         return qml_mtx_events::EventType::AudioMessage;
+    }
+    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Confetti> &)
+    {
+        return qml_mtx_events::EventType::ConfettiMessage;
     }
     qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Emote> &)
     {
@@ -346,6 +351,7 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
         return mtx::events::EventType::SpaceChild;
     /// m.room.message
     case qml_mtx_events::AudioMessage:
+    case qml_mtx_events::ConfettiMessage:
     case qml_mtx_events::EmoteMessage:
     case qml_mtx_events::FileMessage:
     case qml_mtx_events::ImageMessage:
@@ -449,6 +455,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     connect(&events, &EventStore::fetchedMore, this, [this]() {
         setPaginationInProgress(false);
         updateLastMessage();
+        emit fetchedMore();
     });
     connect(&events, &EventStore::fetchedMore, this, &TimelineModel::checkAfterFetch);
     connect(&events,
@@ -490,7 +497,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 
     connect(this, &TimelineModel::newState, this, [this](mtx::responses::StateEvents events_) {
-        cache::client()->updateState(room_id_.toStdString(), events_);
+        cache::client()->updateState(room_id_.toStdString(), events_, true);
         this->syncState({std::move(events_.events)});
     });
 }
@@ -526,6 +533,7 @@ TimelineModel::roleNames() const
       {IsEncrypted, "isEncrypted"},
       {IsStateEvent, "isStateEvent"},
       {Trustlevel, "trustlevel"},
+      {Notificationlevel, "notificationlevel"},
       {EncryptionError, "encryptionError"},
       {ReplyTo, "replyTo"},
       {ThreadId, "threadId"},
@@ -679,7 +687,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         if (w == 0)
             w = 1;
 
-        double prop = media_height(event) / (double)w;
+        double prop = (double)media_height(event) / (double)w;
 
         return {prop > 0 ? prop : 1.};
     }
@@ -735,6 +743,42 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             }
         }
         return crypto::Trust::Unverified;
+    }
+
+    case Notificationlevel: {
+        const auto &push = ChatPage::instance()->pushruleEvaluator();
+        if (push) {
+            // skip our messages
+            auto sender = mtx::accessors::sender(event);
+            if (sender == http::client()->user_id().to_string())
+                return qml_mtx_events::NotificationLevel::Nothing;
+
+            const auto &id = event_id(event);
+            std::vector<std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvent>>
+              relatedEvents;
+            for (const auto &r : mtx::accessors::relations(event).relations) {
+                auto related = events.get(r.event_id, id);
+                if (related) {
+                    relatedEvents.emplace_back(r,
+                                               mtx::events::collections::TimelineEvent{*related});
+                }
+            }
+
+            auto actions = push->evaluate({event}, pushrulesRoomContext(), relatedEvents);
+            if (std::find(actions.begin(),
+                          actions.end(),
+                          mtx::pushrules::actions::Action{
+                            mtx::pushrules::actions::set_tweak_highlight{}}) != actions.end()) {
+                return qml_mtx_events::NotificationLevel::Highlight;
+            }
+            if (std::find(actions.begin(),
+                          actions.end(),
+                          mtx::pushrules::actions::Action{mtx::pushrules::actions::notify{}}) !=
+                actions.end()) {
+                return qml_mtx_events::NotificationLevel::Notify;
+            }
+        }
+        return qml_mtx_events::NotificationLevel::Nothing;
     }
 
     case EncryptionError:
@@ -858,6 +902,9 @@ TimelineModel::setPaginationInProgress(const bool paginationInProgress)
 
     m_paginationInProgress = paginationInProgress;
     emit paginationInProgressChanged(m_paginationInProgress);
+
+    if (m_paginationInProgress)
+        events.fetchMore();
 }
 
 void
@@ -869,8 +916,6 @@ TimelineModel::fetchMore(const QModelIndex &)
     }
 
     setPaginationInProgress(true);
-
-    events.fetchMore();
 }
 
 void
@@ -930,6 +975,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 {
     if (timeline.events.empty())
         return;
+
+    if (timeline.limited)
+        setPaginationInProgress(false);
 
     events.handleSync(timeline);
 
@@ -991,8 +1039,17 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         } else if (std::holds_alternative<StateEvent<state::space::Parent>>(e)) {
             this->parentChecked = false;
             emit parentSpaceChanged();
-        }
+        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Text>>(e)) {
+            if (auto msg = QString::fromStdString(
+                  std::get<RoomEvent<mtx::events::msg::Text>>(e).content.body);
+                msg.contains("🎉") || msg.contains("🎊"))
+                needsSpecialEffects_ = true;
+        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Confetti>>(e))
+            needsSpecialEffects_ = true;
     }
+
+    if (needsSpecialEffects_)
+        emit confetti();
 
     updateLastMessage();
 }
@@ -1441,7 +1498,6 @@ TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::
     const auto room_id = room_id_.toStdString();
 
     using namespace mtx::events;
-    using namespace mtx::identifiers;
 
     nlohmann::json doc = {{"type", mtx::events::to_string(eventType)},
                           {"content", nlohmann::json(msg.content)},
@@ -1921,6 +1977,22 @@ TimelineModel::copyLinkToEvent(const QString &eventId) const
                        QString(QUrl::toPercentEncoding(eventId)),
                        getRoomVias(room_id_));
     QGuiApplication::clipboard()->setText(link);
+}
+
+void
+TimelineModel::triggerSpecialEffects()
+{
+    if (needsSpecialEffects_) {
+        // Note (Loren): Without the timer, this apparently emits before QML is ready
+        QTimer::singleShot(1, this, [this] { emit confetti(); });
+        needsSpecialEffects_ = false;
+    }
+}
+
+void
+TimelineModel::markSpecialEffectsDone()
+{
+    needsSpecialEffects_ = false;
 }
 
 QString
@@ -2594,6 +2666,32 @@ TimelineModel::showAcceptKnockButton(const QString &id)
     return event->content.membership == Membership::Knock;
 }
 
+void
+TimelineModel::joinReplacementRoom(const QString &id)
+{
+    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    if (!e)
+        return;
+
+    auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Tombstone>>(e);
+    if (!event)
+        return;
+
+    auto joined_rooms = cache::joinedRooms();
+    for (const auto &roomid : joined_rooms) {
+        if (roomid == event->content.replacement_room) {
+            manager_->rooms()->setCurrentRoom(
+              QString::fromStdString(event->content.replacement_room));
+            return;
+        }
+    }
+
+    ChatPage::instance()->joinRoomVia(
+      event->content.replacement_room,
+      {mtx::identifiers::parse<mtx::identifiers::User>(event->sender).hostname()},
+      true);
+}
+
 QString
 TimelineModel::formatMemberEvent(const QString &id)
 {
@@ -2756,7 +2854,8 @@ TimelineModel::setEdit(const QString &newEdit)
             auto msgType = mtx::accessors::msg_type(e);
             if (msgType == mtx::events::MessageType::Text ||
                 msgType == mtx::events::MessageType::Notice ||
-                msgType == mtx::events::MessageType::Emote) {
+                msgType == mtx::events::MessageType::Emote ||
+                msgType == mtx::events::MessageType::Confetti) {
                 auto relInfo  = relatedInfo(newEdit);
                 auto editText = relInfo.quoted_body;
 
@@ -2777,6 +2876,8 @@ TimelineModel::setEdit(const QString &newEdit)
 
                 if (msgType == mtx::events::MessageType::Emote)
                     input()->setText("/me " + editText);
+                else if (msgType == mtx::events::MessageType::Confetti)
+                    input()->setText("/confetti" + editText);
                 else
                     input()->setText(editText);
             } else {
@@ -2881,7 +2982,7 @@ TimelineModel::pinnedMessages() const
         return {};
 
     QStringList list;
-    list.reserve((qsizetype)pinned->content.pinned.size());
+    list.reserve((int)pinned->content.pinned.size());
     for (const auto &p : pinned->content.pinned)
         list.push_back(QString::fromStdString(p));
 
@@ -2912,7 +3013,7 @@ TimelineModel::widgetLinks() const
         theme.clear();
     user = QUrl::toPercentEncoding(user);
 
-    list.reserve((qsizetype)evs.size());
+    list.reserve((int)evs.size());
     for (const auto &p : evs) {
         auto url = QString::fromStdString(p.content.url);
 

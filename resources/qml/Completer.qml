@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -203,6 +204,30 @@ Control {
                         Label {
                             text: model.shortName
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                        }
+
+                    }
+
+                }
+
+                DelegateChoice {
+                    roleValue: "command"
+
+                    RowLayout {
+                        id: del
+
+                        anchors.centerIn: parent
+                        spacing: rowSpacing
+
+                        Label {
+                            text: model.name
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            font.bold: true
+                        }
+
+                        Label {
+                            text: model.description
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
 
                     }

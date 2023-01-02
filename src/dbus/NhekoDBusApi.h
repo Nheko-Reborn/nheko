@@ -1,4 +1,5 @@
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -18,7 +19,7 @@ init();
 
 //! The nheko D-Bus API version provided by this file. The API version number follows semantic
 //! versioning as defined by https://semver.org.
-const QVersionNumber dbusApiVersion{1, 0, 0};
+const QVersionNumber dbusApiVersion{1, 0, 1};
 
 //! Compare the installed Nheko API to the version that your client app targets to see if they
 //! are compatible.
@@ -80,6 +81,9 @@ joinRoom(const QString &alias);
 //! desired).
 void
 directChat(const QString &userId);
+//! Sets the user's status message (if supported by the homeserver).
+void
+setStatusMessage(const QString &message);
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item);

@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -723,6 +724,13 @@ RoomlistModel::getRoomPreviewById(QString roomid) const
         if (invites.contains(roomid)) {
             i                 = invites.value(roomid);
             preview.isInvite_ = true;
+
+            auto member = cache::client()->getInviteMember(roomid.toStdString(),
+                                                           http::client()->user_id().to_string());
+
+            if (member) {
+                preview.reason_ = QString::fromStdString(member->reason);
+            }
         } else {
             i                 = previewedRooms.value(roomid);
             preview.isInvite_ = false;
@@ -769,6 +777,13 @@ RoomlistModel::setCurrentRoom(const QString &roomid)
         if (invites.contains(roomid)) {
             i           = invites.value(roomid);
             p.isInvite_ = true;
+
+            auto member = cache::client()->getInviteMember(roomid.toStdString(),
+                                                           http::client()->user_id().to_string());
+
+            if (member) {
+                p.reason_ = QString::fromStdString(member->reason);
+            }
         } else {
             i           = previewedRooms.value(roomid);
             p.isInvite_ = false;
@@ -796,9 +811,9 @@ RoomlistModel::setCurrentRoom(const QString &roomid)
 namespace {
 enum NotificationImportance : short
 {
-    ImportanceDisabled = -3,
-    NoPreview          = -2,
-    Preview            = -1,
+    NoPreview          = -3,
+    Preview            = -2,
+    ImportanceDisabled = -1,
     AllEventsRead      = 0,
     NewMessage         = 1,
     NewMentions        = 2,

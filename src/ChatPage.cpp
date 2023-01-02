@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -152,16 +153,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
     connect(notificationsManager,
             &NotificationsManager::sendNotificationReply,
             this,
-            [this](const QString &roomid, const QString &eventid, const QString &body) {
-                view_manager_->queueReply(roomid, eventid, body);
-                auto exWin = MainWindow::instance()->windowForRoom(roomid);
-                if (exWin) {
-                    exWin->requestActivate();
-                } else {
-                    view_manager_->rooms()->setCurrentRoom(roomid);
-                    MainWindow::instance()->requestActivate();
-                }
-            });
+            &ChatPage::sendNotificationReply);
 
     connect(
       this,
@@ -179,7 +171,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
         static unsigned int prevNotificationCount = 0;
         unsigned int notificationCount            = 0;
         for (const auto &room : sync.rooms.join) {
-            notificationCount += room.second.unread_notifications.notification_count;
+            notificationCount +=
+              static_cast<unsigned int>(room.second.unread_notifications.notification_count);
         }
 
         // HACK: If we had less notifications last time we checked, send an alert if the
@@ -269,7 +262,23 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                       cache::getEventIndex(room_id, cache::client()->getFullyReadEventId(room_id));
 
                     auto ctx = roomModel->pushrulesRoomContext();
+                    std::vector<
+                      std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvent>>
+                      relatedEvents;
+
                     for (const auto &event : room.timeline.events) {
+                        auto event_id = mtx::accessors::event_id(event);
+
+                        // skip already read events
+                        if (currentReadMarker &&
+                            currentReadMarker > cache::getEventIndex(room_id, event_id))
+                            continue;
+
+                        // skip our messages
+                        auto sender = mtx::accessors::sender(event);
+                        if (sender == http::client()->user_id().to_string())
+                            continue;
+
                         mtx::events::collections::TimelineEvent te{event};
                         std::visit([room_id = room_id](auto &event_) { event_.room_id = room_id; },
                                    te.data);
@@ -285,18 +294,29 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                                 te.data = result.event.value();
                         }
 
-                        auto actions = pushrules->evaluate(te, ctx);
+                        relatedEvents.clear();
+                        for (const auto &r : mtx::accessors::relations(te.data).relations) {
+                            auto related = cache::client()->getEvent(room_id, r.event_id);
+                            if (related) {
+                                relatedEvents.emplace_back(r, *related);
+                                if (auto encryptedEvent = std::get_if<
+                                      mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
+                                      &related->data);
+                                    encryptedEvent && userSettings_->decryptNotifications()) {
+                                    MegolmSessionIndex index(room_id, encryptedEvent->content);
+
+                                    auto result = olm::decryptEvent(index, *encryptedEvent);
+                                    if (result.event)
+                                        relatedEvents.back().second.data = result.event.value();
+                                }
+                            }
+                        }
+
+                        auto actions = pushrules->evaluate(te, ctx, relatedEvents);
                         if (std::find(actions.begin(),
                                       actions.end(),
                                       mtx::pushrules::actions::Action{
                                         mtx::pushrules::actions::notify{}}) != actions.end()) {
-                            auto event_id = mtx::accessors::event_id(event);
-
-                            // skip already read events
-                            if (currentReadMarker &&
-                                currentReadMarker > cache::getEventIndex(room_id, event_id))
-                                continue;
-
                             if (!cache::isNotificationSent(event_id)) {
                                 // We should only send one notification per event.
                                 cache::markSentNotification(event_id);
@@ -385,6 +405,21 @@ ChatPage::dropToLoginPage(const QString &msg)
 
     http::client()->shutdown();
     connectivityTimer_.stop();
+
+    auto btn = QMessageBox::warning(
+      nullptr,
+      tr("Confirm logout"),
+      tr("Because of the following reason Nheko wants to drop you to the login page:\n%1\nIf you "
+         "think this is a mistake, you can close Nheko instead to possibly recover your encryption "
+         "keys. After you have been dropped to the login page, you can sign in again using your "
+         "usual methods.")
+        .arg(msg),
+      QMessageBox::StandardButton::Close | QMessageBox::StandardButton::Ok,
+      QMessageBox::StandardButton::Ok);
+    if (btn == QMessageBox::StandardButton::Close) {
+        QCoreApplication::exit(1);
+        exit(1);
+    }
 
     resetUI();
     deleteConfigs();
@@ -1064,13 +1099,16 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
           }
 
           std::map<std::string, uint16_t> key_counts;
-          auto count = 0;
+          std::uint64_t count = 0;
           if (auto c = res.one_time_key_counts.find(mtx::crypto::SIGNED_CURVE25519);
               c == res.one_time_key_counts.end()) {
               key_counts[mtx::crypto::SIGNED_CURVE25519] = 0;
           } else {
-              key_counts[mtx::crypto::SIGNED_CURVE25519] = c->second;
-              count                                      = c->second;
+              key_counts[mtx::crypto::SIGNED_CURVE25519] =
+                c->second > std::numeric_limits<std::uint16_t>::max()
+                  ? std::numeric_limits<std::uint16_t>::max()
+                  : static_cast<std::uint16_t>(c->second);
+              count = c->second;
           }
 
           nhlog::crypto()->info(
@@ -1577,6 +1615,19 @@ ChatPage::handleMatrixUri(QString uri)
         return false;
     }
     return false;
+}
+
+void
+ChatPage::sendNotificationReply(const QString &roomid, const QString &eventid, const QString &body)
+{
+    view_manager_->queueReply(roomid, eventid, body);
+    auto exWin = MainWindow::instance()->windowForRoom(roomid);
+    if (exWin) {
+        exWin->requestActivate();
+    } else {
+        view_manager_->rooms()->setCurrentRoom(roomid);
+        MainWindow::instance()->requestActivate();
+    }
 }
 
 bool

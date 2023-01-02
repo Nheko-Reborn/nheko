@@ -2,7 +2,7 @@
 # CMake module to search for the cmark library
 #
 
-include(FindPkgConfig)
+find_package(PkgConfig)
 pkg_check_modules(PC_CMARK QUIET cmark)
 
 if(NOT CMARK_INCLUDE_DIR)
@@ -34,9 +34,8 @@ endif()
 
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(cmark
-                                  DEFAULT_MSG
-                                  CMARK_INCLUDE_DIR
-                                  CMARK_LIBRARY)
+  REQUIRED_VARS CMARK_LIBRARY CMARK_INCLUDE_DIR
+)
 
 mark_as_advanced(CMARK_LIBRARY CMARK_INCLUDE_DIR)
 

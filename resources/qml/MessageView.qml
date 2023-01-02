@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -38,6 +39,8 @@ Item {
 
         property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < chatRoot.availableWidth) ? Settings.timelineMaxWidth : chatRoot.availableWidth) - chatRoot.padding * 2 - (scrollbar.interactive? scrollbar.width : 0)
 
+        readonly property alias filteringInProgress: filteredTimeline.filteringInProgress
+
         displayMarginBeginning: height / 2
         displayMarginEnd: height / 2
 
@@ -59,7 +62,6 @@ Item {
         onCountChanged: {
             // Mark timeline as read
             if (atYEnd && room) model.currentIndex = 0;
-
         }
 
         ScrollBar.vertical: scrollbar
@@ -415,6 +417,7 @@ Item {
             required property string callType
             required property var reactions
             required property int trustlevel
+            required property int notificationlevel
             required property int encryptionError
             required property var timestamp
             required property int status
@@ -482,6 +485,7 @@ Item {
                 callType: wrapper.callType
                 reactions: wrapper.reactions
                 trustlevel: wrapper.trustlevel
+                notificationlevel: wrapper.notificationlevel
                 encryptionError: wrapper.encryptionError
                 timestamp: wrapper.timestamp
                 status: wrapper.status
@@ -560,7 +564,7 @@ Item {
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: Nheko.paddingLarge
-            visible: room && room.paginationInProgress
+            visible: (room && room.paginationInProgress) || chat.filteringInProgress
             // hacky, but works
             height: loadingSpinner.height + 2 * Nheko.paddingLarge
 
@@ -569,7 +573,7 @@ Item {
 
                 anchors.centerIn: parent
                 anchors.margins: Nheko.paddingLarge
-                running: room && room.paginationInProgress
+                running: (room && room.paginationInProgress) || chat.filteringInProgress
                 foreground: Nheko.colors.mid
                 z: 3
             }
