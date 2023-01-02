@@ -109,7 +109,7 @@
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>允许访问此聊天室的聊天室列表。任何在这些聊天室中的人都可以加入此聊天室。</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -124,7 +124,7 @@
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>输入尚未列入列表的其他聊天室...</translation>
     </message>
 </context>
 <context>
@@ -228,7 +228,7 @@
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>确认注销</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -331,12 +331,14 @@
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
+        <translation>由于以下原因，Nheko希望将你返回到登录页面。
+%1
+如果你认为这是一个错误，你可以关闭Nheko，以便可能恢复你的加密密钥。在你被返回到登录页面后，你可以用你的常用方法再次登录。</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>迁移缓存到当前版本失败。这可能是由不同的原因导致的。请在https://github.com/Nheko-Reborn/nheko提交一个issue，并尝试在这期间使用旧版本。或者，你可以尝试手动删除缓存。</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -845,12 +847,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation>无法直接加入此房间。但是，您可以敲门，房间成员可以接受或拒绝此加入请求。您还可以在下面提供他们让您进入的理由：</translation>
+        <translation>此聊天室无法直接加入。但是，你可以请求加入此聊天室，聊天室成员可以接受或拒绝此加入请求。另外你可以在下面提供一个理由，让他们允许你加入：</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>请求加入</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2487,12 +2489,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+1"/>
         <source>Send</source>
-        <translation type="unfinished">发送</translation>
+        <translation>发送</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation type="unfinished">写一条消息…</translation>
+        <translation>写一条消息…</translation>
     </message>
 </context>
 <context>
@@ -2699,7 +2701,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>Room settings</source>
-        <translation type="unfinished"></translation>
+        <translation>聊天室设置</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3038,7 +3040,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>允许请求加入</translation>
     </message>
     <message>
         <location line="+19"/>
