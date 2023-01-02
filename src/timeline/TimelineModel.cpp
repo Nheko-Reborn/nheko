@@ -975,6 +975,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
     if (timeline.events.empty())
         return;
 
+    if (timeline.limited)
+        setPaginationInProgress(false);
+
     events.handleSync(timeline);
 
     using namespace mtx::events;

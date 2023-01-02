@@ -398,7 +398,11 @@ public slots:
     void setThread(const QString &newThread);
     void resetThread();
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
-    void clearTimeline() { events.clearTimeline(); }
+    void clearTimeline()
+    {
+        events.clearTimeline();
+        setPaginationInProgress(false);
+    }
     void resetState();
     void receivedSessionKey(const std::string &session_key)
     {
