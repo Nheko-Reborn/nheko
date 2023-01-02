@@ -104,7 +104,7 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+27"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>已允许的房间设置</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -114,7 +114,7 @@
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>父社区</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -730,7 +730,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+51"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>不显示此社区或标签的通知计数。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -818,7 +818,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法从聊天室中删除社区：%1</translation>
     </message>
 </context>
 <context>
@@ -1507,7 +1507,10 @@ You may optionally provide a reason for others to accept your knock:</source>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>您的登录名。 mxid 应以 @ 开头，后跟用户 ID。 在用户 ID 之后，您需要在 : 之后包含您的服务器名称。
+如果您的服务器不支持 .well-known 查找，您也可以将您的主服务器地址放在那里。
+示例：@user:server.my
+如果 Nheko 无法发现您的主服务器，它会显示一个字段供您手动输入服务器。</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1527,13 +1530,13 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation>此设备的名称，将在验证您的设备时向其他人显示。如果未提供任何内容，则使用默认值。</translation>
+        <translation>此设备的名称，将在验证您的设备时向其他人显示。 如果未提供任何内容，则使用默认值。</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation>可联系到您的主服务器客户端 API 的地址。
+        <translation>可用于联系您的主服务器客户端 API 的地址。
 示例：https://server.my:8787</translation>
     </message>
     <message>
@@ -1722,7 +1725,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 更改了此聊天室的父社区。</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1979,7 +1982,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>要允许其他用户查看您的哪些设备实际上属于您，您可以验证它们。 这也允许密钥备份自动工作。 现在验证 %1 ？</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2212,7 +2215,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+46"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation type="unfinished"></translation>
+        <translation>没有在此处应用新权限的权限</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2465,7 +2468,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Set the global log level, or a comma-separated list of &lt;component&gt;=&lt;level&gt; pairs, or both. For example, to set the default log level to &apos;warn&apos; but disable logging for the &apos;ui&apos; component, pass &apos;warn,ui=off&apos;. levels:{trace,debug,info,warning,error,critical,off} components:{crypto,db,mtx,net,qml,ui}</source>
-        <translation type="unfinished"></translation>
+        <translation>设置全局日志级别，或以逗号分隔的 &lt;component&gt;=&lt;level&gt; 列表，或两者。 例如，要将默认日志级别设置为 “warn” 但禁用 “ui” 组件的日志记录，请传递 “warn,ui=off”。 级别：{trace,debug,info,warning,error,critical,off} 组件：{crypto,db,mtx,net,qml,ui}</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2475,7 +2478,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
-        <translation type="unfinished"></translation>
+        <translation>设置日志输出类型。 允许使用逗号分隔的列表。 默认值为“file,stderr”。 类型：{file,stderr,none}</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2742,7 +2745,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished"></translation>
+        <translation>在社区中添加或删除...</translation>
     </message>
     <message>
         <location line="+263"/>
@@ -3036,7 +3039,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-180"/>
         <source>Anyone can join</source>
-        <translation type="unfinished"></translation>
+        <translation>任何人都可以加入</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3061,12 +3064,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation type="unfinished"></translation>
+        <translation>允许访客加入</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished"></translation>
+        <translation>应用访问规则</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -3374,7 +3377,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from community</source>
-        <translation type="unfinished"></translation>
+        <translation>从社区中添加或删除</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3389,7 +3392,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>仅为社区成员列出</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3399,12 +3402,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>不相关的</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>子社区</translation>
     </message>
 </context>
 <context>
@@ -3944,7 +3947,7 @@ Reason: %4</source>
     <message>
         <location line="+115"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>在 %1</translation>
     </message>
     <message>
         <location line="+111"/>
@@ -4608,7 +4611,7 @@ OFF - 方形，ON - 圆形。</translation>
     <message>
         <location line="+2"/>
         <source>Choose where to show the total number of notifications contained within a community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>选择在何处显示社区或标签中包含的通知总数。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4618,7 +4621,7 @@ OFF - 方形，ON - 圆形。</translation>
     <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果其他用户已通过验证，则自动回复他们的密钥请求，即使该设备不应该以其他方式访问这些密钥。</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -4635,17 +4638,17 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="-319"/>
         <source>Communities sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>社区侧边栏</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Show message counts for communities and tags</source>
-        <translation type="unfinished"></translation>
+        <translation>显示社区和标签的消息计数</translation>
     </message>
     <message>
         <location line="+223"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation type="unfinished"></translation>
+        <translation>设置时间线中消息的最大宽度（以像素为单位）。 当 Nheko 最大化时，这有助于提高宽屏上的可读性</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4930,7 +4933,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>打开 fallback ，按步骤操作，完成后确认。</translation>
     </message>
 </context>
 <context>
