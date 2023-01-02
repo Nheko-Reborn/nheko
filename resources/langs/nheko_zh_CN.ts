@@ -48,7 +48,7 @@
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation>更新别名失败：%1</translation>
+        <translation>未能更新别名：%1</translation>
     </message>
 </context>
 <context>
@@ -119,7 +119,7 @@
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation>其他房间</translation>
+        <translation>其他聊天室</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -217,7 +217,7 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+121"/>
         <source>Failed to invite user: %1</source>
-        <translation>邀请用户失败：%1</translation>
+        <translation>未能邀请用户：%1</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -238,7 +238,7 @@
     <message>
         <location line="+35"/>
         <source>Failed to open database, logging out!</source>
-        <translation>无法打开数据库，账户将登出！</translation>
+        <translation>未能打开数据库，账户将登出！</translation>
     </message>
     <message>
         <location line="+262"/>
@@ -279,7 +279,7 @@
     <message>
         <location line="+12"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation>未能成功邀请 %1 到 %2：%3</translation>
+        <translation>未能邀请 %1 到 %2：%3</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -289,7 +289,7 @@
     <message>
         <location line="+26"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation>未能成功封禁 %2 里的 %1：%3</translation>
+        <translation>未能封禁 %2 里的 %1：%3</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -309,7 +309,7 @@
     <message>
         <location line="+10"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation>未能将 %2 里的 %1 成功解封：%3</translation>
+        <translation>未能将 %2 里的 %1 解封：%3</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -348,14 +348,14 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
     <message>
         <location line="+54"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation>恢复 OLM 账户失败。请重新登录。</translation>
+        <translation>未能恢复 OLM 账户。请重新登录。</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+4"/>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation>恢复保存的数据失败。请重新登录。</translation>
+        <translation>未能恢复保存的数据。请重新登录。</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -372,7 +372,8 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>你未能加入 %1。你可以尝试请求加入，以便其他人可以邀请你进来。你想这样做吗？
+你可以选择提供一个理由让其他人接受你的加入请求：</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -430,298 +431,298 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+103"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;消息&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;文本&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/join (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/join (!聊天室id|#别名) [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/knock (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/knock (!聊天室id|#别名) [原因]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/invite @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/invite @用户id [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/kick @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/kick @用户id [原因]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/ban @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/ban @用户id [原因]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unban @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/unban @用户id [原因]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/redact ($eventid|@userid)</source>
-        <translation type="unfinished"></translation>
+        <translation>/redact ($事件id|@用户id)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/roomnick &lt;displayname&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/roomnick &lt;显示名称&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/shrug [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/shrug [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/fliptable</source>
-        <translation type="unfinished"></translation>
+        <translation>/fliptable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unfliptable</source>
-        <translation type="unfinished"></translation>
+        <translation>/unfliptable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/sovietflip</source>
-        <translation type="unfinished"></translation>
+        <translation>/sovietflip</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/clear-timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>/clear-timeline</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/reset-state</source>
-        <translation type="unfinished"></translation>
+        <translation>/reset-state</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rotate-megolm-session</source>
-        <translation type="unfinished"></translation>
+        <translation>/rotate-megolm-session</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/md [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/md [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/plain [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/plain [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbow [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbow [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowme [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowme [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/notice [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbownotice [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbownotice [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/confetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/confetti [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowconfetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowconfetti [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto ($事件id|消息索引|matrix:r/聊天室/e/事件)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/converttodm</source>
-        <translation type="unfinished"></translation>
+        <translation>/converttodm</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/converttoroom</source>
-        <translation type="unfinished"></translation>
+        <translation>/converttoroom</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条表达行动的信息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation type="unfinished"></translation>
+        <translation>当你回复一条信息时，发送 &lt;文本&gt; 作为回应。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>加入一个聊天室。理由是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>请求加入一个聊天室。理由是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>离开一个聊天室。理由是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请一个用户进入当前聊天室。理由是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>将一个用户踢出当前聊天室。原因是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>在当前聊天室封禁一个用户。原因是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>在当前聊天室解封一个用户。原因是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑一个事件或一个用户的所有本地缓存信息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change your displayname in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>更改你在此聊天室的显示名称。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>¯\_(ツ)_/¯ with an optional message.</source>
-        <translation type="unfinished"></translation>
+        <translation>¯\_(ツ)_/¯ 带有可选消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>(╯°□°)╯︵ ┻━┻</source>
-        <translation type="unfinished"></translation>
+        <translation>(╯°□°)╯︵ ┻━┻</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>┯━┯╭( º _ º╭)</source>
-        <translation type="unfinished"></translation>
+        <translation>┯━┯╭( º _ º╭)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ノ┬─┬ノ ︵ ( \o°o)\</source>
-        <translation type="unfinished"></translation>
+        <translation>ノ┬─┬ノ ︵ ( \o°o)\</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Clear the currently cached messages in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>清除此聊天室中当前缓存的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refetch the state in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>重新获取此聊天室中的状态。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>轮换当前的对称加密密钥。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条markdown格式的消息（忽略全局设置）。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条未格式化的消息（忽略全局设置）。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条彩虹色的消息</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>以彩虹色发送 /me</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条机器人消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条彩虹色的机器人消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条带有彩色纸屑的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条带有彩色纸屑的彩虹色消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to this event or link.</source>
-        <translation type="unfinished"></translation>
+        <translation>转到此事件或链接。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>将此聊天室转换为直接聊天。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>将此直接聊天转换为聊天室。</translation>
     </message>
 </context>
 <context>
@@ -734,7 +735,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation>默认隐藏带有此标签或来自此社区的房间。</translation>
+        <translation>默认隐藏带有此标签或来自此社区的聊天室。</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -802,17 +803,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+657"/>
         <source>Failed to update community: %1</source>
-        <translation>无法更新社区: %1</translation>
+        <translation>未能更新社区: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation>无法从社区中删除房间: %1</translation>
+        <translation>未能从社区中删除聊天室：%1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>未能更新聊天室的社区：%1</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -830,7 +831,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation>确认加入房间</translation>
+        <translation>确认加入聊天室</translation>
     </message>
     <message numerus="yes">
         <location line="+67"/>
@@ -842,7 +843,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+25"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>你想加入此聊天室吗？你可以选择在下面添加理由：</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -903,7 +904,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation>新房间</translation>
+        <translation>新聊天室</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -933,7 +934,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation>任何人都可以加入公共房间；私人房间需要明确的邀请。</translation>
+        <translation>任何人都可以加入公共聊天室；私人聊天室需要明确的邀请。</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -981,7 +982,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation>用提供的恢复令牌或口令解密密钥失败</translation>
+        <translation>未能使用提供的恢复密钥或口令解密密钥</translation>
     </message>
 </context>
 <context>
@@ -1377,7 +1378,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>父社区的表情包</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1666,12 +1667,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+78"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>此聊天室因以下原因被替换: %1</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished"></translation>
+        <translation>转到更换后的聊天室</translation>
     </message>
     <message>
         <location line="+162"/>
@@ -1751,12 +1752,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 拒绝了通话。</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 选择答案</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1790,7 +1791,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>已在通话中</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1838,12 +1839,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Reply in thread</source>
-        <translation type="unfinished"></translation>
+        <translation>在消息列中回复</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
+        <translation>新消息列</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1895,7 +1896,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>&amp;Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;消息列</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1910,7 +1911,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>&amp;Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;已读回执</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1973,7 +1974,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>为了允许其他用户查看你的哪些设备实际上属于你，你可以对其进行验证。这也允许密钥备份自动工作。立即验证未验证的设备？（请确保你有其中一个可用的设备。）</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2196,7 +2197,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
-        <translation type="unfinished"></translation>
+        <translation>这些权限应该应用于哪些子社区和聊天室？</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2206,7 +2207,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>Overwrite exisiting modifications in rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>覆盖聊天室中的现有修改</translation>
     </message>
     <message>
         <location line="+46"/>
@@ -2221,12 +2222,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+1"/>
         <source>Existing modifications to the permissions in this room will be overwritten</source>
-        <translation type="unfinished"></translation>
+        <translation>对此聊天室现有权限的修改将被覆盖</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Permissions synchronized with community</source>
-        <translation type="unfinished"></translation>
+        <translation>权限已与社区同步</translation>
     </message>
 </context>
 <context>
@@ -2390,12 +2391,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>Edit child communities and rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑子社区和聊天室</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent communities</source>
-        <translation type="unfinished"></translation>
+        <translation>更改父社区</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2420,7 +2421,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Reject a call</source>
-        <translation type="unfinished"></translation>
+        <translation>拒绝通话</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2441,7 +2442,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+231"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>创建一个独特的配置文件，允许你同时登录多个帐户并启动多个 Nheko 实例。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2459,7 +2460,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-26"/>
         <source>Alias for &apos;--log-level trace&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>&apos;--log-level trace&apos; 的别名。</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2484,7 +2485,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
         <source>Respond</source>
-        <translation type="unfinished"></translation>
+        <translation>响应</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2502,7 +2503,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/ReadReceipts.qml" line="+41"/>
         <source>Read receipts</source>
-        <translation>已阅回执</translation>
+        <translation>已读回执</translation>
     </message>
 </context>
 <context>
@@ -2549,7 +2550,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>此设备的名称，在验证你的设备时将会显示给其他人。如果没有提供任何信息，则使用默认值。</translation>
     </message>
     <message>
         <location line="-109"/>
@@ -2609,7 +2610,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.4). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>所选服务器不支持此客户端理解的 Matrix 协议版本（v1.1 到 v1.4）。你不能注册。</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2652,7 +2653,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Cancel Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>取消消息列</translation>
     </message>
 </context>
 <context>
@@ -2814,7 +2815,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>创建一个新社区</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2923,7 +2924,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>更改聊天室头像。</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -3045,17 +3046,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>Allow joining via other rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>允许通过其他聊天室加入</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Rooms to join via</source>
-        <translation type="unfinished"></translation>
+        <translation>通过以下方式加入的聊天室</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>更改用户可以加入此聊天室的聊天室列表。通常这是此聊天室的官方社区。</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3075,7 +3076,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+18"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>更改已启用的表情包，删除表情包或创建新表情包</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -3182,7 +3183,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Please enter the token which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>请输入已发送给你的令牌：</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3378,12 +3379,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>此聊天室的官方社区</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>此聊天室的附属社区</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3393,7 +3394,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>仅为聊天室成员列出</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3821,7 +3822,7 @@ Reason: %4</source>
     <message>
         <location line="+925"/>
         <source>%1 made this room require an invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 使此聊天室需要邀请才能加入。</translation>
     </message>
     <message>
         <location line="+654"/>
@@ -3865,7 +3866,7 @@ Reason: %4</source>
     <message>
         <location line="+18"/>
         <source>Part of a thread</source>
-        <translation type="unfinished"></translation>
+        <translation>消息列的一部分</translation>
     </message>
 </context>
 <context>
@@ -3915,12 +3916,12 @@ Reason: %4</source>
     <message>
         <location line="+36"/>
         <source>Hide invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>隐藏邀请理由</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Show invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>显示邀请理由</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -3973,7 +3974,7 @@ Reason: %4</source>
     <message>
         <location line="+66"/>
         <source>Search this room</source>
-        <translation type="unfinished"></translation>
+        <translation>搜索此聊天室</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -4008,7 +4009,7 @@ Reason: %4</source>
     <message>
         <location line="+63"/>
         <source>Enter search query</source>
-        <translation type="unfinished"></translation>
+        <translation>输入搜索查询</translation>
     </message>
 </context>
 <context>
@@ -4232,7 +4233,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Use shift+enter to send and enter to start a new line</source>
-        <translation type="unfinished"></translation>
+        <translation>使用 shift+enter 以发送消息，enter 以换行</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4312,12 +4313,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Decrypt notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>解密通知</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Display fancy effects such as confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>显示花哨的效果例如彩色纸屑</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4558,7 +4559,7 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+4"/>
         <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>反转文本输入中 enter 键的行为，使其在按下 shift+enter 时发送消息，并在按下 enter 时换行。</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4602,7 +4603,7 @@ OFF - 方形，ON - 圆形。</translation>
     <message>
         <location line="+16"/>
         <source>Decrypt messages shown in notifications for encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>解密加密聊天的通知中显示的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4612,7 +4613,7 @@ OFF - 方形，ON - 圆形。</translation>
     <message>
         <location line="+3"/>
         <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation type="unfinished"></translation>
+        <translation>有些消息可以用花哨的效果发送。例如，使用“/confetti”发送的消息将在屏幕上显示彩色纸屑。</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4649,14 +4650,16 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+19"/>
         <source>Show a column containing communities and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>在聊天室列表旁边显示包含社区和标签的列。</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>首先显示有新消息的聊天室。
+如果关闭，聊天室列表将只按聊天室中最后一条消息的时间戳排序。
+如果打开，有活动通知的聊天室（带数字的小圆圈）将排在最前面。你静音的聊天室仍将按时间戳排序，因为你似乎认为它们不如其他聊天室重要。</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -5030,12 +5033,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="-11"/>
         <source>You sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>你发送了一些彩色纸屑</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 发送了一些彩色纸屑</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -5080,12 +5083,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+4"/>
         <source>You rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>你拒绝了通话</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 拒绝了通话</translation>
     </message>
 </context>
 <context>
