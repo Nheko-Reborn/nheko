@@ -36,6 +36,7 @@ ApplicationWindow {
             font: Nheko.monospaceFont()
             color: Nheko.colors.text
             readOnly: true
+            selectByMouse: !Settings.mobileMode
             textFormat: Text.PlainText
 
             anchors.fill: parent
