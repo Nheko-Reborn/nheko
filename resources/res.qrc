@@ -132,6 +132,7 @@
         <file>qml/components/ReorderableListview.qml</file>
         <file>qml/components/SpaceMenuLevel.qml</file>
         <file>qml/components/TextButton.qml</file>
+        <file>qml/components/UserListRow.qml</file>
         <file>qml/delegates/Encrypted.qml</file>
         <file>qml/delegates/FileMessage.qml</file>
         <file>qml/delegates/ImageMessage.qml</file>

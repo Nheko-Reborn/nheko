@@ -88,7 +88,9 @@ Invitee::Invitee(QString mxid, QString displayName, QString avatarUrl, QObject *
   : QObject{parent}
   , mxid_{std::move(mxid)}
 {
-    if (displayName == "" || avatarUrl == "") {
+    // checking for empty avatarUrl will cause profiles to be loaded that don't have an avatar
+    // to needlessly be loaded. Can we make sure we either provide both or none?
+    if (displayName == "") {
         http::client()->get_profile(
           mxid_.toStdString(),
           [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {

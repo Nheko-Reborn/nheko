@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
+import "../components"
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -67,13 +68,13 @@ ApplicationWindow {
             Layout.fillWidth: true
             Layout.preferredHeight: implicitHeight
             spacing: 4
+            visible: !inviteesList.visible
             Repeater {
                 id: inviteesRepeater
                 model: invitees
                 delegate: ItemDelegate {
                     onClicked: invitees.removeUser(model.mxid)
                     id: inviteeButton
-                    visible: !inviteesList.visible
                     contentItem: Label {
                         anchors.centerIn: parent
                         id: inviteeUserid
@@ -92,7 +93,7 @@ ApplicationWindow {
         }
 
         Label {
-            text: qsTr("User to invite")
+            text: qsTr("Search user")
             Layout.fillWidth: true
             color: Nheko.colors.text
         }
@@ -145,51 +146,17 @@ ApplicationWindow {
 
         }
         RowLayout {
-            ItemDelegate {
+            UserListRow {
                 visible: inviteeEntry.isValidMxid
                 id: del3
                 Layout.preferredWidth: inviteDialogRoot.width/2
                 Layout.alignment: Qt.AlignTop
-                Layout.preferredHeight: layout3.implicitHeight + Nheko.paddingSmall * 2
-                onClicked: addInvite(inviteeEntry.text, profile? profile.displayName : "", profile? profile.avatarUrl : "")
-                background: Rectangle {
-                color: del3.hovered ? Nheko.colors.dark : inviteDialogRoot.color
-                clip: true
-                }
-                GridLayout {
-                    id: layout3
-                    anchors.centerIn: parent
-                    width: del3.width - Nheko.paddingSmall * 2
-                    rows: 2
-                    columns: 2
-                    rowSpacing: Nheko.paddingSmall
-                    columnSpacing: Nheko.paddingMedium
-
-                    Avatar {
-                        Layout.rowSpan: 2
-                        Layout.preferredWidth: Nheko.avatarSize
-                        Layout.preferredHeight: Nheko.avatarSize
-                        Layout.alignment: Qt.AlignLeft
-                        userid: inviteeEntry.text
-                        url: profile? profile.avatarUrl.replace("mxc://", "image://MxcImage/") : ""
-                        displayName: profile? profile.displayName : ""
-                        enabled: false
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: profile? profile.displayName : ""
-                        color: TimelineManager.userColor(inviteeEntry.text, Nheko.colors.window)
-                        font.pointSize: fontMetrics.font.pointSize
-                    }
-
-                    Label {
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignTop
-                        text: inviteeEntry.text
-                        color: Nheko.colors.buttonText
-                        font.pointSize: fontMetrics.font.pointSize * 0.9
-                    }
-                }
+                Layout.preferredHeight: implicitHeight
+                displayName: profile? profile.displayName : ""
+                avatarUrl: profile? profile.avatarUrl : ""
+                userid: inviteeEntry.text
+                onClicked: addInvite(inviteeEntry.text, displayName, avatarUrl)
+                bgColor: del3.hovered ? Nheko.colors.dark : inviteDialogRoot.color
             }
             ListView {
                 visible: !inviteeEntry.isValidMxid
@@ -198,48 +165,15 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 clip: true
-                delegate: ItemDelegate {
+                delegate: UserListRow {
                     id: del2
                     width: ListView.view.width
-                    height: layout2.implicitHeight + Nheko.paddingSmall * 2
-                    onClicked: addInvite(model.userid, model.displayName, model.avatarUrl)
-                    background: Rectangle {
-                    color: del2.hovered ? Nheko.colors.dark : inviteDialogRoot.color
-                    }
-                    GridLayout {
-                        id: layout2
-                        anchors.centerIn: parent
-                        width: del2.width - Nheko.paddingSmall * 2
-                        rows: 2
-                        columns: 2
-                        rowSpacing: Nheko.paddingSmall
-                        columnSpacing: Nheko.paddingMedium
-
-                        Avatar {
-                            Layout.rowSpan: 2
-                            Layout.preferredWidth: Nheko.avatarSize
-                            Layout.preferredHeight: Nheko.avatarSize
-                            Layout.alignment: Qt.AlignLeft
-                            userid: model.userid
-                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            displayName: model.displayName
-                            enabled: false
-                        }
-                        Label {
-                            Layout.fillWidth: true
-                            text: model.displayName
-                            color: TimelineManager.userColor(model.userid, Nheko.colors.window)
-                            font.pointSize: fontMetrics.font.pointSize
-                        }
-
-                        Label {
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignTop
-                            text: model.userid
-                            color: Nheko.colors.buttonText
-                            font.pointSize: fontMetrics.font.pointSize * 0.9
-                        }
-                    }
+                    height: implicitHeight
+                    displayName: model.displayName
+                    userid: model.userid
+                    avatarUrl: model.avatarUrl
+                    onClicked: addInvite(userid, displayName, avatarUrl)
+                    bgColor: del2.hovered ? Nheko.colors.dark : inviteDialogRoot.color
                 }
             }
             ListView {
@@ -251,57 +185,24 @@ ApplicationWindow {
                 clip: true
                 visible: inviteDialogRoot.width >= 500
 
-                delegate: ItemDelegate {
+                delegate: UserListRow {
                     id: del
-
                     hoverEnabled: true
                     width: ListView.view.width
-                    height: layout.implicitHeight + Nheko.paddingSmall * 2
+                    height: implicitHeight
                     onClicked: TimelineManager.openGlobalUserProfile(model.mxid)
-                    background: Rectangle {
-                        color: del.hovered ? Nheko.colors.dark : inviteDialogRoot.color
-                    }
-                    GridLayout {
-                        id: layout
-                        anchors.centerIn: parent
-                        width: del.width - Nheko.paddingSmall * 2
-                        rows: 2
-                        columns: 3
-                        rowSpacing: Nheko.paddingSmall
-                        columnSpacing: Nheko.paddingMedium
-
-                        Avatar {
-                            Layout.rowSpan: 2
-                            Layout.preferredWidth: Nheko.avatarSize
-                            Layout.preferredHeight: Nheko.avatarSize
-                            Layout.alignment: Qt.AlignLeft
-                            userid: model.mxid
-                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            displayName: model.displayName
-                            enabled: false
-                        }
-                        Label {
-                            Layout.fillWidth: true
-                            text: model.displayName
-                            color: TimelineManager.userColor(model.mxid, Nheko.colors.window)
-                            font.pointSize: fontMetrics.font.pointSize
-                        }
-
-                        ImageButton {
-                            Layout.rowSpan: 2
-                            id: removeButton
-                            image: ":/icons/icons/ui/dismiss.svg"
-                            onClicked: invitees.removeUser(model.mxid)
-                        }
-
-                        Label {
-                            Layout.fillWidth: true
-                            Layout.alignment: Qt.AlignTop
-                            text: model.mxid
-                            color: Nheko.colors.buttonText
-                            font.pointSize: fontMetrics.font.pointSize * 0.9
-                        }
-
+                    userid: model.mxid
+                    avatarUrl: model.avatarUrl
+                    displayName: model.displayName
+                    bgColor: del.hovered ? Nheko.colors.dark : inviteDialogRoot.color
+                    ImageButton {
+                        anchors.right: parent.right
+                        anchors.rightMargin: Nheko.paddingSmall
+                        anchors.top: parent.top
+                        anchors.topMargin: Nheko.paddingSmall
+                        id: removeButton
+                        image: ":/icons/icons/ui/dismiss.svg"
+                        onClicked: invitees.removeUser(model.mxid)
                     }
 
                     CursorShape {
