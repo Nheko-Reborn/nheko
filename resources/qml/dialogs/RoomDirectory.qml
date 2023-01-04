@@ -16,10 +16,10 @@ ApplicationWindow {
     id: roomDirectoryWindow
 
     visible: true
-    minimumWidth: 340
-    minimumHeight: 340
-    height: 420
-    width: 650
+    minimumHeight 320 
+    minimumWidth: 460
+    height: 600
+    width: 580
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
@@ -48,10 +48,10 @@ ApplicationWindow {
             property color background: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
-            property int avatarSize: fontMetrics.height * 3.2
+            property int avatarSize: fontMetrics.height * 3
 
             color: background
-            height: avatarSize + Nheko.paddingLarge
+            height: avatarSize + Nheko.paddingLarge + 2
             width: ListView.view.width
 
             RowLayout {
