@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -398,7 +399,11 @@ public slots:
     void setThread(const QString &newThread);
     void resetThread();
     void setDecryptDescription(bool decrypt) { decryptDescription = decrypt; }
-    void clearTimeline() { events.clearTimeline(); }
+    void clearTimeline()
+    {
+        events.clearTimeline();
+        setPaginationInProgress(false);
+    }
     void resetState();
     void receivedSessionKey(const std::string &session_key)
     {

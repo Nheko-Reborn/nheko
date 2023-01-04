@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2821"/>
+        <location filename="../../src/Cache.cpp" line="+2828"/>
         <source>%1 and %n other(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -232,14 +232,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Because of the following reason Nheko wants to drop you to the login page:
-%1
-If you think this is a mistake, you can close Nheko instead to possibly recover your encrpytion keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+101"/>
+        <location line="+102"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
         <translation>La kaŝmemoro sur via disko pli novas, ol tio, kion povas subteni ĉi tiu versio de Nheko. Bonvolu ĝisdatigi Nhekon aŭ vakigi vian kaŝmemoron.</translation>
     </message>
@@ -336,7 +329,14 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
         <translation>Malsukcesis migrado de kaŝmemoro!</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-87"/>
+        <source>Because of the following reason Nheko wants to drop you to the login page:
+%1
+If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2677,7 +2677,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1945"/>
+        <location filename="../../src/Cache.cpp" line="+1968"/>
         <source>no version stored</source>
         <translation>neniu versio konservita</translation>
     </message>
@@ -3249,7 +3249,7 @@ Example: https://server.my:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4564"/>
+        <location filename="../../src/Cache.cpp" line="-4594"/>
         <source>Failed to connect to secret storage</source>
         <translation>Malsukcesis konektiĝi al sekreta deponejo</translation>
     </message>
@@ -3885,7 +3885,7 @@ Kialo: %4</translation>
         <translation>Neniu ĉambro estas malfermita</translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+158"/>
         <source>No preview available</source>
         <translation>Neniu antaŭrigardo disponeblas</translation>
     </message>
@@ -3923,7 +3923,17 @@ Kialo: %4</translation>
         <translation>rifuzi inviton</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+36"/>
+        <source>Hide invite reason</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Show invite reason</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Back to room list</source>
         <translation>Reen al listo de ĉambroj</translation>
     </message>

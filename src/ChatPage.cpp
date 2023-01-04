@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -266,6 +267,18 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                       relatedEvents;
 
                     for (const auto &event : room.timeline.events) {
+                        auto event_id = mtx::accessors::event_id(event);
+
+                        // skip already read events
+                        if (currentReadMarker &&
+                            currentReadMarker > cache::getEventIndex(room_id, event_id))
+                            continue;
+
+                        // skip our messages
+                        auto sender = mtx::accessors::sender(event);
+                        if (sender == http::client()->user_id().to_string())
+                            continue;
+
                         mtx::events::collections::TimelineEvent te{event};
                         std::visit([room_id = room_id](auto &event_) { event_.room_id = room_id; },
                                    te.data);
@@ -304,13 +317,6 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                                       actions.end(),
                                       mtx::pushrules::actions::Action{
                                         mtx::pushrules::actions::notify{}}) != actions.end()) {
-                            auto event_id = mtx::accessors::event_id(event);
-
-                            // skip already read events
-                            if (currentReadMarker &&
-                                currentReadMarker > cache::getEventIndex(room_id, event_id))
-                                continue;
-
                             if (!cache::isNotificationSent(event_id)) {
                                 // We should only send one notification per event.
                                 cache::markSentNotification(event_id);
@@ -404,7 +410,7 @@ ChatPage::dropToLoginPage(const QString &msg)
       nullptr,
       tr("Confirm logout"),
       tr("Because of the following reason Nheko wants to drop you to the login page:\n%1\nIf you "
-         "think this is a mistake, you can close Nheko instead to possibly recover your encrpytion "
+         "think this is a mistake, you can close Nheko instead to possibly recover your encryption "
          "keys. After you have been dropped to the login page, you can sign in again using your "
          "usual methods.")
         .arg(msg),

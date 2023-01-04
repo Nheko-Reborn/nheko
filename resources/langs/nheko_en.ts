@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message numerus="yes">
-        <location filename="../../src/Cache.cpp" line="+2821"/>
+        <location filename="../../src/Cache.cpp" line="+2828"/>
         <source>%1 and %n other(s)</source>
         <translation>
             <numerusform>%1 and %n other</numerusform>
@@ -229,17 +229,10 @@
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirm logout</translation>
     </message>
     <message>
-        <location line="+1"/>
-        <source>Because of the following reason Nheko wants to drop you to the login page:
-%1
-If you think this is a mistake, you can close Nheko instead to possibly recover your encrpytion keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+101"/>
+        <location line="+102"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
         <translation>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</translation>
     </message>
@@ -335,7 +328,16 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
         <translation>Cache migration failed!</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-87"/>
+        <source>Because of the following reason Nheko wants to drop you to the login page:
+%1
+If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
+        <translation>Because of the following reason Nheko wants to drop you to the login page:
+%1
+If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</translation>
+    </message>
+    <message>
+        <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
         <translation>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</translation>
     </message>
@@ -430,298 +432,298 @@ You may optionally provide a reason for others to accept your knock:</translatio
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+103"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;message&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;text&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/join (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/join (!roomid|#alias) [reason]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/knock (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/knock (!roomid|#alias) [reason]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [reason]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [reason]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/invite @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/invite @userid [reason]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/kick @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/kick @userid [reason]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/ban @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/ban @userid [reason]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unban @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/unban @userid [reason]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/redact ($eventid|@userid)</source>
-        <translation type="unfinished"></translation>
+        <translation>/redact ($eventid|@userid)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/roomnick &lt;displayname&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/roomnick &lt;displayname&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/shrug [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/shrug [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/fliptable</source>
-        <translation type="unfinished"></translation>
+        <translation>/fliptable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unfliptable</source>
-        <translation type="unfinished"></translation>
+        <translation>/unfliptable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/sovietflip</source>
-        <translation type="unfinished"></translation>
+        <translation>/sovietflip</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/clear-timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>/clear-timeline</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/reset-state</source>
-        <translation type="unfinished"></translation>
+        <translation>/reset-state</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rotate-megolm-session</source>
-        <translation type="unfinished"></translation>
+        <translation>/rotate-megolm-session</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/md [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/md [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/plain [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/plain [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbow [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbow [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowme [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowme [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/notice [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbownotice [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbownotice [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/confetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/confetti [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowconfetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowconfetti [message]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto ($eventid|message index|matrix:r/room/e/event)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/converttodm</source>
-        <translation type="unfinished"></translation>
+        <translation>/converttodm</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/converttoroom</source>
-        <translation type="unfinished"></translation>
+        <translation>/converttoroom</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a message expressing an action.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Send &lt;text&gt; as a reaction when you’re replying to a message.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Join a room. Reason is optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ask to join a room. Reason is optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Leave a room. Reason is optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Invite a user into the current room. Reason is optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kick a user from the current room. Reason is optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ban a user from the current room. Reason is optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unban a user in the current room. Reason is optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Redact an event or all locally cached messages of a user.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change your displayname in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Change your displayname in this room.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>¯\_(ツ)_/¯ with an optional message.</source>
-        <translation type="unfinished"></translation>
+        <translation>¯\_(ツ)_/¯ with an optional message.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>(╯°□°)╯︵ ┻━┻</source>
-        <translation type="unfinished"></translation>
+        <translation>(╯°□°)╯︵ ┻━┻</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>┯━┯╭( º _ º╭)</source>
-        <translation type="unfinished"></translation>
+        <translation>┯━┯╭( º _ º╭)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ノ┬─┬ノ ︵ ( \o°o)\</source>
-        <translation type="unfinished"></translation>
+        <translation>ノ┬─┬ノ ︵ ( \o°o)\</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Clear the currently cached messages in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Clear the currently cached messages in this room.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refetch the state in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Refetch the state in this room.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rotate the current symmetric encryption key.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a markdown formatted message (ignoring the global setting).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Send an unformatted message (ignoring the global setting).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a message in rainbow colors.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Send /me in rainbow colors.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a bot message.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a bot message in rainbow colors.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a message with confetti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Send a message in rainbow colors with confetti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to this event or link.</source>
-        <translation type="unfinished"></translation>
+        <translation>Go to this event or link.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convert this room to a direct chat.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convert this direct chat into a room.</translation>
     </message>
 </context>
 <context>
@@ -1735,12 +1737,12 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+30"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 rejected the call.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 select answer</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1761,12 +1763,12 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="-339"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>This room was replaced for the following reason: %1</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished"></translation>
+        <translation>Go to replacement room</translation>
     </message>
     <message>
         <location line="+282"/>
@@ -1794,7 +1796,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Already on a call</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2424,7 +2426,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Reject a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Reject a call</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2488,17 +2490,17 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
         <source>Respond</source>
-        <translation type="unfinished"></translation>
+        <translation>Respond</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Send</source>
-        <translation type="unfinished">Send</translation>
+        <translation>Send</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Write a message…</translation>
+        <translation>Write a message…</translation>
     </message>
 </context>
 <context>
@@ -2680,7 +2682,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1945"/>
+        <location filename="../../src/Cache.cpp" line="+1968"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -2705,7 +2707,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+12"/>
         <source>Room settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Room settings</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3253,7 +3255,7 @@ Please take note that it can&apos;t be disabled afterwards.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4564"/>
+        <location filename="../../src/Cache.cpp" line="-4594"/>
         <source>Failed to connect to secret storage</source>
         <translation>Failed to connect to secret storage</translation>
     </message>
@@ -3887,7 +3889,7 @@ Reason: %4</translation>
         <translation>No room open</translation>
     </message>
     <message>
-        <location line="+157"/>
+        <location line="+158"/>
         <source>No preview available</source>
         <translation>No preview available</translation>
     </message>
@@ -3925,7 +3927,17 @@ Reason: %4</translation>
         <translation>decline invite</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+36"/>
+        <source>Hide invite reason</source>
+        <translation>Hide invite reason</translation>
+    </message>
+    <message>
+        <location line="+0"/>
+        <source>Show invite reason</source>
+        <translation>Show invite reason</translation>
+    </message>
+    <message>
+        <location line="+29"/>
         <source>Back to room list</source>
         <translation>Back to room list</translation>
     </message>
@@ -3975,7 +3987,7 @@ Reason: %4</translation>
     <message>
         <location line="+66"/>
         <source>Search this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Search this room</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -4010,7 +4022,7 @@ Reason: %4</translation>
     <message>
         <location line="+63"/>
         <source>Enter search query</source>
-        <translation type="unfinished"></translation>
+        <translation>Enter search query</translation>
     </message>
 </context>
 <context>
@@ -4235,7 +4247,7 @@ Reason: %4</translation>
     <message>
         <location line="+2"/>
         <source>Use shift+enter to send and enter to start a new line</source>
-        <translation type="unfinished"></translation>
+        <translation>Use shift+enter to send and enter to start a new line</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4315,12 +4327,12 @@ Reason: %4</translation>
     <message>
         <location line="+2"/>
         <source>Decrypt notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Decrypt notifications</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Display fancy effects such as confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Display fancy effects such as confetti</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4561,7 +4573,7 @@ When disabled, all messages are sent as a plain text.</translation>
     <message>
         <location line="+4"/>
         <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4605,7 +4617,7 @@ OFF - square, ON - circle.</translation>
     <message>
         <location line="+16"/>
         <source>Decrypt messages shown in notifications for encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Decrypt messages shown in notifications for encrypted chats.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4615,7 +4627,7 @@ OFF - square, ON - circle.</translation>
     <message>
         <location line="+3"/>
         <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -5035,12 +5047,12 @@ This setting will take effect upon restart.</translation>
     <message>
         <location line="-11"/>
         <source>You sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>You sent some confetti</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sent some confetti</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -5085,12 +5097,12 @@ This setting will take effect upon restart.</translation>
     <message>
         <location line="+4"/>
         <source>You rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>You rejected a call</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 rejected a call</translation>
     </message>
 </context>
 <context>

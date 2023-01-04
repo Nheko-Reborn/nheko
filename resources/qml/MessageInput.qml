@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -219,7 +220,7 @@ Rectangle {
                     } else if (event.matches(StandardKey.InsertLineSeparator)) {
                         if (popup.opened) popup.close();
 
-                        if (Settings.invertEnterKey && !Qt.inputMethod.visible || Qt.platform.os === "windows") {
+                        if (Settings.invertEnterKey && (!Qt.inputMethod.visible || Qt.platform.os === "windows")) {
                             room.input.send();
                             event.accepted = true;
                         }
@@ -234,7 +235,7 @@ Rectangle {
                                 return;
                             }
                         }
-                        if (!Settings.invertEnterKey && !Qt.inputMethod.visible || Qt.platform.os === "windows") {
+                        if (!Settings.invertEnterKey && (!Qt.inputMethod.visible || Qt.platform.os === "windows")) {
                             room.input.send();
                             event.accepted = true;
                         }

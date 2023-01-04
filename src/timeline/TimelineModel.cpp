@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -496,7 +497,7 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
     showEventTimer.callOnTimeout(this, &TimelineModel::scrollTimerEvent);
 
     connect(this, &TimelineModel::newState, this, [this](mtx::responses::StateEvents events_) {
-        cache::client()->updateState(room_id_.toStdString(), events_);
+        cache::client()->updateState(room_id_.toStdString(), events_, true);
         this->syncState({std::move(events_.events)});
     });
 }
@@ -747,6 +748,11 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case Notificationlevel: {
         const auto &push = ChatPage::instance()->pushruleEvaluator();
         if (push) {
+            // skip our messages
+            auto sender = mtx::accessors::sender(event);
+            if (sender == http::client()->user_id().to_string())
+                return qml_mtx_events::NotificationLevel::Nothing;
+
             const auto &id = event_id(event);
             std::vector<std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvent>>
               relatedEvents;
@@ -969,6 +975,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 {
     if (timeline.events.empty())
         return;
+
+    if (timeline.limited)
+        setPaginationInProgress(false);
 
     events.handleSync(timeline);
 

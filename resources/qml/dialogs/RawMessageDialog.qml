@@ -1,5 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -35,6 +36,7 @@ ApplicationWindow {
             font: Nheko.monospaceFont()
             color: Nheko.colors.text
             readOnly: true
+            selectByMouse: !Settings.mobileMode
             textFormat: Text.PlainText
 
             anchors.fill: parent

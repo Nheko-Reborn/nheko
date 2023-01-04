@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: 2019 The nheko authors
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -118,7 +119,9 @@ public:
                                                  std::size_t len        = 30);
     size_t memberCount(const std::string &room_id);
 
-    void updateState(const std::string &room, const mtx::responses::StateEvents &state);
+    void updateState(const std::string &room,
+                     const mtx::responses::StateEvents &state,
+                     bool wipe = false);
     void saveState(const mtx::responses::Sync &res);
     bool isInitialized();
     bool isDatabaseReady() { return databaseReady_ && isInitialized(); }
@@ -408,8 +411,10 @@ private:
                 break;
             }
             }
-            // fallthrough to also store it as state event to eventually migrate away from a
-            // separate members db.
+
+            // BUG(Nico): Ideally we would fall through and store this in the database, but it seems
+            // to currently corrupt the db sometimes, so... let's find that bug first!
+            return;
         } else if (std::holds_alternative<StateEvent<Encryption>>(event)) {
             setEncryptedRoom(txn, room_id);
             return;

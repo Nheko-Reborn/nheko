@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: 2017 Konstantinos Sideris <siderisk@auth.gr>
 // SPDX-FileCopyrightText: 2021 Nheko Contributors
 // SPDX-FileCopyrightText: 2022 Nheko Contributors
+// SPDX-FileCopyrightText: 2023 Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -1669,13 +1670,19 @@ Cache::calculateRoomReadStatus(const std::string &room_id)
 }
 
 void
-Cache::updateState(const std::string &room, const mtx::responses::StateEvents &state)
+Cache::updateState(const std::string &room, const mtx::responses::StateEvents &state, bool wipe)
 {
     auto txn         = lmdb::txn::begin(env_);
     auto statesdb    = getStatesDb(txn, room);
     auto stateskeydb = getStatesKeyDb(txn, room);
     auto membersdb   = getMembersDb(txn, room);
     auto eventsDb    = getEventsDb(txn, room);
+
+    if (wipe) {
+        membersdb.drop(txn);
+        statesdb.drop(txn);
+        stateskeydb.drop(txn);
+    }
 
     saveStateEvents(txn, statesdb, stateskeydb, membersdb, eventsDb, room, state.events);
 
