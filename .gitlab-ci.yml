@@ -275,6 +275,8 @@ appimage-amd64:
     - appimage-builder --skip-test
   after_script:
     - bash ./.ci/upload-nightly-gitlab.sh nheko-latest-x86_64.AppImage
+  rules:
+    - if : '$CI_PIPELINE_TRIGGERED == null'
   artifacts:
     paths:
       - 'nheko-latest-x86_64.AppImage'
