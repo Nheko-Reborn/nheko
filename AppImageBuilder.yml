@@ -87,6 +87,14 @@ AppDir:
     exclude:
     - usr/share/man
     - usr/share/doc
+    - usr/bin/cmark
+    - usr/bin/dbus*
+    - usr/bin/openssl
+    - usr/bin/c_rehash
+    - usr/bin/session-migration
+    - usr/include
+    - usr/sbin
+    - lib/systemd
   test:
     fedora:
       image: appimagecrafters/tests-env:fedora-30
