@@ -43,6 +43,7 @@ AppDir:
     - qml-module-qt-labs-platform
     - qml-module-qt-labs-settings
     - qml-module-qtgraphicaleffects
+    - qml-module-qtquick-particles2
     - qml-module-qtmultimedia
     - qml-module-qtquick2
     - qml-module-qtquick-controls2
