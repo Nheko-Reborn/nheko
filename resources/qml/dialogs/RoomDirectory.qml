@@ -16,10 +16,10 @@ ApplicationWindow {
     id: roomDirectoryWindow
 
     visible: true
-    minimumHeight 320 
-    minimumWidth: 460
-    height: 600
-    width: 580
+    minimumHeight 288 
+    minimumWidth: 256
+    height: 620
+    width: 440
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
