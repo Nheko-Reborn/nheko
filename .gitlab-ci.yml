@@ -230,14 +230,14 @@ appimage-amd64:
   allow_failure: true
   before_script:
     # Installing the packages needed to download and install third-party tools
-    - apt-get update && apt-get install -y software-properties-common git wget curl
+    - apt-get update && apt-get install -y software-properties-common git wget curl python3 python3-pip python3-setuptools
 
     # Installing the packages needed to compile nheko and third-party tools
     - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev 
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
         qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
         qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
-        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev nlohmann-json3-dev libcmark-dev asciidoc libre2-dev libgtest-dev libgl1-mesa-dev python3 python3-pip python3-setuptools
+        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev nlohmann-json3-dev libcmark-dev asciidoc libre2-dev libgtest-dev libgl1-mesa-dev qml-module-qtquick-particles2
 
     # Installing the packages needed to build AppImage
     - apt-get -yq install breeze-icon-theme desktop-file-utils elfutils fakeroot file gnupg2 gtk-update-icon-cache libgdk-pixbuf2.0-dev libgdk-pixbuf2.0-0 libglib2.0-bin librsvg2-dev libyaml-dev strace zsync squashfs-tools
