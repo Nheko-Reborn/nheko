@@ -1,0 +1,122 @@
+# appimage-builder recipe see https://appimage-builder.readthedocs.io for details
+version: 1
+AppDir:
+  path: ./AppDir
+  app_info:
+    id: nheko
+    name: nheko
+    icon: nheko
+    version: latest
+    exec: usr/bin/nheko
+    exec_args: $@
+  runtime:
+    env:
+      APPDIR_LIBRARY_PATH: $APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu/gstreamer-1.0:$APPDIR/usr/lib/x86_64-linux-gnu/gconv:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib/x86_64-linux-gnu/pulseaudio
+  apt:
+    arch: amd64
+    allow_unauthenticated: true
+    sources:
+    - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
+    - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
+    - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-security main restricted universe multiverse
+    - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-backports main restricted universe multiverse
+    - sourceline: deb http://archive.canonical.com/ubuntu jammy partner
+      key_url: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x871920d1991bc93c
+    include:
+    # idk, need there ca-certificates, but some systems may not have
+    - ca-certificates
+    - gstreamer1.0-plugins-good
+    - libbs2b0
+    - libbz2-1.0
+    - libcurl4
+    - libelf1
+    - libexpat1
+    - libevent-core-2.1-7
+    - libevent-pthreads-2.1-7
+    - libjpeg-turbo8
+    - libkf5archive5
+    - liblmdb0
+    - liblz4-1
+    - libnorm1
+    - libnss-mdns
+    - libpcre3
+    - qml-module-qt-labs-platform
+    - qml-module-qt-labs-settings
+    - qml-module-qtgraphicaleffects
+    - qml-module-qtquick-particles2
+    - qml-module-qtmultimedia
+    - qml-module-qtquick2
+    - qml-module-qtquick-controls2
+    - qml-module-qtquick-layouts
+    - qml-module-qtquick-window2
+    - libcmark0.30.2
+    - libfmt8
+    - libolm3
+    - libqt5core5a
+    - libqt5dbus5
+    - libqt5gui5
+    - libqt5keychain1
+    - libqt5multimedia5
+    - libqt5multimedia5-plugins
+    - libqt5network5
+    - libqt5quickwidgets5
+    - libqt5svg5
+    - libqt5widgets5
+    - libspdlog1-fmt8
+    - libxcb-ewmh2
+    - libxcb1
+    - librubberband2
+    - libsm6
+    - libsnappy1v5
+    - libxau6
+    - libxcb-render-util0
+    - libxcb-sync1
+    - libxcb-xinerama0
+    - libxcb-xkb1
+    - libxcursor1
+    - libxdmcp6
+    - libxext6
+    - libxfixes3
+    - libxrender1
+    - libxshmfence1
+    - libxv1
+    - libxxf86vm1
+    - libzstd1
+    exclude: []
+  files:
+    exclude:
+    - usr/share/man
+    - usr/share/doc
+    - usr/bin/cmark
+    - usr/bin/dbus*
+    - usr/bin/openssl
+    - usr/bin/c_rehash
+    - usr/bin/session-migration
+    - usr/include
+    - usr/sbin
+    - lib/systemd
+  test:
+    fedora:
+      image: appimagecrafters/tests-env:fedora-30
+      command: ./AppRun
+      use_host_x: true
+    debian:
+      image: appimagecrafters/tests-env:debian-stable
+      command: ./AppRun
+      use_host_x: true
+    arch:
+      image: appimagecrafters/tests-env:archlinux-latest
+      command: ./AppRun
+      use_host_x: true
+    centos:
+      image: appimagecrafters/tests-env:centos-7
+      command: ./AppRun
+      use_host_x: true
+    ubuntu:
+      image: appimagecrafters/tests-env:ubuntu-xenial
+      command: ./AppRun
+      use_host_x: true
+AppImage:
+  arch: x86_64
+  update-information: None
+  sign-key: None

@@ -223,6 +223,71 @@ build-flatpak-arm64:
     paths: ['build-flatpak/nheko-arm64.flatpak']
     name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-arm64
 
+appimage-amd64:
+  stage: build
+  image: ubuntu:22.04
+  tags: [docker]
+  allow_failure: true
+  before_script:
+    # Installing the packages needed to download and install third-party tools
+    - apt-get update && apt-get install -y software-properties-common git wget curl python3 python3-pip python3-setuptools
+
+    # Installing the packages needed to compile nheko and third-party tools
+    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev 
+        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
+        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
+        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
+        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev nlohmann-json3-dev libcmark-dev asciidoc libre2-dev libgtest-dev libgl1-mesa-dev qml-module-qtquick-particles2
+
+    # Installing the packages needed to build AppImage
+    - apt-get -yq install breeze-icon-theme desktop-file-utils elfutils fakeroot file gnupg2 gtk-update-icon-cache libgdk-pixbuf2.0-dev libgdk-pixbuf2.0-0 libglib2.0-bin librsvg2-dev libyaml-dev strace zsync squashfs-tools
+
+    - wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool && \
+    - chmod +x /usr/local/bin/appimagetool
+
+    - export HOME_DIR=$(pwd)
+
+    # Workaround for https://github.com/AppImageCrafters/appimage-builder/issues/280
+    - cd /tmp
+    - git clone https://github.com/AppImageCrafters/appimage-builder
+    - cd appimage-builder
+    - git checkout 9733877eed75aea0fa8e9a1cd26c22d77a10aa4a
+    - pip3 install .
+    - pip3 install cffi
+    - cd $HOME_DIR
+
+    - /usr/sbin/update-ccache-symlinks
+    - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
+    
+  script:
+    - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
+    - cmake -GNinja -H. -Bbuild
+        -DCMAKE_INSTALL_PREFIX=/usr
+        -DHUNTER_ROOT=".hunter"
+        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_LMDB=OFF -DUSE_BUNDLED_QTKEYCHAIN=OFF -DUSE_BUNDLED_LIBEVENT=OFF
+        -DVOIP=OFF -DMAN=OFF
+        -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
+        -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
+        -DJSON_ImplicitConversions=OFF
+    - DESTDIR=`pwd`/AppDir ninja -C build install/local
+    - DESTDIR=`pwd`/AppDir ninja -C build _deps/cmark-build/src/install
+    - mkdir -p AppDir/usr/lib/x86_64-linux-gnu AppDir/lib/x86_64-linux-gnu
+    - appimage-builder --skip-test
+  after_script:
+    - bash ./.ci/upload-nightly-gitlab.sh nheko-latest-x86_64.AppImage
+  rules:
+    - if : '$CI_PIPELINE_TRIGGERED == null'
+  artifacts:
+    paths:
+      - 'nheko-latest-x86_64.AppImage'
+    expire_in: 1 week
+    expose_as: 'appimage-amd64'
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .hunter/
+      - .ccache
+
 linting:
   stage: build
   image: alpine:latest
