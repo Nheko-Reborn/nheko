@@ -245,12 +245,16 @@ appimage-amd64:
     - wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage -O /usr/local/bin/appimagetool && \
     - chmod +x /usr/local/bin/appimagetool
 
+    - export HOME_DIR=$(pwd)
+
     # Workaround for https://github.com/AppImageCrafters/appimage-builder/issues/280
     - cd /tmp
     - git clone https://github.com/AppImageCrafters/appimage-builder
+    - cd appimage-builder
     - git checkout 9733877eed75aea0fa8e9a1cd26c22d77a10aa4a
     - pip3 install .
     - pip3 install cffi
+    - cd $HOME_DIR
 
     - /usr/sbin/update-ccache-symlinks
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
