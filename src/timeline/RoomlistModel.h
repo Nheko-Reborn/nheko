@@ -129,6 +129,7 @@ signals:
     void totalUnreadMessageCountUpdated(int unreadMessages);
     void currentRoomChanged(QString currentRoomId);
     void fetchedPreview(QString roomid, RoomInfo info);
+    void spaceSelected(QString roomId);
 
 private:
     void addRoom(const QString &room_id, bool suppressInsertNotification = false);

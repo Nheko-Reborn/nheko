@@ -579,6 +579,9 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
 void
 CommunitiesModel::setCurrentTagId(const QString &tagId)
 {
+    if (currentTagId_ == tagId)
+        return;
+
     if (tagId.startsWith(QLatin1String("tag:"))) {
         auto tag = tagId.mid(4);
         for (const auto &t : qAsConst(tags_)) {
