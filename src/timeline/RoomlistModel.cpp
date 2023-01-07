@@ -768,6 +768,10 @@ RoomlistModel::setCurrentRoom(const QString &roomid)
         currentRoomPreview_.reset();
         emit currentRoomChanged(currentRoom_->roomId());
         nhlog::ui()->debug("Switched to: {}", roomid.toStdString());
+
+        if (currentRoom_->isSpace()) {
+            emit spaceSelected(roomid);
+        }
     } else if (invites.contains(roomid) || previewedRooms.contains(roomid)) {
         currentRoom_ = nullptr;
         std::optional<RoomInfo> i;

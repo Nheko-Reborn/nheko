@@ -152,6 +152,9 @@ TimelineViewManager::TimelineViewManager(CallManager *, ChatPage *parent)
         isConnected_ = true;
         emit isConnectedChanged(true);
     });
+    connect(rooms_, &RoomlistModel::spaceSelected, communities_, [this](QString roomId) {
+        communities_->setCurrentTagId("space:" + roomId);
+    });
 }
 
 void
