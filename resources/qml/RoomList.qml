@@ -387,7 +387,7 @@ Page {
                             Layout.alignment: Qt.AlignBaseline
                             color: roomItem.importantText
                             elideWidth: width
-                            fullText: roomName
+                            fullText: TimelineManager.htmlEscape(roomName)
                             textFormat: Text.RichText
                             Layout.fillWidth: true
                         }

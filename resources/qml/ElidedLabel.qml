@@ -16,7 +16,7 @@ Label {
     property int fullTextWidth: Math.ceil(metrics.advanceWidth)
 
     color: Nheko.colors.text
-    text: (textFormat == Text.PlainText) ? metrics.elidedText : TimelineManager.escapeEmoji(TimelineManager.htmlEscape(metrics.elidedText))
+    text: (textFormat == Text.PlainText) ? metrics.elidedText : TimelineManager.escapeEmoji(metrics.elidedText)
     maximumLineCount: 1
     elide: Text.ElideRight
     textFormat: Text.PlainText
