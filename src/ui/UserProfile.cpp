@@ -38,7 +38,11 @@ UserProfile::UserProfile(const QString &roomid,
             this,
             &UserProfile::setGlobalUsername,
             Qt::QueuedConnection);
-    connect(this, &UserProfile::verificationStatiChanged, &UserProfile::updateVerificationStatus);
+    connect(this,
+            &UserProfile::verificationStatiChanged,
+            this,
+            &UserProfile::updateVerificationStatus,
+            Qt::QueuedConnection);
 
     if (isGlobalUserProfile()) {
         getGlobalProfileData();
