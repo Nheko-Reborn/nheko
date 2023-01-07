@@ -603,7 +603,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.8.3 REQUIRED)
+	find_package(MatrixClient 0.8.1 REQUIRED)
 endif()
 
 if (VOIP)
