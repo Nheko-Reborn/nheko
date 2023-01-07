@@ -12,34 +12,16 @@
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 
 RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
   : QAbstractListModel(parent)
   , showOnlyRoomWithAliases_(showOnlyRoomWithAliases)
 {
-    std::vector<std::string> rooms_ = cache::joinedRooms();
-    roomInfos                       = cache::getRoomInfo(rooms_);
-    if (!showOnlyRoomWithAliases_) {
-        roomids.reserve(rooms_.size());
-        roomAliases.reserve(rooms_.size());
-    }
+    rooms = cache::client()->roomNamesAndAliases();
 
-    for (const auto &r : rooms_) {
-        auto roomAliasesList =
-          cache::client()->getStateEvent<mtx::events::state::CanonicalAlias>(r);
-
-        if (showOnlyRoomWithAliases_) {
-            if (roomAliasesList && !roomAliasesList->content.alias.empty()) {
-                roomids.push_back(QString::fromStdString(r));
-                roomAliases.push_back(QString::fromStdString(roomAliasesList->content.alias));
-            }
-        } else {
-            roomids.push_back(QString::fromStdString(r));
-            roomAliases.push_back(roomAliasesList
-                                    ? QString::fromStdString(roomAliasesList->content.alias)
-                                    : QLatin1String(""));
-        }
-    }
+    if (showOnlyRoomWithAliases_)
+        utils::erase_if(rooms, [](auto &r) { return r.alias.empty(); });
 }
 
 QHash<int, QByteArray>
@@ -60,29 +42,28 @@ RoomsModel::data(const QModelIndex &index, int role) const
     if (hasIndex(index.row(), index.column(), index.parent())) {
         switch (role) {
         case CompletionModel::CompletionRole: {
+            auto alias = QString::fromStdString(rooms[index.row()].alias);
             if (UserSettings::instance()->markdown()) {
-                QString percentEncoding = QUrl::toPercentEncoding(roomAliases[index.row()]);
+                QString percentEncoding = QUrl::toPercentEncoding(alias);
                 return QStringLiteral("[%1](https://matrix.to/#/%2)")
-                  .arg(QString(roomAliases[index.row()])
-                         .replace("[", "\\[")
-                         .replace("]", "\\]")
-                         .toHtmlEscaped(),
+                  .arg(alias.replace("[", "\\[").replace("]", "\\]").toHtmlEscaped(),
                        percentEncoding);
             } else {
-                return roomAliases[index.row()];
+                return alias;
             }
         }
         case CompletionModel::SearchRole:
         case Qt::DisplayRole:
         case Roles::RoomAlias:
-            return roomAliases[index.row()].toHtmlEscaped();
+            return QString::fromStdString(rooms[index.row()].alias).toHtmlEscaped();
         case CompletionModel::SearchRole2:
         case Roles::RoomName:
-            return QString::fromStdString(roomInfos.at(roomids[index.row()]).name).toHtmlEscaped();
+            return QString::fromStdString(rooms[index.row()].name);
         case Roles::AvatarUrl:
-            return QString::fromStdString(roomInfos.at(roomids[index.row()]).avatar_url);
+            return QString::fromStdString(
+              cache::client()->singleRoomInfo(rooms[index.row()].id).avatar_url);
         case Roles::RoomID:
-            return roomids[index.row()].toHtmlEscaped();
+            return QString::fromStdString(rooms[index.row()].id).toHtmlEscaped();
         }
     }
     return {};

@@ -99,7 +99,6 @@ using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
 Q_DECLARE_METATYPE(RoomMember)
 Q_DECLARE_METATYPE(mtx::responses::Timeline)
-Q_DECLARE_METATYPE(RoomSearchResult)
 Q_DECLARE_METATYPE(RoomInfo)
 Q_DECLARE_METATYPE(mtx::responses::QueryKeys)
 
@@ -2446,6 +2445,39 @@ Cache::roomInfo(bool withInvites)
             result.insert(QString::fromStdString(std::string(room_id)), std::move(tmp));
         }
         invitesCursor.close();
+    }
+
+    return result;
+}
+
+std::vector<RoomNameAlias>
+Cache::roomNamesAndAliases()
+{
+    auto txn = ro_txn(env_);
+
+    std::vector<RoomNameAlias> result;
+    result.reserve(roomsDb_.size(txn));
+
+    std::string_view room_id;
+    std::string_view room_data;
+    auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
+    while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
+        try {
+            std::string room_id_str = std::string(room_id);
+            RoomInfo info           = nlohmann::json::parse(std::move(room_data)).get<RoomInfo>();
+
+            auto aliases = getStateEvent<mtx::events::state::CanonicalAlias>(txn, room_id_str);
+            std::string alias;
+            if (aliases) {
+                alias = aliases->content.alias;
+            }
+
+            result.push_back(RoomNameAlias{.id    = std::move(room_id_str),
+                                           .name  = std::move(info.name),
+                                           .alias = std::move(alias)});
+        } catch (std::exception &e) {
+            nhlog::db()->warn("Failed to add room {} to result: {}", room_id, e.what());
+        }
     }
 
     return result;
@@ -5136,7 +5168,6 @@ void
 init(const QString &user_id)
 {
     qRegisterMetaType<RoomMember>();
-    qRegisterMetaType<RoomSearchResult>();
     qRegisterMetaType<RoomInfo>();
     qRegisterMetaType<QMap<QString, RoomInfo>>();
     qRegisterMetaType<std::map<QString, RoomInfo>>();

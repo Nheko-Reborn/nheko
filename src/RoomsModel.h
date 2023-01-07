@@ -27,13 +27,11 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override
     {
         (void)parent;
-        return (int)roomids.size();
+        return (int)rooms.size();
     }
     QVariant data(const QModelIndex &index, int role) const override;
 
 private:
-    std::vector<QString> roomids;
-    std::vector<QString> roomAliases;
-    std::map<QString, RoomInfo> roomInfos;
+    std::vector<RoomNameAlias> rooms;
     bool showOnlyRoomWithAliases_;
 };

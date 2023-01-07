@@ -103,6 +103,12 @@ to_json(nlohmann::json &j, const RoomInfo &info);
 void
 from_json(const nlohmann::json &j, RoomInfo &info);
 
+//! A plain struct with roomid, name and alias used for filling the room completer.
+struct RoomNameAlias
+{
+    std::string id, name, alias;
+};
+
 //! Basic information per member.
 struct MemberInfo
 {
