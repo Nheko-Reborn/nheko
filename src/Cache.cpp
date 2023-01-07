@@ -345,9 +345,8 @@ Cache::setup()
       {
         {"pickle_secret", true},
       },
-      [this](const std::string &, bool, const std::string &value) {
-          this->pickle_secret_ = value;
-      });
+      [this](const std::string &, bool, const std::string &value) { this->pickle_secret_ = value; },
+      true);
 }
 
 static void
@@ -383,14 +382,21 @@ secretName(std::string name, bool internal)
 void
 Cache::loadSecretsFromStore(
   std::vector<std::pair<std::string, bool>> toLoad,
-  std::function<void(const std::string &name, bool internal, const std::string &value)> callback)
+  std::function<void(const std::string &name, bool internal, const std::string &value)> callback,
+  bool databaseReadyOnFinished)
 {
     auto settings = UserSettings::instance()->qsettings();
 
     if (toLoad.empty()) {
         this->databaseReady_ = true;
-        emit databaseReady();
-        nhlog::db()->debug("Database ready");
+
+        // HACK(Nico): Some migrations would loop infinitely otherwise.
+        // So we set the database to be ready, but not emit the signal, because that would start the
+        // migrations again. :D
+        if (databaseReadyOnFinished) {
+            emit databaseReady();
+            nhlog::db()->debug("Database ready");
+        }
         return;
     }
 
@@ -404,8 +410,10 @@ Cache::loadSecretsFromStore(
                 callback(name_, internal, value.toStdString());
             }
         }
-        // if we emit the databaseReady signal directly it won't be received
-        QTimer::singleShot(0, this, [this, callback] { loadSecretsFromStore({}, callback); });
+        // if we emit the DatabaseReady signal directly it won't be received
+        QTimer::singleShot(0, this, [this, callback, databaseReadyOnFinished] {
+            loadSecretsFromStore({}, callback, databaseReadyOnFinished);
+        });
         return;
     }
 
@@ -421,8 +429,14 @@ Cache::loadSecretsFromStore(
     connect(job,
             &QKeychain::ReadPasswordJob::finished,
             this,
-            [this, name, toLoad, job, name_ = name_, internal = internal, callback](
-              QKeychain::Job *) mutable {
+            [this,
+             name,
+             toLoad,
+             job,
+             name_    = name_,
+             internal = internal,
+             callback,
+             databaseReadyOnFinished](QKeychain::Job *) mutable {
                 nhlog::db()->debug("Finished reading '{}'", toLoad.begin()->first);
                 const QString secret = job->textData();
                 if (job->error() && job->error() != QKeychain::Error::EntryNotFound) {
@@ -443,8 +457,9 @@ Cache::loadSecretsFromStore(
                 toLoad.erase(toLoad.begin());
 
                 // You can't start a job from the finish signal of a job.
-                QTimer::singleShot(
-                  0, this, [this, toLoad, callback] { loadSecretsFromStore(toLoad, callback); });
+                QTimer::singleShot(0, this, [this, toLoad, callback, databaseReadyOnFinished] {
+                    loadSecretsFromStore(toLoad, callback, databaseReadyOnFinished);
+                });
             });
     nhlog::db()->debug("Reading '{}'", name_);
     job->start();
@@ -1473,6 +1488,7 @@ Cache::runMigrations()
        }},
       {"2022.11.06",
        [this]() {
+           this->databaseReady_ = false;
            loadSecretsFromStore(
              {
                {mtx::secret_storage::secrets::cross_signing_master, false},
@@ -1480,11 +1496,25 @@ Cache::runMigrations()
                {mtx::secret_storage::secrets::cross_signing_user_signing, false},
                {mtx::secret_storage::secrets::megolm_backup_v1, false},
              },
-             [this](const std::string &name, bool internal, const std::string &value) {
+             [this,
+              count = 1](const std::string &name, bool internal, const std::string &value) mutable {
+                 nhlog::db()->critical("Loaded secret {}", name);
                  this->storeSecret(name, value, internal);
-                 QTimer::singleShot(
-                   0, this, [this, name, internal] { deleteSecretFromStore(name, internal); });
-             });
+
+                 // HACK(Nico): delay deletion to not crash because of multiple nested deletions.
+                 // Since this is just migration code, this should be *fine*.
+
+                 QTimer::singleShot(count * 2000, this, [this, name, internal] {
+                     deleteSecretFromStore(name, internal);
+                 });
+                 count++;
+             },
+             false);
+
+           while (!this->databaseReady_) {
+               QCoreApplication::instance()->processEvents(QEventLoop::AllEvents, 100);
+           }
+
            return true;
        }},
     };

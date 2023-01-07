@@ -332,7 +332,8 @@ private:
     void loadSecretsFromStore(
       std::vector<std::pair<std::string, bool>> toLoad,
       std::function<void(const std::string &name, bool internal, const std::string &value)>
-        callback);
+        callback,
+      bool databaseReadyOnFinished = false);
     void storeSecretInStore(const std::string name, const std::string secret);
     void deleteSecretFromStore(const std::string name, bool internal);
 
