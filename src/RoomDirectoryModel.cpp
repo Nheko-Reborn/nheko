@@ -29,12 +29,6 @@ RoomDirectoryModel::RoomDirectoryModel(QObject *parent, const std::string &serve
             i++;
         }
     });
-
-    connect(this,
-            &RoomDirectoryModel::fetchedRoomsBatch,
-            this,
-            &RoomDirectoryModel::displayRooms,
-            Qt::QueuedConnection);
 }
 
 QHash<int, QByteArray>
@@ -170,22 +164,28 @@ RoomDirectoryModel::fetchMore(const QModelIndex &)
     loadingMoreRooms_ = true;
     emit loadingMoreRoomsChanged();
 
+    auto job = QSharedPointer<FetchRoomsChunkFromDirectoryJob>::create();
+    connect(job.data(),
+            &FetchRoomsChunkFromDirectoryJob::fetchedRoomsBatch,
+            this,
+            &RoomDirectoryModel::displayRooms);
+
     http::client()->post_public_rooms(
       req,
-      [requested_server, this, req](const mtx::responses::PublicRooms &res,
-                                    mtx::http::RequestErr err) {
-          loadingMoreRooms_ = false;
-          emit loadingMoreRoomsChanged();
-
+      [requested_server, job, req](const mtx::responses::PublicRooms &res,
+                                   mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->error("Failed to retrieve rooms from mtxclient - {} - {} - {}",
                                   mtx::errors::to_string(err->matrix_error.errcode),
                                   err->matrix_error.error,
                                   err->parse_error);
-          } else if (req.filter.generic_search_term == this->userSearchString_ &&
-                     req.since == this->prevBatch_ && requested_server == this->server_) {
+          } else {
               nhlog::net()->debug("signalling chunk to GUI thread");
-              emit fetchedRoomsBatch(res.chunk, res.next_batch);
+              emit job->fetchedRoomsBatch(res.chunk,
+                                          res.next_batch,
+                                          req.filter.generic_search_term,
+                                          requested_server,
+                                          req.since);
           }
       },
       requested_server);
@@ -193,8 +193,19 @@ RoomDirectoryModel::fetchMore(const QModelIndex &)
 
 void
 RoomDirectoryModel::displayRooms(std::vector<mtx::responses::PublicRoomsChunk> fetched_rooms,
-                                 const std::string &next_batch)
+                                 const std::string &next_batch,
+                                 const std::string &search_term,
+                                 const std::string &server,
+                                 const std::string &since)
 {
+    if (search_term != this->userSearchString_ || since != this->prevBatch_ ||
+        server != this->server_) {
+        return;
+    }
+
+    loadingMoreRooms_ = false;
+    emit loadingMoreRoomsChanged();
+
     nhlog::net()->debug("Prev batch: {} | Next batch: {}", prevBatch_, next_batch);
 
     if (fetched_rooms.empty()) {

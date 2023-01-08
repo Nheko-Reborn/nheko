@@ -13,6 +13,24 @@
 
 #include <mtx/responses/public_rooms.hpp>
 
+class FetchRoomsChunkFromDirectoryJob final : public QObject
+{
+    Q_OBJECT
+
+public:
+    explicit FetchRoomsChunkFromDirectoryJob(QObject *p = nullptr)
+      : QObject(p)
+    {
+    }
+
+signals:
+    void fetchedRoomsBatch(std::vector<mtx::responses::PublicRoomsChunk> rooms,
+                           const std::string &next_batch,
+                           const std::string &search_term,
+                           const std::string &server,
+                           const std::string &since);
+};
+
 class RoomDirectoryModel : public QAbstractListModel
 {
     Q_OBJECT
@@ -55,8 +73,6 @@ public:
     Q_INVOKABLE void joinRoom(const int &index = -1);
 
 signals:
-    void fetchedRoomsBatch(std::vector<mtx::responses::PublicRoomsChunk> rooms,
-                           const std::string &next_batch);
     void loadingMoreRoomsChanged();
     void reachedEndOfPaginationChanged();
 
@@ -67,7 +83,10 @@ public slots:
 private slots:
 
     void displayRooms(std::vector<mtx::responses::PublicRoomsChunk> rooms,
-                      const std::string &next_batch);
+                      const std::string &next_batch,
+                      const std::string &search_term,
+                      const std::string &server,
+                      const std::string &since);
 
 private:
     bool canJoinRoom(const QString &room) const;
