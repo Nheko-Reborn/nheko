@@ -38,7 +38,17 @@ UserDirectoryModel::setSearchString(const QString &f)
     nhlog::ui()->debug("Received user directory query: {}", userSearchString_);
     beginResetModel();
     results_.clear();
+    canFetchMore_ = true;
     endResetModel();
+}
+
+void
+UserDirectoryModel::fetchMore(const QModelIndex &)
+{
+    if (!canFetchMore_)
+        return;
+
+    nhlog::net()->debug("Fetching users from mtxclient...");
     searchingUsers_ = true;
     emit searchingUsersChanged();
     http::client()->search_user_directory(
@@ -78,11 +88,12 @@ UserDirectoryModel::data(const QModelIndex &index, int role) const
 void
 UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> results)
 {
-    if (results_.empty()) {
+    if (results.empty()) {
         nhlog::net()->error("mtxclient helper thread yielded empty chunk!");
         return;
     }
     beginInsertRows(QModelIndex(), 0, static_cast<int>(results_.size()) - 1);
     results_ = results;
     endInsertRows();
+    canFetchMore_ = false;
 }

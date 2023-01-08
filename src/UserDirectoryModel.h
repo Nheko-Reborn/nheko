@@ -37,11 +37,14 @@ public:
         (void)parent;
         return static_cast<int>(results_.size());
     }
+    bool canFetchMore(const QModelIndex &) const override { return canFetchMore_; }
+    void fetchMore(const QModelIndex &) override;
 
 private:
     std::vector<mtx::responses::User> results_;
     std::string userSearchString_;
     bool searchingUsers_{false};
+    bool canFetchMore_{true};
 
 signals:
     void searchingUsersChanged();

@@ -138,11 +138,13 @@ ApplicationWindow {
                 }
             }
 
-            CheckBox {
+            ToggleButton {
                 id: searchOnServer
-                text: qsTr("Search on Server")
                 checked: false
                 onClicked: userSearch.model.setSearchString(inviteeEntry.text)
+            }
+            MatrixText {
+                text: qsTr("Search on Server")
             }
 
         }
