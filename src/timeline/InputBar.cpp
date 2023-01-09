@@ -179,7 +179,7 @@ InputBar::insertMimeData(const QMimeData *md)
                // NOTE(Nico): Safari, when copying the url, sends a url list. Since we only paste
                // local files, skip remote ones.
                [&md] {
-                   for (const auto &u : md->urls()) {
+                   for (auto &&u : md->urls()) {
                        if (u.isLocalFile())
                            return true;
                    }
