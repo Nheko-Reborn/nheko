@@ -138,8 +138,8 @@ handle_to_device_messages(const std::vector<mtx::events::collections::DeviceEven
                 cache::client()->query_keys(
                   olm_msg.sender, [olm_msg](const UserKeyCache &userKeys, mtx::http::RequestErr e) {
                       if (e) {
-                          nhlog::crypto()->error("Failed to query user keys, dropping olm "
-                                                 "message");
+                          nhlog::crypto()->error(
+                            "Failed to query user keys, dropping olm message: {}", e);
                           return;
                       }
                       handle_olm_message(std::move(olm_msg), userKeys);

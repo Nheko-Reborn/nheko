@@ -190,9 +190,7 @@ UserProfile::fetchDeviceList(const QString &userID)
       [other_user_id = userID.toStdString(), this](const UserKeyCache &,
                                                    mtx::http::RequestErr err) {
           if (err) {
-              nhlog::net()->warn("failed to query device keys: {},{}",
-                                 mtx::errors::to_string(err->matrix_error.errcode),
-                                 static_cast<int>(err->status_code));
+              nhlog::net()->warn("failed to query device keys: {}", *err);
           }
 
           // Ensure local key cache is up to date
@@ -203,9 +201,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                 std::string local_user_id = utils::localUser().toStdString();
 
                 if (err) {
-                    nhlog::net()->warn("failed to query device keys: {},{}",
-                                       mtx::errors::to_string(err->matrix_error.errcode),
-                                       static_cast<int>(err->status_code));
+                    nhlog::net()->warn("failed to query device keys: {}", *err);
                 }
 
                 emit verificationStatiChanged();
@@ -261,9 +257,7 @@ UserProfile::updateVerificationStatus()
           [this, deviceInfo](const mtx::responses::QueryDevices &allDevs,
                              mtx::http::RequestErr err) mutable {
               if (err) {
-                  nhlog::net()->warn("failed to query devices: {} {}",
-                                     err->matrix_error.error,
-                                     static_cast<int>(err->status_code));
+                  nhlog::net()->warn("failed to query device keys: {}", *err);
                   this->deviceList_.queueReset(std::move(deviceInfo));
                   emit devicesChanged();
                   return;
@@ -335,7 +329,7 @@ UserProfile::changeUsername(const QString &username)
         // change global
         http::client()->set_displayname(username.toStdString(), [](mtx::http::RequestErr err) {
             if (err) {
-                nhlog::net()->warn("could not change username");
+                nhlog::net()->warn("could not change username: {}", *err);
                 return;
             }
         });
@@ -358,7 +352,7 @@ UserProfile::changeDeviceName(const QString &deviceID, const QString &deviceName
     http::client()->set_device_name(
       deviceID.toStdString(), deviceName.toStdString(), [this](mtx::http::RequestErr err) {
           if (err) {
-              nhlog::net()->warn("could not change device name");
+              nhlog::net()->warn("could not change device name: {}", *err);
               return;
           }
           refreshDevices();
@@ -434,14 +428,14 @@ UserProfile::changeAvatar()
        room_id  = roomid_.toStdString(),
        content = std::move(bin)](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) {
           if (err) {
-              nhlog::ui()->error("Failed to upload image", err->matrix_error.error);
+              nhlog::ui()->error("Failed to upload image: {}", *err);
               return;
           }
 
           if (isGlobalUserProfile()) {
               http::client()->set_avatar_url(res.content_uri, [this](mtx::http::RequestErr err) {
                   if (err) {
-                      nhlog::ui()->error("Failed to set user avatar url", err->matrix_error.error);
+                      nhlog::ui()->error("Failed to set user avatar url: {}", *err);
                   }
 
                   isLoading_ = false;
@@ -463,14 +457,14 @@ UserProfile::changeAvatar()
 void
 UserProfile::updateRoomMemberState(mtx::events::state::Member member)
 {
-    http::client()->send_state_event(
-      roomid_.toStdString(),
-      http::client()->user_id().to_string(),
-      member,
-      [](mtx::responses::EventId, mtx::http::RequestErr err) {
-          if (err)
-              nhlog::net()->error("Failed to update room member state : ", err->matrix_error.error);
-      });
+    http::client()->send_state_event(roomid_.toStdString(),
+                                     http::client()->user_id().to_string(),
+                                     member,
+                                     [](mtx::responses::EventId, mtx::http::RequestErr err) {
+                                         if (err)
+                                             nhlog::net()->error(
+                                               "Failed to update room member state: {}", *err);
+                                     });
 }
 
 void

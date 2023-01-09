@@ -1381,9 +1381,7 @@ ChatPage::decryptDownloadedSecrets(mtx::secret_storage::AesHmacSha2KeyDescriptio
         http::client()->keys_signatures_upload(
           req, [](const mtx::responses::KeySignaturesUpload &res, mtx::http::RequestErr err) {
               if (err) {
-                  nhlog::net()->error("failed to upload signatures: {},{}",
-                                      mtx::errors::to_string(err->matrix_error.errcode),
-                                      static_cast<int>(err->status_code));
+                  nhlog::net()->error("failed to upload signatures: {}", *err);
               }
 
               for (const auto &[user_id, tmp] : res.errors)
