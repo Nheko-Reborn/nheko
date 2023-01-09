@@ -175,7 +175,10 @@ InputBar::insertMimeData(const QMimeData *md)
         startUploadFromMimeData(*md, audio.first());
     } else if (!video.empty()) {
         startUploadFromMimeData(*md, video.first());
-    } else if (md->hasUrls() && [&md] {
+    } else if (md->hasUrls() &&
+               // NOTE(Nico): Safari, when copying the url, sends a url list. Since we only paste
+               // local files, skip remote ones.
+               [&md] {
                    for (const auto &u : md->urls()) {
                        if (u.isLocalFile())
                            return true;
