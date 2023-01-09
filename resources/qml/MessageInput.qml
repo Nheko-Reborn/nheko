@@ -11,6 +11,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
 import im.nheko 1.0
+import org.kde.sonnet 1.0 as Sonnet
 
 Rectangle {
     id: inputBar
@@ -116,6 +117,21 @@ Rectangle {
 
             TextArea {
                 id: messageInput
+
+
+    Sonnet.SpellcheckHighlighter {
+        id: spellcheckhighlighter
+        document: messageInput.textDocument
+        cursorPosition: messageInput.cursorPosition
+        selectionStart: messageInput.selectionStart
+        selectionEnd: messageInput.selectionEnd
+        misspelledColor: Nheko.theme.error
+
+        onChangeCursorPosition: {
+            messageInput.cursorPosition = start;
+            messageInput.moveCursorSelection(end, TextEdit.SelectCharacters);
+        }
+    }
 
                 property int completerTriggeredAt: 0
 
