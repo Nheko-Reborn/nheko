@@ -125,16 +125,16 @@ LoginPage::onMatrixIdEntered()
 
                   if (!err->parse_error.empty()) {
                       emit versionErrorCb(tr("Autodiscovery failed. Received malformed response."));
-                      nhlog::net()->error("Autodiscovery failed. Received malformed response.");
+                      nhlog::net()->error("Autodiscovery failed. Received malformed response. {}",
+                                          err->parse_error);
                       return;
                   }
 
                   emit versionErrorCb(tr("Autodiscovery failed. Unknown error when "
                                          "requesting .well-known."));
                   nhlog::net()->error("Autodiscovery failed. Unknown error when "
-                                      "requesting .well-known. {} {}",
-                                      err->status_code,
-                                      err->error_code);
+                                      "requesting .well-known. {}",
+                                      *err);
                   return;
               }
 

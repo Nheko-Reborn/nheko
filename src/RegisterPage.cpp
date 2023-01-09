@@ -83,16 +83,16 @@ RegisterPage::setServer(const QString &server)
 
               if (!err->parse_error.empty()) {
                   setHsError(tr("Autodiscovery failed. Received malformed response."));
-                  nhlog::net()->error("Autodiscovery failed. Received malformed response.");
+                  nhlog::net()->error("Autodiscovery failed. Received malformed response. {}",
+                                      err->parse_error);
                   emit hsErrorChanged();
                   return;
               }
 
               setHsError(tr("Autodiscovery failed. Unknown error when requesting .well-known."));
               nhlog::net()->error("Autodiscovery failed. Unknown error when "
-                                  "requesting .well-known. {} {}",
-                                  err->status_code,
-                                  err->error_code);
+                                  "requesting .well-known. {}",
+                                  *err);
               return;
           }
 
@@ -236,18 +236,13 @@ RegisterPage::startRegistration(const QString &username,
 
               // The server requires registration flows.
               if (err->status_code == 401 && err->matrix_error.unauthorized.flows.empty()) {
-                  nhlog::net()->warn("failed to retrieve registration flows: "
-                                     "status_code({}), matrix_error({}) ",
-                                     static_cast<int>(err->status_code),
-                                     err->matrix_error.error);
+                  nhlog::net()->warn("failed to retrieve registration flows: {}", *err);
                   setError(QString::fromStdString(err->matrix_error.error));
                   disconnect(UIA::instance(), &UIA::error, this, nullptr);
                   return;
               }
 
-              nhlog::net()->error("failed to register: status_code ({}), matrix_error({})",
-                                  static_cast<int>(err->status_code),
-                                  err->matrix_error.error);
+              nhlog::net()->error("failed to register: {}", *err);
 
               setError(QString::fromStdString(err->matrix_error.error));
               disconnect(UIA::instance(), &UIA::error, this, nullptr);
