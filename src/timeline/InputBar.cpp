@@ -175,7 +175,13 @@ InputBar::insertMimeData(const QMimeData *md)
         startUploadFromMimeData(*md, audio.first());
     } else if (!video.empty()) {
         startUploadFromMimeData(*md, video.first());
-    } else if (md->hasUrls()) {
+    } else if (md->hasUrls() && [&md] {
+                   for (const auto &u : md->urls()) {
+                       if (u.isLocalFile())
+                           return true;
+                   }
+                   return false;
+               }()) {
         // Generic file path for any platform.
         for (auto &&u : md->urls()) {
             if (u.isLocalFile()) {
