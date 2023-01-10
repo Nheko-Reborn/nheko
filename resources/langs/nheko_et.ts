@@ -119,12 +119,12 @@
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Teine jututuba</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa täiendavaid jututube, mis pole veel loendis...</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita väljalogimine</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -429,152 +429,152 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+104"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;tekst&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/join (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/join (!roomid|#alias) [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/knock (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/knock (!roomid|#alias) [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/invite @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/invite @userid [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/kick @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/kick @userid [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/ban @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/ban @userid [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unban @userid [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/unban @userid [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/redact ($eventid|@userid)</source>
-        <translation type="unfinished"></translation>
+        <translation>/redact ($eventid|@userid)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/roomnick &lt;displayname&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/roomnick &lt;kuvatav nimi&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/shrug [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/shrug [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/fliptable</source>
-        <translation type="unfinished"></translation>
+        <translation>/fliptable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unfliptable</source>
-        <translation type="unfinished"></translation>
+        <translation>/unfliptable</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/sovietflip</source>
-        <translation type="unfinished"></translation>
+        <translation>/sovietflip</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/clear-timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>/clear-timeline</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/reset-state</source>
-        <translation type="unfinished"></translation>
+        <translation>/reset-state</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rotate-megolm-session</source>
-        <translation type="unfinished"></translation>
+        <translation>/rotate-megolm-session</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/md [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/md [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/plain [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/plain [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbow [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbow [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowme [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowme [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/notice [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbownotice [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbownotice [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/confetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/confetti [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowconfetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowconfetti [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto ($eventid|message index|matrix:r/room/e/event)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/converttodm</source>
-        <translation type="unfinished"></translation>
+        <translation>/converttodm</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/converttoroom</source>
-        <translation type="unfinished"></translation>
+        <translation>/converttoroom</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1789,7 +1789,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõne on juba pooleli</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1909,7 +1909,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>&amp;Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Lugemisteatised</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2419,7 +2419,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Reject a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Ära võta kõnet vastu</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2483,17 +2483,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
         <source>Respond</source>
-        <translation type="unfinished"></translation>
+        <translation>Vasta</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Send</source>
-        <translation type="unfinished">Saada</translation>
+        <translation>Saada</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Kirjuta sõnum…</translation>
+        <translation>Kirjuta sõnum…</translation>
     </message>
 </context>
 <context>
@@ -2700,7 +2700,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>Room settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa seadistused</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3922,12 +3922,12 @@ Põhjus: %4</translation>
     <message>
         <location line="+36"/>
         <source>Hide invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Peida kutse põhjus</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Show invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita kutse põhjust</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -3980,7 +3980,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+66"/>
         <source>Search this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi siit jututoast</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -4015,7 +4015,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+63"/>
         <source>Enter search query</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisesta otsing</translation>
     </message>
 </context>
 <context>
@@ -4240,7 +4240,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Use shift+enter to send and enter to start a new line</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumi saatmiseks kasuta „Shift+Enter“ klahve ning uue rea jaoks kasuta „Enter“ klahvi</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4320,12 +4320,12 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Decrypt notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Dekrüpti teavitused</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Display fancy effects such as confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita edevaid efekte nagu näiteks serpentiine</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4610,7 +4610,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+16"/>
         <source>Decrypt messages shown in notifications for encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud vestluste puhul dekrüpti ka teavitustes näidatav sisu.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4620,7 +4620,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+3"/>
         <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumitele võid lisada edevaid efekte. Näiteks „/confetti“ käsk lisab sõnumile serpentiine.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -5038,12 +5038,12 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="-11"/>
         <source>You sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Sina saatsid serpentiine</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis serpentiine</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -5088,12 +5088,12 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="+4"/>
         <source>You rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Sina ei võtnud kõnet vastu</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ei võtnud kõnet vastu</translation>
     </message>
 </context>
 <context>

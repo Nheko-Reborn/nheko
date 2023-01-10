@@ -2737,7 +2737,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать метку…</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3001,7 +3001,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Права доступа</translation>
     </message>
     <message>
         <location line="+6"/>
