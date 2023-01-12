@@ -44,7 +44,7 @@
 
 ### Improvements
 
-- Prompt before deleting the database.
+- Prompt before deleting the database when the error could be resolved by the user.
 - Improve logging in particular for sync or registration errors.
 - Speedup quick switcher.
 - Prune image cache in the background.
@@ -76,7 +76,7 @@
 - Potential crash when closing the room directory.
 - text selection in the raw message dialog.
 - Pagination after a timeline clear.
-- Sending using Enter on Windows.
+- Entering newlines on Windows.
 - Work around crash in QQC2 in alias dialog.
 - Fix forwarding between encrypted rooms.
 - Blurry icons on HiDPI screens. (q234rty)
