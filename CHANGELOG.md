@@ -1,5 +1,103 @@
 # Changelog
 
+## [0.11.0] -- UNRELEASED
+
+### Highlights
+
+- Search in your timeline 🔍
+  - Works in encrypted rooms.
+  - Search is entirely local.
+  - It might be a bit slow on some systems, since it needs to paginate the room
+      to search instead of relying on the server.
+- Pushrule support! 🫸🫷
+  - Notifications should now be faster and not rely on the server.
+  - Notifications should work properly in encrypted rooms.
+  - MSC3664 is supported for pushrules for reply (needs server support).
+  - Mentions get highlighted in the timeline.
+  - Decrypting notifications can be disabled for improved privacy.
+- Threads 🧵
+  - Threads are a simple way to structure large rooms.
+  - Start a new thread from any event.
+  - Focus on a specific thread by clicking on the colored thread button next to
+      any event from this thread.
+  - Replies automatically land inside the thread.
+
+### Features
+
+- Remember where you left off using the new unread indicator! ---
+- Navigate to space when selected in quick switcher or via link.
+- (Re-)Add an AppImage build. (Zhymabek Roman)
+- Render and send confetti! 🎉 (LorenDB)
+- Focus text field on most key presses.
+- Show link to next room for tombstone events.
+- macOS: Only play notification sound when pushrule says so.
+- macOS: Builds for Apple Silicon.
+- macOS: Allow quick replies from notifications.
+- Completer for /commands.
+- Allow opening room settings from room list. (LorenDB)
+- Allow setting the status message via the dbus API. (LorenDB)
+  - Check out this for one possible usecase: https://schlomp.space/tastytea/dotfiles/src/commit/485aa7103c4f414ce0731804acf34a65a772fd28/.local/bin/mpd2nheko (Setting your currently playing song as your status)
+- Allow swapping Enter and Shift-Enter. (LordMZTE)
+- Preliminary support for VoIP v1. (Rohit)
+- Allow applying permission changes in spaces recursively.
+- Allow modifying permissions of users not in the room.
+
+### Improvements
+
+- Prompt before deleting the database.
+- Improve logging in particular for sync or registration errors.
+- Speedup quick switcher.
+- Prune image cache in the background.
+- Store all secrets encrypted in the database (apart from the pickle).
+- Speedup fetching olm sessions from the database.
+- Increase database resiliency at the cost of a lot of performance.
+- Rename spaces to communities.
+- Handle some rate limiting better in some cases.
+- More fine grained control over logging. (Forest)
+
+### Translations
+
+- Ukrainian (NullPointerException)
+- Indonesian (Linerly as always &lt;3)
+- Portugese (Brazil) (Daimar, zerowhy, Terry)
+- Estonian (Priit also a valued regular)
+- Finnish (Lurkki, you might know them too!)
+- Chinese (Chen Shaoji, Poesty Li, ling, Eric)
+- Russian (SOT-TECH, Evgeny, Carmina16, Mihail Iosilevich, Artem, Herecore, Alexey Murz, glebasson)
+- Occidental (Carmina16)
+- Polish (Romanik)
+- Dutch (Thulinma)
+- French (GitEz-code, Guillaume Girol, lascapi)
+
+### Bugfixes
+
+- Fix regional indicators. ‌🇦‌-‌🇿‌
+- Pasting from Safari on macOS.
+- Potential crash when closing the room directory.
+- text selection in the raw message dialog.
+- Pagination after a timeline clear.
+- Sending using Enter on Windows.
+- Work around crash in QQC2 in alias dialog.
+- Fix forwarding between encrypted rooms.
+- Blurry icons on HiDPI screens. (q234rty)
+- Fix CMark warning when configuring. (FINALLY!)
+- Blurry thumbnails. (again?!?)
+- Upload box thumbnail size. (foxb612)
+- Previews getting sorted above normal rooms in space view.
+- Excessive summary calls.
+- Usage type buttons for Sticker/Emoji packs.
+- Old server lookups overwriting new ones, possibly preventing any login.
+- Crash in member list.
+- Stripping fallbacks of plain text bodies.
+- Different greens.
+- Spoilers in replies.
+- Invites without state.
+
+### Notes
+
+We bumped the required mtxclient version to 0.9.0 and the required coeurl
+version to 0.3.0. Supported Matrix API versions are now 1.1 to 1.5.
+
 ## [0.10.2] -- 2022-09-22
 
 ### Security release

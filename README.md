@@ -300,7 +300,7 @@ sudo pacman -S qt5-base \
 ##### Gentoo Linux
 
 ```bash
-sudo emerge -a ">=dev-qt/qtgui-5.10.0" media-libs/fontconfig dev-libs/qtkeychain
+sudo emerge -a ">=dev-qt/qtgui-5.15.0" media-libs/fontconfig dev-libs/qtkeychain
 ```
 
 ##### Ubuntu 20.04
@@ -400,7 +400,7 @@ You need to fill out the paths for the `Qt5_DIR`.
 The Qt5 dir should point to the `lib\cmake\Qt5` dir.
 
 Examples for the paths are:
- - `C:\\Qt\\5.10.1\\msvc2017_64\\lib\\cmake\\Qt5`
+ - `C:\\Qt\\5.15.1\\msvc2017_64\\lib\\cmake\\Qt5`
 
 You should also enable hunter by setting `HUNTER_ENABLED` to `ON` and `BUILD_SHARED_LIBS` to `OFF`.
 
