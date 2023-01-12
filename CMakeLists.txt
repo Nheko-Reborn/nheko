@@ -107,8 +107,8 @@ project(nheko LANGUAGES CXX C)
 include(GNUInstallDirs)
 
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
-set(CPACK_PACKAGE_VERSION_MINOR "10")
-set(CPACK_PACKAGE_VERSION_PATCH "2")
+set(CPACK_PACKAGE_VERSION_MINOR "11")
+set(CPACK_PACKAGE_VERSION_PATCH "0")
 set(PROJECT_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR})
 set(PROJECT_VERSION_MINOR ${CPACK_PACKAGE_VERSION_MINOR})
 set(PROJECT_VERSION_PATCH ${CPACK_PACKAGE_VERSION_PATCH})
@@ -186,13 +186,13 @@ if(USE_BUNDLED_COEURL)
 	FetchContent_Declare(
 		coeurl
 		GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-		GIT_TAG        f989f3c54c1ca15e29c5bd6b1ce4efbcb3fd8078
+		GIT_TAG        v0.3.0
 		)
 	FetchContent_MakeAvailable(coeurl)
 	set(COEURL_TARGET_NAME coeurl::coeurl)
 else()
 	find_package(PkgConfig)
-	pkg_check_modules(coeurl IMPORTED_TARGET coeurl>=0.1.1)
+	pkg_check_modules(coeurl IMPORTED_TARGET coeurl>=0.3.0)
 	if (TARGET PkgConfig::coeurl)
 		set(COEURL_TARGET_NAME PkgConfig::coeurl)
 	endif()
@@ -595,13 +595,13 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
                 GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-                GIT_TAG        79dcdbb8daad2efb06147e136702a12cd8877aba
+                GIT_TAG        v0.9.0
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
 	FetchContent_MakeAvailable(MatrixClient)
 else()
-	find_package(MatrixClient 0.8.1 REQUIRED)
+	find_package(MatrixClient 0.9.0 REQUIRED)
 endif()
 
 if (VOIP)
