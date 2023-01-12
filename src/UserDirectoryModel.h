@@ -44,7 +44,7 @@ private:
     std::vector<mtx::responses::User> results_;
     std::string userSearchString_;
     bool searchingUsers_{false};
-    bool canFetchMore_{true};
+    bool canFetchMore_{false};
 
 signals:
     void searchingUsersChanged();

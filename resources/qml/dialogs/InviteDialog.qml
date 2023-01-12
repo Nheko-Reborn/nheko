@@ -179,6 +179,11 @@ ApplicationWindow {
                     bgColor: del2.hovered ? Nheko.colors.dark : inviteDialogRoot.color
                 }
             }
+            Rectangle {
+                Layout.fillHeight: true
+                width: 1
+                color: Nheko.theme.separator
+            }
             ListView {
                 id: inviteesList
 

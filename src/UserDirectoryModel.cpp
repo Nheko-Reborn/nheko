@@ -34,6 +34,10 @@ UserDirectoryModel::roleNames() const
 void
 UserDirectoryModel::setSearchString(const QString &f)
 {
+    if (f == "") {
+        nhlog::ui()->debug("Rejecting empty search string");
+        return;
+    }
     userSearchString_ = f.toStdString();
     nhlog::ui()->debug("Received user directory query: {}", userSearchString_);
     beginResetModel();
@@ -89,7 +93,7 @@ void
 UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> results)
 {
     if (results.empty()) {
-        nhlog::net()->error("mtxclient helper thread yielded empty chunk!");
+        nhlog::net()->error("mtxclient helper thread yielded no results!");
         return;
     }
     beginInsertRows(QModelIndex(), 0, static_cast<int>(results_.size()) - 1);
