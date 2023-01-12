@@ -301,8 +301,8 @@ Menu {
                             verticalAlignment: Image.AlignVCenter
                             smooth: true
                             mipmap: true
-                            sourceSize.width: width
-                            sourceSize.height: height
+                            sourceSize.width: 32
+                            sourceSize.height: 32
                             source: "image://colorimage/" + model.image + "?" + (hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
                         }
 
