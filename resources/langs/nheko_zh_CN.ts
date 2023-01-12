@@ -682,12 +682,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation>发送一条彩虹色的消息</translation>
+        <translation>发送一条彩虹色的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation>以彩虹色发送 /me</translation>
+        <translation>/me 以彩虹色发送。</translation>
     </message>
     <message>
         <location line="+2"/>
