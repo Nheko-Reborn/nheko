@@ -149,6 +149,8 @@ enum EventState
     Read,
     //! The client sent the message. Not yet received.
     Sent,
+    //! The client sent the message, but it failed.
+    Failed,
     //! When the message is loaded from cache or backfill.
     Empty,
 };

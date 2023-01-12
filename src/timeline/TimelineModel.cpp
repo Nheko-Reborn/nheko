@@ -698,7 +698,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             return QVariant(QString::fromStdString(event_id(event)));
     }
     case State: {
-        auto id             = QString::fromStdString(event_id(event));
+        auto idstr          = event_id(event);
+        auto id             = QString::fromStdString(idstr);
         auto containsOthers = [](const auto &vec) {
             for (const auto &e : vec)
                 if (e.second != http::client()->user_id().to_string())
@@ -709,9 +710,13 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         // only show read receipts for messages not from us
         if (acc::sender(event) != http::client()->user_id().to_string())
             return qml_mtx_events::Empty;
-        else if (!id.isEmpty() && id[0] == 'm')
-            return qml_mtx_events::Sent;
-        else if (read.contains(id) || containsOthers(cache::readReceipts(id, room_id_)))
+        else if (!id.isEmpty() && id[0] == 'm') {
+            auto pending = cache::client()->pendingEvents(this->room_id_.toStdString());
+            if (std::find(pending.begin(), pending.end(), idstr) != pending.end())
+                return qml_mtx_events::Sent;
+            else
+                return qml_mtx_events::Failed;
+        } else if (read.contains(id) || containsOthers(cache::readReceipts(id, room_id_)))
             return qml_mtx_events::Read;
         else
             return qml_mtx_events::Received;
