@@ -21,4 +21,3 @@ is_logged_in();
 void
 init();
 }
-
