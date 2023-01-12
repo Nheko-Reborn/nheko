@@ -402,8 +402,6 @@ set(SRC_FILES
 	src/ui/RoomSummary.h
 	src/ui/Theme.cpp
 	src/ui/Theme.h
-	src/ui/ThemeManager.cpp
-	src/ui/ThemeManager.h
 	src/ui/UIA.cpp
 	src/ui/UIA.h
 	src/ui/UserProfile.cpp
