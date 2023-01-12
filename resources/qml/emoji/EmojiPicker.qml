@@ -112,7 +112,6 @@ Menu {
 
                 Layout.preferredHeight: cellHeight * 5
                 Layout.preferredWidth: 7 * 52 + 20
-                Layout.leftMargin: 0
                 cellWidth: 52
                 cellHeight: 52
                 boundsBehavior: Flickable.StopAtBounds
