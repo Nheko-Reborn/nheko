@@ -40,12 +40,12 @@ BusyIndicator {
                 Rectangle {
                     implicitWidth: radius * 2
                     implicitHeight: radius * 2
-                    radius: item.height / 6
+                    radius: item.height / 8
                     color: Nheko.colors.text
                     opacity: (index + 2) / (repeater.count + 2)
                     transform: [
                         Translate {
-                            y: -Math.min(item.width, item.height) * 0.5 + item.height / 6
+                            y: item.height / 2
                         },
                         Rotation {
                             angle: index / repeater.count * 360
