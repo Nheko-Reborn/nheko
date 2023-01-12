@@ -1764,7 +1764,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 elektis respondon</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2398,7 +2398,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+3"/>
         <source>Edit child communities and rooms</source>
-        <translation type="unfinished">Redakti idajn komunumojn kaj ĉambrojn</translation>
+        <translation>Redakti idajn komunumojn kaj ĉambrojn</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2477,7 +2477,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+5"/>
         <source>level</source>
-        <translation type="unfinished"></translation>
+        <translation>nivelo</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2487,7 +2487,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+2"/>
         <source>type</source>
-        <translation type="unfinished"></translation>
+        <translation>speco</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
@@ -2642,7 +2642,7 @@ Ekzemplo: https://servilo.mia:8787</translation>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished">Parto de rezervita nomspaco</translation>
+        <translation>Parto de la rezervita nomspaco.</translation>
     </message>
 </context>
 <context>
