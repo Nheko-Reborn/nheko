@@ -31,10 +31,11 @@ Menu {
         popup(showAt ? showAt : null);
     }
 
-    margins: 0
-    bottomPadding: 1
-    leftPadding: 1
-    rightPadding: 1
+    margins: 2
+    bottomPadding: 0
+    leftPadding: 0
+    rightPadding: 0
+    topPadding: 0
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
@@ -44,26 +45,24 @@ Menu {
 
     Rectangle {
         color: Nheko.colors.window
-        height: columnView.implicitHeight + 4
+        height: columnView.implicitHeight + Nheko.paddingSmall*2
         width: 7 * 52 + 20
 
         ColumnLayout {
             id: columnView
 
-            spacing: 0
-            anchors.leftMargin: 3
-            anchors.rightMargin: 3
+            spacing: Nheko.paddingSmall
+            anchors.leftMargin: Nheko.paddingSmall
+            anchors.rightMargin: Nheko.paddingSmall
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
-            anchors.topMargin: 2
 
             // Search field
             TextField {
                 id: emojiSearch
 
-                Layout.topMargin: 3
-                Layout.preferredWidth: 7 * 52 + 20 - 6
+                Layout.preferredWidth: 7 * 52 + 20 - Nheko.paddingSmall
                 palette: Nheko.colors
                 background: null
                 placeholderTextColor: Nheko.colors.buttonText
@@ -74,9 +73,9 @@ Menu {
                 onTextChanged: searchTimer.restart()
                 onVisibleChanged: {
                     if (visible)
-                        forceActiveFocus();
+                    forceActiveFocus();
                     else
-                        clear();
+                    clear();
                 }
 
                 Timer {
@@ -89,37 +88,22 @@ Menu {
                     }
                 }
 
-                ToolButton {
+                ImageButton {
                     id: clearSearch
 
                     visible: emojiSearch.text !== ''
-                    icon.source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+
+                    image: ":/icons/icons/ui/round-remove-button.svg"
                     focusPolicy: Qt.NoFocus
                     onClicked: emojiSearch.clear()
                     hoverEnabled: true
-                    background: null
-
                     anchors {
-                        verticalCenter: parent.verticalCenter
+                        top: parent.top
+                        bottom: parent.bottom
                         right: parent.right
+                        rightMargin: Nheko.paddingSmall
                     }
-                    // clear the default hover effects.
-
-                    Image {
-                        height: parent.height - 2 * Nheko.paddingSmall
-                        width: height
-                        source: "image://colorimage/:/icons/icons/ui/round-remove-button.svg?" + (clearSearch.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
-
-                        anchors {
-                            verticalCenter: parent.verticalCenter
-                            right: parent.right
-                            margins: Nheko.paddingSmall
-                        }
-
-                    }
-
                 }
-
             }
 
             // emoji grid
@@ -128,7 +112,7 @@ Menu {
 
                 Layout.preferredHeight: cellHeight * 5
                 Layout.preferredWidth: 7 * 52 + 20
-                Layout.leftMargin: 4
+                Layout.leftMargin: 0
                 cellWidth: 52
                 cellHeight: 52
                 boundsBehavior: Flickable.StopAtBounds
