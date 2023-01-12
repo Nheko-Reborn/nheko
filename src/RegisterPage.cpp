@@ -164,6 +164,10 @@ RegisterPage::versionsCheck()
                     return;
                 }
 
+                for (const auto &f : e->matrix_error.unauthorized.flows)
+                    nhlog::ui()->debug("Registration flows for server: {}",
+                                       fmt::join(f.stages, ", "));
+
                 supported_   = true;
                 lookingUpHs_ = false;
                 emit lookingUpHsChanged();
