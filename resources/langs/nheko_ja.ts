@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>画面を共有しています</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -153,7 +153,7 @@
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>ボイスコール</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -171,12 +171,12 @@
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>ボイスコール</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished">デバイス</translation>
+        <translation>デバイス一覧</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -186,12 +186,12 @@
     <message>
         <location line="+13"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不明なマイク: %1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>不明なカメラ: %1</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -201,7 +201,7 @@
     <message>
         <location line="-31"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>マイクが見つかりませんでした。</translation>
     </message>
 </context>
 <context>
@@ -209,7 +209,7 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+820"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>全画面</translation>
     </message>
 </context>
 <context>
