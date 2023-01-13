@@ -68,6 +68,7 @@
 - Polish (Romanik)
 - Dutch (Thulinma)
 - French (GitEz-code, Guillaume Girol, lascapi)
+- Esperanto (Tirifto)
 
 ### Bugfixes
 
