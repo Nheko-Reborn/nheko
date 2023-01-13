@@ -1139,7 +1139,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+4"/>
         <source>Encrypted by a verified device</source>
-        <translation>Verschlüsselt von einem verifizierten Gerät</translation>
+        <translation>Von einem verifizierten Gerät verschlüsselt</translation>
     </message>
     <message>
         <location line="+2"/>
