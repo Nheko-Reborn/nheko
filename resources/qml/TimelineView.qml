@@ -25,6 +25,7 @@ Item {
     property var room: null
     property var roomPreview: null
     property bool showBackButton: false
+    property bool shouldEffectsRun: false
     clip: true
 
     onRoomChanged: if (room != null) room.triggerSpecialEffects()
@@ -344,7 +345,10 @@ Item {
         onClicked: Rooms.resetCurrentRoom()
     }
 
-    ParticleSystem { id: confettiParticleSystem }
+    ParticleSystem { id: confettiParticleSystem 
+        Component.onCompleted: pause();
+        paused: !shouldEffectsRun
+    }
 
     Emitter {
         id: confettiEmitter
@@ -356,6 +360,7 @@ Item {
         emitRate: Math.min(400 * Math.sqrt(parent.width * parent.height) / 870, 1000)
         lifeSpan: 15000
         system: confettiParticleSystem
+        maximumEmitted: 500
         velocityFromMovement: 8
         size: 16
         sizeVariation: 4
@@ -365,27 +370,27 @@ Item {
             xVariation: Math.min(4 * parent.width / 7, 450)
             yVariation: 250
         }
+    }
 
-        ImageParticle {
-            system: confettiParticleSystem
-            source: "qrc:/confettiparticle.svg"
-            rotationVelocity: 0
-            rotationVelocityVariation: 360
-            colorVariation: 1
-            color: "white"
-            entryEffect: ImageParticle.None
-            xVector: PointDirection {
-                x: 1
-                y: 0
-                xVariation: 0.2
-                yVariation: 0.2
-            }
-            yVector: PointDirection {
-                x: 0
-                y: 0.5
-                xVariation: 0.2
-                yVariation: 0.2
-            }
+    ImageParticle {
+        system: confettiParticleSystem
+        source: "qrc:/confettiparticle.svg"
+        rotationVelocity: 0
+        rotationVelocityVariation: 360
+        colorVariation: 1
+        color: "white"
+        entryEffect: ImageParticle.None
+        xVector: PointDirection {
+            x: 1
+            y: 0
+            xVariation: 0.2
+            yVariation: 0.2
+        }
+        yVector: PointDirection {
+            x: 0
+            y: 0.5
+            xVariation: 0.2
+            yVariation: 0.2
         }
     }
 
@@ -399,6 +404,14 @@ Item {
     NhekoDropArea {
         anchors.fill: parent
         roomid: room ? room.roomId : ""
+    }
+
+    Timer {
+        id: effectsTimer
+        onTriggered: shouldEffectsRun = false;
+        interval: confettiEmitter.lifeSpan
+        repeat: false
+        running: false
     }
 
     Connections {
@@ -424,8 +437,17 @@ Item {
             if (!Settings.fancyEffects)
                 return
 
+            shouldEffectsRun = true;
             confettiEmitter.pulse(parent.height * 2)
             room.markSpecialEffectsDone()
+        }
+
+        function onConfettiDone()
+        {
+            if (!Settings.fancyEffects)
+                return
+
+            effectsTimer.start();
         }
 
         target: room

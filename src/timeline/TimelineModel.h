@@ -451,6 +451,7 @@ signals:
     void newCallEvent(const mtx::events::collections::TimelineEvents &event);
     void scrollToIndex(int index);
     void confetti();
+    void confettiDone();
 
     void lastMessageChanged();
     void notificationsChanged();

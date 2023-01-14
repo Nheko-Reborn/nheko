@@ -1998,6 +1998,7 @@ void
 TimelineModel::markSpecialEffectsDone()
 {
     needsSpecialEffects_ = false;
+    emit confettiDone();
 }
 
 QString
