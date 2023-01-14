@@ -678,7 +678,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä muotoilematon viesti (ohjelman laajuisesta asetuksesta huolimatta).</translation>
     </message>
     <message>
         <location line="+2"/>
