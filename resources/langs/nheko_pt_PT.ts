@@ -43,12 +43,12 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao reverter publicação da alcunha %1: %2</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao atualizar alcunhas: %1</translation>
     </message>
 </context>
 <context>
@@ -56,47 +56,47 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+27"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Alcunhas de %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de alcunhas desta sala. Normalmente só é possível adicionar alcunhas no seu servidor. Pode existir uma alcunha canónica e várias outras alternativas.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alcunha principal</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Tornar alcunha principal</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicitar como uma alcunha nesta sala</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar no diretório de salas</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover esta alcunha</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#nova-alcunha:servidor.tld</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Add</source>
-        <translation type="unfinished">Adicionar</translation>
+        <translation>Adicionar</translation>
     </message>
 </context>
 <context>
@@ -104,27 +104,27 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+28"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Definições das salas permitidas</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de salas que podem aceder a esta. Qualquer membro dessas salas pode aceder a esta.</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Comunidade mãe</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Outra sala</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Insira salas adicionais ainda não presentes na lista...</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar saída</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -244,22 +244,22 @@
     <message>
         <location line="+262"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Bater à porta&quot;</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Tem a certeza que quer bater à porta de %1? Opcionalmente, pode indicar uma razão para os membros o aceitarem:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Failed to knock room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao bater à porta: %1</translation>
     </message>
     <message>
         <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>A criação da sala falhou: Má alcunha</translation>
     </message>
     <message>
         <location line="+18"/>
