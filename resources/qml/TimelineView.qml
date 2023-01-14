@@ -347,7 +347,7 @@ Item {
 
     ParticleSystem { id: confettiParticleSystem 
         Component.onCompleted: pause();
-        paused: shouldEffectsRun
+        paused: !shouldEffectsRun
     }
 
     Emitter {
@@ -406,6 +406,14 @@ Item {
         roomid: room ? room.roomId : ""
     }
 
+    Timer {
+        id: effectsTimer
+        onTriggered: shouldEffectsRun = false;
+        interval: confettiEmitter.lifeSpan
+        repeat: false
+        running: false
+    }
+
     Connections {
         function onOpenReadReceiptsDialog(rr) {
             var dialog = readReceiptsDialog.createObject(timelineRoot, {
@@ -439,7 +447,7 @@ Item {
             if (!Settings.fancyEffects)
                 return
 
-            shouldEffectsRun = false;
+            effectsTimer.start();
         }
 
         target: room
