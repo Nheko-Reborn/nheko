@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.11.1] -- 2023-01-15
+
+### Hotfix Release
+
+- Fixes issue where CPU usage could be excessive even when nheko was idle or minimized.
+- Add failed state for queued (pending) messages
+
 ## [0.11.0] -- 2023-01-12
 
 ### Highlights
