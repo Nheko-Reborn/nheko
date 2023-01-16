@@ -4,7 +4,7 @@
 
 ### Hotfix Release
 
-- Fixes issue where CPU usage could be excessive even when nheko was idle or minimized.
+- Fixes issue where CPU usage could be excessive even when nheko was idle or minimized. (See #1284)
 - Add failed state for queued (pending) messages
 
 ## [0.11.0] -- 2023-01-12
