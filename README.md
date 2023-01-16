@@ -308,14 +308,21 @@ sudo pacman -S qt5-base \
 sudo emerge -a ">=dev-qt/qtgui-5.15.0" media-libs/fontconfig dev-libs/qtkeychain
 ```
 
-##### Ubuntu 20.04
+##### Ubuntu 22.04
+
+Older versions of Ubuntu don't have a new enough version of Qt 5.
 
 ```bash
 # Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
-sudo apt install g++ cmake zlib1g-dev libssl-dev qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev libboost-system-dev libboost-thread-dev libboost-iostreams-dev libolm-dev liblmdb++-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libgtest-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2} qt5keychain-dev libevent-dev libcurl-dev
+sudo apt install --no-install-recommends g++ cmake make zlib1g-dev libssl-dev libolm-dev liblmdb-dev libcmark-dev nlohmann-json3-dev \
+    libspdlog-dev libevent-dev libcurl4-openssl-dev libre2-dev libxcb-ewmh-dev asciidoc-base \
+    qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev qt5keychain-dev \
+    qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2,quick-particles2} \
+    libgstreamer1.0-dev libgstreamer-plugins-{base,bad}1.0-dev qtgstreamer-plugins-qt5 libnice-dev
 ```
-This will install all dependencies, except for tweeny (use bundled tweeny)
-and mtxclient (needs to be build separately).
+
+This will install all dependencies, including for mtxclient. You will need to use the bundled lmdb++ because the version in Ubuntu 22.04 is
+too old.
 
 ##### Debian Buster (or higher probably)
 
@@ -325,7 +332,7 @@ and mtxclient (needs to be build separately).
 sudo apt install cmake gcc make automake liblmdb-dev \
     qt5-default libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev \
     qml-module-qtgstreamer qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev \
-    qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts  qml-module-qt-labs-platform\
+    qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform \
     qt5keychain-dev asciidoctor libsecret-1-dev
 ```
 
