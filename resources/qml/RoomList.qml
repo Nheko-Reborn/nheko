@@ -60,6 +60,12 @@ Page {
         model: Rooms
         reuseItems: true
 
+        ScrollBar.vertical: ScrollBar {
+            id: roomlistscrollbar
+            active: true
+            visible: (! collapsed) && (parent.contentHeight > parent.height)
+        }
+
         ScrollHelper {
             flickable: parent
             anchors.fill: parent
@@ -258,7 +264,7 @@ Page {
             }
 
             height: avatarSize + 2 * Nheko.paddingMedium
-            width: ListView.view.width
+            width: ListView.view.width - roomlistscrollbar.width
             state: "normal"
             ToolTip.visible: hovered && collapsed
             ToolTip.delay: Nheko.tooltipDelay
