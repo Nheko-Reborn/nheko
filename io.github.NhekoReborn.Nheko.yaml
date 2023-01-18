@@ -20,14 +20,27 @@ finish-args:
   - --allow=per-app-dev-shm
 cleanup:
   - /include
+  - /lib/pkgconfig
   - /bin/mdb*
   - '*.a'
   - /libexec
-  - /lib/cmake/
+  - /lib/cmake
   - /bin/cmark
   - /bin/event_rpcgen.py
   - /bin/playout
   - /bin/secret-tool
+  - /bin/gst-*
+  - /share/gdb
+  - /share/gst*
+  - /lib/girepository-1.0/
+  - /lib/gst-validate-launcher/
+  - /lib/gstreamer-1.0/include
+  - /lib/gstreamer-1.0/include/
+  - /lib/gstreamer-1.0/libgstcoreelements.so
+  - /lib/gstreamer-1.0/libgstopengl*
+  - /lib/gstreamer-1.0/libgstximagesink.so
+  - /lib/gstreamer-1.0/validate/
+  - /lib/libgst*
 modules:
   - name: lmdb
     sources:
@@ -154,6 +167,24 @@ modules:
       - sha256: f89c61410a072e5cbcf8c27e3a778da7d6fd2f2b5b1445cd4f4508bee946ab0f
         type: archive
         url: https://github.com/google/re2/archive/refs/tags/2022-06-01.tar.gz
+  - buildsystem: meson
+    name: gstreamer
+    sources:
+      - commit: f7806a854aad960eae3288db4a67a574f92428fe
+        tag: 1.20.5
+        type: git
+        url: https://gitlab.freedesktop.org/gstreamer/gstreamer.git
+    config-opts:
+      - --auto-features=disabled
+      -  -Dgood=enabled
+      -  -Dgst-plugins-good:qt5=enabled
+      -  -Dqt5=enabled
+      -  -Dbase=enabled
+      -  -Dgst-plugins-base:gl=enabled
+      -  -Dgst-plugins-base:gl_platform=glx,egl
+      -  -Dgst-plugins-base:gl_winsys=x11,wayland
+      -  -Dgst-plugins-base:x11=enabled
+      -  -Dgst-plugins-base:xshm=enabled
   - buildsystem: qmake
     name: qt-jdenticon
     no-make-install: true
