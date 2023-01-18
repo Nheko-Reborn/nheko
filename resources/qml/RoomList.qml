@@ -418,7 +418,7 @@ Page {
                             color: roomItem.unimportantText
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             elideWidth: width
-                            fullText: lastMessage
+                            fullText: TimelineManager.htmlEscape(lastMessage)
                             textFormat: Text.RichText
                             Layout.fillWidth: true
                         }
