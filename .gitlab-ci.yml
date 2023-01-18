@@ -172,6 +172,8 @@ build-flatpak-amd64:
     - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     - flatpak --noninteractive install --user flathub org.kde.Platform//5.15-22.08
     - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15-22.08
+      # see https://github.com/flatpak/flatpak-builder/issues/495
+    - git config --global protocol.file.allow always
   script:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
@@ -202,6 +204,8 @@ build-flatpak-arm64:
     - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     - flatpak --noninteractive install --user flathub org.kde.Platform//5.15-22.08
     - flatpak --noninteractive install --user flathub org.kde.Sdk//5.15-22.08
+      # see https://github.com/flatpak/flatpak-builder/issues/495
+    - git config --global protocol.file.allow always
   script:
     - export VERSION=$(git describe)
     - if [ "$(grep MemTotal /proc/meminfo | tr -cd '[0-9]')" -lt "6000000" ]; then export EXTRA_FLAGS='--jobs=3'; fi
