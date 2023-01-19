@@ -138,7 +138,7 @@ Item {
                     visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
                     width: 16
                     hoverEnabled: true
-                    image: ":/icons/icons/ui/smile.svg"
+                    image: ":/icons/icons/ui/smile-add.svg"
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("React")
