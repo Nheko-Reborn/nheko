@@ -29,8 +29,6 @@ ApplicationWindow {
     function addInvite(mxid, displayName, avatarUrl) {
         if (mxid.match("@.+?:.{3,}")) {
             invitees.addUser(mxid, displayName, avatarUrl);
-            if (mxid == inviteeEntry.text)
-                inviteeEntry.clear();
         } else
             console.log("invalid mxid: " + mxid)
     }
@@ -110,9 +108,14 @@ ApplicationWindow {
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
                 Layout.fillWidth: true
                 onAccepted: {
-                    if (isValidMxid)
+                    if (isValidMxid) {
                         addInvite(text, "", "");
-
+                        clear()
+                    }
+                    else if (userSearch.count > 0) {
+                        addInvite(userSearch.itemAtIndex(0).userid, userSearch.itemAtIndex(0).displayName, userSearch.itemAtIndex(0).avatarUrl)
+                        clear()
+                    }
                 }
                 Component.onCompleted: forceActiveFocus()
                 Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
@@ -181,6 +184,7 @@ ApplicationWindow {
             }
             Rectangle {
                 Layout.fillHeight: true
+                visible: inviteesList.visible
                 width: 1
                 color: Nheko.theme.separator
             }

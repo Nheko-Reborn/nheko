@@ -69,7 +69,7 @@ UserDirectoryModel::fetchMore(const QModelIndex &)
               emit fetchedSearchResults(res.results);
           }
       },
-      -1);
+      50);
 }
 
 QVariant
