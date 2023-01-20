@@ -683,12 +683,12 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä viesti sateenkaaren värein.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä /me sateenkaaren värein.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -713,7 +713,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Go to this event or link.</source>
-        <translation type="unfinished"></translation>
+        <translation>Siirry tähän tapahtumaan tai linkkiin.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1671,12 +1671,12 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+79"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tämä huone korvattiin seuraavasta syystä: %1</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished"></translation>
+        <translation>Siirry korvaavaan huoneeseen</translation>
     </message>
     <message>
         <location line="+162"/>
@@ -1756,7 +1756,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hylkäsi puhelun.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1795,7 +1795,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Jo puhelussa</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2425,7 +2425,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location line="+2"/>
         <source>Reject a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Hylkää puhelu</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2489,17 +2489,17 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
         <source>Respond</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastaa</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Send</source>
-        <translation type="unfinished">Lähetä</translation>
+        <translation>Lähetä</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Kirjoita viesti…</translation>
+        <translation>Kirjoita viesti…</translation>
     </message>
 </context>
 <context>
@@ -2706,7 +2706,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location line="+12"/>
         <source>Room settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Huoneen asetukset</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3928,12 +3928,12 @@ Syy: %4</translation>
     <message>
         <location line="+36"/>
         <source>Hide invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Piilota kutsun syy</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Show invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä kutsun syy</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -3986,7 +3986,7 @@ Syy: %4</translation>
     <message>
         <location line="+66"/>
         <source>Search this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Etsi tästä huoneesta</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -4021,7 +4021,7 @@ Syy: %4</translation>
     <message>
         <location line="+63"/>
         <source>Enter search query</source>
-        <translation type="unfinished"></translation>
+        <translation>Syötä hakutermi</translation>
     </message>
 </context>
 <context>
@@ -4246,7 +4246,7 @@ Syy: %4</translation>
     <message>
         <location line="+2"/>
         <source>Use shift+enter to send and enter to start a new line</source>
-        <translation type="unfinished"></translation>
+        <translation>Käytä VAIHTO+SYÖTTÖÄ lähettämiseen ja SYÖTTÖÄ aloittaaksesi uuden rivin</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4326,7 +4326,7 @@ Syy: %4</translation>
     <message>
         <location line="+2"/>
         <source>Decrypt notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Pura salaus ilmoituksissa</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4616,7 +4616,7 @@ POIS - neliö, PÄÄLLÄ - ympyrä.</translation>
     <message>
         <location line="+16"/>
         <source>Decrypt messages shown in notifications for encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pura salatuista keskusteluista tulevien ilmoitusten salaus.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5096,12 +5096,12 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
     <message>
         <location line="+4"/>
         <source>You rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Hylkäsit puhelun</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hylkäsi puhelun</translation>
     </message>
 </context>
 <context>
