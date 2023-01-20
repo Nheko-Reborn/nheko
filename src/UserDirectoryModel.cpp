@@ -96,7 +96,7 @@ UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> resul
         nhlog::net()->error("mtxclient helper thread yielded no results!");
         return;
     }
-    beginInsertRows(QModelIndex(), 0, static_cast<int>(results_.size()) - 1);
+    beginInsertRows(QModelIndex(), 0, static_cast<int>(results.size()) - 1);
     results_ = results;
     endInsertRows();
     canFetchMore_ = false;
