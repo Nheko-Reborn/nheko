@@ -114,12 +114,12 @@
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Родительское сообщество</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Другая комната</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -859,7 +859,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Присоединиться</translation>
     </message>
 </context>
 <context>
