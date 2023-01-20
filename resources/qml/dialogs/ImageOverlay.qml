@@ -116,6 +116,7 @@ Window {
             //ToolTip.delay: Nheko.tooltipDelay
             //ToolTip.text: qsTr("Download")
             onClicked: {
+                imageOverlay.hide();
                 if (room) {
                     room.saveMedia(eventId);
                 } else {
