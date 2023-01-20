@@ -104,17 +104,17 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+28"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Lubatud jututubade seadistused</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututubade loend, mis tagav ligipääsu ka siia jututuppa. Kõik nende jututubade liikmed võivad liituda ka selle jututoaga.</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Ülemkogukond</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -332,12 +332,14 @@
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
+        <translation>Järgmisel põhjusel soovib Nheko sind suunata sisselogimislehele:
+%1
+Kui sa arvad, et tegemist on veaga, siis võid selle asemel Nheko sulgeda ja võid proovida oma krüptovõtmete taastamist. Kui sind juba on suunatud sisselogimislehele, siis saad tavapärasel viisil uuesti oma kontole ja sellega Matrixi võrku sisse logida.</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Puhverdatud andmete tõstmine kasutamiseks uue tarkvara versiooni jaoks ei õnnestunud. Sellel võib olla mitu põhjust. Palun koosta siin https://github.com/Nheko-Reborn/nheko veateade ja proovi seni kasutada vana versiooni. Teise võimalusena võid proovida puhverdatud andmete kustutamist käsitsi.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -579,148 +581,148 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada sõnum, mis esindab mõnd tegevust.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastates sõnumile, reageeri &lt;tekstiga&gt;.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu jututoaga. Kui soovid, siis lisa põhjus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Küsi võimalust jututoaga liitumiseks. Kui soovid, siis lisa põhjus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lahku jututoast. Kui soovid, siis lisa põhjus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu kasutaja sellesse jututuppa. Kui soovid, siis lisa põhjus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Müksa kasutaja sellest jututoast välja. Kui soovid, siis lisa põhjus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keela kasutajale ligipääs sellesse jututuppa. Kui soovid, siis lisa põhjus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda kasutajalt ligipääsukeeld sellesse jututuppa. Kui soovid, siis lisa põhjus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda ühte sündmust või kasutaja kõiki kohalikku seadmesse puhverdatud sõnumeid.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change your displayname in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma kuvatavat nime siin jututoas.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>¯\_(ツ)_/¯ with an optional message.</source>
-        <translation type="unfinished"></translation>
+        <translation>¯\_(ツ)_/¯ koos valikulise lisatekstiga.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>(╯°□°)╯︵ ┻━┻</source>
-        <translation type="unfinished"></translation>
+        <translation>(╯°□°)╯︵ ┻━┻</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>┯━┯╭( º _ º╭)</source>
-        <translation type="unfinished"></translation>
+        <translation>┯━┯╭( º _ º╭)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ノ┬─┬ノ ︵ ( \o°o)\</source>
-        <translation type="unfinished"></translation>
+        <translation>ノ┬─┬ノ ︵ ( \o°o)\</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Clear the currently cached messages in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kustuta puhverdatud sõnumid siit jututoast.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refetch the state in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laadi uuesti olek siin jututoas.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Genereeri ja laadi praegune sümmeetriline krüptovõti uuesti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada markdown-vormingus sõnum (üldistele seadistustele vaatamata).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada vormindamata sõnum (üldistele seadistustele vaatamata).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada sõnum vikerkaarevärvides.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada /me vikerkaarevärvides.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada robotsõnum.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada robotsõnum vikerkaarevärvides.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada sõnum serpentiinidega.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada vikerkaarevärvides sõnum serpentiinidega.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to this event or link.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava see sündmus või link.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda see jututuba otsevestluseks.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda see otsevestlus jututoaks.</translation>
     </message>
 </context>
 <context>
@@ -728,12 +730,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+52"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ära näita teavituste loendit selle kogukonna või sildi kohta.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaikimisi peaida selle sildiga või sellest kogukonnast pärit jututoad.</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -801,22 +803,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+660"/>
         <source>Failed to update community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kogukonna uuendamine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa eemaldamine kogukonnast ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kogukonna uuendamine jututoa jaoks ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kogukonna eemaldamine jututoast ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -847,7 +849,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoaga ei saa otse liituda. Küll aga saad sa jututoa uksele koputada ning liikmed saavad sinu liitumise lubada või sellest keelduda. Kui soovid, siis lisa alljärgnevas ka liitumise selgitus:</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -933,7 +935,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avalike jututubadega saavad liituda kõik huvilised ja privaatsed jututoad vajavad kutset.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1377,7 +1379,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Pildipakk ülemkogukonast</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1526,13 +1528,14 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu seadme nimi, mida teised osapooled verifitseerimise ajal ja vajadusel hiljem näevad. Kui sa midagi ei sisesta, siis kehtib vaikimisi väärtus.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Aadress, mis võimaldab ligipääsu sinu koduserveri API&apos;le.
+Näiteks: https://minuserver.ee:8787</translation>
     </message>
     <message>
         <location line="-4"/>
@@ -1590,7 +1593,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitud server ei mõista Matrixi protokolli versioone, mida see klient oskab (versioonid 1.1 kuni 1.5). Sisselogimine pole võimalik.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1730,12 +1733,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+30"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ei võtnud kõnet vastu.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - vali vastus</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1756,17 +1759,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-339"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututuba asendati järgneval põhjusel: %1</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished"></translation>
+        <translation>Mine uude jututuppa</translation>
     </message>
     <message>
         <location line="+282"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa ülemkogukonda.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -1837,12 +1840,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Reply in thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Vasta jutulõngana</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus jutulõng</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1894,7 +1897,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>&amp;Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Jutulõng</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1909,7 +1912,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>&amp;Read receipts</source>
-        <translation>&amp;Lugemisteatised</translation>
+        <translation>Lugemisteatised</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2389,12 +2392,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+3"/>
         <source>Edit child communities and rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda alakogukondi või jututube</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda ülemkogukondi</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2440,7 +2443,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+232"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo unikaalne kasutajaprofiil, mis võimaldab samaaegselt sisse logide mitmele Matrixi kontole ja avada vastavalt mitu nheko rakenduse akent.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2458,7 +2461,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-26"/>
         <source>Alias for &apos;--log-level trace&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias võtmele „--log-level trace“.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -2468,17 +2471,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>level</source>
-        <translation type="unfinished"></translation>
+        <translation>tase</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali logiväljundi tüüp. Mitme tüübi puhul eralda väärtused komadega. Vaikimisi väärtus on „file,stderr“. types:{file,stderr,none}</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>type</source>
-        <translation type="unfinished"></translation>
+        <translation>tüüp</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
@@ -2548,7 +2551,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu seadme nimi, mida teised osapooled verifitseerimise ajal ja vajadusel hiljem näevad. Kui sa midagi ei sisesta, siis kehtib vaikimisi väärtus.</translation>
     </message>
     <message>
         <location line="-109"/>
@@ -2608,7 +2611,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitud server ei mõista Matrixi protokolli versioone, mida see klient oskab (versioonid 1.1 kuni 1.5). Registreerumine pole võimalik.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2651,7 +2654,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Cancel Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista jutulõng</translation>
     </message>
 </context>
 <context>
@@ -2740,7 +2743,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa kogukonda või eemalda sealt...</translation>
     </message>
     <message>
         <location line="+260"/>
@@ -3036,37 +3039,37 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="-180"/>
         <source>Anyone can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Kes iganes võib liituda</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba uksele koputamine</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Allow joining via other rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba liitumine teiste jututubade kaudu</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Rooms to join via</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoad, mille kaudu on võimalik liituda</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda jututube, mille kaudu on võimalik selle jututoaga liituda. Tavaliselt on selleks näiteks selle jututoa põhiline kogukond.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba külalistel liituda</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Jõusta ligipääsureeglid</translation>
     </message>
     <message>
         <location line="+57"/>
@@ -3076,7 +3079,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+18"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda kasutatavaid lisapakke, eemalda neid või lisa uusi</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -3183,7 +3186,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+10"/>
         <source>Please enter the token which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun sisesta sulle saadetud tunnuskood:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3374,7 +3377,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+17"/>
         <source>Add or remove from community</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa kogukonda või eemalda sealt</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3827,7 +3830,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+925"/>
         <source>%1 made this room require an invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 seadistas, et see jututuba vajab liitumiseks kutset.</translation>
     </message>
     <message>
         <location line="+654"/>
@@ -3871,7 +3874,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+18"/>
         <source>Part of a thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Osa jutulõngast</translation>
     </message>
 </context>
 <context>
@@ -3950,7 +3953,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+115"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kogukonnas</translation>
     </message>
     <message>
         <location line="+111"/>
@@ -4642,7 +4645,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="-319"/>
         <source>Communities sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Kogukondade külgpaan</translation>
     </message>
     <message>
         <location line="+38"/>
