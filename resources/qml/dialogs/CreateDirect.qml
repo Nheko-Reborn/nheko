@@ -77,7 +77,8 @@ ApplicationWindow {
             label: qsTr("User to invite")
             placeholderText: qsTr("@user:server.tld")
             onTextChanged: {
-                if(isValidMxid) {
+                // we can't use "isValidMxid" here, since the property might only be reevaluated after this change handler.
+                if(text.match("@.+?:.{3,}")) {
                     profile = TimelineManager.getGlobalUserProfile(text);
                 } else
                     profile = null;
@@ -106,7 +107,7 @@ ApplicationWindow {
         Button {
             text: "Start Direct Chat"
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: userID.isValidMxid
+            enabled: userID.isValidMxid && profile
         }
         onRejected: createDirectRoot.close();
         onAccepted: {
