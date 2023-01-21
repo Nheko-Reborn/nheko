@@ -45,19 +45,19 @@ qmlMessageHandler(QtMsgType type, const QMessageLogContext &context, const QStri
 
     switch (type) {
     case QtDebugMsg:
-        nhlog::qml()->debug("{} ({}:{}, {})", localMsg, file, context.line, function);
+        qml_logger->debug("{} ({}:{}, {})", localMsg, file, context.line, function);
         break;
     case QtInfoMsg:
-        nhlog::qml()->info("{} ({}:{}, {})", localMsg, file, context.line, function);
+        qml_logger->info("{} ({}:{}, {})", localMsg, file, context.line, function);
         break;
     case QtWarningMsg:
-        nhlog::qml()->warn("{} ({}:{}, {})", localMsg, file, context.line, function);
+        qml_logger->warn("{} ({}:{}, {})", localMsg, file, context.line, function);
         break;
     case QtCriticalMsg:
-        nhlog::qml()->critical("{} ({}:{}, {})", localMsg, file, context.line, function);
+        qml_logger->critical("{} ({}:{}, {})", localMsg, file, context.line, function);
         break;
     case QtFatalMsg:
-        nhlog::qml()->critical("{} ({}:{}, {})", localMsg, file, context.line, function);
+        qml_logger->critical("{} ({}:{}, {})", localMsg, file, context.line, function);
         break;
     }
 }
