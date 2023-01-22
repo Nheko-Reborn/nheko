@@ -22,7 +22,8 @@ MatrixText {
     text: "
     <style type=\"text/css\">
     a { color:" + Nheko.colors.link + ";}
-    code { background-color: " + Nheko.colors.alternateBase + ";}
+    code { background-color: " + Nheko.colors.alternateBase + "; white-space: pre-wrap; }
+    pre { background-color: " + Nheko.colors.alternateBase + "; white-space: pre-wrap; }
     table {
         border-width: 1px;
         border-collapse: collapse;
@@ -40,7 +41,7 @@ MatrixText {
         background-color: " + Nheko.colors.text + ";
     }" : "") +  // TODO(Nico): Figure out how to support mobile
     "</style>
-    " + formatted.replace(/<pre>/g, "<pre style='white-space: pre-wrap; background-color: " + Nheko.colors.alternateBase + "'>").replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
+    " + formatted.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
     width: parent.width
     height: !keepFullText ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
     clip: !keepFullText
