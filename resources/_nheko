@@ -1,16 +1,6 @@
 #compdef nheko
 
-_arguments '--help[Displays help on commandline options.]' \
-           '-h[Displays help on commandline options.]' \
-           '--help-all[Displays help including Qt specific options.]' \
-           '--version[Displays version information.]' \
-           '-v[Displays version information.]' \
-           '--debug[Enables debug output.]' \
-           '--profile[Create or select profile.]:profile:_nheko_select_profile' \
-           '-p[Create or select profile.]:profile:_nheko_select_profile'
-
-function _nheko_select_profile()
-{
+function _nheko_select_profile() {
     local -a profiles=(default)
     while read -r line; do
         [[ ${line} =~ '\\auth\\device_id' ]] && profiles+=(${line%%\\*})
@@ -18,6 +8,11 @@ function _nheko_select_profile()
     _values "profile" ${profiles}
 }
 
-# Local Variables:
-# mode: shell-script
-# End:
+_arguments \
+    {'(--help)-h','(-h)--help'}'[Displays help on commandline options.]' \
+    --help-all'[Displays help including Qt specific options.]' \
+    {'(--version)-v','(-v)--version'}'[Displays version information.]' \
+    --debug'[Enables debug output.]' \
+    {'(--log-level)-l','(-l)--log-level'}'[Set the global log level, or a comma-separated list of <component>=<level> pairs, or both.]' \
+    {'(--log-type)-L','(-L)--log-type'}"[Set the log output type. A comma-separated list is allowed. The default is 'file,stderr'.]" \
+    {'(--profile)-p','(-p)--profile'}'[Create or select profile.]':'profile':'_nheko_select_profile'
