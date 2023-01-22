@@ -1613,6 +1613,9 @@ request_cross_signing_keys()
                 body[local_user][dev] = secretRequest;
         }
 
+        if (body.empty())
+            return;
+
         http::client()->send_to_device<mtx::events::msg::SecretRequest>(
           http::client()->generate_txn_id(),
           body,
