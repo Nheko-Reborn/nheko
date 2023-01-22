@@ -82,6 +82,12 @@ MainWindow::MainWindow(QWindow *parent)
     MainWindow::setWindowTitle(0);
     setObjectName(QStringLiteral("MainWindow"));
     setResizeMode(QQuickView::SizeRootObjectToView);
+  
+    QScreen *screen = QGuiApplication::primaryScreen();
+    QRect  screenGeometry = screen->geometry();
+    int iScreenH = screenGeometry.height();
+    int iScreenW = screenGeometry.width();
+  
     setMinimumHeight(conf::window::minHeight);
     setMinimumWidth(conf::window::minWidth);
     restoreWindowSize();
