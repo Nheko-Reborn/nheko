@@ -598,7 +598,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
         int charIdx = 0;
         while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
             cmark_node *cur = cmark_iter_get_node(iter);
-            // only text nodes (no code or semilar)
+            // only text nodes (no code or similar)
             if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
                 continue;
 
@@ -608,7 +608,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
             QString buf;
             int boundaryStart = 0;
             int boundaryEnd   = 0;
-            // use QTextBoundaryFinder to iterate ofer graphemes
+            // use QTextBoundaryFinder to iterate over graphemes
             QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme, nodeText);
             while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
                 charIdx++;
@@ -654,6 +654,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify)
 
     // The buffer is no longer needed.
     free((char *)tmp_buf);
+    cmark_node_free(node);
 
     auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
 

@@ -46,4 +46,5 @@ private:
 public:
     CallDevices(CallDevices const &)    = delete;
     void operator=(CallDevices const &) = delete;
+    void deinit();
 };

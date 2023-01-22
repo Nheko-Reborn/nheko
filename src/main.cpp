@@ -37,9 +37,11 @@
 #include "notifications/Manager.h"
 #endif
 
-#if defined(GSTREAMER_AVAILABLE) && (defined(Q_OS_MAC) || defined(Q_OS_WINDOWS))
+#ifdef GSTREAMER_AVAILABLE
 #include <QAbstractEventDispatcher>
 #include <gst/gst.h>
+
+#include "voip/CallDevices.h"
 #endif
 
 #ifdef QML_DEBUGGING
@@ -399,5 +401,13 @@ main(int argc, char *argv[])
 
     nhlog::ui()->info("starting nheko {}", nheko::version);
 
-    return app.exec();
+    auto returnvalue = app.exec();
+
+#ifdef GSTREAMER_AVAILABLE
+    CallDevices::instance().deinit();
+
+    gst_deinit();
+#endif
+
+    return returnvalue;
 }

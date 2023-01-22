@@ -248,10 +248,11 @@ tokenise(std::string_view str, char delim)
 }
 }
 
+static GstDeviceMonitor *monitor = nullptr;
+
 void
 CallDevices::init()
 {
-    static GstDeviceMonitor *monitor = nullptr;
     if (!monitor) {
         monitor       = gst_device_monitor_new();
         GstCaps *caps = gst_caps_new_empty_simple("audio/x-raw");
@@ -270,6 +271,16 @@ CallDevices::init()
             nhlog::ui()->error("WebRTC: failed to start device monitor");
             return;
         }
+    }
+}
+
+void
+CallDevices::deinit()
+{
+    if (monitor) {
+        gst_device_monitor_stop(monitor);
+        g_free(monitor);
+        monitor = nullptr;
     }
 }
 
