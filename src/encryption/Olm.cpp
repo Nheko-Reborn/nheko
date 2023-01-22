@@ -1613,8 +1613,10 @@ request_cross_signing_keys()
                 body[local_user][dev] = secretRequest;
         }
 
-        if (body.empty())
+        if (body.empty()) {
+            nhlog::net()->warn("No verified devices to request {} from.", secretName);
             return;
+        }
 
         http::client()->send_to_device<mtx::events::msg::SecretRequest>(
           http::client()->generate_txn_id(),
