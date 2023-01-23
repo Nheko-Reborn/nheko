@@ -303,8 +303,8 @@ sudo pacman -S qt5-base \
 ```
 
 #### Debian 11+ / Ubuntu 22.04 
-<font size= “1”>*Older OS versions require a newer version of Qt5 than offered in official repositories.*</font>  
-<font size= “1”>*Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):*</font>
+*Older OS versions require a newer version of Qt5 than offered in official repositories.* 
+*Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):*
 ```bash
 sudo apt install --no-install-recommends g++ cmake make zlib1g-dev libssl-dev libolm-dev liblmdb-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libevent-dev libcurl4-openssl-dev libre2-dev libxcb-ewmh-dev asciidoc-base \
 qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev qt5keychain-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2,quick-particles2} \
