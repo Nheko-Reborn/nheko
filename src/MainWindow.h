@@ -69,6 +69,8 @@ public:
 protected:
     void closeEvent(QCloseEvent *event);
     bool event(QEvent *event) override;
+    // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+    void mousePressEvent(QMouseEvent *) override;
 
 private slots:
     //! Handle interaction with the tray icon.
@@ -77,6 +79,8 @@ private slots:
     virtual void setWindowTitle(int notificationCount);
 
 signals:
+    // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+    void hideMenu();
     void reload();
     void secretsChanged();
 

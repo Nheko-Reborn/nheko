@@ -25,6 +25,14 @@ Item {
 
     property string searchString: ""
 
+    // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+    Connections {
+        function onHideMenu() {
+            messageContextMenu.close()
+        }
+        target: MainWindow
+    }
+
     ScrollBar {
         id: scrollbar
         parent: chat.parent

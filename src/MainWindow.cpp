@@ -359,6 +359,16 @@ MainWindow::event(QEvent *event)
     return QQuickView::event(event);
 }
 
+// HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+void
+MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        emit hideMenu();
+    }
+    return QQuickView::mousePressEvent(event);
+}
+
 void
 MainWindow::restoreWindowSize()
 {
