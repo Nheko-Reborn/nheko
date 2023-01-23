@@ -8,17 +8,13 @@
 
 #include "Cache.h"
 #include "Logging.h"
+#include <QSharedPointer>
 #include "MatrixClient.h"
 #include "mtx/responses/users.hpp"
 
 UserDirectoryModel::UserDirectoryModel(QObject *parent)
   : QAbstractListModel{parent}
 {
-    connect(this,
-            &UserDirectoryModel::fetchedSearchResults,
-            this,
-            &UserDirectoryModel::displaySearchResults,
-            Qt::QueuedConnection);
 }
 
 QHash<int, QByteArray>
@@ -52,21 +48,24 @@ UserDirectoryModel::fetchMore(const QModelIndex &)
         return;
 
     nhlog::net()->debug("Fetching users from mtxclient...");
+    std::string searchTerm = userSearchString_;
     searchingUsers_ = true;
     emit searchingUsersChanged();
+    auto job = QSharedPointer<FetchUsersFromDirectoryJob>::create();
+    connect(job.data(),
+            &FetchUsersFromDirectoryJob::fetchedSearchResults,
+            this,
+            &UserDirectoryModel::displaySearchResults);
     http::client()->search_user_directory(
-      userSearchString_,
-      [this](const mtx::responses::Users &res, mtx::http::RequestErr err) {
-          searchingUsers_ = false;
-          emit searchingUsersChanged();
-
+      searchTerm,
+      [job, searchTerm](const mtx::responses::Users &res, mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->error("Failed to retrieve users from mtxclient - {} - {} - {}",
                                   mtx::errors::to_string(err->matrix_error.errcode),
                                   err->matrix_error.error,
                                   err->parse_error);
           } else {
-              emit fetchedSearchResults(res.results);
+              emit job->fetchedSearchResults(res.results, searchTerm);
           }
       },
       50);
@@ -89,8 +88,12 @@ UserDirectoryModel::data(const QModelIndex &index, int role) const
 }
 
 void
-UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> results)
+UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> results, const std::string &searchTerm)
 {
+    if (searchTerm != this->userSearchString_)
+        return;
+    searchingUsers_ = false;
+    emit searchingUsersChanged();
     if (results.empty()) {
         nhlog::net()->debug("mtxclient helper thread yielded no results!");
         return;

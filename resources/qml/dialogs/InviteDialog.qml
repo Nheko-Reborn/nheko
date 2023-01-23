@@ -77,7 +77,7 @@ ApplicationWindow {
                     contentItem: Label {
                         anchors.centerIn: parent
                         id: inviteeUserid
-                        text: model.displayName
+                        text: model.displayName != "" ? model.displayName : model.userid
                         color: inviteeButton.hovered ? Nheko.colors.highlightedText: Nheko.colors.text
                         maximumLineCount: 1
                     }
