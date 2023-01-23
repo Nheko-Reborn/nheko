@@ -279,7 +279,7 @@ CallDevices::deinit()
 {
     if (monitor) {
         gst_device_monitor_stop(monitor);
-        g_free(monitor);
+        gst_object_unref(monitor);
         monitor = nullptr;
     }
 }
