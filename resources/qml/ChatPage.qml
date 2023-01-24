@@ -103,9 +103,10 @@ Rectangle {
                 collapsedWidth: roomlist.avatarSize + 2 * Nheko.paddingMedium
 
                 RoomList {
-                    id: roomlist
-
+                    id: roomlist                    
+           
                     height: adaptiveView.height
+                    width: 460
                     collapsed: parent.collapsed
                 }
 
