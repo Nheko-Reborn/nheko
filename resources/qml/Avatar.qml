@@ -58,8 +58,8 @@ AbstractButton {
         anchors.fill: parent
         asynchronous: true
         fillMode: avatar.crop ? Image.PreserveAspectCrop : Image.PreserveAspectFit
-        mipmap: true
-        smooth: true
+        mipmap: false
+        smooth: false
         sourceSize.width: avatar.width * Screen.devicePixelRatio
         sourceSize.height: avatar.height * Screen.devicePixelRatio
         source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale")) : ""
