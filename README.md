@@ -237,10 +237,10 @@ sharing easier.
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [coeurl](https://nheko.im/nheko-reborn/coeurl)
 - [LMDB](https://symas.com/lightning-memory-mapped-database/)
-- [lmdb++](https://github.com/hoytech/lmdbxx)
+- [lmdb++](https://github.com/hoytech/lmdbxx) (0.9.14 too old)
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)
-- [spdlog](https://github.com/gabime/spdlog)
+- [spdlog](https://github.com/gabime/spdlog) (1.8.1 too old)
 - [GStreamer](https://gitlab.freedesktop.org/gstreamer) 1.18.0 or greater (optional, needed for VoIP support. Pass `-DVOIP=OFF` to disable.).
     - Installing the gstreamer core library plus gst-plugins-base, gst-plugins-good & gst-plugins-bad
       is often sufficient. The qmlgl plugin though is often packaged separately. The actual plugin requirements
@@ -278,7 +278,7 @@ The bundle flags are currently:
 
 A note on bundled OpenSSL: You need to explicitly enable it and it will not be using your system certificate directory by default, if you enable it. You need to override that at runtime with the SSL_CERT_FILE variable. On Windows it will still be using your system certificates though, since it loads them from the system store instead of the OpenSSL directory.
 
-#### Linux
+#### Linux (Appimage)
 
 If you don't want to install any external dependencies, you can generate an AppImage locally using docker. It is not that well maintained though...
 
@@ -286,7 +286,7 @@ If you don't want to install any external dependencies, you can generate an AppI
 make docker-app-image
 ```
 
-##### Arch Linux
+#### Arch Linux
 
 ```bash
 sudo pacman -S qt5-base \
@@ -302,61 +302,45 @@ sudo pacman -S qt5-base \
     qtkeychain-qt5
 ```
 
-##### Gentoo Linux
-
+#### Debian 11+ / Ubuntu 22.04 
+*Older OS versions require a newer version of Qt5 than offered in official repositories.* 
+*Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):*
 ```bash
-sudo emerge -a ">=dev-qt/qtgui-5.15.0" media-libs/fontconfig dev-libs/qtkeychain
+sudo apt install --no-install-recommends g++ cmake make zlib1g-dev libssl-dev libolm-dev liblmdb-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libevent-dev libcurl4-openssl-dev libre2-dev libxcb-ewmh-dev asciidoc-base \
+qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev qt5keychain-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2,quick-particles2} \
+libgstreamer1.0-dev libgstreamer-plugins-{base,bad}1.0-dev qtgstreamer-plugins-qt5 libnice-dev
 ```
+lmdb++-dev is too old so bundled lmdbxx must be used.  
+libspdlog-dev in debian bullseye is too old (without backporting) so requires using hunter to use bundled spdlog.  
+Suggested flags for debian bullseye: `-DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=OFF`  
+Suggested flags for debian bookworm: `-DUSE_BUNDLED_COEURL=1 -DUSE_BUNDLED_MTXCLIENT=1 -DUSE_BUNDLED_LMDBXX=1`
 
-##### Ubuntu 22.04
-
-Older versions of Ubuntu don't have a new enough version of Qt 5.
-
-```bash
-# Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):
-sudo apt install --no-install-recommends g++ cmake make zlib1g-dev libssl-dev libolm-dev liblmdb-dev libcmark-dev nlohmann-json3-dev \
-    libspdlog-dev libevent-dev libcurl4-openssl-dev libre2-dev libxcb-ewmh-dev asciidoc-base \
-    qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev qt5keychain-dev \
-    qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2,quick-particles2} \
-    libgstreamer1.0-dev libgstreamer-plugins-{base,bad}1.0-dev qtgstreamer-plugins-qt5 libnice-dev
-```
-
-This will install all dependencies, including for mtxclient. You will need to use the bundled lmdb++ because the version in Ubuntu 22.04 is
-too old.
-
-##### Debian Buster (or higher probably)
-
-(User report, not sure if all of those are needed)
-
-```bash
-sudo apt install cmake gcc make automake liblmdb-dev \
-    qt5-default libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev \
-    qml-module-qtgstreamer qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev \
-    qml-module-qtgraphicaleffects qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform \
-    qt5keychain-dev asciidoctor libsecret-1-dev
-```
-
-##### Fedora
+#### Fedora
 
 ```bash
 sudo dnf builddep nheko # note that some newer packages might not be captured by that
 ```
 
-##### Guix
+#### Gentoo Linux
+
+```bash
+sudo emerge -a ">=dev-qt/qtgui-5.15.0" media-libs/fontconfig dev-libs/qtkeychain
+```
+
+#### Guix
 
 ```bash
 guix environment nheko
 ```
 
-##### macOS (Xcode 10.2 or later)
-
+#### macOS (Xcode 10.2 or later)
 
 ```bash
 brew update
 brew install qt5 lmdb cmake llvm spdlog boost cmark libolm qtkeychain
 ```
 
-##### Windows
+#### Windows
 
 1. Install Visual Studio 2022's "Desktop Development" and "Linux Development with C++"
 (for the CMake integration) workloads.
