@@ -16,12 +16,12 @@ ApplicationWindow {
     id: roomDirectoryWindow
 
     visible: true
-    
+
     minimumHeight: screen.availableSize().height() / 10 * 3
     minimumWidth: screen.availableSize().width() / 10 * 4
     height: screen.availableSize().height()
     width:  screen.availableSize().width() / 10 * (3 * screen.size().width() / 1000)
-    
+
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
@@ -50,10 +50,10 @@ ApplicationWindow {
             property color background: Nheko.colors.window
             property color importantText: Nheko.colors.text
             property color unimportantText: Nheko.colors.buttonText
-            property int avatarSize: fontMetrics.height * 3.2
+            property int avatarSize: fontMetrics.height * 3
 
             color: background
-            height: avatarSize + Nheko.paddingLarge
+            height: avatarSize + Nheko.paddingLarge + 2
             width: ListView.view.width
 
             RowLayout {
