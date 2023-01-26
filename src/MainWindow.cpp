@@ -363,9 +363,13 @@ MainWindow::event(QEvent *event)
 void
 MainWindow::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
-        emit hideMenu();
+#if defined(Q_OS_LINUX)
+    if (QGuiApplication::platformName() == "wayland") {
+        if (event->button() == Qt::LeftButton) {
+            emit hideMenu();
+        }
     }
+#endif
     return QQuickView::mousePressEvent(event);
 }
 
