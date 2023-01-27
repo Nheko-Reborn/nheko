@@ -1407,7 +1407,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+65"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрити</translation>
     </message>
 </context>
 <context>
@@ -1449,7 +1449,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+17"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Додати</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -1477,7 +1477,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Приєднатися</translation>
     </message>
 </context>
 <context>
@@ -1809,7 +1809,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+288"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Наліпки</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -2022,7 +2022,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Прийняти</translation>
     </message>
 </context>
 <context>
@@ -2073,7 +2073,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Мікрофон не знайдено.</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -2172,7 +2172,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Додати</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2646,7 +2646,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+67"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрити</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2725,17 +2725,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+13"/>
         <source>Favourite</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибране</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Низький пріоритет</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Server notice</source>
-        <translation type="unfinished"></translation>
+        <translation>Повідомлення сервера</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2793,7 +2793,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+20"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрити</translation>
     </message>
     <message>
         <location line="+64"/>
@@ -2988,7 +2988,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+105"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Шифрування</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -3030,7 +3030,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Приховані події</translation>
     </message>
     <message>
         <location line="-31"/>
@@ -3439,7 +3439,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/emoji/StickerPicker.qml" line="+72"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук</translation>
     </message>
 </context>
 <context>
@@ -3457,7 +3457,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+14"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрити</translation>
     </message>
 </context>
 <context>
