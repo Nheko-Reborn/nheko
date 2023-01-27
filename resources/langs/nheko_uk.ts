@@ -1349,7 +1349,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Вилучити</translation>
     </message>
 </context>
 <context>
