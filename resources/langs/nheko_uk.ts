@@ -1357,52 +1357,52 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+25"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування набору зображень</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Створити обліковий запис</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Новий набір кімнат</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Private pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Приватний набір</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Набір з цієї кімнати</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Набір з батьківської спільноти</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Увімкнений глобально набір</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Увімкнути глобально</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволяє використовувати цей пакет у всіх кімнатах</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити</translation>
     </message>
     <message>
         <location line="+65"/>
@@ -1415,17 +1415,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
         <source>Select a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Виберіть файл</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished"></translation>
+        <translation>Усі файли (*)</translation>
     </message>
     <message>
         <location line="+796"/>
         <source>Upload of &apos;%1&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка завантаження &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -1433,18 +1433,18 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/InviteDialog.qml" line="+35"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Запросити користувачів до %1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>User ID to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Користувач для запрошення</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@taras:matrix.org</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1454,12 +1454,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+84"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Запросити</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Скасувати</translation>
     </message>
 </context>
 <context>
@@ -1467,12 +1467,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+16"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Приєднатися до кімнати</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>ID кімнати або псевдонім</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1485,12 +1485,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+19"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Залишити кімнату</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви впевнені, що хочете піти?</translation>
     </message>
 </context>
 <context>
@@ -1498,12 +1498,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/pages/LoginPage.qml" line="+60"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Ідентифікатор Matrix</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>наприклад @taras:matrix.org</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1511,53 +1511,57 @@ You may optionally provide a reason for others to accept your knock:</source>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваше ім&apos;я для входу. Ідентифікатор Matrix має починатися з @, за яким іде ідентифікатор користувача. Після ідентифікатора користувача потрібно включити ім’я вашого сервера після :.
+Ви також можете вказати адресу домашнього сервера, якщо ваш сервер не підтримує .well-known lookup.
+Приклад: @користувач:мій.сервер
+Якщо Nheko не зможе виявити ваш домашній сервер, він покаже вам поле для введення сервера вручну.</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш пароль.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Ім&apos;я пристрою</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ім’я цього пристрою, яке буде показано іншим під час перевірки ваших пристроїв. Якщо нічого не вказано, використовується значення за умовчанням.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Адреса, за якою можна зв’язатися з клієнтським API вашого домашнього сервера.
+Приклад: https://мій.сервер:8787</translation>
     </message>
     <message>
         <location line="-4"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Адреса домашнього сервера</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>мій.сервер:8787</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>ВХІД</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Назад</translation>
     </message>
     <message>
         <location filename="../../src/LoginPage.cpp" line="+87"/>
@@ -1565,77 +1569,77 @@ Example: https://server.my:8787</source>
         <location line="+64"/>
         <location line="+127"/>
         <source>You have entered an invalid Matrix ID  e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви ввели недійсний ідентифікатор Matrix   наприклад @taras:matrix.org</translation>
     </message>
     <message>
         <location line="-157"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка автовиявлення. Отримано неправильну відповідь.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка автовиявлення. Невідома помилка під час запиту .well-known.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Потрібні кінцеві точки не знайдено. Можливо, це не сервер Matrix.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отримано неправильну відповідь. Переконайтеся, що домен домашнього сервера дійсний.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сталася невідома помилка. Переконайтеся, що домен домашнього сервера дійсний.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибраний сервер не підтримує версію протоколу Matrix, яку розуміє цей клієнт (від 1.1 до 1.5). Ви не можете ввійти.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Увійдіть за допомогою Apple</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Продовжуйте з Facebook</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Увійдіть за допомогою Google</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Увійдіть за допомогою Twitter</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Увійдіть за допомогою %1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>SSO LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>ВХІД SSO</translation>
     </message>
     <message>
         <location line="+58"/>
         <source>Empty password</source>
-        <translation type="unfinished"></translation>
+        <translation>Порожній пароль</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>SSO login failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка входу SSO</translation>
     </message>
 </context>
 <context>
@@ -2939,10 +2943,10 @@ Example: https://server.my:8787</source>
     <message numerus="yes">
         <location line="+22"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n учасник</numerusform>
+            <numerusform>%n учасники</numerusform>
+            <numerusform>%n учасників</numerusform>
         </translation>
     </message>
     <message>
@@ -3902,10 +3906,10 @@ Reason: %4</source>
     <message numerus="yes">
         <location line="+12"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n учасник</numerusform>
+            <numerusform>%n учасники</numerusform>
+            <numerusform>%n учасників</numerusform>
         </translation>
     </message>
     <message>
