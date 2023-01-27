@@ -458,7 +458,9 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
             if (tagNameEnd != end) {
                 auto attrStart = tagNameEnd;
                 auto attrsEnd  = std::find(attrStart, end, '>');
-                if (*(attrsEnd - 1) == '/')
+                // we don't want to consume the slash of self closing tags as part of an attribute.
+                // However, obviously we don't want to move backwards, if there are no attributes.
+                if (*(attrsEnd - 1) == '/' && attrStart < attrsEnd)
                     attrsEnd -= 1;
 
                 pos = attrsEnd;
