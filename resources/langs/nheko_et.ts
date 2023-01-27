@@ -373,7 +373,8 @@ Kui sa arvad, et tegemist on veaga, siis võid selle asemel Nheko sulgeda ja võ
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoaga %1 liitumine ei õnnestunud. Sa võid proovida jututoa uksele koputamist ja seal olijad saavad sind sisse lasta. Kas sa soovid seda teha?
+Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerima:</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -1508,7 +1509,10 @@ You may optionally provide a reason for others to accept your knock:</source>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu kasutajanimi sisselogimiseks. Matrix&apos;i kasutajatunnus algab @ märgiga ning sellele järgneb kasutajanimi. Seejärel peale koolonit
+on sinu koduserveri nimi. Kui sinu koduserver ei toeta .well-known nimelahendust, siis sa võid lisada ka koduserveri aadressi.
+Näiteks @kadri:server.minu
+Kui Nheko ei suuda tuvastada sinu koduserverit, siis ta kuvab sulle andmevälja selle sisestamiseks.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1975,12 +1979,12 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun verifitseeri oma seadmed. See tagab, et muud kasutajad saaks kontrollida missugused seadmed on sinu omad ning krüptovõtmete automaatne varundus toimiks. Kas verifitseerime mõne verifitseerimata seadme nüüd? (Selleks peab sul mõni verifitseeritud seadmetest käepärast olema.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Selleks, et muud kasutajad automaatselt usaldaks sinu seadmeid, peaksid nad verifitseerima. Samaga muutub ka krüptovõtmete varundus automaatseks. Kas verifitseerime seadme %1?</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2193,42 +2197,42 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+29"/>
         <source>Apply permission changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Jõusta õiguste muudatused</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
-        <translation type="unfinished"></translation>
+        <translation>Millistele alamkogukondadele ja jututubadele peaks need muudatused kehtima?</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Apply permissions recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Jõusta õigused rekursiivselt</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Overwrite exisiting modifications in rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Asenda senised jututubades tehtud muudatused</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation type="unfinished"></translation>
+        <translation>Uute õiguste määramiseks pole sul õigusi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No changes needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Muudatusi pole vaja teha</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Existing modifications to the permissions in this room will be overwritten</source>
-        <translation type="unfinished"></translation>
+        <translation>Senised õiguste muudatused selles jututoas kirjutatakse nüüd üle</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Permissions synchronized with community</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutame kogukonnaga samu õigusi</translation>
     </message>
 </context>
 <context>
@@ -2466,7 +2470,7 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+4"/>
         <source>Set the global log level, or a comma-separated list of &lt;component&gt;=&lt;level&gt; pairs, or both. For example, to set the default log level to &apos;warn&apos; but disable logging for the &apos;ui&apos; component, pass &apos;warn,ui=off&apos;. levels:{trace,debug,info,warning,error,critical,off} components:{crypto,db,mtx,net,qml,ui}</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista üldine logimise korraldus või komadega eraldatud &lt;komponent&gt;=&lt;logimistase&gt; paarid või sootuks mõlemad. Näiteks, kui tahad, et üldine logimine oleks &apos;warn&apos;, aga graafiline liides ehk &apos;ui&apos; ei logiks midagi, siis sisesta &apos;warn,ui=off&apos;. Logimistasemed on: {trace,debug,info,warning,error,critical,off} ning komponendid: {crypto,db,mtx,net,qml,ui}</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4569,7 +4573,7 @@ Kui Markdown ei ole kasutusel, siis saadetakse kõik sõnumid vormindamata tekst
     <message>
         <location line="+4"/>
         <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaheta sisestusklahvi käitumist teksti kirjutamisel - „Shift+Enter“ saadab sõnumi ja „Enter“ alustab uut rida.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4618,7 +4622,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+2"/>
         <source>Choose where to show the total number of notifications contained within a community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali kogukonnas või sildil leiduvate kõikide teavituste arvu kuvamise koht.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4628,7 +4632,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kui teised kasutajad on verifitseeritud, siis luba automaatselt vastata nende krüptovõtmete päringutele isegi siis, kui too seade ei peaks tohtima neid võtmeid kasutada.</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -4650,24 +4654,26 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
     <message>
         <location line="+38"/>
         <source>Show message counts for communities and tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita kogukonna või sildi sõnumite arvu</translation>
     </message>
     <message>
         <location line="+223"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista sõnumite suurim laius pikslites ajajoonel. See parandab loetavust suurel ekraanil, kui Nheko on avatud täisvaates</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Show a column containing communities and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita jututubade loendi kõrval veergu kogukondade ja siltidega.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuva uute sõnumitega jututoad esimesena.
+Kui see valik on välja lülitatud, siis jututoad järjestatakse viimati saabunud sõnumi ajatempli alusel.
+Kui see valik on sisse lülitatud, siis teavitustega jututoad (pisike ümmargune numbriga ikoon) järjestatakse esimesena. Sinu poolt summutatud jututoad järjestatakse ikkagi ajatempli alusel, sest sa ei pea neid teiste jututubadega võrreldes piisavalt tähtsaks.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4938,7 +4944,7 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava kasutaja registreerimise tagavaravariant, läbi kõik sammud ja kinnita seda, kui kõik valmis on.</translation>
     </message>
 </context>
 <context>
