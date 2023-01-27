@@ -1307,44 +1307,44 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>State key</source>
-        <translation type="unfinished"></translation>
+        <translation>Унікальне ім&apos;я</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>Назва набору</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation>Атрибуція</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+70"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Використовувати як емодзі</translation>
     </message>
     <message>
         <location line="-57"/>
         <location line="+70"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Використовувати як наліпку</translation>
     </message>
     <message>
         <location line="-32"/>
         <source>Shortcode</source>
-        <translation type="unfinished"></translation>
+        <translation>Короткий код</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Тіло</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Вилучити з набору</translation>
     </message>
     <message>
         <location line="+4"/>
