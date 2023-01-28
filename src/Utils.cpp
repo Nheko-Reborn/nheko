@@ -783,12 +783,130 @@ process_spoilers(cmark_node *node)
     cmark_iter_free(iter);
 }
 
+static void
+process_strikethrough(cmark_node *node)
+{
+    auto iter = cmark_iter_new(node);
+
+    while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
+        cmark_node *cur = cmark_iter_get_node(iter);
+
+        // only text nodes (no code or similar)
+        if (cmark_node_get_type(cur) != CMARK_NODE_TEXT) {
+            continue;
+        }
+
+        std::string_view content = cmark_node_get_literal(cur);
+
+        if (auto posStart = content.find("~~"); posStart != std::string::npos) {
+            // we have the start of the strikethrough
+            if (auto posEnd = content.find("~~", posStart + 2); posEnd != std::string::npos) {
+                // we have the end of the strikethrough in the same node
+
+                std::string before_strike = std::string(content.substr(0, posStart));
+                std::string inside_strike =
+                  std::string(content.substr(posStart + 2, posEnd - 2 - posStart));
+                std::string after_strike = std::string(content.substr(posEnd + 2));
+
+                // create the new nodes
+                auto before_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                cmark_node_set_literal(before_node, before_strike.c_str());
+                auto after_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                cmark_node_set_literal(after_node, after_strike.c_str());
+
+                auto block = cmark_node_new(cmark_node_type::CMARK_NODE_CUSTOM_INLINE);
+                cmark_node_set_on_enter(block, "<del>");
+                cmark_node_set_on_exit(block, "</del>");
+                auto child_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                cmark_node_set_literal(child_node, inside_strike.c_str());
+                cmark_node_append_child(block, child_node);
+
+                // insert the new nodes into the tree
+                cmark_node_replace(cur, block);
+                cmark_node_insert_before(block, before_node);
+                cmark_node_insert_after(block, after_node);
+
+                // cleanup the replaced node
+                cmark_node_free(cur);
+
+                // fixup the iterator
+                cmark_iter_reset(iter, block, CMARK_EVENT_EXIT);
+
+            } else {
+                // no end found, but lets try sibling nodes
+                for (auto next = cmark_node_next(cur); next != nullptr;
+                     next      = cmark_node_next(next)) {
+                    // only text nodes again
+                    if (cmark_node_get_type(next) != CMARK_NODE_TEXT)
+                        continue;
+
+                    std::string_view next_content = cmark_node_get_literal(next);
+                    if (auto posEndNext = next_content.find("~~");
+                        posEndNext != std::string_view::npos) {
+                        // We found the end of the strikethrough
+                        std::string before_strike = std::string(content.substr(0, posStart));
+                        std::string after_strike = std::string(next_content.substr(posEndNext + 2));
+
+                        std::string inside_strike_start = std::string(content.substr(posStart + 2));
+                        std::string inside_strike_end =
+                          std::string(next_content.substr(0, posEndNext));
+
+                        // save all the nodes inside the strikethrough for later
+                        std::vector<cmark_node *> child_nodes;
+                        for (auto kid = cmark_node_next(cur); kid != nullptr && kid != next;
+                             kid      = cmark_node_next(kid)) {
+                            child_nodes.push_back(kid);
+                        }
+
+                        // create the new nodes
+                        auto before_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                        cmark_node_set_literal(before_node, before_strike.c_str());
+                        auto after_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                        cmark_node_set_literal(after_node, after_strike.c_str());
+
+                        auto block = cmark_node_new(cmark_node_type::CMARK_NODE_CUSTOM_INLINE);
+                        cmark_node_set_on_enter(block, "<del>");
+                        cmark_node_set_on_exit(block, "</del>");
+
+                        // create the content inside the strikethrough by adding the old text at the
+                        // start and the end as well as all the existing children
+                        auto child_node_start = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                        cmark_node_set_literal(child_node_start, inside_strike_start.c_str());
+                        cmark_node_append_child(block, child_node_start);
+                        for (auto &child : child_nodes)
+                            cmark_node_append_child(block, child);
+                        auto child_node_end = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                        cmark_node_set_literal(child_node_end, inside_strike_end.c_str());
+                        cmark_node_append_child(block, child_node_end);
+
+                        // insert the new nodes into the tree
+                        cmark_node_replace(cur, block);
+                        cmark_node_insert_before(block, before_node);
+                        cmark_node_insert_after(block, after_node);
+
+                        // cleanup removed nodes
+                        cmark_node_free(cur);
+                        cmark_node_free(next);
+
+                        // fixup the iterator
+                        cmark_iter_reset(iter, block, CMARK_EVENT_EXIT);
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    cmark_iter_free(iter);
+}
 QString
 utils::markdownToHtml(const QString &text, bool rainbowify_)
 {
     const auto str         = text.toUtf8();
     cmark_node *const node = cmark_parse_document(str.constData(), str.size(), CMARK_OPT_UNSAFE);
 
+    process_strikethrough(node);
     process_spoilers(node);
 
     if (rainbowify_) {
