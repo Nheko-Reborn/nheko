@@ -718,15 +718,17 @@ process_spoilers(cmark_node *node)
                         continue;
 
                     std::string_view next_content = cmark_node_get_literal(next);
-                    if (auto posEnd = next_content.find("||"); posEnd != std::string_view::npos) {
+                    if (auto posEndNext = next_content.find("||");
+                        posEndNext != std::string_view::npos) {
                         // We found the end of the spoiler
                         std::string before_spoiler = std::string(content.substr(0, posStart));
-                        std::string after_spoiler  = std::string(next_content.substr(posEnd + 2));
+                        std::string after_spoiler =
+                          std::string(next_content.substr(posEndNext + 2));
 
                         std::string inside_spoiler_start =
                           std::string(content.substr(posStart + 2));
                         std::string inside_spoiler_end =
-                          std::string(next_content.substr(0, posEnd));
+                          std::string(next_content.substr(0, posEndNext));
 
                         std::string spoiler_text = extract_spoiler_warning(inside_spoiler_start);
 
