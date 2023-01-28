@@ -30,6 +30,14 @@ Pane {
 
     property string searchString: ""
 
+    // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+    Connections {
+        function onHideMenu() {
+            roomOptionsMenu.close()
+        }
+        target: MainWindow
+    }
+
     onRoomIdChanged: {
         searchString = "";
         searchButton.searchActive = false;

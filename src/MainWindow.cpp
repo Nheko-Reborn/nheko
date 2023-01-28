@@ -359,6 +359,18 @@ MainWindow::event(QEvent *event)
     return QQuickView::event(event);
 }
 
+// HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+void
+MainWindow::mousePressEvent(QMouseEvent *event)
+{
+#if defined(Q_OS_LINUX)
+    if (QGuiApplication::platformName() == "wayland") {
+        emit hideMenu();
+    }
+#endif
+    return QQuickView::mousePressEvent(event);
+}
+
 void
 MainWindow::restoreWindowSize()
 {

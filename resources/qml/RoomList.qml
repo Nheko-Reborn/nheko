@@ -20,6 +20,15 @@ Page {
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     property bool collapsed: false
 
+    // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+    Connections {
+        function onHideMenu() {
+            userInfoMenu.close()
+            roomContextMenu.close()
+        }
+        target: MainWindow
+    }
+
     Component {
         id: roomDirectoryComponent
 
