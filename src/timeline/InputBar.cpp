@@ -457,7 +457,11 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         text.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
 
         // Don't send formatted_body, when we don't need to
-        if (text.formatted_body.find('<') == std::string::npos)
+        // Specifically, if it includes no html tag and no newlines (which behave differently in
+        // formatted bodies). Probably we forgot something, so this might need to expand at some
+        // point.
+        if (text.formatted_body.find('<') == std::string::npos &&
+            text.body.find('\n') == std::string::npos)
             text.formatted_body = "";
         else
             text.format = "org.matrix.custom.html";
