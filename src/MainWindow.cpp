@@ -362,15 +362,16 @@ MainWindow::event(QEvent *event)
 void
 MainWindow::restoreWindowSize()
 {
+    int minWSize = 100;
     int savedWidth  = userSettings_->qsettings()->value(QStringLiteral("window/width")).toInt();
-    int savedheight = userSettings_->qsettings()->value(QStringLiteral("window/height")).toInt();
+    int savedHeight = userSettings_->qsettings()->value(QStringLiteral("window/height")).toInt();
 
-    nhlog::ui()->info("Restoring window size {}x{}", savedWidth, savedheight);
-
-    if (savedWidth == 0 || savedheight == 0)
-        resize(conf::window::width, conf::window::height);
-    else
-        resize(savedWidth, savedheight);
+    if (savedHeight < minWSize)
+        savedHeight = conf::window::height;
+    if (savedWidth < minWSize)
+        savedWidth = conf::window::width;
+    nhlog::ui()->info("Restoring window size {}x{}", savedWidth, savedHeight);
+    resize(savedWidth, savedHeight);
 }
 
 void
