@@ -568,86 +568,229 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
     return QString::fromUtf8(buffer);
 }
 
+static void
+rainbowify(cmark_node *node)
+{
+    // create iterator over node
+    cmark_iter *iter = cmark_iter_new(node);
+
+    // First loop to get total text length
+    int textLen = 0;
+    while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
+        cmark_node *cur = cmark_iter_get_node(iter);
+        // only text nodes (no code or semilar)
+        if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
+            continue;
+        // count up by length of current node's text
+        QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
+                                QString(cmark_node_get_literal(cur)));
+        while (tbf.toNextBoundary() != -1)
+            textLen++;
+    }
+
+    // create new iter to start over
+    cmark_iter_free(iter);
+    iter = cmark_iter_new(node);
+
+    // Second loop to rainbowify
+    int charIdx = 0;
+    while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
+        cmark_node *cur = cmark_iter_get_node(iter);
+        // only text nodes (no code or similar)
+        if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
+            continue;
+
+        // get text in current node
+        QString nodeText(cmark_node_get_literal(cur));
+        // create buffer to append rainbow text to
+        QString buf;
+        int boundaryStart = 0;
+        int boundaryEnd   = 0;
+        // use QTextBoundaryFinder to iterate over graphemes
+        QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme, nodeText);
+        while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
+            charIdx++;
+            // Split text to get current char
+            auto curChar  = QStringView(nodeText).mid(boundaryStart, boundaryEnd - boundaryStart);
+            boundaryStart = boundaryEnd;
+            // Don't rainbowify whitespaces
+            if (curChar.trimmed().isEmpty() || utils::codepointIsEmoji(curChar.toUcs4().at(0))) {
+                buf.append(curChar);
+                continue;
+            }
+
+            // get correct color for char index
+            // Use colors as described here:
+            // https://shark.comfsm.fm/~dleeling/cis/hsl_rainbow.html
+            auto color = QColor::fromHslF((charIdx - 1.0) / textLen * (5. / 6.), 0.9, 0.5);
+            // format color for HTML
+            auto colorString = color.name(QColor::NameFormat::HexRgb);
+            // create HTML element for current char
+            auto curCharColored =
+              QStringLiteral("<font color=\"%0\">%1</font>").arg(colorString).arg(curChar);
+            // append colored HTML element to buffer
+            buf.append(curCharColored);
+        }
+
+        // create HTML_INLINE node to prevent HTML from being escaped
+        auto htmlNode = cmark_node_new(CMARK_NODE_HTML_INLINE);
+        // set content of HTML node to buffer contents
+        cmark_node_set_literal(htmlNode, buf.toUtf8().data());
+        // replace current node with HTML node
+        cmark_node_replace(cur, htmlNode);
+        // free memory of old node
+        cmark_node_free(cur);
+    }
+
+    cmark_iter_free(iter);
+}
+
+static std::string
+extract_spoiler_warning(std::string &inside_spoiler)
+{
+    std::string spoiler_text;
+    if (auto spoilerTextEnd = inside_spoiler.find("|"); spoilerTextEnd != std::string::npos) {
+        spoiler_text   = inside_spoiler.substr(0, spoilerTextEnd);
+        inside_spoiler = inside_spoiler.substr(spoilerTextEnd + 1);
+    }
+    return QString::fromStdString(spoiler_text).replace('"', "&quot;").toStdString();
+}
+
+// TODO(Nico): Add tests :D
+static void
+process_spoilers(cmark_node *node)
+{
+    auto iter = cmark_iter_new(node);
+
+    while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
+        cmark_node *cur = cmark_iter_get_node(iter);
+
+        // only text nodes (no code or similar)
+        if (cmark_node_get_type(cur) != CMARK_NODE_TEXT) {
+            continue;
+        }
+
+        std::string_view content = cmark_node_get_literal(cur);
+
+        if (auto posStart = content.find("||"); posStart != std::string::npos) {
+            // we have the start of the spoiler
+            if (auto posEnd = content.find("||", posStart + 2); posEnd != std::string::npos) {
+                // we have the end of the spoiler in the same node
+
+                std::string before_spoiler = std::string(content.substr(0, posStart));
+                std::string inside_spoiler =
+                  std::string(content.substr(posStart + 2, posEnd - 2 - posStart));
+                std::string after_spoiler = std::string(content.substr(posEnd + 2));
+
+                std::string spoiler_text = extract_spoiler_warning(inside_spoiler);
+
+                // create the new nodes
+                auto before_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                cmark_node_set_literal(before_node, before_spoiler.c_str());
+                auto after_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                cmark_node_set_literal(after_node, after_spoiler.c_str());
+
+                auto block = cmark_node_new(cmark_node_type::CMARK_NODE_CUSTOM_INLINE);
+                cmark_node_set_on_enter(
+                  block, ("<span data-mx-spoiler=\"" + spoiler_text + "\">").c_str());
+                cmark_node_set_on_exit(block, "</span>");
+                auto child_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                cmark_node_set_literal(child_node, inside_spoiler.c_str());
+                cmark_node_append_child(block, child_node);
+
+                // insert the new nodes into the tree
+                cmark_node_replace(cur, block);
+                cmark_node_insert_before(block, before_node);
+                cmark_node_insert_after(block, after_node);
+
+                // cleanup the replaced node
+                cmark_node_free(cur);
+
+                // fixup the iterator
+                cmark_iter_reset(iter, block, CMARK_EVENT_EXIT);
+
+            } else {
+                // no end found, but lets try sibling nodes
+                for (auto next = cmark_node_next(cur); next != nullptr;
+                     next      = cmark_node_next(next)) {
+                    // only text nodes again
+                    if (cmark_node_get_type(next) != CMARK_NODE_TEXT)
+                        continue;
+
+                    std::string_view next_content = cmark_node_get_literal(next);
+                    if (auto posEnd = next_content.find("||"); posEnd != std::string_view::npos) {
+                        // We found the end of the spoiler
+                        std::string before_spoiler = std::string(content.substr(0, posStart));
+                        std::string after_spoiler  = std::string(next_content.substr(posEnd + 2));
+
+                        std::string inside_spoiler_start =
+                          std::string(content.substr(posStart + 2));
+                        std::string inside_spoiler_end =
+                          std::string(next_content.substr(0, posEnd));
+
+                        std::string spoiler_text = extract_spoiler_warning(inside_spoiler_start);
+
+                        // save all the nodes inside the spoiler for later
+                        std::vector<cmark_node *> child_nodes;
+                        for (auto kid = cmark_node_next(cur); kid != nullptr && kid != next;
+                             kid      = cmark_node_next(kid)) {
+                            child_nodes.push_back(kid);
+                        }
+
+                        // create the new nodes
+                        auto before_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                        cmark_node_set_literal(before_node, before_spoiler.c_str());
+                        auto after_node = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                        cmark_node_set_literal(after_node, after_spoiler.c_str());
+
+                        auto block = cmark_node_new(cmark_node_type::CMARK_NODE_CUSTOM_INLINE);
+                        cmark_node_set_on_enter(
+                          block, ("<span data-mx-spoiler=\"" + spoiler_text + "\">").c_str());
+                        cmark_node_set_on_exit(block, "</span>");
+
+                        // create the content inside the spoiler by adding the old text at the start
+                        // and the end as well as all the existing children
+                        auto child_node_start = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                        cmark_node_set_literal(child_node_start, inside_spoiler_start.c_str());
+                        cmark_node_append_child(block, child_node_start);
+                        for (auto &child : child_nodes)
+                            cmark_node_append_child(block, child);
+                        auto child_node_end = cmark_node_new(cmark_node_type::CMARK_NODE_TEXT);
+                        cmark_node_set_literal(child_node_end, inside_spoiler_end.c_str());
+                        cmark_node_append_child(block, child_node_end);
+
+                        // insert the new nodes into the tree
+                        cmark_node_replace(cur, block);
+                        cmark_node_insert_before(block, before_node);
+                        cmark_node_insert_after(block, after_node);
+
+                        // cleanup removed nodes
+                        cmark_node_free(cur);
+                        cmark_node_free(next);
+
+                        // fixup the iterator
+                        cmark_iter_reset(iter, block, CMARK_EVENT_EXIT);
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    cmark_iter_free(iter);
+}
+
 QString
-utils::markdownToHtml(const QString &text, bool rainbowify)
+utils::markdownToHtml(const QString &text, bool rainbowify_)
 {
     const auto str         = text.toUtf8();
     cmark_node *const node = cmark_parse_document(str.constData(), str.size(), CMARK_OPT_UNSAFE);
 
-    if (rainbowify) {
-        // create iterator over node
-        cmark_iter *iter = cmark_iter_new(node);
+    process_spoilers(node);
 
-        // First loop to get total text length
-        int textLen = 0;
-        while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
-            cmark_node *cur = cmark_iter_get_node(iter);
-            // only text nodes (no code or semilar)
-            if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
-                continue;
-            // count up by length of current node's text
-            QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme,
-                                    QString(cmark_node_get_literal(cur)));
-            while (tbf.toNextBoundary() != -1)
-                textLen++;
-        }
-
-        // create new iter to start over
-        cmark_iter_free(iter);
-        iter = cmark_iter_new(node);
-
-        // Second loop to rainbowify
-        int charIdx = 0;
-        while (cmark_iter_next(iter) != CMARK_EVENT_DONE) {
-            cmark_node *cur = cmark_iter_get_node(iter);
-            // only text nodes (no code or similar)
-            if (cmark_node_get_type(cur) != CMARK_NODE_TEXT)
-                continue;
-
-            // get text in current node
-            QString nodeText(cmark_node_get_literal(cur));
-            // create buffer to append rainbow text to
-            QString buf;
-            int boundaryStart = 0;
-            int boundaryEnd   = 0;
-            // use QTextBoundaryFinder to iterate over graphemes
-            QTextBoundaryFinder tbf(QTextBoundaryFinder::BoundaryType::Grapheme, nodeText);
-            while ((boundaryEnd = tbf.toNextBoundary()) != -1) {
-                charIdx++;
-                // Split text to get current char
-                auto curChar =
-                  QStringView(nodeText).mid(boundaryStart, boundaryEnd - boundaryStart);
-                boundaryStart = boundaryEnd;
-                // Don't rainbowify whitespaces
-                if (curChar.trimmed().isEmpty() || codepointIsEmoji(curChar.toUcs4().at(0))) {
-                    buf.append(curChar);
-                    continue;
-                }
-
-                // get correct color for char index
-                // Use colors as described here:
-                // https://shark.comfsm.fm/~dleeling/cis/hsl_rainbow.html
-                auto color = QColor::fromHslF((charIdx - 1.0) / textLen * (5. / 6.), 0.9, 0.5);
-                // format color for HTML
-                auto colorString = color.name(QColor::NameFormat::HexRgb);
-                // create HTML element for current char
-                auto curCharColored =
-                  QStringLiteral("<font color=\"%0\">%1</font>").arg(colorString).arg(curChar);
-                // append colored HTML element to buffer
-                buf.append(curCharColored);
-            }
-
-            // create HTML_INLINE node to prevent HTML from being escaped
-            auto htmlNode = cmark_node_new(CMARK_NODE_HTML_INLINE);
-            // set content of HTML node to buffer contents
-            cmark_node_set_literal(htmlNode, buf.toUtf8().data());
-            // replace current node with HTML node
-            cmark_node_replace(cur, htmlNode);
-            // free memory of old node
-            cmark_node_free(cur);
-        }
-
-        cmark_iter_free(iter);
+    if (rainbowify_) {
+        rainbowify(node);
     }
 
     const char *tmp_buf = cmark_render_html(node, CMARK_OPT_UNSAFE);
