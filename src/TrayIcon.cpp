@@ -15,6 +15,9 @@
 
 #include "TrayIcon.h"
 
+#if defined(Q_OS_LINUX)
+#include "ChatPage.h"
+#endif
 #if defined(Q_OS_MAC)
 #include <QtMacExtras>
 #endif
@@ -119,7 +122,12 @@ TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
     quitAction_ = new QAction(tr("Quit"), this);
 
     connect(viewAction_, &QAction::triggered, parent, &QWindow::show);
-    connect(quitAction_, &QAction::triggered, this, QApplication::quit);
+    connect(quitAction_, &QAction::triggered, this, [=] {
+#if defined(Q_OS_LINUX)
+        ChatPage::instance()->removeAllNotifications();
+#endif
+        QApplication::quit();
+    });
 
     menu->addAction(viewAction_);
     menu->addAction(quitAction_);
