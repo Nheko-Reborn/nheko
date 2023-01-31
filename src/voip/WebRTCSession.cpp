@@ -301,10 +301,9 @@ testPacketLoss(gpointer G_GNUC_UNUSED)
 void
 setWaitForKeyFrame(GstBin *decodebin G_GNUC_UNUSED, GstElement *element, gpointer G_GNUC_UNUSED)
 {
-    if (!std::strcmp(
-          gst_plugin_feature_get_name(GST_PLUGIN_FEATURE(gst_element_get_factory(element))),
-          "rtpvp8depay"))
-        g_object_set(element, "wait-for-keyframe", TRUE, nullptr);
+    // Unconditionally enable keyframe wait and requesting keyframes, so that we do that for
+    // every decode, not just vp8 decoding
+    g_object_set(element, "wait-for-keyframe", TRUE, "request-keyframe", TRUE, nullptr);
 }
 
 GstElement *
