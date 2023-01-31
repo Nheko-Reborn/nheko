@@ -259,6 +259,18 @@ Converts a room to a direct conversation.
 */converttoroom*::
 Converts a direct conversation to a normal room.
 
+== MARKDOWN EXTENSIONS
+
+*newline (+\n+)*::
+A single newline will be turned into `<br>` instead of a space.
+
+*+~~text~~+*::
+Make text strikethrough. HTML putput: `<del>text</del>`
+
+*`||spoiler|text||`*::
+Hide text and set an optional spoiler. Note that Nheko does not display the
+spoiler. HTML output: `<span data-mx-spoiler="spoiler">text</span>`
+
 == FILES
 
 *Configuration file*::
