@@ -29,6 +29,7 @@ Item {
     Connections {
         function onHideMenu() {
             messageContextMenu.close()
+            replyContextMenu.close()
         }
         target: MainWindow
     }

@@ -20,6 +20,14 @@ Page {
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 1.6)
     property bool collapsed: false
 
+    // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+    Connections {
+        function onHideMenu() {
+            communityContextMenu.close()
+        }
+        target: MainWindow
+    }
+
     ListView {
         id: communitiesList
 
