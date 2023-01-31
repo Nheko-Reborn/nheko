@@ -269,7 +269,7 @@ Make text strikethrough. HTML putput: `<del>text</del>`
 
 *`||spoiler|text||`*::
 Hide text and set an optional spoiler. Note that Nheko does not display the
-spoiler. HTML output: `<span data-mx-spoiler="spoiler">text</span>`
+spoiler warning currently. HTML output: `<span data-mx-spoiler="spoiler">text</span>`
 
 == FILES
 
