@@ -160,6 +160,12 @@ Send a message as a reaction when you’re replying to a message.
 */md* _<message>_::
 Force Markdown when sending the current message.
 
+*/cmark* _<message>_::
+Disables most of our extensions to cmark (CommonMark), including the
+newline-in-input = newline-in-output behaviour, strikethrough and spoilers. You
+may still force newlines with 2 spaces or a backslash before the line ending or
+insert HTML elements.
+
 */plain* _<message>_::
 Force plain text when sending the current message.
 
@@ -252,6 +258,18 @@ Converts a room to a direct conversation.
 
 */converttoroom*::
 Converts a direct conversation to a normal room.
+
+== MARKDOWN EXTENSIONS
+
+*newline (+\n+)*::
+A single newline will be turned into `<br>` instead of a space.
+
+*+~~text~~+*::
+Make text strikethrough. HTML putput: `<del>text</del>`
+
+*`||spoiler|text||`*::
+Hide text and set an optional spoiler. Note that Nheko does not display the
+spoiler warning currently. HTML output: `<span data-mx-spoiler="spoiler">text</span>`
 
 == FILES
 
