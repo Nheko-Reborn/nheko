@@ -34,6 +34,10 @@ Pane {
         id: publicRooms
     }
 
+    UserDirectoryModel {
+        id: userDirectory
+    }
+
     //Timer {
     //    onTriggered: gc()
     //    interval: 1000
@@ -198,11 +202,15 @@ Pane {
         }
 
         function onOpenInviteUsersDialog(invitees) {
-            var dialog = Qt.createComponent("qrc:/qml/dialogs/InviteDialog.qml").createObject(timelineRoot, {
+            var component = Qt.createComponent("qrc:/qml/dialogs/InviteDialog.qml")
+            var dialog = component.createObject(timelineRoot, {
                 "roomId": Rooms.currentRoom.roomId,
                 "plainRoomName": Rooms.currentRoom.plainRoomName,
                 "invitees": invitees
             });
+            if (component.status != Component.Ready) {
+                console.log("Failed to create component: " + component.errorString());
+            }
             dialog.show();
             destroyOnClose(dialog);
         }

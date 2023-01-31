@@ -491,6 +491,8 @@ set(SRC_FILES
 	src/SingleImagePackModel.h
 	src/TrayIcon.cpp
 	src/TrayIcon.h
+	src/UserDirectoryModel.cpp
+	src/UserDirectoryModel.h
 	src/UserSettingsPage.cpp
 	src/UserSettingsPage.h
 	src/UsersModel.cpp

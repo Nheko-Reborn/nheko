@@ -5,6 +5,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
+import "../components"
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -16,17 +17,25 @@ ApplicationWindow {
     property string roomId
     property string plainRoomName
     property InviteesModel invitees
+    property var friendsCompleter
+    property var profile
+    minimumWidth: 300
 
-    function addInvite() {
-        if (inviteeEntry.isValidMxid) {
-            invitees.addUser(inviteeEntry.text);
-            inviteeEntry.clear();
-        }
+    Component.onCompleted: {
+        friendsCompleter = TimelineManager.completerFor("user", "friends")
+        width = 600
+    }
+
+    function addInvite(mxid, displayName, avatarUrl) {
+        if (mxid.match("@.+?:.{3,}")) {
+            invitees.addUser(mxid, displayName, avatarUrl);
+        } else
+            console.log("invalid mxid: " + mxid)
     }
 
     function cleanUpAndClose() {
         if (inviteeEntry.isValidMxid)
-            addInvite();
+            addInvite(inviteeEntry.text, "", "");
 
         invitees.accept();
         close();
@@ -53,13 +62,40 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: Nheko.paddingMedium
         spacing: Nheko.paddingMedium
+        Flow {
+            layoutDirection: Qt.LeftToRight
+            Layout.fillWidth: true
+            Layout.preferredHeight: implicitHeight
+            spacing: 4
+            visible: !inviteesList.visible
+            Repeater {
+                id: inviteesRepeater
+                model: invitees
+                delegate: ItemDelegate {
+                    onClicked: invitees.removeUser(model.mxid)
+                    id: inviteeButton
+                    contentItem: Label {
+                        anchors.centerIn: parent
+                        id: inviteeUserid
+                        text: model.displayName != "" ? model.displayName : model.userid
+                        color: inviteeButton.hovered ? Nheko.colors.highlightedText: Nheko.colors.text
+                        maximumLineCount: 1
+                    }
+                    background: Rectangle {
+                        border.color: Nheko.colors.text
+                        color: inviteeButton.hovered ? Nheko.colors.highlight : Nheko.colors.window
+                        border.width: 1
+                        radius: inviteeButton.height / 2
+                    }
+                }
+            }
+        }
 
         Label {
-            text: qsTr("User ID to invite")
+            text: qsTr("Search user")
             Layout.fillWidth: true
             color: Nheko.colors.text
         }
-
         RowLayout {
             spacing: Nheko.paddingMedium
 
@@ -72,9 +108,14 @@ ApplicationWindow {
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
                 Layout.fillWidth: true
                 onAccepted: {
-                    if (isValidMxid)
-                        addInvite();
-
+                    if (isValidMxid) {
+                        addInvite(text, "", "");
+                        clear()
+                    }
+                    else if (userSearch.count > 0) {
+                        addInvite(userSearch.itemAtIndex(0).userid, userSearch.itemAtIndex(0).displayName, userSearch.itemAtIndex(0).avatarUrl)
+                        clear()
+                    }
                 }
                 Component.onCompleted: forceActiveFocus()
                 Keys.onShortcutOverride: event.accepted = ((event.key === Qt.Key_Return || event.key === Qt.Key_Enter) && (event.modifiers & Qt.ControlModifier))
@@ -83,85 +124,107 @@ ApplicationWindow {
                         cleanUpAndClose();
 
                 }
+                onTextChanged: {
+                    searchTimer.restart()
+                    if(isValidMxid) {
+                        profile = TimelineManager.getGlobalUserProfile(text);
+                    } else
+                        profile = null;
+                }
+                Timer {
+                    id: searchTimer
+
+                    interval: 350
+                    onTriggered: {
+                        userSearch.model.setSearchString(parent.text)
+                    }
+                }
             }
 
-            Button {
-                text: qsTr("Add")
-                enabled: inviteeEntry.isValidMxid
-                onClicked: addInvite()
+            ToggleButton {
+                id: searchOnServer
+                checked: false
+                onClicked: userSearch.model.setSearchString(inviteeEntry.text)
+            }
+            MatrixText {
+                text: qsTr("Search on Server")
             }
 
         }
-
-        ListView {
-            id: inviteesList
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            model: invitees
-
-            delegate: ItemDelegate {
-                id: del
-
-                hoverEnabled: true
-                width: ListView.view.width
-                height: layout.implicitHeight + Nheko.paddingSmall * 2
-                onClicked: TimelineManager.openGlobalUserProfile(model.mxid)
-                background: Rectangle {
-                    color: del.hovered ? Nheko.colors.dark : inviteDialogRoot.color
+        RowLayout {
+            UserListRow {
+                visible: inviteeEntry.isValidMxid
+                id: del3
+                Layout.preferredWidth: inviteDialogRoot.width/2
+                Layout.alignment: Qt.AlignTop
+                Layout.preferredHeight: implicitHeight
+                displayName: profile? profile.displayName : ""
+                avatarUrl: profile? profile.avatarUrl : ""
+                userid: inviteeEntry.text
+                onClicked: addInvite(inviteeEntry.text, displayName, avatarUrl)
+                bgColor: del3.hovered ? Nheko.colors.dark : inviteDialogRoot.color
+            }
+            ListView {
+                visible: !inviteeEntry.isValidMxid
+                id: userSearch
+                model: searchOnServer.checked? userDirectory : friendsCompleter
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                clip: true
+                delegate: UserListRow {
+                    id: del2
+                    width: ListView.view.width
+                    height: implicitHeight
+                    displayName: model.displayName
+                    userid: model.userid
+                    avatarUrl: model.avatarUrl
+                    onClicked: addInvite(userid, displayName, avatarUrl)
+                    bgColor: del2.hovered ? Nheko.colors.dark : inviteDialogRoot.color
                 }
+            }
+            Rectangle {
+                Layout.fillHeight: true
+                visible: inviteesList.visible
+                width: 1
+                color: Nheko.theme.separator
+            }
+            ListView {
+                id: inviteesList
 
-                RowLayout {
-                    id: layout
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                model: invitees
+                clip: true
+                visible: inviteDialogRoot.width >= 500
 
-                    spacing: Nheko.paddingMedium
-                    anchors.centerIn: parent
-                    width: del.width - Nheko.paddingSmall * 2
-
-                    Avatar {
-                        width: Nheko.avatarSize
-                        height: Nheko.avatarSize
-                        userid: model.mxid
-                        url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                        displayName: model.displayName
-                        enabled: false
-                    }
-
-                    ColumnLayout {
-                        spacing: Nheko.paddingSmall
-
-                        Label {
-                            text: model.displayName
-                            color: TimelineManager.userColor(model ? model.mxid : "", del.background.color)
-                            font.pointSize: fontMetrics.font.pointSize
-                        }
-
-                        Label {
-                            text: model.mxid
-                            color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
-                            font.pointSize: fontMetrics.font.pointSize * 0.9
-                        }
-
-                    }
-
-                    Item {
-                        Layout.fillWidth: true
-                    }
-
+                delegate: UserListRow {
+                    id: del
+                    hoverEnabled: true
+                    width: ListView.view.width
+                    height: implicitHeight
+                    onClicked: TimelineManager.openGlobalUserProfile(model.mxid)
+                    userid: model.mxid
+                    avatarUrl: model.avatarUrl
+                    displayName: model.displayName
+                    bgColor: del.hovered ? Nheko.colors.dark : inviteDialogRoot.color
                     ImageButton {
+                        anchors.right: parent.right
+                        anchors.rightMargin: Nheko.paddingSmall
+                        anchors.top: parent.top
+                        anchors.topMargin: Nheko.paddingSmall
+                        id: removeButton
                         image: ":/icons/icons/ui/dismiss.svg"
                         onClicked: invitees.removeUser(model.mxid)
                     }
 
-                }
+                    CursorShape {
+                        anchors.fill: parent
+                        cursorShape: Qt.PointingHandCursor
+                    }
 
-                CursorShape {
-                    anchors.fill: parent
-                    cursorShape: Qt.PointingHandCursor
                 }
 
             }
-
         }
 
     }
