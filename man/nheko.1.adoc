@@ -160,6 +160,12 @@ Send a message as a reaction when you’re replying to a message.
 */md* _<message>_::
 Force Markdown when sending the current message.
 
+*/cmark* _<message>_::
+Disables most of our extensions to cmark (CommonMark), including the
+newline-in-input = newline-in-output behaviour, strikethrough and spoilers. You
+may still force newlines with 2 spaces or a backslash before the line ending or
+insert HTML elements.
+
 */plain* _<message>_::
 Force plain text when sending the current message.
 
