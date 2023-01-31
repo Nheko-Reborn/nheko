@@ -267,9 +267,10 @@ A single newline will be turned into `<br>` instead of a space.
 *+~~text~~+*::
 Make text strikethrough. HTML putput: `<del>text</del>`
 
-*`||spoiler|text||`*::
-Hide text and set an optional spoiler. Note that Nheko does not display the
-spoiler warning currently. HTML output: `<span data-mx-spoiler="spoiler">text</span>`
+*`||spoiler warning|text||`*::
+Hide text and set an optional spoiler warning. Note that Nheko does not display
+the spoiler warning currently. HTML output:
+`<span data-mx-spoiler="spoiler">text</span>`
 
 == FILES
 
