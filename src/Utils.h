@@ -276,7 +276,7 @@ linkifyMessage(const QString &body);
 
 //! Convert the input markdown text to html.
 QString
-markdownToHtml(const QString &text, bool rainbowify = false);
+markdownToHtml(const QString &text, bool rainbowify = false, bool noExtensions = false);
 
 //! Escape every html tag, that was not whitelisted
 QString

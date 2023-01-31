@@ -73,6 +73,8 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QString("/rotate-megolm-session");
             case Md:
                 return QString("/md ");
+            case Cmark:
+                return QString("/cmark ");
             case Plain:
                 return QString("/plain ");
             case Rainbow:
@@ -140,6 +142,8 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("/rotate-megolm-session");
             case Md:
                 return tr("/md [message]");
+            case Cmark:
+                return tr("/cmark [message]");
             case Plain:
                 return tr("/plain [message]");
             case Rainbow:
@@ -206,6 +210,9 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("Rotate the current symmetric encryption key.");
             case Md:
                 return tr("Send a markdown formatted message (ignoring the global setting).");
+            case Cmark:
+                return tr(
+                  "Send a commonmark formatted message disabling most extensions compared to /md.");
             case Plain:
                 return tr("Send an unformatted message (ignoring the global setting).");
             case Rainbow:

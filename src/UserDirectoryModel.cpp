@@ -6,11 +6,13 @@
 
 #include "UserDirectoryModel.h"
 
+#include <QSharedPointer>
+
+#include <mtx/responses/users.hpp>
+
 #include "Cache.h"
 #include "Logging.h"
-#include <QSharedPointer>
 #include "MatrixClient.h"
-#include "mtx/responses/users.hpp"
 
 UserDirectoryModel::UserDirectoryModel(QObject *parent)
   : QAbstractListModel{parent}
@@ -49,7 +51,7 @@ UserDirectoryModel::fetchMore(const QModelIndex &)
 
     nhlog::net()->debug("Fetching users from mtxclient...");
     std::string searchTerm = userSearchString_;
-    searchingUsers_ = true;
+    searchingUsers_        = true;
     emit searchingUsersChanged();
     auto job = QSharedPointer<FetchUsersFromDirectoryJob>::create();
     connect(job.data(),
@@ -88,7 +90,8 @@ UserDirectoryModel::data(const QModelIndex &index, int role) const
 }
 
 void
-UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> results, const std::string &searchTerm)
+UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> results,
+                                         const std::string &searchTerm)
 {
     if (searchTerm != this->userSearchString_)
         return;

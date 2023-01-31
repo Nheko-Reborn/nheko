@@ -18,11 +18,12 @@ class FetchUsersFromDirectoryJob final : public QObject
     Q_OBJECT
 public:
     explicit FetchUsersFromDirectoryJob(QObject *p = nullptr)
-    : QObject(p)
+      : QObject(p)
     {
     }
 signals:
-    void fetchedSearchResults(std::vector<mtx::responses::User> results, const std::string &searchTerm);
+    void
+    fetchedSearchResults(std::vector<mtx::responses::User> results, const std::string &searchTerm);
 };
 class UserDirectoryModel : public QAbstractListModel
 {
@@ -65,5 +66,6 @@ public slots:
     bool searchingUsers() const { return searchingUsers_; }
 
 private slots:
-    void displaySearchResults(std::vector<mtx::responses::User> results, const std::string &searchTerm);
+    void
+    displaySearchResults(std::vector<mtx::responses::User> results, const std::string &searchTerm);
 };

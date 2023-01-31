@@ -40,6 +40,7 @@ public:
         ResetState,
         RotateMegolmSession,
         Md,
+        Cmark,
         Plain,
         Rainbow,
         RainbowMe,

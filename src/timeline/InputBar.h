@@ -40,6 +40,7 @@ enum class MarkdownOverride
     NOT_SPECIFIED, // no override set
     ON,
     OFF,
+    CMARK,
 };
 
 class InputVideoSurface final : public QAbstractVideoSurface

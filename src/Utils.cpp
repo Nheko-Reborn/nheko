@@ -901,19 +901,24 @@ process_strikethrough(cmark_node *node)
     cmark_iter_free(iter);
 }
 QString
-utils::markdownToHtml(const QString &text, bool rainbowify_)
+utils::markdownToHtml(const QString &text, bool rainbowify_, bool noExtensions)
 {
     const auto str         = text.toUtf8();
     cmark_node *const node = cmark_parse_document(str.constData(), str.size(), CMARK_OPT_UNSAFE);
 
-    process_strikethrough(node);
-    process_spoilers(node);
+    if (!noExtensions) {
+        process_strikethrough(node);
+        process_spoilers(node);
 
-    if (rainbowify_) {
-        rainbowify(node);
+        if (rainbowify_) {
+            rainbowify(node);
+        }
     }
 
-    const char *tmp_buf = cmark_render_html(node, CMARK_OPT_UNSAFE);
+    const char *tmp_buf = cmark_render_html(
+      node,
+      // by default make single linebreaks <br> tags
+      noExtensions ? CMARK_OPT_UNSAFE : (CMARK_OPT_UNSAFE | CMARK_OPT_HARDBREAKS));
     // Copy the null terminated output buffer.
     std::string html(tmp_buf);
 
@@ -921,7 +926,11 @@ utils::markdownToHtml(const QString &text, bool rainbowify_)
     free((char *)tmp_buf);
     cmark_node_free(node);
 
-    auto result = linkifyMessage(escapeBlacklistedHtml(QString::fromStdString(html))).trimmed();
+    auto result = escapeBlacklistedHtml(QString::fromStdString(html)).trimmed();
+
+    if (!noExtensions) {
+        result = linkifyMessage(std::move(result)).trimmed();
+    }
 
     if (result.count(QStringLiteral("<p>")) == 1 && result.startsWith(QLatin1String("<p>")) &&
         result.endsWith(QLatin1String("</p>"))) {

@@ -465,6 +465,14 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
             text.formatted_body = "";
         else
             text.format = "org.matrix.custom.html";
+    } else if (useMarkdown == MarkdownOverride::CMARK) {
+        // disable all markdown extensions
+        text.formatted_body = utils::markdownToHtml(msg, rainbowify, true).toStdString();
+        // keep everything as it was
+        text.body = msg.trimmed().toStdString();
+
+        // always send formatted
+        text.format = "org.matrix.custom.html";
     }
 
     text.relations = generateRelations();
@@ -802,6 +810,8 @@ InputBar::command(const QString &command, QString args)
         cache::dropOutboundMegolmSession(room->roomId().toStdString());
     } else if (command == QLatin1String("md")) {
         message(args, MarkdownOverride::ON);
+    } else if (command == QLatin1String("cmark")) {
+        message(args, MarkdownOverride::CMARK);
     } else if (command == QLatin1String("plain")) {
         message(args, MarkdownOverride::OFF);
     } else if (command == QLatin1String("rainbow")) {
