@@ -28,6 +28,7 @@ struct RoomMember
 {
     QString user_id;
     QString display_name;
+    QString avatar_url;
     bool is_direct = false;
 };
 

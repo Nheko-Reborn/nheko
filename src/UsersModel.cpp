@@ -34,12 +34,15 @@ UsersModel::UsersModel(const std::string &roomId, QObject *parent)
             }
         }
     } else {
-        for (const auto &m : cache::roomMembers(roomId)) {
-            displayNames.push_back(QString::fromStdString(cache::displayName(room_id, m)));
-            userids.push_back(QString::fromStdString(m));
-            avatarUrls.push_back(
-              cache::avatarUrl(QString::fromStdString(room_id), QString::fromStdString(m)));
+        const auto start_at = std::chrono::steady_clock::now();
+        for (const auto &m : cache::getMembers(roomId, 0, -1)) {
+            displayNames.push_back(m.display_name);
+            userids.push_back(m.user_id);
+            avatarUrls.push_back(m.avatar_url);
         }
+        const auto end_at     = std::chrono::steady_clock::now();
+        const auto build_time = std::chrono::duration<double, std::milli>(end_at - start_at);
+        nhlog::ui()->debug("UsersModel: build data: {} ms", build_time.count());
     }
 }
 

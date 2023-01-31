@@ -3196,8 +3196,11 @@ Cache::getMembers(const std::string &room_id, std::size_t startIndex, std::size_
 
             try {
                 MemberInfo tmp = nlohmann::json::parse(user_data).get<MemberInfo>();
-                members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
-                                                QString::fromStdString(tmp.name)});
+                members.emplace_back(RoomMember{
+                  QString::fromStdString(std::string(user_id)),
+                  QString::fromStdString(tmp.name),
+                  QString::fromStdString(tmp.avatar_url),
+                });
             } catch (const nlohmann::json::exception &e) {
                 nhlog::db()->warn("{}", e.what());
             }
@@ -3263,9 +3266,12 @@ Cache::getMembersFromInvite(const std::string &room_id, std::size_t startIndex, 
 
             try {
                 MemberInfo tmp = nlohmann::json::parse(user_data).get<MemberInfo>();
-                members.emplace_back(RoomMember{QString::fromStdString(std::string(user_id)),
-                                                QString::fromStdString(tmp.name),
-                                                tmp.is_direct});
+                members.emplace_back(RoomMember{
+                  QString::fromStdString(std::string(user_id)),
+                  QString::fromStdString(tmp.name),
+                  QString::fromStdString(tmp.avatar_url),
+                  tmp.is_direct,
+                });
             } catch (const nlohmann::json::exception &e) {
                 nhlog::db()->warn("{}", e.what());
             }
