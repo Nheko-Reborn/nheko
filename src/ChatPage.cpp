@@ -144,9 +144,13 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                 Q_UNUSED(eventid)
                 auto exWin = MainWindow::instance()->windowForRoom(roomid);
                 if (exWin) {
+                    exWin->setVisible(true);
+                    exWin->raise();
                     exWin->requestActivate();
                 } else {
                     view_manager_->rooms()->setCurrentRoom(roomid);
+                    MainWindow::instance()->setVisible(true);
+                    MainWindow::instance()->raise();
                     MainWindow::instance()->requestActivate();
                 }
             });
@@ -1621,9 +1625,13 @@ ChatPage::sendNotificationReply(const QString &roomid, const QString &eventid, c
     view_manager_->queueReply(roomid, eventid, body);
     auto exWin = MainWindow::instance()->windowForRoom(roomid);
     if (exWin) {
+        exWin->setVisible(true);
+        exWin->raise();
         exWin->requestActivate();
     } else {
         view_manager_->rooms()->setCurrentRoom(roomid);
+        MainWindow::instance()->setVisible(true);
+        MainWindow::instance()->raise();
         MainWindow::instance()->requestActivate();
     }
 }
