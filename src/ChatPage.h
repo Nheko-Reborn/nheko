@@ -84,9 +84,7 @@ public:
         return pushrules;
     }
 
-#if defined(Q_OS_LINUX)
     void removeAllNotifications();
-#endif
 
 public slots:
     bool handleMatrixUri(QString uri);

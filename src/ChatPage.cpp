@@ -1641,10 +1641,10 @@ ChatPage::isRoomActive(const QString &room_id)
            MainWindow::instance()->windowForRoom(room_id) == QGuiApplication::focusWindow();
 }
 
-#if defined (Q_OS_LINUX)
 void
 ChatPage::removeAllNotifications()
 {
+#if defined (Q_OS_LINUX)
     notificationsManager->closeAllNotifications();
-}
 #endif
+}
