@@ -84,6 +84,8 @@ public:
         return pushrules;
     }
 
+    void removeAllNotifications();
+
 public slots:
     bool handleMatrixUri(QString uri);
     bool handleMatrixUri(const QUrl &uri);

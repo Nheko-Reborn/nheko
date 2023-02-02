@@ -350,6 +350,7 @@ main(int argc, char *argv[])
         w.show();
 
     QObject::connect(&app, &QApplication::aboutToQuit, &w, [&w]() {
+        ChatPage::instance()->removeAllNotifications();
         w.saveCurrentWindowSize();
         if (http::client() != nullptr) {
             nhlog::net()->debug("shutting down all I/O threads & open connections");

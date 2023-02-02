@@ -271,3 +271,12 @@ NotificationsManager::notificationClosed(uint id, uint reason)
     Q_UNUSED(reason);
     notificationIds.remove(id);
 }
+
+void
+NotificationsManager::closeAllNotifications()
+{
+    for (auto id : notificationIds.keys()) {
+        closeNotification(id);
+        notificationIds.remove(id);
+    }
+}
