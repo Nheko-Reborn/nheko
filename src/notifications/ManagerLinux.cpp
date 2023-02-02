@@ -275,7 +275,8 @@ NotificationsManager::notificationClosed(uint id, uint reason)
 void
 NotificationsManager::closeAllNotifications()
 {
-    for (auto id : notificationIds.keys()) {
+    const auto ids = notificationIds.keys();
+    for (const auto &id : ids) {
         closeNotification(id);
         notificationIds.remove(id);
     }
