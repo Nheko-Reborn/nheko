@@ -55,6 +55,8 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QString("/unban @");
             case Redact:
                 return QString("/redact ");
+            case MyRoomnick:
+                return QString("/myroomnick ");
             case Roomnick:
                 return QString("/roomnick ");
             case Shrug:
@@ -124,6 +126,8 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("/unban @userid [reason]");
             case Redact:
                 return tr("/redact ($eventid|@userid)");
+            case MyRoomnick:
+                return tr("/myroomnick <displayname>");
             case Roomnick:
                 return tr("/roomnick <displayname>");
             case Shrug:

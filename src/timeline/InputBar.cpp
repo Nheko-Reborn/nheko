@@ -776,7 +776,7 @@ InputBar::command(const QString &command, QString args)
         } else if (args.startsWith('$')) {
             room->redactEvent(args.section(' ', 0, 0), args.section(' ', 1, -1));
         }
-    } else if (command == QLatin1String("roomnick")) {
+    } else if (command == QLatin1String("myroomnick") || command == QLatin1String("roomnick")) {
         mtx::events::state::Member member;
         member.display_name = args.toStdString();
         member.avatar_url =

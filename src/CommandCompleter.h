@@ -31,6 +31,7 @@ public:
         Ban,
         Unban,
         Redact,
+        MyRoomnick,
         Roomnick,
         Shrug,
         Fliptable,

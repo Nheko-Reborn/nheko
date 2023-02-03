@@ -210,7 +210,7 @@ Redacts all visible messages of the specified user. You will run into rate limit
 */redact* _<eventid>_ _[reason]_::
 Redacts a specific event.
 
-*/roomnick* _<roomname>_::
+*/myroomnick*, */roomnick* _<roomname>_::
 Change your nickname in a single room.
 
 === Emoticons
