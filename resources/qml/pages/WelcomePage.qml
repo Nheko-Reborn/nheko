@@ -9,6 +9,7 @@ import QtQuick.Layouts 1.2
 import QtQuick.Window 2.15
 import im.nheko 1.0
 import "../components/"
+import ".."
 
 ColumnLayout {
     Item {
@@ -64,8 +65,29 @@ ColumnLayout {
                 mainWindow.push(loginPage);
             }
         }
+
         Item {
             Layout.fillWidth: true
+        }
+
+    }
+
+    RowLayout {
+        Layout.alignment: Qt.AlignHCenter
+        Layout.margins: Nheko.paddingLarge
+
+        ToggleButton {
+            Layout.margins: Nheko.paddingLarge
+            Layout.alignment: Qt.AlignRight
+            checked: Settings.reducedMotion
+            onCheckedChanged: Settings.reducedMotion = checked
+        }
+
+        Label {
+            Layout.alignment: Qt.AlignLeft
+            Layout.margins: Nheko.paddingLarge
+            text: qsTr("Reduce animations")
+            color: Nheko.colors.text
         }
     }
     Item {
