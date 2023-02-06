@@ -6,9 +6,9 @@ if [ -z "$1" ]; then
 fi
 
 if [ -n "${CI_COMMIT_TAG}" ]; then
-	BUILD_URL=$(./flat-manager-client create https://flatpak.neko.dev stable)
+	BUILD_URL=$(./flat-manager-client create --public_download https://flatpak.neko.dev stable)
 elif [ "master" = "${CI_COMMIT_REF_NAME}" ]; then
-	BUILD_URL=$(./flat-manager-client create https://flatpak.neko.dev nightly)
+	BUILD_URL=$(./flat-manager-client create --public_download https://flatpak.neko.dev nightly)
 fi
 
 if [ -z "${BUILD_URL}" ]; then
@@ -18,7 +18,6 @@ fi
 
 BUILD_URL=${BUILD_URL/http:/https:}
 
-./flat-manager-client push $BUILD_URL $1
-./flat-manager-client commit --wait $BUILD_URL
-./flat-manager-client publish --wait $BUILD_URL
+./flat-manager-client push --commit --wait --wait-update $BUILD_URL $1
+./flat-manager-client publish --wait --wait-update $BUILD_URL
 
