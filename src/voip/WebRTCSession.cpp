@@ -1159,7 +1159,7 @@ WebRTCSession::end()
 #else
 
 bool
-WebRTCSession::havePlugins(bool, std::string *)
+WebRTCSession::havePlugins(bool, bool, std::string *)
 {
     return false;
 }
