@@ -208,7 +208,7 @@
 <context>
     <name>CallManager</name>
     <message>
-        <location filename="../../src/voip/CallManager.cpp" line="+820"/>
+        <location filename="../../src/voip/CallManager.cpp" line="+819"/>
         <source>Entire screen</source>
         <translation>Entire screen</translation>
     </message>
@@ -222,7 +222,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+839"/>
+        <location line="+843"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
@@ -430,7 +430,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+104"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+106"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;message&gt;</translation>
     </message>
@@ -528,6 +528,11 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <location line="+2"/>
         <source>/md [message]</source>
         <translation>/md [message]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/cmark [message]</source>
+        <translation>/cmark [message]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -677,6 +682,11 @@ You may optionally provide a reason for others to accept your knock:</translatio
     </message>
     <message>
         <location line="+2"/>
+        <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
+        <translation>Send a commonmark formatted message disabling most extensions compared to /md.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
         <translation>Send an unformatted message (ignoring the global setting).</translation>
     </message>
@@ -729,7 +739,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+52"/>
+        <location filename="../qml/CommunitiesList.qml" line="+60"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Do not show notification counts for this community or tag.</translation>
     </message>
@@ -881,7 +891,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>@user:server.tld</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Encryption</source>
         <translation>Encryption</translation>
     </message>
@@ -1013,12 +1023,12 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+71"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+70"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
     <message>
-        <location line="+197"/>
+        <location line="+181"/>
         <source>People</source>
         <translation>People</translation>
     </message>
@@ -1421,7 +1431,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>All Files (*)</translation>
     </message>
     <message>
-        <location line="+796"/>
+        <location line="+810"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Upload of &apos;%1&apos; failed</translation>
     </message>
@@ -1429,28 +1439,28 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>InviteDialog</name>
     <message>
-        <location filename="../qml/dialogs/InviteDialog.qml" line="+35"/>
+        <location filename="../qml/dialogs/InviteDialog.qml" line="+44"/>
         <source>Invite users to %1</source>
         <translation>Invite users to %1</translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>User ID to invite</source>
-        <translation>User ID to invite</translation>
-    </message>
-    <message>
-        <location line="+14"/>
+        <location line="+64"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
         <translation>@joe:matrix.org</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Add</source>
-        <translation>Add</translation>
+        <location line="-13"/>
+        <source>Search user</source>
+        <translation>Search user</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+55"/>
+        <source>Search on Server</source>
+        <translation>Search on Server</translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>Invite</source>
         <translation>Invite</translation>
     </message>
@@ -1832,7 +1842,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+129"/>
+        <location filename="../qml/MessageView.qml" line="+138"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
@@ -2445,7 +2455,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+232"/>
+        <location filename="../../src/main.cpp" line="+234"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</translation>
     </message>
@@ -2628,7 +2638,7 @@ Example: https://server.my:8787</translation>
         <translation>Server does not support registration.</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+28"/>
         <source>Invalid username.</source>
         <translation>Invalid username.</translation>
     </message>
@@ -2682,7 +2692,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1968"/>
+        <location filename="../../src/Cache.cpp" line="+1974"/>
         <source>no version stored</source>
         <translation>no version stored</translation>
     </message>
@@ -2690,7 +2700,7 @@ Example: https://server.my:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+144"/>
+        <location filename="../qml/RoomList.qml" line="+153"/>
         <source>New tag</source>
         <translation>New tag</translation>
     </message>
@@ -3173,7 +3183,7 @@ Please take note that it can&apos;t be disabled afterwards.</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+255"/>
+        <location filename="../qml/Root.qml" line="+263"/>
         <source>Please enter your login password to continue:</source>
         <translation>Please enter your login password to continue:</translation>
     </message>
@@ -3255,7 +3265,7 @@ Please take note that it can&apos;t be disabled afterwards.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4658"/>
+        <location filename="../../src/Cache.cpp" line="-4664"/>
         <source>Failed to connect to secret storage</source>
         <translation>Failed to connect to secret storage</translation>
     </message>
@@ -3440,7 +3450,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>StickerPicker</name>
     <message>
-        <location filename="../qml/emoji/StickerPicker.qml" line="+72"/>
+        <location filename="../qml/emoji/StickerPicker.qml" line="+71"/>
         <source>Search</source>
         <translation>Search</translation>
     </message>
@@ -3466,7 +3476,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1389"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1394"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Message redaction failed: %1</translation>
@@ -3498,7 +3508,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>Save file</translation>
     </message>
     <message numerus="yes">
-        <location line="+274"/>
+        <location line="+275"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3827,12 +3837,12 @@ Reason: %4</translation>
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="-1627"/>
+        <location line="-1628"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
     <message>
-        <location line="+925"/>
+        <location line="+926"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 made this room require an invitation to join.</translation>
     </message>
@@ -3884,7 +3894,7 @@ Reason: %4</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+43"/>
+        <location filename="../qml/TimelineView.qml" line="+44"/>
         <source>No room open</source>
         <translation>No room open</translation>
     </message>
@@ -3945,17 +3955,17 @@ Reason: %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+153"/>
+        <location filename="../qml/TopBar.qml" line="+161"/>
         <source>Back to room list</source>
         <translation>Back to room list</translation>
     </message>
     <message>
-        <location line="-133"/>
+        <location line="-141"/>
         <source>No room selected</source>
         <translation>No room selected</translation>
     </message>
     <message>
-        <location line="+115"/>
+        <location line="+123"/>
         <source>In %1</source>
         <translation>In %1</translation>
     </message>
@@ -4201,8 +4211,8 @@ Reason: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+534"/>
-        <location filename="../../src/UserSettingsPage.h" line="+244"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+551"/>
+        <location filename="../../src/UserSettingsPage.h" line="+248"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -4210,7 +4220,7 @@ Reason: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+408"/>
         <source>Theme</source>
         <translation>Theme</translation>
     </message>
@@ -4336,6 +4346,11 @@ Reason: %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Reduce or disable animations</source>
+        <translation>Reduce or disable animations</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Privacy Screen</source>
         <translation>Privacy Screen</translation>
     </message>
@@ -4456,6 +4471,11 @@ Reason: %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>ACCESSIBILITY</source>
+        <translation>ACCESSIBILITY</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>TIMELINE</source>
         <translation>TIMELINE</translation>
     </message>
@@ -4525,7 +4545,7 @@ Reason: %4</translation>
         <translation>Expose room information via D-Bus</translation>
     </message>
     <message>
-        <location line="+103"/>
+        <location line="+105"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -4630,24 +4650,29 @@ OFF - square, ON - circle.</translation>
         <translation>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</translation>
     </message>
     <message>
+        <location line="+3"/>
+        <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
+        <translation>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</translation>
+    </message>
+    <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+32"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</translation>
     </message>
     <message>
-        <location line="-72"/>
+        <location line="-76"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</translation>
     </message>
     <message>
-        <location line="-319"/>
+        <location line="-325"/>
         <source>Communities sidebar</source>
         <translation>Communities sidebar</translation>
     </message>
@@ -4657,7 +4682,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Show message counts for communities and tags</translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+229"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</translation>
     </message>
@@ -4711,7 +4736,7 @@ Only affects messages in encrypted chats.</source>
 Only affects messages in encrypted chats.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+14"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
         <translation>When the window loses focus, the timeline will
@@ -4743,7 +4768,7 @@ be blurred.</translation>
         <translation>Download message encryption keys from and upload to the encrypted online key backup.</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
         <translation>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</translation>
     </message>
@@ -4767,7 +4792,7 @@ This setting will take effect upon restart.</source>
 This setting will take effect upon restart.</translation>
     </message>
     <message>
-        <location line="+442"/>
+        <location line="+451"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -4896,7 +4921,7 @@ This setting will take effect upon restart.</translation>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../qml/pages/WelcomePage.qml" line="+30"/>
+        <location filename="../qml/pages/WelcomePage.qml" line="+31"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>Welcome to Nheko! The desktop client for the Matrix protocol.</translation>
     </message>
@@ -4914,6 +4939,16 @@ This setting will take effect upon restart.</translation>
         <location line="+8"/>
         <source>LOGIN</source>
         <translation>LOGIN</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Reduce animations</source>
+        <translation>Reduce animations</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
+        <translation>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</translation>
     </message>
 </context>
 <context>

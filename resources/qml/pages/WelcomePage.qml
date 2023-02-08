@@ -88,6 +88,13 @@ ColumnLayout {
             Layout.margins: Nheko.paddingLarge
             text: qsTr("Reduce animations")
             color: Nheko.colors.text
+
+            HoverHandler {
+                id: hovered
+            }
+            ToolTip.visible: hovered.hovered
+            ToolTip.text: qsTr("Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.")
+            ToolTip.delay: Nheko.tooltipDelay
         }
     }
     Item {
