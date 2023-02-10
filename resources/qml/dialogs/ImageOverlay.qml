@@ -23,6 +23,7 @@ Window {
 
     //visibility: Window.FullScreen
     color: Qt.rgba(0.2,0.2,0.2,0.66)
+    Component.onCompleted: Nheko.setWindowRole(imageOverlay, "imageoverlay")
 
     Shortcut {
         sequence: StandardKey.Cancel
