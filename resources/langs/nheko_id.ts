@@ -531,7 +531,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>/cmark [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -682,7 +682,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan yang diformat dengan CommonMark, menonaktifkan banyak ekstensi dibandingkan /md.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1450,12 +1450,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="-13"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari pengguna</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Cari di Server</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -4336,7 +4336,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Kurangi atau nonaktifkan animasi</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4461,7 +4461,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>ACCESSIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>AKSESIBILITAS</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4932,12 +4932,12 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Kurangi animasi</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko menggunakan animasi di beberapa tempat untuk membuat hal-hal indah. Ini memungkinkanmu untuk menonaktifkannya jika mereka membuatmu pusing.</translation>
     </message>
 </context>
 <context>
