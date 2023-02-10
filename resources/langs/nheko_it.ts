@@ -6,7 +6,7 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+109"/>
         <source>Calling...</source>
-        <translation>Chiamata in corso...</translation>
+        <translation>Sto chiamando…</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -17,7 +17,7 @@
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>Stai condividendo lo schermo</translation>
+        <translation>Stai condividendo lo schermo.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -192,7 +192,7 @@
     <message>
         <location line="+9"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Videocamera sconosciuta: %1</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -210,7 +210,7 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+819"/>
         <source>Entire screen</source>
-        <translation>Schermo completo</translation>
+        <translation>Schermo intero</translation>
     </message>
 </context>
 <context>
@@ -234,12 +234,12 @@
     <message>
         <location line="+102"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>La cache in memoria appartiene ad una versione piú recente di quella supportata da Nheko. Per favore, aggiorna Nheko o cancella la cache.</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>Apertura del database fallita, disconnessione in corso!</translation>
     </message>
     <message>
         <location line="+262"/>
@@ -275,7 +275,7 @@
     <message>
         <location line="-470"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation>Vuoi davvero inviare %1 (%2)?</translation>
+        <translation>Vuoi veramente invitare %1 (%2)?</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -285,7 +285,7 @@
     <message>
         <location line="+32"/>
         <source>Kicked user: %1</source>
-        <translation>Scacciato utente: %1</translation>
+        <translation>Espulso utente: %1</translation>
     </message>
     <message>
         <location line="+26"/>
