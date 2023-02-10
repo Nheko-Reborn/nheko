@@ -532,7 +532,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>/cmark [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark [bericht]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -683,7 +683,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuur een bericht opgemaakt in commonmark, waarin de meeste markdown uitbreidingen zijn uitgeschakeld vergeleken met /md.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1452,12 +1452,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="-13"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek gebruiker</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek op server</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -4347,7 +4347,7 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Animaties beperken of uitschakelen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4472,7 +4472,7 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>ACCESSIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>TOEGANKELIJKHEID</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4652,7 +4652,7 @@ UIT - vierkant, AAN - cirkel.</translation>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko gebruikt animaties op verscheidene plaatsen om dingen mooier te maken. Met deze optie kan je de animaties uitschakelen als je je er niet goed door voelt.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4943,12 +4943,12 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Beperk animaties</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko gebruikt animaties op verscheidene plaatsen om dingen mooier te maken. Hiermee kan je deze uitschakelen als je je er niet goed door voelt.</translation>
     </message>
 </context>
 <context>
