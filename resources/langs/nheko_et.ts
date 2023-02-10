@@ -532,7 +532,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>/cmark [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -683,7 +683,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada sõnum commonmark-vormingus, mis on lihtsam kui tavapärane markdown ehk /md.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1452,12 +1452,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="-13"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi kasutajat</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi serveris</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -4347,7 +4347,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Lülita välja animatsioonid või vähenda neid</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4472,7 +4472,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>ACCESSIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>LIGIPÄÄSETAVUS</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4652,7 +4652,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Et kasutajaliides oleks toredam, kasutab Nheko mitmel puhul animatsioone. Kui see sulle ei sobi, siis saad nad välja lülitada.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4943,12 +4943,12 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Vähenda animatsioone</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Et kasutajaliides oleks toredam, kasutab Nheko mitmel puhul animatsioone. Kui see sulle ei sobi, siis saad nad välja lülitada.</translation>
     </message>
 </context>
 <context>
