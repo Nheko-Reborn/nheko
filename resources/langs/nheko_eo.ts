@@ -533,7 +533,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>/cmark [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark [mesaĝo]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -684,7 +684,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendi mesaĝon en la formo CommonMark, sen ekstraj kapabloj, kiujn havas la ordono /md.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1453,12 +1453,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="-13"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Serĉi uzanton</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Serĉi en servilo</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -4351,7 +4351,7 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Malpliigi aŭ malŝalti movbildojn</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4476,7 +4476,7 @@ Kialo: %4</translation>
     <message>
         <location line="+2"/>
         <source>ACCESSIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>FACILUZEBLECO</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4658,7 +4658,7 @@ NE – kvadrato, JES – cirklo.</translation>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko uzas movbildojn kelkloke por plibeligi sin. Per ĉi tio vi povas ilin malŝalti, se ili malplaĉas al vi.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4950,12 +4950,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Malpliigi movbildojn</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko uzas movbildojn kelkloke por plibeligi sin. Per ĉi tio vi povas ilin malŝalti, se ili malplaĉas al vi.</translation>
     </message>
 </context>
 <context>
