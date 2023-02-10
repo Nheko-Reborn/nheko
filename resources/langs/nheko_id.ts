@@ -440,13 +440,13 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
-        <translation>/join (!idruangan|#alias) [alasan]</translation>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/join &lt;!idruangan|#alias&gt; [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
-        <translation>/knock (!idruangan|#alias) [alasan]</translation>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/knock &lt;!idruangan|#alias&gt; [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -460,28 +460,28 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite @userid [reason]</source>
-        <translation>/invite @idpengguna [alasan]</translation>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation>/invite &lt;@idpengguna&gt; [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick @userid [reason]</source>
-        <translation>/kick @idpengguna [alasan]</translation>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation>/kick &lt;@idpengguna&gt; [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/ban @userid [reason]</source>
-        <translation>/ban @idpengguna [alasan]</translation>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation>/ban &lt;@idpengguna&gt; [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unban @userid [reason]</source>
-        <translation>/unban @idpengguna [alasan]</translation>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation>/unban &lt;@idpengguna&gt; [alasan]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
-        <translation>/redact ($idperistiwa|@idpengguna)</translation>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
+        <translation>/redact &lt;$idperistiwa|@idpengguna&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -525,8 +525,8 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
     <message>
         <location line="+2"/>
-        <source>/md [message]</source>
-        <translation>/md [pesan]</translation>
+        <source>/md &lt;message&gt;</source>
+        <translation>/md &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -535,28 +535,28 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
     <message>
         <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation>/plain [pesan]</translation>
+        <source>/plain &lt;message&gt;</source>
+        <translation>/plain &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation>/rainbow [pesan]</translation>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation>/rainbow &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation>/rainbowme [pesan]</translation>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation>/rainbowme &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation>/notice [pesan]</translation>
+        <source>/notice &lt;message&gt;</source>
+        <translation>/notice &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation>/rainbownotice [pesan]</translation>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation>/rainbownotice &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>

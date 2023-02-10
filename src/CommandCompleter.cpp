@@ -107,23 +107,23 @@ CommandCompleter::data(const QModelIndex &index, int role) const
             case React:
                 return tr("/react <text>");
             case Join:
-                return tr("/join (!roomid|#alias) [reason]");
+                return tr("/join <!roomid|#alias> [reason]");
             case Knock:
-                return tr("/knock (!roomid|#alias) [reason]");
+                return tr("/knock <!roomid|#alias> [reason]");
             case Part:
                 return tr("/part [reason]");
             case Leave:
                 return tr("/leave [reason]");
             case Invite:
-                return tr("/invite @userid [reason]");
+                return tr("/invite <@userid> [reason]");
             case Kick:
-                return tr("/kick @userid [reason]");
+                return tr("/kick <@userid> [reason]");
             case Ban:
-                return tr("/ban @userid [reason]");
+                return tr("/ban <@userid> [reason]");
             case Unban:
-                return tr("/unban @userid [reason]");
+                return tr("/unban <@userid> [reason]");
             case Redact:
-                return tr("/redact ($eventid|@userid)");
+                return tr("/redact <$eventid|@userid>");
             case Roomnick:
                 return tr("/roomnick <displayname>");
             case Shrug:
@@ -141,25 +141,25 @@ CommandCompleter::data(const QModelIndex &index, int role) const
             case RotateMegolmSession:
                 return tr("/rotate-megolm-session");
             case Md:
-                return tr("/md [message]");
+                return tr("/md <message>");
             case Cmark:
-                return tr("/cmark [message]");
+                return tr("/cmark <message>");
             case Plain:
-                return tr("/plain [message]");
+                return tr("/plain <message>");
             case Rainbow:
-                return tr("/rainbow [message]");
+                return tr("/rainbow <message>");
             case RainbowMe:
-                return tr("/rainbowme [message]");
+                return tr("/rainbowme <message>");
             case Notice:
-                return tr("/notice [message]");
+                return tr("/notice <message>");
             case RainbowNotice:
-                return tr("/rainbownotice [message]");
+                return tr("/rainbownotice <message>");
             case Confetti:
                 return tr("/confetti [message]");
             case RainbowConfetti:
                 return tr("/rainbowconfetti [message]");
             case Goto:
-                return tr("/goto ($eventid|message index|matrix:r/room/e/event)");
+                return tr("/goto <message reference>");
             case ConvertToDm:
                 return tr("/converttodm");
             case ConvertToRoom:
@@ -228,7 +228,7 @@ CommandCompleter::data(const QModelIndex &index, int role) const
             case RainbowConfetti:
                 return tr("Send a message in rainbow colors with confetti.");
             case Goto:
-                return tr("Go to this event or link.");
+                return tr("Go to a specific message using an event id, index or matrix: link");
             case ConvertToDm:
                 return tr("Convert this room to a direct chat.");
             case ConvertToRoom:

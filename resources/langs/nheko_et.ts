@@ -441,13 +441,13 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
-        <translation>/join (!roomid|#alias) [põhjus]</translation>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/join &lt;!roomid|#alias&gt; [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
-        <translation>/knock (!roomid|#alias) [põhjus]</translation>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/knock &lt;!roomid|#alias&gt; [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -461,28 +461,28 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite @userid [reason]</source>
-        <translation>/invite @userid [põhjus]</translation>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation>/invite &lt;@userid&gt; [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick @userid [reason]</source>
-        <translation>/kick @userid [põhjus]</translation>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation>/kick &lt;@userid&gt; [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/ban @userid [reason]</source>
-        <translation>/ban @userid [põhjus]</translation>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation>/ban &lt;@userid&gt; [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unban @userid [reason]</source>
-        <translation>/unban @userid [põhjus]</translation>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation>/unban &lt;@userid&gt; [põhjus]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
-        <translation>/redact ($eventid|@userid)</translation>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
+        <translation>/redact &lt;$eventid|@userid&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -526,8 +526,8 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     </message>
     <message>
         <location line="+2"/>
-        <source>/md [message]</source>
-        <translation>/md [sõnum]</translation>
+        <source>/md &lt;message&gt;</source>
+        <translation>/md &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -536,28 +536,28 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     </message>
     <message>
         <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation>/plain [sõnum]</translation>
+        <source>/plain &lt;message&gt;</source>
+        <translation>/plain &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation>/rainbow [sõnum]</translation>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation>/rainbow &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation>/rainbowme [sõnum]</translation>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation>/rainbowme &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation>/notice [sõnum]</translation>
+        <source>/notice &lt;message&gt;</source>
+        <translation>/notice &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation>/rainbownotice [sõnum]</translation>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation>/rainbownotice &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>

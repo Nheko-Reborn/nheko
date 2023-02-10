@@ -439,13 +439,13 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
-        <translation>/join (!roomid|#alias) [przyczyna]</translation>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/join &lt;!roomid|#alias&gt; [przyczyna]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
-        <translation>/knock (!roomid|#alias) [przyczyna]</translation>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/knock &lt;!roomid|#alias&gt; [przyczyna]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -459,28 +459,28 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite @userid [reason]</source>
-        <translation>/invite @userid [przyczyna]</translation>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation>/invite &lt;@userid&gt; [przyczyna]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick @userid [reason]</source>
-        <translation>/kick @userid [przyczyna]</translation>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation>/kick &lt;@userid&gt; [przyczyna]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/ban @userid [reason]</source>
-        <translation>/ban @userid [przyczyna]</translation>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation>/ban &lt;@userid&gt; [przyczyna]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unban @userid [reason]</source>
-        <translation>/unban @userid [przyczyna]</translation>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation>/unban &lt;@userid&gt; [przyczyna]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
-        <translation>/redact ($eventid|@userid)</translation>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
+        <translation>/redact &lt;$eventid|@userid&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -524,8 +524,8 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/md [message]</source>
-        <translation>/md [wiadomość]</translation>
+        <source>/md &lt;message&gt;</source>
+        <translation>/md &lt;wiadomość&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -534,28 +534,28 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation>/plain [wiadomość]</translation>
+        <source>/plain &lt;message&gt;</source>
+        <translation>/plain &lt;wiadomość&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation>/rainbow [wiadomość]</translation>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation>/rainbow &lt;wiadomość&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation>/rainbowme [wiadomość]</translation>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation>/rainbowme &lt;wiadomość&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation>/notice [wiadomość]</translation>
+        <source>/notice &lt;message&gt;</source>
+        <translation>/notice &lt;wiadomość&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation>/rainbownotice [wiadomość]</translation>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation>/rainbownotice &lt;wiadomość&gt;</translation>
     </message>
     <message>
         <location line="+2"/>

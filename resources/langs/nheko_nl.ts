@@ -441,13 +441,13 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
-        <translation>/join (!kamerid|#alias) [reden]</translation>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/join &lt;!kamerid|#alias&gt; [reden]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
-        <translation>/knock (!kamerid|#alias) [reden]</translation>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/knock &lt;!kamerid|#alias&gt; [reden]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -461,28 +461,28 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite @userid [reason]</source>
-        <translation>/invite @gebruikerid [reden]</translation>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation>/invite &lt;@gebruikerid&gt; [reden]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick @userid [reason]</source>
-        <translation>/kick @gebruikerid [reden]</translation>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation>/kick &lt;@gebruikerid&gt; [reden]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/ban @userid [reason]</source>
-        <translation>/ban @gebruikerid [reden]</translation>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation>/ban &lt;@gebruikerid&gt; [reden]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unban @userid [reason]</source>
-        <translation>/unban @gebruikerid [reden]</translation>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation>/unban &lt;@gebruikerid&gt; [reden]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
-        <translation>/redact ($gebeurtenisid|@gebruikerid)</translation>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
+        <translation>/redact &lt;$gebeurtenisid|@gebruikerid&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -526,8 +526,8 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/md [message]</source>
-        <translation>/md [bericht]</translation>
+        <source>/md &lt;message&gt;</source>
+        <translation>/md &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -536,28 +536,28 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation>/plain [bericht]</translation>
+        <source>/plain &lt;message&gt;</source>
+        <translation>/plain &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation>/rainbow [bericht]</translation>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation>/rainbow &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation>/rainbowme [bericht]</translation>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation>/rainbowme &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation>/notice [bericht]</translation>
+        <source>/notice &lt;message&gt;</source>
+        <translation>/notice &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation>/rainbownotice [bericht]</translation>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation>/rainbownotice &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>

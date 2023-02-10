@@ -441,13 +441,13 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
-        <translation>/join (!raumid|#alias) [Grund]</translation>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/join &lt;!raumid|#alias&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
-        <translation>/knock (!raumid|#alias) [Grund]</translation>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/knock &lt;!raumid|#alias&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -461,28 +461,28 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite @userid [reason]</source>
-        <translation>/invite @nutzerid [Grund]</translation>
+        <source>/invite &lt;@userid&gt;[reason]</source>
+        <translation>/invite &lt;@nutzerid&gt;[Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick @userid [reason]</source>
-        <translation>/kick @nutzerid [Grund]</translation>
+        <source>/kick &lt;@userid&gt;[reason]</source>
+        <translation>/kick &lt;@nutzerid&gt;[Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/ban @userid [reason]</source>
-        <translation>/ban @nutzerid [Grund]</translation>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation>/ban &lt;@nutzerid&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unban @userid [reason]</source>
-        <translation>/unban @nutzerid [Grund]</translation>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation>/unban &lt;@nutzerid&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
-        <translation>/redact ($eventid|@nutzerid)</translation>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
+        <translation>/redact &lt;$eventid|@nutzerid&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -526,38 +526,38 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>/md [message]</source>
-        <translation>/md [Nachricht]</translation>
+        <source>/md &lt;message&gt;</source>
+        <translation>/md &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/cmark [message]</source>
-        <translation>/cmark [Nachricht]</translation>
+        <source>/cmark &lt;message&gt;</source>
+        <translation>/cmark &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation>/plain [Nachricht]</translation>
+        <source>/plain &lt;message&gt;</source>
+        <translation>/plain &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation>/rainbow [Nachricht]</translation>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation>/rainbow &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation>/rainbowme [Nachricht]</translation>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation>/rainbowme &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation>/notice [Nachricht]</translation>
+        <source>/notice &lt;message&gt;</source>
+        <translation>/notice &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation>/rainbownotice [Nachricht]</translation>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation>/rainbownotice &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>

@@ -439,7 +439,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

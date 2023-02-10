@@ -438,12 +438,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -458,27 +458,27 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite @userid [reason]</source>
+        <source>/invite &lt;@userid&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick @userid [reason]</source>
+        <source>/kick &lt;@userid&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/ban @userid [reason]</source>
+        <source>/ban &lt;@userid&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unban @userid [reason]</source>
+        <source>/unban &lt;@userid&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -523,37 +523,37 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/md [message]</source>
+        <source>/md &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/cmark [message]</source>
+        <source>/cmark &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/plain [message]</source>
+        <source>/plain &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbow [message]</source>
+        <source>/rainbow &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbowme [message]</source>
+        <source>/rainbowme &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/notice [message]</source>
+        <source>/notice &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rainbownotice [message]</source>
+        <source>/rainbownotice &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
