@@ -114,17 +114,17 @@
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation>Communauté parent</translation>
+        <translation>Communauté parente</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Autre salon</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrez d&apos;autres salons qui ne sont pas encore dans la liste…</translation>
     </message>
 </context>
 <context>
