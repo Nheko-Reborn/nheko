@@ -48,7 +48,7 @@
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation>Impossible de mettre à jour les alias : %1</translation>
+        <translation>Impossible de mettre à jour les alias&#xa0;: %1</translation>
     </message>
 </context>
 <context>
@@ -56,12 +56,12 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+27"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias de %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des alias vers cette salle. Habituellement, vous ne pouvez ajouter des alias que sur votre serveur. Vous pouvez avoir un alias principal et de nombreux autres alternatifs.</translation>
     </message>
     <message>
         <location line="+45"/>
