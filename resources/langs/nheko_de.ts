@@ -461,13 +461,13 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite &lt;@userid&gt;[reason]</source>
-        <translation>/invite &lt;@nutzerid&gt;[Grund]</translation>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation>/invite &lt;@nutzerid&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick &lt;@userid&gt;[reason]</source>
-        <translation>/kick &lt;@nutzerid&gt;[Grund]</translation>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation>/kick &lt;@nutzerid&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -571,8 +571,8 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation>/goto ($eventid|Nachrichten Index|matrix:r/raumid/e/eventid)</translation>
+        <source>/goto &lt;message reference&gt;</source>
+        <translation>/goto &lt;Nachrichtenreferenz&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -722,8 +722,8 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Navigiere zu dieser Nachricht oder diesem Link.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation>Springe zu einer Nachricht mit spezifischer eventid, Index oder via einem matrix:-Link</translation>
     </message>
     <message>
         <location line="+2"/>

@@ -437,17 +437,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+6"/>
         <source>/part [reason]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -457,32 +447,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/invite @userid [reason]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/kick @userid [reason]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/ban @userid [reason]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/unban @userid [reason]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+12"/>
         <source>/roomnick &lt;displayname&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -522,42 +487,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/md [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/cmark [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+16"/>
         <source>/confetti [message]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -567,8 +497,78 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="-50"/>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+18"/>
+        <source>/md &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/cmark &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/plain &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/notice &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>/goto &lt;message reference&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -719,7 +719,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

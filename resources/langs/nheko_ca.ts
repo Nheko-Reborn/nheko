@@ -568,7 +568,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
+        <source>/goto &lt;message reference&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -719,7 +719,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

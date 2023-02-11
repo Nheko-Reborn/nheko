@@ -531,12 +531,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation>/md &lt;mesaĝo&gt;</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/cmark [message]</source>
-        <translation>/cmark [mesaĝo]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>/plain &lt;message&gt;</source>
         <translation>/plain &lt;mesaĝo&gt;</translation>
     </message>
@@ -571,9 +566,14 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation>/rainbowconfetti [mesaĝo]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation>/goto ($identigilo-de-okazo|indekso-de-mesaĝo|matrix:r/ĉambro/e/okazo)</translation>
+        <location line="-14"/>
+        <source>/cmark &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>/goto &lt;message reference&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -723,8 +723,8 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Iri al ĉi tiu okazo aŭ ligilo.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>

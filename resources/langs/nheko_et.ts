@@ -530,12 +530,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <translation>/md &lt;sõnum&gt;</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/cmark [message]</source>
-        <translation>/cmark [sõnum]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>/plain &lt;message&gt;</source>
         <translation>/plain &lt;sõnum&gt;</translation>
     </message>
@@ -570,9 +565,14 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <translation>/rainbowconfetti [sõnum]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation>/goto ($eventid|message index|matrix:r/room/e/event)</translation>
+        <location line="-14"/>
+        <source>/cmark &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>/goto &lt;message reference&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -722,8 +722,8 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Ava see sündmus või link.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>

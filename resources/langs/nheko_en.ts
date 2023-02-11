@@ -460,27 +460,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>/leave [reason]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/invite &lt;userid&gt; [reason]</source>
-        <translation>/invite &lt;userid&gt; [reason]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/kick &lt;userid&gt; [reason]</source>
-        <translation>/kick &lt;userid&gt; [reason]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/ban &lt;userid&gt; [reason]</source>
-        <translation>/ban &lt;userid&gt; [reason]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/unban &lt;userid&gt; [reason]</source>
-        <translation>/unban &lt;userid&gt; [reason]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+10"/>
         <source>/redact &lt;$eventid|@userid&gt;</source>
         <translation>/redact &lt;$eventid|@userid&gt;</translation>
     </message>
@@ -570,9 +550,29 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>/rainbowconfetti [message]</translation>
     </message>
     <message>
+        <location line="-42"/>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation>/invite &lt;@userid&gt; [reason]</translation>
+    </message>
+    <message>
         <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation>/goto ($eventid|message index|matrix:r/room/e/event)</translation>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation>/kick &lt;@userid&gt; [reason]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation>/ban &lt;@userid&gt; [reason]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation>/unban &lt;@userid&gt; [reason]</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>/goto &lt;message reference&gt;</source>
+        <translation>/goto &lt;message reference&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -722,8 +722,8 @@ You may optionally provide a reason for others to accept your knock:</translatio
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Go to this event or link.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation>Go to a specific message using an event id, index or matrix: link</translation>
     </message>
     <message>
         <location line="+2"/>

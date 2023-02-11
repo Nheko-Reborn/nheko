@@ -529,12 +529,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <translation>/md &lt;pesan&gt;</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/cmark [message]</source>
-        <translation>/cmark [pesan]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>/plain &lt;message&gt;</source>
         <translation>/plain &lt;pesan&gt;</translation>
     </message>
@@ -569,9 +564,14 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <translation>/rainbowconfetti [pesan]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation>/goto ($idperistiwa|indeks pesan|matrix:r/room/e/event)</translation>
+        <location line="-14"/>
+        <source>/cmark &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>/goto &lt;message reference&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -721,8 +721,8 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Pergi ke perisitwa atau tautan ini.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4641,7 +4641,7 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nheko menggunakan animasi di beberapa tempat untuk membuat hal-hal indah. Ini memungkinkanmu untuk menonaktifkannya jika mereka membuatmu pusing.</translation>
     </message>
     <message>
         <location line="+16"/>

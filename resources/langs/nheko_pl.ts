@@ -528,12 +528,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>/md &lt;wiadomość&gt;</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/cmark [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>/plain &lt;message&gt;</source>
         <translation>/plain &lt;wiadomość&gt;</translation>
     </message>
@@ -568,8 +563,13 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>/rainbowconfetti [wiadomość]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
+        <location line="-14"/>
+        <source>/cmark &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>/goto &lt;message reference&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -720,8 +720,8 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Przejdź do tego wydarzenia lub linku.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>

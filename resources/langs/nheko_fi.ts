@@ -525,42 +525,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/md [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/cmark [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+16"/>
         <source>/confetti [message]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -570,8 +535,43 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="-16"/>
+        <source>/md &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
+        <source>/cmark &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/plain &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/notice &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>/goto &lt;message reference&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -722,8 +722,8 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Siirry tähän tapahtumaan tai linkkiin.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
