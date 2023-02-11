@@ -495,37 +495,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>/shrug [Nachricht]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/fliptable</source>
-        <translation>/fliptable</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/unfliptable</source>
-        <translation>/unfliptable</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/sovietflip</source>
-        <translation>/sovietflip</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/clear-timeline</source>
-        <translation>/clear-timeline</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/reset-state</source>
-        <translation>/reset-state</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rotate-megolm-session</source>
-        <translation>/rotate-megolm-session</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+14"/>
         <source>/md &lt;message&gt;</source>
         <translation>/md &lt;Nachricht&gt;</translation>
     </message>
@@ -575,17 +545,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>/goto &lt;Nachrichtenreferenz&gt;</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/converttodm</source>
-        <translation>/converttodm</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/converttoroom</source>
-        <translation>/converttoroom</translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+12"/>
         <source>Send a message expressing an action.</source>
         <translation>Sende eine Nachricht, die eine Aktion ausdrückt.</translation>
     </message>

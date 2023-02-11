@@ -496,37 +496,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation>/shrug [mesaĝo]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/fliptable</source>
-        <translation>/fliptable</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/unfliptable</source>
-        <translation>/unfliptable</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/sovietflip</source>
-        <translation>/sovietflip</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/clear-timeline</source>
-        <translation>/clear-timeline</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/reset-state</source>
-        <translation>/reset-state</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rotate-megolm-session</source>
-        <translation>/rotate-megolm-session</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+14"/>
         <source>/md &lt;message&gt;</source>
         <translation>/md &lt;mesaĝo&gt;</translation>
     </message>
@@ -576,17 +546,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/converttodm</source>
-        <translation>/converttodm</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/converttoroom</source>
-        <translation>/converttoroom</translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+12"/>
         <source>Send a message expressing an action.</source>
         <translation>Sendi mesaĝon, kiu esprimas agon.</translation>
     </message>
