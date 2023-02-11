@@ -61,37 +61,37 @@
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation>Liste des alias vers cette salle. Habituellement, vous ne pouvez ajouter des alias que sur votre serveur. Vous pouvez avoir un alias principal et de nombreux autres alternatifs.</translation>
+        <translation>Liste des alias de ce salon. Habituellement, vous ne pouvez ajouter des alias que sur votre serveur. Vous pouvez avoir un alias principal et de nombreux autres alternatifs.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias principal</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Rendre l&apos;alias principal</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Publier l&apos;alias dans ce salon</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Publier dans l&apos;annuaire des salons</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Retirer cet alias</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#nouvel-alias:serveur.domaine</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -104,17 +104,17 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+28"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Configuration des salons autorisés</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Liste des salons autorisant l&apos;accès à ce salon. Tout membre d&apos;un de ces salons peut rejoindre celui-ci.</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Communauté parent</translation>
     </message>
     <message>
         <location line="+0"/>
