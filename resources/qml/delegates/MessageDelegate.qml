@@ -253,9 +253,8 @@ Item {
         DelegateChoice {
             roleValue: MtxEvent.Encryption
 
-            Pill {
-                text: qsTr("%1 enabled encryption").arg(d.userName)
-                isStateEvent: d.isStateEvent
+            EncryptionEnabled {
+                username: d.userName
             }
 
         }

@@ -196,6 +196,7 @@
         <file>qml/voip/ScreenShare.qml</file>
         <file>qml/voip/VideoCall.qml</file>
         <file>confettiparticle.svg</file>
+        <file>qml/delegates/EncryptionEnabled.qml</file>
     </qresource>
     <qresource prefix="/media">
         <file>media/ring.ogg</file>
