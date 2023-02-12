@@ -580,53 +580,81 @@ getMediaAttributes(const GstSDPMessage *sdp,
 }
 
 bool
-WebRTCSession::havePlugins(bool isVideo, std::string *errorMessage)
+WebRTCSession::havePlugins(bool isVideo, bool isX11Screenshare, std::string *errorMessage)
 {
     if (!initialised_ && !init(errorMessage))
         return false;
-    if (!isVideo && haveVoicePlugins_)
+    if (haveVoicePlugins_ && (!isVideo || haveVideoPlugins_) &&
+        (!isX11Screenshare || haveX11ScreensharePlugins_))
         return true;
-    if (isVideo && haveVideoPlugins_)
-        return true;
 
-    const gchar *voicePlugins[] = {"audioconvert",
-                                   "audioresample",
-                                   "autodetect",
-                                   "dtls",
-                                   "nice",
-                                   "opus",
-                                   "playback",
-                                   "rtpmanager",
-                                   "srtp",
-                                   "volume",
-                                   "webrtc",
-                                   nullptr};
+    static constexpr std::initializer_list<const char *> audio_elements = {
+      "audioconvert",
+      "audioresample",
+      "autoaudiosink",
+      "capsfilter",
+      "decodebin",
+      "opusenc",
+      "queue",
+      "rtpopuspay",
+      "volume",
+      "webrtcbin",
+    };
 
-    const gchar *videoPlugins[] = {
-      "compositor", "opengl", "qmlgl", "rtp", "videoconvert", "vpx", nullptr};
+    static constexpr std::initializer_list<const char *> video_elements = {
+      "compositor",
+      "glcolorconvert",
+      "glsinkbin",
+      "glupload",
+      "qmlglsink",
+      "rtpvp8pay",
+      "tee",
+      "videoconvert",
+      "videoscale",
+      "vp8enc",
+    };
+    static constexpr std::initializer_list<const char *> screenshare_elements = {
+      "ximagesink",
+      "ximagesrc",
+    };
 
-    std::string strError("Missing GStreamer plugins: ");
-    const gchar **needed  = isVideo ? videoPlugins : voicePlugins;
-    bool &havePlugins     = isVideo ? haveVideoPlugins_ : haveVoicePlugins_;
-    havePlugins           = true;
+    std::string strError("Missing GStreamer elements: ");
     GstRegistry *registry = gst_registry_get();
-    for (guint i = 0; i < g_strv_length((gchar **)needed); i++) {
-        GstPlugin *plugin = gst_registry_find_plugin(registry, needed[i]);
-        if (!plugin) {
-            havePlugins = false;
-            strError += std::string(needed[i]) + " ";
-            continue;
+
+    auto check_plugins = [&strError,
+                          registry](const std::initializer_list<const char *> &elements) {
+        bool havePlugins = true;
+        for (const auto &element : elements) {
+            GstPluginFeature *plugin =
+              gst_registry_find_feature(registry, element, GST_TYPE_ELEMENT_FACTORY);
+            if (!plugin) {
+                havePlugins = false;
+                strError += std::string(element) + " ";
+                continue;
+            }
+            gst_object_unref(plugin);
         }
-        gst_object_unref(plugin);
-    }
-    if (!havePlugins) {
+
+        return havePlugins;
+    };
+
+    haveVoicePlugins_ = check_plugins(audio_elements);
+
+    // check both elements at once
+    if (isVideo)
+        haveVideoPlugins_ = check_plugins(video_elements);
+    if (isX11Screenshare)
+        haveX11ScreensharePlugins_ = check_plugins(screenshare_elements);
+
+    if (!haveVoicePlugins_ || (isVideo && !haveVideoPlugins_) ||
+        (isX11Screenshare && !haveX11ScreensharePlugins_)) {
         nhlog::ui()->error(strError);
         if (errorMessage)
             *errorMessage = strError;
         return false;
     }
 
-    if (isVideo) {
+    if (isVideo || isX11Screenshare) {
         // load qmlglsink to register GStreamer's GstGLVideoItem QML type
         GstElement *qmlglsink = gst_element_factory_make("qmlglsink", nullptr);
         gst_object_unref(qmlglsink);
@@ -1131,7 +1159,7 @@ WebRTCSession::end()
 #else
 
 bool
-WebRTCSession::havePlugins(bool, std::string *)
+WebRTCSession::havePlugins(bool, bool, std::string *)
 {
     return false;
 }

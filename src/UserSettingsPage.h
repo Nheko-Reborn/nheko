@@ -67,6 +67,8 @@ class UserSettings final : public QObject
                  spaceNotificationsChanged)
     Q_PROPERTY(bool fancyEffects READ fancyEffects WRITE setFancyEffects NOTIFY fancyEffectsChanged)
     Q_PROPERTY(
+      bool reducedMotion READ reducedMotion WRITE setReducedMotion NOTIFY reducedMotionChanged)
+    Q_PROPERTY(
       bool privacyScreen READ privacyScreen WRITE setPrivacyScreen NOTIFY privacyScreenChanged)
     Q_PROPERTY(int privacyScreenTimeout READ privacyScreenTimeout WRITE setPrivacyScreenTimeout
                  NOTIFY privacyScreenTimeoutChanged)
@@ -174,6 +176,7 @@ public:
     void setDecryptNotifications(bool state);
     void setSpaceNotifications(bool state);
     void setFancyEffects(bool state);
+    void setReducedMotion(bool state);
     void setPrivacyScreen(bool state);
     void setPrivacyScreenTimeout(int state);
     void setPresence(Presence state);
@@ -218,6 +221,7 @@ public:
     bool decryptNotifications() const { return decryptNotifications_; }
     bool spaceNotifications() const { return spaceNotifications_; }
     bool fancyEffects() const { return fancyEffects_; }
+    bool reducedMotion() const { return reducedMotion_; }
     bool privacyScreen() const { return privacyScreen_; }
     int privacyScreenTimeout() const { return privacyScreenTimeout_; }
     bool markdown() const { return markdown_; }
@@ -300,6 +304,7 @@ signals:
     void decryptNotificationsChanged(bool state);
     void spaceNotificationsChanged(bool state);
     void fancyEffectsChanged(bool state);
+    void reducedMotionChanged(bool state);
     void privacyScreenChanged(bool state);
     void privacyScreenTimeoutChanged(int state);
     void timelineMaxWidthChanged(int state);
@@ -366,6 +371,7 @@ private:
     bool decryptNotifications_;
     bool spaceNotifications_;
     bool fancyEffects_;
+    bool reducedMotion_;
     bool privacyScreen_;
     int privacyScreenTimeout_;
     bool shareKeysWithTrustedUsers_;
@@ -434,11 +440,15 @@ class UserSettingsModel final : public QAbstractListModel
         ExposeDBusApi,
 #endif
 
+        AccessibilitySection,
+        ReducedMotion,
+        FancyEffects,
+        AnimateImagesOnHover,
+        MessageHoverHighlight,
+
         TimelineSection,
         TimelineMaxWidth,
-        MessageHoverHighlight,
         EnlargeEmojiOnlyMessages,
-        AnimateImagesOnHover,
         OpenImageExternal,
         OpenVideoExternal,
         ButtonsInTimeline,
@@ -448,7 +458,6 @@ class UserSettingsModel final : public QAbstractListModel
         InvertEnterKey,
         Bubbles,
         SmallAvatars,
-        FancyEffects,
 
         SidebarSection,
         GroupView,

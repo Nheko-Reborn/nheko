@@ -193,9 +193,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
 
     std::string errorMessage;
-    if (!session_.havePlugins(false, &errorMessage) ||
-        ((callType == CallType::VIDEO || callType == CallType::SCREEN) &&
-         !session_.havePlugins(true, &errorMessage))) {
+    if (!session_.havePlugins(
+          callType != CallType::VOICE, callType == CallType::SCREEN, &errorMessage)) {
         emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
         return;
     }
@@ -469,8 +468,8 @@ CallManager::acceptInvite()
 
     stopRingtone();
     std::string errorMessage;
-    if (!session_.havePlugins(false, &errorMessage) ||
-        (callType_ == CallType::VIDEO && !session_.havePlugins(true, &errorMessage))) {
+    if (!session_.havePlugins(
+          callType_ != CallType::VOICE, callType_ == CallType::SCREEN, &errorMessage)) {
         emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
         hangUp(CallHangUp::Reason::UserMediaFailed);
         return;

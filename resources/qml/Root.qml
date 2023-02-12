@@ -345,6 +345,63 @@ Pane {
 
         anchors.fill: parent
         initialItem: welcomePage
+
+        Transition {
+            id: reducedMotionTransitionExit
+            PropertyAnimation {
+                property: "opacity"
+                from: 1
+                to:0
+                duration: 200
+            }
+        }
+        Transition {
+            id: reducedMotionTransitionEnter
+            SequentialAnimation {
+                PropertyAction { property: "opacity"; value: 0 }
+                PauseAnimation { duration: 200 }
+                PropertyAnimation {
+                    property: "opacity"
+                    from: 0
+                    to:1
+                    duration: 200
+                }
+            }
+        }
+
+        // for some reason direct bindings to a hidden StackView don't work, so manually store and restore here.
+        property Transition pushEnterOrg
+        property Transition pushExitOrg
+        property Transition popEnterOrg
+        property Transition popExitOrg
+        property Transition replaceEnterOrg
+        property Transition replaceExitOrg
+        Component.onCompleted: {
+            pushEnterOrg = pushEnter;
+            popEnterOrg = popEnter;
+            replaceEnterOrg = replaceEnter;
+            pushExitOrg = pushExit;
+            popExitOrg = popExit;
+            replaceExitOrg = replaceExit;
+
+            updateTrans()
+        }
+
+        function updateTrans() {
+            pushEnter = Settings.reducedMotion ? reducedMotionTransitionEnter : pushEnterOrg;
+            pushExit = Settings.reducedMotion ? reducedMotionTransitionExit : pushExitOrg;
+            popEnter = Settings.reducedMotion ? reducedMotionTransitionEnter : popEnterOrg;
+            popExit = Settings.reducedMotion ? reducedMotionTransitionExit : popExitOrg;
+            replaceEnter = Settings.reducedMotion ? reducedMotionTransitionEnter : replaceEnterOrg;
+            replaceExit = Settings.reducedMotion ? reducedMotionTransitionExit : replaceExitOrg;
+        }
+
+        Connections {
+            target: Settings
+            function onReducedMotionChanged() {
+                mainWindow.updateTrans();
+            }
+        }
     }
 
     Component {

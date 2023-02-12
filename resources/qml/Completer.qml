@@ -121,6 +121,9 @@ Control {
         pixelAligned: true
         highlightFollowsCurrentItem: true
 
+        displayMarginBeginning: height / 2
+        displayMarginEnd: height / 2
+
         delegate: Rectangle {
             property variant modelData: model
 

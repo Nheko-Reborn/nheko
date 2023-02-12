@@ -34,69 +34,69 @@ CommandCompleter::data(const QModelIndex &index, int role) const
             // append space where applicable in a completion
             switch (index.row()) {
             case Me:
-                return QString("/me ");
+                return QStringLiteral("/me ");
             case React:
-                return QString("/react ");
+                return QStringLiteral("/react ");
             case Join:
-                return QString("/join ");
+                return QStringLiteral("/join ");
             case Knock:
-                return QString("/knock ");
+                return QStringLiteral("/knock ");
             case Part:
-                return QString("/part ");
+                return QStringLiteral("/part ");
             case Leave:
-                return QString("/leave ");
+                return QStringLiteral("/leave ");
             case Invite:
-                return QString("/invite @");
+                return QStringLiteral("/invite @");
             case Kick:
-                return QString("/kick @");
+                return QStringLiteral("/kick @");
             case Ban:
-                return QString("/ban @");
+                return QStringLiteral("/ban @");
             case Unban:
-                return QString("/unban @");
+                return QStringLiteral("/unban @");
             case Redact:
-                return QString("/redact ");
+                return QStringLiteral("/redact ");
             case MyRoomnick:
-                return QString("/myroomnick ");
+                return QStringLiteral("/myroomnick ");
             case Roomnick:
-                return QString("/roomnick ");
+                return QStringLiteral("/roomnick ");
             case Shrug:
-                return QString("/shrug");
+                return QStringLiteral("/shrug");
             case Fliptable:
-                return QString("/fliptable");
+                return QStringLiteral("/fliptable");
             case Unfliptable:
-                return QString("/unfliptable");
+                return QStringLiteral("/unfliptable");
             case Sovietflip:
-                return QString("/sovietflip");
+                return QStringLiteral("/sovietflip");
             case ClearTimeline:
-                return QString("/clear-timeline");
+                return QStringLiteral("/clear-timeline");
             case ResetState:
-                return QString("/reset-state");
+                return QStringLiteral("/reset-state");
             case RotateMegolmSession:
-                return QString("/rotate-megolm-session");
+                return QStringLiteral("/rotate-megolm-session");
             case Md:
-                return QString("/md ");
+                return QStringLiteral("/md ");
             case Cmark:
-                return QString("/cmark ");
+                return QStringLiteral("/cmark ");
             case Plain:
-                return QString("/plain ");
+                return QStringLiteral("/plain ");
             case Rainbow:
-                return QString("/rainbow ");
+                return QStringLiteral("/rainbow ");
             case RainbowMe:
-                return QString("/rainbowme ");
+                return QStringLiteral("/rainbowme ");
             case Notice:
-                return QString("/notice ");
+                return QStringLiteral("/notice ");
             case RainbowNotice:
-                return QString("/rainbownotice ");
+                return QStringLiteral("/rainbownotice ");
             case Confetti:
-                return QString("/confetti ");
+                return QStringLiteral("/confetti ");
             case RainbowConfetti:
-                return QString("/rainbowconfetti ");
+                return QStringLiteral("/rainbowconfetti ");
             case Goto:
-                return QString("/goto ");
+                return QStringLiteral("/goto ");
             case ConvertToDm:
-                return QString("/converttodm");
+                return QStringLiteral("/converttodm");
             case ConvertToRoom:
-                return QString("/converttoroom");
+                return QStringLiteral("/converttoroom");
             default:
                 return {};
             }
@@ -109,23 +109,23 @@ CommandCompleter::data(const QModelIndex &index, int role) const
             case React:
                 return tr("/react <text>");
             case Join:
-                return tr("/join (!roomid|#alias) [reason]");
+                return tr("/join <!roomid|#alias> [reason]");
             case Knock:
-                return tr("/knock (!roomid|#alias) [reason]");
+                return tr("/knock <!roomid|#alias> [reason]");
             case Part:
                 return tr("/part [reason]");
             case Leave:
                 return tr("/leave [reason]");
             case Invite:
-                return tr("/invite @userid [reason]");
+                return tr("/invite <@userid> [reason]");
             case Kick:
-                return tr("/kick @userid [reason]");
+                return tr("/kick <@userid> [reason]");
             case Ban:
-                return tr("/ban @userid [reason]");
+                return tr("/ban <@userid> [reason]");
             case Unban:
-                return tr("/unban @userid [reason]");
+                return tr("/unban <@userid> [reason]");
             case Redact:
-                return tr("/redact ($eventid|@userid)");
+                return tr("/redact <$eventid|@userid>");
             case MyRoomnick:
                 return tr("/myroomnick <displayname>");
             case Roomnick:
@@ -133,41 +133,41 @@ CommandCompleter::data(const QModelIndex &index, int role) const
             case Shrug:
                 return tr("/shrug [message]");
             case Fliptable:
-                return tr("/fliptable");
+                return QStringLiteral("/fliptable");
             case Unfliptable:
-                return tr("/unfliptable");
+                return QStringLiteral("/unfliptable");
             case Sovietflip:
-                return tr("/sovietflip");
+                return QStringLiteral("/sovietflip");
             case ClearTimeline:
-                return tr("/clear-timeline");
+                return QStringLiteral("/clear-timeline");
             case ResetState:
-                return tr("/reset-state");
+                return QStringLiteral("/reset-state");
             case RotateMegolmSession:
-                return tr("/rotate-megolm-session");
+                return QStringLiteral("/rotate-megolm-session");
             case Md:
-                return tr("/md [message]");
+                return tr("/md <message>");
             case Cmark:
-                return tr("/cmark [message]");
+                return tr("/cmark <message>");
             case Plain:
-                return tr("/plain [message]");
+                return tr("/plain <message>");
             case Rainbow:
-                return tr("/rainbow [message]");
+                return tr("/rainbow <message>");
             case RainbowMe:
-                return tr("/rainbowme [message]");
+                return tr("/rainbowme <message>");
             case Notice:
-                return tr("/notice [message]");
+                return tr("/notice <message>");
             case RainbowNotice:
-                return tr("/rainbownotice [message]");
+                return tr("/rainbownotice <message>");
             case Confetti:
                 return tr("/confetti [message]");
             case RainbowConfetti:
                 return tr("/rainbowconfetti [message]");
             case Goto:
-                return tr("/goto ($eventid|message index|matrix:r/room/e/event)");
+                return tr("/goto <message reference>");
             case ConvertToDm:
-                return tr("/converttodm");
+                return QStringLiteral("/converttodm");
             case ConvertToRoom:
-                return tr("/converttoroom");
+                return QStringLiteral("/converttoroom");
             default:
                 return {};
             }
@@ -232,7 +232,7 @@ CommandCompleter::data(const QModelIndex &index, int role) const
             case RainbowConfetti:
                 return tr("Send a message in rainbow colors with confetti.");
             case Goto:
-                return tr("Go to this event or link.");
+                return tr("Go to a specific message using an event id, index or matrix: link");
             case ConvertToDm:
                 return tr("Convert this room to a direct chat.");
             case ConvertToRoom:

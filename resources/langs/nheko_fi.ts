@@ -208,7 +208,7 @@
 <context>
     <name>CallManager</name>
     <message>
-        <location filename="../../src/voip/CallManager.cpp" line="+820"/>
+        <location filename="../../src/voip/CallManager.cpp" line="+819"/>
         <source>Entire screen</source>
         <translation>Koko näyttö</translation>
     </message>
@@ -222,7 +222,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+839"/>
+        <location line="+843"/>
         <source>Invited user: %1</source>
         <translation>Kutsuttiin käyttäjä: %1</translation>
     </message>
@@ -430,7 +430,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+104"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+106"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;viesti&gt;</translation>
     </message>
@@ -441,13 +441,13 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
-        <translation>/join (!huonetunnus|#alias) [syy]</translation>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/join &lt;!huonetunnus|#alias&gt; [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
-        <translation>/knock (!huonetunnus|#alias) [syy]</translation>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/knock &lt;!huonetunnus|#alias&gt; [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -461,28 +461,28 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite @userid [reason]</source>
-        <translation>/invite @käyttäjätunnus [syy]</translation>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation>/invite &lt;@käyttäjätunnus&gt; [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick @userid [reason]</source>
-        <translation>/kick @käyttäjätunnus [syy]</translation>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation>/kick &lt;@käyttäjätunnus&gt; [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/ban @userid [reason]</source>
-        <translation>/ban @käyttäjätunnus [syy]</translation>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation>/ban &lt;@käyttäjätunnus&gt; [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unban @userid [reason]</source>
-        <translation>/unban @käyttäjätunnus [syy]</translation>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation>/unban &lt;@käyttäjätunnus&gt; [syy]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
-        <translation>/redact ($tapahtumatunnus|@käyttäjätunnus)</translation>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
+        <translation>/redact &lt;$tapahtumatunnus|@käyttäjätunnus&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -495,67 +495,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
         <translation>/shrug [viesti]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/fliptable</source>
-        <translation>/fliptable</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/unfliptable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/sovietflip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/clear-timeline</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/reset-state</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rotate-megolm-session</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/md [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+28"/>
         <source>/confetti [message]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -565,22 +505,47 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
+        <location line="-16"/>
+        <source>/md &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/converttodm</source>
+        <source>/cmark &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/converttoroom</source>
+        <source>/plain &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+2"/>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/notice &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>/goto &lt;message reference&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Send a message expressing an action.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -677,6 +642,11 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
         <translation>Lähetä muotoilematon viesti (ohjelman laajuisesta asetuksesta huolimatta).</translation>
     </message>
@@ -712,8 +682,8 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Siirry tähän tapahtumaan tai linkkiin.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -729,7 +699,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+52"/>
+        <location filename="../qml/CommunitiesList.qml" line="+60"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Älä näytä ilmoitusmääriä tästä yhteisöstä tai tagista.</translation>
     </message>
@@ -881,7 +851,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
         <translation>@käyttäjä:palvelin.tld</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Encryption</source>
         <translation>Salaus</translation>
     </message>
@@ -1013,12 +983,12 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+71"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+70"/>
         <source>Search</source>
         <translation>Hae</translation>
     </message>
     <message>
-        <location line="+197"/>
+        <location line="+181"/>
         <source>People</source>
         <translation>Ihmiset</translation>
     </message>
@@ -1421,7 +1391,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
         <translation>Kaikki Tiedostot (*)</translation>
     </message>
     <message>
-        <location line="+796"/>
+        <location line="+810"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Tiedoston &quot;%1&quot; lähetys epäonnistui</translation>
     </message>
@@ -1429,28 +1399,28 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
 <context>
     <name>InviteDialog</name>
     <message>
-        <location filename="../qml/dialogs/InviteDialog.qml" line="+35"/>
+        <location filename="../qml/dialogs/InviteDialog.qml" line="+44"/>
         <source>Invite users to %1</source>
         <translation>Kutsu käyttäjiä %1</translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>User ID to invite</source>
-        <translation>Käyttäjätunnus kutsuttavaksi</translation>
-    </message>
-    <message>
-        <location line="+14"/>
+        <location line="+64"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
         <translation>@matti:matrix.org</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Add</source>
-        <translation>Lisää</translation>
+        <location line="-13"/>
+        <source>Search user</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+55"/>
+        <source>Search on Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>Invite</source>
         <translation>Kutsu</translation>
     </message>
@@ -1831,7 +1801,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+129"/>
+        <location filename="../qml/MessageView.qml" line="+138"/>
         <source>Edit</source>
         <translation>Muokkaa</translation>
     </message>
@@ -2444,7 +2414,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+232"/>
+        <location filename="../../src/main.cpp" line="+234"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Luo ainutkertainen profiili, jonka kautta voit kirjautua sisään samanaikaisesti usealla käyttäjällä, sekä käynnistää Nhekosta monta ilmentymää.</translation>
     </message>
@@ -2627,7 +2597,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
         <translation>Palvelin ei tue rekisteröitymistä.</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+28"/>
         <source>Invalid username.</source>
         <translation>Epäkelpo käyttäjätunnus.</translation>
     </message>
@@ -2681,7 +2651,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1968"/>
+        <location filename="../../src/Cache.cpp" line="+1974"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -2689,7 +2659,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+144"/>
+        <location filename="../qml/RoomList.qml" line="+153"/>
         <source>New tag</source>
         <translation>Uusi tagi</translation>
     </message>
@@ -3172,7 +3142,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+255"/>
+        <location filename="../qml/Root.qml" line="+263"/>
         <source>Please enter your login password to continue:</source>
         <translation>Syötä sisäänkirjautumisen salasanasi jatkaaksesi:</translation>
     </message>
@@ -3254,7 +3224,7 @@ Huomaathan ettei sitä voida poistaa käytöstä myöhemmin.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4658"/>
+        <location filename="../../src/Cache.cpp" line="-4664"/>
         <source>Failed to connect to secret storage</source>
         <translation>Salattuun tallennustilaan ei saatu yhteyttä</translation>
     </message>
@@ -3439,7 +3409,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
 <context>
     <name>StickerPicker</name>
     <message>
-        <location filename="../qml/emoji/StickerPicker.qml" line="+72"/>
+        <location filename="../qml/emoji/StickerPicker.qml" line="+71"/>
         <source>Search</source>
         <translation>Hae</translation>
     </message>
@@ -3465,7 +3435,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1389"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1394"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Viestin muokkaus epäonnistui: %1</translation>
@@ -3497,7 +3467,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
         <translation>Tallenna tiedosto</translation>
     </message>
     <message numerus="yes">
-        <location line="+274"/>
+        <location line="+275"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3826,12 +3796,12 @@ Syy: %4</translation>
         <translation>%1 perui koputuksensa.</translation>
     </message>
     <message>
-        <location line="-1627"/>
+        <location line="-1628"/>
         <source>You joined this room.</source>
         <translation>Liityit tähän huoneeseen.</translation>
     </message>
     <message>
-        <location line="+925"/>
+        <location line="+926"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 teki tämän huoneen vaatimaan kutsun liittymiseen.</translation>
     </message>
@@ -3883,7 +3853,7 @@ Syy: %4</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+43"/>
+        <location filename="../qml/TimelineView.qml" line="+44"/>
         <source>No room open</source>
         <translation>Yhtäkään huonetta ei ole avattu</translation>
     </message>
@@ -3944,17 +3914,17 @@ Syy: %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+153"/>
+        <location filename="../qml/TopBar.qml" line="+161"/>
         <source>Back to room list</source>
         <translation>Takaisin huonelistaan</translation>
     </message>
     <message>
-        <location line="-133"/>
+        <location line="-141"/>
         <source>No room selected</source>
         <translation>Ei valittua huonetta</translation>
     </message>
     <message>
-        <location line="+115"/>
+        <location line="+123"/>
         <source>In %1</source>
         <translation>Osa yhteisöä %1</translation>
     </message>
@@ -4200,8 +4170,8 @@ Syy: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+534"/>
-        <location filename="../../src/UserSettingsPage.h" line="+244"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+551"/>
+        <location filename="../../src/UserSettingsPage.h" line="+248"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
@@ -4209,7 +4179,7 @@ Syy: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+408"/>
         <source>Theme</source>
         <translation>Teema</translation>
     </message>
@@ -4335,6 +4305,11 @@ Syy: %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Reduce or disable animations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Privacy Screen</source>
         <translation>Yksityisyysnäkymä</translation>
     </message>
@@ -4455,6 +4430,11 @@ Syy: %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>ACCESSIBILITY</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>TIMELINE</source>
         <translation>AIKAJANA</translation>
     </message>
@@ -4524,7 +4504,7 @@ Syy: %4</translation>
         <translation>Paljasta huonetiedot D-Bus:in kautta</translation>
     </message>
     <message>
-        <location line="+103"/>
+        <location line="+105"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
@@ -4629,24 +4609,29 @@ POIS - neliö, PÄÄLLÄ - ympyrä.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+3"/>
+        <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Vastaa automaattisesti muiden vahvistettujen käyttäjien avainpyyntöihin, vaikka kyseisellä laitteella ei muuten pitäisi olla pääsyä avaimiin.</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+32"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>Omien laitteidesi vahvistamiseen käytettävä avain. Jos avain on välimuistissa, jonkun laitteesi vahvistus tekee siitä vahvistetun kaikille muille laitteillesi, ja käyttäjille, jotka ovat vahvistaneet sinut.</translation>
     </message>
     <message>
-        <location line="-72"/>
+        <location line="-76"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Näytä hälytys kun viesti on vastaanotettu.
 Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalkissa.</translation>
     </message>
     <message>
-        <location line="-319"/>
+        <location line="-325"/>
         <source>Communities sidebar</source>
         <translation>Yhteisösivupalkki</translation>
     </message>
@@ -4656,7 +4641,7 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
         <translation>Näytä yhteisöjen ja tagien viestimäärät</translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+229"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Aseta viestien maksimileveys aikajanalla (pikseleinä). Voi auttaa luettavuudessa, kun Nheko on suurennettuna</translation>
     </message>
@@ -4710,7 +4695,7 @@ Only affects messages in encrypted chats.</source>
 Vaikuttaa vain salattujen keskustelujen viesteihin.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+14"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
         <translation>Kun ikkuna ei ole kohdistettuna, tämä aikajana
@@ -4742,7 +4727,7 @@ sumennetaan.</translation>
         <translation>Lataa viestien salausavaimet salatusta verkkoavainvarmuuskopiosta ja lähetä avaimet sinne.</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
         <translation>Avain purkamaan avainten varmuuskopioita verkossa. Jos se laitetaan välimuistiin, voit sallia avainten varmuuskopioinnin verkossa säilöäksesi salausavaimet, jotka ovat turvallisesti salattuja palvelimella.</translation>
     </message>
@@ -4766,7 +4751,7 @@ This setting will take effect upon restart.</source>
 Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
     </message>
     <message>
-        <location line="+442"/>
+        <location line="+451"/>
         <source>Select a file</source>
         <translation>Valitse tiedosto</translation>
     </message>
@@ -4895,7 +4880,7 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../qml/pages/WelcomePage.qml" line="+30"/>
+        <location filename="../qml/pages/WelcomePage.qml" line="+31"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>Tervetuloa Nhekoon! Työpöytäsovellus Matrix-protokollalle.</translation>
     </message>
@@ -4913,6 +4898,16 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
         <location line="+8"/>
         <source>LOGIN</source>
         <translation>KIRJAUDU</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Reduce animations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

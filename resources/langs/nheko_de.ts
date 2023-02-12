@@ -208,7 +208,7 @@
 <context>
     <name>CallManager</name>
     <message>
-        <location filename="../../src/voip/CallManager.cpp" line="+820"/>
+        <location filename="../../src/voip/CallManager.cpp" line="+819"/>
         <source>Entire screen</source>
         <translation>Ganzer Bildschirm</translation>
     </message>
@@ -222,7 +222,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+839"/>
+        <location line="+843"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
@@ -430,7 +430,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+104"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+106"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;Nachricht&gt;</translation>
     </message>
@@ -441,13 +441,13 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>/join (!roomid|#alias) [reason]</source>
-        <translation>/join (!raumid|#alias) [Grund]</translation>
+        <source>/join &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/join &lt;!raumid|#alias&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/knock (!roomid|#alias) [reason]</source>
-        <translation>/knock (!raumid|#alias) [Grund]</translation>
+        <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
+        <translation>/knock &lt;!raumid|#alias&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -461,28 +461,28 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>/invite @userid [reason]</source>
-        <translation>/invite @nutzerid [Grund]</translation>
+        <source>/invite &lt;@userid&gt; [reason]</source>
+        <translation>/invite &lt;@nutzerid&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/kick @userid [reason]</source>
-        <translation>/kick @nutzerid [Grund]</translation>
+        <source>/kick &lt;@userid&gt; [reason]</source>
+        <translation>/kick &lt;@nutzerid&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/ban @userid [reason]</source>
-        <translation>/ban @nutzerid [Grund]</translation>
+        <source>/ban &lt;@userid&gt; [reason]</source>
+        <translation>/ban &lt;@nutzerid&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unban @userid [reason]</source>
-        <translation>/unban @nutzerid [Grund]</translation>
+        <source>/unban &lt;@userid&gt; [reason]</source>
+        <translation>/unban &lt;@nutzerid&gt; [Grund]</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/redact ($eventid|@userid)</source>
-        <translation>/redact ($eventid|@nutzerid)</translation>
+        <source>/redact &lt;$eventid|@userid&gt;</source>
+        <translation>/redact &lt;$eventid|@nutzerid&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -495,64 +495,39 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>/shrug [Nachricht]</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/fliptable</source>
-        <translation>/fliptable</translation>
+        <location line="+14"/>
+        <source>/md &lt;message&gt;</source>
+        <translation>/md &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/unfliptable</source>
-        <translation>/unfliptable</translation>
+        <source>/cmark &lt;message&gt;</source>
+        <translation>/cmark &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/sovietflip</source>
-        <translation>/sovietflip</translation>
+        <source>/plain &lt;message&gt;</source>
+        <translation>/plain &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/clear-timeline</source>
-        <translation>/clear-timeline</translation>
+        <source>/rainbow &lt;message&gt;</source>
+        <translation>/rainbow &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/reset-state</source>
-        <translation>/reset-state</translation>
+        <source>/rainbowme &lt;message&gt;</source>
+        <translation>/rainbowme &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/rotate-megolm-session</source>
-        <translation>/rotate-megolm-session</translation>
+        <source>/notice &lt;message&gt;</source>
+        <translation>/notice &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>/md [message]</source>
-        <translation>/md [Nachricht]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/plain [message]</source>
-        <translation>/plain [Nachricht]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbow [message]</source>
-        <translation>/rainbow [Nachricht]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbowme [message]</source>
-        <translation>/rainbowme [Nachricht]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/notice [message]</source>
-        <translation>/notice [Nachricht]</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbownotice [message]</source>
-        <translation>/rainbownotice [Nachricht]</translation>
+        <source>/rainbownotice &lt;message&gt;</source>
+        <translation>/rainbownotice &lt;Nachricht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -566,21 +541,11 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>/goto ($eventid|message index|matrix:r/room/e/event)</source>
-        <translation>/goto ($eventid|Nachrichten Index|matrix:r/raumid/e/eventid)</translation>
+        <source>/goto &lt;message reference&gt;</source>
+        <translation>/goto &lt;Nachrichtenreferenz&gt;</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>/converttodm</source>
-        <translation>/converttodm</translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/converttoroom</source>
-        <translation>/converttoroom</translation>
-    </message>
-    <message>
-        <location line="+8"/>
+        <location line="+12"/>
         <source>Send a message expressing an action.</source>
         <translation>Sende eine Nachricht, die eine Aktion ausdrückt.</translation>
     </message>
@@ -677,6 +642,11 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
+        <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
+        <translation>Sende eine Nachricht im Commonmarkformat ohne die Erweiterungen aus dem /md-Modus.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
         <translation>Sende diese Nachricht unformatiert (selbst wenn die globale Einstellung Markdown preferiert).</translation>
     </message>
@@ -712,8 +682,8 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>Go to this event or link.</source>
-        <translation>Navigiere zu dieser Nachricht oder diesem Link.</translation>
+        <source>Go to a specific message using an event id, index or matrix: link</source>
+        <translation>Springe zu einer Nachricht mit spezifischer eventid, Index oder via einem matrix:-Link</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -729,7 +699,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+52"/>
+        <location filename="../qml/CommunitiesList.qml" line="+60"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Zeige keine Benachrichtigungen für diese Gruppe oder Tag an.</translation>
     </message>
@@ -881,7 +851,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>@nutzer.server.domain</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+15"/>
         <source>Encryption</source>
         <translation>Verschlüsselung</translation>
     </message>
@@ -1013,12 +983,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../qml/emoji/EmojiPicker.qml" line="+71"/>
+        <location filename="../qml/emoji/EmojiPicker.qml" line="+70"/>
         <source>Search</source>
         <translation>Suche</translation>
     </message>
     <message>
-        <location line="+197"/>
+        <location line="+181"/>
         <source>People</source>
         <translation>Leute</translation>
     </message>
@@ -1421,7 +1391,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>Alle Dateien (*)</translation>
     </message>
     <message>
-        <location line="+796"/>
+        <location line="+810"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Das Hochladen von &apos;%1&apos; ist fehlgeschlagen</translation>
     </message>
@@ -1429,28 +1399,28 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>InviteDialog</name>
     <message>
-        <location filename="../qml/dialogs/InviteDialog.qml" line="+35"/>
+        <location filename="../qml/dialogs/InviteDialog.qml" line="+44"/>
         <source>Invite users to %1</source>
         <translation>Lade Benutzer in %1 ein</translation>
     </message>
     <message>
-        <location line="+23"/>
-        <source>User ID to invite</source>
-        <translation>Benutzer-ID, die eingeladen werden soll</translation>
-    </message>
-    <message>
-        <location line="+14"/>
+        <location line="+64"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
         <translation>@joe:matrix.org</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>Add</source>
-        <translation>Hinzufügen</translation>
+        <location line="-13"/>
+        <source>Search user</source>
+        <translation>Suche Benutzer</translation>
     </message>
     <message>
-        <location line="+84"/>
+        <location line="+55"/>
+        <source>Search on Server</source>
+        <translation>Serverseitige Suche</translation>
+    </message>
+    <message>
+        <location line="+86"/>
         <source>Invite</source>
         <translation>Einladen</translation>
     </message>
@@ -1832,7 +1802,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+129"/>
+        <location filename="../qml/MessageView.qml" line="+138"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
@@ -2445,7 +2415,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+232"/>
+        <location filename="../../src/main.cpp" line="+234"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Erstelle ein separates Profil, was mehrere Instanzen von Nheko mit verschiedenen Accounts zur gleichen Zeit ermöglicht.</translation>
     </message>
@@ -2628,7 +2598,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>Server unterstützt keine Registrierung.</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+28"/>
         <source>Invalid username.</source>
         <translation>Illegaler Benutzername.</translation>
     </message>
@@ -2682,7 +2652,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+1968"/>
+        <location filename="../../src/Cache.cpp" line="+1974"/>
         <source>no version stored</source>
         <translation>keine Version gespeichert</translation>
     </message>
@@ -2690,7 +2660,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+144"/>
+        <location filename="../qml/RoomList.qml" line="+153"/>
         <source>New tag</source>
         <translation>Neuer Tag</translation>
     </message>
@@ -3173,7 +3143,7 @@ Die Verschlüsselung des Raumes kann nach Aktivierung nicht mehr deaktiviert wer
 <context>
     <name>Root</name>
     <message>
-        <location filename="../qml/Root.qml" line="+255"/>
+        <location filename="../qml/Root.qml" line="+263"/>
         <source>Please enter your login password to continue:</source>
         <translation>Bitte gib dein Anmeldepassword an um fortzufahren:</translation>
     </message>
@@ -3255,7 +3225,7 @@ Die Verschlüsselung des Raumes kann nach Aktivierung nicht mehr deaktiviert wer
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4658"/>
+        <location filename="../../src/Cache.cpp" line="-4664"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbindung zum kryptografischen Speicher fehlgeschlagen</translation>
     </message>
@@ -3440,7 +3410,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>StickerPicker</name>
     <message>
-        <location filename="../qml/emoji/StickerPicker.qml" line="+72"/>
+        <location filename="../qml/emoji/StickerPicker.qml" line="+71"/>
         <source>Search</source>
         <translation>Suche</translation>
     </message>
@@ -3466,7 +3436,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1389"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1394"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
@@ -3498,7 +3468,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <translation>Datei speichern</translation>
     </message>
     <message numerus="yes">
-        <location line="+274"/>
+        <location line="+275"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3827,12 +3797,12 @@ Grund: %4</translation>
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-1627"/>
+        <location line="-1628"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+925"/>
+        <location line="+926"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 hat diesen Raum nur eingeladenen Nutzern zugänglich gemacht.</translation>
     </message>
@@ -3884,7 +3854,7 @@ Grund: %4</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+43"/>
+        <location filename="../qml/TimelineView.qml" line="+44"/>
         <source>No room open</source>
         <translation>Kein Raum geöffnet</translation>
     </message>
@@ -3945,17 +3915,17 @@ Grund: %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+153"/>
+        <location filename="../qml/TopBar.qml" line="+161"/>
         <source>Back to room list</source>
         <translation>Zurück zur Raumliste</translation>
     </message>
     <message>
-        <location line="-133"/>
+        <location line="-141"/>
         <source>No room selected</source>
         <translation>Kein Raum ausgewählt</translation>
     </message>
     <message>
-        <location line="+115"/>
+        <location line="+123"/>
         <source>In %1</source>
         <translation>In %1</translation>
     </message>
@@ -4201,8 +4171,8 @@ Grund: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+534"/>
-        <location filename="../../src/UserSettingsPage.h" line="+244"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+551"/>
+        <location filename="../../src/UserSettingsPage.h" line="+248"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
@@ -4210,7 +4180,7 @@ Grund: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+408"/>
         <source>Theme</source>
         <translation>Erscheinungsbild</translation>
     </message>
@@ -4336,6 +4306,11 @@ Grund: %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Reduce or disable animations</source>
+        <translation>Reduziere oder deaktiviere Animationen</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Privacy Screen</source>
         <translation>Blickschutz</translation>
     </message>
@@ -4456,6 +4431,11 @@ Grund: %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>ACCESSIBILITY</source>
+        <translation>BARRIEREFREIHEIT</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>TIMELINE</source>
         <translation>NACHRICHTENLISTE</translation>
     </message>
@@ -4525,7 +4505,7 @@ Grund: %4</translation>
         <translation>Mache Rauminformationen über D-Bus verfügbar</translation>
     </message>
     <message>
-        <location line="+103"/>
+        <location line="+105"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
@@ -4630,24 +4610,29 @@ AUS - Quadratisch, AN - Kreisförmig.</translation>
         <translation>Manche Nachrichten lösen extra Effekte aus. Z.B. erzeugen Nachrichten, die mit /confetti gesendet wurden, einen kleinen Konfettischauer.</translation>
     </message>
     <message>
+        <location line="+3"/>
+        <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
+        <translation>Für besseres Aussehen verwendet Nheko an verschiedenen Stellen Animationen. Diese Option erlaubt dir die Animationen zu deaktiveren, wenn diese bei dir Unwohlsein hervorrufen.</translation>
+    </message>
+    <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Teilt automatisch Schlüssel für Nachrichten mit verifizierten Nutzern (auf Anfrage), selbst wenn diese sonst keinen Zugriff darauf hätten.</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+32"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
         <translation>Der Schlüssel um deine eigenen Geräte zu verifizieren. Wenn dieser im Cache ist, dann werden alle deine Geräte als verifiziert für andere Nutzer erscheinen, wenn du diese verifiziert hast.</translation>
     </message>
     <message>
-        <location line="-72"/>
+        <location line="-76"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Hebe das Fenster hervor, wenn eine Nachricht empfangen wurde.
 Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</translation>
     </message>
     <message>
-        <location line="-319"/>
+        <location line="-325"/>
         <source>Communities sidebar</source>
         <translation>Gruppenseitenleiste</translation>
     </message>
@@ -4657,7 +4642,7 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
         <translation>Zeige Nachrichtenzahl für Gruppen und Tags</translation>
     </message>
     <message>
-        <location line="+223"/>
+        <location line="+229"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Setze eine maximale Breite für Nachrichten im Chat (in Pixeln). Das kann die Lesbarkeit auf breiten Bildschirmen erhöhen.</translation>
     </message>
@@ -4711,7 +4696,7 @@ Only affects messages in encrypted chats.</source>
 Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+14"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
         <translation>Die Zeitliste wird unscharf, wenn das Fenster den Fokus verliert.</translation>
@@ -4742,7 +4727,7 @@ be blurred.</source>
         <translation>Speichere eine Kopie der Nachrichtenschlüssel verschlüsselt auf dem Server.</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+24"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
         <translation>Der Schlüssel um Schlüssel aus der Onlinesicherung zu laden. Wenn dieser vorhanden ist, können die Schlüssel für verschlüsselte Nachrichten sicher online gespeichert und wieder runtergeladen werden.</translation>
     </message>
@@ -4766,7 +4751,7 @@ This setting will take effect upon restart.</source>
 Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     </message>
     <message>
-        <location line="+442"/>
+        <location line="+451"/>
         <source>Select a file</source>
         <translation>Datei auswählen</translation>
     </message>
@@ -4895,7 +4880,7 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
 <context>
     <name>WelcomePage</name>
     <message>
-        <location filename="../qml/pages/WelcomePage.qml" line="+30"/>
+        <location filename="../qml/pages/WelcomePage.qml" line="+31"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
         <translation>Willkommen bei Nheko! Ein Desktop-Client für das Matrix-Protokoll.</translation>
     </message>
@@ -4913,6 +4898,16 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
         <location line="+8"/>
         <source>LOGIN</source>
         <translation>ANMELDEN</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>Reduce animations</source>
+        <translation>Reduziere Animationen</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
+        <translation>Für besseres Aussehen verwendet Nheko an verschiedenen Stellen Animationen. Diese Option erlaubt dir die Animationen zu deaktiveren, wenn diese bei dir Unwohlsein hervorrufen.</translation>
     </message>
 </context>
 <context>

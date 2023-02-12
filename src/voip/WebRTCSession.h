@@ -54,7 +54,7 @@ public:
         return instance;
     }
 
-    bool havePlugins(bool isVideo, std::string *errorMessage = nullptr);
+    bool havePlugins(bool isVideo, bool isX11Screenshare, std::string *errorMessage = nullptr);
     webrtc::CallType callType() const { return callType_; }
     webrtc::State state() const { return state_; }
     bool haveLocalPiP() const;
@@ -93,18 +93,19 @@ private:
     WebRTCSession();
 
     CallDevices &devices_;
-    bool initialised_           = false;
-    bool haveVoicePlugins_      = false;
-    bool haveVideoPlugins_      = false;
-    webrtc::CallType callType_  = webrtc::CallType::VOICE;
-    webrtc::State state_        = webrtc::State::DISCONNECTED;
-    bool isOffering_            = false;
-    bool isRemoteVideoRecvOnly_ = false;
-    bool isRemoteVideoSendOnly_ = false;
-    QQuickItem *videoItem_      = nullptr;
-    GstElement *pipe_           = nullptr;
-    GstElement *webrtc_         = nullptr;
-    unsigned int busWatchId_    = 0;
+    bool initialised_               = false;
+    bool haveVoicePlugins_          = false;
+    bool haveVideoPlugins_          = false;
+    bool haveX11ScreensharePlugins_ = false;
+    webrtc::CallType callType_      = webrtc::CallType::VOICE;
+    webrtc::State state_            = webrtc::State::DISCONNECTED;
+    bool isOffering_                = false;
+    bool isRemoteVideoRecvOnly_     = false;
+    bool isRemoteVideoSendOnly_     = false;
+    QQuickItem *videoItem_          = nullptr;
+    GstElement *pipe_               = nullptr;
+    GstElement *webrtc_             = nullptr;
+    unsigned int busWatchId_        = 0;
     std::vector<std::string> turnServers_;
     uint32_t shareWindowId_ = 0;
 

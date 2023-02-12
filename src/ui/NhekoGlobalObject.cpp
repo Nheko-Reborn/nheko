@@ -10,6 +10,8 @@
 #include <QDesktopServices>
 #include <QStyle>
 #include <QUrl>
+#include <QWindow>
+#include <QtPlatformHeaders/QXcbWindowFunctions>
 
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -177,4 +179,10 @@ Nheko::createRoom(bool space,
     }
 
     emit ChatPage::instance()->createRoom(req);
+}
+
+void
+Nheko::setWindowRole(QWindow *win, QString newRole) const
+{
+    QXcbWindowFunctions::setWmWindowRole(win, newRole.toUtf8());
 }
