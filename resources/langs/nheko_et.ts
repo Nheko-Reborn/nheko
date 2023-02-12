@@ -537,12 +537,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="-14"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;sõnumi viide&gt;</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -683,7 +683,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava sõnumi tunnuse, sündmuse id või matrix: lingi alusel konkreetne sõnum</translation>
     </message>
     <message>
         <location line="+2"/>
