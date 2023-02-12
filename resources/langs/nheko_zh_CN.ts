@@ -536,12 +536,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="-14"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;消息&gt;</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;消息参考&gt;</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -642,7 +642,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条commonmark格式的消息，与/md相比其禁用大多数扩展。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -682,7 +682,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>使用事件 ID、索引或 matrix: 链接以转到一条特定的消息</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -788,7 +788,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation>无法从聊天室中删除社区：%1</translation>
+        <translation>未能从聊天室中删除社区：%1</translation>
     </message>
 </context>
 <context>
@@ -1410,12 +1410,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="-13"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>搜索用户</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>在服务器上搜索</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1477,10 +1477,10 @@ You may optionally provide a reason for others to accept your knock:</source>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>您的登录名。 mxid 应以 @ 开头，后跟用户 ID。 在用户 ID 之后，您需要在 : 之后包含您的服务器名称。
-如果您的服务器不支持 .well-known 查找，您也可以将您的主服务器地址放在那里。
-示例：@user:server.my
-如果 Nheko 无法发现您的主服务器，它会显示一个字段供您手动输入服务器。</translation>
+        <translation>你的登录名。一个mxid应以@开头，后跟用户ID。在用户ID之后，你需要在一个 : 之后包含你的服务器名称。
+如果你的服务器不支持 .well-known 查询，你也可以输入你的主服务器地址。
+例如。@user:server.my
+如果 Nheko 未能发现你的主服务器，它将显示一个字段，让你手动输入服务器。</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1952,7 +1952,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation>要允许其他用户查看您的哪些设备实际上属于您，您可以验证它们。 这也允许密钥备份自动工作。 现在验证 %1 ？</translation>
+        <translation>为了允许其他用户查看你的哪些设备实际上属于你，你可以对其进行验证。这也允许密钥备份自动工作。现在验证 %1 ？</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4296,7 +4296,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation type="unfinished"></translation>
+        <translation>减少或禁用动画</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4421,7 +4421,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>ACCESSIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>可访问性</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4601,7 +4601,7 @@ OFF - 方形，ON - 圆形。</translation>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko 在多处使用动画以使页面过渡流畅。如果这些动画让你感觉不舒服，你可以把它们关掉。</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4892,12 +4892,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>减少动画</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko 在多处使用动画以使页面过渡流畅。如果这些动画让你感觉不舒服，你可以把它们关掉。</translation>
     </message>
 </context>
 <context>
