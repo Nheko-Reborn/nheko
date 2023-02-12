@@ -538,12 +538,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="-14"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;mesaĝo&gt;</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;indiko de mesaĝo&gt;</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -684,7 +684,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Iri al specifa mesaĝo per identigilo de okazo, indico, aŭ ligilo de la speco «matrix:»</translation>
     </message>
     <message>
         <location line="+2"/>
