@@ -14,7 +14,8 @@ Rectangle {
     required property string username
 
     radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
-    width: parent.width ? parent.width : 0
+    width: parent.width ? Math.min(parent.width, 700) : 0
+    anchors.horizontalCenter: parent.horizontalCenter
     height: contents.implicitHeight + Nheko.paddingMedium * 2
     color: Nheko.colors.alternateBase
     border.color: Nheko.theme.green
