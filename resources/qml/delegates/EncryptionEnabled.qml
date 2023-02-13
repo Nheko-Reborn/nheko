@@ -47,9 +47,7 @@ Rectangle {
             }
 
             MatrixText {
-                text: qsTr("Encryption keeps your messages safe by locking them with a key that only the people in this room have. "
-                           + "That means that even if somebody gains unauthorized access to your messages, they will not be able to see "
-                           + "what they say.")
+                text: qsTr("Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right person, you can verify them in real life.")
                 color: Nheko.colors.text
                 width: parent.width
             }
