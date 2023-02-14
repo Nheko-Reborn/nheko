@@ -59,7 +59,7 @@ Item {
 
         Image {
             anchors.fill: parent
-            source: thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : ""
+            source: thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : "image://colorimage/:/icons/icons/ui/video-file.svg?" + Nheko.colors.windowText
             asynchronous: true
             fillMode: Image.PreserveAspectFit
 
