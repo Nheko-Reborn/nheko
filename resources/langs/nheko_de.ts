@@ -1100,6 +1100,19 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
 </context>
 <context>
+    <name>EncryptionEnabled</name>
+    <message>
+        <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
+        <source>%1 enabled end-to-end encryption</source>
+        <translation>%1 hat die Ende-zu-Ende-Verschlüsselung aktiviert</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
+        <translation>Durch die Verschlüsselung sind deine Nachrichten nur von den Personen lesbar, denen du sie auch senden wolltest. Um auf eine Nummer extra-sicher zu gehen, kannst du die Personen mit denen du kommunizierst, in der echten Welt verifizieren.</translation>
+    </message>
+</context>
+<context>
     <name>EncryptionIndicator</name>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+57"/>
@@ -1655,12 +1668,7 @@ Beispiel: https://mein.server:8787</translation>
         <translation>%1 hat eine Nachricht gelöscht</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>%1 enabled encryption</source>
-        <translation>%1 hat die Verschlüsselung aktiviert</translation>
-    </message>
-    <message>
-        <location line="+25"/>
+        <location line="+34"/>
         <source>%2 changed the room name to: %1</source>
         <translation>%2 hat den Raumnamen geändert auf: %1</translation>
     </message>

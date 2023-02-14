@@ -1098,6 +1098,19 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
 </context>
 <context>
+    <name>EncryptionEnabled</name>
+    <message>
+        <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
+        <source>%1 enabled end-to-end encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EncryptionIndicator</name>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+57"/>
@@ -1653,12 +1666,7 @@ Example: https://server.my:8787</source>
         <translation>%1 移除了一条消息</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>%1 enabled encryption</source>
-        <translation>%1 启用了加密</translation>
-    </message>
-    <message>
-        <location line="+25"/>
+        <location line="+34"/>
         <source>%2 changed the room name to: %1</source>
         <translation>%2 将聊天室名称更改为：%1</translation>
     </message>

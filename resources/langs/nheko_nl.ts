@@ -1100,6 +1100,19 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     </message>
 </context>
 <context>
+    <name>EncryptionEnabled</name>
+    <message>
+        <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
+        <source>%1 enabled end-to-end encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EncryptionIndicator</name>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+57"/>
@@ -1655,12 +1668,7 @@ Voorbeeld: https://mijn.server:8787</translation>
         <translation>%1 heeft een bericht verwijderd</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>%1 enabled encryption</source>
-        <translation>%1 heeft versleuteling ingeschakeld</translation>
-    </message>
-    <message>
-        <location line="+25"/>
+        <location line="+34"/>
         <source>%2 changed the room name to: %1</source>
         <translation>%2 heeft de naam van de kamer veranderd in: %1</translation>
     </message>

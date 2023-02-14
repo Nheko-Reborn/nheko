@@ -1098,6 +1098,19 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
 </context>
 <context>
+    <name>EncryptionEnabled</name>
+    <message>
+        <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
+        <source>%1 enabled end-to-end encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EncryptionIndicator</name>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+57"/>
@@ -1643,12 +1656,7 @@ Contoh: https://server.saya:8787</translation>
         <translation>%1 menghapus sebuah pesan</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>%1 enabled encryption</source>
-        <translation>%1 mengaktifkan enkripsi</translation>
-    </message>
-    <message>
-        <location line="+25"/>
+        <location line="+34"/>
         <source>%2 changed the room name to: %1</source>
         <translation>%2 mengubah nama ruangan ke: %1</translation>
     </message>
@@ -1729,7 +1737,7 @@ Contoh: https://server.saya:8787</translation>
         <translation>%1 menjawab panggilan.</translation>
     </message>
     <message>
-        <location line="-339"/>
+        <location line="-338"/>
         <source>This room was replaced for the following reason: %1</source>
         <translation>Ruangan ini digantikan karena alasan berikut: %1</translation>
     </message>
@@ -1739,7 +1747,7 @@ Contoh: https://server.saya:8787</translation>
         <translation>Pergi ke ruangan baru</translation>
     </message>
     <message>
-        <location line="+282"/>
+        <location line="+281"/>
         <source>%1 changed the parent communities for this room.</source>
         <translation>%1 mengubah komunitas induk untuk ruangan.</translation>
     </message>

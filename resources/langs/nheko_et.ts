@@ -1100,6 +1100,19 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     </message>
 </context>
 <context>
+    <name>EncryptionEnabled</name>
+    <message>
+        <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
+        <source>%1 enabled end-to-end encryption</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EncryptionIndicator</name>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+57"/>
@@ -1645,12 +1658,7 @@ Näiteks: https://minuserver.ee:8787</translation>
         <translation>%1 eemaldas sõnumi</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <source>%1 enabled encryption</source>
-        <translation>%1 võttis kasutusele krüptimise</translation>
-    </message>
-    <message>
-        <location line="+25"/>
+        <location line="+34"/>
         <source>%2 changed the room name to: %1</source>
         <translation>%2 muutis jututoa uueks nimeks: %1</translation>
     </message>
@@ -1731,7 +1739,7 @@ Näiteks: https://minuserver.ee:8787</translation>
         <translation>%1 vastas kõnele.</translation>
     </message>
     <message>
-        <location line="-339"/>
+        <location line="-338"/>
         <source>This room was replaced for the following reason: %1</source>
         <translation>Jututuba asendati järgneval põhjusel: %1</translation>
     </message>
@@ -1741,7 +1749,7 @@ Näiteks: https://minuserver.ee:8787</translation>
         <translation>Mine uude jututuppa</translation>
     </message>
     <message>
-        <location line="+282"/>
+        <location line="+281"/>
         <source>%1 changed the parent communities for this room.</source>
         <translation>%1 muutis selle jututoa ülemkogukonda.</translation>
     </message>
