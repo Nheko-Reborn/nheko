@@ -699,7 +699,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+60"/>
+        <location filename="../qml/CommunitiesList.qml" line="+65"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Ära näita teavituste loendit selle kogukonna või sildi kohta.</translation>
     </message>
@@ -2668,7 +2668,7 @@ Näiteks: https://minuserver.ee:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+153"/>
+        <location filename="../qml/RoomList.qml" line="+158"/>
         <source>New tag</source>
         <translation>Uus silt</translation>
     </message>
@@ -4179,8 +4179,8 @@ Põhjus: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+551"/>
-        <location filename="../../src/UserSettingsPage.h" line="+248"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+564"/>
+        <location filename="../../src/UserSettingsPage.h" line="+252"/>
         <source>Default</source>
         <translation>Vaikimisi</translation>
     </message>
@@ -4188,7 +4188,7 @@ Põhjus: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+408"/>
+        <location line="+409"/>
         <source>Theme</source>
         <translation>Teema</translation>
     </message>
@@ -4219,6 +4219,11 @@ Põhjus: %4</translation>
     </message>
     <message>
         <location line="+4"/>
+        <source>Scrollbars in room list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Send messages as Markdown</source>
         <translation>Saada sõnumid kasutades Markdown vormindust</translation>
     </message>
@@ -4513,7 +4518,7 @@ Põhjus: %4</translation>
         <translation>Jaga jututoa teavet D-Bus&apos;i vahendusel</translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location line="+107"/>
         <source>Default</source>
         <translation>Vaikimisi</translation>
     </message>
@@ -4553,6 +4558,11 @@ peale akna fookuse kadumist ajajoone vaade hägustub.
     </message>
     <message>
         <location line="+4"/>
+        <source>Shows scrollbars in the room list and communities list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
         <translation>Luba Markdown-vormingu kasutamine sõnumite koostamisel.
@@ -4640,17 +4650,17 @@ This usually causes the application icon in the task bar to animate in some fash
 See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti animatsiooniga sulle märku.</translation>
     </message>
     <message>
-        <location line="-325"/>
+        <location line="-331"/>
         <source>Communities sidebar</source>
         <translation>Kogukondade külgpaan</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+40"/>
         <source>Show message counts for communities and tags</source>
         <translation>Näita kogukonna või sildi sõnumite arvu</translation>
     </message>
     <message>
-        <location line="+229"/>
+        <location line="+231"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Seadista sõnumite suurim laius pikslites ajajoonel. See parandab loetavust suurel ekraanil, kui Nheko on avatud täisvaates</translation>
     </message>
@@ -4660,7 +4670,7 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>Näita jututubade loendi kõrval veergu kogukondade ja siltidega.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+23"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -4760,7 +4770,7 @@ This setting will take effect upon restart.</source>
 Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+459"/>
         <source>Select a file</source>
         <translation>Vali fail</translation>
     </message>

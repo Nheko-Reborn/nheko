@@ -39,6 +39,8 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool tray READ tray WRITE setTray NOTIFY trayChanged)
     Q_PROPERTY(bool startInTray READ startInTray WRITE setStartInTray NOTIFY startInTrayChanged)
     Q_PROPERTY(bool groupView READ groupView WRITE setGroupView NOTIFY groupViewStateChanged)
+    Q_PROPERTY(bool scrollbarsInRoomlist READ scrollbarsInRoomlist WRITE setScrollbarsInRoomlist
+                 NOTIFY scrollbarsInRoomlistChanged)
     Q_PROPERTY(bool markdown READ markdown WRITE setMarkdown NOTIFY markdownChanged)
     Q_PROPERTY(
       bool invertEnterKey READ invertEnterKey WRITE setInvertEnterKey NOTIFY invertEnterKeyChanged)
@@ -157,6 +159,7 @@ public:
     void setFontFamily(QString family);
     void setEmojiFontFamily(QString family);
     void setGroupView(bool state);
+    void setScrollbarsInRoomlist(bool state);
     void setMarkdown(bool state);
     void setInvertEnterKey(bool state);
     void setBubbles(bool state);
@@ -216,6 +219,7 @@ public:
     bool tray() const { return tray_; }
     bool startInTray() const { return startInTray_; }
     bool groupView() const { return groupView_; }
+    bool scrollbarsInRoomlist() const { return scrollbarsInRoomlist_; }
     bool avatarCircles() const { return avatarCircles_; }
     bool decryptSidebar() const { return decryptSidebar_; }
     bool decryptNotifications() const { return decryptNotifications_; }
@@ -283,6 +287,7 @@ public:
 
 signals:
     void groupViewStateChanged(bool state);
+    void scrollbarsInRoomlistChanged(bool state);
     void roomSortingChanged(bool state);
     void themeChanged(QString state);
     void messageHoverHighlightChanged(bool state);
@@ -355,6 +360,7 @@ private:
     bool tray_;
     bool startInTray_;
     bool groupView_;
+    bool scrollbarsInRoomlist_;
     bool markdown_;
     bool invertEnterKey_;
     bool bubbles_;
@@ -436,6 +442,7 @@ class UserSettingsModel final : public QAbstractListModel
         UseIdenticon,
         PrivacyScreen,
         PrivacyScreenTimeout,
+        ScrollbarsInRoomlist,
 #ifdef NHEKO_DBUS_SYS
         ExposeDBusApi,
 #endif

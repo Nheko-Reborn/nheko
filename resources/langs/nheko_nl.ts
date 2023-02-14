@@ -699,7 +699,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+60"/>
+        <location filename="../qml/CommunitiesList.qml" line="+65"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Laat geen meldingteller zien voor deze groep of markering.</translation>
     </message>
@@ -2668,7 +2668,7 @@ Voorbeeld: https://mijn.server:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+153"/>
+        <location filename="../qml/RoomList.qml" line="+158"/>
         <source>New tag</source>
         <translation>Nieuwe markering</translation>
     </message>
@@ -4179,8 +4179,8 @@ Reden: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+551"/>
-        <location filename="../../src/UserSettingsPage.h" line="+248"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+564"/>
+        <location filename="../../src/UserSettingsPage.h" line="+252"/>
         <source>Default</source>
         <translation>Standaard</translation>
     </message>
@@ -4188,7 +4188,7 @@ Reden: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+408"/>
+        <location line="+409"/>
         <source>Theme</source>
         <translation>Thema</translation>
     </message>
@@ -4219,6 +4219,11 @@ Reden: %4</translation>
     </message>
     <message>
         <location line="+4"/>
+        <source>Scrollbars in room list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Send messages as Markdown</source>
         <translation>Verstuur berichten in Markdown</translation>
     </message>
@@ -4513,7 +4518,7 @@ Reden: %4</translation>
         <translation>Maak kamerinformatie beschikbaar over D-Bus</translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location line="+107"/>
         <source>Default</source>
         <translation>Standaard</translation>
     </message>
@@ -4553,6 +4558,11 @@ Kies 0 om direct te blurren. Maximale waarde is 1 uur (3600 seconden)</translati
     </message>
     <message>
         <location line="+4"/>
+        <source>Shows scrollbars in the room list and communities list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
         <translation>Sta het gebruik van Markdown in berichten toe.
@@ -4640,17 +4650,17 @@ This usually causes the application icon in the task bar to animate in some fash
 Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets dergelijks.</translation>
     </message>
     <message>
-        <location line="-325"/>
+        <location line="-331"/>
         <source>Communities sidebar</source>
         <translation>Zijbalk voor groepen</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+40"/>
         <source>Show message counts for communities and tags</source>
         <translation>Laat totaalaantal berichten zien voor groepen en markeringen</translation>
     </message>
     <message>
-        <location line="+229"/>
+        <location line="+231"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Stel de maximale breedte in van berichten in de tijdlijn (in pixels). Dit kan helpen met leesbaarheid op een breed scherm als Nheko op volledig scherm staat ingesteld</translation>
     </message>
@@ -4660,7 +4670,7 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <translation>Laat een zijbalk zien met groepen en markeringen naast de kamerlijst.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+23"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -4760,7 +4770,7 @@ This setting will take effect upon restart.</source>
 Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+459"/>
         <source>Select a file</source>
         <translation>Selecteer een bestand</translation>
     </message>

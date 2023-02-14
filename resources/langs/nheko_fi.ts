@@ -699,7 +699,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+60"/>
+        <location filename="../qml/CommunitiesList.qml" line="+65"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Älä näytä ilmoitusmääriä tästä yhteisöstä tai tagista.</translation>
     </message>
@@ -2667,7 +2667,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+153"/>
+        <location filename="../qml/RoomList.qml" line="+158"/>
         <source>New tag</source>
         <translation>Uusi tagi</translation>
     </message>
@@ -4178,8 +4178,8 @@ Syy: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+551"/>
-        <location filename="../../src/UserSettingsPage.h" line="+248"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+564"/>
+        <location filename="../../src/UserSettingsPage.h" line="+252"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
@@ -4187,7 +4187,7 @@ Syy: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+408"/>
+        <location line="+409"/>
         <source>Theme</source>
         <translation>Teema</translation>
     </message>
@@ -4218,6 +4218,11 @@ Syy: %4</translation>
     </message>
     <message>
         <location line="+4"/>
+        <source>Scrollbars in room list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Send messages as Markdown</source>
         <translation>Lähetä viestit Markdownina</translation>
     </message>
@@ -4512,7 +4517,7 @@ Syy: %4</translation>
         <translation>Paljasta huonetiedot D-Bus:in kautta</translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location line="+107"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
@@ -4552,6 +4557,11 @@ Aseta nollaan, jotta sumennetaan heti kohdistus kadotetaan. Suurin arvo 1 tunti 
     </message>
     <message>
         <location line="+4"/>
+        <source>Shows scrollbars in the room list and communities list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
         <translation>Salli Markdownin käyttö viesteissä.
@@ -4639,17 +4649,17 @@ This usually causes the application icon in the task bar to animate in some fash
 Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalkissa.</translation>
     </message>
     <message>
-        <location line="-325"/>
+        <location line="-331"/>
         <source>Communities sidebar</source>
         <translation>Yhteisösivupalkki</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+40"/>
         <source>Show message counts for communities and tags</source>
         <translation>Näytä yhteisöjen ja tagien viestimäärät</translation>
     </message>
     <message>
-        <location line="+229"/>
+        <location line="+231"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Aseta viestien maksimileveys aikajanalla (pikseleinä). Voi auttaa luettavuudessa, kun Nheko on suurennettuna</translation>
     </message>
@@ -4659,7 +4669,7 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
         <translation>Näytä yhteisöt ja tagit sisältävä sarake huonelistan vieressä.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+23"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -4759,7 +4769,7 @@ This setting will take effect upon restart.</source>
 Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+459"/>
         <source>Select a file</source>
         <translation>Valitse tiedosto</translation>
     </message>

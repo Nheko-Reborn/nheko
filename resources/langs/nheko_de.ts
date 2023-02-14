@@ -699,7 +699,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+60"/>
+        <location filename="../qml/CommunitiesList.qml" line="+65"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Zeige keine Benachrichtigungen für diese Gruppe oder Tag an.</translation>
     </message>
@@ -2668,7 +2668,7 @@ Beispiel: https://mein.server:8787</translation>
 <context>
     <name>RoomList</name>
     <message>
-        <location filename="../qml/RoomList.qml" line="+153"/>
+        <location filename="../qml/RoomList.qml" line="+158"/>
         <source>New tag</source>
         <translation>Neuer Tag</translation>
     </message>
@@ -4179,8 +4179,8 @@ Grund: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+551"/>
-        <location filename="../../src/UserSettingsPage.h" line="+248"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+564"/>
+        <location filename="../../src/UserSettingsPage.h" line="+252"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
@@ -4188,7 +4188,7 @@ Grund: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+408"/>
+        <location line="+409"/>
         <source>Theme</source>
         <translation>Erscheinungsbild</translation>
     </message>
@@ -4219,6 +4219,11 @@ Grund: %4</translation>
     </message>
     <message>
         <location line="+4"/>
+        <source>Scrollbars in room list</source>
+        <translation>Srollleisten in der Raumliste</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Send messages as Markdown</source>
         <translation>Sende Nachrichten als Markdown formatiert</translation>
     </message>
@@ -4513,7 +4518,7 @@ Grund: %4</translation>
         <translation>Mache Rauminformationen über D-Bus verfügbar</translation>
     </message>
     <message>
-        <location line="+105"/>
+        <location line="+107"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
@@ -4553,6 +4558,11 @@ Maximaler Wert ist eine Stunde (3600 Sekunden).</translation>
     </message>
     <message>
         <location line="+4"/>
+        <source>Shows scrollbars in the room list and communities list.</source>
+        <translation>Zeigt Scrollleisten in der Raumliste und in der Gruppenliste an.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
         <translation>Nutze Markdown als Format für Nachrichten.
@@ -4640,17 +4650,17 @@ This usually causes the application icon in the task bar to animate in some fash
 Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</translation>
     </message>
     <message>
-        <location line="-325"/>
+        <location line="-331"/>
         <source>Communities sidebar</source>
         <translation>Gruppenseitenleiste</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+40"/>
         <source>Show message counts for communities and tags</source>
         <translation>Zeige Nachrichtenzahl für Gruppen und Tags</translation>
     </message>
     <message>
-        <location line="+229"/>
+        <location line="+231"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Setze eine maximale Breite für Nachrichten im Chat (in Pixeln). Das kann die Lesbarkeit auf breiten Bildschirmen erhöhen.</translation>
     </message>
@@ -4660,7 +4670,7 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
         <translation>Zeige eine Liste mit Gruppen und Tags neben der Raumliste.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+23"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -4759,7 +4769,7 @@ This setting will take effect upon restart.</source>
 Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     </message>
     <message>
-        <location line="+451"/>
+        <location line="+459"/>
         <source>Select a file</source>
         <translation>Datei auswählen</translation>
     </message>

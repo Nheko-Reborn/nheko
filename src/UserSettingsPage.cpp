@@ -65,6 +65,8 @@ UserSettings::load(std::optional<QString> profile)
     hasAlertOnNotification_ =
       settings.value(QStringLiteral("user/alert_on_notification"), false).toBool();
     groupView_         = settings.value(QStringLiteral("user/group_view"), true).toBool();
+    scrollbarsInRoomlist_ =
+      settings.value(QStringLiteral("user/scrollbars_in_roomlist"), false).toBool();
     buttonsInTimeline_ = settings.value(QStringLiteral("user/timeline/buttons"), true).toBool();
     timelineMaxWidth_  = settings.value(QStringLiteral("user/timeline/max_width"), 0).toInt();
     messageHoverHighlight_ =
@@ -224,6 +226,17 @@ UserSettings::setGroupView(bool state)
 
     groupView_ = state;
     emit groupViewStateChanged(state);
+    save();
+}
+
+void
+UserSettings::setScrollbarsInRoomlist(bool state)
+{
+    if (scrollbarsInRoomlist_ == state)
+        return;
+
+    scrollbarsInRoomlist_ = state;
+    emit scrollbarsInRoomlistChanged(state);
     save();
 }
 
@@ -862,6 +875,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("minor_events"), sortByImportance_);
     settings.setValue(QStringLiteral("read_receipts"), readReceipts_);
     settings.setValue(QStringLiteral("group_view"), groupView_);
+    settings.setValue(QStringLiteral("scrollbars_in_roomlist"), scrollbarsInRoomlist_);
     settings.setValue(QStringLiteral("markdown_enabled"), markdown_);
     settings.setValue(QStringLiteral("invert_enter_key"), invertEnterKey_);
     settings.setValue(QStringLiteral("bubbles_enabled"), bubbles_);
@@ -969,6 +983,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Start in tray");
         case GroupView:
             return tr("Communities sidebar");
+        case ScrollbarsInRoomlist:
+            return tr("Scrollbars in room list");
         case Markdown:
             return tr("Send messages as Markdown");
         case InvertEnterKey:
@@ -1111,6 +1127,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->startInTray();
         case GroupView:
             return i->groupView();
+        case ScrollbarsInRoomlist:
+            return i->scrollbarsInRoomlist();
         case Markdown:
             return i->markdown();
         case InvertEnterKey:
@@ -1255,6 +1273,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Start the application in the background without showing the client window.");
         case GroupView:
             return tr("Show a column containing communities and tags next to the room list.");
+        case ScrollbarsInRoomlist:
+            return tr("Shows scrollbars in the room list and communities list.");
         case Markdown:
             return tr(
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
@@ -1411,6 +1431,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case Tray:
         case StartInTray:
         case GroupView:
+        case ScrollbarsInRoomlist:
         case Markdown:
         case InvertEnterKey:
         case Bubbles:
@@ -1630,6 +1651,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case GroupView: {
             if (value.userType() == QMetaType::Bool) {
                 i->setGroupView(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case ScrollbarsInRoomlist: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setScrollbarsInRoomlist(value.toBool());
                 return true;
             } else
                 return false;
@@ -2089,6 +2117,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::groupViewStateChanged, this, [this]() {
         emit dataChanged(index(GroupView), index(GroupView), {Value});
+    });
+    connect(s.get(), &UserSettings::scrollbarsInRoomlistChanged, this, [this]() {
+        emit dataChanged(index(ScrollbarsInRoomlist), index(ScrollbarsInRoomlist), {Value});
     });
     connect(s.get(), &UserSettings::roomSortingChanged, this, [this]() {
         emit dataChanged(index(SortByImportance), index(SortByImportance), {Value});
