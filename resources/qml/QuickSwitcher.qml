@@ -25,6 +25,7 @@ Popup {
     onOpened: {
         roomTextInput.forceActiveFocus();
     }
+    onClosed: TimelineManager.focusMessageInput()
     property int textMargin: Nheko.paddingSmall
 
     Column{
