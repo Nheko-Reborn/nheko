@@ -21,10 +21,12 @@
 #include <QTemporaryFile>
 #endif
 
+#include "ChatPage.h"
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "timeline/TimelineModel.h"
+#include "timeline/TimelineViewManager.h"
 
 MxcMediaProxy::MxcMediaProxy(QObject *parent)
   : QMediaPlayer(parent)
@@ -47,6 +49,11 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
                 if (t == QMediaMetaData::Orientation)
                     emit orientationChanged();
             });
+
+    connect(ChatPage::instance()->timelineManager()->rooms(),
+            &RoomlistModel::currentRoomChanged,
+            this,
+            &MxcMediaProxy::pause);
 }
 void
 MxcMediaProxy::setVideoSurface(QAbstractVideoSurface *surface)
