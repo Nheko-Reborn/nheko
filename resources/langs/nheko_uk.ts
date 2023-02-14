@@ -538,12 +538,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="-14"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;повідомлення&gt;</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;посилання на повідомлення&gt;</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -644,7 +644,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати повідомлення у форматі commonmark, вимкнувши більшість розширень порівняно з /md.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -684,7 +684,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейдіть до певного повідомлення за допомогою ідентифікатора події, індексу або matrix:link</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1414,12 +1414,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="-13"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук користувача</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук на сервері</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1617,17 +1617,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+15"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Вийти</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Триває дзвінок. Вийти?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви впевнені, що хочете вийти?</translation>
     </message>
 </context>
 <context>
@@ -1636,7 +1636,7 @@ Example: https://server.my:8787</source>
         <location filename="../../src/timeline/InputBar.cpp" line="-154"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося завантажити медіа. Будь ласка спробуйте ще раз.</translation>
     </message>
 </context>
 <context>
@@ -1644,113 +1644,113 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+247"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 видалив повідомлення</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 enabled encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 увімкнув шифрування</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 змінив назву кімнати на: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 видалив назву кімнати</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 змінив тему на: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 видалив тему</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив аватар кімнати</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив закріплені повідомлення.</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив адреси для цієї кімнати.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 створив і налаштував кімнату: %2</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 зробив голосовий виклик.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 здійснив відеодзвінок.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 зателефонував.</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відхилив виклик.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 вибрав відповідь</translation>
     </message>
     <message>
         <location line="+28"/>
         <location line="+14"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 обговорює виклик...</translation>
     </message>
     <message>
         <location line="+123"/>
         <source>Allow them in</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволити їм увійти</translation>
     </message>
     <message>
         <location line="-193"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відповів на дзвінок.</translation>
     </message>
     <message>
         <location line="-339"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Цю кімнату було замінено з такої причини: %1</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished"></translation>
+        <translation>Йти до кімнати заміни</translation>
     </message>
     <message>
         <location line="+282"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив батьківські спільноти для цієї кімнати.</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 завершив виклик.</translation>
     </message>
 </context>
 <context>
@@ -1758,27 +1758,27 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageInput.qml" line="+57"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Покласти трубку</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Зателефонувати</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Вже на дзвінку</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати файл</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Write a message...</source>
-        <translation type="unfinished"></translation>
+        <translation>Написати повідомлення…</translation>
     </message>
     <message>
         <location line="+288"/>
@@ -1788,17 +1788,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+24"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Емодзі</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Send</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви не маєте дозволу надсилати повідомлення в цій кімнаті</translation>
     </message>
 </context>
 <context>
@@ -1806,59 +1806,59 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageView.qml" line="+138"/>
         <source>Edit</source>
-        <translation type="unfinished">Змінити</translation>
+        <translation>Змінити</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Реагувати</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Reply in thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Відповісти в ланцюжку</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Новий ланцюжок</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Відповісти</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Опції</translation>
     </message>
     <message>
         <location line="+438"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Причина видалення</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Введіть причину видалення або натисніть Enter щоб видалити без причини:</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+141"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Копіювати</translation>
     </message>
     <message>
         <location line="-134"/>
         <location line="+141"/>
         <source>Copy &amp;link location</source>
-        <translation type="unfinished"></translation>
+        <translation>Копіювати &amp;посилання розташування</translation>
     </message>
     <message>
         <location line="-133"/>
         <source>Re&amp;act</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ре&amp;агувати</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1868,7 +1868,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1981,7 +1981,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2067,7 +2067,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
 </context>
 <context>
@@ -2507,12 +2507,12 @@ Example: https://server.my:8787</source>
         <location line="+21"/>
         <location line="+102"/>
         <source>Back</source>
-        <translation type="unfinished">Назад</translation>
+        <translation>Назад</translation>
     </message>
     <message>
         <location line="-79"/>
         <source>Password</source>
-        <translation type="unfinished">Пароль</translation>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2527,7 +2527,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+19"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ім’я цього пристрою, яке буде показано іншим під час перевірки ваших пристроїв. Якщо нічого не вказано, використовується значення за умовчанням.</translation>
     </message>
     <message>
         <location line="-109"/>
@@ -2552,7 +2552,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>Device name</source>
-        <translation type="unfinished">Ім&apos;я пристрою</translation>
+        <translation>Ім&apos;я пристрою</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2562,32 +2562,32 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+85"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished">Помилка автовиявлення. Отримано неправильну відповідь.</translation>
+        <translation>Помилка автовиявлення. Отримано неправильну відповідь.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished">Помилка автовиявлення. Невідома помилка під час запиту .well-known.</translation>
+        <translation>Помилка автовиявлення. Невідома помилка під час запиту .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation type="unfinished">Потрібні кінцеві точки не знайдено. Можливо, це не сервер Matrix.</translation>
+        <translation>Потрібні кінцеві точки не знайдено. Можливо, це не сервер Matrix.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished">Отримано неправильну відповідь. Переконайтеся, що домен домашнього сервера дійсний.</translation>
+        <translation>Отримано неправильну відповідь. Переконайтеся, що домен домашнього сервера дійсний.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation type="unfinished">Сталася невідома помилка. Переконайтеся, що домен домашнього сервера дійсний.</translation>
+        <translation>Сталася невідома помилка. Переконайтеся, що домен домашнього сервера дійсний.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибраний сервер не підтримує версію протоколу Matrix, яку розуміє цей клієнт (від 1.1 до 1.5). Ви не можете зареєструватися.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2684,7 +2684,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">Залишити кімнату</translation>
+        <translation>Залишити кімнату</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2777,7 +2777,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Приєднатися до кімнати</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3106,7 +3106,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Усі файли (*)</translation>
+        <translation>Усі файли (*)</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3222,7 +3222,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
 </context>
 <context>
@@ -3983,7 +3983,7 @@ Reason: %4</source>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished">Залишити кімнату</translation>
+        <translation>Залишити кімнату</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4162,7 +4162,7 @@ Reason: %4</source>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Усі файли (*)</translation>
+        <translation>Усі файли (*)</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4745,12 +4745,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+451"/>
         <source>Select a file</source>
-        <translation type="unfinished">Виберіть файл</translation>
+        <translation>Вибрати файл</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Усі файли (*)</translation>
+        <translation>Усі файли (*)</translation>
     </message>
     <message>
         <location line="+89"/>
@@ -4820,7 +4820,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+49"/>
         <source>Back</source>
-        <translation type="unfinished">Назад</translation>
+        <translation>Назад</translation>
     </message>
     <message>
         <location line="-42"/>
@@ -4866,7 +4866,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+19"/>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
 </context>
 <context>
@@ -4889,7 +4889,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+8"/>
         <source>LOGIN</source>
-        <translation type="unfinished">ВХІД</translation>
+        <translation>ВХІД</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -4920,7 +4920,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4943,7 +4943,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+1"/>
         <source>Cancel</source>
-        <translation type="unfinished">Скасувати</translation>
+        <translation>Скасувати</translation>
     </message>
     <message>
         <location line="+1"/>
