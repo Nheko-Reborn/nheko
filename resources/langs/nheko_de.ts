@@ -1109,7 +1109,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation>Durch die Verschlüsselung sind deine Nachrichten nur von den Personen lesbar, denen du sie auch senden wolltest. Um auf eine Nummer extra-sicher zu gehen, kannst du die Personen mit denen du kommunizierst, in der echten Welt verifizieren.</translation>
+        <translation>Durch die Verschlüsselung sind deine Nachrichten nur von den Personen lesbar, denen du sie auch senden wolltest. Um auf eine Nummer extra-sicher zu gehen, kannst du die Personen, mit denen du kommunizierst, in der echten Welt verifizieren.</translation>
     </message>
 </context>
 <context>
