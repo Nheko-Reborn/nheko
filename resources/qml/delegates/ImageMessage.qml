@@ -32,18 +32,6 @@ AbstractButton {
     property bool fitsMetadata: (parent.width - width) > metadataWidth+4
 
     Image {
-        id: blurhash_
-
-        anchors.fill: parent
-        visible: img.status != Image.Ready
-        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + Nheko.colors.buttonText)
-        asynchronous: true
-        fillMode: Image.PreserveAspectFit
-        sourceSize.width: parent.width * Screen.devicePixelRatio
-        sourceSize.height: parent.height * Screen.devicePixelRatio
-    }
-
-    Image {
         id: img
 
         visible: !mxcimage.loaded
@@ -68,7 +56,19 @@ AbstractButton {
         eventId: parent.eventId
     }
 
-    onClicked :Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
+    Image {
+        id: blurhash_
+
+        anchors.fill: parent
+        visible: img.status != Image.Ready || timeline.privacyScreen.active
+        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + Nheko.colors.buttonText)
+        asynchronous: true
+        fillMode: Image.PreserveAspectFit
+        sourceSize.width: parent.width * Screen.devicePixelRatio
+        sourceSize.height: parent.height * Screen.devicePixelRatio
+    }
+
+    onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
 
     Item {
         id: overlay

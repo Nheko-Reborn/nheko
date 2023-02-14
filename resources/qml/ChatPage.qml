@@ -128,6 +128,7 @@ Rectangle {
                 TimelineView {
                     id: timeline
 
+                    privacyScreen: privacyScreen
                     showBackButton: adaptiveView.singlePageMode
                     room: Rooms.currentRoom
                     roomPreview: Rooms.currentRoomPreview.roomid ? Rooms.currentRoomPreview : null
@@ -140,6 +141,8 @@ Rectangle {
     }
 
     PrivacyScreen {
+        id: privacyScreen
+
         anchors.fill: parent
         visible: Settings.privacyScreen
         screenTimeout: Settings.privacyScreenTimeout

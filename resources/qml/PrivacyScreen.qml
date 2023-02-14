@@ -12,6 +12,7 @@ import im.nheko 1.0
 Item {
     id: privacyScreen
 
+    readonly property bool active: screenSaver.state === "Visible"
     property var timelineRoot
     property int screenTimeout
 
@@ -61,7 +62,6 @@ Item {
                     target: screenSaver
                     opacity: 1
                 }
-
             },
             State {
                 name: "Invisible"
@@ -75,7 +75,6 @@ Item {
                     target: screenSaver
                     visible: false
                 }
-
             }
         ]
         transitions: [
