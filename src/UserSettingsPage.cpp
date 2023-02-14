@@ -64,7 +64,7 @@ UserSettings::load(std::optional<QString> profile)
       settings.value(QStringLiteral("user/desktop_notifications"), true).toBool();
     hasAlertOnNotification_ =
       settings.value(QStringLiteral("user/alert_on_notification"), false).toBool();
-    groupView_         = settings.value(QStringLiteral("user/group_view"), true).toBool();
+    groupView_ = settings.value(QStringLiteral("user/group_view"), true).toBool();
     scrollbarsInRoomlist_ =
       settings.value(QStringLiteral("user/scrollbars_in_roomlist"), false).toBool();
     buttonsInTimeline_ = settings.value(QStringLiteral("user/timeline/buttons"), true).toBool();
