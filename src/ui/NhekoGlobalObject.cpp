@@ -11,7 +11,11 @@
 #include <QStyle>
 #include <QUrl>
 #include <QWindow>
+
+// for some reason that is not installed in our macOS env...
+#ifndef Q_OS_MAC
 #include <QtPlatformHeaders/QXcbWindowFunctions>
+#endif
 
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -182,7 +186,9 @@ Nheko::createRoom(bool space,
 }
 
 void
-Nheko::setWindowRole(QWindow *win, QString newRole) const
+Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString newRole) const
 {
+#ifndef Q_OS_MAC
     QXcbWindowFunctions::setWmWindowRole(win, newRole.toUtf8());
+#endif
 }
