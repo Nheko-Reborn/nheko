@@ -6,9 +6,11 @@
 
 #pragma once
 
+#include <QApplication>
 #include <QFontDatabase>
 #include <QObject>
 #include <QPalette>
+#include <QStyle>
 #include <QWindow>
 
 #include "AliasEditModel.h"
@@ -73,6 +75,10 @@ public:
     }
     Q_INVOKABLE void setTransientParent(QWindow *window, QWindow *parentWindow) const;
     Q_INVOKABLE void setWindowRole(QWindow *win, QString newRole) const;
+    Q_INVOKABLE int titlebarHeight() const
+    {
+        return QApplication::style()->pixelMetric(QStyle::PM_TitleBarHeight);
+    }
 
 public slots:
     void updateUserProfile();

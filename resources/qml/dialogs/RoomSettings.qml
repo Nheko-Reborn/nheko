@@ -21,7 +21,7 @@ ApplicationWindow {
     minimumWidth: 340
     minimumHeight: 450
     width: 450
-    height: 680
+    height: Screen.height >= contentLayout1.height + footer.height + Nheko.titlebarHeight() ? contentLayout1.height + footer.height : 680
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
@@ -44,6 +44,7 @@ ApplicationWindow {
         flickableDirection: Flickable.VerticalFlick
         contentWidth: roomSettingsDialog.width
         contentHeight: contentLayout1.height
+
         ColumnLayout {
             id: contentLayout1
             width: parent.width
