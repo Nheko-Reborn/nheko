@@ -482,7 +482,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>/redact &lt;$eventid|@userid&gt;</source>
-        <translation>/redact &lt;$eventid|@userid&gt;</translation>
+        <translation>/redact &lt;$sündmusetunnus|@kasutajanimi&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1104,12 +1104,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 võttis kasutusele läbiva krüptimise</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine tagab, et sõnumeid saavad lugevad vaid need kasutajad, kellele sa sõnumeid saadad. Kui tahad kindel olla, et teised kasutajad on päriselt ka need, kellena nad end esitlevad, siis pead nad ka verifitseerima.</translation>
     </message>
 </context>
 <context>
@@ -4220,7 +4220,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+4"/>
         <source>Scrollbars in room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Kerimisribad jututubade loendis</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4559,7 +4559,7 @@ peale akna fookuse kadumist ajajoone vaade hägustub.
     <message>
         <location line="+4"/>
         <source>Shows scrollbars in the room list and communities list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita jututubade ja kogukondade loendites kerimisribasid.</translation>
     </message>
     <message>
         <location line="+2"/>
