@@ -36,10 +36,10 @@ Page {
         height: parent.height
         model: Communities.filtered()
 
-        ScrollBar {
+        ScrollBar.vertical: ScrollBar {
             id: scrollbar
+            parent: !collapsed && Settings.scrollbarsInRoomlist ? communitiesList : null
         }
-        ScrollBar.vertical: (!collapsed && Settings.scrollbarsInRoomlist) ? scrollbar : null
 
         ScrollHelper {
             flickable: parent
@@ -88,7 +88,7 @@ Page {
             required property var model
 
             height: avatarSize + 2 * Nheko.paddingMedium
-            width: ListView.view.width - (scrollbar.interactive && scrollbar.visible ? scrollbar.width : 0)
+            width: ListView.view.width - ((scrollbar.interactive && scrollbar.visible && scrollbar.parent) ? scrollbar.width : 0)
             state: "normal"
             ToolTip.visible: hovered && collapsed
             ToolTip.text: model.tooltip
