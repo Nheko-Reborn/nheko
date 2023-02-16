@@ -56,7 +56,7 @@ ApplicationWindow {
             id: contentL
 
             width: devicelist.width
-            spacing: 10
+            spacing: Nheko.paddingMedium
 
             Avatar {
                 id: displayAvatar
