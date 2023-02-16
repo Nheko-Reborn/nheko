@@ -177,6 +177,21 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
             }
 
+            MatrixText {
+                id: statusMsg
+                text: qsTr("Status: %1").arg(Presence.userStatus(profile.userid))
+                visible: Presence.userStatus(profile.userid) != ""
+                Layout.alignment: Qt.AlignHCenter
+                font.italic: true
+                font.pointSize: Math.floor(fontMetrics.font.pointSize * 0.9)
+                Connections {
+                    target: Presence
+                    function onPresenceChanged(id) {
+                        if (id == profile.userid) statusMsg.text = Presence.userStatus(profile.userid);
+                    }
+                }
+            }
+
             RowLayout {
                 visible: !profile.isGlobalUserProfile
                 Layout.alignment: Qt.AlignHCenter
