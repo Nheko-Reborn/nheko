@@ -21,7 +21,10 @@ ApplicationWindow {
     minimumWidth: 340
     minimumHeight: 450
     width: 450
-    height: Screen.height >= contentLayout1.height + footer.height + Nheko.titlebarHeight() ? contentLayout1.height + footer.height : 680
+    height: {
+        var maxHeight = Math.min(Screen.height - 100, 900)
+        return maxHeight >= contentLayout1.height + footer.height + Nheko.titlebarHeight() ? contentLayout1.height + footer.height : maxHeight
+    }
     palette: Nheko.colors
     color: Nheko.colors.window
     modality: Qt.NonModal
