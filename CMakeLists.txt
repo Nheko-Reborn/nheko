@@ -63,6 +63,7 @@ option(USE_BUNDLED_LIBEVENT "Use the bundled version of libevent." ${HUNTER_ENAB
 option(USE_BUNDLED_LIBCURL "Use the bundled version of libcurl." ${HUNTER_ENABLED})
 option(USE_BUNDLED_RE2 "Use the bundled version of re2." ${HUNTER_ENABLED})
 option(USE_BUNDLED_CPPHTTPLIB "Use the bundled version of cpp-httplib." ON)
+option(USE_BUNDLED_BLURHASH "Use the bundled version of blurhash." ON)
 
 include(CMakeDependentOption)
 set(VOIP_DEFAULT ON)
@@ -698,12 +699,7 @@ else()
 	endif()
 endif()
 
-target_include_directories(nheko PRIVATE src includes third_party/blurhash)
-set(THIRD_PARTY_SRC_FILES
-	third_party/blurhash/blurhash.cpp
-	third_party/blurhash/blurhash.hpp
-	)
-target_sources(nheko PRIVATE ${THIRD_PARTY_SRC_FILES})
+target_include_directories(nheko PRIVATE src includes)
 
 if (USE_BUNDLED_CPPHTTPLIB)
 	target_include_directories(nheko PRIVATE third_party/cpp-httplib-0.5.12)
@@ -711,6 +707,19 @@ if (USE_BUNDLED_CPPHTTPLIB)
 else()
 	find_package(httplib REQUIRED)
 	target_link_libraries(nheko PRIVATE httplib::httplib)
+endif()
+
+if (USE_BUNDLED_BLURHASH)
+	target_include_directories(nheko PRIVATE third_party/blurhash)
+	set(BLURHASH_SRC_FILES
+		third_party/blurhash/blurhash.cpp
+		third_party/blurhash/blurhash.hpp
+	)
+	target_sources(nheko PRIVATE ${BLURHASH_SRC_FILES})
+else()
+	find_package(PkgConfig REQUIRED)
+	pkg_check_modules(blurhash REQUIRED IMPORTED_TARGET blurhash)
+	target_link_libraries(nheko PRIVATE PkgConfig::blurhash)
 endif()
 
 # Fixup bundled keychain include dirs
