@@ -66,6 +66,50 @@ AbstractButton {
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width * Screen.devicePixelRatio
         sourceSize.height: parent.height * Screen.devicePixelRatio
+        state: img.status != Image.Ready ? "Visible" : (timeline.privacyScreen.active ? "Visible" : "Invisible")
+
+        states: [
+            State {
+                name: "Visible"
+
+                PropertyChanges {
+                    target: blurhash_
+                    opacity: 1
+                }
+            },
+            State {
+                name: "Invisible"
+
+                PropertyChanges {
+                    target: blurhash_
+                    opacity: 0
+                }
+            }
+        ]
+        transitions: [
+            Transition {
+                from: "Visible"
+                to: "Invisible"
+
+                NumberAnimation {
+                    target: blurhash_
+                    property: "opacity"
+                    duration: 250
+                    easing.type: Easing.InQuad
+                }
+            },
+            Transition {
+                from: "Invisible"
+                to: "Visible"
+
+                NumberAnimation {
+                    target: blurhash_
+                    property: "opacity"
+                    duration: 500
+                    easing.type: Easing.InQuad
+                }
+            }
+        ]
     }
 
     onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
