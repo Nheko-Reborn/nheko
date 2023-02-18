@@ -534,11 +534,15 @@ EventStore::edits(const std::string &event_id)
         if (edit_rel.replaces() == event_id &&
             original_sender == mtx::accessors::sender(*related_event)) {
             auto related_ev = *related_event;
-            if (edit_rel.synthesized && original_relations.reply_to() && !edit_rel.reply_to()) {
-                auto edit_rel_copy = edit_rel;
-                edit_rel_copy.relations.push_back(
-                  {mtx::common::RelationType::InReplyTo, original_relations.reply_to().value()});
-                mtx::accessors::set_relations(related_ev, std::move(edit_rel_copy));
+
+            // spec does not allow changing relatings in an edit. So if we are not using the multi
+            // relation format specific to Nheko, just use the original relations + the edit...
+            if (edit_rel.synthesized) {
+                auto merged_relations = original_relations;
+                merged_relations.synthesized = true;
+                merged_relations.relations.push_back(
+                  {mtx::common::RelationType::Replace, event_id});
+                mtx::accessors::set_relations(related_ev, std::move(merged_relations));
             }
             edits.push_back(std::move(related_ev));
         }
