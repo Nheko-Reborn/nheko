@@ -12,7 +12,7 @@ task:
   zip_script:
     - ditto -c -k --sequesterRsrc --keepParent build/nheko.app build/nheko.zip
   gitlab_script:
-    - $CIRRUS_BRANCH == 'master' && curl -X POST
+    - [ $CIRRUS_BRANCH == 'master' ] && curl -X POST
         --fail
         -F token="${GITLAB_TRIGGER_TOKEN}"
         -F ref="${CIRRUS_BRANCH}"
