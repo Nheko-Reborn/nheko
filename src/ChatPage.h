@@ -180,6 +180,7 @@ signals:
                        QString reason             = "",
                        bool failedJoin            = false,
                        bool promptForConfirmation = true);
+    void newOnlineKeyBackupAvailable();
 
 private slots:
     void logout();

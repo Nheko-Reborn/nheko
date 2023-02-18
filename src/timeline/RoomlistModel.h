@@ -95,6 +95,8 @@ public:
     }
     RoomPreview getRoomPreviewById(QString roomid) const;
 
+    void refetchOnlineKeyBackupKeys();
+
 public slots:
     void initializeRooms();
     void sync(const mtx::responses::Sync &sync_);

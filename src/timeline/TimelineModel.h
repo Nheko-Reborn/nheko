@@ -528,6 +528,8 @@ private:
 
     std::unique_ptr<RoomSummary, DeleteLaterDeleter> parentSummary = nullptr;
     bool parentChecked                                             = false;
+
+    friend void EventStore::refetchOnlineKeyBackupKeys(TimelineModel *room);
 };
 
 template<class T>

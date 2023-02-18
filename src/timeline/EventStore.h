@@ -20,12 +20,16 @@
 #include "Reaction.h"
 #include "encryption/Olm.h"
 
+class TimelineModel;
+
 class EventStore final : public QObject
 {
     Q_OBJECT
 
 public:
     EventStore(std::string room_id, QObject *parent);
+
+    static void refetchOnlineKeyBackupKeys(TimelineModel *room);
 
     // taken from QtPrivate::QHashCombine
     static uint hashCombine(uint hash, uint seed)

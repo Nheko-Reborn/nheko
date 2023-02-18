@@ -547,6 +547,12 @@ ChatPage::bootstrap(QString userid, QString homeserver, QString token)
                 &Cache::newReadReceipts,
                 view_manager_,
                 &TimelineViewManager::updateReadReceipts);
+
+        connect(cache::client(), &Cache::secretChanged, this, [this](const std::string &secret) {
+            if (secret == mtx::secret_storage::secrets::megolm_backup_v1) {
+                getBackupVersion();
+            }
+        });
     } catch (const lmdb::error &e) {
         nhlog::db()->critical("failure during boot: {}", e.what());
         emit dropToLoginPageCb(tr("Failed to open database, logging out!"));
@@ -1224,7 +1230,7 @@ ChatPage::getBackupVersion()
           }
 
           // switch to UI thread for secrets stuff
-          QTimer::singleShot(0, this, [res] {
+          QTimer::singleShot(0, this, [this, res] {
               auto auth_data = nlohmann::json::parse(res.auth_data);
 
               if (res.algorithm == "m.megolm_backup.v1.curve25519-aes-sha2") {
@@ -1247,11 +1253,17 @@ ChatPage::getBackupVersion()
                       return;
                   }
 
+                  auto oldBackupVersion = cache::client()->backupVersion();
+
                   nhlog::crypto()->info("Using online key backup.");
                   OnlineBackupVersion data{};
                   data.algorithm = res.algorithm;
                   data.version   = res.version;
                   cache::client()->saveBackupVersion(data);
+
+                  if (!oldBackupVersion || oldBackupVersion->version != data.version) {
+                      view_manager_->rooms()->refetchOnlineKeyBackupKeys();
+                  }
               } else {
                   nhlog::crypto()->info("Unsupported key backup algorithm: {}", res.algorithm);
                   cache::client()->deleteBackupVersion();

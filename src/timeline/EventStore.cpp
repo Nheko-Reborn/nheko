@@ -17,6 +17,7 @@
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "TimelineModel.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
@@ -353,6 +354,16 @@ EventStore::receivedSessionKey(const std::string &session_id)
             events_.remove({room_id_, toInternalIdx(*idx)});
             emit dataChanged(*idx, *idx);
         }
+
+        if (auto edit = e.content.relations.replaces()) {
+            auto edit_idx = idToIndex(edit.value());
+            if (edit_idx) {
+                decryptedEvents_.remove({room_id_, e.event_id});
+                events_by_id_.remove({room_id_, e.event_id});
+                events_.remove({room_id_, toInternalIdx(*edit_idx)});
+                emit dataChanged(*edit_idx, *edit_idx);
+            }
+        }
     }
 }
 
@@ -538,7 +549,7 @@ EventStore::edits(const std::string &event_id)
             // spec does not allow changing relatings in an edit. So if we are not using the multi
             // relation format specific to Nheko, just use the original relations + the edit...
             if (edit_rel.synthesized) {
-                auto merged_relations = original_relations;
+                auto merged_relations        = original_relations;
                 merged_relations.synthesized = true;
                 merged_relations.relations.push_back(
                   {mtx::common::RelationType::Replace, event_id});
@@ -754,6 +765,15 @@ EventStore::decryptEvent(const IdIndex &idx,
 }
 
 void
+EventStore::refetchOnlineKeyBackupKeys(TimelineModel *room)
+{
+    for (const auto &[session_id, request] : room->events.pending_key_requests) {
+        (void)request;
+        olm::lookup_keybackup(room->events.room_id_, session_id);
+    }
+}
+
+void
 EventStore::requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &ev,
                            bool manual)
 {
@@ -767,8 +787,8 @@ EventStore::requestSession(const mtx::events::EncryptedEvent<mtx::events::msg::E
         auto &r = pending_key_requests.at(ev.content.session_id);
         r.events.push_back(copy);
 
-        // automatically request once every 10 min, manually every 1 min
-        qint64 delay = manual ? 60 : (60 * 10);
+        // automatically request once every 2 min, manually every 30 s
+        qint64 delay = manual ? 30 : (60 * 2);
         if (r.requested_at + delay < QDateTime::currentSecsSinceEpoch()) {
             r.requested_at = QDateTime::currentSecsSinceEpoch();
             olm::lookup_keybackup(room_id_, ev.content.session_id);

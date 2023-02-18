@@ -812,6 +812,18 @@ RoomlistModel::setCurrentRoom(const QString &roomid)
     }
 }
 
+void
+RoomlistModel::refetchOnlineKeyBackupKeys()
+{
+    for (auto i = models.begin(); i != models.end(); ++i) {
+        auto ptr = i.value();
+
+        if (!ptr.isNull()) {
+            EventStore::refetchOnlineKeyBackupKeys(ptr.data());
+        }
+    }
+}
+
 namespace {
 enum NotificationImportance : short
 {

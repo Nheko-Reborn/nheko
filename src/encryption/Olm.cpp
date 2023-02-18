@@ -896,12 +896,15 @@ download_full_keybackup()
 {
     if (!UserSettings::instance()->useOnlineKeyBackup()) {
         // Online key backup disabled
+        nhlog::crypto()->debug("Not downloading full online key backup, because it is disabled.");
         return;
     }
 
     auto backupVersion = cache::client()->backupVersion();
     if (!backupVersion) {
         // no trusted OKB
+        nhlog::crypto()->debug(
+          "Not downloading full online key backup, because we don't have a version for it.");
         return;
     }
 
@@ -910,9 +913,13 @@ download_full_keybackup()
     auto decryptedSecret = cache::secret(mtx::secret_storage::secrets::megolm_backup_v1);
     if (!decryptedSecret) {
         // no backup key available
+        nhlog::crypto()->debug(
+          "Not downloading full online key backup, because we don't have a key for it.");
         return;
     }
     auto sessionDecryptionKey = to_binary_buf(base642bin(*decryptedSecret));
+
+    nhlog::crypto()->debug("Downloading full online key backup.");
 
     http::client()->room_keys(
       backupVersion->version,
@@ -925,11 +932,12 @@ download_full_keybackup()
                                          err->matrix_error.error);
               return;
           }
+          nhlog::crypto()->debug("Storing full online key backup.");
 
           mtx::crypto::ExportedSessionKeys allKeys;
-          try {
-              for (const auto &[room, roomKey] : bk.rooms) {
-                  for (const auto &[session_id, encSession] : roomKey.sessions) {
+          for (const auto &[room, roomKey] : bk.rooms) {
+              for (const auto &[session_id, encSession] : roomKey.sessions) {
+                  try {
                       auto session = decrypt_session(encSession.session_data, sessionDecryptionKey);
 
                       if (session.algorithm != mtx::crypto::MEGOLM_ALGO)
@@ -946,16 +954,22 @@ download_full_keybackup()
                       sess.sender_key          = std::move(session.sender_key);
                       sess.session_key         = std::move(session.session_key);
                       allKeys.sessions.push_back(std::move(sess));
+                  } catch (const olm_exception &e) {
+                      nhlog::crypto()->critical("failed to decrypt inbound megolm session: {}",
+                                                e.what());
                   }
               }
-
-              // call on UI thread
-              QTimer::singleShot(0, ChatPage::instance(), [keys = std::move(allKeys)] {
-                  cache::importSessionKeys(keys);
-              });
-          } catch (const lmdb::error &e) {
-              nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
           }
+
+          // call on UI thread
+          QTimer::singleShot(0, ChatPage::instance(), [keys = std::move(allKeys)] {
+              try {
+                  cache::importSessionKeys(keys);
+                  nhlog::crypto()->debug("Storing full online key backup completed.");
+              } catch (const lmdb::error &e) {
+                  nhlog::crypto()->critical("failed to save inbound megolm session: {}", e.what());
+              }
+          });
       });
 }
 void
@@ -1083,8 +1097,6 @@ send_key_request_for(mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> e,
           nhlog::net()->info(
             "m.room_key_request sent to {}:{} and your own devices", e.sender, e.content.device_id);
       });
-
-    // http::client()->room_keys
 }
 
 void
