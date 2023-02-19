@@ -34,10 +34,10 @@
 
 #include "blurhash.hpp"
 
-ChatPage *ChatPage::instance_             = nullptr;
-constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
-constexpr int RETRY_TIMEOUT               = 5'000;
-constexpr size_t MAX_ONETIME_KEYS         = 50;
+ChatPage *ChatPage::instance_                    = nullptr;
+static constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
+static constexpr int RETRY_TIMEOUT               = 5'000;
+static constexpr size_t MAX_ONETIME_KEYS         = 50;
 
 Q_DECLARE_METATYPE(std::optional<mtx::crypto::EncryptedFile>)
 Q_DECLARE_METATYPE(std::optional<RelatedInfo>)

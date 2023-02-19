@@ -48,15 +48,15 @@ static const std::string_view OLM_ACCOUNT_KEY("olm_account");
 static const std::string_view CACHE_FORMAT_VERSION_KEY("cache_format_version");
 static const std::string_view CURRENT_ONLINE_BACKUP_VERSION("current_online_backup_version");
 
-constexpr auto MAX_DBS    = 32384UL;
-constexpr auto BATCH_SIZE = 100;
+static constexpr auto MAX_DBS    = 32384UL;
+static constexpr auto BATCH_SIZE = 100;
 
 #if Q_PROCESSOR_WORDSIZE >= 5 // 40-bit or more, up to 2^(8*WORDSIZE) words addressable.
-constexpr auto DB_SIZE                 = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
-constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
+static constexpr auto DB_SIZE                 = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
+static constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
 #elif Q_PROCESSOR_WORDSIZE == 4 // 32-bit address space limits mmaps
-constexpr auto DB_SIZE                 = 1ULL * 1024ULL * 1024ULL * 1024ULL; // 1 GB
-constexpr size_t MAX_RESTORED_MESSAGES = 5'000;
+static constexpr auto DB_SIZE                 = 1ULL * 1024ULL * 1024ULL * 1024ULL; // 1 GB
+static constexpr size_t MAX_RESTORED_MESSAGES = 5'000;
 #else
 #error Not enough virtual address space for the database on target CPU
 #endif
@@ -65,34 +65,34 @@ constexpr size_t MAX_RESTORED_MESSAGES = 5'000;
 //!
 //! Contains UI information for the joined rooms. (i.e name, topic, avatar url etc).
 //! Format: room_id -> RoomInfo
-constexpr auto ROOMS_DB("rooms");
-constexpr auto INVITES_DB("invites");
+static constexpr auto ROOMS_DB("rooms");
+static constexpr auto INVITES_DB("invites");
 //! maps each room to its parent space (id->id)
-constexpr auto SPACES_PARENTS_DB("space_parents");
+static constexpr auto SPACES_PARENTS_DB("space_parents");
 //! maps each space to its current children (id->id)
-constexpr auto SPACES_CHILDREN_DB("space_children");
+static constexpr auto SPACES_CHILDREN_DB("space_children");
 //! Information that  must be kept between sync requests.
-constexpr auto SYNC_STATE_DB("sync_state");
+static constexpr auto SYNC_STATE_DB("sync_state");
 //! Read receipts per room/event.
-constexpr auto READ_RECEIPTS_DB("read_receipts");
-constexpr auto NOTIFICATIONS_DB("sent_notifications");
-constexpr auto PRESENCE_DB("presence");
+static constexpr auto READ_RECEIPTS_DB("read_receipts");
+static constexpr auto NOTIFICATIONS_DB("sent_notifications");
+static constexpr auto PRESENCE_DB("presence");
 
 //! Encryption related databases.
 
 //! user_id -> list of devices
-constexpr auto DEVICES_DB("devices");
+static constexpr auto DEVICES_DB("devices");
 //! device_id -> device keys
-constexpr auto DEVICE_KEYS_DB("device_keys");
+static constexpr auto DEVICE_KEYS_DB("device_keys");
 //! room_ids that have encryption enabled.
-constexpr auto ENCRYPTED_ROOMS_DB("encrypted_rooms");
+static constexpr auto ENCRYPTED_ROOMS_DB("encrypted_rooms");
 
 //! room_id -> pickled OlmInboundGroupSession
-constexpr auto INBOUND_MEGOLM_SESSIONS_DB("inbound_megolm_sessions");
+static constexpr auto INBOUND_MEGOLM_SESSIONS_DB("inbound_megolm_sessions");
 //! MegolmSessionIndex -> pickled OlmOutboundGroupSession
-constexpr auto OUTBOUND_MEGOLM_SESSIONS_DB("outbound_megolm_sessions");
+static constexpr auto OUTBOUND_MEGOLM_SESSIONS_DB("outbound_megolm_sessions");
 //! MegolmSessionIndex -> session data about which devices have access to this
-constexpr auto MEGOLM_SESSIONS_DATA_DB("megolm_sessions_data_db");
+static constexpr auto MEGOLM_SESSIONS_DATA_DB("megolm_sessions_data_db");
 
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;

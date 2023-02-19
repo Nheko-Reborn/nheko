@@ -34,10 +34,6 @@ class NotificationsManager;
 class TimelineModel;
 class CallManager;
 
-constexpr int CONSENSUS_TIMEOUT      = 1000;
-constexpr int SHOW_CONTENT_TIMEOUT   = 3000;
-constexpr int TYPING_REFRESH_TIMEOUT = 10000;
-
 namespace mtx::requests {
 struct CreateRoom;
 }

@@ -23,10 +23,6 @@ class QSpinBox;
 class QHBoxLayout;
 class QVBoxLayout;
 
-constexpr int OptionMargin       = 6;
-constexpr int LayoutTopMargin    = 50;
-constexpr int LayoutBottomMargin = LayoutTopMargin;
-
 class UserSettings final : public QObject
 {
     Q_OBJECT
