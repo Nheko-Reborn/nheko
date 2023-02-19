@@ -13,8 +13,6 @@
 
 #include <CacheCryptoStructs.h>
 
-constexpr auto OLM_ALGO = "m.olm.v1.curve25519-aes-sha2";
-
 namespace olm {
 Q_NAMESPACE
 

@@ -7,4 +7,12 @@
 
 using namespace emoji;
 
+// a null terminated string_view
+template<size_t N>
+static consteval std::u16string_view
+null_literal(const char16_t (&lit)[N])
+{
+    return std::u16string_view(lit, N);
+}
+
 

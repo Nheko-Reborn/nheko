@@ -15,11 +15,11 @@ class Emoji(object):
 def generate_qml_list(**kwargs):
     entrycount = sum([len(c[1]) for c in kwargs.items()])
     tmpl = Template('''
-const std::array<Emoji, {{ entrycount }} > emoji::Provider::emoji = {
+constexpr std::array<Emoji, {{ entrycount }} > emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
-    Emoji{QStringLiteral(u"{{ e.code }}"), QStringLiteral(u"{{ e.shortname }}"), QStringLiteral(u"{{ e.unicodename }}"), emoji::Emoji::Category::{{ c[0].capitalize() }}},
+    Emoji{null_literal(u"{{ e.code }}"), null_literal(u"{{ e.shortname }}"), null_literal(u"{{ e.unicodename }}"), emoji::Emoji::Category::{{ c[0].capitalize() }}},
     {%- endfor %}
     {%- endfor %}
 };

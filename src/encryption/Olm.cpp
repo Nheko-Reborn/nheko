@@ -32,6 +32,7 @@ auto client_ = std::make_unique<mtx::crypto::OlmClient>();
 std::map<std::string, std::string> request_id_to_secret_name;
 
 constexpr auto MEGOLM_ALGO = "m.megolm.v1.aes-sha2";
+constexpr auto OLM_ALGO    = "m.olm.v1.curve25519-aes-sha2";
 }
 
 namespace olm {

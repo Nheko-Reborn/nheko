@@ -57,17 +57,17 @@ EmojiModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
         case CompletionModel::CompletionRole:
         case static_cast<int>(EmojiModel::Roles::Unicode):
-            return Provider::emoji[index.row()].unicode;
+            return Provider::emoji[index.row()].unicode();
 
         case Qt::ToolTipRole:
-            return Provider::emoji[index.row()].shortName + ", " +
-                   Provider::emoji[index.row()].unicodeName;
+            return Provider::emoji[index.row()].shortName() + ", " +
+                   Provider::emoji[index.row()].unicodeName();
         case CompletionModel::SearchRole2:
         case static_cast<int>(EmojiModel::Roles::UnicodeName):
-            return Provider::emoji[index.row()].unicodeName;
+            return Provider::emoji[index.row()].unicodeName();
         case CompletionModel::SearchRole:
         case static_cast<int>(EmojiModel::Roles::ShortName):
-            return Provider::emoji[index.row()].shortName;
+            return Provider::emoji[index.row()].shortName();
         case static_cast<int>(EmojiModel::Roles::Category):
             return QVariant::fromValue(Provider::emoji[index.row()].category);
 

@@ -17,15 +17,15 @@
 namespace conf {
 
 namespace modals {
-constexpr int WIDGET_MARGIN  = 20;
-constexpr int WIDGET_SPACING = 15;
+inline constexpr int WIDGET_MARGIN  = 20;
+inline constexpr int WIDGET_SPACING = 15;
 
-constexpr auto LABEL_MEDIUM_SIZE_RATIO = 1.3;
+inline constexpr auto LABEL_MEDIUM_SIZE_RATIO = 1.3;
 }
 
 namespace strings {
-const QString url_html = QStringLiteral("<a href=\"\\1\">\\1</a>");
-const QRegularExpression url_regex(
+inline const QString url_html = QStringLiteral("<a href=\"\\1\">\\1</a>");
+inline const QRegularExpression url_regex(
   // match an unquoted URL
   []() {
       const auto general_unicode = QStringLiteral(
@@ -78,17 +78,17 @@ const QRegularExpression url_regex(
   }(),
   QRegularExpression::UseUnicodePropertiesOption);
 // A matrix link to be converted back to markdown
-static const QRegularExpression
+inline const QRegularExpression
   matrixToLink(QStringLiteral(R"(<a href=\"(https://matrix.to/#/.*?)\">(.*?)</a>)"));
 }
 
 // Window geometry.
 namespace window {
-constexpr int height = 600;
-constexpr int width  = 1066;
+inline constexpr int height = 600;
+inline constexpr int width  = 1066;
 
-constexpr int minHeight = 340;
-constexpr int minWidth  = 340;
+inline constexpr int minHeight = 340;
+inline constexpr int minWidth  = 340;
 } // namespace window
 
 } // namespace conf
