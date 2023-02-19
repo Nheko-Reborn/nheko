@@ -16,7 +16,7 @@ null_literal(const char16_t (&lit)[N])
     return std::u16string_view(lit, N);
 }
 
-constexpr std::array<Emoji, 3681> emoji::Provider::emoji = {
+constexpr const std::array<Emoji, 3681> emoji::Provider::emoji = {
   // People
   Emoji{null_literal(u"\U0001F600"),
         null_literal(u"grinning"),
