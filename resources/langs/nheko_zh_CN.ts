@@ -1102,12 +1102,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 启用了端对端加密</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>加密可以保障你的信息安全，只有收信人可以解密你的消息。为了提高安全，如需确认收信人身份正确，你可以与真人进行核验。</translation>
     </message>
 </context>
 <context>
@@ -4209,7 +4209,7 @@ Reason: %4</source>
     <message>
         <location line="+4"/>
         <source>Scrollbars in room list</source>
-        <translation type="unfinished"></translation>
+        <translation>聊天室列表中的滚动条</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4548,7 +4548,7 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
     <message>
         <location line="+4"/>
         <source>Shows scrollbars in the room list and communities list.</source>
-        <translation type="unfinished"></translation>
+        <translation>在聊天室列表与社区列表中显示滚动条。</translation>
     </message>
     <message>
         <location line="+2"/>
