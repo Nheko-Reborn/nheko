@@ -260,8 +260,8 @@ KDE has similar plugins, that can extend the supported image types even more.
 - XCB, XCB-EWMH: For screensharing support on X11. VOIP needs to be enabled. Can be disabled with `-DSCREENSHARE_X11=OFF`.
 - [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support. The bundled version requires libsecret, unless you pass `-DLIBSECRET_SUPPORT=OFF`.)
 - A compiler that supports C++ 20:
-    - Clang 6 (tested on Travis CI)
-    - GCC 7 (tested on Travis CI)
+    - Clang 11 (Only clazy 13 is tested in CI)
+    - GCC 10 (tested on Gitlab CI)
     - MSVC 19.13 (tested on AppVeyor)
 
 Nheko can use bundled version for most of those libraries automatically, if the versions in your distro are too old.

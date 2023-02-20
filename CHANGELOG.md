@@ -1,5 +1,75 @@
 # Changelog
 
+## [0.11.2] -- 2023-02-20
+
+### Highlights
+
+- Improved Markdown input 🗒️
+  - You can now enter strike-through and spoilers using `~~` and `||`
+      respectively.
+  - Single line-breaks now also create a line-break in the formatted message.
+  - Code tags now preserve whitespace.
+- User search in the invite dialog 🧑‍🤝‍🧑 (Malte E)
+  - Can search either locally or consult the user directory on your server.
+
+### Features
+
+- Allow disabling animations before login.
+- Set the window role to "imageoverlay" on X11. (Thulinma)
+
+### Improvements
+
+- The Nheko binary should now be slightly smaller.
+- You can now build Nheko against a system install of the blurhash and
+    cpp-httplib libraries. (vitaly)
+- You can now enable scrollbars for the room and community lists in the
+    settings. (balsof)
+- Add a generic video icon when there is no thumbnail. (LorenDB)
+- Pause video when switching rooms. (LorenDB)
+- Add a fancy delegate when encryption is enabled. (LorenDB)
+- Standardise command format messages. (phyto)
+- Automatically fetch keys for undecrypted messages after verification.
+- Remove all notifications on exit on Linux. (ShootingStarDragons)
+- Document markdown features and /cmark command in the man page. (tastytea)
+- Speedup the user completer.
+- Allow closing menus on Wayland by clicking the window. (ShootingStarDragons)
+- Merge Debian/Ubuntu Dependencies in the README. (enigma9o7)
+- Update zsh completions. (tastytea)
+- Skip empty requests for cross-signing keys when user only has one device.
+    (Jason)
+- Hide image overlay when saving a file. (ShootingStarDragons)
+- Make it more obvious that the add reaction button is not an emoji.
+- Build only the gstreamer qml plugin in flatpak.
+- Update Ubuntu dependency list for building from source. (tastytea)
+
+### Translations
+
+- Estonian (Priit)
+- Ukrainian (NullPointerException)
+- Indonesian (Linerly)
+- Chinese (Poesty Li)
+- Esperanto (Tirifto)
+- French (MayeulC, CB, Glandos, Rick)
+- Dutch (Thulinma)
+- Italian (DynamoFox, Elia Tomasi, Joseph Curto, Quanterxotur)
+- Russian (Evgeny, SOT-TECH)
+- Finnish (Lurkki)
+
+### Bugfixes
+
+- You can now forward stickers again.
+- Edits shouldn't "jump" out of threads anymore.
+- Focus text input when quick switcher is closed. (LorenDB)
+- Fix rare freeze with an empty list in a completer.
+- Don't fail the plugins check on GStreamer 1.22 during a video call.
+- Allow nested ()/[] brackets in URLs. (mauke)
+- Make br tags work properly again.
+- Don't double free call devices. (Jason)
+- Work around multiple destructor calls on Clang. (Jason)
+- Html in sidebar.
+
+### Notes
+
 ## [0.11.1] -- 2023-01-15
 
 ### Hotfix Release
