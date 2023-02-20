@@ -230,6 +230,15 @@ sharing easier.
 
 ---
 
+**Q:** I can't see some image types!
+
+**A:** Nheko uses Qt's image plugins to render images. You might need to install
+additional packages to display some image types like webp. Usually those
+packages are called `qt5-image-formats-plugins`, `qt5-imageformats` or similar.
+KDE has similar plugins, that can extend the supported image types even more.
+
+---
+
 ### Build Requirements
 
 - Qt5 (5.15 or greater). Required for overlapping hover handlers in Qml.
