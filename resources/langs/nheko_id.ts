@@ -1102,12 +1102,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengaktifkan enkripsi ujung ke ujung</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enkripsi membuat pesanmu aman dengan hanya memperbolehkan orang-orang yang kamu kirim pesannya untuk mereka baca. Untuk keamanan lebih, jika kamu ingin yakin kamu berbicara ke orang-orang yang benar, kamu bisa memverifikasi secara langsung.</translation>
     </message>
 </context>
 <context>
@@ -4209,7 +4209,7 @@ Alasan: %4</translation>
     <message>
         <location line="+4"/>
         <source>Scrollbars in room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilah gulir dalam daftar ruangan</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4548,7 +4548,7 @@ Tetapkan ke 0 untuk memburamkan secara langsung setelah kehilangan fokus. Nilai 
     <message>
         <location line="+4"/>
         <source>Shows scrollbars in the room list and communities list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan bilah gulir dalam daftar ruangan dan daftar komunitas.</translation>
     </message>
     <message>
         <location line="+2"/>
