@@ -109,9 +109,6 @@ after_build:
     - copy nheko-installer.exe nheko-%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%-installer.exe
     - ps: .\.ci\upload-nightly.ps1
 
-on_success:
-    - if "%APPVEYOR_REPO_TAG%" == "true" (curl -T nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe -uredsky17:%BINTRAY_APIKEY% https://api.bintray.com/content/nheko-reborn/nheko/%APPVEYOR_REPO_TAG_NAME%/nheko/%APPVEYOR_REPO_TAG_NAME%/)
-
 deploy:
     - description: "Development builds"
       provider: GitHub

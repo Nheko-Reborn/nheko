@@ -1,3 +1,8 @@
+stages:
+  - build
+  - sign
+  - deploy
+
 variables:
   CCACHE_COMPILERCHECK: content
   CCACHE_DIR: "${CI_PROJECT_DIR}/.ccache"
@@ -136,7 +141,7 @@ build-macos:
       - "${CCACHE_DIR}"
 
 codesign-macos:
-  stage: deploy
+  stage: sign
   tags: [macos]
   variables:
     PLAT: "intel"
@@ -153,12 +158,12 @@ codesign-macos:
   rules:
     - if : '$CI_PIPELINE_TRIGGERED && $CI_COMMIT_REF_PROTECTED == "true"'
       variables:
-        PLAT: "m1"
+        PLAT: "apple_silicon"
     - if : '$CI_COMMIT_BRANCH == "master"'
     - if : $CI_COMMIT_TAG
   artifacts:
     paths:
-      - artifacts/nheko-${CI_COMMIT_SHORT_SHA}_${PLAT}.dmg
+      - artifacts/nheko-${CI_COMMIT_SHORT_SHA}-${PLAT}.dmg
       - /tmp/notarize*
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos
 
@@ -303,3 +308,13 @@ linting:
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == null'
 
+github-release:
+  stage: deploy
+  image: alpine:latest
+  tags: [docker]
+  rules:
+    - if: '$CI_COMMIT_TAG != null'
+  before_script:
+    - apk update && apk add jq
+  script:
+    - ./.ci/update-github-release.sh
