@@ -70,6 +70,11 @@
 
 ### Notes
 
+You may want to build against the most recent mtxclient (0.9.2) for additional
+bugfixes. cpp-httplib and blurhash are still bundled by default and shipped with
+the source tarball. Explicitly disable the bundling for those packages to build
+against system versions.
+
 ## [0.11.1] -- 2023-01-15
 
 ### Hotfix Release
