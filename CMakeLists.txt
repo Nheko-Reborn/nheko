@@ -110,7 +110,7 @@ include(GNUInstallDirs)
 
 set(CPACK_PACKAGE_VERSION_MAJOR "0")
 set(CPACK_PACKAGE_VERSION_MINOR "11")
-set(CPACK_PACKAGE_VERSION_PATCH "1")
+set(CPACK_PACKAGE_VERSION_PATCH "2")
 set(PROJECT_VERSION_MAJOR ${CPACK_PACKAGE_VERSION_MAJOR})
 set(PROJECT_VERSION_MINOR ${CPACK_PACKAGE_VERSION_MINOR})
 set(PROJECT_VERSION_PATCH ${CPACK_PACKAGE_VERSION_PATCH})
@@ -121,7 +121,7 @@ fix_project_version()
 
 # Set additional project information
 set(COMPANY "Nheko")
-set(COPYRIGHT "Copyright (c) 2022 Nheko Contributors")
+set(COPYRIGHT "Copyright (c) 2023 Nheko Contributors")
 set(IDENTIFIER "io.github.nheko-reborn.nheko")
 
 add_project_meta(META_FILES_TO_INCLUDE)
@@ -597,7 +597,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
                 GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-                GIT_TAG        a2ea44e15ea5bdd340e39d4ed32ff082ca972a6d
+                GIT_TAG        0.9.2
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
