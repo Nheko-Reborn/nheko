@@ -529,11 +529,12 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
 
     std::visit(
       [room](auto e) {
-          if constexpr (mtx::events::message_content_to_type<decltype(e.content)> ==
-                        mtx::events::EventType::RoomMessage) {
+          constexpr auto type = mtx::events::message_content_to_type<decltype(e.content)>;
+          if constexpr (type == mtx::events::EventType::RoomMessage ||
+                        type == mtx::events::EventType::Sticker) {
               e.content.relations.relations.clear();
               removeReplyFallback(e);
-              room->sendMessageEvent(e.content, mtx::events::EventType::RoomMessage);
+              room->sendMessageEvent(e.content, type);
           }
       },
       *e);
