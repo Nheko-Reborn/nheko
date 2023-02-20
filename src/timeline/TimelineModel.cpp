@@ -46,113 +46,126 @@ namespace {
 struct RoomEventType
 {
     template<class T>
-    qml_mtx_events::EventType operator()(const mtx::events::Event<T> &e)
+    constexpr qml_mtx_events::EventType operator()(const mtx::events::Event<T> &e)
     {
         return qml_mtx_events::toRoomEventType(e.type);
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Audio> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Audio> &)
     {
         return qml_mtx_events::EventType::AudioMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Confetti> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Confetti> &)
     {
         return qml_mtx_events::EventType::ConfettiMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Emote> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Emote> &)
     {
         return qml_mtx_events::EventType::EmoteMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::File> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::File> &)
     {
         return qml_mtx_events::EventType::FileMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Image> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Image> &)
     {
         return qml_mtx_events::EventType::ImageMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Notice> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Notice> &)
     {
         return qml_mtx_events::EventType::NoticeMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Text> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Text> &)
     {
         return qml_mtx_events::EventType::TextMessage;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Video> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Video> &)
     {
         return qml_mtx_events::EventType::VideoMessage;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationRequest> &)
     {
         return qml_mtx_events::EventType::KeyVerificationRequest;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationStart> &)
     {
         return qml_mtx_events::EventType::KeyVerificationStart;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationMac> &)
     {
         return qml_mtx_events::EventType::KeyVerificationMac;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationAccept> &)
     {
         return qml_mtx_events::EventType::KeyVerificationAccept;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationReady> &)
     {
         return qml_mtx_events::EventType::KeyVerificationReady;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationCancel> &)
     {
         return qml_mtx_events::EventType::KeyVerificationCancel;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationKey> &)
     {
         return qml_mtx_events::EventType::KeyVerificationKey;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::KeyVerificationDone> &)
     {
         return qml_mtx_events::EventType::KeyVerificationDone;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::msg::Redacted> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Redacted> &)
     {
         return qml_mtx_events::EventType::Redacted;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::voip::CallInvite> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::voip::CallInvite> &)
     {
         return qml_mtx_events::EventType::CallInvite;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::voip::CallAnswer> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::voip::CallAnswer> &)
     {
         return qml_mtx_events::EventType::CallAnswer;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::voip::CallHangUp> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::voip::CallHangUp> &)
     {
         return qml_mtx_events::EventType::CallHangUp;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::voip::CallCandidates> &)
     {
         return qml_mtx_events::EventType::CallCandidates;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::voip::CallSelectAnswer> &)
     {
         return qml_mtx_events::EventType::CallSelectAnswer;
     }
-    qml_mtx_events::EventType operator()(const mtx::events::Event<mtx::events::voip::CallReject> &)
+    constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::voip::CallReject> &)
     {
         return qml_mtx_events::EventType::CallReject;
     }
-    qml_mtx_events::EventType
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::voip::CallNegotiate> &)
     {
         return qml_mtx_events::EventType::CallNegotiate;
@@ -1060,7 +1073,7 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 }
 
 template<typename T>
-auto
+static constexpr auto
 isMessage(const mtx::events::RoomEvent<T> &e)
   -> std::enable_if_t<std::is_same<decltype(e.content.msgtype), std::string>::value, bool>
 {
@@ -1068,42 +1081,42 @@ isMessage(const mtx::events::RoomEvent<T> &e)
 }
 
 template<typename T>
-auto
+static constexpr auto
 isMessage(const mtx::events::Event<T> &)
 {
     return false;
 }
 
 template<typename T>
-auto
+static constexpr auto
 isMessage(const mtx::events::EncryptedEvent<T> &)
 {
     return true;
 }
 
-auto
+static constexpr auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallInvite> &)
 {
     return true;
 }
 
-auto
+static constexpr auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &)
 {
     return true;
 }
-auto
+static constexpr auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
 {
     return true;
 }
 
-auto
+static constexpr auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &)
 {
     return true;
 }
-auto
+static constexpr auto
 isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallSelectAnswer> &)
 {
     return true;

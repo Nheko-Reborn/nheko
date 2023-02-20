@@ -242,24 +242,23 @@ EventStore::EventStore(std::string room_id, QObject *)
                       if (!session.session)
                           continue;
 
-                      std::visit(
-                        [&pending_event, &original_encrypted, &session, this](auto &msg) {
-                            nlohmann::json doc = {{"type", mtx::events::to_string(msg.type)},
+                      auto doc = std::visit(
+                        [this](auto &msg) {
+                            return nlohmann::json{{"type", mtx::events::to_string(msg.type)},
                                                   {"content", nlohmann::json(msg.content)},
                                                   {"room_id", room_id_}};
-
-                            auto data = olm::encrypt_group_message_with_session(
-                              session.session, http::client()->device_id(), doc);
-
-                            session.data.message_index =
-                              olm_outbound_group_session_message_index(session.session.get());
-                            cache::updateOutboundMegolmSession(
-                              room_id_, session.data, session.session);
-
-                            original_encrypted.content = data;
-                            pending_event->data        = original_encrypted;
                         },
                         pending_event->data);
+
+                      auto data = olm::encrypt_group_message_with_session(
+                        session.session, http::client()->device_id(), std::move(doc));
+
+                      session.data.message_index =
+                        olm_outbound_group_session_message_index(session.session.get());
+                      cache::updateOutboundMegolmSession(room_id_, session.data, session.session);
+
+                      original_encrypted.content = data;
+                      pending_event->data        = original_encrypted;
                   }
 
                   cache::client()->replaceEvent(room_id_, pending_event_id, *pending_event);
@@ -367,6 +366,58 @@ EventStore::receivedSessionKey(const std::string &session_id)
     }
 }
 
+namespace {
+template<class... Ts>
+struct overloaded : Ts...
+{
+    using Ts::operator()...;
+};
+template<class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
+}
+
+static void
+handle_room_verification(EventStore *self, const mtx::events::collections::TimelineEvents &event)
+{
+    std::visit(
+      overloaded{
+        [self](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg) {
+            nhlog::db()->debug("handle_room_verification: Request");
+            emit self->startDMVerification(msg);
+        },
+        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel> &msg) {
+            nhlog::db()->debug("handle_room_verification: Cancel");
+            ChatPage::instance()->receivedDeviceVerificationCancel(msg.content);
+        },
+        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept> &msg) {
+            nhlog::db()->debug("handle_room_verification: Accept");
+            ChatPage::instance()->receivedDeviceVerificationAccept(msg.content);
+        },
+        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey> &msg) {
+            nhlog::db()->debug("handle_room_verification: Key");
+            ChatPage::instance()->receivedDeviceVerificationKey(msg.content);
+        },
+        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac> &msg) {
+            nhlog::db()->debug("handle_room_verification: Mac");
+            ChatPage::instance()->receivedDeviceVerificationMac(msg.content);
+        },
+        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady> &msg) {
+            nhlog::db()->debug("handle_room_verification: Ready");
+            ChatPage::instance()->receivedDeviceVerificationReady(msg.content);
+        },
+        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone> &msg) {
+            nhlog::db()->debug("handle_room_verification: Done");
+            ChatPage::instance()->receivedDeviceVerificationDone(msg.content);
+        },
+        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart> &msg) {
+            nhlog::db()->debug("handle_room_verification: Start");
+            ChatPage::instance()->receivedDeviceVerificationStart(msg.content, msg.sender);
+        },
+        [](const auto &) {},
+      },
+      event);
+}
+
 void
 EventStore::handleSync(const mtx::responses::Timeline &events)
 {
@@ -464,62 +515,10 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
             if (d_event->event &&
                 std::visit([](auto e) { return (e.sender != utils::localUser().toStdString()); },
                            *d_event->event)) {
-                handle_room_verification(*d_event->event);
+                handle_room_verification(this, *d_event->event);
             }
         }
     }
-}
-
-namespace {
-template<class... Ts>
-struct overloaded : Ts...
-{
-    using Ts::operator()...;
-};
-template<class... Ts>
-overloaded(Ts...) -> overloaded<Ts...>;
-}
-
-void
-EventStore::handle_room_verification(mtx::events::collections::TimelineEvents event)
-{
-    std::visit(
-      overloaded{
-        [this](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationRequest> &msg) {
-            nhlog::db()->debug("handle_room_verification: Request");
-            emit startDMVerification(msg);
-        },
-        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationCancel> &msg) {
-            nhlog::db()->debug("handle_room_verification: Cancel");
-            ChatPage::instance()->receivedDeviceVerificationCancel(msg.content);
-        },
-        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationAccept> &msg) {
-            nhlog::db()->debug("handle_room_verification: Accept");
-            ChatPage::instance()->receivedDeviceVerificationAccept(msg.content);
-        },
-        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationKey> &msg) {
-            nhlog::db()->debug("handle_room_verification: Key");
-            ChatPage::instance()->receivedDeviceVerificationKey(msg.content);
-        },
-        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationMac> &msg) {
-            nhlog::db()->debug("handle_room_verification: Mac");
-            ChatPage::instance()->receivedDeviceVerificationMac(msg.content);
-        },
-        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationReady> &msg) {
-            nhlog::db()->debug("handle_room_verification: Ready");
-            ChatPage::instance()->receivedDeviceVerificationReady(msg.content);
-        },
-        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationDone> &msg) {
-            nhlog::db()->debug("handle_room_verification: Done");
-            ChatPage::instance()->receivedDeviceVerificationDone(msg.content);
-        },
-        [](const mtx::events::RoomEvent<mtx::events::msg::KeyVerificationStart> &msg) {
-            nhlog::db()->debug("handle_room_verification: Start");
-            ChatPage::instance()->receivedDeviceVerificationStart(msg.content, msg.sender);
-        },
-        [](const auto &) {},
-      },
-      event);
 }
 
 std::vector<mtx::events::collections::TimelineEvents>

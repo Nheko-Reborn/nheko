@@ -131,7 +131,6 @@ private:
     olm::DecryptionResult *
     decryptEvent(const IdIndex &idx,
                  const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
-    void handle_room_verification(mtx::events::collections::TimelineEvents event);
 
     std::string room_id_;
 

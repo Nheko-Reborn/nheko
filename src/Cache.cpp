@@ -212,13 +212,10 @@ Cache::isHiddenEvent(lmdb::txn &txn,
             hiddenEvents = std::move(h.content);
     }
 
-    return std::visit(
-      [hiddenEvents](const auto &ev) {
-          return std::any_of(hiddenEvents.hidden_event_types->begin(),
-                             hiddenEvents.hidden_event_types->end(),
-                             [ev](EventType type) { return type == ev.type; });
-      },
-      e);
+    return std::find(hiddenEvents.hidden_event_types->begin(),
+                     hiddenEvents.hidden_event_types->end(),
+                     std::visit([](const auto &ev) { return ev.type; }, e)) !=
+           hiddenEvents.hidden_event_types->end();
 }
 
 Cache::Cache(const QString &userId, QObject *parent)
