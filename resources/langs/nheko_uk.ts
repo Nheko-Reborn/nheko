@@ -1106,12 +1106,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 увімкнув наскрізне шифрування</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Шифрування зберігає ваші повідомлення в безпеці, дозволяючи прочитати повідомлення лише людям, яким ви надіслали. Для додаткової безпеки, якщо ви хочете переконатися, що спілкуєтеся з потрібними людьми, ви можете перевірити їх у реальному житті.</translation>
     </message>
 </context>
 <context>
@@ -1871,7 +1871,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>Repl&amp;y</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Відпов&amp;сти</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1881,67 +1881,67 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>&amp;Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Зв&apos;язок</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Від&amp;кріпити</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&amp;Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Закріпити</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Прочитати квитанції</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>&amp;Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Вперед</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>&amp;Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Відзначити як прочитане</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Переглянути необроблене повідомлення</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Переглянути розшифроване необроблене повідомлення</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Remo&amp;ve message</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ви&amp;далити повідомлення</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>&amp;Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Зберегти як</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Open in external program</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Відкрити у зовнішній програмі</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Copy link to eve&amp;nt</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Копіювати посилання на подію</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>&amp;Go to quoted message</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Перейти до цитованого повідомлення</translation>
     </message>
 </context>
 <context>
@@ -1949,12 +1949,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+13"/>
         <source>Send Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати запит на підтвердження</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Received Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Отримано запит на підтвердження</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -2276,7 +2276,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Change the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити аватар кімнати</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2475,12 +2475,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+1"/>
         <source>Send</source>
-        <translation type="unfinished">Надіслати</translation>
+        <translation>Надіслати</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Написати повідомлення…</translation>
+        <translation>Написати повідомлення…</translation>
     </message>
 </context>
 <context>
@@ -2752,7 +2752,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+81"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Вийти</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -3772,7 +3772,7 @@ Reason: %4</source>
     <message>
         <location line="-32"/>
         <source>%1 changed their avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив свій аватар.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5076,7 +5076,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+2"/>
         <source>%1 placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 зателефонував</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5086,7 +5086,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+2"/>
         <source>%1 answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відповів на дзвінок</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5106,7 +5106,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+2"/>
         <source>%1 rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відхилив виклик</translation>
     </message>
 </context>
 <context>
