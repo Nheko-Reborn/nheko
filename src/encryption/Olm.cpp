@@ -1262,7 +1262,7 @@ decryptEvent(const MegolmSessionIndex &index,
     } catch (const lmdb::error &e) {
         return {DecryptionErrorCode::DbError, e.what(), std::nullopt};
     } catch (const mtx::crypto::olm_exception &e) {
-        if (e.error_code() == mtx::crypto::OlmErrorCode::UNKNOWN_MESSAGE_INDEX)
+        if (e.error_code() == mtx::crypto::OlmErrorCode::OLM_UNKNOWN_MESSAGE_INDEX)
             return {DecryptionErrorCode::MissingSessionIndex, e.what(), std::nullopt};
         return {DecryptionErrorCode::DecryptionFailed, e.what(), std::nullopt};
     }
