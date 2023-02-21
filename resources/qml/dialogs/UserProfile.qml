@@ -317,6 +317,8 @@ ApplicationWindow {
             ColumnLayout {
                 spacing: 0
 
+                Layout.leftMargin: Nheko.paddingMedium
+                Layout.rightMargin: Nheko.paddingMedium
                 RowLayout {
                     Text {
                         Layout.fillWidth: true
