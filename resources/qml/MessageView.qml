@@ -376,7 +376,7 @@ Item {
                         id: statusMsg
                         anchors.baseline: userNameButton.baseline
                         color: Nheko.colors.buttonText
-                        text: Presence.userStatus(userId)
+                        text: userStatus.replace(/\n/g, " ")
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
                         width: Math.min(implicitWidth, userInfo.remainingWidth - userName_.width - parent.spacing)
@@ -390,11 +390,11 @@ Item {
                             id: statusMsgHoverHandler
                         }
 
+                        property string userStatus: Presence.userStatus(userId)
                         Connections {
                             target: Presence
-
                             function onPresenceChanged(id) {
-                                if (id == userId) statusMsg.text = Presence.userStatus(userId);
+                                if (id == userId) statusMsg.userStatus = Presence.userStatus(userId);
                             }
                         }
                     }
