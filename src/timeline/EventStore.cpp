@@ -575,8 +575,7 @@ EventStore::reactions(const std::string &event_id)
 
     struct TempReaction
     {
-        int count = 0;
-        std::vector<std::string> users;
+        std::set<std::string> users;
         std::string reactedBySelf;
     };
     std::map<std::string, TempReaction> aggregation;
@@ -595,14 +594,13 @@ EventStore::reactions(const std::string &event_id)
             auto key  = reaction->content.relations.annotates()->key.value();
             auto &agg = aggregation[key];
 
-            if (agg.count == 0) {
+            if (agg.users.empty()) {
                 Reaction temp{};
                 temp.key_ = QString::fromStdString(key);
                 reactions.push_back(temp);
             }
 
-            agg.count++;
-            agg.users.push_back(cache::displayName(room_id_, reaction->sender));
+            agg.users.insert(cache::displayName(room_id_, reaction->sender));
             if (reaction->sender == self)
                 agg.reactedBySelf = reaction->event_id;
         }
@@ -612,7 +610,7 @@ EventStore::reactions(const std::string &event_id)
     temp.reserve(static_cast<int>(reactions.size()));
     for (auto &reaction : reactions) {
         const auto &agg            = aggregation[reaction.key_.toStdString()];
-        reaction.count_            = agg.count;
+        reaction.count_            = agg.users.size();
         reaction.selfReactedEvent_ = QString::fromStdString(agg.reactedBySelf);
 
         bool firstReaction = true;
