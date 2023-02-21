@@ -18,6 +18,7 @@ http_code=$(curl \
   "https://api.github.com/repos/Nheko-Reborn/nheko/releases/tags/$CI_COMMIT_TAG")
 
 if [ "$http_code" = "404" ]; then
+    release_notes="$(perl -0777 -ne '/.*?(## .*?)\n(## |\Z)/s && print $1' CHANGELOG.md | jq -R -s '.')"
     # Doing a 'fresh' release, not just updating the assets.
     release_json="$(curl \
         -X POST \
@@ -25,7 +26,7 @@ if [ "$http_code" = "404" ]; then
         -H "Authorization: Bearer ${GITHUB_AUTH_TOKEN}"\
         -H "X-GitHub-Api-Version: 2022-11-28" \
         https://api.github.com/repos/Nheko-Reborn/nheko/releases \
-        -d "{\"tag_name\":\"${CI_COMMIT_TAG}\",\"target_commitish\":\"master\",\"name\":\"${CI_COMMIT_TAG}\",\"body\":\"Description of the release\",\"draft\":true,\"prerelease\":true,\"generate_release_notes\":false}")"
+        -d "{\"tag_name\":\"${CI_COMMIT_TAG}\",\"target_commitish\":\"master\",\"name\":\"${CI_COMMIT_TAG}\",\"body\":\"${release_notes}\",\"draft\":true,\"prerelease\":true,\"generate_release_notes\":false}")"
 elif [ "$http_code" = "200" ]; then
     # Updating a release (probably because of cirrus-ci or so)
     release_json=$(curl \
