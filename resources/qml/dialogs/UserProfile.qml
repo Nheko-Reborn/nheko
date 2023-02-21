@@ -179,15 +179,22 @@ ApplicationWindow {
 
             MatrixText {
                 id: statusMsg
-                text: qsTr("Status: %1").arg(Presence.userStatus(profile.userid))
+                text: updateStatus()
                 visible: Presence.userStatus(profile.userid) != ""
                 Layout.alignment: Qt.AlignHCenter
-                font.italic: true
+                Layout.fillWidth: true
+                horizontalAlignment: TextEdit.AlignHCenter
+                Layout.leftMargin: Nheko.paddingMedium
+                Layout.rightMargin: Nheko.paddingMedium
                 font.pointSize: Math.floor(fontMetrics.font.pointSize * 0.9)
+
+                function updateStatus(){
+                    return qsTr("<i><b>Status:</b> %1</i>").arg(Presence.userStatus(profile.userid))
+                }
                 Connections {
                     target: Presence
                     function onPresenceChanged(id) {
-                        if (id == profile.userid) statusMsg.text = Presence.userStatus(profile.userid);
+                        if (id == profile.userid) statusMsg.text = statusMsg.updateStatus();
                     }
                 }
             }
