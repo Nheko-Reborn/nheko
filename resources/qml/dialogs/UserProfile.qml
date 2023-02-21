@@ -56,7 +56,7 @@ ApplicationWindow {
             id: contentL
 
             width: devicelist.width
-            spacing: 10
+            spacing: Nheko.paddingMedium
 
             Avatar {
                 id: displayAvatar
@@ -177,6 +177,28 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
             }
 
+            MatrixText {
+                id: statusMsg
+                text: updateStatus()
+                visible: Presence.userStatus(profile.userid) != ""
+                Layout.alignment: Qt.AlignHCenter
+                Layout.fillWidth: true
+                horizontalAlignment: TextEdit.AlignHCenter
+                Layout.leftMargin: Nheko.paddingMedium
+                Layout.rightMargin: Nheko.paddingMedium
+                font.pointSize: Math.floor(fontMetrics.font.pointSize * 0.9)
+
+                function updateStatus(){
+                    return qsTr("<i><b>Status:</b> %1</i>").arg(Presence.userStatus(profile.userid))
+                }
+                Connections {
+                    target: Presence
+                    function onPresenceChanged(id) {
+                        if (id == profile.userid) statusMsg.text = statusMsg.updateStatus();
+                    }
+                }
+            }
+
             RowLayout {
                 visible: !profile.isGlobalUserProfile
                 Layout.alignment: Qt.AlignHCenter
@@ -295,6 +317,8 @@ ApplicationWindow {
             ColumnLayout {
                 spacing: 0
 
+                Layout.leftMargin: Nheko.paddingMedium
+                Layout.rightMargin: Nheko.paddingMedium
                 RowLayout {
                     Text {
                         Layout.fillWidth: true

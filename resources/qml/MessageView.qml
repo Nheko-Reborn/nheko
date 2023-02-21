@@ -348,6 +348,7 @@ Item {
                     }
                     property int remainingWidth: chat.delegateMaxWidth - spacing - messageUserAvatar.width
                     AbstractButton {
+                        id: userNameButton
                         contentItem: ElidedLabel {
                             id: userName_
                             fullText: userName
@@ -373,12 +374,21 @@ Item {
 
                     Label {
                         id: statusMsg
+                        anchors.baseline: userNameButton.baseline
                         color: Nheko.colors.buttonText
                         text: Presence.userStatus(userId)
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
-                        width: userInfo.remainingWidth - userName_.width - parent.spacing
+                        width: Math.min(implicitWidth, userInfo.remainingWidth - userName_.width - parent.spacing)
                         font.italic: true
+                        font.pointSize: Math.floor(fontMetrics.font.pointSize * 0.8)
+                        ToolTip.text: qsTr("%1's status message").arg(userName)
+                        ToolTip.visible: statusMsgHoverHandler.hovered
+                        ToolTip.delay: Nheko.tooltipDelay
+
+                        HoverHandler {
+                            id: statusMsgHoverHandler
+                        }
 
                         Connections {
                             target: Presence
