@@ -9,6 +9,6 @@ set -eu
 
 FILES=$(find src resources/qml -type f \( -iname "*.cpp" -o -iname "*.h" -o -iname "*.qml" \))
 
-reuse addheader --copyright="Nheko Contributors" --license="GPL-3.0-or-later" $FILES
+reuse annotate --exclude-year --copyright="Nheko Contributors" --license="GPL-3.0-or-later" $FILES
 
 git diff --exit-code
