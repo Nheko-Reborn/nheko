@@ -88,24 +88,14 @@ AbstractButton {
         ]
         transitions: [
             Transition {
-                from: "Visible"
-                to: "Invisible"
-
-                NumberAnimation {
-                    target: blurhash_
-                    property: "opacity"
-                    duration: 250
-                    easing.type: Easing.InQuad
-                }
-            },
-            Transition {
                 from: "Invisible"
                 to: "Visible"
+                reversible: true
 
                 NumberAnimation {
                     target: blurhash_
                     property: "opacity"
-                    duration: 500
+                    duration: 300
                     easing.type: Easing.InQuad
                 }
             }

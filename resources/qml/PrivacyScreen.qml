@@ -79,29 +79,9 @@ Item {
         ]
         transitions: [
             Transition {
-                from: "Visible"
-                to: "Invisible"
-
-                SequentialAnimation {
-                    NumberAnimation {
-                        target: screenSaver
-                        property: "opacity"
-                        duration: 250
-                        easing.type: Easing.InQuad
-                    }
-
-                    NumberAnimation {
-                        target: screenSaver
-                        property: "visible"
-                        duration: 0
-                    }
-
-                }
-
-            },
-            Transition {
                 from: "Invisible"
                 to: "Visible"
+                reversible: true
 
                 SequentialAnimation {
                     NumberAnimation {
@@ -113,7 +93,7 @@ Item {
                     NumberAnimation {
                         target: screenSaver
                         property: "opacity"
-                        duration: 500
+                        duration: 300
                         easing.type: Easing.InQuad
                     }
 
