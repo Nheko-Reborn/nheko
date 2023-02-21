@@ -94,7 +94,7 @@ Item {
                         target: screenSaver
                         property: "opacity"
                         duration: 300
-                        easing.type: Easing.InQuad
+                        easing.type: Easing.Linear
                     }
 
                 }

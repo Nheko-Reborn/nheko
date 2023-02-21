@@ -28,6 +28,104 @@ AbstractButton {
     height: width*proportionalHeight
     hoverEnabled: true
 
+    state: img.status != Image.Ready ? "ImageLoading" : (timeline.privacyScreen.active ? "PrivacyScreenVisible" : "PrivacyScreenInvisible")
+    states: [
+        State {
+            name: "ImageLoading"
+
+            PropertyChanges {
+                target: blurhash_
+                opacity: 1
+                visible: true
+            }
+
+            PropertyChanges {
+                target: img
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: mxcimage
+                opacity: 0
+            }
+        },
+        State {
+            name: "PrivacyScreenVisible"
+
+            PropertyChanges {
+                target: blurhash_
+                opacity: blurhash ? 1 : 0
+                visible: blurhash ? true : false
+            }
+
+            PropertyChanges {
+                target: img
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: mxcimage
+                opacity: 0
+            }
+        },
+        State {
+            name: "PrivacyScreenInvisible"
+
+            PropertyChanges {
+                target: blurhash_
+                opacity: 0
+                visible: false
+            }
+
+            PropertyChanges {
+                target: img
+                opacity: 1
+            }
+
+            PropertyChanges {
+                target: mxcimage
+                opacity: 1
+            }
+        }
+    ]
+    transitions: [
+        Transition {
+            from: "PrivacyScreenInvisible"
+            to: "PrivacyScreenVisible"
+            reversible: true
+
+            SequentialAnimation {
+                PropertyAction {
+                    target: blurhash_
+                    property: "visible"
+                }
+
+                ParallelAnimation {
+                    NumberAnimation {
+                        target: blurhash_
+                        property: "opacity"
+                        duration: 300
+                        easing.type: Easing.Linear
+                    }
+
+                    NumberAnimation {
+                        target: img
+                        property: "opacity"
+                        duration: 300
+                        easing.type: Easing.Linear
+                    }
+
+                    NumberAnimation {
+                        target: mxcimage
+                        property: "opacity"
+                        duration: 300
+                        easing.type: Easing.Linear
+                    }
+                }
+            }
+        }
+    ]
+
     property int metadataWidth
     property bool fitsMetadata: (parent.width - width) > metadataWidth+4
 
@@ -60,46 +158,11 @@ AbstractButton {
         id: blurhash_
 
         anchors.fill: parent
-        visible: img.status != Image.Ready || timeline.privacyScreen.active
         source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + Nheko.colors.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width * Screen.devicePixelRatio
         sourceSize.height: parent.height * Screen.devicePixelRatio
-        state: img.status != Image.Ready ? "Visible" : (timeline.privacyScreen.active ? "Visible" : "Invisible")
-
-        states: [
-            State {
-                name: "Visible"
-
-                PropertyChanges {
-                    target: blurhash_
-                    opacity: 1
-                }
-            },
-            State {
-                name: "Invisible"
-
-                PropertyChanges {
-                    target: blurhash_
-                    opacity: 0
-                }
-            }
-        ]
-        transitions: [
-            Transition {
-                from: "Invisible"
-                to: "Visible"
-                reversible: true
-
-                NumberAnimation {
-                    target: blurhash_
-                    property: "opacity"
-                    duration: 300
-                    easing.type: Easing.InQuad
-                }
-            }
-        ]
     }
 
     onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
