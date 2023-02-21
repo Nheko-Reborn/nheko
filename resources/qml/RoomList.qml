@@ -470,11 +470,14 @@ Page {
 
             function openUserProfile() {
                 Nheko.updateUserProfile();
-                var userProfile = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml").createObject(timelineRoot, {
-                    "profile": Nheko.currentUser
-                });
-                userProfile.show();
-                timelineRoot.destroyOnClose(userProfile);
+                var component = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml")
+                if (component.status == Component.Ready) {
+                    var userProfile = component.createObject(timelineRoot, {"profile": Nheko.currentUser});
+                    userProfile.show();
+                    timelineRoot.destroyOnClose(userProfile);
+                } else {
+                    console.error("Failed to create component: " + component.errorString());
+                }
             }
 
 
@@ -790,9 +793,14 @@ Page {
                     ToolTip.text: qsTr("Search rooms (Ctrl+K)")
                     Layout.margins: Nheko.paddingMedium
                     onClicked: {
-                        var quickSwitch = Qt.createComponent("qrc:/qml/QuickSwitcher.qml").createObject(timelineRoot);
-                        quickSwitch.open();
-                        destroyOnClosed(quickSwitch);
+                        var component = Qt.createComponent("qrc:/qml/QuickSwitcher.qml")
+                        if (component.status == Component.Ready) {
+                            var quickSwitch = component.createObject(timelineRoot);
+                            quickSwitch.open();
+                            destroyOnClosed(quickSwitch);
+                        } else {
+                            console.error("Failed to create component: " + component.errorString());
+                        }
                     }
                 }
 
