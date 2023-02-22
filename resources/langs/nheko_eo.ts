@@ -1105,7 +1105,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ŝaltis tutvojan ĉifradon</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4913,12 +4913,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+10"/>
         <source>Enjoy your stay!</source>
-        <translation>Ĝuu via resto!</translation>
+        <translation>Ĝuu vian ĉeeston!</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>REGISTER</source>
-        <translation>REGISTRU</translation>
+        <translation>REGISTRIĜI</translation>
     </message>
     <message>
         <location line="+8"/>
