@@ -159,7 +159,7 @@ main(int argc, char *argv[])
 
     // this needs to be after setting the application name. Or how would we find our settings
     // file then?
-#if defined(Q_OS_LINUX) || defined(Q_OS_WIN) || defined(Q_OS_FREEBSD)
+#if !defined(Q_OS_MACOS)
     if (qgetenv("QT_SCALE_FACTOR").size() == 0) {
         float factor = utils::scaleFactor();
 
