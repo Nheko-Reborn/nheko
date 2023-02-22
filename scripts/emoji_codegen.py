@@ -19,7 +19,7 @@ constexpr const std::array<Emoji, {{ entrycount }} > emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
-    Emoji{null_literal(u"{{ e.code }}"), null_literal(u"{{ e.shortname }}"), null_literal(u"{{ e.unicodename }}"), emoji::Emoji::Category::{{ c[0].capitalize() }}},
+    Emoji{std::u16string_view(u"{{ e.code }}"), std::u16string_view(u"{{ e.shortname }}"), std::u16string_view(u"{{ e.unicodename }}"), emoji::Emoji::Category::{{ c[0].capitalize() }}},
     {%- endfor %}
     {%- endfor %}
 };
@@ -55,9 +55,9 @@ if __name__ == '__main__':
         'Flags': flags,
         'Component': symbols
     }
-    shortcodeDict = {} 
+    shortcodeDict = {}
     # for my sanity - this strips newlines
-    for line in open(shortcodefilename, 'r', encoding="utf8"): 
+    for line in open(shortcodefilename, 'r', encoding="utf8"):
         longname, shortname = line.strip().split(':')
         shortcodeDict[longname] = shortname
     current_category = ''

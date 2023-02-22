@@ -49,9 +49,9 @@ public:
     }
 
     constexpr Emoji()
-      : unicode_(u"", 1)
-      , shortName_(u"", 1)
-      , unicodeName_(u"", 1)
+      : unicode_(u"", 0)
+      , shortName_(u"", 0)
+      , unicodeName_(u"", 0)
       , category(Category::Search)
     {
     }

@@ -61,6 +61,7 @@
   <url type="homepage">https://github.com/Nheko-Reborn/nheko</url>
   <update_contact>https://github.com/Nheko-Reborn</update_contact>
   <releases>
+    <release date="2023-02-23" version="0.11.3"/>
     <release date="2023-02-20" version="0.11.2"/>
     <release date="2023-01-15" version="0.11.1"/>
     <release date="2023-01-12" version="0.11.0"/>
