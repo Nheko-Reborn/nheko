@@ -97,6 +97,8 @@ public:
         return "Nheko on Windows";
 #elif defined(Q_OS_FREEBSD)
         return "Nheko on FreeBSD";
+#elif defined(Q_OS_OPENBSD)
+        return "Nheko on OpenBSD";
 #else
         return "Nheko";
 #endif
