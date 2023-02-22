@@ -8,6 +8,10 @@ Any kind of contribution to the project is greatly appreciated.
 - Code refactoring
 - Translations
 
+Usually we accept contributions on GitHub as Pull-Requests: https://github.com/Nheko-Reborn/nheko/pulls
+
+Otherwise you can also submit patches, but that is more effort for both sides.
+
 ### Working on new features
 
 Everything on the issue tracker is up for grabs unless someone else is 
@@ -17,6 +21,15 @@ If you're planning to work on a new feature leave a message on the Matrix room
 (or in the corresponding issue), so we won't end up having duplicate work.
 
 ### Submitting a translation
+
+Usually translations are done on weblate: https://weblate.nheko.im/
+
+Anyone can submit suggestions and once they have 2 upvotes, they will
+automatically be applied. If you want to directly apply your or other changes
+without going through the consensus mode, you can also jump into the Matrix room
+and apply to become a translator.
+
+Alternatively translations can also be added manually like so:
 
 Example for a Japanese translation.
 - Create a new translation file using the prototype in English
