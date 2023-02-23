@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.11.3] -- 2023-02-23
+
+### Bugfix
+
+- Fix redundant null byte inserted with the emoji completer
+
 ## [0.11.2] -- 2023-02-20
 
 ### Highlights

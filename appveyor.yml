@@ -1,6 +1,6 @@
 ---
 
-version: 0.11.2-{build}
+version: 0.11.3-{build}
 
 configuration: Release
 image: Visual Studio 2022
@@ -29,8 +29,8 @@ build_script:
     # VERSION format:     branch-master/branch-1.2
     # INSTVERSION format: x.y.z
     # WINVERSION format:  9999.0.0.123/1.2.0.234
-    - if "%APPVEYOR_REPO_TAG%"=="false" set INSTVERSION=0.11.2
-    - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=0.11.2
+    - if "%APPVEYOR_REPO_TAG%"=="false" set INSTVERSION=0.11.3
+    - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=0.11.3
     - if "%APPVEYOR_REPO_TAG%"=="false" if "%APPVEYOR_REPO_BRANCH%"=="master" set INSTVERSION=9999.0
     - if "%APPVEYOR_REPO_TAG%"=="false" set WINVERSION=%INSTVERSION%.0.%APPVEYOR_BUILD_NUMBER%
     # VERSION format:     v1.2.3/v1.3.4
@@ -93,8 +93,8 @@ after_build:
     - copy %BUILD%\deploy\installer\gui\package.xml installer\packages\io.github.nhekoreborn.nheko\meta
     - copy %BUILD%\deploy\installer\gui\installscript.qs installer\packages\io.github.nhekoreborn.nheko\meta
     # Amend version and date
-    - sed -i "s/__VERSION__/0.11.2/" installer\config\config.xml
-    - sed -i "s/__VERSION__/0.11.2/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
+    - sed -i "s/__VERSION__/0.11.3/" installer\config\config.xml
+    - sed -i "s/__VERSION__/0.11.3/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
     - sed -i "s/__DATE__/%DATE%/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
     # Copy nheko data
     - xcopy NhekoData\*.* installer\packages\io.github.nhekoreborn.nheko\data\*.* /s /e /c /y
