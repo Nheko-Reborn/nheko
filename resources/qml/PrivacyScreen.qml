@@ -12,7 +12,7 @@ import im.nheko 1.0
 Item {
     id: privacyScreen
 
-    readonly property bool active: screenSaver.state === "Visible"
+    readonly property bool active: Settings.privacyScreen && screenSaver.state === "Visible"
     property var timelineRoot
     property int screenTimeout
 

@@ -28,15 +28,15 @@ AbstractButton {
     height: width*proportionalHeight
     hoverEnabled: true
 
-    state: img.status != Image.Ready ? "ImageLoading" : (timeline.privacyScreen.active ? "PrivacyScreenVisible" : "PrivacyScreenInvisible")
+    state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"
     states: [
         State {
-            name: "ImageLoading"
+            name: "BlurhashVisible"
 
             PropertyChanges {
                 target: blurhash_
-                opacity: 1
-                visible: true
+                opacity: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash) ? 1 : 0
+                visible: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash)
             }
 
             PropertyChanges {
@@ -50,26 +50,7 @@ AbstractButton {
             }
         },
         State {
-            name: "PrivacyScreenVisible"
-
-            PropertyChanges {
-                target: blurhash_
-                opacity: blurhash ? 1 : 0
-                visible: blurhash ? true : false
-            }
-
-            PropertyChanges {
-                target: img
-                opacity: 0
-            }
-
-            PropertyChanges {
-                target: mxcimage
-                opacity: 0
-            }
-        },
-        State {
-            name: "PrivacyScreenInvisible"
+            name: "ImageVisible"
 
             PropertyChanges {
                 target: blurhash_
@@ -90,8 +71,8 @@ AbstractButton {
     ]
     transitions: [
         Transition {
-            from: "PrivacyScreenInvisible"
-            to: "PrivacyScreenVisible"
+            from: "ImageVisible"
+            to: "BlurhashVisible"
             reversible: true
 
             SequentialAnimation {
