@@ -423,11 +423,16 @@ Item {
         }
 
         function onShowRawMessageDialog(rawMessage) {
-            var dialog = Qt.createComponent("qrc:/qml/dialogs/RawMessageDialog.qml").createObject(timelineRoot, {
-                "rawMessage": rawMessage
-            });
-            dialog.show();
-            timelineRoot.destroyOnClose(dialog);
+            var component = Qt.createComponent("qrc:/qml/dialogs/RawMessageDialog.qml")
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {
+                    "rawMessage": rawMessage
+                });
+                dialog.show();
+                timelineRoot.destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         function onConfetti()

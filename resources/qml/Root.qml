@@ -51,36 +51,57 @@ Pane {
     }
 
     function showAliasEditor(settings) {
-        var dialog = Qt.createComponent("qrc:/qml/dialogs/AliasEditor.qml").createObject(timelineRoot, {
-            "roomSettings": settings
-        });
-        dialog.show();
-        destroyOnClose(dialog);
+        var component = Qt.createComponent("qrc:/qml/dialogs/AliasEditor.qml")
+        if (component.status == Component.Ready) {
+            var dialog = component.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            dialog.show();
+            destroyOnClose(dialog);
+        } else {
+            console.error("Failed to create component: " + component.errorString());
+        }
+
     }
 
     function showPLEditor(settings) {
-        var dialog = Qt.createComponent("qrc:/qml/dialogs/PowerLevelEditor.qml").createObject(timelineRoot, {
-            "roomSettings": settings
-        });
-        dialog.show();
-        destroyOnClose(dialog);
+        var component = Qt.createComponent("qrc:/qml/dialogs/PowerLevelEditor.qml")
+        if (component.status == Component.Ready) {
+            var dialog = component.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            dialog.show();
+            destroyOnClose(dialog);
+        } else {
+            console.error("Failed to create component: " + component.errorString());
+        }
     }
 
     function showSpacePLApplyPrompt(settings, editingModel) {
-        var dialog = Qt.createComponent("qrc:/qml/dialogs/PowerLevelSpacesApplyDialog.qml").createObject(timelineRoot, {
-            "roomSettings": settings,
-            "editingModel": editingModel
-        });
-        dialog.show();
-        destroyOnClose(dialog);
+        var component = Qt.createComponent("qrc:/qml/dialogs/PowerLevelSpacesApplyDialog.qml")
+        if (component.status == Component.Ready) {
+            var dialog = component.createObject(timelineRoot, {
+                "roomSettings": settings,
+                "editingModel": editingModel
+            });
+            dialog.show();
+            destroyOnClose(dialog);
+        } else {
+            console.error("Failed to create component: " + component.errorString());
+        }
     }
 
     function showAllowedRoomsEditor(settings) {
-        var dialog = Qt.createComponent("qrc:/qml/dialogs/AllowedRoomsSettingsDialog.qml").createObject(timelineRoot, {
-            "roomSettings": settings
-        });
-        dialog.show();
-        destroyOnClose(dialog);
+        var component = Qt.createComponent("qrc:/qml/dialogs/AllowedRoomsSettingsDialog.qml")
+        if (component.status == Component.Ready) {
+            var dialog = component.createObject(timelineRoot, {
+                "roomSettings": settings
+            });
+            dialog.show();
+            destroyOnClose(dialog);
+        } else {
+            console.error("Failed to create component: " + component.errorString());
+        }
     }
 
     Component {
@@ -99,9 +120,14 @@ Pane {
     Shortcut {
         sequence: "Ctrl+K"
         onActivated: {
-            var quickSwitch = Qt.createComponent("qrc:/qml/QuickSwitcher.qml").createObject(timelineRoot);
-            quickSwitch.open();
-            destroyOnClosed(quickSwitch);
+            var component = Qt.createComponent("qrc:/qml/QuickSwitcher.qml")
+            if (component.status == Component.Ready) {
+                var quickSwitch = component.createObject(timelineRoot);
+                quickSwitch.open();
+                destroyOnClosed(quickSwitch);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
     }
 
@@ -123,21 +149,36 @@ Pane {
 
     Connections {
         function onOpenLogoutDialog() {
-            var dialog = Qt.createComponent("qrc:/qml/dialogs/LogoutDialog.qml").createObject(timelineRoot);
-            dialog.open();
-            destroyOnClose(dialog);
+            var component = Qt.createComponent("qrc:/qml/dialogs/LogoutDialog.qml")
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot);
+                dialog.open();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         function onOpenJoinRoomDialog() {
-            var dialog = Qt.createComponent("qrc:/qml/dialogs/JoinRoomDialog.qml").createObject(timelineRoot);
-            dialog.show();
-            destroyOnClose(dialog);
+            var component = Qt.createComponent("qrc:/qml/dialogs/JoinRoomDialog.qml")
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot);
+                dialog.show();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         function onShowRoomJoinPrompt(summary) {
-            var dialog = Qt.createComponent("qrc:/qml/dialogs/ConfirmJoinRoomDialog.qml").createObject(timelineRoot, {"summary": summary});
-            dialog.show();
-            destroyOnClose(dialog);
+            var component = Qt.createComponent("qrc:/qml/dialogs/ConfirmJoinRoomDialog.qml")
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {"summary": summary});
+                dialog.show();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         target: Nheko
@@ -145,11 +186,14 @@ Pane {
 
     Connections {
         function onNewDeviceVerificationRequest(flow) {
-            var dialog = Qt.createComponent("qrc:/qml/device-verification/DeviceVerification.qml").createObject(timelineRoot, {
-                "flow": flow
-            });
-            dialog.show();
-            destroyOnClose(dialog);
+            var component = Qt.createComponent("qrc:/qml/device-verification/DeviceVerification.qml")
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {"flow": flow});
+                dialog.show();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         target: VerificationManager
@@ -166,73 +210,105 @@ Pane {
 
     Connections {
         function onOpenProfile(profile) {
-            var userProfile = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml").createObject(timelineRoot, {
-                "profile": profile
-            });
-            userProfile.show();
-            destroyOnClose(userProfile);
+            var component = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml")
+            if (component.status == Component.Ready) {
+                var userProfile = component.createObject(timelineRoot, {"profile": profile});
+                userProfile.show();
+                destroyOnClose(userProfile);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         function onShowImagePackSettings(room, packlist) {
-            var packSet = Qt.createComponent("qrc:/qml/dialogs/ImagePackSettingsDialog.qml").createObject(timelineRoot, {
-                "room": room,
-                "packlist": packlist
-            });
-            packSet.show();
-            destroyOnClose(packSet);
+            var component = Qt.createComponent("qrc:/qml/dialogs/ImagePackSettingsDialog.qml")
+
+            if (component.status == Component.Ready) {
+                var packSet = component.createObject(timelineRoot, {
+                    "room": room,
+                    "packlist": packlist
+                });
+                packSet.show();
+                destroyOnClose(packSet);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         function onOpenRoomMembersDialog(members, room) {
-            var membersDialog = Qt.createComponent("qrc:/qml/dialogs/RoomMembers.qml").createObject(timelineRoot, {
-                "members": members,
-                "room": room
-            });
-            membersDialog.show();
-            destroyOnClose(membersDialog);
+            var component = Qt.createComponent("qrc:/qml/dialogs/RoomMembers.qml")
+            if (component.status == Component.Ready) {
+                var membersDialog = component.createObject(timelineRoot, {
+                    "members": members,
+                    "room": room
+                });
+                membersDialog.show();
+                destroyOnClose(membersDialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
+
         }
 
         function onOpenRoomSettingsDialog(settings) {
-            var roomSettings = Qt.createComponent("qrc:/qml/dialogs/RoomSettings.qml").createObject(timelineRoot, {
-                "roomSettings": settings
-            });
-            roomSettings.show();
-            destroyOnClose(roomSettings);
+            var component = Qt.createComponent("qrc:/qml/dialogs/RoomSettings.qml")
+            if (component.status == Component.Ready) {
+                var roomSettings = component.createObject(timelineRoot, {
+                    "roomSettings": settings
+                });
+                roomSettings.show();
+                destroyOnClose(roomSettings);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
+
         }
 
         function onOpenInviteUsersDialog(invitees) {
             var component = Qt.createComponent("qrc:/qml/dialogs/InviteDialog.qml")
-            var dialog = component.createObject(timelineRoot, {
-                "roomId": Rooms.currentRoom.roomId,
-                "plainRoomName": Rooms.currentRoom.plainRoomName,
-                "invitees": invitees
-            });
-            if (component.status != Component.Ready) {
-                console.log("Failed to create component: " + component.errorString());
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {
+                    "roomId": Rooms.currentRoom.roomId,
+                    "plainRoomName": Rooms.currentRoom.plainRoomName,
+                    "invitees": invitees
+                });
+                dialog.show();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
             }
-            dialog.show();
-            destroyOnClose(dialog);
         }
 
         function onOpenLeaveRoomDialog(roomid, reason) {
-            var dialog = Qt.createComponent("qrc:/qml/dialogs/LeaveRoomDialog.qml").createObject(timelineRoot, {
-                "roomId": roomid,
-                "reason": reason
-            });
-            dialog.open();
-            destroyOnClose(dialog);
+            var component = Qt.createComponent("qrc:/qml/dialogs/LeaveRoomDialog.qml")
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {
+                    "roomId": roomid,
+                    "reason": reason
+                });
+                dialog.open();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         function onShowImageOverlay(room, eventId, url, originalWidth, proportionalHeight) {
-            var dialog = Qt.createComponent("qrc:/qml/dialogs/ImageOverlay.qml").createObject(timelineRoot, {
-                "room": room,
-                "eventId": eventId,
-                "url": url,
-                "originalWidth": originalWidth ?? 0,
-                "proportionalHeight": proportionalHeight ?? 0
-            });
-
-            dialog.showFullScreen();
-            destroyOnClose(dialog);
+            var component = Qt.createComponent("qrc:/qml/dialogs/ImageOverlay.qml")
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {
+                        "room": room,
+                        "eventId": eventId,
+                        "url": url,
+                        "originalWidth": originalWidth ?? 0,
+                        "proportionalHeight": proportionalHeight ?? 0
+                    }
+                );
+                dialog.showFullScreen();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         target: TimelineManager
@@ -241,9 +317,14 @@ Pane {
     Connections {
         function onNewInviteState() {
             if (CallManager.haveCallInvite && Settings.mobileMode) {
-                var dialog = Qt.createComponent("qrc:/qml/voip/CallInvite.qml").createObject(timelineRoot);
-                dialog.open();
-                destroyOnClose(dialog);
+                var component = Qt.createComponent("qrc:/qml/voip/CallInvite.qml")
+                if (component.status == Component.Ready) {
+                    var dialog = component.createObject(timelineRoot);
+                    dialog.open();
+                    destroyOnClose(dialog);
+                } else {
+                    console.error("Failed to create component: " + component.errorString());
+                }
             }
         }
 
