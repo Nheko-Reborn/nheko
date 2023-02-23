@@ -108,17 +108,21 @@ Page {
                 }
 
                 TimelineView {
-                    id: timelineView
+                    id: timeline
+
+                    privacyScreen: privacyScreen
                     anchors.fill: parent
                     room: roomWindowW.room
                     roomPreview: roomWindowW.roomPreview.roomid ? roomWindowW.roomPreview : null
                 }
 
                 PrivacyScreen {
+                    id: privacyScreen
+
                     anchors.fill: parent
                     visible: Settings.privacyScreen
                     screenTimeout: Settings.privacyScreenTimeout
-                    timelineRoot: timelineView
+                    timelineRoot: timeline
                     windowTarget: roomWindowW
                 }
 

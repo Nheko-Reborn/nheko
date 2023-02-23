@@ -26,20 +26,87 @@ AbstractButton {
     height: width*proportionalHeight
     hoverEnabled: true
 
+    state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"
+    states: [
+        State {
+            name: "BlurhashVisible"
+
+            PropertyChanges {
+                target: blurhash_
+                opacity: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash) ? 1 : 0
+                visible: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash)
+            }
+
+            PropertyChanges {
+                target: img
+                opacity: 0
+            }
+
+            PropertyChanges {
+                target: mxcimage
+                opacity: 0
+            }
+        },
+        State {
+            name: "ImageVisible"
+
+            PropertyChanges {
+                target: blurhash_
+                opacity: 0
+                visible: false
+            }
+
+            PropertyChanges {
+                target: img
+                opacity: 1
+            }
+
+            PropertyChanges {
+                target: mxcimage
+                opacity: 1
+            }
+        }
+    ]
+    transitions: [
+        Transition {
+            from: "ImageVisible"
+            to: "BlurhashVisible"
+            reversible: true
+
+            SequentialAnimation {
+                PropertyAction {
+                    target: blurhash_
+                    property: "visible"
+                }
+
+                ParallelAnimation {
+                    NumberAnimation {
+                        target: blurhash_
+                        property: "opacity"
+                        duration: 300
+                        easing.type: Easing.Linear
+                    }
+
+                    NumberAnimation {
+                        target: img
+                        property: "opacity"
+                        duration: 300
+                        easing.type: Easing.Linear
+                    }
+
+                    NumberAnimation {
+                        target: mxcimage
+                        property: "opacity"
+                        duration: 300
+                        easing.type: Easing.Linear
+                    }
+                }
+            }
+        }
+    ]
+
     property int metadataWidth
     property bool fitsMetadata: (parent.width - width) > metadataWidth+4
-
-    Image {
-        id: blurhash_
-
-        anchors.fill: parent
-        visible: img.status != Image.Ready
-        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + Nheko.colors.buttonText)
-        asynchronous: true
-        fillMode: Image.PreserveAspectFit
-        sourceSize.width: parent.width * Screen.devicePixelRatio
-        sourceSize.height: parent.height * Screen.devicePixelRatio
-    }
 
     Image {
         id: img
@@ -66,7 +133,18 @@ AbstractButton {
         eventId: parent.eventId
     }
 
-    onClicked :Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
+    Image {
+        id: blurhash_
+
+        anchors.fill: parent
+        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + Nheko.colors.buttonText)
+        asynchronous: true
+        fillMode: Image.PreserveAspectFit
+        sourceSize.width: parent.width * Screen.devicePixelRatio
+        sourceSize.height: parent.height * Screen.devicePixelRatio
+    }
+
+    onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
 
     Item {
         id: overlay

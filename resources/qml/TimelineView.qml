@@ -24,6 +24,7 @@ Item {
     property var roomPreview: null
     property bool showBackButton: false
     property bool shouldEffectsRun: false
+    required property PrivacyScreen privacyScreen
     clip: true
 
     onRoomChanged: if (room != null) room.triggerSpecialEffects()
