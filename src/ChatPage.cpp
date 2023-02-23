@@ -1661,7 +1661,7 @@ ChatPage::isRoomActive(const QString &room_id)
 void
 ChatPage::removeAllNotifications()
 {
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
     notificationsManager->closeAllNotifications();
 #endif
 }

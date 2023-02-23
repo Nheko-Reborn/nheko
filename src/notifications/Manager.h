@@ -53,7 +53,7 @@ public slots:
 #if defined(NHEKO_DBUS_SYS)
 public:
     void closeNotifications(QString roomId);
-#if defined(Q_OS_LINUX)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
     void closeAllNotifications();
 #endif
 
