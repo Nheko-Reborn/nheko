@@ -290,7 +290,12 @@ Cache::setup()
         //
         // 2022-10-28: Disable the nosync flags again in the hope to crack down on some database
         // corruption.
-        env_.open(cacheDirectory_.toStdString().c_str()); //, MDB_NOMETASYNC | MDB_NOSYNC);
+        // 2023-02-23: Reenable the nosync flags. There was no measureable benefit to resiliency,
+        // but sync causes frequent lag sometimes even for the whole system. Possibly the data
+        // corruption is an lmdb or filesystem bug. See
+        // https://github.com/Nheko-Reborn/nheko/issues/1355
+        // https://github.com/Nheko-Reborn/nheko/issues/1303
+        env_.open(cacheDirectory_.toStdString().c_str(), MDB_NOMETASYNC | MDB_NOSYNC);
     } catch (const lmdb::error &e) {
         if (e.code() != MDB_VERSION_MISMATCH && e.code() != MDB_INVALID) {
             throw std::runtime_error("LMDB initialization failed" + std::string(e.what()));
