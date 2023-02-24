@@ -19,9 +19,6 @@
 #include "ui/RoomSettings.h"
 #include "ui/UserProfile.h"
 
-class MxcImageProvider;
-class BlurhashProvider;
-class ColorImageProvider;
 class UserSettings;
 class ChatPage;
 class ImagePackListModel;
