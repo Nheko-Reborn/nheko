@@ -184,6 +184,8 @@ public slots:
     void setSearchString(const QString &s);
     QString searchString() const { return searchString_; }
 
+    bool hasCompletion() const { return rowCount() > 0; }
+
 signals:
     void newSearchString(QString);
 

@@ -190,3 +190,63 @@ Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString new
     QXcbWindowFunctions::setWmWindowRole(win, newRole.toUtf8());
 #endif
 }
+
+QString
+Nheko::getCommandFromText(const QString &text)
+{
+    if (text.startsWith('/')) {
+        int command_end = text.indexOf(QRegularExpression(QStringLiteral("\\s")));
+        if (command_end == -1)
+            command_end = text.size();
+        auto command = text.mid(1, command_end - 1);
+        if (command.isEmpty() || command == QLatin1String("/"))
+            return {};
+        else {
+            return command;
+        }
+    } else
+        return {};
+}
+
+bool
+Nheko::isInvalidCommand(QString command) const
+{
+    if (command.size() <= 0)
+        return false;
+
+    static const QStringList validCommands{QStringLiteral("/me"),
+                                           QStringLiteral("/react"),
+                                           QStringLiteral("/join"),
+                                           QStringLiteral("/knock"),
+                                           QStringLiteral("/part"),
+                                           QStringLiteral("/leave"),
+                                           QStringLiteral("/invite"),
+                                           QStringLiteral("/kick"),
+                                           QStringLiteral("/ban"),
+                                           QStringLiteral("/unban"),
+                                           QStringLiteral("/redact"),
+                                           QStringLiteral("/roomnick"),
+                                           QStringLiteral("/shrug"),
+                                           QStringLiteral("/fliptable"),
+                                           QStringLiteral("/unfliptable"),
+                                           QStringLiteral("/sovietflip"),
+                                           QStringLiteral("/clear-timeline"),
+                                           QStringLiteral("/reset-state"),
+                                           QStringLiteral("/rotate-megolm-session"),
+                                           QStringLiteral("/md"),
+                                           QStringLiteral("/cmark"),
+                                           QStringLiteral("/plain"),
+                                           QStringLiteral("/rainbow"),
+                                           QStringLiteral("/rainbowme"),
+                                           QStringLiteral("/notice"),
+                                           QStringLiteral("/rainbownotice"),
+                                           QStringLiteral("/confetti"),
+                                           QStringLiteral("/rainbowconfetti"),
+                                           QStringLiteral("/goto"),
+                                           QStringLiteral("/converttodm"),
+                                           QStringLiteral("/converttoroom")};
+
+    if (!command.startsWith('/'))
+        command.prepend('/');
+    return !validCommands.contains(command);
+}

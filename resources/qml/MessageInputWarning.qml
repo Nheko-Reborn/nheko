@@ -8,14 +8,20 @@ import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 Item {
-    implicitHeight: warningRect.visible ? warningDisplay.implicitHeight + 2 * Nheko.paddingSmall : 0
+    id: warningRoot
+
+    required property string text
+    required property bool isVisible
+
+    implicitHeight: isVisible ? warningDisplay.implicitHeight + 2 * Nheko.paddingSmall : 0
     height: implicitHeight
     Layout.fillWidth: true
+    Layout.margins: isVisible ? Nheko.paddingSmall : 0
 
     Rectangle {
         id: warningRect
 
-        visible: (room && room.permissions.canPingRoom() && room.input.containsAtRoom)
+        visible: warningRoot.isVisible
         // TODO: Qt.alpha() would make more sense but it wasn't working...
         color: Qt.rgba(Nheko.theme.error.r, Nheko.theme.error.g, Nheko.theme.error.b, 0.3)
         border.width: 1
@@ -31,7 +37,7 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: Nheko.paddingSmall
             color: Nheko.colors.text
-            text: qsTr("You are about to notify the whole room")
+            text: warningRoot.text
             textFormat: Text.PlainText
         }
 

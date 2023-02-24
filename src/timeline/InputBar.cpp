@@ -846,6 +846,8 @@ InputBar::command(const QString &command, QString args)
                                 cache::getMembers(this->room->roomId().toStdString(), 0, -1));
     } else if (command == QLatin1String("converttoroom")) {
         utils::removeDirectFromRoom(this->room->roomId());
+    } else {
+        message("/" + command + " " + args);
     }
 }
 
