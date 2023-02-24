@@ -129,6 +129,7 @@
         <file>qml/components/AvatarListTile.qml</file>
         <file>qml/components/FlatButton.qml</file>
         <file>qml/components/MainWindowDialog.qml</file>
+        <file>qml/components/NhekoTabButton.qml</file>
         <file>qml/components/NotificationBubble.qml</file>
         <file>qml/components/ReorderableListview.qml</file>
         <file>qml/components/SpaceMenuLevel.qml</file>

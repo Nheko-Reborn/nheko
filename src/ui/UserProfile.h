@@ -119,6 +119,30 @@ private:
     friend class UserProfile;
 };
 
+class RoomInfoModel final : public QAbstractListModel
+{
+    Q_OBJECT
+public:
+    enum Roles
+    {
+        RoomId,
+        RoomName,
+        AvatarUrl,
+    };
+
+    explicit RoomInfoModel(const std::map<std::string, RoomInfo> &, QObject *parent = nullptr);
+    QHash<int, QByteArray> roleNames() const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override
+    {
+        (void)parent;
+        return (int)roomInfos_.size();
+    }
+    QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+private:
+    std::vector<std::pair<std::string, RoomInfo>> roomInfos_;
+};
+
 class UserProfile final : public QObject
 {
     Q_OBJECT
@@ -126,6 +150,7 @@ class UserProfile final : public QObject
     Q_PROPERTY(QString userid READ userid CONSTANT)
     Q_PROPERTY(QString avatarUrl READ avatarUrl NOTIFY avatarUrlChanged)
     Q_PROPERTY(DeviceInfoModel *deviceList READ deviceList NOTIFY devicesChanged)
+    Q_PROPERTY(RoomInfoModel *sharedRooms READ sharedRooms CONSTANT)
     Q_PROPERTY(bool isGlobalUserProfile READ isGlobalUserProfile CONSTANT)
     Q_PROPERTY(int userVerified READ getUserStatus NOTIFY userStatusChanged)
     Q_PROPERTY(bool isLoading READ isLoading NOTIFY loadingChanged)
@@ -139,6 +164,7 @@ public:
                 TimelineModel *parent = nullptr);
 
     DeviceInfoModel *deviceList();
+    RoomInfoModel *sharedRooms();
 
     QString userid();
     QString displayName();
@@ -198,4 +224,5 @@ private:
     bool isLoading_              = false;
     TimelineViewManager *manager;
     TimelineModel *model;
+    RoomInfoModel *sharedRooms_ = nullptr;
 };

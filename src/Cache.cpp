@@ -3146,6 +3146,36 @@ Cache::joinedRooms()
     return room_ids;
 }
 
+std::map<std::string, RoomInfo>
+Cache::getCommonRooms(const std::string &user_id)
+{
+    std::map<std::string, RoomInfo> result;
+
+    auto txn = ro_txn(env_);
+
+    std::string_view room_id;
+    std::string_view room_data;
+    std::string_view member_info;
+
+    auto roomsCursor = lmdb::cursor::open(txn, roomsDb_);
+    while (roomsCursor.get(room_id, room_data, MDB_NEXT)) {
+        try {
+            if (getMembersDb(txn, std::string(room_id)).get(txn, user_id, member_info)) {
+                RoomInfo tmp = nlohmann::json::parse(std::move(room_data)).get<RoomInfo>();
+                result.emplace(std::string(room_id), std::move(tmp));
+            }
+        } catch (std::exception &e) {
+            nhlog::db()->warn("Failed to read common room for member ({}) in room ({}): {}",
+                              user_id,
+                              room_id,
+                              e.what());
+        }
+    }
+    roomsCursor.close();
+
+    return result;
+}
+
 std::optional<MemberInfo>
 Cache::getMember(const std::string &room_id, const std::string &user_id)
 {

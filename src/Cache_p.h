@@ -64,6 +64,7 @@ public:
     crypto::Trust roomVerificationStatus(const std::string &room_id);
 
     std::vector<std::string> joinedRooms();
+    std::map<std::string, RoomInfo> getCommonRooms(const std::string &user_id);
 
     QMap<QString, RoomInfo> roomInfo(bool withInvites = true);
     QHash<QString, RoomInfo> invites();
