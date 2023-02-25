@@ -111,7 +111,6 @@
         <file>qml/UploadBox.qml</file>
         <file>qml/MessageInput.qml</file>
         <file>qml/MessageView.qml</file>
-        <file>qml/NhekoBusyIndicator.qml</file>
         <file>qml/PrivacyScreen.qml</file>
         <file>qml/Reactions.qml</file>
         <file>qml/ReplyPopup.qml</file>
