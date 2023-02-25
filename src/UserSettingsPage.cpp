@@ -8,6 +8,7 @@
 #include <QFontDatabase>
 #include <QInputDialog>
 #include <QMessageBox>
+#include <QRawFont>
 #include <QStandardPaths>
 #include <QString>
 #include <QTextStream>
@@ -25,6 +26,29 @@
 #include "voip/CallDevices.h"
 
 #include "config/nheko.h"
+
+static QStringList
+fontFamilies(bool emoji)
+{
+    static QFontDatabase fontDb;
+
+    if (!emoji) {
+        return fontDb.families();
+    } else {
+        static QStringList emojiFamilies = [] {
+            QStringList families;
+            const auto originalFamilies = fontDb.families();
+            for (const auto &family : originalFamilies) {
+                auto rawFont = QRawFont::fromFont(QFont(family));
+                if (rawFont.supportsCharacter(0x0001F600ull)) {
+                    families.push_back(family);
+                }
+            }
+            return families;
+        }();
+        return emojiFamilies;
+    }
+}
 
 QSharedPointer<UserSettings> UserSettings::instance_;
 
@@ -1526,7 +1550,6 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
                 l.push_back(QString::fromStdString(d));
             return l;
         };
-        static QFontDatabase fontDb;
 
         switch (index.row()) {
         case Theme:
@@ -1546,9 +1569,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               i->camera().toStdString(), i->cameraResolution().toStdString()));
 
         case Font:
-            return fontDb.families();
+            return fontFamilies(false);
         case EmojiFont:
-            return fontDb.families(QFontDatabase::WritingSystem::Symbol);
+            return fontFamilies(true);
         case Ringtone: {
             QStringList l{
               QStringLiteral("Mute"),
@@ -1592,8 +1615,6 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
 bool
 UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    static QFontDatabase fontDb;
-
     auto i = UserSettings::instance();
     if (role == Value) {
         switch (index.row()) {
@@ -1836,15 +1857,14 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         }
         case Font: {
             if (value.userType() == QMetaType::Int) {
-                i->setFontFamily(fontDb.families().at(value.toInt()));
+                i->setFontFamily(fontFamilies(false).at(value.toInt()));
                 return true;
             } else
                 return false;
         }
         case EmojiFont: {
             if (value.userType() == QMetaType::Int) {
-                i->setEmojiFontFamily(
-                  fontDb.families(QFontDatabase::WritingSystem::Symbol).at(value.toInt()));
+                i->setEmojiFontFamily(fontFamilies(true).at(value.toInt()));
                 return true;
             } else
                 return false;
