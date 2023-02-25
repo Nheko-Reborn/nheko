@@ -412,13 +412,17 @@ private:
                 break;
             }
             }
+        } else if (auto encr = std::get_if<StateEvent<Encryption>>(&event)) {
+            if (!encr->state_key.empty())
+                return;
 
-            // BUG(Nico): Ideally we would fall through and store this in the database, but it seems
-            // to currently corrupt the db sometimes, so... let's find that bug first!
-            return;
-        } else if (std::holds_alternative<StateEvent<Encryption>>(event)) {
             setEncryptedRoom(txn, room_id);
-            return;
+
+            std::string_view temp;
+            // ensure we don't replace the event in the db
+            if (statesdb.get(txn, to_string(encr->type), temp)) {
+                return;
+            }
         }
 
         std::visit(
@@ -441,16 +445,20 @@ private:
                                                                        {"id", e.event_id},
                                                                      })
                                                 .dump());
-                      } else if (e.state_key.empty())
+                      } else if (e.state_key.empty()) {
                           statesdb.put(txn, to_string(e.type), nlohmann::json(e).dump());
-                      else
-                          stateskeydb.put(txn,
-                                          to_string(e.type),
-                                          nlohmann::json::object({
-                                                                   {"key", e.state_key},
-                                                                   {"id", e.event_id},
-                                                                 })
-                                            .dump());
+                      } else {
+                          auto data = nlohmann::json::object({
+                                                               {"key", e.state_key},
+                                                               {"id", e.event_id},
+                                                             })
+                                        .dump();
+                          auto key = to_string(e.type);
+
+                          // Work around https://bugs.openldap.org/show_bug.cgi?id=8447
+                          stateskeydb.del(txn, key, data);
+                          stateskeydb.put(txn, key, data);
+                      }
                   }
               }
           },
