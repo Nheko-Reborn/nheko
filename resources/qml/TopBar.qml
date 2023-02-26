@@ -242,26 +242,26 @@ Pane {
                     enabled: false
                     unencryptedIcon: ":/icons/icons/ui/people.svg"
                     unencryptedColor: Nheko.colors.buttonText
+                    unencryptedHoverColor: Nheko.colors.highlight
+                    hovered: parent.hovered
+
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: {
+                        if (!isEncrypted)
+                        return qsTr("Show room members.");
+
+                        switch (trustlevel) {
+                            case Crypto.Verified:
+                            return qsTr("This room contains only verified devices.");
+                            case Crypto.TOFU:
+                            return qsTr("This room contains verified devices and devices which have never changed their master key.");
+                            default:
+                            return qsTr("This room contains unverified devices!");
+                        }
+                    }
                 }
 
                 background: null
-
-                ToolTip.delay: Nheko.tooltipDelay
-                ToolTip.text: {
-                    if (!isEncrypted)
-                    return qsTr("Show room members.");
-
-                    switch (trustlevel) {
-                        case Crypto.Verified:
-                        return qsTr("This room contains only verified devices.");
-                        case Crypto.TOFU:
-                        return qsTr("This room contains verified devices and devices which have never changed their master key.");
-                        default:
-                        return qsTr("This room contains unverified devices!");
-                    }
-                }
-                ToolTip.visible: hovered
-
                 onClicked: TimelineManager.openRoomMembers(room)
             }
 
