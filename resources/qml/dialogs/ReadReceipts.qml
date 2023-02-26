@@ -78,6 +78,8 @@ ApplicationWindow {
                         anchors.margins: Nheko.paddingSmall
 
                         Avatar {
+                            id: avatar
+
                             width: Nheko.avatarSize
                             height: Nheko.avatarSize
                             userid: model.mxid
@@ -88,23 +90,24 @@ ApplicationWindow {
 
                         ColumnLayout {
                             spacing: Nheko.paddingSmall
+                            Layout.fillWidth: true
 
-                            Label {
+                            ElidedLabel {
                                 text: model.displayName
                                 color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
                                 font.pointSize: fontMetrics.font.pointSize
+                                elideWidth: del.width - Nheko.paddingMedium - avatar.width
+                                Layout.fillWidth: true
                             }
 
-                            Label {
+                            ElidedLabel {
                                 text: model.timestamp
                                 color: Nheko.colors.buttonText
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
+                                elideWidth: del.width - Nheko.paddingMedium - avatar.width
+                                Layout.fillWidth: true
                             }
 
-                        }
-
-                        Item {
-                            Layout.fillWidth: true
                         }
 
                     }
