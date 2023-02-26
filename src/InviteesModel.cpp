@@ -9,8 +9,9 @@
 #include "MatrixClient.h"
 #include "mtx/responses/profile.hpp"
 
-InviteesModel::InviteesModel(QObject *parent)
-  : QAbstractListModel{parent}
+InviteesModel::InviteesModel(TimelineModel *room, QObject *parent)
+  : QAbstractListModel{parent},
+    room_{room}
 {
 }
 

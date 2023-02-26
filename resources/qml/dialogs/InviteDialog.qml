@@ -12,8 +12,6 @@ import im.nheko 1.0
 ApplicationWindow {
     id: inviteDialogRoot
 
-    property string roomId
-    property string plainRoomName
     property InviteesModel invitees
     property var friendsCompleter
     property var profile
@@ -39,7 +37,7 @@ ApplicationWindow {
         close();
     }
 
-    title: qsTr("Invite users to %1").arg(plainRoomName)
+    title: qsTr("Invite users to %1").arg(invitees.room.plainRoomName)
     height: 380
     width: 340
     palette: Nheko.colors
