@@ -218,7 +218,7 @@ build-flatpak-arm64:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-arm64.flatpak
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
   rules:
-    - if : '$CI_PIPELINE_TRIGGERED == 123456'
+    - if : '$CI_PIPELINE_TRIGGERED == "123456"'
   cache:
     key: "$CI_JOB_NAME"
     paths:
