@@ -37,7 +37,7 @@ elif [ "$http_code" = "200" ]; then
         "https://api.github.com/repos/Nheko-Reborn/nheko/releases/tags/$CI_COMMIT_TAG")
 fi
 
-upload_url="$(echo "$release_json" | jq ".upload-url")"
+upload_url="$(echo "$release_json" | jq '."upload-url"')"
 # get rid of the 'hypermedia' stuff at the end and use a 'real' URL
 upload_url="$(echo "$upload_url" | sed 's/{?name,label\}/?name/g')"
 
