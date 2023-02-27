@@ -36,7 +36,7 @@ class InviteesModel final : public QAbstractListModel
     Q_OBJECT
 
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
-    Q_PROPERTY(TimelineModel * room READ room CONSTANT)
+    Q_PROPERTY(TimelineModel *room READ room CONSTANT)
 
 public:
     enum Roles

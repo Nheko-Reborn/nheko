@@ -10,8 +10,8 @@
 #include "mtx/responses/profile.hpp"
 
 InviteesModel::InviteesModel(TimelineModel *room, QObject *parent)
-  : QAbstractListModel{parent},
-    room_{room}
+  : QAbstractListModel{parent}
+  , room_{room}
 {
 }
 
