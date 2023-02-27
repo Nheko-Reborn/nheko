@@ -390,8 +390,7 @@ InputBar::send()
 
     auto wasEdit = !room->edit().isEmpty();
 
-    auto [commandName, args] = getCommandAndArgs();
-    if (commandName.isNull())
+    if (auto [commandName, args] = getCommandAndArgs(); commandName.isNull())
         message(text());
     else
         command(commandName, args);

@@ -167,7 +167,6 @@ Item {
         }
 
         MessageInput {
-            id: input
         }
 
     }
