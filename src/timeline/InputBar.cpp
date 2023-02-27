@@ -224,8 +224,9 @@ InputBar::insertMimeData(const QMimeData *md)
 }
 
 void
-InputBar::updateAtRoom(const QString &t)
+InputBar::updateTextContentProperties(const QString &t)
 {
+    // check for @room
     bool roomMention = false;
 
     if (t.size() > 4) {
@@ -249,6 +250,54 @@ InputBar::updateAtRoom(const QString &t)
         this->containsAtRoom_ = roomMention;
         emit containsAtRoomChanged();
     }
+
+    // check for invalid commands
+    auto commandName = getCommandAndArgs().first;
+    bool hasInvalidCommand{};
+    if (!commandName.isNull() && '/' + commandName != text()) {
+        static const QStringList validCommands{QStringLiteral("me"),
+                                               QStringLiteral("react"),
+                                               QStringLiteral("join"),
+                                               QStringLiteral("knock"),
+                                               QStringLiteral("part"),
+                                               QStringLiteral("leave"),
+                                               QStringLiteral("invite"),
+                                               QStringLiteral("kick"),
+                                               QStringLiteral("ban"),
+                                               QStringLiteral("unban"),
+                                               QStringLiteral("redact"),
+                                               QStringLiteral("roomnick"),
+                                               QStringLiteral("shrug"),
+                                               QStringLiteral("fliptable"),
+                                               QStringLiteral("unfliptable"),
+                                               QStringLiteral("sovietflip"),
+                                               QStringLiteral("clear-timeline"),
+                                               QStringLiteral("reset-state"),
+                                               QStringLiteral("rotate-megolm-session"),
+                                               QStringLiteral("md"),
+                                               QStringLiteral("cmark"),
+                                               QStringLiteral("plain"),
+                                               QStringLiteral("rainbow"),
+                                               QStringLiteral("rainbowme"),
+                                               QStringLiteral("notice"),
+                                               QStringLiteral("rainbownotice"),
+                                               QStringLiteral("confetti"),
+                                               QStringLiteral("rainbowconfetti"),
+                                               QStringLiteral("goto"),
+                                               QStringLiteral("converttodm"),
+                                               QStringLiteral("converttoroom")};
+        hasInvalidCommand = !validCommands.contains(commandName);
+    } else
+        hasInvalidCommand = false;
+
+    if (containsInvalidCommand_ != hasInvalidCommand) {
+        containsInvalidCommand_ = hasInvalidCommand;
+        emit containsInvalidCommandChanged();
+    }
+    if (currentCommand_ != commandName) {
+        currentCommand_ = commandName;
+        emit currentCommandChanged();
+    }
 }
 
 void
@@ -263,7 +312,7 @@ InputBar::setText(const QString &newText)
     if (history_.size() == INPUT_HISTORY_SIZE)
         history_.pop_back();
 
-    updateAtRoom(QLatin1String(""));
+    updateTextContentProperties(QLatin1String(""));
     emit textChanged(newText);
 }
 void
@@ -284,7 +333,7 @@ InputBar::updateState(int selectionStart_,
             history_.front() = text_;
         history_index_ = 0;
 
-        updateAtRoom(text_);
+        updateTextContentProperties(text_);
         // disabled, as it moves the cursor to the end
         // emit textChanged(text_);
     }
@@ -312,7 +361,7 @@ InputBar::previousText()
     else if (text().isEmpty())
         history_index_--;
 
-    updateAtRoom(text());
+    updateTextContentProperties(text());
     return text();
 }
 
@@ -323,7 +372,7 @@ InputBar::nextText()
     if (history_index_ >= INPUT_HISTORY_SIZE)
         history_index_ = 0;
 
-    updateAtRoom(text());
+    updateTextContentProperties(text());
     return text();
 }
 
@@ -341,20 +390,11 @@ InputBar::send()
 
     auto wasEdit = !room->edit().isEmpty();
 
-    if (text().startsWith('/')) {
-        int command_end = text().indexOf(QRegularExpression(QStringLiteral("\\s")));
-        if (command_end == -1)
-            command_end = text().size();
-        auto name = text().mid(1, command_end - 1);
-        auto args = text().mid(command_end + 1);
-        if (name.isEmpty() || name == QLatin1String("/")) {
-            message(args);
-        } else {
-            command(name, args);
-        }
-    } else {
+    auto [commandName, args] = getCommandAndArgs();
+    if (commandName.isNull())
         message(text());
-    }
+    else
+        command(commandName, args);
 
     if (!wasEdit) {
         history_.push_front(QLatin1String(""));
@@ -714,6 +754,24 @@ InputBar::video(const QString &filename,
     video.relations = generateRelations();
 
     room->sendMessageEvent(video, mtx::events::EventType::RoomMessage);
+}
+
+QPair<QString, QString>
+InputBar::getCommandAndArgs() const
+{
+    if (!text().startsWith('/'))
+        return {{}, text()};
+
+    int command_end = text().indexOf(QRegularExpression(QStringLiteral("\\s")));
+    if (command_end == -1)
+        command_end = text().size();
+    auto name = text().mid(1, command_end - 1);
+    auto args = text().mid(command_end + 1);
+    if (name.isEmpty() || name == QLatin1String("/")) {
+        return {{}, text()};
+    } else {
+        return {name, args};
+    }
 }
 
 void

@@ -159,17 +159,8 @@ Item {
         }
 
         MessageInputWarning {
-            text: qsTr("The command /%1 is not recognized and will be sent as part of your message").arg(Nheko.getCommandFromText(input.text))
-            isVisible: {
-                if (!input.text)
-                    return false;
-
-                let command = Nheko.getCommandFromText(input.text);
-                if (Nheko.isInvalidCommand(command) && ("/" + command !== input.text))
-                    return true;
-                else
-                    return false;
-            }
+            text: qsTr("The command /%1 is not recognized and will be sent as part of your message").arg(room ? room.input.currentCommand : "")
+            isVisible: room ? room.input.containsInvalidCommand : false
         }
 
         ReplyPopup {
