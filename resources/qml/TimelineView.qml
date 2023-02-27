@@ -155,12 +155,12 @@ Item {
 
         MessageInputWarning {
             text: qsTr("You are about to notify the whole room")
-            isVisible: (room && room.permissions.canPingRoom() && room.input.containsAtRoom)
+            visible: (room && room.permissions.canPingRoom() && room.input.containsAtRoom)
         }
 
         MessageInputWarning {
             text: qsTr("The command /%1 is not recognized and will be sent as part of your message").arg(room ? room.input.currentCommand : "")
-            isVisible: room ? room.input.containsInvalidCommand : false
+            visible: room ? room.input.containsInvalidCommand : false
         }
 
         ReplyPopup {
