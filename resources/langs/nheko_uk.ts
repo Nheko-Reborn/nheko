@@ -1866,12 +1866,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-133"/>
         <source>Re&amp;act</source>
-        <translation type="unfinished">Ре&amp;агувати</translation>
+        <translation>Ре&amp;агувати</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Repl&amp;y</source>
-        <translation type="unfinished">Відпов&amp;сти</translation>
+        <translation>Відпо&amp;вісти</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1886,7 +1886,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished">Від&amp;кріпити</translation>
+        <translation>Від&amp;кріпити</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1921,7 +1921,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+6"/>
         <source>Remo&amp;ve message</source>
-        <translation type="unfinished">Ви&amp;далити повідомлення</translation>
+        <translation>Ви&amp;далити повідомлення</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1936,7 +1936,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>Copy link to eve&amp;nt</source>
-        <translation type="unfinished">Копіювати посилання на подію</translation>
+        <translation>Копіювати посилання на &amp;подію</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -1959,32 +1959,32 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Щоб дозволити іншим користувачам бачити, які з ваших пристроїв насправді належать вам, ви можете підтвердити їх. Це також дозволяє резервне копіювання ключів працювати автоматично. Перевірити неперевірений пристрій зараз? (Переконайтеся, що у вас є один із цих пристроїв.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Щоб дозволити іншим користувачам бачити, які з ваших пристроїв насправді належать вам, ви можете перевірити їх. Це також дозволяє резервне копіювання ключів працювати автоматично. Перевірити %1 зараз?</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.</source>
-        <translation type="unfinished"></translation>
+        <translation>Щоб переконатися, що жоден зловмисник не зможе підслухати ваші зашифровані повідомлення, ви можете перевірити іншу сторону.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has requested to verify their device %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав запит на перевірку свого пристрою %2.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 using the device %2 has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, використовуя пристрій %2, надіслав запит на перевірку.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your device (%1) has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш пристрій (%1) надіслав запит на перевірку.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1994,12 +1994,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Відказати</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Почати перевірку</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2012,7 +2012,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/NotificationWarning.qml" line="+34"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви збираєтеся повідомити всю кімнату</translation>
     </message>
 </context>
 <context>
@@ -2021,28 +2021,28 @@ Example: https://server.my:8787</source>
         <location filename="../../src/notifications/Manager.cpp" line="+25"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+62"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав зашифроване повідомлення</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 replied: %2</source>
         <comment>Format a reply in a notification. %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 відповів: %2</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відповів зашифрованим повідомленням</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>%1 replied to a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відповів на повідомлення</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 sent a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав повідомлення</translation>
     </message>
 </context>
 <context>
@@ -2050,7 +2050,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/voip/PlaceCall.qml" line="+42"/>
         <source>Place a call to %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Зателефонувати %1?</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2060,17 +2060,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+24"/>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Голос</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Відео</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Екран</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2083,7 +2083,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+13"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>нереалізована подія: </translation>
     </message>
 </context>
 <context>
@@ -2091,65 +2091,65 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+26"/>
         <source>Permissions in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволи в %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Будьте обережні під час редагування дозволів. Ви не можете знизити дозволи для людей з таким самим або вищим рівнем, ніж ваш. Будьте обережні, просуваючи інших.</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Roles</source>
-        <translation type="unfinished"></translation>
+        <translation>Ролі</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Користувачі</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Move permissions between roles to change them</source>
-        <translation type="unfinished"></translation>
+        <translation>Переміщуйте дозволи між ролями, щоб змінювати їх</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+240"/>
         <source>Administrator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Адміністратор (%1)</translation>
     </message>
     <message>
         <location line="-238"/>
         <location line="+240"/>
         <source>Moderator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Модератор (%1)</translation>
     </message>
     <message>
         <location line="-238"/>
         <source>User (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Користувач (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+238"/>
         <source>Custom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Спеціальний (%1)</translation>
     </message>
     <message>
         <location line="-225"/>
         <source>Remove event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалити тип події</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Додати тип події</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Add new role</source>
-        <translation type="unfinished"></translation>
+        <translation>Додати нову роль</translation>
     </message>
     <message>
         <location line="+38"/>
@@ -2159,17 +2159,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Move users up or down to change their permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Перемістіть користувачів вгору або вниз, щоб змінити їхні дозволи</translation>
     </message>
     <message>
         <location line="+142"/>
         <source>Remove user</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалити користувача</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
+        <translation>Додати користувача</translation>
     </message>
 </context>
 <context>
@@ -2177,42 +2177,42 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+29"/>
         <source>Apply permission changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Застосувати зміни дозволів</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
-        <translation type="unfinished"></translation>
+        <translation>До яких підспільнот і кімнат слід застосувати ці дозволи?</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Apply permissions recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Застосувати дозволи рекурсивно</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Overwrite exisiting modifications in rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Перезаписати наявні зміни в кімнатах</translation>
     </message>
     <message>
         <location line="+46"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation type="unfinished"></translation>
+        <translation>Тут немає дозволів для застосування нових дозволів</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No changes needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Зміни не потрібні</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Existing modifications to the permissions in this room will be overwritten</source>
-        <translation type="unfinished"></translation>
+        <translation>Існуючі зміни дозволів у цій кімнаті буде перезаписано</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Permissions synchronized with community</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволи синхронізовані з спільнотою</translation>
     </message>
 </context>
 <context>
@@ -2220,7 +2220,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+739"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося оновити рівень потужності: %1</translation>
     </message>
 </context>
 <context>
@@ -2228,7 +2228,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-116"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося оновити рівень потужності: %1</translation>
     </message>
 </context>
 <context>
@@ -2236,12 +2236,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-467"/>
         <source>Other events</source>
-        <translation type="unfinished"></translation>
+        <translation>Інші події</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other state events</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location line="+2"/>
