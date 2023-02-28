@@ -43,15 +43,16 @@ elif [ "$http_code" = "200" ]; then
 fi
 
 echo "Getting upload URL..."
-upload_url="$(echo "$release_json" | jq '."upload-url"')"
+upload_url="$(echo "$release_json" | jq '."upload_url"')"
 # get rid of the 'hypermedia' stuff at the end and use a 'real' URL
 echo "Upload URL (hypermedia): ${upload_url}"
 upload_url="$(echo "$upload_url" | sed 's/{?name,label\}/?name/g')"
 
+ls -la .
 echo "Uploading artifacts"
 for file in ./artifacts/*; do
     name="${file##*/}"
-    echo "Uploading ${name}"
+    echo "Uploading $file"
     [ -e "$file" ] && curl \
     -X POST \
     -H "Accept: application/vnd.github+json" \
