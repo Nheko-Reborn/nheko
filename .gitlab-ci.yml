@@ -186,7 +186,7 @@ build-flatpak-amd64:
   after_script:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-amd64.flatpak
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
-    - (cd $CI_BUILDS_DIR && mkdir -p artifacts && cp build-flatpak/nheko-arm64.flatpak artifacts/) || true
+    - (cd $CI_BUILDS_DIR && mkdir -p artifacts && cp build-flatpak/nheko-amd64.flatpak artifacts/) || true
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   cache:
