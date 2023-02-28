@@ -318,8 +318,10 @@ github-release:
   rules:
     - if: '$CI_COMMIT_TAG =~ /^test\d+\.\d+\.\d+$/'
   dependencies:
-    - build
-    - sign
+    - appimage-amd64
+    - build-flatpak-arm64
+    - build-flatpak-amd64
+    - codesign-macos
   before_script:
     - apk update && apk add jq curl perl
   script:
