@@ -130,7 +130,7 @@ build-macos:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   artifacts:
     paths:
-      - build/nheko.app
+      - build/nheko.app # not putting this in 'artifacts' subdir because we don't want to put it on releases
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos-app
     expose_as: 'macos-app'
     public: false
@@ -186,6 +186,7 @@ build-flatpak-amd64:
   after_script:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-amd64.flatpak
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
+    - (cd $CI_BUILDS_DIR && mkdir -p artifacts && cp build-flatpak/nheko-arm64.flatpak artifacts/) || true
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   cache:
@@ -194,7 +195,7 @@ build-flatpak-amd64:
       - build-flatpak/.flatpak-builder/
   artifacts:
     expose_as: 'flatpak-amd64'
-    paths: ['build-flatpak/nheko-amd64.flatpak']
+    paths: ['artifacts/nheko-amd64.flatpak']
     name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-amd64
 
 build-flatpak-arm64:
@@ -217,6 +218,7 @@ build-flatpak-arm64:
   after_script:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-arm64.flatpak
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
+    - (cd $CI_BUILDS_DIR && mkdir -p artifacts && cp build-flatpak/nheko-arm64.flatpak artifacts/) || true
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == "123456"'
   cache:
@@ -225,7 +227,7 @@ build-flatpak-arm64:
       - build-flatpak/.flatpak-builder/
   artifacts:
     expose_as: 'flatpak-arm64'
-    paths: ['build-flatpak/nheko-arm64.flatpak']
+    paths: ['artifacts/nheko-arm64.flatpak']
     name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-arm64
 
 appimage-amd64:
@@ -279,12 +281,13 @@ appimage-amd64:
     - mkdir -p AppDir/usr/lib/x86_64-linux-gnu AppDir/lib/x86_64-linux-gnu
     - appimage-builder --skip-test
   after_script:
+    - mkdir -p artifacts && cp nheko-latest-x86_64.AppImage artifacts/
     - bash ./.ci/upload-nightly-gitlab.sh nheko-latest-x86_64.AppImage
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   artifacts:
     paths:
-      - 'nheko-latest-x86_64.AppImage'
+      - 'artifacts/nheko-latest-x86_64.AppImage'
     expire_in: 1 week
     expose_as: 'appimage-amd64'
   cache:
@@ -314,6 +317,9 @@ github-release:
   tags: [docker]
   rules:
     - if: '$CI_COMMIT_TAG =~ /^test\d+\.\d+\.\d+$/'
+  dependencies:
+    - build
+    - sign
   before_script:
     - apk update && apk add jq curl perl
   script:
