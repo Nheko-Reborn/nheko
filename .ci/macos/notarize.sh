@@ -97,7 +97,7 @@ done
 VERSION=${CI_COMMIT_SHORT_SHA}
 
 if [ -n "$VERSION" ]; then
-    mv nheko.dmg "nheko-${VERSION}_${PLAT}.dmg"
-    mkdir artifacts
-    cp "nheko-${VERSION}_${PLAT}.dmg" artifacts/
+    mv nheko.dmg "nheko-${VERSION}-${PLAT}.dmg"
+    mkdir -p artifacts
+    cp "nheko-${VERSION}-${PLAT}.dmg" artifacts/
 fi
