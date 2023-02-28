@@ -151,7 +151,7 @@ codesign-macos:
     - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
     - ./.ci/macos/notarize.sh
   after_script:
-    - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}_${PLAT}.dmg
+    - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}-${PLAT}.dmg
   needs:
     - job: build-macos
       optional: true # optional since we want to be able to also trigger this job from cirrus ci for apple silicon builds.

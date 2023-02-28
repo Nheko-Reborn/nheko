@@ -43,7 +43,7 @@ elif [ "$http_code" = "200" ]; then
 fi
 
 echo "Getting upload URL..."
-upload_url="$(echo "$release_json" | jq '."upload_url"')"
+upload_url="$(echo "$release_json" | jq -r '."upload_url"')"
 # get rid of the 'hypermedia' stuff at the end and use a 'real' URL
 echo "Upload URL (hypermedia): ${upload_url}"
 upload_url="$(echo "$upload_url" | sed 's/{?name,label\}/?name/g')"
