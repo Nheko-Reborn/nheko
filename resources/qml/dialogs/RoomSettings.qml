@@ -395,7 +395,8 @@ ApplicationWindow {
                             checked = true;
                             return ;
                         }
-                        confirmEncryptionDialog.open();
+                        if (checked === true)
+                            confirmEncryptionDialog.open();
                     }
                     Layout.alignment: Qt.AlignRight
                 }
