@@ -253,7 +253,7 @@ InputBar::updateTextContentProperties(const QString &t)
 
     // check for invalid commands
     auto commandName = getCommandAndArgs().first;
-    static const QStringList validCommands{QStringLiteral("me"),
+    static const QSet<QString> validCommands{QStringLiteral("me"),
                                            QStringLiteral("react"),
                                            QStringLiteral("join"),
                                            QStringLiteral("knock"),
