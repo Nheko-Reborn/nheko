@@ -75,7 +75,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter
         Layout.margins: Nheko.paddingLarge
 
-        ToggleButton {
+        Switch {
             Layout.margins: Nheko.paddingLarge
             Layout.alignment: Qt.AlignRight
             checked: Settings.reducedMotion

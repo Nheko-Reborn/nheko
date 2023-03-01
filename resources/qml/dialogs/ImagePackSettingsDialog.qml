@@ -185,7 +185,7 @@ ApplicationWindow {
                             text: qsTr("Enable globally")
                         }
 
-                        ToggleButton {
+                        Switch {
                             ToolTip.text: qsTr("Enables this pack to be used in all rooms")
                             checked: currentPack ? currentPack.isGloballyEnabled : false
                             onCheckedChanged: currentPack.isGloballyEnabled = checked

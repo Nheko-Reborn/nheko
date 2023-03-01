@@ -139,7 +139,7 @@ ApplicationWindow {
                 }
             }
 
-            ToggleButton {
+            Switch {
                 id: searchOnServer
                 checked: false
                 onClicked: userSearch.model.setSearchString(inviteeEntry.text)

@@ -84,7 +84,7 @@ ApplicationWindow {
                     }
                 }
 
-                ToggleButton {
+                Switch {
                     checked: model.allowed
                     Layout.alignment: Qt.AlignRight
                     onCheckedChanged: model.allowed = checked

@@ -91,7 +91,7 @@ ApplicationWindow {
                 text: qsTr("Encryption")
                 color: Nheko.colors.text
             }
-            ToggleButton {
+            Switch {
                 Layout.alignment: Qt.AlignRight
                 id: encryption
                 checked: otherUserHasE2ee

@@ -79,7 +79,7 @@ ApplicationWindow {
                 }
             }
 
-            ToggleButton {
+            Switch {
                 Layout.alignment: Qt.AlignRight
                 checked: !hiddenEvents.hiddenEvents.includes(MtxEvent.Member)
                 onToggled: hiddenEvents.toggle(MtxEvent.Member)
@@ -96,7 +96,7 @@ ApplicationWindow {
                 }
             }
 
-            ToggleButton {
+            Switch {
                 Layout.alignment: Qt.AlignRight
                 checked: !hiddenEvents.hiddenEvents.includes(MtxEvent.PowerLevels)
                 onToggled: hiddenEvents.toggle(MtxEvent.PowerLevels)
@@ -107,7 +107,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            ToggleButton {
+            Switch {
                 Layout.alignment: Qt.AlignRight
                 checked: !hiddenEvents.hiddenEvents.includes(MtxEvent.Sticker)
                 onToggled: hiddenEvents.toggle(MtxEvent.Sticker)

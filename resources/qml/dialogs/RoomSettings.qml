@@ -292,7 +292,7 @@ ApplicationWindow {
                     color: Nheko.colors.text
                 }
 
-                ToggleButton {
+                Switch {
                     id: publicRoomButton
 
                     enabled: roomSettings.canChangeJoinRules
@@ -307,7 +307,7 @@ ApplicationWindow {
                     visible: knockingButton.visible
                 }
 
-                ToggleButton {
+                Switch {
                     id: knockingButton
 
                     visible: !publicRoomButton.checked
@@ -326,7 +326,7 @@ ApplicationWindow {
                     visible: restrictedButton.visible
                 }
 
-                ToggleButton {
+                Switch {
                     id: restrictedButton
 
                     visible: !publicRoomButton.checked
@@ -363,7 +363,7 @@ ApplicationWindow {
                     color: Nheko.colors.text
                 }
 
-                ToggleButton {
+                Switch {
                     id: guestAccessButton
 
                     enabled: roomSettings.canChangeJoinRules
@@ -386,7 +386,7 @@ ApplicationWindow {
                     color: Nheko.colors.text
                 }
 
-                ToggleButton {
+                Switch {
                     id: encryptionToggle
 
                     checked: roomSettings.isEncryptionEnabled

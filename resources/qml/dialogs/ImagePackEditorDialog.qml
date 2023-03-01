@@ -206,7 +206,7 @@ ApplicationWindow {
                         text: qsTr("Use as Emoji")
                     }
 
-                    ToggleButton {
+                    Switch {
                         checked: imagePack.isEmotePack
                         onCheckedChanged: imagePack.isEmotePack = checked
                         Layout.alignment: Qt.AlignRight
@@ -219,7 +219,7 @@ ApplicationWindow {
                         text: qsTr("Use as Sticker")
                     }
 
-                    ToggleButton {
+                    Switch {
                         checked: imagePack.isStickerPack
                         onCheckedChanged: imagePack.isStickerPack = checked
                         Layout.alignment: Qt.AlignRight
@@ -276,7 +276,7 @@ ApplicationWindow {
                         text: qsTr("Use as Emoji")
                     }
 
-                    ToggleButton {
+                    Switch {
                         checked: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.IsEmote)
                         onCheckedChanged: imagePack.setData(imagePack.index(currentImageIndex, 0), checked, SingleImagePackModel.IsEmote)
                         Layout.alignment: Qt.AlignRight
@@ -289,7 +289,7 @@ ApplicationWindow {
                         text: qsTr("Use as Sticker")
                     }
 
-                    ToggleButton {
+                    Switch {
                         checked: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.IsSticker)
                         onCheckedChanged: imagePack.setData(imagePack.index(currentImageIndex, 0), checked, SingleImagePackModel.IsSticker)
                         Layout.alignment: Qt.AlignRight

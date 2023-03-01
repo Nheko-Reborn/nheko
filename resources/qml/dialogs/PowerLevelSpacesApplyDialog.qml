@@ -58,7 +58,7 @@ ApplicationWindow {
                     color: Nheko.colors.text
                 }
 
-                ToggleButton {
+                Switch {
                     checked: editingModel.spaces.applyToChildren
                     Layout.alignment: Qt.AlignRight
                     onCheckedChanged: editingModel.spaces.applyToChildren = checked
@@ -70,7 +70,7 @@ ApplicationWindow {
                     color: Nheko.colors.text
                 }
 
-                ToggleButton {
+                Switch {
                     checked: editingModel.spaces.overwriteDiverged
                     Layout.alignment: Qt.AlignRight
                     onCheckedChanged: editingModel.spaces.overwriteDiverged = checked
@@ -122,7 +122,7 @@ ApplicationWindow {
                     }
                 }
 
-                ToggleButton {
+                Switch {
                     checked: model.applyPermissions
                     Layout.alignment: Qt.AlignRight
                     onCheckedChanged: model.applyPermissions = checked

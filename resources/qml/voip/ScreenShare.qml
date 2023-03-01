@@ -78,7 +78,7 @@ Popup {
                 text: qsTr("Include your camera picture-in-picture")
             }
 
-            ToggleButton {
+            Switch {
                 id: pipCheckBox
 
                 enabled: CallManager.cameras.length > 0
@@ -92,7 +92,7 @@ Popup {
                 ToolTip.visible: hovered
             }
 
-            ToggleButton {
+            Switch {
                 id: remoteVideoCheckBox
 
                 Layout.alignment: Qt.AlignRight
@@ -105,7 +105,7 @@ Popup {
                 text: qsTr("Hide mouse cursor")
             }
 
-            ToggleButton {
+            Switch {
                 id: hideCursorCheckBox
 
                 Layout.alignment: Qt.AlignRight

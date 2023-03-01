@@ -86,7 +86,7 @@ Rectangle {
 
                         DelegateChoice {
                             roleValue: UserSettingsModel.Toggle
-                            ToggleButton {
+                            Switch {
                                 checked: model.value
                                 onCheckedChanged: model.value = checked
                                 enabled: model.enabled

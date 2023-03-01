@@ -90,7 +90,7 @@ ApplicationWindow {
             ToolTip.text: qsTr("Public rooms can be joined by anyone; private rooms need explicit invites.")
             ToolTip.delay: Nheko.tooltipDelay
         }
-        ToggleButton {
+        Switch {
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
             id: isPublic
@@ -109,7 +109,7 @@ ApplicationWindow {
             ToolTip.text: qsTr("All invitees are given the same power level as the creator")
             ToolTip.delay: Nheko.tooltipDelay
         }
-        ToggleButton {
+        Switch {
             visible: !space
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
@@ -130,7 +130,7 @@ ApplicationWindow {
             ToolTip.text: qsTr("Caution: Encryption cannot be disabled")
             ToolTip.delay: Nheko.tooltipDelay
         }
-        ToggleButton {
+        Switch {
             visible: !space
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth

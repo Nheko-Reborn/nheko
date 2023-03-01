@@ -131,7 +131,7 @@ Item {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                 Layout.fillWidth: true
 
-                ToggleButton {
+                Switch {
                     id: storeSecretsOnline
 
                     checked: true
@@ -161,7 +161,7 @@ Item {
                 Layout.fillWidth: true
                 visible: storeSecretsOnline.checked
 
-                ToggleButton {
+                Switch {
                     id: usePassword
 
                     checked: false
@@ -197,7 +197,7 @@ Item {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
                 Layout.fillWidth: true
 
-                ToggleButton {
+                Switch {
                     id: useOnlineKeyBackup
 
                     checked: true
