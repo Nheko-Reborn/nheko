@@ -254,46 +254,47 @@ InputBar::updateTextContentProperties(const QString &t)
     // check for invalid commands
     auto commandName = getCommandAndArgs().first;
     static const QSet<QString> validCommands{QStringLiteral("me"),
-                                           QStringLiteral("react"),
-                                           QStringLiteral("join"),
-                                           QStringLiteral("knock"),
-                                           QStringLiteral("part"),
-                                           QStringLiteral("leave"),
-                                           QStringLiteral("invite"),
-                                           QStringLiteral("kick"),
-                                           QStringLiteral("ban"),
-                                           QStringLiteral("unban"),
-                                           QStringLiteral("redact"),
-                                           QStringLiteral("roomnick"),
-                                           QStringLiteral("shrug"),
-                                           QStringLiteral("fliptable"),
-                                           QStringLiteral("unfliptable"),
-                                           QStringLiteral("sovietflip"),
-                                           QStringLiteral("clear-timeline"),
-                                           QStringLiteral("reset-state"),
-                                           QStringLiteral("rotate-megolm-session"),
-                                           QStringLiteral("md"),
-                                           QStringLiteral("cmark"),
-                                           QStringLiteral("plain"),
-                                           QStringLiteral("rainbow"),
-                                           QStringLiteral("rainbowme"),
-                                           QStringLiteral("notice"),
-                                           QStringLiteral("rainbownotice"),
-                                           QStringLiteral("confetti"),
-                                           QStringLiteral("rainbowconfetti"),
-                                           QStringLiteral("goto"),
-                                           QStringLiteral("converttodm"),
-                                           QStringLiteral("converttoroom")};
-    bool hasInvalidCommand = !commandName.isNull() && '/' + commandName != text() && !validCommands.contains(commandName);
+                                             QStringLiteral("react"),
+                                             QStringLiteral("join"),
+                                             QStringLiteral("knock"),
+                                             QStringLiteral("part"),
+                                             QStringLiteral("leave"),
+                                             QStringLiteral("invite"),
+                                             QStringLiteral("kick"),
+                                             QStringLiteral("ban"),
+                                             QStringLiteral("unban"),
+                                             QStringLiteral("redact"),
+                                             QStringLiteral("roomnick"),
+                                             QStringLiteral("shrug"),
+                                             QStringLiteral("fliptable"),
+                                             QStringLiteral("unfliptable"),
+                                             QStringLiteral("sovietflip"),
+                                             QStringLiteral("clear-timeline"),
+                                             QStringLiteral("reset-state"),
+                                             QStringLiteral("rotate-megolm-session"),
+                                             QStringLiteral("md"),
+                                             QStringLiteral("cmark"),
+                                             QStringLiteral("plain"),
+                                             QStringLiteral("rainbow"),
+                                             QStringLiteral("rainbowme"),
+                                             QStringLiteral("notice"),
+                                             QStringLiteral("rainbownotice"),
+                                             QStringLiteral("confetti"),
+                                             QStringLiteral("rainbowconfetti"),
+                                             QStringLiteral("goto"),
+                                             QStringLiteral("converttodm"),
+                                             QStringLiteral("converttoroom")};
+    bool hasInvalidCommand =
+      !commandName.isNull() && '/' + commandName != text() && !validCommands.contains(commandName);
 
     bool signalsChanged{false};
     if (containsInvalidCommand_ != hasInvalidCommand) {
         containsInvalidCommand_ = hasInvalidCommand;
-        signalsChanged = true;
+        signalsChanged          = true;
     }
     if (currentCommand_ != commandName) {
         currentCommand_ = commandName;
-        signalsChanged = true;
+        signalsChanged  = true;
     }
     if (signalsChanged) {
         emit currentCommandChanged();
@@ -393,9 +394,8 @@ InputBar::send()
 
     if (auto [commandName, args] = getCommandAndArgs(); commandName.isEmpty())
         message(text());
-    else
-        if (!command(commandName, args))
-            message(text());
+    else if (!command(commandName, args))
+        message(text());
 
     if (!wasEdit) {
         history_.push_front(QLatin1String(""));
