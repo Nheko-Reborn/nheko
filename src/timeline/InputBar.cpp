@@ -253,50 +253,51 @@ InputBar::updateTextContentProperties(const QString &t)
 
     // check for invalid commands
     auto commandName = getCommandAndArgs().first;
-    bool hasInvalidCommand{};
-    if (!commandName.isNull() && '/' + commandName != text()) {
-        static const QStringList validCommands{QStringLiteral("me"),
-                                               QStringLiteral("react"),
-                                               QStringLiteral("join"),
-                                               QStringLiteral("knock"),
-                                               QStringLiteral("part"),
-                                               QStringLiteral("leave"),
-                                               QStringLiteral("invite"),
-                                               QStringLiteral("kick"),
-                                               QStringLiteral("ban"),
-                                               QStringLiteral("unban"),
-                                               QStringLiteral("redact"),
-                                               QStringLiteral("roomnick"),
-                                               QStringLiteral("shrug"),
-                                               QStringLiteral("fliptable"),
-                                               QStringLiteral("unfliptable"),
-                                               QStringLiteral("sovietflip"),
-                                               QStringLiteral("clear-timeline"),
-                                               QStringLiteral("reset-state"),
-                                               QStringLiteral("rotate-megolm-session"),
-                                               QStringLiteral("md"),
-                                               QStringLiteral("cmark"),
-                                               QStringLiteral("plain"),
-                                               QStringLiteral("rainbow"),
-                                               QStringLiteral("rainbowme"),
-                                               QStringLiteral("notice"),
-                                               QStringLiteral("rainbownotice"),
-                                               QStringLiteral("confetti"),
-                                               QStringLiteral("rainbowconfetti"),
-                                               QStringLiteral("goto"),
-                                               QStringLiteral("converttodm"),
-                                               QStringLiteral("converttoroom")};
-        hasInvalidCommand = !validCommands.contains(commandName);
-    } else
-        hasInvalidCommand = false;
+    static const QStringList validCommands{QStringLiteral("me"),
+                                           QStringLiteral("react"),
+                                           QStringLiteral("join"),
+                                           QStringLiteral("knock"),
+                                           QStringLiteral("part"),
+                                           QStringLiteral("leave"),
+                                           QStringLiteral("invite"),
+                                           QStringLiteral("kick"),
+                                           QStringLiteral("ban"),
+                                           QStringLiteral("unban"),
+                                           QStringLiteral("redact"),
+                                           QStringLiteral("roomnick"),
+                                           QStringLiteral("shrug"),
+                                           QStringLiteral("fliptable"),
+                                           QStringLiteral("unfliptable"),
+                                           QStringLiteral("sovietflip"),
+                                           QStringLiteral("clear-timeline"),
+                                           QStringLiteral("reset-state"),
+                                           QStringLiteral("rotate-megolm-session"),
+                                           QStringLiteral("md"),
+                                           QStringLiteral("cmark"),
+                                           QStringLiteral("plain"),
+                                           QStringLiteral("rainbow"),
+                                           QStringLiteral("rainbowme"),
+                                           QStringLiteral("notice"),
+                                           QStringLiteral("rainbownotice"),
+                                           QStringLiteral("confetti"),
+                                           QStringLiteral("rainbowconfetti"),
+                                           QStringLiteral("goto"),
+                                           QStringLiteral("converttodm"),
+                                           QStringLiteral("converttoroom")};
+    bool hasInvalidCommand = !commandName.isNull() && '/' + commandName != text() && !validCommands.contains(commandName);
 
+    bool signalsChanged{false};
     if (containsInvalidCommand_ != hasInvalidCommand) {
         containsInvalidCommand_ = hasInvalidCommand;
-        emit containsInvalidCommandChanged();
+        signalsChanged = true;
     }
     if (currentCommand_ != commandName) {
         currentCommand_ = commandName;
+        signalsChanged = true;
+    }
+    if (signalsChanged) {
         emit currentCommandChanged();
+        emit containsInvalidCommandChanged();
     }
 }
 
@@ -390,10 +391,11 @@ InputBar::send()
 
     auto wasEdit = !room->edit().isEmpty();
 
-    if (auto [commandName, args] = getCommandAndArgs(); commandName.isNull())
+    if (auto [commandName, args] = getCommandAndArgs(); commandName.isEmpty())
         message(text());
     else
-        command(commandName, args);
+        if (!command(commandName, args))
+            message(text());
 
     if (!wasEdit) {
         history_.push_front(QLatin1String(""));
@@ -758,16 +760,17 @@ InputBar::video(const QString &filename,
 QPair<QString, QString>
 InputBar::getCommandAndArgs() const
 {
-    if (!text().startsWith('/'))
-        return {{}, text()};
+    const auto currentText = text();
+    if (!currentText.startsWith('/'))
+        return {{}, currentText};
 
-    int command_end = text().indexOf(QRegularExpression(QStringLiteral("\\s")));
+    int command_end = currentText.indexOf(QRegularExpression(QStringLiteral("\\s")));
     if (command_end == -1)
-        command_end = text().size();
-    auto name = text().mid(1, command_end - 1);
-    auto args = text().mid(command_end + 1);
+        command_end = currentText.size();
+    auto name = currentText.mid(1, command_end - 1);
+    auto args = currentText.mid(command_end + 1);
     if (name.isEmpty() || name == QLatin1String("/")) {
-        return {{}, text()};
+        return {{}, currentText};
     } else {
         return {name, args};
     }
@@ -798,7 +801,7 @@ InputBar::sticker(CombinedImagePackModel *model, int row)
     room->sendMessageEvent(sticker, mtx::events::EventType::Sticker);
 }
 
-void
+bool
 InputBar::command(const QString &command, QString args)
 {
     if (command == QLatin1String("me")) {
@@ -886,16 +889,16 @@ InputBar::command(const QString &command, QString args)
         // 1 - Going directly to a given event ID
         if (args[0] == '$') {
             room->showEvent(args);
-            return;
+            return true;
         }
         // 2 - Going directly to a given message index
         if (args[0] >= '0' && args[0] <= '9') {
             room->showEvent(args);
-            return;
+            return true;
         }
         // 3 - Matrix URI handler, as if you clicked the URI
         if (ChatPage::instance()->handleMatrixUri(args)) {
-            return;
+            return true;
         }
         nhlog::net()->error("Could not resolve goto: {}", args.toStdString());
     } else if (command == QLatin1String("converttodm")) {
@@ -904,8 +907,10 @@ InputBar::command(const QString &command, QString args)
     } else if (command == QLatin1String("converttoroom")) {
         utils::removeDirectFromRoom(this->room->roomId());
     } else {
-        message("/" + command + " " + args);
+        return false;
     }
+
+    return true;
 }
 
 MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
