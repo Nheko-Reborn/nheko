@@ -206,7 +206,7 @@ Item {
         Shortcut {
             sequence: StandardKey.MoveToPreviousPage
             onActivated: {
-                chat.contentY = chat.contentY - chat.height / 2;
+                chat.contentY = chat.contentY - chat.height * 0.9;
                 chat.returnToBounds();
             }
         }
@@ -214,7 +214,7 @@ Item {
         Shortcut {
             sequence: StandardKey.MoveToNextPage
             onActivated: {
-                chat.contentY = chat.contentY + chat.height / 2;
+                chat.contentY = chat.contentY + chat.height * 0.9;
                 chat.returnToBounds();
             }
         }
