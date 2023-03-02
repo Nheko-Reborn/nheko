@@ -279,6 +279,13 @@ Item {
             onClicked: Rooms.declineInvite(roomPreview.roomid)
         }
 
+        FlatButton {
+            visible: !!room
+            Layout.alignment: Qt.AlignHCenter
+            text: qsTr("leave")
+            onClicked: TimelineManager.openLeaveRoomDialog(room.roomId)
+        }
+
         ScrollView {
             id: reasonField
             property bool showReason: false
