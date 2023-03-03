@@ -228,17 +228,17 @@
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation>确认注销</translation>
+        <translation>确认退出登录</translation>
     </message>
     <message>
         <location line="+102"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation>当前设备中的缓存比Nheko支持的版本更新，请更新Nheko或清理缓存。</translation>
+        <translation>当前设备中的缓存比 Nheko 支持的版本更新，请更新 Nheko 或清理缓存。</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Failed to open database, logging out!</source>
-        <translation>未能打开数据库，账户将登出！</translation>
+        <translation>未能打开数据库，账户将退出登录！</translation>
     </message>
     <message>
         <location line="+262"/>
@@ -248,7 +248,7 @@
     <message>
         <location line="+4"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation>你真的想请求加入 %1 吗？你可以选择提供一个理由让其他人接受你的加入请求：</translation>
+        <translation>你真的想请求加入 %1 吗？你可以选择提供理由让其他人接受你的加入请求：</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -331,14 +331,14 @@
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation>由于以下原因，Nheko希望将你返回到登录页面。
+        <translation>由于以下原因，Nheko 希望将你返回到登录页面。
 %1
-如果你认为这是一个错误，你可以关闭Nheko，以便可能恢复你的加密密钥。在你被返回到登录页面后，你可以用你的常用方法再次登录。</translation>
+如果你认为这是一个错误，你可以关闭 Nheko，以便可能恢复你的加密密钥。在你被返回到登录页面后，你可以用你的常用方法再次登录。</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation>迁移缓存到当前版本失败。这可能是由不同的原因导致的。请在https://github.com/Nheko-Reborn/nheko提交一个issue，并尝试在这期间使用旧版本。或者，你可以尝试手动删除缓存。</translation>
+        <translation>迁移缓存到当前版本失败。这可能是由不同的原因导致的。请在 https://github.com/Nheko-Reborn/nheko 提交一个 issue，并尝试在这期间使用旧版本。或者，你可以尝试手动删除缓存。</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -373,7 +373,7 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
         <translation>你未能加入 %1。你可以尝试请求加入，以便其他人可以邀请你进来。你想这样做吗？
-你可以选择提供一个理由让其他人接受你的加入请求：</translation>
+你可以选择提供理由让其他人接受你的加入请求：</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -398,12 +398,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+56"/>
         <source>Reason for the kick</source>
-        <translation>踢出原因</translation>
+        <translation>踢出理由</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation>输入踢出 %1 (%2) 的原因，如无原因请按回车：</translation>
+        <translation>输入踢出 %1 (%2) 的理由，如无理由请按回车：</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -413,12 +413,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+13"/>
         <source>Reason for the ban</source>
-        <translation>封禁原因</translation>
+        <translation>封禁理由</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation>输入封禁 %1 (%2) 的原因，如无原因请按回车：</translation>
+        <translation>输入封禁 %1 (%2) 的理由，如无请按回车：</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+38"/>
@@ -446,7 +446,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
-        <translation>/knock &lt;!聊天室id|#别名&gt; [原因]</translation>
+        <translation>/knock &lt;!聊天室id|#别名&gt; [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -466,17 +466,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/kick &lt;@userid&gt; [reason]</source>
-        <translation>/kick &lt;@用户id&gt; [原因]</translation>
+        <translation>/kick &lt;@用户id&gt; [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/ban &lt;@userid&gt; [reason]</source>
-        <translation>/ban &lt;@用户id&gt; [原因]</translation>
+        <translation>/ban &lt;@用户id&gt; [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unban &lt;@userid&gt; [reason]</source>
-        <translation>/unban &lt;@用户id&gt; [原因]</translation>
+        <translation>/unban &lt;@用户id&gt; [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -546,53 +546,53 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Send a message expressing an action.</source>
-        <translation>发送一条表达行动的信息。</translation>
+        <translation>发送一条表达行动的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation>当你回复一条信息时，发送 &lt;文本&gt; 作为回应。</translation>
+        <translation>当你回复一条消息时，发送 &lt;文本&gt; 作为回应。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Join a room. Reason is optional.</source>
-        <translation>加入一个聊天室。理由是可选的。</translation>
+        <translation>加入聊天室 (可选填理由) 。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation>请求加入一个聊天室。理由是可选的。</translation>
+        <translation>请求加入聊天室 (可选填理由) 。</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation>离开一个聊天室。理由是可选的。</translation>
+        <translation>离开聊天室 (可选填理由) 。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation>邀请一个用户进入当前聊天室。理由是可选的。</translation>
+        <translation>邀请一位用户进入当前聊天室 (可选填理由) 。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation>将一个用户踢出当前聊天室。原因是可选的。</translation>
+        <translation>将一位用户踢出当前聊天室 (可选填理由) 。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation>在当前聊天室封禁一个用户。原因是可选的。</translation>
+        <translation>在当前聊天室封禁一位用户 (可选填理由) 。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation>在当前聊天室解封一个用户。原因是可选的。</translation>
+        <translation>在当前聊天室解封一位用户 (可选填理由) 。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation>编辑一个事件或一个用户的所有本地缓存信息。</translation>
+        <translation>编辑事件或用户的所有本地缓存的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -637,17 +637,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation>发送一条markdown格式的消息（忽略全局设置）。</translation>
+        <translation>发送一条 markdown 格式的消息 (忽略全局设置) 。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation>发送一条commonmark格式的消息，与/md相比其禁用大多数扩展。</translation>
+        <translation>发送一条 commonmark 格式的消息，与 /md 相比其禁用大多数扩展。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation>发送一条未格式化的消息（忽略全局设置）。</translation>
+        <translation>发送一条未格式化的消息 (忽略全局设置) 。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -657,7 +657,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation>/me 以彩虹色发送。</translation>
+        <translation>以彩虹色发送 /me。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -818,7 +818,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation>此聊天室无法直接加入。但是，你可以请求加入此聊天室，聊天室成员可以接受或拒绝此加入请求。另外你可以在下面提供一个理由，让他们允许你加入：</translation>
+        <translation>此聊天室无法直接加入。但是，你可以请求加入此聊天室，聊天室成员可以接受或拒绝此加入请求。另外你可以在下面提供理由，让他们允许你加入：</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -1041,7 +1041,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation>如果使用不同的字体，显示的表情符号在不同的客户中可能看起来不同。同样，它们也可能被翻译成不同的语言。尽管如此，它们应该描述64种不同的物体或动物中的一种。例如，狮子和猫是不同的，但猫是一样的，即使一个客户端只显示猫脸，而另一个客户端显示整个猫身。</translation>
+        <translation>如果使用不同的字体，显示的表情符号在不同的客户中可能看起来不同。同样，它们也可能被翻译成不同的语言。尽管如此，它们应该描述 64 种不同的物体或动物中的一种。例如，狮子和猫是不同的，但猫是一样的，即使一个客户端只显示猫脸，而另一个客户端显示整个猫身。</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1084,7 +1084,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation>该加密密钥被重复使用！聊天时可能插入了假消息！</translation>
+        <translation>该加密密钥被重复使用！有人可能试图在此聊天中插入虚假的消息！</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1256,7 +1256,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation>图片（*.png *.webp *.gif *.jpg *.jpeg）</translation>
+        <translation>图片 (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1490,7 +1490,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>你的登录名。一个mxid应以@开头，后跟用户ID。在用户ID之后，你需要在一个 : 之后包含你的服务器名称。
+        <translation>你的登录名。一个 mxid 应以 @ 开头，后跟用户 ID。在用户 ID 之后，你需要在一个 : 之后包含你的服务器名称。
 如果你的服务器不支持 .well-known 查询，你也可以输入你的主服务器地址。
 例如。@user:server.my
 如果 Nheko 未能发现你的主服务器，它将显示一个字段，让你手动输入服务器。</translation>
@@ -1513,7 +1513,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation>此设备的名称，将在验证您的设备时向其他人显示。 如果未提供任何内容，则使用默认值。</translation>
+        <translation>此设备的名称，将在验证您的设备时向其他人显示。如果未提供任何内容，则使用默认值。</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1563,7 +1563,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+33"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation>没找到要求的终端。可能不是一个 Matrix 服务器。</translation>
+        <translation>没找到要求的终端。可能不是 Matrix 服务器。</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1573,12 +1573,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation>发生了一个未知错误。请确认服务器域名合法。</translation>
+        <translation>发生了未知错误。请确认服务器域名合法。</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本（v1.1 到 v1.5）。您无法登录。</translation>
+        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本 (v1.1 到 v1.5) 。您无法登录。</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1608,7 +1608,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>SSO LOGIN</source>
-        <translation>SSO登录</translation>
+        <translation>SSO 登录</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -1618,7 +1618,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+55"/>
         <source>SSO login failed</source>
-        <translation>SSO登录失败</translation>
+        <translation>SSO 登录失败</translation>
     </message>
 </context>
 <context>
@@ -1626,17 +1626,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+15"/>
         <source>Log out</source>
-        <translation>注销</translation>
+        <translation>退出登录</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation>正在进行通话中。是否注销？</translation>
+        <translation>正在进行通话中。是否退出登录？</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation>你确定要注销吗？</translation>
+        <translation>你确定要退出登录吗？</translation>
     </message>
 </context>
 <context>
@@ -1653,7 +1653,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+79"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation>此聊天室因以下原因被替换: %1</translation>
+        <translation>此聊天室由于以下原因被替换: %1</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1782,7 +1782,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+56"/>
         <source>Write a message...</source>
-        <translation>写一条消息…</translation>
+        <translation>写消息…</translation>
     </message>
     <message>
         <location line="+288"/>
@@ -1840,12 +1840,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+438"/>
         <source>Reason for removal</source>
-        <translation>移除原因</translation>
+        <translation>移除理由</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation>输入移除原因或无缘无故地回车：</translation>
+        <translation>输入移除理由或无缘无故地回车：</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1955,7 +1955,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation>为了允许其他用户查看你的哪些设备实际上属于你，你可以对其进行验证。这也允许密钥备份自动工作。立即验证未验证的设备？（请确保你有其中一个可用的设备。）</translation>
+        <translation>为了允许其他用户查看你的哪些设备实际上属于你，你可以对其进行验证。这也允许密钥备份自动工作。立即验证未验证的设备？ (请确保你有其中一个可用的设备)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2332,7 +2332,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Change the widgets (experimental)</source>
-        <translation>更改挂件（实验性）</translation>
+        <translation>更改挂件 (实验性)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2476,7 +2476,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation>写一条消息…</translation>
+        <translation>写消息…</translation>
     </message>
 </context>
 <context>
@@ -2576,7 +2576,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation>没有找到所需的端点。可能不是一个 Matrix 服务器。</translation>
+        <translation>没有找到所需的端点。可能不是 Matrix 服务器。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2591,7 +2591,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
-        <translation>所选服务器不支持此客户端理解的 Matrix 协议版本（v1.1 到 v1.5）。你不能注册。</translation>
+        <translation>所选服务器不支持此客户端理解的 Matrix 协议版本 (v1.1 到 v1.5) 。你不能注册。</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2748,7 +2748,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+81"/>
         <source>Logout</source>
-        <translation>注销</translation>
+        <translation>退出登录</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -2796,7 +2796,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation>创建一个新社区</translation>
+        <translation>创建新社区</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -3277,7 +3277,7 @@ It seems like you are new. Before you can securely encrypt your messages, we nee
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation>你似乎已为此帐户配置了加密。为了能够访问你的加密消息并使此设备显示为受信任，你可以验证现有设备或（如果有）输入你的恢复口令。请选择以下选项之一。
+        <translation>你似乎已为此帐户配置了加密。为了能够访问你的加密消息并使此设备显示为受信任，你可以验证现有设备或输入你的恢复口令 (如果有的话) 。请选择以下选项之一。
 如果选择验证，则需要另一台设备可用。如果你选择“输入密码”，你将需要你的恢复密钥或口令。如果点击取消，你可以选择稍后验证自己。</translation>
     </message>
     <message>
@@ -3321,7 +3321,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+156"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation>身份密钥已改变。这会破坏了E2EE，因此请注销。</translation>
+        <translation>身份密钥已改变。此操作破坏了 E2EE，因此请退出登录。</translation>
     </message>
 </context>
 <context>
@@ -3429,7 +3429,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+10"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation>验证成功！ 双方都验证了他们的设备！</translation>
+        <translation>验证成功！双方都验证了他们的设备！</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3579,7 +3579,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation>%1现在可以封禁聊天室成员。</translation>
+        <translation>%1 现在可以封禁聊天室成员。</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -3631,12 +3631,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation>％1 已将 ％2 降级为此聊天室的协管员。</translation>
+        <translation>%1 已将 %2 降级为此聊天室的协管员。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation>％1 已将 ％2 的权限等级从 ％3 改为 ％4。</translation>
+        <translation>%1 已将 %2 的权限等级从 %3 改为 %4。</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4117,7 +4117,7 @@ Reason: %4</source>
     <message>
         <location line="+56"/>
         <source>Sign out this device.</source>
-        <translation>注销此设备。</translation>
+        <translation>退出此设备。</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -4137,12 +4137,12 @@ Reason: %4</source>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+159"/>
         <source>Sign out device %1</source>
-        <translation>注销设备 %1</translation>
+        <translation>退出设备 %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation>你已注销此设备。</translation>
+        <translation>你已退出此设备。</translation>
     </message>
     <message>
         <location line="+222"/>
@@ -4319,7 +4319,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation>隐私屏幕超时（以秒为单位 [0 - 3600]）</translation>
+        <translation>隐私屏幕超时 (以秒为单位 [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4521,9 +4521,9 @@ Reason: %4</source>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation>设置窗口失去焦点后超时多久（以秒为单位）
+        <translation>设置窗口失去焦点后超时多久 (以秒为单位)
 会模糊屏幕。
-设置为 0 以在失去焦点后立即模糊。最大值为 1 小时（3600 秒）</translation>
+设置为 0 以在失去焦点后立即模糊。最大值为 1 小时 (3600 秒)</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4565,7 +4565,7 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+4"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
-        <translation>消息获得气泡背景。这也会触发一些布局变化 (WIP)。</translation>
+        <translation>消息获得气泡背景。这也会触发一些布局变化 (WIP) 。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4651,7 +4651,7 @@ This usually causes the application icon in the task bar to animate in some fash
     <message>
         <location line="+231"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation>设置时间线中消息的最大宽度（以像素为单位）。 当 Nheko 最大化时，这有助于提高宽屏上的可读性</translation>
+        <translation>设置时间线中消息的最大宽度 (以像素为单位) 。 当 Nheko 最大化时，这有助于提高宽屏上的可读性</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4665,14 +4665,14 @@ If this is off, the list of rooms will only be sorted by the timestamp of the la
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
         <translation>首先显示有新消息的聊天室。
 如果关闭，聊天室列表将只按聊天室中最后一条消息的时间戳排序。
-如果打开，有活动通知的聊天室（带数字的小圆圈）将排在最前面。你静音的聊天室仍将按时间戳排序，因为你似乎认为它们不如其他聊天室重要。</translation>
+如果打开，有活动通知的聊天室 (带数字的小圆圈) 将排在最前面。你静音的聊天室仍将按时间戳排序，因为你似乎认为它们不如其他聊天室重要。</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
-        <translation>显示你的信息是否已被阅读。
+        <translation>显示你的消息是否已被阅读。
 状态显示在时间戳旁边。
 警告：如果你的主服务器不支持此功能，你的聊天室将永远不会被标记为已读！</translation>
     </message>
@@ -4754,7 +4754,7 @@ be blurred.</source>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation>允许第三方插件和应用程序通过 D-Bus 加载你所在聊天室的信息。这可以有有用的应用，但也可能被用于邪恶的目的。启用时风险自负。
+        <translation>允许第三方插件和应用程序通过 D-Bus 加载你所在聊天室的信息。这或许有一些帮助，但也可能被恶意软件利用。启用时风险自负。
 
 这个设置将在重新启动时生效。</translation>
     </message>
@@ -4946,7 +4946,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation>打开 fallback ，按步骤操作，完成后确认。</translation>
+        <translation>打开回溯程序，按步骤操作，完成后确认。</translation>
     </message>
 </context>
 <context>
