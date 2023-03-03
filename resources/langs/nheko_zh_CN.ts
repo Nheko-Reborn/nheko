@@ -2796,7 +2796,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation>创建一个新社区</translation>
+        <translation>创建新社区</translation>
     </message>
     <message>
         <location line="+21"/>
