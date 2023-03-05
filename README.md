@@ -59,24 +59,16 @@ can be found in the [GitHub releases](https://github.com/Nheko-Reborn/nheko/rele
 #### Arch Linux
 
 ```bash
-pacaur -S nheko # nheko-git
-```
-
-Nheko requires a secret server to run, so you'll need to install and configure a service such as [KDE Wallet](https://wiki.archlinux.org/title/KDE_Wallet) or [GNOME Keyring](https://wiki.archlinux.org/title/GNOME/Keyring) if not provided by your desktop environment.
-
-Binary releases of the stable builds are available (using [Open Build Service](https://build.opensuse.org/)). To add this [unofficial repository](https://wiki.archlinux.org/title/Unofficial_user_repositories), execute the following block after reviewing the [PKGBUILD and service files](https://build.opensuse.org/package/show/home:digital_mystik:AUR/nheko):
-
-```
-curl -s 'https://download.opensuse.org/repositories/home:/digital_mystik:/AUR/Arch/x86_64/home_digital_mystik_AUR_Arch.key' | sudo pacman-key -a - && sudo pacman-key --lsign-key 4D41B287F3ABC4B8
-echo '
-[home_digital_mystik_AUR_Arch]
-Server = https://download.opensuse.org/repositories/home:/digital_mystik:/AUR/Arch/x86_64/' | sudo tee --append /etc/pacman.conf
 sudo pacman -Syu nheko
 ```
 
-This imports the repository's public PGP key and locally signs it, adds the pertinent entry to `/etc/pacman.conf`, and installs nheko after updating the databases/system; one can now treat nheko as a typical package. 
+The development version is available in the AUR:
 
-To undo these changes, delete the repository entry from `/etc/pacman.conf`, and remove the public signing key with `sudo pacman-key -d 4D41B287F3ABC4B8`.
+```bash
+pacaur -S nheko-git
+```
+
+Nheko requires a secret server to run, so you'll need to install and configure a service such as [KDE Wallet](https://wiki.archlinux.org/title/KDE_Wallet) or [GNOME Keyring](https://wiki.archlinux.org/title/GNOME/Keyring) if not provided by your desktop environment.
 
 #### Debian (10 and above) / Ubuntu (18.04 and above)
 
