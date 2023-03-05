@@ -62,6 +62,12 @@ can be found in the [GitHub releases](https://github.com/Nheko-Reborn/nheko/rele
 sudo pacman -Syu nheko
 ```
 
+The development version is available in the AUR:
+
+```bash
+pacaur -S nheko-git
+```
+
 Nheko requires a secret server to run, so you'll need to install and configure a service such as [KDE Wallet](https://wiki.archlinux.org/title/KDE_Wallet) or [GNOME Keyring](https://wiki.archlinux.org/title/GNOME/Keyring) if not provided by your desktop environment.
 
 #### Debian (10 and above) / Ubuntu (18.04 and above)
