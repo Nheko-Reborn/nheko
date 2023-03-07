@@ -281,6 +281,8 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("rainbownotice"),
                                              QStringLiteral("confetti"),
                                              QStringLiteral("rainbowconfetti"),
+                                             QStringLiteral("rain"),
+                                             QStringLiteral("rainbowrain"),
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
                                              QStringLiteral("converttoroom")};
@@ -624,6 +626,30 @@ InputBar::confetti(const QString &body, bool rainbowify)
 }
 
 void
+InputBar::rainfall(const QString &body, bool rainbowify)
+{
+    auto html = utils::markdownToHtml(body, rainbowify);
+
+    mtx::events::msg::Unknown rain;
+    rain.msgtype = "io.element.effect.rainfall";
+    rain.body    = body.trimmed().toStdString();
+
+    if (html != body.trimmed().toHtmlEscaped() &&
+        ChatPage::instance()->userSettings()->markdown()) {
+        nlohmann::json j;
+        j["formatted_body"] = html.toStdString();
+        j["format"]         = "org.matrix.custom.html";
+        rain.content        = j.dump();
+        // Remove markdown links by completer
+        rain.body = replaceMatrixToMarkdownLink(body.trimmed()).toStdString();
+    }
+
+    rain.relations = generateRelations();
+
+    room->sendMessageEvent(rain, mtx::events::EventType::RoomMessage);
+}
+
+void
 InputBar::image(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
@@ -890,6 +916,10 @@ InputBar::command(const QString &command, QString args)
         confetti(args, false);
     } else if (command == QLatin1String("rainbowconfetti")) {
         confetti(args, true);
+    } else if (command == QLatin1String("rainfall")) {
+        rainfall(args, false);
+    } else if (command == QLatin1String("rainbowrain")) {
+        rainfall(args, true);
     } else if (command == QLatin1String("goto")) {
         // Goto has three different modes:
         // 1 - Going directly to a given event ID

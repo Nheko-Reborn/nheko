@@ -364,7 +364,9 @@ Item {
         onClicked: Rooms.resetCurrentRoom()
     }
 
-    ParticleSystem { id: confettiParticleSystem 
+    ParticleSystem {
+        id: confettiParticleSystem
+
         Component.onCompleted: pause();
         paused: !shouldEffectsRun
     }
@@ -420,6 +422,42 @@ Item {
         angle: 90
     }
 
+    ParticleSystem {
+        id: rainfallParticleSystem
+
+        Component.onCompleted: pause();
+        paused: !shouldEffectsRun
+    }
+
+    Emitter {
+        id: rainfallEmitter
+
+        width: parent.width
+        enabled: false
+        anchors.horizontalCenter: parent.horizontalCenter
+        y: -60
+        emitRate: parent.width / 50
+        lifeSpan: 10000
+        system: rainfallParticleSystem
+        velocity: PointDirection {
+            x: 0
+            y: 300
+            xVariation: 0
+            yVariation: 75
+        }
+
+        ItemParticle {
+            system: rainfallParticleSystem
+            fade: false
+            delegate: Rectangle {
+                width: 2
+                height: 30 + 30 * Math.random()
+                radius: 2
+                color: "#0099ff"
+            }
+        }
+    }
+
     NhekoDropArea {
         anchors.fill: parent
         roomid: room ? room.roomId : ""
@@ -428,7 +466,7 @@ Item {
     Timer {
         id: effectsTimer
         onTriggered: shouldEffectsRun = false;
-        interval: confettiEmitter.lifeSpan
+        interval: Math.max(confettiEmitter.lifeSpan, rainfallEmitter.lifeSpan)
         repeat: false
         running: false
     }
@@ -471,7 +509,25 @@ Item {
             if (!Settings.fancyEffects)
                 return
 
-            effectsTimer.start();
+            effectsTimer.restart();
+        }
+
+        function onRainfall()
+        {
+            if (!Settings.fancyEffects)
+                return
+
+            shouldEffectsRun = true;
+            rainfallEmitter.pulse(parent.height * 7.5)
+            room.markSpecialEffectsDone()
+        }
+
+        function onRainfallDone()
+        {
+            if (!Settings.fancyEffects)
+                return
+
+            effectsTimer.restart();
         }
 
         target: room

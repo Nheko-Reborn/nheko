@@ -46,6 +46,8 @@ public:
         RainbowNotice,
         Confetti,
         RainbowConfetti,
+        Rainfall,
+        RainbowRain,
         Goto,
         ConvertToDm,
         ConvertToRoom,

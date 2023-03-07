@@ -1081,19 +1081,29 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Text>>(e)) {
             if (auto msg = QString::fromStdString(
                   std::get<RoomEvent<mtx::events::msg::Text>>(e).content.body);
-                msg.contains("🎉") || msg.contains("🎊"))
+                msg.contains("🎉") || msg.contains("🎊")) {
                 needsSpecialEffects_ = true;
+                specialEffects_.setFlag(Confetti);
+            }
         } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Unknown>>(e)) {
             if (auto msg = QString::fromStdString(
                   std::get<RoomEvent<mtx::events::msg::Unknown>>(e).content.body);
-                msg.contains("🎉") || msg.contains("🎊"))
+                msg.contains("🎉") || msg.contains("🎊")) {
                 needsSpecialEffects_ = true;
-        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Confetti>>(e))
+                specialEffects_.setFlag(Confetti);
+            } else if (std::get<RoomEvent<mtx::events::msg::Unknown>>(e).content.msgtype ==
+                       "io.element.effect.rainfall") {
+                needsSpecialEffects_ = true;
+                specialEffects_.setFlag(Rainfall);
+            }
+        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Confetti>>(e)) {
             needsSpecialEffects_ = true;
+            specialEffects_.setFlag(Confetti);
+        }
     }
 
     if (needsSpecialEffects_)
-        emit confetti();
+        triggerSpecialEffects();
 
     if (avatarChanged)
         emit roomAvatarUrlChanged();
@@ -2056,7 +2066,14 @@ TimelineModel::triggerSpecialEffects()
 {
     if (needsSpecialEffects_) {
         // Note (Loren): Without the timer, this apparently emits before QML is ready
-        QTimer::singleShot(1, this, [this] { emit confetti(); });
+        if (specialEffects_.testFlag(Confetti)) {
+            QTimer::singleShot(1, this, [this] { emit confetti(); });
+            specialEffects_.setFlag(Confetti, false);
+        }
+        if (specialEffects_.testFlag(Rainfall)) {
+            QTimer::singleShot(1, this, [this] { emit rainfall(); });
+            specialEffects_.setFlag(Rainfall, false);
+        }
         needsSpecialEffects_ = false;
     }
 }
@@ -2066,6 +2083,10 @@ TimelineModel::markSpecialEffectsDone()
 {
     needsSpecialEffects_ = false;
     emit confettiDone();
+    emit rainfallDone();
+
+    specialEffects_.setFlag(Confetti, false);
+    specialEffects_.setFlag(Rainfall, false);
 }
 
 QString
@@ -2928,7 +2949,8 @@ TimelineModel::setEdit(const QString &newEdit)
             if (msgType == mtx::events::MessageType::Text ||
                 msgType == mtx::events::MessageType::Notice ||
                 msgType == mtx::events::MessageType::Emote ||
-                msgType == mtx::events::MessageType::Confetti) {
+                msgType == mtx::events::MessageType::Confetti ||
+                msgType == mtx::events::MessageType::Unknown) {
                 auto relInfo  = relatedInfo(newEdit);
                 auto editText = relInfo.quoted_body;
 
@@ -2950,8 +2972,14 @@ TimelineModel::setEdit(const QString &newEdit)
                 if (msgType == mtx::events::MessageType::Emote)
                     input()->setText("/me " + editText);
                 else if (msgType == mtx::events::MessageType::Confetti)
-                    input()->setText("/confetti" + editText);
-                else
+                    input()->setText("/confetti " + editText);
+                else if (msgType == mtx::events::MessageType::Unknown) {
+                    if (auto u = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Unknown>>(&e);
+                        u && u->content.msgtype == "io.element.effect.rainfall")
+                        input()->setText("/rainfall " + editText);
+                    else
+                        input()->setText(editText);
+                } else
                     input()->setText(editText);
             } else {
                 input()->setText(QLatin1String(""));
