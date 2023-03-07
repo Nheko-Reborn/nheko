@@ -102,6 +102,7 @@ messageDescription(const QString &username = QString(),
     using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
     using Sticker    = mtx::events::Sticker;
     using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
+    using Unknown    = mtx::events::RoomEvent<mtx::events::msg::Unknown>;
     using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
     using Confetti   = mtx::events::RoomEvent<mtx::events::msg::Confetti>;
     using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
@@ -149,7 +150,7 @@ messageDescription(const QString &username = QString(),
             return QCoreApplication::translate("message-description sent:",
                                                "%1 sent a notification")
               .arg(username);
-    } else if (std::is_same<T, Text>::value) {
+    } else if (std::is_same<T, Text>::value || std::is_same<T, Unknown>::value) {
         if (isLocal)
             return QCoreApplication::translate("message-description sent:", "You: %1").arg(body);
         else

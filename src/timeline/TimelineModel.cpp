@@ -84,6 +84,11 @@ struct RoomEventType
         return qml_mtx_events::EventType::TextMessage;
     }
     constexpr qml_mtx_events::EventType
+    operator()(const mtx::events::Event<mtx::events::msg::Unknown> &)
+    {
+        return qml_mtx_events::EventType::UnknownMessage;
+    }
+    constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::Video> &)
     {
         return qml_mtx_events::EventType::VideoMessage;
@@ -203,7 +208,7 @@ qml_mtx_events::toRoomEventType(mtx::events::EventType e)
     case EventType::RoomMember:
         return qml_mtx_events::EventType::Member;
     case EventType::RoomMessage:
-        return qml_mtx_events::EventType::UnknownMessage;
+        return qml_mtx_events::EventType::UnknownEvent;
     case EventType::RoomName:
         return qml_mtx_events::EventType::Name;
     case EventType::RoomPowerLevels:
@@ -239,7 +244,7 @@ qml_mtx_events::toRoomEventType(mtx::events::EventType e)
     case EventType::Unsupported:
         return qml_mtx_events::EventType::Unsupported;
     default:
-        return qml_mtx_events::EventType::UnknownMessage;
+        return qml_mtx_events::EventType::UnknownEvent;
     }
 }
 
@@ -369,9 +374,10 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     case qml_mtx_events::LocationMessage:
     case qml_mtx_events::NoticeMessage:
     case qml_mtx_events::TextMessage:
+    case qml_mtx_events::UnknownMessage:
     case qml_mtx_events::VideoMessage:
     case qml_mtx_events::Redacted:
-    case qml_mtx_events::UnknownMessage:
+    case qml_mtx_events::UnknownEvent:
     case qml_mtx_events::KeyVerificationRequest:
     case qml_mtx_events::KeyVerificationStart:
     case qml_mtx_events::KeyVerificationMac:
@@ -1075,6 +1081,11 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
         } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Text>>(e)) {
             if (auto msg = QString::fromStdString(
                   std::get<RoomEvent<mtx::events::msg::Text>>(e).content.body);
+                msg.contains("🎉") || msg.contains("🎊"))
+                needsSpecialEffects_ = true;
+        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Unknown>>(e)) {
+            if (auto msg = QString::fromStdString(
+                  std::get<RoomEvent<mtx::events::msg::Unknown>>(e).content.body);
                 msg.contains("🎉") || msg.contains("🎊"))
                 needsSpecialEffects_ = true;
         } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Confetti>>(e))

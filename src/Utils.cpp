@@ -221,6 +221,7 @@ utils::getMessageDescription(const TimelineEvent &event,
     using Image      = mtx::events::RoomEvent<mtx::events::msg::Image>;
     using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
     using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
+    using Unknown    = mtx::events::RoomEvent<mtx::events::msg::Unknown>;
     using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
     using Confetti   = mtx::events::RoomEvent<mtx::events::msg::Confetti>;
     using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
@@ -241,6 +242,8 @@ utils::getMessageDescription(const TimelineEvent &event,
         return createDescriptionInfo<Notice>(event, localUser, displayName);
     } else if (std::holds_alternative<Text>(event)) {
         return createDescriptionInfo<Text>(event, localUser, displayName);
+    } else if (std::holds_alternative<Unknown>(event)) {
+        return createDescriptionInfo<Unknown>(event, localUser, displayName);
     } else if (std::holds_alternative<Video>(event)) {
         return createDescriptionInfo<Video>(event, localUser, displayName);
     } else if (std::holds_alternative<Confetti>(event)) {

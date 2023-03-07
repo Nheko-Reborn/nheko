@@ -51,7 +51,7 @@ Item {
         width: parent.width? parent.width: 0 // this should get rid of "cannot read property 'width' of null"
 
         DelegateChoice {
-            roleValue: MtxEvent.UnknownMessage
+            roleValue: MtxEvent.UnknownEvent
 
             Placeholder {
                 typeString: d.typeString
@@ -89,6 +89,20 @@ Item {
 
         DelegateChoice {
             roleValue: MtxEvent.TextMessage
+
+            TextMessage {
+                formatted: d.formattedBody
+                body: d.body
+                isOnlyEmoji: d.isOnlyEmoji
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                metadataWidth: d.metadataWidth
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.UnknownMessage
 
             TextMessage {
                 formatted: d.formattedBody
