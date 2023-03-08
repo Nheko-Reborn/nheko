@@ -252,7 +252,7 @@ InputBar::updateTextContentProperties(const QString &t)
     }
 
     // check for invalid commands
-    auto commandName = getCommandAndArgs().first;
+    auto commandName = getCommandAndArgs(t).first;
     static const QSet<QString> validCommands{QStringLiteral("me"),
                                              QStringLiteral("react"),
                                              QStringLiteral("join"),
@@ -284,13 +284,17 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
                                              QStringLiteral("converttoroom")};
-    bool hasInvalidCommand =
-      !commandName.isNull() && '/' + commandName != text() && !validCommands.contains(commandName);
+    bool hasInvalidCommand    = !commandName.isNull() && !validCommands.contains(commandName);
+    bool hasIncompleteCommand = hasInvalidCommand && '/' + commandName == t;
 
     bool signalsChanged{false};
     if (containsInvalidCommand_ != hasInvalidCommand) {
         containsInvalidCommand_ = hasInvalidCommand;
         signalsChanged          = true;
+    }
+    if (containsIncompleteCommand_ != hasIncompleteCommand) {
+        containsIncompleteCommand_ = hasIncompleteCommand;
+        signalsChanged             = true;
     }
     if (currentCommand_ != commandName) {
         currentCommand_ = commandName;
@@ -299,6 +303,7 @@ InputBar::updateTextContentProperties(const QString &t)
     if (signalsChanged) {
         emit currentCommandChanged();
         emit containsInvalidCommandChanged();
+        emit containsIncompleteCommandChanged();
     }
 }
 
@@ -392,9 +397,11 @@ InputBar::send()
 
     auto wasEdit = !room->edit().isEmpty();
 
-    if (auto [commandName, args] = getCommandAndArgs(); commandName.isEmpty())
-        message(text());
-    else if (!command(commandName, args))
+    auto [commandName, args] = getCommandAndArgs();
+    updateTextContentProperties(text());
+    if (containsIncompleteCommand_)
+        return;
+    if (commandName.isEmpty() || !command(commandName, args))
         message(text());
 
     if (!wasEdit) {
@@ -758,9 +765,8 @@ InputBar::video(const QString &filename,
 }
 
 QPair<QString, QString>
-InputBar::getCommandAndArgs() const
+InputBar::getCommandAndArgs(const QString &currentText) const
 {
-    const auto currentText = text();
     if (!currentText.startsWith('/'))
         return {{}, currentText};
 

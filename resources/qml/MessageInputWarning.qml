@@ -11,6 +11,7 @@ Rectangle {
     id: warningRoot
 
     required property string text
+    property color bubbleColor: Nheko.theme.error
 
     implicitHeight: visible ? warningDisplay.implicitHeight + 4 * Nheko.paddingSmall : 0
     height: implicitHeight
@@ -22,9 +23,9 @@ Rectangle {
 
         visible: warningRoot.visible
         // TODO: Qt.alpha() would make more sense but it wasn't working...
-        color: Qt.rgba(Nheko.theme.error.r, Nheko.theme.error.g, Nheko.theme.error.b, 0.3)
+        color: Qt.rgba(bubbleColor.r, bubbleColor.g, bubbleColor.b, 0.3)
         border.width: 1
-        border.color: Nheko.theme.error
+        border.color: bubbleColor
         radius: 3
         anchors.fill: parent
         anchors.margins: visible ? Nheko.paddingSmall : 0

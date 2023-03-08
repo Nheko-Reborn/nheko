@@ -160,7 +160,13 @@ Item {
 
         MessageInputWarning {
             text: qsTr("The command /%1 is not recognized and will be sent as part of your message").arg(room ? room.input.currentCommand : "")
-            visible: room ? room.input.containsInvalidCommand : false
+            visible: room ? room.input.containsInvalidCommand && !room.input.containsIncompleteCommand : false
+        }
+
+        MessageInputWarning {
+            text: qsTr("/%1 looks like an incomplete command. To send it anyway, add a space to the end of your message.").arg(room ? room.input.currentCommand : "")
+            visible: room ? room.input.containsIncompleteCommand : false
+            bubbleColor: Nheko.theme.orange
         }
 
         ReplyPopup {

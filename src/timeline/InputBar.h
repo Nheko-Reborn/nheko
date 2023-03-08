@@ -175,6 +175,8 @@ class InputBar final : public QObject
     Q_PROPERTY(bool containsAtRoom READ containsAtRoom NOTIFY containsAtRoomChanged)
     Q_PROPERTY(
       bool containsInvalidCommand READ containsInvalidCommand NOTIFY containsInvalidCommandChanged)
+    Q_PROPERTY(bool containsIncompleteCommand READ containsIncompleteCommand NOTIFY
+                 containsIncompleteCommandChanged)
     Q_PROPERTY(QString currentCommand READ currentCommand NOTIFY currentCommandChanged)
     Q_PROPERTY(QString text READ text NOTIFY textChanged)
     Q_PROPERTY(QVariantList uploads READ uploads NOTIFY uploadsChanged)
@@ -202,6 +204,7 @@ public slots:
 
     [[nodiscard]] bool containsAtRoom() const { return containsAtRoom_; }
     bool containsInvalidCommand() const { return containsInvalidCommand_; }
+    bool containsIncompleteCommand() const { return containsIncompleteCommand_; }
     QString currentCommand() const { return currentCommand_; }
 
     void send();
@@ -231,6 +234,7 @@ signals:
     void uploadingChanged(bool value);
     void containsAtRoomChanged();
     void containsInvalidCommandChanged();
+    void containsIncompleteCommandChanged();
     void currentCommandChanged();
     void uploadsChanged();
 
@@ -274,7 +278,8 @@ private:
                const QSize &thumbnailDimensions,
                const QString &blurhash);
 
-    QPair<QString, QString> getCommandAndArgs() const;
+    QPair<QString, QString> getCommandAndArgs() const { return getCommandAndArgs(text()); }
+    QPair<QString, QString> getCommandAndArgs(const QString &currentText) const;
     mtx::common::Relations generateRelations() const;
 
     void startUploadFromPath(const QString &path);
@@ -296,9 +301,10 @@ private:
     std::deque<QString> history_;
     std::size_t history_index_ = 0;
     int selectionStart = 0, selectionEnd = 0, cursorPosition = 0;
-    bool uploading_              = false;
-    bool containsAtRoom_         = false;
-    bool containsInvalidCommand_ = false;
+    bool uploading_                 = false;
+    bool containsAtRoom_            = false;
+    bool containsInvalidCommand_    = false;
+    bool containsIncompleteCommand_ = false;
     QString currentCommand_;
 
     using UploadHandle = std::unique_ptr<MediaUpload, DeleteLaterDeleter>;
