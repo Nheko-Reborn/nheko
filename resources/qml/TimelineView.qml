@@ -252,7 +252,7 @@ Item {
             Layout.rightMargin: Nheko.paddingLarge
 
             TextArea {
-                text: TimelineManager.escapeEmoji(preview.roomTopic)
+                text: preview.roomName != "" ? TimelineManager.escapeEmoji(preview.roomTopic) : qsTr("This room is possibly inaccessible. If this room is private, you should remove it from the child list of this space.")
                 wrapMode: TextEdit.WordWrap
                 textFormat: TextEdit.RichText
                 readOnly: true

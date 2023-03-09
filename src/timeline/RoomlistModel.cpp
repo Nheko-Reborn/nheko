@@ -222,7 +222,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             case Roles::RoomName:
                 return tr("No preview available");
             case Roles::LastMessage:
-                return QString();
+                return tr("This room is possibly inaccessible");
             case Roles::Time:
                 return QString();
             case Roles::Timestamp:
