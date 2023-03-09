@@ -1100,6 +1100,15 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                       .toBool();
         }
 
+        // If it is a preview but it can't be fetched, it is probably an inaccessible private room.
+        // Hide it if the user isn't an admin.
+        auto index = sourceModel()->index(sourceRow, 0);
+        if (sourceModel()->data(index, RoomlistModel::IsPreview).toBool() &&
+            !sourceModel()->data(index, RoomlistModel::IsPreviewFetched).toBool() &&
+            !Permissions(filterStr).canChange(qml_mtx_events::SpaceChild)) {
+            return false;
+        }
+
         return true;
     } else {
         return true;
