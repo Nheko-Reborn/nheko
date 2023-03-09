@@ -1122,14 +1122,25 @@ isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallSelectAnswer> &)
 
 // Workaround. We also want to see a room at the top, if we just joined it
 auto
-isYourJoin(const mtx::events::StateEvent<mtx::events::state::Member> &e)
+isYourJoin(const mtx::events::StateEvent<mtx::events::state::Member> &e, EventStore &events)
 {
-    return e.content.membership == mtx::events::state::Membership::Join &&
-           e.state_key == http::client()->user_id().to_string();
+    if (e.content.membership == mtx::events::state::Membership::Join &&
+        e.state_key == http::client()->user_id().to_string() &&
+        !e.unsigned_data.replaces_state.empty()) {
+        auto tempPrevEvent = events.get(e.unsigned_data.replaces_state, e.event_id);
+        if (tempPrevEvent) {
+            if (auto prevEvent =
+                  std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(tempPrevEvent)) {
+                if (prevEvent->content.membership != mtx::events::state::Membership::Join)
+                    return true;
+            }
+        }
+    }
+    return false;
 }
 template<typename T>
 auto
-isYourJoin(const mtx::events::Event<T> &)
+isYourJoin(const mtx::events::Event<T> &, EventStore &)
 {
     return false;
 }
@@ -1153,7 +1164,7 @@ TimelineModel::updateLastMessage()
         if (!event)
             continue;
 
-        if (std::visit([](const auto &e) -> bool { return isYourJoin(e); }, *event)) {
+        if (std::visit([this](const auto &e) -> bool { return isYourJoin(e, events); }, *event)) {
             auto time   = mtx::accessors::origin_server_ts(*event);
             uint64_t ts = time.toMSecsSinceEpoch();
             auto description =
