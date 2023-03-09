@@ -268,8 +268,6 @@ Pane {
             var component = Qt.createComponent("qrc:/qml/dialogs/InviteDialog.qml")
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
-                    "roomId": Rooms.currentRoom.roomId,
-                    "plainRoomName": Rooms.currentRoom.plainRoomName,
                     "invitees": invitees
                 });
                 dialog.show();

@@ -180,7 +180,7 @@ TimelineViewManager::openRoomSettings(QString room_id)
 void
 TimelineViewManager::openInviteUsers(QString roomId)
 {
-    InviteesModel *model = new InviteesModel{};
+    InviteesModel *model = new InviteesModel{rooms_->getRoomById(roomId).data()};
     connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
         emit inviteUsers(roomId, model->mxids());
     });

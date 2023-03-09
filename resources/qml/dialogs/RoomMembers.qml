@@ -146,12 +146,14 @@ ApplicationWindow {
 
                         ColumnLayout {
                             spacing: Nheko.paddingSmall
+                            Layout.fillWidth: true
 
                             ElidedLabel {
                                 fullText: model.displayName
                                 color: TimelineManager.userColor(model ? model.mxid : "", del.background.color)
                                 font.pixelSize: fontMetrics.font.pixelSize
                                 elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
+                                Layout.fillWidth: true
                             }
 
                             ElidedLabel {
@@ -159,12 +161,9 @@ ApplicationWindow {
                                 color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
                                 font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
                                 elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
+                                Layout.fillWidth: true
                             }
 
-                        }
-
-                        Item {
-                            Layout.fillWidth: true
                         }
 
                         Image {

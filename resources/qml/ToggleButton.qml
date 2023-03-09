@@ -25,7 +25,7 @@ Switch {
             width: parent.width - height
             x: radius
             y: parent.height / 2 - height / 2
-            color: toggleButton.checked ? "skyblue" : "grey"
+            color: toggleButton.checked ? Nheko.colors.highlight : "grey"
             border.color: "#cccccc"
         }
 

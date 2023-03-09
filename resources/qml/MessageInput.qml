@@ -4,6 +4,7 @@
 
 import "./emoji"
 import "./voip"
+import "./ui"
 import QtQuick 2.12
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -90,8 +91,9 @@ Rectangle {
                 color: Nheko.colors.window
                 visible: room && room.input.uploading
 
-                NhekoBusyIndicator {
-                    anchors.fill: parent
+                Spinner {
+                    anchors.centerIn: parent
+                    height: parent.height / 2
                     running: parent.visible
                 }
 
