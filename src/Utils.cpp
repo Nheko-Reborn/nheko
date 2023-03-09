@@ -141,11 +141,9 @@ utils::replaceEmoji(const QString &body)
         if (!insideTag && utils::codepointIsEmoji(code)) {
             if (!insideFontBlock) {
                 fmtBody += QStringLiteral("<font face=\"") % UserSettings::instance()->emojiFont() %
-                           QStringLiteral("\"") %
                            (UserSettings::instance()->enlargeEmojiOnlyMessages()
-                              ? QStringLiteral(" size=\"4\"")
-                              : QString{}) %
-                           QStringLiteral(">");
+                              ? QStringLiteral("\" size=\"4\">")
+                              : QStringLiteral("\">"));
                 insideFontBlock = true;
             } else if (code == 0xfe0f) {
                 // BUG(Nico):
