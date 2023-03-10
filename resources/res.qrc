@@ -122,7 +122,7 @@
         <file>qml/ForwardCompleter.qml</file>
         <file>qml/SelfVerificationCheck.qml</file>
         <file>qml/TypingIndicator.qml</file>
-        <file>qml/NotificationWarning.qml</file>
+        <file>qml/MessageInputWarning.qml</file>
         <file>qml/components/AdaptiveLayout.qml</file>
         <file>qml/components/AdaptiveLayoutElement.qml</file>
         <file>qml/components/AvatarListTile.qml</file>

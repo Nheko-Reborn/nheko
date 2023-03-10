@@ -14,6 +14,8 @@ import im.nheko 1.0
 Rectangle {
     id: inputBar
 
+    readonly property string text: messageInput.text
+
     color: Nheko.colors.window
     Layout.fillWidth: true
     Layout.preferredHeight: row.implicitHeight
