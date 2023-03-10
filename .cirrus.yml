@@ -5,6 +5,9 @@ task:
   environment:
     GITLAB_TRIGGER_TOKEN: ENCRYPTED[!5fb4bbdecbde3b2c766ac7383dca573cd5ec8b815c5ac9bede0cadfe9ad70ecd3e64b1728f7840da087099f3fc1fd4f7!]
   homebrew_script:
+    # The following update-reset is a workaround for this issue: https://github.com/Homebrew/homebrew-bundle/issues/1179
+    - brew update-reset
+    - unset HOMEBREW_NO_AUTO_UPDATE
     - brew bundle --file .ci/macos/Brewfile
   build_script:
     - export PATH="$(brew --prefix qt5)/bin/:${PATH}"
