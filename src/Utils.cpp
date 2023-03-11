@@ -21,6 +21,7 @@
 
 #include <array>
 #include <cmath>
+#include <unordered_set>
 #include <variant>
 
 #include <cmark.h>
@@ -1263,30 +1264,87 @@ utils::roomVias(const std::string &roomid)
 {
     std::vector<std::string> vias;
 
+    // for joined rooms
     {
-        auto members = cache::getMembers(roomid, 0, 100);
+        // see https://spec.matrix.org/v1.6/appendices/#routing for the algorithm
+
+        auto members = cache::roomMembers(roomid);
         if (!members.empty()) {
-            vias.push_back(http::client()->user_id().hostname());
+            auto powerlevels =
+              cache::client()->getStateEvent<mtx::events::state::PowerLevels>(roomid).value_or(
+                mtx::events::StateEvent<mtx::events::state::PowerLevels>{});
+
+            std::unordered_set<std::string> users_with_high_pl;
+            std::set<std::string> users_with_high_pl_in_room;
+            // we should pick PL > 50, but imo that is broken, so we just pick users who have admins
+            // perm
+            for (const auto &user : powerlevels.content.users) {
+                if (user.second >= powerlevels.content.events_default &&
+                    user.second >= powerlevels.content.state_default) {
+                    users_with_high_pl.insert(user.first);
+                }
+            }
+
+            std::unordered_map<std::string, std::size_t> usercount_by_server;
             for (const auto &m : members) {
-                if (vias.size() >= 4)
+                auto user_id = mtx::identifiers::parse<mtx::identifiers::User>(m);
+                usercount_by_server[user_id.hostname()] += 1;
+
+                if (users_with_high_pl.count(m))
+                    users_with_high_pl_in_room.insert(m);
+            }
+
+            // TODO(Nico): remove acled servers
+
+            // add the highest powerlevel user
+            auto max_pl_user = std::max_element(
+              users_with_high_pl_in_room.begin(),
+              users_with_high_pl_in_room.end(),
+              [&pl_content = powerlevels.content](const std::string &a, const std::string &b) {
+                  return pl_content.user_level(a) < pl_content.user_level(b);
+              });
+            if (max_pl_user != users_with_high_pl_in_room.end()) {
+                auto host =
+                  mtx::identifiers::parse<mtx::identifiers::User>(*max_pl_user).hostname();
+                vias.push_back(host);
+                usercount_by_server.erase(host);
+            }
+
+            // add up to 3 users, by usercount size from that server
+            std::vector<std::pair<std::size_t, std::string>> servers_sorted_by_usercount;
+            servers_sorted_by_usercount.reserve(usercount_by_server.size());
+            for (const auto &[server, count] : usercount_by_server)
+                servers_sorted_by_usercount.emplace_back(count, server);
+
+            std::sort(servers_sorted_by_usercount.begin(),
+                      servers_sorted_by_usercount.end(),
+                      [](const auto &a, const auto &b) {
+                          if (a.first == b.first)
+                              // same pl, sort lex smaller server first
+                              return a.second < b.second;
+
+                          // sort high user count first
+                          return a.first > b.first;
+                      });
+
+            for (const auto &server : servers_sorted_by_usercount) {
+                if (vias.size() >= 3)
                     break;
 
-                auto user_id =
-                  mtx::identifiers::parse<mtx::identifiers::User>(m.user_id.toStdString());
-
-                auto server = user_id.hostname();
-                if (std::find(begin(vias), end(vias), server) == vias.end())
-                    vias.push_back(server);
+                vias.push_back(server.second);
             }
+
+            return vias;
         }
     }
 
-    if (vias.empty()) {
+    // for invites
+    {
         auto members = cache::getMembersFromInvite(roomid, 0, 100);
         if (!members.empty()) {
             vias.push_back(http::client()->user_id().hostname());
             for (const auto &m : members) {
-                if (vias.size() >= 4)
+                if (vias.size() >= 3)
                     break;
 
                 auto user_id =
@@ -1296,24 +1354,22 @@ utils::roomVias(const std::string &roomid)
                 if (std::find(begin(vias), end(vias), server) == vias.end())
                     vias.push_back(server);
             }
+
+            return vias;
         }
     }
 
-    if (vias.empty()) {
-        auto parents = cache::client()->getParentRoomIds(roomid);
-        for (const auto &p : parents) {
-            auto child =
-              cache::client()->getStateEvent<mtx::events::state::space::Child>(p, roomid);
-            if (child && child->content.via)
-                vias.insert(vias.end(), child->content.via->begin(), child->content.via->end());
-        }
-
-        std::sort(begin(vias), end(vias));
-        auto last = std::unique(begin(vias), end(vias));
-        vias.erase(last, end(vias));
-
-        // if (vias.size()> 3)
-        //     vias.erase(begin(vias)+3, end(vias));
+    // for space previews
+    auto parents = cache::client()->getParentRoomIds(roomid);
+    for (const auto &p : parents) {
+        auto child = cache::client()->getStateEvent<mtx::events::state::space::Child>(p, roomid);
+        if (child && child->content.via)
+            vias.insert(vias.end(), child->content.via->begin(), child->content.via->end());
     }
+
+    std::sort(begin(vias), end(vias));
+    auto last = std::unique(begin(vias), end(vias));
+    vias.erase(last, end(vias));
+
     return vias;
 }
