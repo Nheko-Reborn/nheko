@@ -73,6 +73,7 @@ if (APPLE OR WIN32)
 endif()
 option(VOIP "Whether to enable voip support. Disable this, if you don't have gstreamer." ${VOIP_DEFAULT})
 cmake_dependent_option(SCREENSHARE_X11 "Whether to enable screenshare support on X11." ON "VOIP" OFF)
+cmake_dependent_option(SCREENSHARE_XDP "Whether to enable screenshare support using xdg-desktop-portal." ON "VOIP" OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
@@ -414,6 +415,9 @@ set(SRC_FILES
 	src/voip/CallDevices.h
 	src/voip/CallManager.cpp
 	src/voip/CallManager.h
+	src/voip/ScreenCastPortal.cpp
+	src/voip/ScreenCastPortal.h
+	src/voip/WebRTCSession.h
 	src/voip/WebRTCSession.cpp
 	src/voip/WebRTCSession.h
 

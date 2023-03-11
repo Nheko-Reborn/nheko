@@ -14,7 +14,14 @@ Popup {
     anchors.centerIn: parent;
 
     Component.onCompleted: {
+        if (CallManager.screenShareX11Available)
+            CallManager.setScreenShareType(ScreenShareType.X11);
+        else
+            CallManager.setScreenShareType(ScreenShareType.XDP);
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
+    }
+    Component.onDestruction: {
+        CallManager.closeScreenShare();
     }
     palette: Nheko.colors
 
@@ -35,16 +42,63 @@ Popup {
             Layout.bottomMargin: 8
 
             Label {
+            Layout.alignment: Qt.AlignLeft
+            text: qsTr("Method:")
+            color: Nheko.colors.windowText
+            }
+
+            RadioButton {
+            id: screenshare_X11
+            text: qsTr("X11");
+            visible: CallManager.screenShareX11Available
+            checked: CallManager.screenShareX11Available
+            onToggled: {
+                if (screenshare_X11.checked)
+                    CallManager.setScreenShareType(ScreenShareType.X11);
+                else
+                    CallManager.setScreenShareType(ScreenShareType.XDP);
+                }
+            }
+            RadioButton {
+            id: screenshare_XDP
+            text: qsTr("xdg-desktop-portal");
+            checked: !CallManager.screenShareX11Available
+            onToggled: {
+                if (screenshare_XDP.checked)
+                    CallManager.setScreenShareType(ScreenShareType.XDP);
+                else
+                    CallManager.setScreenShareType(ScreenShareType.X11);
+                }
+            }
+        }
+
+        RowLayout {
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
+            Layout.bottomMargin: 8
+
+            Label {
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Window:")
                 color: Nheko.colors.windowText
             }
 
             ComboBox {
+                visible: screenshare_X11.checked
                 id: windowCombo
 
                 Layout.fillWidth: true
                 model: CallManager.windowList()
+            }
+
+            Button {
+                visible: screenshare_XDP.checked
+                highlighted: !CallManager.screenShareReady
+                text: qsTr("Request screencast")
+                onClicked: {
+                  Settings.screenShareHideCursor = hideCursorCheckBox.checked;
+                  CallManager.setupScreenShareXDP();
+                }
             }
 
         }
@@ -122,6 +176,7 @@ Popup {
             }
 
             Button {
+                visible: CallManager.screenShareReady
                 text: qsTr("Share")
                 icon.source: "qrc:/icons/icons/ui/screen-share.svg"
 
@@ -137,6 +192,7 @@ Popup {
             }
 
             Button {
+                visible: CallManager.screenShareReady
                 text: qsTr("Preview")
                 onClicked: {
                     CallManager.previewWindow(windowCombo.currentIndex);
