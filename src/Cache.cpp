@@ -37,7 +37,7 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION{"2022.11.06"};
+static const std::string CURRENT_CACHE_FORMAT_VERSION{"2023.03.12"};
 
 //! Keys used for the DB
 static const std::string_view NEXT_BATCH_KEY("next_batch");
@@ -1513,6 +1513,64 @@ Cache::runMigrations()
                QCoreApplication::instance()->processEvents(QEventLoop::AllEvents, 100);
            }
 
+           return true;
+       }},
+      {"2023.03.12",
+       [this]() {
+           try {
+               auto txn      = lmdb::txn::begin(env_, nullptr);
+               auto room_ids = getRoomIds(txn);
+
+               for (const auto &room_id : room_ids) {
+                   try {
+                       auto oldStateskeyDb =
+                         lmdb::dbi::open(txn,
+                                         std::string(room_id + "/state_by_key").c_str(),
+                                         MDB_CREATE | MDB_DUPSORT);
+                       lmdb::dbi_set_dupsort(
+                         txn, oldStateskeyDb, +[](const MDB_val *a, const MDB_val *b) {
+                             auto get_skey = [](const MDB_val *v) {
+                                 return nlohmann::json::parse(
+                                          std::string_view(static_cast<const char *>(v->mv_data),
+                                                           v->mv_size))
+                                   .value("key", "");
+                             };
+
+                             return get_skey(a).compare(get_skey(b));
+                         });
+                       auto newStateskeyDb = getStatesKeyDb(txn, room_id);
+
+                       // convert the dupsort format
+                       {
+                           auto cursor = lmdb::cursor::open(txn, oldStateskeyDb);
+                           std::string_view ev_type, data;
+                           bool start = true;
+                           while (cursor.get(ev_type, data, start ? MDB_FIRST : MDB_NEXT)) {
+                               start = false;
+
+                               auto j =
+                                 nlohmann::json::parse(std::string_view(data.data(), data.size()));
+
+                               newStateskeyDb.put(
+                                 txn, ev_type, j.value("key", "") + '\0' + j.value("id", ""));
+                           }
+                       }
+
+                       // delete old db
+                       lmdb::dbi_drop(txn, oldStateskeyDb, true);
+                   } catch (std::exception &e) {
+                       nhlog::db()->error("While migrating state events from {}, ignoring error {}",
+                                          room_id,
+                                          e.what());
+                   }
+               }
+               txn.commit();
+           } catch (const lmdb::error &) {
+               nhlog::db()->critical("Failed to convert states key database in migration!");
+               return false;
+           }
+
+           nhlog::db()->info("Successfully updated states key database format.");
            return true;
        }},
     };
