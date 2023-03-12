@@ -821,7 +821,7 @@ Item {
         width: 0
         height: width
         radius: width/2
-        onClicked: chat.positionViewAtBeginning();
+        onClicked: function() { chat.positionViewAtBeginning(); TimelineManager.focusMessageInput(); }
         flat: true
         hoverEnabled: true
 
