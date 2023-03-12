@@ -1273,6 +1273,51 @@ utils::roomVias(const std::string &roomid)
             auto powerlevels =
               cache::client()->getStateEvent<mtx::events::state::PowerLevels>(roomid).value_or(
                 mtx::events::StateEvent<mtx::events::state::PowerLevels>{});
+            auto acls = cache::client()->getStateEvent<mtx::events::state::ServerAcl>(roomid);
+
+            std::vector<QRegularExpression> allowedServers;
+            std::vector<QRegularExpression> deniedServers;
+
+            if (acls) {
+                auto globToRegexp = [](const std::string &globExp) {
+                    auto rawReg = QRegularExpression::escape(QString::fromStdString(globExp))
+                                    .replace("\\*", ".*")
+                                    .replace("\\?", ".");
+                    return QRegularExpression(QRegularExpression::anchoredPattern(rawReg),
+                                              QRegularExpression::DotMatchesEverythingOption |
+                                                QRegularExpression::DontCaptureOption);
+                };
+
+                allowedServers.reserve(acls->content.allow.size());
+                for (const auto &s : acls->content.allow)
+                    allowedServers.push_back(globToRegexp(s));
+                deniedServers.reserve(acls->content.deny.size());
+                for (const auto &s : acls->content.deny)
+                    allowedServers.push_back(globToRegexp(s));
+
+                nhlog::ui()->critical("ACL: {}", nlohmann::json(acls->content).dump(2));
+            }
+
+            auto isHostAllowed = [&acls, &allowedServers, &deniedServers](const std::string &host) {
+                if (!acls)
+                    return true;
+
+                auto url = QUrl::fromEncoded(
+                  "https://" + QByteArray::fromRawData(host.data(), host.size()), QUrl::StrictMode);
+                if (url.hasQuery() || url.hasFragment())
+                    return false;
+
+                auto hostname = url.host();
+
+                for (const auto &d : deniedServers)
+                    if (d.match(hostname).hasMatch())
+                        return false;
+                for (const auto &a : allowedServers)
+                    if (a.match(hostname).hasMatch())
+                        return true;
+
+                return false;
+            };
 
             std::unordered_set<std::string> users_with_high_pl;
             std::set<std::string> users_with_high_pl_in_room;
@@ -1281,7 +1326,10 @@ utils::roomVias(const std::string &roomid)
             for (const auto &user : powerlevels.content.users) {
                 if (user.second >= powerlevels.content.events_default &&
                     user.second >= powerlevels.content.state_default) {
-                    users_with_high_pl.insert(user.first);
+                    auto host =
+                      mtx::identifiers::parse<mtx::identifiers::User>(user.first).hostname();
+                    if (isHostAllowed(host))
+                        users_with_high_pl.insert(user.first);
                 }
             }
 
@@ -1294,7 +1342,9 @@ utils::roomVias(const std::string &roomid)
                     users_with_high_pl_in_room.insert(m);
             }
 
-            // TODO(Nico): remove acled servers
+            std::erase_if(usercount_by_server, [&isHostAllowed](const auto &item) {
+                return !isHostAllowed(item.first);
+            });
 
             // add the highest powerlevel user
             auto max_pl_user = std::max_element(
