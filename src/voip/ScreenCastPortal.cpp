@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #ifdef GSTREAMER_AVAILABLE
 
 #include "ScreenCastPortal.h"
