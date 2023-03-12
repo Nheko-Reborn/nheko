@@ -953,11 +953,15 @@ TimelineModel::syncState(const mtx::responses::State &s)
 {
     using namespace mtx::events;
 
+    bool avatarChanged      = false;
+    bool nameChanged        = false;
+    bool memberCountChanged = false;
+
     for (const auto &e : s.events) {
         if (std::holds_alternative<StateEvent<state::Avatar>>(e))
-            emit roomAvatarUrlChanged();
+            avatarChanged = true;
         else if (std::holds_alternative<StateEvent<state::Name>>(e))
-            emit roomNameChanged();
+            nameChanged = true;
         else if (std::holds_alternative<StateEvent<state::Topic>>(e))
             emit roomTopicChanged();
         else if (std::holds_alternative<StateEvent<state::PinnedEvents>>(e))
@@ -968,20 +972,29 @@ TimelineModel::syncState(const mtx::responses::State &s)
             permissions_.invalidate();
             emit permissionsChanged();
         } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
-            emit roomAvatarUrlChanged();
-            emit roomNameChanged();
-            emit roomMemberCountChanged();
+            avatarChanged      = true;
+            nameChanged        = true;
+            memberCountChanged = true;
 
-            if (roomMemberCount() <= 2) {
-                emit isDirectChanged();
-                emit directChatOtherUserIdChanged();
-            }
         } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
             this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
             emit encryptionChanged();
         } else if (std::holds_alternative<StateEvent<state::space::Parent>>(e)) {
             this->parentChecked = false;
             emit parentSpaceChanged();
+        }
+    }
+
+    if (avatarChanged)
+        emit roomAvatarUrlChanged();
+    if (nameChanged)
+        emit roomNameChanged();
+
+    if (memberCountChanged) {
+        emit roomMemberCountChanged();
+        if (roomMemberCount() <= 2) {
+            emit isDirectChanged();
+            emit directChatOtherUserIdChanged();
         }
     }
 }
@@ -998,6 +1011,10 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
     events.handleSync(timeline);
 
     using namespace mtx::events;
+
+    bool avatarChanged      = false;
+    bool nameChanged        = false;
+    bool memberCountChanged = false;
 
     for (auto e : timeline.events) {
         if (auto encryptedEvent = std::get_if<EncryptedEvent<msg::Encrypted>>(&e)) {
@@ -1033,9 +1050,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
               },
               e);
         else if (std::holds_alternative<StateEvent<state::Avatar>>(e))
-            emit roomAvatarUrlChanged();
+            avatarChanged = true;
         else if (std::holds_alternative<StateEvent<state::Name>>(e))
-            emit roomNameChanged();
+            nameChanged = true;
         else if (std::holds_alternative<StateEvent<state::Topic>>(e))
             emit roomTopicChanged();
         else if (std::holds_alternative<StateEvent<state::PinnedEvents>>(e))
@@ -1046,9 +1063,9 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
             permissions_.invalidate();
             emit permissionsChanged();
         } else if (std::holds_alternative<StateEvent<state::Member>>(e)) {
-            emit roomAvatarUrlChanged();
-            emit roomNameChanged();
-            emit roomMemberCountChanged();
+            avatarChanged      = true;
+            nameChanged        = true;
+            memberCountChanged = true;
         } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
             this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
             emit encryptionChanged();
@@ -1066,6 +1083,19 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 
     if (needsSpecialEffects_)
         emit confetti();
+
+    if (avatarChanged)
+        emit roomAvatarUrlChanged();
+    if (nameChanged)
+        emit roomNameChanged();
+
+    if (memberCountChanged) {
+        emit roomMemberCountChanged();
+        if (roomMemberCount() <= 2) {
+            emit isDirectChanged();
+            emit directChatOtherUserIdChanged();
+        }
+    }
 
     updateLastMessage();
 }
