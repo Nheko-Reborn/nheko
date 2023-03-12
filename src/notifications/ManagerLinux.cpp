@@ -187,11 +187,14 @@ NotificationsManager::systemPostNotification(const QString &room_id,
     // The list of actions has always the action name and then a localized version of that
     // action. Currently we just use an empty string for that.
     // TODO(Nico): Look into what to actually put there.
-    argumentList << (QStringList(QStringLiteral("default"))
-                     << QLatin1String("") << QStringLiteral("inline-reply")
-                     << QLatin1String("")); // actions
-    argumentList << hints;                  // hints
-    argumentList << (int)-1;                // timeout in ms
+    QStringList actions;
+    actions << QStringList(QStringLiteral("default")) << QLatin1String("");
+    if (!room_id.isEmpty()) {
+        actions << QStringLiteral("inline-reply") << QLatin1String("");
+    }
+    argumentList << actions; // actions
+    argumentList << hints;   // hints
+    argumentList << (int)-1; // timeout in ms
 
     QDBusPendingCall call = dbus.asyncCallWithArgumentList(QStringLiteral("Notify"), argumentList);
     auto watcher          = new QDBusPendingCallWatcher{call, this};

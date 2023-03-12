@@ -215,6 +215,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
         if (pushrules) {
             const auto local_user = utils::localUser().toStdString();
 
+            // Desktop notifications to be sent
+            std::vector<std::tuple<QSharedPointer<TimelineModel>,
+                                   mtx::events::collections::TimelineEvents,
+                                   std::string,
+                                   std::vector<mtx::pushrules::actions::Action>>>
+              notifications;
             for (const auto &[room_id, room] : sync.rooms.join) {
                 // clear old notifications
                 for (const auto &e : room.ephemeral.events) {
@@ -334,29 +340,45 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                                     continue;
 
                                 if (userSettings_->hasDesktopNotifications()) {
-                                    auto info = cache::singleRoomInfo(room_id);
-
-                                    AvatarProvider::resolve(
-                                      roomModel->roomAvatarUrl(),
-                                      96,
-                                      this,
-                                      [this, te, room_id = room_id, actions](QPixmap image) {
-                                          notificationsManager->postNotification(
-                                            mtx::responses::Notification{
-                                              .actions     = actions,
-                                              .event       = std::move(te),
-                                              .read        = false,
-                                              .profile_tag = "",
-                                              .room_id     = room_id,
-                                              .ts          = 0,
-                                            },
-                                            image.toImage());
-                                      });
+                                    notifications.emplace_back(roomModel, te, room_id, actions);
                                 }
                             }
                         }
                     }
                 }
+            }
+            if (notifications.size() <= 5) {
+                for (const auto &[roomModel, te, room_id, actions] : notifications) {
+                    AvatarProvider::resolve(
+                      roomModel->roomAvatarUrl(),
+                      96,
+                      this,
+                      [this, te = te, room_id = room_id, actions = actions](QPixmap image) {
+                          notificationsManager->postNotification(
+                            mtx::responses::Notification{
+                              .actions     = actions,
+                              .event       = std::move(te),
+                              .read        = false,
+                              .profile_tag = "",
+                              .room_id     = room_id,
+                              .ts          = 0,
+                            },
+                            image.toImage());
+                      });
+                }
+            } else if (!notifications.empty()) {
+                std::map<QSharedPointer<TimelineModel>, std::size_t> missedEvents;
+                for (const auto &[roomModel, te, room_id, actions] : notifications) {
+                    missedEvents[roomModel]++;
+                }
+                QString body;
+                for (const auto &[roomModel, nbNotifs] : missedEvents) {
+                    body += tr("%1 unread messages in room %2\n")
+                              .arg(nbNotifs)
+                              .arg(roomModel->roomName());
+                }
+                emit notificationsManager->systemPostNotificationCb(
+                  "", "", "New messages while away", body, QImage());
             }
         }
     });
