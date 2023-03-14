@@ -121,6 +121,8 @@ class UserSettings final : public QObject
                  hiddenWidgetsChanged)
     Q_PROPERTY(
       bool exposeDBusApi READ exposeDBusApi WRITE setExposeDBusApi NOTIFY exposeDBusApiChanged)
+    Q_PROPERTY(bool updateSpaceVias READ updateSpaceVias WRITE setUpdateSpaceVias NOTIFY
+                 updateSpaceViasChanged)
 
     UserSettings();
 
@@ -205,6 +207,7 @@ public:
     void setOpenVideoExternal(bool state);
     void setCollapsedSpaces(QList<QStringList> spaces);
     void setExposeDBusApi(bool state);
+    void setUpdateSpaceVias(bool state);
 
     QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
     bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -277,6 +280,7 @@ public:
     bool openVideoExternal() const { return openVideoExternal_; }
     QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }
     bool exposeDBusApi() const { return exposeDBusApi_; }
+    bool updateSpaceVias() const { return updateSpaceVias_; }
 
 signals:
     void groupViewStateChanged(bool state);
@@ -339,6 +343,7 @@ signals:
     void hiddenWidgetsChanged();
     void recentReactionsChanged();
     void exposeDBusApiChanged(bool state);
+    void updateSpaceViasChanged(bool state);
 
 private:
     // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -410,6 +415,7 @@ private:
     bool openImageExternal_;
     bool openVideoExternal_;
     bool exposeDBusApi_;
+    bool updateSpaceVias_;
 
     QSettings settings;
 
@@ -439,6 +445,7 @@ class UserSettingsModel final : public QAbstractListModel
 #ifdef NHEKO_DBUS_SYS
         ExposeDBusApi,
 #endif
+        UpdateSpaceVias,
 
         AccessibilitySection,
         ReducedMotion,

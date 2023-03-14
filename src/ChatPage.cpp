@@ -95,6 +95,12 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                   return;
               }
 
+              // only update spaces every 20 minutes
+              if (lastSpacesUpdate < QDateTime::currentDateTime().addSecs(-20 * 60)) {
+                  lastSpacesUpdate = QDateTime::currentDateTime();
+                  utils::updateSpaceVias();
+              }
+
               if (!isConnected_)
                   emit connectionRestored();
           });
@@ -378,6 +384,13 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
           disconnect(
             this, &ChatPage::newSyncResponse, this, &ChatPage::startRemoveFallbackKeyTimer);
       },
+      Qt::QueuedConnection);
+
+    connect(
+      this,
+      &ChatPage::callFunctionOnGuiThread,
+      this,
+      [](std::function<void()> f) { f(); },
       Qt::QueuedConnection);
 
     connectCallMessage<mtx::events::voip::CallInvite>();

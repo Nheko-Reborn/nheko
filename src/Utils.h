@@ -335,4 +335,7 @@ markRoomAsDirect(QString roomid, std::vector<RoomMember> members);
 
 std::vector<std::string>
 roomVias(const std::string &roomid);
+
+void
+updateSpaceVias();
 }

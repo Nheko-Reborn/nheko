@@ -175,6 +175,8 @@ signals:
                        bool promptForConfirmation = true);
     void newOnlineKeyBackupAvailable();
 
+    void callFunctionOnGuiThread(std::function<void()>);
+
 private slots:
     void logout();
     void removeRoom(const QString &room_id);
@@ -221,6 +223,8 @@ private:
     CallManager *callManager_;
 
     std::unique_ptr<mtx::pushrules::PushRuleEvaluator> pushrules;
+
+    QDateTime lastSpacesUpdate = QDateTime::currentDateTime();
 };
 
 template<class Collection>

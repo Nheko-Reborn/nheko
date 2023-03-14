@@ -98,6 +98,8 @@ UserSettings::load(std::optional<QString> profile)
     privacyScreenTimeout_ =
       settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
     exposeDBusApi_ = settings.value(QStringLiteral("user/expose_dbus_api"), false).toBool();
+    updateSpaceVias_ =
+      settings.value(QStringLiteral("user/space_background_maintenance"), true).toBool();
 
     mobileMode_ = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
     emojiFont_  = settings.value(QStringLiteral("user/emoji_font_family"), "emoji").toString();
@@ -290,6 +292,17 @@ UserSettings::setExposeDBusApi(bool state)
 
     exposeDBusApi_ = state;
     emit exposeDBusApiChanged(state);
+    save();
+}
+
+void
+UserSettings::setUpdateSpaceVias(bool state)
+{
+    if (updateSpaceVias_ == state)
+        return;
+
+    updateSpaceVias_ = state;
+    emit updateSpaceViasChanged(state);
     save();
 }
 
@@ -901,6 +914,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("open_image_external"), openImageExternal_);
     settings.setValue(QStringLiteral("open_video_external"), openVideoExternal_);
     settings.setValue(QStringLiteral("expose_dbus_api"), exposeDBusApi_);
+    settings.setValue(QStringLiteral("space_background_maintenance"), updateSpaceVias_);
 
     settings.endGroup(); // user
 
@@ -1102,6 +1116,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Master signing key");
         case ExposeDBusApi:
             return tr("Expose room information via D-Bus");
+        case UpdateSpaceVias:
+            return tr("Periodically update community routing information");
         }
     } else if (role == Value) {
         switch (index.row()) {
@@ -1235,6 +1251,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return cache::secret(mtx::secret_storage::secrets::cross_signing_master).has_value();
         case ExposeDBusApi:
             return i->exposeDBusApi();
+        case UpdateSpaceVias:
+            return i->updateSpaceVias();
         }
     } else if (role == Description) {
         switch (index.row()) {
@@ -1405,6 +1423,12 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
                       "This can have useful applications, but it also could be used for nefarious "
                       "purposes. Enable at your own risk.\n\n"
                       "This setting will take effect upon restart.");
+        case UpdateSpaceVias:
+            return tr(
+              "To allow new users to join a community, the community needs to expose some "
+              "information about what servers participate in a room to community members. Since "
+              "the room participants can change over time, this needs to be updated from time to "
+              "time. This setting enables a background job to do that automatically.");
         }
     } else if (role == Type) {
         switch (index.row()) {
@@ -1453,6 +1477,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case ShareKeysWithTrustedUsers:
         case UseOnlineKeyBackup:
         case ExposeDBusApi:
+        case UpdateSpaceVias:
         case SpaceNotifications:
         case FancyEffects:
         case ReducedMotion:
@@ -1938,6 +1963,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
+        case UpdateSpaceVias: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setUpdateSpaceVias(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         }
     }
     return false;
@@ -2186,5 +2218,8 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::exposeDBusApiChanged, this, [this] {
         emit dataChanged(index(ExposeDBusApi), index(ExposeDBusApi), {Value});
+    });
+    connect(s.get(), &UserSettings::updateSpaceViasChanged, this, [this] {
+        emit dataChanged(index(UpdateSpaceVias), index(UpdateSpaceVias), {Value});
     });
 }
