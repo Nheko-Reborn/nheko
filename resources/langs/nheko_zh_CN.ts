@@ -1492,7 +1492,7 @@ Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
         <translation>你的登录名。一个 mxid 应以 @ 开头，后跟用户 ID。在用户 ID 之后，你需要在一个 : 之后包含你的服务器名称。
 如果你的服务器不支持 .well-known 查询，你也可以输入你的主服务器地址。
-例如。@user:server.my
+例如：@user:server.my
 如果 Nheko 未能发现你的主服务器，它将显示一个字段，让你手动输入服务器。</translation>
     </message>
     <message>
@@ -1513,13 +1513,13 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation>此设备的名称，将在验证您的设备时向其他人显示。 如果未提供任何内容，则使用默认值。</translation>
+        <translation>此设备的名称，将在验证您的设备时向其他人显示。如果未提供任何内容，则使用默认值。</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation>可用于联系您的主服务器客户端 API 的地址。
+        <translation>可用于联系你的主服务器客户端 API 的地址。
 示例：https://server.my:8787</translation>
     </message>
     <message>
@@ -1563,7 +1563,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+33"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation>没找到要求的终端。可能不是一个 Matrix 服务器。</translation>
+        <translation>所需的端点未找到。可能不是 Matrix 服务器。</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1573,12 +1573,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation>发生了一个未知错误。请确认服务器域名合法。</translation>
+        <translation>发生了未知错误。请确保主服务器域名有效。</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本（v1.1 到 v1.5）。您无法登录。</translation>
+        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本（v1.1 到 v1.5）。你无法登录。</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1608,7 +1608,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>SSO LOGIN</source>
-        <translation>SSO登录</translation>
+        <translation>SSO 登录</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -1618,7 +1618,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+55"/>
         <source>SSO login failed</source>
-        <translation>SSO登录失败</translation>
+        <translation>SSO 登录失败</translation>
     </message>
 </context>
 <context>
@@ -1653,7 +1653,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+79"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation>此聊天室因以下原因被替换: %1</translation>
+        <translation>此聊天室由于以下原因被替换：%1</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -1840,12 +1840,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+438"/>
         <source>Reason for removal</source>
-        <translation>移除原因</translation>
+        <translation>移除理由</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation>输入移除原因或无缘无故地回车：</translation>
+        <translation>输入移除理由或按回车键不输入理由：</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2446,7 +2446,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Set the global log level, or a comma-separated list of &lt;component&gt;=&lt;level&gt; pairs, or both. For example, to set the default log level to &apos;warn&apos; but disable logging for the &apos;ui&apos; component, pass &apos;warn,ui=off&apos;. levels:{trace,debug,info,warning,error,critical,off} components:{crypto,db,mtx,net,qml,ui}</source>
-        <translation>设置全局日志级别，或以逗号分隔的 &lt;component&gt;=&lt;level&gt; 列表，或两者。 例如，要将默认日志级别设置为 “warn” 但禁用 “ui” 组件的日志记录，请传递 “warn,ui=off”。 级别：{trace,debug,info,warning,error,critical,off} 组件：{crypto,db,mtx,net,qml,ui}</translation>
+        <translation>设置全局日志级别，或以逗号分隔的 &lt;component&gt;=&lt;level&gt; 列表，或两者。例如，要将默认日志级别设置为 “warn” 但禁用 “ui” 组件的日志记录，请传递 “warn,ui=off” 。级别：{trace,debug,info,warning,error,critical,off} 组件：{crypto,db,mtx,net,qml,ui}</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2456,7 +2456,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+4"/>
         <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
-        <translation>设置日志输出类型。 允许使用逗号分隔的列表。 默认值为“file,stderr”。 类型：{file,stderr,none}</translation>
+        <translation>设置日志输出类型。允许使用逗号分隔的列表。默认值为 “file,stderr” 。类型：{file,stderr,none}</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2576,7 +2576,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+25"/>
         <source>The required endpoints were not found. Possibly not a Matrix server.</source>
-        <translation>没有找到所需的端点。可能不是一个 Matrix 服务器。</translation>
+        <translation>所需的端点未找到。可能不是 Matrix 服务器。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3244,7 +3244,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+41"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation>这是你的恢复密钥。你将需要它来恢复对加密消息和验证密钥的访问。请保管好它。不要与任何人分享，也不要丢失！</translation>
+        <translation>这是你的恢复密钥。你将需要它来恢复对加密消息和验证密钥的访问。请保管好它。不要与任何人分享，也不要丢失！切记！</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -3277,7 +3277,7 @@ It seems like you are new. Before you can securely encrypt your messages, we nee
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation>你似乎已为此帐户配置了加密。为了能够访问你的加密消息并使此设备显示为受信任，你可以验证现有设备或（如果有）输入你的恢复口令。请选择以下选项之一。
+        <translation>你似乎已为此帐户配置了加密。为了能够访问你的加密消息并使此设备显示为受信任，你可以验证现有设备或输入你的恢复口令（如果有的话）。请选择以下选项之一。
 如果选择验证，则需要另一台设备可用。如果你选择“输入密码”，你将需要你的恢复密钥或口令。如果点击取消，你可以选择稍后验证自己。</translation>
     </message>
     <message>
@@ -3429,7 +3429,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+10"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation>验证成功！ 双方都验证了他们的设备！</translation>
+        <translation>验证成功！双方都验证了他们的设备！</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3579,7 +3579,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation>%1现在可以封禁聊天室成员。</translation>
+        <translation>%1 现在可以封禁聊天室成员。</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -3631,12 +3631,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation>％1 已将 ％2 降级为此聊天室的协管员。</translation>
+        <translation>%1 已将 %2 降级为此聊天室的协管员。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation>％1 已将 ％2 的权限等级从 ％3 改为 ％4。</translation>
+        <translation>%1 已将 %2 的权限等级从 %3 改为 %4。</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4523,7 +4523,7 @@ focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
         <translation>设置窗口失去焦点后超时多久（以秒为单位）
 会模糊屏幕。
-设置为 0 以在失去焦点后立即模糊。最大值为 1 小时（3600 秒）</translation>
+设置为 0 则将在失去焦点后立刻模糊。最大值为 1 小时（3600 秒）</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4672,7 +4672,7 @@ If this is on, rooms which have active notifications (the small circle with a nu
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
-        <translation>显示你的信息是否已被阅读。
+        <translation>显示你的消息是否已被阅读。
 状态显示在时间戳旁边。
 警告：如果你的主服务器不支持此功能，你的聊天室将永远不会被标记为已读！</translation>
     </message>
@@ -4754,7 +4754,7 @@ be blurred.</source>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation>允许第三方插件和应用程序通过 D-Bus 加载你所在聊天室的信息。这可以有有用的应用，但也可能被用于邪恶的目的。启用时风险自负。
+        <translation>允许第三方插件和应用程序通过 D-Bus 加载你所在聊天室的信息。这会有很多有用的应用，但也可能被用于恶意目的。启用时风险自负。
 
 这个设置将在重新启动时生效。</translation>
     </message>
@@ -4895,7 +4895,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+10"/>
         <source>Enjoy your stay!</source>
-        <translation>祝您使用愉快！</translation>
+        <translation>祝你使用愉快！</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4946,7 +4946,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation>打开 fallback ，按步骤操作，完成后确认。</translation>
+        <translation>打开回溯程序，按步骤操作，完成后确认。</translation>
     </message>
 </context>
 <context>
