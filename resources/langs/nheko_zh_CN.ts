@@ -1084,7 +1084,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation>该加密密钥被重复使用！有人可能试图在此聊天中插入虚假的消息！</translation>
+        <translation>该加密密钥被重复使用！有人可能试图在此聊天中插入虚假消息！</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1107,7 +1107,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation>加密可以保障你的信息安全，只有收信人可以解密你的消息。为了提高安全，如需确认收信人身份正确，你可以与真人进行核验。</translation>
+        <translation>加密使得消息仅能被你所发送的人阅读，保障了你的信息安全。为了额外安全性，如果你想确保你是在与正确的人交谈，你可以在现实生活中验证他们。</translation>
     </message>
 </context>
 <context>
@@ -1256,7 +1256,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation>图片（*.png *.webp *.gif *.jpg *.jpeg）</translation>
+        <translation>图片 (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1490,7 +1490,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>你的登录名。一个mxid应以@开头，后跟用户ID。在用户ID之后，你需要在一个 : 之后包含你的服务器名称。
+        <translation>你的登录名。一个 mxid 应以 @ 开头，后跟用户 ID。在用户 ID 之后，你需要在一个 : 之后包含你的服务器名称。
 如果你的服务器不支持 .well-known 查询，你也可以输入你的主服务器地址。
 例如。@user:server.my
 如果 Nheko 未能发现你的主服务器，它将显示一个字段，让你手动输入服务器。</translation>
