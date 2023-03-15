@@ -398,12 +398,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+56"/>
         <source>Reason for the kick</source>
-        <translation>踢出原因</translation>
+        <translation>踢出理由</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation>输入踢出 %1 (%2) 的原因，如无原因请按回车：</translation>
+        <translation>输入踢出 %1 (%2) 的理由，如无理由请按回车：</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -413,12 +413,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+13"/>
         <source>Reason for the ban</source>
-        <translation>封禁原因</translation>
+        <translation>封禁理由</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation>输入封禁 %1 (%2) 的原因，如无原因请按回车：</translation>
+        <translation>输入封禁 %1 (%2) 的理由，如无理由请按回车：</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+38"/>
@@ -446,7 +446,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
-        <translation>/knock &lt;!聊天室id|#别名&gt; [原因]</translation>
+        <translation>/knock &lt;!聊天室id|#别名&gt; [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -466,17 +466,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/kick &lt;@userid&gt; [reason]</source>
-        <translation>/kick &lt;@用户id&gt; [原因]</translation>
+        <translation>/kick &lt;@用户id&gt; [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/ban &lt;@userid&gt; [reason]</source>
-        <translation>/ban &lt;@用户id&gt; [原因]</translation>
+        <translation>/ban &lt;@用户id&gt; [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unban &lt;@userid&gt; [reason]</source>
-        <translation>/unban &lt;@用户id&gt; [原因]</translation>
+        <translation>/unban &lt;@用户id&gt; [理由]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -546,12 +546,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Send a message expressing an action.</source>
-        <translation>发送一条表达行动的信息。</translation>
+        <translation>发送一条表达行动的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation>当你回复一条信息时，发送 &lt;文本&gt; 作为回应。</translation>
+        <translation>当你回复一条消息时，发送 &lt;文本&gt; 作为回应。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -592,7 +592,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation>编辑一个事件或一个用户的所有本地缓存信息。</translation>
+        <translation>编辑一个事件或一个用户的所有本地缓存消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1084,7 +1084,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation>该加密密钥被重复使用！聊天时可能插入了假消息！</translation>
+        <translation>该加密密钥被重复使用！有人可能试图在此聊天中插入虚假的消息！</translation>
     </message>
     <message>
         <location line="+2"/>
