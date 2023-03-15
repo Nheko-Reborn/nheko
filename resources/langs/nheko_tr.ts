@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+109"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aranıyor…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bağlanıyor…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekranınızı paylaşıyorsunuz.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -27,12 +27,12 @@
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofonu Aç</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofonu Sustur</translation>
     </message>
 </context>
 <context>
@@ -43,12 +43,12 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Adres %1 yayından kaldırılamadı: %2</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Adres güncellenemedi: %1</translation>
     </message>
 </context>
 <context>
@@ -56,22 +56,22 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+27"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1&apos;e ait adresler</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu odaya ait adresler Genellikle adresleri sadece kendi sunucunuza ekleyebilirsiniz. Bir standart adres ve birden çok alternatif adres alabilirsiniz.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Ana adres</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Ana adrese çevir</translation>
     </message>
     <message>
         <location line="+14"/>
