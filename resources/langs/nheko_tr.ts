@@ -109,12 +109,12 @@
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu odaya erişimi olan odaların listesi. Bu odalardan herhangi birinde olan kişi, bu odaya da katılabilir.</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Ana Topluluk</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -141,7 +141,7 @@
         <location line="+2"/>
         <location line="+153"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Boş Oda</translation>
     </message>
 </context>
 <context>
@@ -149,17 +149,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+78"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videolu Arama</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Sesli Arama</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofon bulunamadı.</translation>
     </message>
 </context>
 <context>
@@ -167,42 +167,42 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+67"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videolu Arama</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Sesli Arama</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Cihazlar</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Kabul et</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinmeyen mikrofon: %1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinmeyen kamera: %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Reddet</translation>
     </message>
     <message>
         <location line="-31"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mikrofon bulunamadı.</translation>
     </message>
 </context>
 <context>
@@ -210,7 +210,7 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+819"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Bütün ekran</translation>
     </message>
 </context>
 <context>
@@ -218,28 +218,28 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+122"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kullanıcı davet edilemedi: %1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+843"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kullanıcı davet edildi: %1</translation>
     </message>
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Çıkışı onayla</translation>
     </message>
     <message>
         <location line="+102"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diskinizdeki önbelleğin versiyonu Nheko&apos;nun desteklediğinden daha yeni. Lütfen Nheko&apos;yu güncelleyin ya da önbelleğinizi temizleyin.</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>Veritabanı açılamadı, çıkış yapılıyor!</translation>
     </message>
     <message>
         <location line="+262"/>
@@ -249,12 +249,12 @@
     <message>
         <location line="+4"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>%1&apos;in kapısını tıklatmak istediğine emin misiniz? İsterseniz diğerlerinin tıklatmanızı kabul etmeleri için bir sebep de yazabilirsiniz:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Failed to knock room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Odanın kapısı tıklatılamadı: %1</translation>
     </message>
     <message>
         <location line="+59"/>
