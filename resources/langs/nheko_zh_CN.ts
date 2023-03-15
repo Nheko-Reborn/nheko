@@ -104,7 +104,7 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+28"/>
         <source>Allowed rooms settings</source>
-        <translation>已允许的房间设置</translation>
+        <translation>已允许的聊天室设置</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -228,12 +228,12 @@
     <message>
         <location line="-554"/>
         <source>Confirm logout</source>
-        <translation>确认注销</translation>
+        <translation>确认登出</translation>
     </message>
     <message>
         <location line="+102"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation>当前设备中的缓存比Nheko支持的版本更新，请更新Nheko或清理缓存。</translation>
+        <translation>当前设备中的缓存比 Nheko 支持的版本更新，请更新 Nheko 或清理缓存</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -331,14 +331,14 @@
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation>由于以下原因，Nheko希望将你返回到登录页面。
+        <translation>由于以下原因，Nheko 希望将你返回到登录页面。
 %1
-如果你认为这是一个错误，你可以关闭Nheko，以便可能恢复你的加密密钥。在你被返回到登录页面后，你可以用你的常用方法再次登录。</translation>
+如果你认为这是一个错误，你可以关闭 Nheko，以便可能恢复你的加密密钥。在你被返回到登录页面后，你可以用你的常用方法再次登录。</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation>迁移缓存到当前版本失败。这可能是由不同的原因导致的。请在https://github.com/Nheko-Reborn/nheko提交一个issue，并尝试在这期间使用旧版本。或者，你可以尝试手动删除缓存。</translation>
+        <translation>迁移缓存到当前版本失败。这可能是由不同的原因导致的。请在 https://github.com/Nheko-Reborn/nheko 提交一个 issue，并尝试在这期间使用旧版本。或者，你可以尝试手动删除缓存。</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -637,12 +637,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation>发送一条markdown格式的消息（忽略全局设置）。</translation>
+        <translation>发送一条 markdown 格式的消息（忽略全局设置）。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation>发送一条commonmark格式的消息，与/md相比其禁用大多数扩展。</translation>
+        <translation>发送一条 commonmark 格式的消息，与 /md 相比其禁用大多数扩展。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1041,7 +1041,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation>如果使用不同的字体，显示的表情符号在不同的客户中可能看起来不同。同样，它们也可能被翻译成不同的语言。尽管如此，它们应该描述64种不同的物体或动物中的一种。例如，狮子和猫是不同的，但猫是一样的，即使一个客户端只显示猫脸，而另一个客户端显示整个猫身。</translation>
+        <translation>如果使用不同的字体，显示的表情符号在不同的客户中可能看起来不同。同样，它们也可能被翻译成不同的语言。尽管如此，它们应该描述 64 种不同的物体或动物中的一种。例如，狮子和猫是不同的，但猫是一样的，即使一个客户端只显示猫脸，而另一个客户端显示整个猫身。</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1513,7 +1513,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation>此设备的名称，将在验证您的设备时向其他人显示。如果未提供任何内容，则使用默认值。</translation>
+        <translation>此设备的名称，将在验证你的设备时向其他人显示。如果未提供任何内容，则使用默认值。</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1626,17 +1626,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+15"/>
         <source>Log out</source>
-        <translation>注销</translation>
+        <translation>登出</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation>正在进行通话中。是否注销？</translation>
+        <translation>正在进行通话中。是否登出？</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation>你确定要注销吗？</translation>
+        <translation>你确定要登出吗？</translation>
     </message>
 </context>
 <context>
@@ -2748,7 +2748,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+81"/>
         <source>Logout</source>
-        <translation>注销</translation>
+        <translation>登出</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -3321,7 +3321,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+156"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation>身份密钥已改变。这会破坏了E2EE，因此请注销。</translation>
+        <translation>身份密钥已改变。此操作破坏了 E2EE，因此请登出。</translation>
     </message>
 </context>
 <context>
@@ -4117,7 +4117,7 @@ Reason: %4</source>
     <message>
         <location line="+56"/>
         <source>Sign out this device.</source>
-        <translation>注销此设备。</translation>
+        <translation>登出此设备。</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -4137,12 +4137,12 @@ Reason: %4</source>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+159"/>
         <source>Sign out device %1</source>
-        <translation>注销设备 %1</translation>
+        <translation>登出设备 %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation>你已注销此设备。</translation>
+        <translation>你已登出此设备。</translation>
     </message>
     <message>
         <location line="+222"/>
