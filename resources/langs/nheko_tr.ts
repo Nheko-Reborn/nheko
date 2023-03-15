@@ -81,22 +81,22 @@
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Oda sunucusunda yayınla</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Adı kaldır</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#yeni-ad:sunucu.tld</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekle</translation>
     </message>
 </context>
 <context>
@@ -104,7 +104,7 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+28"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">İzin verilen oda ayarları</translation>
     </message>
     <message>
         <location line="+14"/>
