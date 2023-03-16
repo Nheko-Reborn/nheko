@@ -259,169 +259,172 @@
     <message>
         <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Oda oluşturma başarısız: Hatalı Adres</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Room %1 created.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 adlı oda oluşturuldu.</translation>
     </message>
     <message>
         <location line="+43"/>
         <location line="+471"/>
         <source>Confirm invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Daveti onayla</translation>
     </message>
     <message>
         <location line="-470"/>
         <source>Do you really want to invite %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) adlı kişiyi davet etmek istediğinize emin misiniz?</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Failed to invite %1 to %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 adlı kişi %2&apos;ye davet edilemedi: %3</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Kicked user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kullanıcı atıldı: %1</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Failed to ban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 adlı kişi %2&apos;den yasaklanamadı: %3</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Banned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kullanıcı yasaklandı: %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Confirm unban</source>
-        <translation type="unfinished"></translation>
+        <translation>Yasak kaldırmayı onayla</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to unban %1 (%2)?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) adlı kişinin yasağını kaldırmak istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Failed to unban %1 in %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%2&apos;de %1 adlı kişinin yasağı kaldırılamadı: %3</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unbanned user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Yasak kaldırıldı: %1</translation>
     </message>
     <message>
         <location line="+376"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 adlı kişiyle özel konuşma başlatmak istediğinize emin misiniz?</translation>
     </message>
     <message>
         <location line="-922"/>
         <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
+        <translation>Önbellek transferi başarısız!</translation>
     </message>
     <message>
         <location line="-87"/>
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko, şu sebeplerden dolayı sizi giriş sayfasına yönlendiriyor:
+%1
+Eğer bunun bir hata olduğunu düşünüyorsanız Nheko&apos;yu kapatabilir ve şifreleme anahtarlarınızı kurtarmaya çalışabilirsiniz. Giriş sayfasına yönlendirildiğinizde tekrar her zamanki gibi giriş yapabilirsiniz.</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Önbelleği şu anki sürüme taşıma işlemi başarısız oldu. Bunun birden çok sebebi olabilir. Lütfen https://github.com/Nheko-Reborn/nheko linkinden bir issue oluşturun ve geçici bir süreliğine eski bir versiyonu kullanmayı deneyin. Alternatif olarak önbelleği manuel olarak silmeyi deneyebilirsiniz.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
+        <translation>Uyumsuz önbellek versiyonu</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>OLM hesabınız alınamadı. Lütfen tekrar giriş yapın.</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+4"/>
         <location line="+4"/>
         <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kayıtlı veriler yüklenemedi. Lütfen tekrar giriş yapın.</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifreleme anahtarları oluşturulamadı. Sunucunun yanıtı: %1 %2. Lütfen daha sonra tekrar deneyin.</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+112"/>
         <source>Please try to login again: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen tekrar giriş yapmayı deneyin: %1</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 adlı odaya katılamadınız. Diğerlerinin sizi içeri alması için kapı tıklatmayı deneyebilirsiniz. Şimdi denemek ister misiniz?
+İsterseniz diğerlerinin sizi kabul etmesi için bir sebep de sunabilirsiniz:</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Failed to join room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Odaya katılınamadı: %1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Davet kaldırılamadı: %1</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Oda oluşturma başarısız: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Odadan ayrılma başarısız: %1</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
+        <translation>Atmak için sebep</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) adlı kişiyi atmak için bir sebep girin ya da enter tuşuna basarak boş bırakın:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 adlı kişi %2&apos;den atılamadı: %3</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Yasaklama sebebi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) adlı kişiyi yasaklamak için bir sebep girin ya da enter tuşuna basarak boş bırakın:</translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+38"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Ağ bağlantısı kurulamadı</translation>
     </message>
 </context>
 <context>
@@ -429,213 +432,213 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+106"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;mesaj&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;metin&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/join &lt;!roomid|#alias&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/join &lt;!odaid|#adres&gt; [sebep]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/knock &lt;!odaid|#adres&gt; [sebep]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [sebep]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [sebep]</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>/redact &lt;$eventid|@userid&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/redact &lt;$olayid|@kullaniciid&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/roomnick &lt;displayname&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/roomnick &lt;görünürisim&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/shrug [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/shrug [mesaj]</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>/md &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/md &lt;mesaj&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;mesaj&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/plain &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/plain &lt;mesaj&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbow &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbow &lt;mesaj&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowme &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowme &lt;mesaj&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/notice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice &lt;mesaj&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbownotice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbownotice &lt;mesaj&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/confetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/confetti [mesaj]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowconfetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowconfetti [message]</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>/invite &lt;@userid&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/invite &lt;@kullaniciid&gt; [sebep]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/kick &lt;@userid&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/kick &lt;@kullaniciid&gt; [sebep]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/ban &lt;@userid&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/ban &lt;@kullaniciid&gt; [sebep]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unban &lt;@userid&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/unban &lt;@kullaniciid&gt; [sebep]</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;mesaj referansı&gt;</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir eylem belirten mesaj gönderin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir mesaja yanıt verirken &lt;metin&gt;&apos;i tepki olarak gönderin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir odaya katıl. Sebep isteğe bağlı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir odaya katılmak için izin iste. Sebep isteğe bağlı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir odadan ayrıl. Sebep isteğe bağlı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir kullanıcıyı şu anki odaya davet et. Sebep isteğe bağlı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir kullanıcıyı şu anki odadan at. Sebep isteğe bağlı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir kullanıcıyı şu anki odadan yasakla. Sebep isteğe bağlı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir kullanıcının bu odadaki yasağını kaldır. Sebep isteğe bağlı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir kullanıcının gönderdiği olayları veya bütün yerel önbellekte tutulan mesajlarını kaldır.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change your displayname in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu odadaki görünür adınızı değiştirin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>¯\_(ツ)_/¯ with an optional message.</source>
-        <translation type="unfinished"></translation>
+        <translation>İsteğe bağlı bir mesajla ¯\_(ツ)_/¯.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>(╯°□°)╯︵ ┻━┻</source>
-        <translation type="unfinished"></translation>
+        <translation>(╯°□°)╯︵ ┻━┻</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>┯━┯╭( º _ º╭)</source>
-        <translation type="unfinished"></translation>
+        <translation>┯━┯╭( º _ º╭)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ノ┬─┬ノ ︵ ( \o°o)\</source>
-        <translation type="unfinished"></translation>
+        <translation>ノ┬─┬ノ ︵ ( \o°o)\</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Clear the currently cached messages in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu odanın yerel önbellekte tutulan mesajlarını temizle.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refetch the state in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu odanın durumunu yenile.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Şu anki simetrik şifreleme anahtarını döndür.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Markdown ile formatlanmış bir mesaj gönderin (küresel ayarları gözardı ederek).</translation>
     </message>
     <message>
         <location line="+2"/>
