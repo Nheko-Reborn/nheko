@@ -233,7 +233,7 @@
     <message>
         <location line="+102"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation>当前设备中的缓存比 Nheko 支持的版本更新，请更新 Nheko 或清理缓存</translation>
+        <translation>当前设备中的缓存比 Nheko 支持的版本更新，请更新 Nheko 或清理缓存。</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -577,17 +577,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation>将一个用户踢出当前聊天室。原因是可选的。</translation>
+        <translation>将一个用户踢出当前聊天室。理由是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation>在当前聊天室封禁一个用户。原因是可选的。</translation>
+        <translation>在当前聊天室封禁一个用户。理由是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation>在当前聊天室解封一个用户。原因是可选的。</translation>
+        <translation>在当前聊天室解封一个用户。理由是可选的。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3733,7 +3733,7 @@ If you choose verify, you need to have the other device available. If you choose
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
         <translation>%1 (%2) 移除了此消息于 %3
-原因：%4</translation>
+理由：%4</translation>
     </message>
     <message>
         <location line="+152"/>
@@ -3788,7 +3788,7 @@ Reason: %4</source>
     <message>
         <location line="+31"/>
         <source>Reason: %1</source>
-        <translation>原因：%1</translation>
+        <translation>理由：%1</translation>
     </message>
     <message>
         <location line="-19"/>
