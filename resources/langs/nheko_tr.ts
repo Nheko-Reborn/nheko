@@ -643,57 +643,57 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>/md&apos;ye kıyasla çoğu uzantıyı devre dışı bırakan commonmark bir mesaj gönderin.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Formatlanmamış bir mesaj gönderin (küresel ayarları gözardı ederek).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gökkuşağı renklerinde bir mesaj gönderin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gökkuşağı renklerinde /me komutu gönderin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir bot mesajı gönderin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gökkuşağı renklerinde bir bot mesajı gönderin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfetili bir mesaj gönderin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gökkuşağı renklerinde konfetili bir mesaj gönderin.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Bir olay IDsi, indis veya matrix: linki ile belirli bir mesaja gidin</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu odayı bir direkt konuşmaya çevir.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu direkt konuşmayı bir odaya çevir.</translation>
     </message>
 </context>
 <context>
@@ -701,22 +701,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+65"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu topluluk veya etiket için bildirim sayısını gösterme.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Varsayılan olarak bu etikete sahip ya da bu topluluktan gelen odaları gizle.</translation>
     </message>
     <message>
         <location line="+86"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Genişlet</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Daralt</translation>
     </message>
 </context>
 <context>
@@ -724,22 +724,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/timeline/CommunitiesModel.cpp" line="+82"/>
         <source>All rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm odalar</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tüm odaları filtresiz göster.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Direkt Konuşmalar</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Direkt konuşmaları göster.</translation>
     </message>
     <message>
         <location line="+67"/>
