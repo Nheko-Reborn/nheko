@@ -796,11 +796,13 @@ RoomlistModel::setCurrentRoom(const QString &roomid)
             p.roomName_         = QString::fromStdString(i->name);
             p.roomTopic_        = QString::fromStdString(i->topic);
             p.roomAvatarUrl_    = QString::fromStdString(i->avatar_url);
+            p.isFetched_        = true;
             currentRoomPreview_ = std::move(p);
             nhlog::ui()->debug("Switched to (preview): {}",
                                currentRoomPreview_->roomid_.toStdString());
         } else {
             p.roomid_           = roomid;
+            p.isFetched_        = false;
             currentRoomPreview_ = p;
             nhlog::ui()->debug("Switched to (empty): {}",
                                currentRoomPreview_->roomid_.toStdString());
