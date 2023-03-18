@@ -32,6 +32,7 @@ class RoomPreview
     Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl CONSTANT)
     Q_PROPERTY(QString reason READ reason CONSTANT)
     Q_PROPERTY(bool isInvite READ isInvite CONSTANT)
+    Q_PROPERTY(bool isFetched READ isFetched CONSTANT)
 
 public:
     RoomPreview() {}
@@ -42,9 +43,10 @@ public:
     QString roomAvatarUrl() const { return roomAvatarUrl_; }
     QString reason() const { return reason_; }
     bool isInvite() const { return isInvite_; }
+    bool isFetched() const { return isFetched_; }
 
     QString roomid_, roomName_, roomAvatarUrl_, roomTopic_, reason_;
-    bool isInvite_ = false;
+    bool isInvite_ = false, isFetched_ = true;
 };
 
 class RoomlistModel final : public QAbstractListModel

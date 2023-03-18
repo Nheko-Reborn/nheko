@@ -222,7 +222,7 @@ RoomlistModel::data(const QModelIndex &index, int role) const
             case Roles::RoomName:
                 return tr("No preview available");
             case Roles::LastMessage:
-                return QString();
+                return tr("This room is possibly inaccessible");
             case Roles::Time:
                 return QString();
             case Roles::Timestamp:
@@ -796,11 +796,13 @@ RoomlistModel::setCurrentRoom(const QString &roomid)
             p.roomName_         = QString::fromStdString(i->name);
             p.roomTopic_        = QString::fromStdString(i->topic);
             p.roomAvatarUrl_    = QString::fromStdString(i->avatar_url);
+            p.isFetched_        = true;
             currentRoomPreview_ = std::move(p);
             nhlog::ui()->debug("Switched to (preview): {}",
                                currentRoomPreview_->roomid_.toStdString());
         } else {
             p.roomid_           = roomid;
+            p.isFetched_        = false;
             currentRoomPreview_ = p;
             nhlog::ui()->debug("Switched to (empty): {}",
                                currentRoomPreview_->roomid_.toStdString());
@@ -1098,6 +1100,15 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
             return !sourceModel()
                       ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::IsDirect)
                       .toBool();
+        }
+
+        // If it is a preview but it can't be fetched, it is probably an inaccessible private room.
+        // Hide it if the user isn't an admin.
+        auto index = sourceModel()->index(sourceRow, 0);
+        if (sourceModel()->data(index, RoomlistModel::IsPreview).toBool() &&
+            !sourceModel()->data(index, RoomlistModel::IsPreviewFetched).toBool() &&
+            !Permissions(filterStr).canChange(qml_mtx_events::SpaceChild)) {
+            return false;
         }
 
         return true;
