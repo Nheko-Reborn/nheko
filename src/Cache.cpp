@@ -1893,6 +1893,14 @@ Cache::saveState(const mtx::responses::Sync &res)
         auto membersdb   = getMembersDb(txn, room.first);
         auto eventsDb    = getEventsDb(txn, room.first);
 
+        // nhlog::db()->critical(
+        //   "Saving events for room: {}, state {}, timeline {}, account {}, ephemeral {}",
+        //   room.first,
+        //   room.second.state.events.size(),
+        //   room.second.timeline.events.size(),
+        //   room.second.account_data.events.size(),
+        //   room.second.ephemeral.events.size());
+
         saveStateEvents(
           txn, statesdb, stateskeydb, membersdb, eventsDb, room.first, room.second.state.events);
         saveStateEvents(
@@ -1901,13 +1909,12 @@ Cache::saveState(const mtx::responses::Sync &res)
         saveTimelineMessages(txn, eventsDb, room.first, room.second.timeline);
 
         RoomInfo updatedInfo;
+        std::string_view originalRoomInfoDump;
         {
             // retrieve the old tags and modification ts
-            std::string_view data;
-            if (roomsDb_.get(txn, room.first, data)) {
+            if (roomsDb_.get(txn, room.first, originalRoomInfoDump)) {
                 try {
-                    RoomInfo tmp = nlohmann::json::parse(std::string_view(data.data(), data.size()))
-                                     .get<RoomInfo>();
+                    RoomInfo tmp     = nlohmann::json::parse(originalRoomInfoDump).get<RoomInfo>();
                     updatedInfo.tags = std::move(tmp.tags);
 
                     updatedInfo.approximate_last_modification_ts =
@@ -1915,7 +1922,7 @@ Cache::saveState(const mtx::responses::Sync &res)
                 } catch (const nlohmann::json::exception &e) {
                     nhlog::db()->warn("failed to parse room info: room_id ({}), {}: {}",
                                       room.first,
-                                      std::string(data.data(), data.size()),
+                                      originalRoomInfoDump,
                                       e.what());
                 }
             }
@@ -2004,7 +2011,12 @@ Cache::saveState(const mtx::responses::Sync &res)
               std::visit([](const auto &e) -> uint64_t { return e.origin_server_ts; }, e);
         }
 
-        roomsDb_.put(txn, room.first, nlohmann::json(updatedInfo).dump());
+        if (auto newRoomInfoDump = nlohmann::json(updatedInfo).dump();
+            newRoomInfoDump != originalRoomInfoDump) {
+            nhlog::db()->critical(
+              "Writing out new room info:\n{}\n{}", originalRoomInfoDump, newRoomInfoDump);
+            roomsDb_.put(txn, room.first, newRoomInfoDump);
+        }
 
         for (const auto &e : room.second.ephemeral.events) {
             if (auto receiptsEv =
@@ -2135,7 +2147,20 @@ Cache::savePresence(
   const std::vector<mtx::events::Event<mtx::events::presence::Presence>> &presenceUpdates)
 {
     for (const auto &update : presenceUpdates) {
-        presenceDb_.put(txn, update.sender, nlohmann::json(update.content).dump());
+        auto toWrite = nlohmann::json(update.content);
+        // Nheko currently doesn't use those and it causes lots of db writes :)
+        toWrite.erase("currently_active");
+        toWrite.erase("last_active_ago");
+        auto toWriteStr = toWrite.dump();
+
+        std::string_view oldPresenceVal;
+
+        presenceDb_.get(txn, update.sender, oldPresenceVal);
+        if (oldPresenceVal != toWriteStr) {
+            // nhlog::db()->critical(
+            //   "Presence update for {}: {} -> {}", update.sender, oldPresenceVal, toWriteStr);
+            presenceDb_.put(txn, update.sender, toWriteStr);
+        }
     }
 }
 
