@@ -4179,8 +4179,15 @@ Cache::getImagePacks(const std::string &room_id, std::optional<bool> stickers)
 
           for (const auto &parent :
                getStateEventsWithType<mtx::events::state::space::Parent>(txn, current_room)) {
-              if (parent.content.canonical && parent.content.via && !parent.content.via->empty())
-                  addRoomAndCanonicalParents(parent.state_key);
+              if (parent.content.canonical && parent.content.via && !parent.content.via->empty()) {
+                  try {
+                      addRoomAndCanonicalParents(parent.state_key);
+                  } catch (const lmdb::error &) {
+                      nhlog::db()->debug("Skipping events from parent community, because we are "
+                                         "not joined to it: {}",
+                                         parent.state_key);
+                  }
+              }
           }
       };
 
