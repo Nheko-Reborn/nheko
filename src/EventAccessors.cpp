@@ -15,12 +15,12 @@ namespace {
 struct IsStateEvent
 {
     template<class T>
-    bool operator()(const mtx::events::StateEvent<T> &)
+    constexpr bool operator()(const mtx::events::StateEvent<T> &)
     {
         return true;
     }
     template<class T>
-    bool operator()(const mtx::events::Event<T> &)
+    constexpr bool operator()(const mtx::events::Event<T> &)
     {
         return false;
     }
@@ -36,28 +36,6 @@ struct EventMsgType
         else if constexpr (requires(decltype(e) t) { std::string{t.content.msgtype}; })
             return mtx::events::getMessageType(e.content.msgtype);
         return mtx::events::MessageType::Unknown;
-    }
-};
-
-struct EventRoomName
-{
-    template<class T>
-    std::string operator()(const T &e)
-    {
-        if constexpr (std::is_same_v<mtx::events::StateEvent<mtx::events::state::Name>, T>)
-            return e.content.name;
-        return "";
-    }
-};
-
-struct EventRoomTopic
-{
-    template<class T>
-    std::string operator()(const T &e)
-    {
-        if constexpr (std::is_same_v<mtx::events::StateEvent<mtx::events::state::Topic>, T>)
-            return e.content.topic;
-        return "";
     }
 };
 
@@ -86,37 +64,37 @@ struct CallType
 struct EventBody
 {
     template<class T>
-    std::string operator()(const mtx::events::Event<T> &e)
+    const std::string *operator()(const mtx::events::Event<T> &e)
     {
         if constexpr (requires(decltype(e) t) { t.content.body.value(); })
-            return e.content.body ? e.content.body.value() : "";
+            return e.content.body ? &e.content.body.value() : nullptr;
         else if constexpr (requires(decltype(e) t) { std::string{t.content.body}; })
-            return e.content.body;
-        return "";
+            return &e.content.body;
+        return nullptr;
     }
 };
 
 struct EventFormattedBody
 {
     template<class T>
-    std::string operator()(const mtx::events::RoomEvent<T> &e)
+    const std::string *operator()(const mtx::events::RoomEvent<T> &e)
     {
         if constexpr (requires { T::formatted_body; }) {
             if (e.content.format == "org.matrix.custom.html")
-                return e.content.formatted_body;
+                return &e.content.formatted_body;
         }
-        return "";
+        return nullptr;
     }
 };
 
 struct EventFile
 {
     template<class T>
-    std::optional<mtx::crypto::EncryptedFile> operator()(const mtx::events::Event<T> &e)
+    const std::optional<mtx::crypto::EncryptedFile> *operator()(const mtx::events::Event<T> &e)
     {
         if constexpr (requires { T::file; })
-            return e.content.file;
-        return std::nullopt;
+            return &e.content.file;
+        return nullptr;
     }
 };
 
@@ -137,8 +115,8 @@ struct EventUrl
     std::string operator()(const mtx::events::Event<T> &e)
     {
         if constexpr (requires { T::url; }) {
-            if (auto file = EventFile{}(e))
-                return file->url;
+            if (auto file = EventFile{}(e); file && *file)
+                return (*file)->url;
             return e.content.url;
         }
         return "";
@@ -351,15 +329,23 @@ mtx::accessors::msg_type(const mtx::events::collections::TimelineEvents &event)
 {
     return std::visit(EventMsgType{}, event);
 }
+
 std::string
 mtx::accessors::room_name(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit(EventRoomName{}, event);
+    if (auto c = std::get_if<mtx::events::StateEvent<mtx::events::state::Name>>(&event))
+        return c->content.name;
+    else
+        return "";
 }
+
 std::string
 mtx::accessors::room_topic(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit(EventRoomTopic{}, event);
+    if (auto c = std::get_if<mtx::events::StateEvent<mtx::events::state::Topic>>(&event))
+        return c->content.topic;
+    else
+        return "";
 }
 
 std::string
@@ -371,13 +357,15 @@ mtx::accessors::call_type(const mtx::events::collections::TimelineEvents &event)
 std::string
 mtx::accessors::body(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit(EventBody{}, event);
+    auto body = std::visit(EventBody{}, event);
+    return body ? *body : std::string{};
 }
 
 std::string
 mtx::accessors::formatted_body(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit(EventFormattedBody{}, event);
+    auto body = std::visit(EventFormattedBody{}, event);
+    return body ? *body : std::string{};
 }
 
 QString
@@ -395,7 +383,11 @@ mtx::accessors::formattedBodyWithFallback(const mtx::events::collections::Timeli
 std::optional<mtx::crypto::EncryptedFile>
 mtx::accessors::file(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit(EventFile{}, event);
+    auto temp = std::visit(EventFile{}, event);
+    if (temp)
+        return *temp;
+    else
+        return {};
 }
 
 std::optional<mtx::crypto::EncryptedFile>
