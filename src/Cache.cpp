@@ -1956,14 +1956,24 @@ Cache::saveState(const mtx::responses::Sync &res)
             bool room_has_space_update = false;
             for (const auto &e : room.second.state.events) {
                 if (auto se = std::get_if<StateEvent<state::space::Parent>>(&e)) {
-                    spaces_with_updates.insert(se->state_key);
-                    room_has_space_update = true;
+                    if (se->state_key.empty()) {
+                        nhlog::db()->warn("Skipping space parent with empty state key in room {}",
+                                          room.first);
+                    } else {
+                        spaces_with_updates.insert(se->state_key);
+                        room_has_space_update = true;
+                    }
                 }
             }
             for (const auto &e : room.second.timeline.events) {
                 if (auto se = std::get_if<StateEvent<state::space::Parent>>(&e)) {
-                    spaces_with_updates.insert(se->state_key);
-                    room_has_space_update = true;
+                    if (se->state_key.empty()) {
+                        nhlog::db()->warn("Skipping space child with empty state key in room {}",
+                                          room.first);
+                    } else {
+                        spaces_with_updates.insert(se->state_key);
+                        room_has_space_update = true;
+                    }
                 }
             }
 
@@ -2013,8 +2023,8 @@ Cache::saveState(const mtx::responses::Sync &res)
 
         if (auto newRoomInfoDump = nlohmann::json(updatedInfo).dump();
             newRoomInfoDump != originalRoomInfoDump) {
-            nhlog::db()->critical(
-              "Writing out new room info:\n{}\n{}", originalRoomInfoDump, newRoomInfoDump);
+            // nhlog::db()->critical(
+            //   "Writing out new room info:\n{}\n{}", originalRoomInfoDump, newRoomInfoDump);
             roomsDb_.put(txn, room.first, newRoomInfoDump);
         }
 
