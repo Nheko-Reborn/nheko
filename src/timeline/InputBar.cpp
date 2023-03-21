@@ -283,6 +283,7 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("rainbowconfetti"),
                                              QStringLiteral("rain"),
                                              QStringLiteral("rainbowrain"),
+                                             QStringLiteral("msgtype"),
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
                                              QStringLiteral("converttoroom")};
@@ -650,6 +651,30 @@ InputBar::rainfall(const QString &body, bool rainbowify)
 }
 
 void
+InputBar::customMsgtype(const QString &msgtype, const QString &body, bool rainbowify)
+{
+    auto html = utils::markdownToHtml(body, rainbowify);
+
+    mtx::events::msg::Unknown msg;
+    msg.msgtype = msgtype.toStdString();
+    msg.body    = body.trimmed().toStdString();
+
+    if (html != body.trimmed().toHtmlEscaped() &&
+        ChatPage::instance()->userSettings()->markdown()) {
+        nlohmann::json j;
+        j["formatted_body"] = html.toStdString();
+        j["format"]         = "org.matrix.custom.html";
+        msg.content         = j.dump();
+        // Remove markdown links by completer
+        msg.body = replaceMatrixToMarkdownLink(body.trimmed()).toStdString();
+    }
+
+    msg.relations = generateRelations();
+
+    room->sendMessageEvent(msg, mtx::events::EventType::RoomMessage);
+}
+
+void
 InputBar::image(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
@@ -920,6 +945,8 @@ InputBar::command(const QString &command, QString args)
         rainfall(args, false);
     } else if (command == QLatin1String("rainbowrain")) {
         rainfall(args, true);
+    } else if (command == QLatin1String("msgtype")) {
+        customMsgtype(args.section(' ', 0, 0), args.section(' ', 1, -1), false);
     } else if (command == QLatin1String("goto")) {
         // Goto has three different modes:
         // 1 - Going directly to a given event ID
