@@ -21,6 +21,7 @@ ApplicationWindow {
     minimumHeight: stack.currentItem.implicitHeight + 2 * Nheko.paddingLarge
     height: stack.currentItem.implicitHeight + 2 * Nheko.paddingMedium
     minimumWidth: 400
+    width: 400
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     background: Rectangle {
