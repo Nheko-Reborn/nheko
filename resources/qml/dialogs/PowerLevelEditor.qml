@@ -21,6 +21,7 @@ ApplicationWindow {
     minimumWidth: 300
     minimumHeight: 400
     height: 600
+    width: 300
 
     title: qsTr("Permissions in %1").arg(roomSettings.roomName);
 
