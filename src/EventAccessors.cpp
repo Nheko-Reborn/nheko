@@ -103,7 +103,7 @@ struct EventThumbnailFile
     template<class T>
     std::optional<mtx::crypto::EncryptedFile> operator()(const mtx::events::Event<T> &e)
     {
-        if constexpr (requires { T::thumbnail_file; })
+        if constexpr (requires { e.content.info.thumbnail_file; })
             return e.content.info.thumbnail_file;
         return std::nullopt;
     }
