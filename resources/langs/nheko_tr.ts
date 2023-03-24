@@ -244,7 +244,7 @@
     <message>
         <location line="+262"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation>Kapıyı tıklat</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -744,52 +744,52 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+67"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoriler</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoriye aldığınız odalar.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Low Priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Düşük Öncelik</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation type="unfinished"></translation>
+        <translation>Düşük öncelikli odalar.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Server Notices</source>
-        <translation type="unfinished"></translation>
+        <translation>Sunucu Bildirileri</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Messages from your server or administrator.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sunucunuzdan ya da yöneticinizden gelen mesajlar.</translation>
     </message>
     <message>
         <location line="+660"/>
         <source>Failed to update community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Topluluk güncellenemedi: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Oda topluluktan silinemedi: %1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Oda için topluluk güncellenemedi: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Topluluk, odadan kaldırılamadı: %1</translation>
     </message>
 </context>
 <context>
@@ -797,40 +797,40 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+21"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Topluluğa katılmayı onayla</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Odaya katılmayı onayla</translation>
     </message>
     <message numerus="yes">
         <location line="+67"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n üye</numerusform>
+            <numerusform>%n üye</numerusform>
         </translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu odaya katılmak istiyor musunuz? İsterseniz aşağıdan bir sebep belirtebilirsiniz:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu odaya direkt olarak katılamazsınız. Ama yine de odanın kapısını tıklatabilir ve oda üyelerinden giriş izni isteyebilirsiniz. İsterseniz aşağıdan bir sebep de belirtebilirsiniz:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Kapıyı tıklat</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Katıl</translation>
     </message>
 </context>
 <context>
@@ -838,22 +838,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+17"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Direkt Sohbet Oluştur</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Davet edilecek kullanıcı</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@kullanici:sunucu.tld</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifreleme</translation>
     </message>
 </context>
 <context>
@@ -861,37 +861,37 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+148"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Oda Oluştur</translation>
     </message>
     <message>
         <location line="-102"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>İsim</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Yeni Topluluk</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Yeni Oda</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>İsimsiz</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Konu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Konu yok</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -901,17 +901,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Herkese Açık</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Herkese açık odalara herkes katılabilir; Gizli odalara katılmak için davet gereklidir.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Trusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Güvenildi</translation>
     </message>
     <message>
         <location line="+6"/>
