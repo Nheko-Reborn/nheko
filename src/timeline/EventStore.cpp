@@ -650,7 +650,7 @@ EventStore::get(int idx, bool decrypt)
         if (edits_.empty())
             event = cache::client()->getEvent(room_id_, *event_id);
         else
-            event = {edits_.back()};
+            event = mtx::events::collections::TimelineEvent{edits_.back()};
 
         if (!event)
             return nullptr;
