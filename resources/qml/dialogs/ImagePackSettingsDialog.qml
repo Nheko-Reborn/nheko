@@ -165,6 +165,7 @@ ApplicationWindow {
                         horizontalAlignment: TextEdit.AlignHCenter
                         Layout.alignment: Qt.AlignHCenter
                         Layout.preferredWidth: packinfoC.width - Nheko.paddingLarge * 2
+                        textFormat: TextEdit.PlainText
                     }
 
                     MatrixText {
@@ -173,6 +174,7 @@ ApplicationWindow {
                         horizontalAlignment: TextEdit.AlignHCenter
                         Layout.alignment: Qt.AlignHCenter
                         Layout.preferredWidth: packinfoC.width - Nheko.paddingLarge * 2
+                        textFormat: TextEdit.PlainText
                     }
 
                     GridLayout {
