@@ -365,7 +365,7 @@ Item {
     }
 
     ParticleSystem {
-        id: confettiParticleSystem
+        id: particleSystem
 
         Component.onCompleted: pause();
         paused: !shouldEffectsRun
@@ -374,13 +374,14 @@ Item {
     Emitter {
         id: confettiEmitter
 
+        group: "confetti"
         width: parent.width * 3/4
         enabled: false
         anchors.horizontalCenter: parent.horizontalCenter
         y: parent.height
         emitRate: Math.min(400 * Math.sqrt(parent.width * parent.height) / 870, 1000)
         lifeSpan: 15000
-        system: confettiParticleSystem
+        system: particleSystem
         maximumEmitted: 500
         velocityFromMovement: 8
         size: 16
@@ -394,7 +395,8 @@ Item {
     }
 
     ImageParticle {
-        system: confettiParticleSystem
+        system: particleSystem
+        groups: ["confetti"]
         source: "qrc:/confettiparticle.svg"
         rotationVelocity: 0
         rotationVelocityVariation: 360
@@ -416,29 +418,23 @@ Item {
     }
 
     Gravity {
-        system: confettiParticleSystem
+        system: particleSystem
         anchors.fill: parent
         magnitude: 350
         angle: 90
     }
 
-    ParticleSystem {
-        id: rainfallParticleSystem
-
-        Component.onCompleted: pause();
-        paused: !shouldEffectsRun
-    }
-
     Emitter {
         id: rainfallEmitter
 
+        group: "rain"
         width: parent.width
         enabled: false
         anchors.horizontalCenter: parent.horizontalCenter
         y: -60
         emitRate: parent.width / 50
         lifeSpan: 10000
-        system: rainfallParticleSystem
+        system: particleSystem
         velocity: PointDirection {
             x: 0
             y: 300
@@ -447,7 +443,8 @@ Item {
         }
 
         ItemParticle {
-            system: rainfallParticleSystem
+            system: particleSystem
+            groups: ["rain"]
             fade: false
             delegate: Rectangle {
                 width: 2
