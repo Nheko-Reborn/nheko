@@ -17,12 +17,14 @@ build-clazy:
     CLAZY_CHECKS: level0,level1,no-non-pod-global-static
     TRAVIS_OS_NAME: linux
   before_script:
+    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - apt-get update
     - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake liblmdb-dev libre2-dev
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
         qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev
         qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform
         qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev
+    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
     - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
@@ -47,6 +49,7 @@ build-gcc11:
   variables:
     TRAVIS_OS_NAME: linux
   before_script:
+    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - apt-get update
     - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
@@ -57,6 +60,7 @@ build-gcc11:
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
+    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib/ccache:${PATH}"
     - cmake -GNinja -H. -Bbuild
@@ -85,6 +89,7 @@ build-gcc10:
   variables:
     TRAVIS_OS_NAME: linux
   before_script:
+    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - apt-get update
     - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
@@ -95,6 +100,7 @@ build-gcc10:
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
+    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib/ccache:${PATH}"
     - cmake -GNinja -H. -Bbuild
@@ -167,13 +173,19 @@ codesign-macos:
       - /tmp/notarize*
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos
 
-build-flatpak-amd64:
+build-flatpak:
   stage: build
   image: ubuntu:latest
   #image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
-  tags: [docker]
+  tags: 
+    - docker-${ARCH}
+  parallel:
+    matrix:
+      - ARCH: [amd64, arm64]
   before_script:
+    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - apt-get update && apt-get -y install flatpak-builder git python3 curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
+    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
     - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
       # see https://github.com/flatpak/flatpak-builder/issues/495
     - git config --global protocol.file.allow always
@@ -181,12 +193,16 @@ build-flatpak-amd64:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
     - cd build-flatpak
-    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date`" app ../io.github.NhekoReborn.Nheko.yaml
-    - flatpak build-bundle repo nheko-amd64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
+    - echo -e "\e[0Ksection_start:`date +%s`:build_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mBuilding flatpak"
+    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../io.github.NhekoReborn.Nheko.yaml
+    - echo -e "\e[0Ksection_end:`date +%s`:build_flatpak\r\e[0K"
+    - flatpak build-bundle repo nheko-${ARCH}.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
-    - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-amd64.flatpak
+    - echo -e "\e[0Ksection_start:`date +%s`:upload_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mUploading flatpak"
+    - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-${ARCH}.flatpak
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
-    - (cd .. && mkdir -p artifacts && cp build-flatpak/nheko-amd64.flatpak artifacts/) || true
+    - (mkdir -p artifacts && cp build-flatpak/nheko-${ARCH}.flatpak artifacts/) || true
+    - echo -e "\e[0Ksection_end:`date +%s`:upload_flatpak\r\e[0K"
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   cache:
@@ -194,41 +210,9 @@ build-flatpak-amd64:
     paths:
       - build-flatpak/.flatpak-builder/
   artifacts:
-    expose_as: 'flatpak-amd64'
-    paths: ['artifacts/nheko-amd64.flatpak']
-    name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-amd64
-
-build-flatpak-arm64:
-  stage: build
-  image: ubuntu:latest
-  #image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
-  tags: [docker-arm64]
-  before_script:
-    - apt-get update && apt-get -y install flatpak-builder git python3 curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
-    - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-      # see https://github.com/flatpak/flatpak-builder/issues/495
-    - git config --global protocol.file.allow always
-  script:
-    - export VERSION=$(git describe)
-    - if [ "$(grep MemTotal /proc/meminfo | tr -cd '[0-9]')" -lt "6000000" ]; then export EXTRA_FLAGS='--jobs=3'; fi
-    - mkdir -p build-flatpak
-    - cd build-flatpak
-    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache $EXTRA_FLAGS --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for arm64" app ../io.github.NhekoReborn.Nheko.yaml
-    - flatpak build-bundle repo nheko-arm64.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
-  after_script:
-    - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-arm64.flatpak
-    - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
-    - (cd .. && mkdir -p artifacts && cp build-flatpak/nheko-arm64.flatpak artifacts/) || true
-  rules:
-    - if : '$CI_PIPELINE_TRIGGERED == null'
-  cache:
-    key: "$CI_JOB_NAME"
-    paths:
-      - build-flatpak/.flatpak-builder/
-  artifacts:
-    expose_as: 'flatpak-arm64'
-    paths: ['artifacts/nheko-arm64.flatpak']
-    name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-arm64
+    expose_as: 'flatpak'
+    paths: ['artifacts/nheko-${ARCH}.flatpak']
+    name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-${ARCH}
 
 appimage-amd64:
   stage: build
@@ -236,6 +220,8 @@ appimage-amd64:
   tags: [docker]
   allow_failure: true
   before_script:
+    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
+
     # Installing the packages needed to download and install third-party tools
     - apt-get update && apt-get install -y software-properties-common git wget curl python3 python3-pip python3-setuptools
 
@@ -265,6 +251,8 @@ appimage-amd64:
 
     - /usr/sbin/update-ccache-symlinks
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
+
+    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
     
   script:
     - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
@@ -319,8 +307,7 @@ github-release:
     - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'
   dependencies:
     - appimage-amd64
-    - build-flatpak-arm64
-    - build-flatpak-amd64
+    - build-flatpak
     - codesign-macos
   before_script:
     - apk update && apk add jq curl perl
