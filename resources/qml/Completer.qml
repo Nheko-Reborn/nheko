@@ -125,6 +125,8 @@ Control {
         delegate: Rectangle {
             property variant modelData: model
 
+            ListView.delayRemove: true
+
             color: model.index == popup.currentIndex ? Nheko.colors.highlight : Nheko.colors.base
             height: chooser.child.implicitHeight + 2 * popup.rowMargin
             implicitWidth: fullWidth ? ListView.view.width : chooser.child.implicitWidth + 4

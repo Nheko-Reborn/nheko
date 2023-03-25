@@ -449,6 +449,7 @@ Item {
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
             width: chat.delegateMaxWidth
             height: section.active ? section.height + timelinerow.height : timelinerow.height
+            ListView.delayRemove: true
 
             Loader {
                 id: section
