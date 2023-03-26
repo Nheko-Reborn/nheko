@@ -123,6 +123,70 @@ build-gcc10:
       - .hunter/
       - .ccache
 
+build-tw:
+  stage: build
+  image: opensuse/tumbleweed
+  tags: [docker]
+  variables:
+    TRAVIS_OS_NAME: linux
+  before_script:
+    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
+    - >
+        zypper --non-interactive install
+        "appstream-glib"
+        "asciidoc"
+        "ccache"
+        "cmake"
+        "cmark-devel"
+        "desktop-file-utils"
+        "gcc-c++"
+        "git"
+        "libappstream-glib8"
+        "lmdb-devel"
+        "memory-constraints"
+        "ninja"
+        "nlohmann_json-devel"
+        "olm-devel"
+        "openssl-devel"
+        "pkgconfig"
+        "spdlog-devel"
+        "zlib-devel"
+        "libQt5PlatformHeaders-devel"
+        "cmake(re2)"
+        "cmake(Qt5Concurrent)"
+        "cmake(Qt5Core)"
+        "cmake(Qt5DBus)"
+        "cmake(Qt5Keychain)"
+        "cmake(Qt5LinguistTools)"
+        "cmake(Qt5Multimedia)"
+        "cmake(Qt5Network)"
+        "cmake(Qt5QuickControls2)"
+        "cmake(Qt5Svg)"
+        "cmake(Qt5Widgets)"
+        "pkgconfig(libcurl)"
+        "pkgconfig(libevent)"
+        "pkgconfig(gstreamer-webrtc-1.0)"
+        "pkgconfig(xcb)"
+        "pkgconfig(xcb-ewmh)"
+    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
+  script:
+    - export PATH="/usr/lib64/ccache:${PATH}"
+    - cmake -GNinja -H. -Bbuild
+        -DCMAKE_INSTALL_PREFIX=.deps/usr
+        -DUSE_BUNDLED_MTXCLIENT=ON -DUSE_BUNDLED_COEURL=ON -DUSE_BUNDLED_LMDBXX=ON
+        -DCMAKE_BUILD_TYPE=Release
+        -DCMAKE_CXX_FLAGS="-Wno-error=array-bounds"
+        -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
+        # temporarily disabled because of mtxclient failures
+        #-DJSON_ImplicitConversions=OFF
+    - cmake --build build
+  rules:
+    - if : '$CI_PIPELINE_TRIGGERED == null'
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - .ccache
+
 build-macos:
   stage: build
   tags: [macos]
