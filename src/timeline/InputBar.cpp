@@ -651,9 +651,9 @@ InputBar::rainfall(const QString &body, bool rainbowify)
 }
 
 void
-InputBar::customMsgtype(const QString &msgtype, const QString &body, bool rainbowify)
+InputBar::customMsgtype(const QString &msgtype, const QString &body)
 {
-    auto html = utils::markdownToHtml(body, rainbowify);
+    auto html = utils::markdownToHtml(body);
 
     mtx::events::msg::Unknown msg;
     msg.msgtype = msgtype.toStdString();
@@ -946,7 +946,7 @@ InputBar::command(const QString &command, QString args)
     } else if (command == QLatin1String("rainbowrain")) {
         rainfall(args, true);
     } else if (command == QLatin1String("msgtype")) {
-        customMsgtype(args.section(' ', 0, 0), args.section(' ', 1, -1), false);
+        customMsgtype(args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("goto")) {
         // Goto has three different modes:
         // 1 - Going directly to a given event ID

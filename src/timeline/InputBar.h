@@ -243,7 +243,7 @@ private:
     void notice(const QString &body, bool rainbowify);
     void confetti(const QString &body, bool rainbowify);
     void rainfall(const QString &body, bool rainbowify);
-    void customMsgtype(const QString &msgtype, const QString &body, bool rainbowify);
+    void customMsgtype(const QString &msgtype, const QString &body);
     bool command(const QString &name, QString args);
     void image(const QString &filename,
                const std::optional<mtx::crypto::EncryptedFile> &file,
