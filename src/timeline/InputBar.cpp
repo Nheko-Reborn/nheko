@@ -281,7 +281,7 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("rainbownotice"),
                                              QStringLiteral("confetti"),
                                              QStringLiteral("rainbowconfetti"),
-                                             QStringLiteral("rain"),
+                                             QStringLiteral("rainfall"),
                                              QStringLiteral("rainbowrain"),
                                              QStringLiteral("msgtype"),
                                              QStringLiteral("goto"),
