@@ -11,7 +11,7 @@ variables:
 
 build-clazy:
   stage: build
-  image: ubuntu:22.04
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:22.04
   tags: [docker]
   variables:
     CLAZY_CHECKS: level0,level1,no-non-pod-global-static
@@ -44,7 +44,7 @@ build-clazy:
 
 build-gcc11:
   stage: build
-  image: ubuntu:22.04
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:22.04
   tags: [docker]
   variables:
     TRAVIS_OS_NAME: linux
@@ -84,7 +84,7 @@ build-gcc11:
 
 build-gcc10:
   stage: build
-  image: debian:bullseye
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/debian:bullseye
   tags: [docker]
   variables:
     TRAVIS_OS_NAME: linux
@@ -125,7 +125,7 @@ build-gcc10:
 
 build-tw:
   stage: build
-  image: opensuse/tumbleweed
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/opensuse/tumbleweed
   tags: [docker]
   variables:
     TRAVIS_OS_NAME: linux
@@ -239,7 +239,7 @@ codesign-macos:
 
 build-flatpak:
   stage: build
-  image: ubuntu:latest
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:latest
   #image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
   tags: 
     - docker-${ARCH}
@@ -280,7 +280,7 @@ build-flatpak:
 
 appimage-amd64:
   stage: build
-  image: ubuntu:22.04
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:22.04
   tags: [docker]
   allow_failure: true
   before_script:
@@ -350,7 +350,7 @@ appimage-amd64:
 
 linting:
   stage: build
-  image: alpine:latest
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:latest
   tags: [docker]
   before_script:
     - apk update && apk add make git python3 py3-pip
@@ -365,7 +365,7 @@ linting:
 
 github-release:
   stage: deploy
-  image: alpine:latest
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:latest
   tags: [docker]
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'
