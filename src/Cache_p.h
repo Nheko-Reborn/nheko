@@ -436,11 +436,22 @@ private:
                   if (e.type != EventType::Unsupported) {
                       if (std::is_same_v<std::remove_cv_t<std::remove_reference_t<decltype(e)>>,
                                          StateEvent<mtx::events::msg::Redacted>>) {
-                          if (e.type == EventType::RoomMember)
-                              membersdb.del(txn, e.state_key, "");
-                          else if (e.state_key.empty())
-                              statesdb.del(txn, to_string(e.type));
-                          else
+                          // apply the redaction event
+                          if (e.type == EventType::RoomMember) {
+                              // membership is not revoked, but names are yeeted (so we set the name
+                              // to the mxid)
+                              MemberInfo tmp{e.state_key, ""};
+                              membersdb.put(txn, e.state_key, nlohmann::json(tmp).dump());
+                          } else if (e.state_key.empty()) {
+                              // strictly speaking some stuff in those events can be redacted, but
+                              // this is close enough. Ref:
+                              // https://spec.matrix.org/v1.6/rooms/v10/#redactions
+                              if (e.type != EventType::RoomCreate &&
+                                  e.type != EventType::RoomJoinRules &&
+                                  e.type != EventType::RoomPowerLevels &&
+                                  e.type != EventType::RoomHistoryVisibility)
+                                  statesdb.del(txn, to_string(e.type));
+                          } else
                               stateskeydb.del(
                                 txn, to_string(e.type), e.state_key + '\0' + e.event_id);
                       } else if (e.state_key.empty()) {

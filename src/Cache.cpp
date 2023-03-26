@@ -3628,9 +3628,29 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                           te);
                 // overwrite the content and add redation data
                 std::visit(
-                  [redaction](auto &ev) {
+                  [&redaction, &room_id, &txn, &eventsDb, this](auto &ev) {
                       ev.unsigned_data.redacted_because = *redaction;
                       ev.unsigned_data.redacted_by      = redaction->event_id;
+
+                      if constexpr (isStateEvent_<decltype(ev)>) {
+                          auto statesdb    = getStatesDb(txn, room_id);
+                          auto stateskeydb = getStatesKeyDb(txn, room_id);
+                          auto membersdb   = getMembersDb(txn, room_id);
+                          mtx::events::StateEvent<mtx::events::msg::Redacted> redactedEvent;
+                          redactedEvent.event_id  = ev.event_id;
+                          redactedEvent.state_key = ev.state_key;
+                          redactedEvent.type      = ev.type;
+                          nhlog::db()->critical("Redacting: {}",
+                                                nlohmann::json(redactedEvent).dump(2));
+
+                          saveStateEvent(txn,
+                                         statesdb,
+                                         stateskeydb,
+                                         membersdb,
+                                         eventsDb,
+                                         room_id,
+                                         mtx::events::collections::StateEvents{redactedEvent});
+                      }
                   },
                   te.data);
                 event = mtx::accessors::serialize_event(te.data);
@@ -5194,8 +5214,8 @@ to_json(nlohmann::json &j, const MemberInfo &info)
 void
 from_json(const nlohmann::json &j, MemberInfo &info)
 {
-    info.name       = j.at("name").get<std::string>();
-    info.avatar_url = j.at("avatar_url").get<std::string>();
+    info.name       = j.value("name", "");
+    info.avatar_url = j.value("avatar_url", "");
     info.is_direct  = j.value("is_direct", false);
     info.reason     = j.value("reason", "");
 }
