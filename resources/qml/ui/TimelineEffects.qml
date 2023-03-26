@@ -73,6 +73,7 @@ Item {
 
     Gravity {
         system: particleSystem
+        groups: ["confetti"]
         anchors.fill: parent
         magnitude: 350
         angle: 90
