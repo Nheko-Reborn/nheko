@@ -68,11 +68,22 @@ CallManager::CallManager(QObject *parent)
     qRegisterMetaType<mtx::events::voip::CallCandidates::Candidate>();
     qRegisterMetaType<mtx::responses::TurnServer>();
 
-    if (screenShareX11Available()) {
-        screenShareType_ = ScreenShareType::X11;
-    } else {
+#ifdef GSTREAMER_AVAILABLE
+    std::string errorMessage;
+    if (session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
+        screenShareTypes_.push_back(ScreenShareType::XDP);
         screenShareType_ = ScreenShareType::XDP;
     }
+
+    if (std::getenv("DISPLAY")) {
+        screenShareTypes_.push_back(ScreenShareType::X11);
+        if (QGuiApplication::platformName() != QStringLiteral("wayland")) {
+            // Selected by default
+            screenShareType_ = ScreenShareType::X11;
+            std::swap(screenShareTypes_[0], screenShareTypes_[1]);
+        }
+    }
+#endif
 
     connect(
       &session_,
@@ -208,13 +219,6 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
 
     std::string errorMessage;
-    if (!session_.havePlugins(callType != CallType::VOICE,
-                              callType == CallType::SCREEN,
-                              screenShareType_,
-                              &errorMessage)) {
-        emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
-        return;
-    }
 
     callType_ = callType;
     roomid_   = roomid;
@@ -745,16 +749,6 @@ CallManager::callsSupported()
 #endif
 }
 
-bool
-CallManager::screenShareX11Available()
-{
-#ifdef GSTREAMER_AVAILABLE
-    return std::getenv("DISPLAY");
-#else
-    return false;
-#endif
-}
-
 QStringList
 CallManager::devices(bool isVideo) const
 {
@@ -863,9 +857,29 @@ CallManager::screenShareReady() const
 }
 
 QStringList
+CallManager::screenShareTypeList()
+{
+    QStringList ret;
+    ret.reserve(2);
+    for (ScreenShareType type : screenShareTypes_) {
+        switch (type) {
+        case ScreenShareType::X11:
+            ret.append(tr("X11"));
+            break;
+        case ScreenShareType::XDP:
+            ret.append(tr("Stream from xdg-desktop-portal"));
+            break;
+        }
+    }
+
+    return ret;
+}
+
+QStringList
 CallManager::windowList()
 {
-    if (!screenShareX11Available()) {
+    if (!(std::find(screenShareTypes_.begin(), screenShareTypes_.end(), ScreenShareType::X11) !=
+          screenShareTypes_.end())) {
         return {};
     }
 
@@ -998,7 +1012,7 @@ CallManager::previewWindow(unsigned int index) const
     }
 
     if (screenShareType_ == ScreenShareType::X11 &&
-        (!screenShareX11Available() || windows_.empty() || index >= windows_.size())) {
+        (windows_.empty() || index >= windows_.size())) {
         nhlog::ui()->error("X11 screencast not available");
         return;
     }
@@ -1085,19 +1099,20 @@ CallManager::setupScreenShareXDP()
 #ifdef GSTREAMER_AVAILABLE
     ScreenCastPortal &sc_portal = ScreenCastPortal::instance();
     sc_portal.init();
-    screenShareType_ = ScreenShareType::XDP;
 #endif
 }
 
 void
-CallManager::setScreenShareType(webrtc::ScreenShareType screenShareType)
+CallManager::setScreenShareType(unsigned int index)
 {
 #ifdef GSTREAMER_AVAILABLE
     closeScreenShare();
-    screenShareType_ = screenShareType;
+    if (index >= screenShareTypes_.size())
+        nhlog::ui()->error("WebRTC: Screen share type index out of range");
+    screenShareType_ = screenShareTypes_[index];
     emit screenShareChanged();
 #else
-    (void)screenShareType;
+    (void)index;
 #endif
 }
 

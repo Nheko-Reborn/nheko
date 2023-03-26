@@ -14,10 +14,6 @@ Popup {
     anchors.centerIn: parent;
 
     Component.onCompleted: {
-        if (CallManager.screenShareX11Available)
-            CallManager.setScreenShareType(ScreenShareType.X11);
-        else
-            CallManager.setScreenShareType(ScreenShareType.XDP);
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
     }
     Component.onDestruction: {
@@ -47,29 +43,13 @@ Popup {
             color: Nheko.colors.windowText
             }
 
-            RadioButton {
-            id: screenshare_X11
-            text: qsTr("X11");
-            visible: CallManager.screenShareX11Available
-            checked: CallManager.screenShareX11Available
-            onToggled: {
-                if (screenshare_X11.checked)
-                    CallManager.setScreenShareType(ScreenShareType.X11);
-                else
-                    CallManager.setScreenShareType(ScreenShareType.XDP);
-                }
-            }
-            RadioButton {
-            id: screenshare_XDP
-            text: qsTr("xdg-desktop-portal");
-            checked: !CallManager.screenShareX11Available
-            onToggled: {
-                if (screenshare_XDP.checked)
-                    CallManager.setScreenShareType(ScreenShareType.XDP);
-                else
-                    CallManager.setScreenShareType(ScreenShareType.X11);
-                }
-            }
+          ComboBox {
+            id: screenshareType
+
+            Layout.fillWidth: true
+            model: CallManager.screenShareTypeList()
+            onCurrentIndexChanged: CallManager.setScreenShareType(currentIndex);
+          }
         }
 
         RowLayout {
@@ -84,7 +64,7 @@ Popup {
             }
 
             ComboBox {
-                visible: screenshare_X11.checked
+                visible: CallManager.screenShareType == ScreenShareType.X11
                 id: windowCombo
 
                 Layout.fillWidth: true
@@ -92,7 +72,7 @@ Popup {
             }
 
             Button {
-                visible: screenshare_XDP.checked
+                visible: CallManager.screenShareType == ScreenShareType.XDP
                 highlighted: !CallManager.screenShareReady
                 text: qsTr("Request screencast")
                 onClicked: {

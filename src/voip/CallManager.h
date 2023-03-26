@@ -44,7 +44,6 @@ class CallManager final : public QObject
     Q_PROPERTY(QStringList mics READ mics NOTIFY devicesChanged)
     Q_PROPERTY(QStringList cameras READ cameras NOTIFY devicesChanged)
     Q_PROPERTY(bool callsSupported READ callsSupported CONSTANT)
-    Q_PROPERTY(bool screenShareX11Available READ screenShareX11Available CONSTANT)
     Q_PROPERTY(bool screenShareReady READ screenShareReady NOTIFY screenShareChanged)
 
 public:
@@ -68,7 +67,6 @@ public:
     bool screenShareReady() const;
 
     static bool callsSupported();
-    static bool screenShareX11Available();
 
 public slots:
     void sendInvite(const QString &roomid, webrtc::CallType, unsigned int windowIndex = 0);
@@ -80,8 +78,9 @@ public slots:
       mtx::events::voip::CallHangUp::Reason = mtx::events::voip::CallHangUp::Reason::UserHangUp);
     void rejectInvite();
     void setupScreenShareXDP();
-    void setScreenShareType(webrtc::ScreenShareType);
+    void setScreenShareType(unsigned int index);
     void closeScreenShare();
+    QStringList screenShareTypeList();
     QStringList windowList();
     void previewWindow(unsigned int windowIndex) const;
 
@@ -126,6 +125,7 @@ private:
     std::vector<std::string> turnURIs_;
     QTimer turnServerTimer_;
     QMediaPlayer player_;
+    std::vector<webrtc::ScreenShareType> screenShareTypes_;
     std::vector<std::pair<QString, uint32_t>> windows_;
     std::vector<std::string> rejectCallPartyIDs_;
 
