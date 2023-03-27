@@ -14,22 +14,13 @@
 #include <QDBusPendingCallWatcher>
 #include <QDBusPendingReply>
 #include <QDBusUnixFileDescriptor>
+#include <mtxclient/utils.hpp>
 #include <random>
 
 static QString
 make_token()
 {
-    thread_local std::random_device rng;
-    std::uniform_int_distribution<char> index_dist(0, 9);
-
-    std::string token;
-    token.reserve(5 + 64);
-    token += "nheko";
-
-    for (uint8_t i = 0; i < 64; ++i)
-        token.push_back('0' + index_dist(rng));
-
-    return QString::fromStdString(std::move(token));
+    return QString::fromStdString("nheko" + mtx::client::utils::random_token(64, false));
 }
 
 static QString
