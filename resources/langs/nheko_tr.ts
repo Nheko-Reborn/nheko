@@ -916,17 +916,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Bütün davetlilere oda yapımcısıyla aynı yetkiler verilir</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifreleme</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Dikkat: Şifreleme devre dışı bırakılamaz</translation>
     </message>
 </context>
 <context>
@@ -934,27 +934,27 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/ChatPage.cpp" line="+285"/>
         <source>Decrypt secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Gizli anahtarları deşifre et</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Gizli anahtarlarınızı kurtarmak için anahtarınızı ya da parolanızı girin:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation type="unfinished"></translation>
+        <translation>Gizli anahtarlarınızı kurtarmak için anahtarınızı ya da %1 adlı parolanızı girin:</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Decryption failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifre çözme başarısız</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>Verilen kurtarma anahtarı veya parolayla gizli anahtarların şifresi çözülemedi</translation>
     </message>
 </context>
 <context>
@@ -962,7 +962,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+13"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğrulama Kodu</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -972,12 +972,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+33"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eşleşmiyorlar!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eşleşiyorlar!</translation>
     </message>
 </context>
 <context>
@@ -985,47 +985,47 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/emoji/EmojiPicker.qml" line="+70"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Ara</translation>
     </message>
     <message>
         <location line="+181"/>
         <source>People</source>
-        <translation type="unfinished"></translation>
+        <translation>İnsanlar</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğa</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished"></translation>
+        <translation>Yiyecekler</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiviteler</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished"></translation>
+        <translation>Seyahat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished"></translation>
+        <translation>Objeler</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished"></translation>
+        <translation>Semboller</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished"></translation>
+        <translation>Bayraklar</translation>
     </message>
 </context>
 <context>
@@ -1033,27 +1033,27 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+13"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğrulama Kodu</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Lütfen emoji kullanarak doğrulayın. Her iki tarafta da aynı emojileri görmeniz lazım. Eğer aynı değillerse, lütfen &apos;Eşleşmiyorlar!&apos; düğmesine basıp doğrulamayı iptal edin!</translation>
     </message>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Görünen emojiler fontlar yüzünden farklı programlarda farklı biçimde görünebilir. Aynı şekilde başka dillere de çevrilmiş olabilirler. Yine de 64 farklı obje veya hayvanlardan oluşmalılar. Örnek olarak bir aslan ve kedi emojisi farklı, fakat bir kedinin kafasının veya bütün vücudunun görünmesi aynıdır.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eşleşmiyorlar!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Eşleşiyorlar!</translation>
     </message>
 </context>
 <context>
@@ -1061,42 +1061,42 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+48"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu mesajı çözmek için anahtar yok. Anahtarı otomatik olarak talep ettik ama sabırsızlanıyorsanız yine de tekrar istemeyi deneyebilirsiniz.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu mesaj çözülemedi çünkü sadece yeni mesajlar için anahtarımız var. Bu mesaj için erişim istemeyi deneyebilirsiniz.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifreleme anahtarlarını veritabanından okurken bir hata oluştu.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu mesajı çözmede bir hata oluştu.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
+        <translation>İleti ayrıştırılamadı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifreleme anahtarı tekrar kullanıldı! Birileri bu sohbete sahte mesajlar yerleştirmeye çalışıyor olabilir!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinmeyen şifre çözme hatası</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>Anahtar talep et</translation>
     </message>
 </context>
 <context>
@@ -1104,12 +1104,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 uçtan uça şifrelmeyi aktive etti</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Şifreleme, mesajlarınızı sadece gönderen kişinin okumasını sağlayarak daha güvenli hale getirir. Ekstra güvenlik için, eğer doğru kişiyle konuştuğunuza emin olmak istiyorsanız, onları gerçek hayatta doğrulayabilirsiniz.</translation>
     </message>
 </context>
 <context>
@@ -1117,22 +1117,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+57"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu mesaj şifreli değil!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Encrypted by a verified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğrulanmış bir cihaz tarafından şifrelendi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğrulanmamış bir cihaz tarafından şifrelendi, fakat bu kullanıcıya şu ana kadar güvendiniz.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğrulanmamış bir cihaz ya da şifre yedeği gibi güvenilmez bir kaynak ile şifrelendi.</translation>
     </message>
 </context>
 <context>
@@ -1140,42 +1140,42 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+13"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğrulama başarısız</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diğer kullanıcı bizim doğrulama protokolümüzü desteklemiyor.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Anahtar uyuşmazlığı tespit edildi!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cihaz doğrulaması zaman aşımına uğradı.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diğer taraf doğrulamayı iptal etti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Doğrulama mesajları hatalı sırayla alındı!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilinmeyen doğrulama hatası.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Kapat</translation>
     </message>
 </context>
 <context>
@@ -1183,7 +1183,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+41"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>İlet</translation>
     </message>
 </context>
 <context>
