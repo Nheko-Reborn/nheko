@@ -20,7 +20,7 @@ class ScreenCastPortal final : public QObject
 public:
     struct Stream
     {
-        int fd;
+        QDBusUnixFileDescriptor fd;
         quint32 nodeId;
     };
 
@@ -51,6 +51,13 @@ private:
     void selectSources();
     void start();
     void openPipeWireRemote();
+    bool makeConnection(QString service,
+                        QString path,
+                        QString interface,
+                        QString name,
+                        const char *slot);
+    void removeConnection();
+    void disconnectClose();
     QDBusObjectPath sessionHandle;
     uint availableSourceTypes;
     uint availableCursorModes;
@@ -65,6 +72,7 @@ private:
         Closing,
     };
     State state = State::Closed;
+    std::optional<std::array<QString, 5>> last_connection;
 };
 
 #endif

@@ -34,6 +34,48 @@ handle_path(QString handle_token)
            QStringLiteral("/") + handle_token;
 }
 
+bool
+ScreenCastPortal::makeConnection(QString service,
+                                 QString path,
+                                 QString interface,
+                                 QString name,
+                                 const char *slot)
+{
+    if (QDBusConnection::sessionBus().connect(service, path, interface, name, this, slot)) {
+        last_connection = {
+          std::move(service), std::move(path), std::move(interface), std::move(name), slot};
+        return true;
+    }
+    return false;
+}
+
+void
+ScreenCastPortal::disconnectClose()
+{
+    QDBusConnection::sessionBus().disconnect(QStringLiteral("org.freedesktop.portal.Desktop"),
+                                             sessionHandle.path(),
+                                             QStringLiteral("org.freedesktop.portal.Session"),
+                                             QStringLiteral("Closed"),
+                                             this,
+                                             SLOT(closedHandler(QVariantMap)));
+}
+
+void
+ScreenCastPortal::removeConnection()
+{
+    if (!last_connection.has_value())
+        return;
+
+    const auto &connection = *last_connection;
+    QDBusConnection::sessionBus().disconnect(connection[0],
+                                             connection[1],
+                                             connection[2],
+                                             connection[3],
+                                             this,
+                                             connection[4].toLocal8Bit().data());
+    last_connection = std::nullopt;
+}
+
 void
 ScreenCastPortal::init()
 {
@@ -79,13 +121,19 @@ ScreenCastPortal::close(bool reinit)
         break;
     case State::Starting:
         if (!reinit) {
-            // Remaining handler will abort.
+            disconnectClose();
+            removeConnection();
             state = State::Closed;
         }
         break;
     case State::Started: {
         state = State::Closing;
+        disconnectClose();
+        // Close file descriptor if it was opened
+        stream = Stream{};
+
         emit readyChanged();
+
         auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.portal.Desktop"),
                                                   sessionHandle.path(),
                                                   QStringLiteral("org.freedesktop.portal.Session"),
@@ -97,7 +145,9 @@ ScreenCastPortal::close(bool reinit)
                 &QDBusPendingCallWatcher::finished,
                 this,
                 [this, reinit](QDBusPendingCallWatcher *self) {
+                    self->deleteLater();
                     QDBusPendingReply reply = *self;
+
                     if (!reply.isValid()) {
                         nhlog::ui()->warn("org.freedesktop.portal.ScreenCast (Close): {}",
                                           reply.error().message().toStdString());
@@ -116,8 +166,11 @@ ScreenCastPortal::close(bool reinit)
 void
 ScreenCastPortal::closedHandler(uint response, const QVariantMap &)
 {
+    removeConnection();
+    disconnectClose();
+
     if (response != 0) {
-        nhlog::ui()->error("org.freedekstop.portal.ScreenCast (Closed): {}", response);
+        nhlog::ui()->error("org.freedesktop.portal.ScreenCast (Closed): {}", response);
     }
 
     nhlog::ui()->debug("org.freedesktop.portal.ScreenCast: Connection closed");
@@ -130,12 +183,16 @@ ScreenCastPortal::createSession()
 {
     // Connect before sending the request to avoid missing the reply
     QString handle_token = make_token();
-    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.portal.Desktop"),
-                                          handle_path(handle_token),
-                                          QStringLiteral("org.freedesktop.portal.Request"),
-                                          QStringLiteral("Response"),
-                                          this,
-                                          SLOT(createSessionHandler(uint, QVariantMap)));
+    if (!makeConnection(QStringLiteral("org.freedesktop.portal.Desktop"),
+                        handle_path(handle_token),
+                        QStringLiteral("org.freedesktop.portal.Request"),
+                        QStringLiteral("Response"),
+                        SLOT(createSessionHandler(uint, QVariantMap)))) {
+        nhlog::ui()->error(
+          "Connection to signal Response for org.freedesktop.portal.Request failed");
+        close();
+        return;
+    }
 
     auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.portal.Desktop"),
                                               QStringLiteral("/org/freedesktop/portal/desktop"),
@@ -145,11 +202,11 @@ ScreenCastPortal::createSession()
                        {QStringLiteral("session_handle_token"), make_token()}};
 
     QDBusPendingCall pendingCall     = QDBusConnection::sessionBus().asyncCall(msg);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall, this);
     connect(
       watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *self) {
-          QDBusPendingReply<QDBusObjectPath> reply = *self;
           self->deleteLater();
+          QDBusPendingReply<QDBusObjectPath> reply = *self;
 
           if (!reply.isValid()) {
               nhlog::ui()->error("org.freedesktop.portal.ScreenCast (CreateSession): {}",
@@ -162,31 +219,32 @@ ScreenCastPortal::createSession()
 void
 ScreenCastPortal::createSessionHandler(uint response, const QVariantMap &results)
 {
-    switch (state) {
-    case State::Closed:
+    removeConnection();
+
+    if (state != State::Starting) {
         nhlog::ui()->warn("ScreenCastPortal not starting");
-        break;
-    case State::Starting: {
-        if (response != 0) {
-            nhlog::ui()->error("org.freedekstop.portal.ScreenCast (CreateSession Response): {}",
-                               response);
-            close();
-            return;
-        }
-
-        sessionHandle = QDBusObjectPath(results.value(QStringLiteral("session_handle")).toString());
-
-        nhlog::ui()->debug("org.freedesktop.portal.ScreenCast: sessionHandle = {}",
-                           sessionHandle.path().toStdString());
-
-        getAvailableSourceTypes();
-    } break;
-    case State::Started:
-        nhlog::ui()->warn("ScreenCastPortal already started");
-        break;
-    case State::Closing:
-        break;
+        return;
     }
+    if (response != 0) {
+        nhlog::ui()->error("org.freedesktop.portal.ScreenCast (CreateSession Response): {}",
+                           response);
+        close();
+        return;
+    }
+
+    sessionHandle = QDBusObjectPath(results.value(QStringLiteral("session_handle")).toString());
+
+    nhlog::ui()->debug("org.freedesktop.portal.ScreenCast: sessionHandle = {}",
+                       sessionHandle.path().toStdString());
+
+    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.portal.Desktop"),
+                                          sessionHandle.path(),
+                                          QStringLiteral("org.freedesktop.portal.Session"),
+                                          QStringLiteral("Closed"),
+                                          this,
+                                          SLOT(closedHandler(QVariantMap)));
+
+    getAvailableSourceTypes();
 }
 
 void
@@ -200,11 +258,11 @@ ScreenCastPortal::getAvailableSourceTypes()
         << QStringLiteral("AvailableSourceTypes");
 
     QDBusPendingCall pendingCall     = QDBusConnection::sessionBus().asyncCall(msg);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall, this);
     connect(
       watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *self) {
-          QDBusPendingReply<QDBusVariant> reply = *self;
           self->deleteLater();
+          QDBusPendingReply<QDBusVariant> reply = *self;
 
           if (!reply.isValid()) {
               nhlog::ui()->error("org.freedesktop.DBus.Properties (Get AvailableSourceTypes): {}",
@@ -213,29 +271,21 @@ ScreenCastPortal::getAvailableSourceTypes()
               return;
           }
 
-          switch (state) {
-          case State::Closed:
+          if (state != State::Starting) {
               nhlog::ui()->warn("ScreenCastPortal not starting");
-              break;
-          case State::Starting: {
-              const auto &value = reply.value().variant();
-              if (value.canConvert<uint>()) {
-                  availableSourceTypes = value.value<uint>();
-              } else {
-                  nhlog::ui()->error("Invalid reply from org.freedesktop.DBus.Properties (Get "
-                                     "AvailableSourceTypes)");
-                  close();
-                  return;
-              }
-
-              getAvailableCursorModes();
-          } break;
-          case State::Started:
-              nhlog::ui()->warn("ScreenCastPortal already started");
-              break;
-          case State::Closing:
-              break;
+              return;
           }
+          const auto &value = reply.value().variant();
+          if (value.canConvert<uint>()) {
+              availableSourceTypes = value.value<uint>();
+          } else {
+              nhlog::ui()->error("Invalid reply from org.freedesktop.DBus.Properties (Get "
+                                 "AvailableSourceTypes)");
+              close();
+              return;
+          }
+
+          getAvailableCursorModes();
       });
 }
 
@@ -250,11 +300,11 @@ ScreenCastPortal::getAvailableCursorModes()
         << QStringLiteral("AvailableCursorModes");
 
     QDBusPendingCall pendingCall     = QDBusConnection::sessionBus().asyncCall(msg);
-    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall);
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall, this);
     connect(
       watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *self) {
-          QDBusPendingReply<QDBusVariant> reply = *self;
           self->deleteLater();
+          QDBusPendingReply<QDBusVariant> reply = *self;
 
           if (!reply.isValid()) {
               nhlog::ui()->error("org.freedesktop.DBus.Properties (Get AvailableCursorModes): {}",
@@ -263,29 +313,21 @@ ScreenCastPortal::getAvailableCursorModes()
               return;
           }
 
-          switch (state) {
-          case State::Closed:
+          if (state != State::Starting) {
               nhlog::ui()->warn("ScreenCastPortal not starting");
-              break;
-          case State::Starting: {
-              const auto &value = reply.value().variant();
-              if (value.canConvert<uint>()) {
-                  availableCursorModes = value.value<uint>();
-              } else {
-                  nhlog::ui()->error("Invalid reply from org.freedesktop.DBus.Properties (Get "
-                                     "AvailableCursorModes)");
-                  close();
-                  return;
-              }
-
-              selectSources();
-          } break;
-          case State::Started:
-              nhlog::ui()->warn("ScreenCastPortal already started");
-              break;
-          case State::Closing:
-              break;
+              return;
           }
+          const auto &value = reply.value().variant();
+          if (value.canConvert<uint>()) {
+              availableCursorModes = value.value<uint>();
+          } else {
+              nhlog::ui()->error("Invalid reply from org.freedesktop.DBus.Properties (Get "
+                                 "AvailableCursorModes)");
+              close();
+              return;
+          }
+
+          selectSources();
       });
 }
 
@@ -294,12 +336,16 @@ ScreenCastPortal::selectSources()
 {
     // Connect before sending the request to avoid missing the reply
     auto handle_token = make_token();
-    QDBusConnection::sessionBus().connect(QString(),
-                                          handle_path(handle_token),
-                                          QStringLiteral("org.freedesktop.portal.Request"),
-                                          QStringLiteral("Response"),
-                                          this,
-                                          SLOT(selectSourcesHandler(uint, QVariantMap)));
+    if (!makeConnection(QString(),
+                        handle_path(handle_token),
+                        QStringLiteral("org.freedesktop.portal.Request"),
+                        QStringLiteral("Response"),
+                        SLOT(selectSourcesHandler(uint, QVariantMap)))) {
+        nhlog::ui()->error(
+          "Connection to signal Response for org.freedesktop.portal.Request failed");
+        close();
+        return;
+    }
 
     auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.portal.Desktop"),
                                               QStringLiteral("/org/freedesktop/portal/desktop"),
@@ -321,7 +367,9 @@ ScreenCastPortal::selectSources()
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall, this);
     connect(
       watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *self) {
+          self->deleteLater();
           QDBusPendingReply<QDBusObjectPath> reply = *self;
+
           if (!reply.isValid()) {
               nhlog::ui()->error("org.freedesktop.portal.ScreenCast (SelectSources): {}",
                                  reply.error().message().toStdString());
@@ -333,25 +381,19 @@ ScreenCastPortal::selectSources()
 void
 ScreenCastPortal::selectSourcesHandler(uint response, const QVariantMap &)
 {
-    switch (state) {
-    case State::Closed:
+    removeConnection();
+
+    if (state != State::Starting) {
         nhlog::ui()->warn("ScreenCastPortal not starting");
-        break;
-    case State::Starting: {
-        if (response != 0) {
-            nhlog::ui()->error("org.freedekstop.portal.ScreenCast (SelectSources Response): {}",
-                               response);
-            close();
-            return;
-        }
-        start();
-    } break;
-    case State::Started:
-        nhlog::ui()->warn("ScreenCastPortal already started");
-        break;
-    case State::Closing:
-        break;
+        return;
     }
+    if (response != 0) {
+        nhlog::ui()->error("org.freedesktop.portal.ScreenCast (SelectSources Response): {}",
+                           response);
+        close();
+        return;
+    }
+    start();
 }
 
 void
@@ -359,12 +401,15 @@ ScreenCastPortal::start()
 {
     // Connect before sending the request to avoid missing the reply
     auto handle_token = make_token();
-    QDBusConnection::sessionBus().connect(QString(),
-                                          handle_path(handle_token),
-                                          QStringLiteral("org.freedesktop.portal.Request"),
-                                          QStringLiteral("Response"),
-                                          this,
-                                          SLOT(startHandler(uint, QVariantMap)));
+    if (!makeConnection(QString(),
+                        handle_path(handle_token),
+                        QStringLiteral("org.freedesktop.portal.Request"),
+                        QStringLiteral("Response"),
+                        SLOT(startHandler(uint, QVariantMap)))) {
+        nhlog::ui()->error("Connection to org.freedesktop.portal.Request Response failed");
+        close();
+        return;
+    }
 
     auto msg = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.portal.Desktop"),
                                               QStringLiteral("/org/freedesktop/portal/desktop"),
@@ -377,11 +422,12 @@ ScreenCastPortal::start()
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall, this);
     connect(
       watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *self) {
+          self->deleteLater();
           QDBusPendingReply<QDBusObjectPath> reply = *self;
+
           if (!reply.isValid()) {
               nhlog::ui()->error("org.freedesktop.portal.ScreenCast (Start): {}",
                                  reply.error().message().toStdString());
-          } else {
           }
       });
 }
@@ -416,6 +462,8 @@ operator>>(const QDBusArgument &argument, PipeWireStream &stream)
 void
 ScreenCastPortal::startHandler(uint response, const QVariantMap &results)
 {
+    removeConnection();
+
     if (response != 0) {
         nhlog::ui()->error("org.freedesktop.portal.ScreenCast (Start Response): {}", response);
         close();
@@ -448,15 +496,17 @@ ScreenCastPortal::openPipeWireRemote()
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall, this);
     connect(
       watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *self) {
+          self->deleteLater();
           QDBusPendingReply<QDBusUnixFileDescriptor> reply = *self;
+
           if (!reply.isValid()) {
               nhlog::ui()->error("org.freedesktop.portal.ScreenCast (OpenPipeWireRemote): {}",
                                  reply.error().message().toStdString());
               close();
           } else {
-              stream.fd = reply.value().fileDescriptor();
-              nhlog::ui()->debug("org.freedesktop.portal.ScreenCast: fd = {}", stream.fd);
-
+              stream.fd = std::move(reply.value());
+              nhlog::ui()->error("org.freedesktop.portal.ScreenCast: fd = {}",
+                                 stream.fd.fileDescriptor());
               state = State::Started;
               emit readyChanged();
           }

@@ -1030,7 +1030,7 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                 pipe_ = nullptr;
                 return false;
             }
-            g_object_set(pipewiresrc, "fd", (gint)stream->fd, nullptr);
+            g_object_set(pipewiresrc, "fd", (gint)stream->fd.fileDescriptor(), nullptr);
             std::string path = std::to_string(stream->nodeId);
             g_object_set(pipewiresrc, "path", path.c_str(), nullptr);
             g_object_set(pipewiresrc, "do-timestamp", (gboolean)1, nullptr);
