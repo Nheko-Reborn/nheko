@@ -15,7 +15,7 @@ Item {
 
     function pulseRainfall()
     {
-        rainfallEmitter.pulse(parent.height * 7.5)
+        rainfallEmitter.pulse(parent.height * 3.3)
     }
 
     ParticleSystem {
