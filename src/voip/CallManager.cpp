@@ -867,7 +867,7 @@ CallManager::screenShareTypeList()
             ret.append(tr("X11"));
             break;
         case ScreenShareType::XDP:
-            ret.append(tr("Stream from xdg-desktop-portal"));
+            ret.append(tr("PipeWire"));
             break;
         }
     }
