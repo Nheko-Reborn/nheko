@@ -5,7 +5,7 @@
 
 #import "notifications/MacNotificationDelegate.h"
 
-#include <QString.h>
+#include <QString>
 
 #include "ChatPage.h"
 
