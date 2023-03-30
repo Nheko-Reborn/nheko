@@ -16,6 +16,9 @@ Popup {
     Component.onCompleted: {
         frameRateCombo.currentIndex = frameRateCombo.find(Settings.screenShareFrameRate);
     }
+    Component.onDestruction: {
+        CallManager.closeScreenShare();
+    }
     palette: Nheko.colors
 
     ColumnLayout {
@@ -35,16 +38,47 @@ Popup {
             Layout.bottomMargin: 8
 
             Label {
+            Layout.alignment: Qt.AlignLeft
+            text: qsTr("Method:")
+            color: Nheko.colors.windowText
+            }
+
+          ComboBox {
+            id: screenshareType
+
+            Layout.fillWidth: true
+            model: CallManager.screenShareTypeList()
+            onCurrentIndexChanged: CallManager.setScreenShareType(currentIndex);
+          }
+        }
+
+        RowLayout {
+            Layout.leftMargin: 8
+            Layout.rightMargin: 8
+            Layout.bottomMargin: 8
+
+            Label {
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Window:")
                 color: Nheko.colors.windowText
             }
 
             ComboBox {
+                visible: CallManager.screenShareType == ScreenShareType.X11
                 id: windowCombo
 
                 Layout.fillWidth: true
                 model: CallManager.windowList()
+            }
+
+            Button {
+                visible: CallManager.screenShareType == ScreenShareType.XDP
+                highlighted: !CallManager.screenShareReady
+                text: qsTr("Request screencast")
+                onClicked: {
+                  Settings.screenShareHideCursor = hideCursorCheckBox.checked;
+                  CallManager.setupScreenShareXDP();
+                }
             }
 
         }
@@ -122,6 +156,7 @@ Popup {
             }
 
             Button {
+                visible: CallManager.screenShareReady
                 text: qsTr("Share")
                 icon.source: "qrc:/icons/icons/ui/screen-share.svg"
 
@@ -137,6 +172,7 @@ Popup {
             }
 
             Button {
+                visible: CallManager.screenShareReady
                 text: qsTr("Preview")
                 onClicked: {
                     CallManager.previewWindow(windowCombo.currentIndex);

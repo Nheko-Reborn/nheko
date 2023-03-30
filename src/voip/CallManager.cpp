@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <memory>
 
+#include <QGuiApplication>
 #include <QMediaPlaylist>
 #include <QUrl>
 
@@ -22,6 +23,8 @@
 #include "Utils.h"
 
 #include "mtx/responses/turn_server.hpp"
+#include "voip/ScreenCastPortal.h"
+#include "voip/WebRTCSession.h"
 
 /*
  * Select Answer when one instance of the client supports v0
@@ -47,6 +50,7 @@ using namespace mtx::events;
 using namespace mtx::events::voip;
 
 using webrtc::CallType;
+using webrtc::ScreenShareType;
 //! Session Description Object
 typedef RTCSessionDescriptionInit SDO;
 
@@ -63,6 +67,23 @@ CallManager::CallManager(QObject *parent)
     qRegisterMetaType<std::vector<mtx::events::voip::CallCandidates::Candidate>>();
     qRegisterMetaType<mtx::events::voip::CallCandidates::Candidate>();
     qRegisterMetaType<mtx::responses::TurnServer>();
+
+#ifdef GSTREAMER_AVAILABLE
+    std::string errorMessage;
+    if (session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
+        screenShareTypes_.push_back(ScreenShareType::XDP);
+        screenShareType_ = ScreenShareType::XDP;
+    }
+
+    if (std::getenv("DISPLAY")) {
+        screenShareTypes_.push_back(ScreenShareType::X11);
+        if (QGuiApplication::platformName() != QStringLiteral("wayland")) {
+            // Selected by default
+            screenShareType_ = ScreenShareType::X11;
+            std::swap(screenShareTypes_[0], screenShareTypes_[1]);
+        }
+    }
+#endif
 
     connect(
       &session_,
@@ -176,6 +197,13 @@ CallManager::CallManager(QObject *parent)
                     break;
                 }
             });
+
+#ifdef GSTREAMER_AVAILABLE
+    connect(&ScreenCastPortal::instance(),
+            &ScreenCastPortal::readyChanged,
+            this,
+            &CallManager::screenShareChanged);
+#endif
 }
 
 void
@@ -191,11 +219,6 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     auto roomInfo = cache::singleRoomInfo(roomid.toStdString());
 
     std::string errorMessage;
-    if (!session_.havePlugins(
-          callType != CallType::VOICE, callType == CallType::SCREEN, &errorMessage)) {
-        emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
-        return;
-    }
 
     callType_ = callType;
     roomid_   = roomid;
@@ -212,14 +235,22 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
         return;
     }
 
+#ifdef GSTREAMER_AVAILABLE
     if (callType == CallType::SCREEN) {
-        if (!screenShareSupported())
-            return;
-        if (windows_.empty() || windowIndex >= windows_.size()) {
-            nhlog::ui()->error("WebRTC: window index out of range");
-            return;
+        if (screenShareType_ == ScreenShareType::X11) {
+            if (windows_.empty() || windowIndex >= windows_.size()) {
+                nhlog::ui()->error("WebRTC: window index out of range");
+                return;
+            }
+        } else {
+            ScreenCastPortal &sc_portal = ScreenCastPortal::instance();
+            if (sc_portal.getStream() == nullptr) {
+                nhlog::ui()->error("xdg-desktop-portal stream not started");
+                return;
+            }
         }
     }
+#endif
 
     if (haveCallInvite_) {
         nhlog::ui()->debug(
@@ -255,8 +286,12 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     invitee_              = callParty_.toStdString();
     emit newInviteState();
     playRingtone(QUrl(QStringLiteral("qrc:/media/media/ringback.ogg")), true);
-    if (!session_.createOffer(callType,
-                              callType == CallType::SCREEN ? windows_[windowIndex].second : 0)) {
+
+    uint32_t shareWindowId =
+      callType == CallType::SCREEN && screenShareType_ == ScreenShareType::X11
+        ? windows_[windowIndex].second
+        : 0;
+    if (!session_.createOffer(callType, screenShareType_, shareWindowId)) {
         emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
         endCall();
     }
@@ -466,8 +501,10 @@ CallManager::acceptInvite()
 
     stopRingtone();
     std::string errorMessage;
-    if (!session_.havePlugins(
-          callType_ != CallType::VOICE, callType_ == CallType::SCREEN, &errorMessage)) {
+    if (!session_.havePlugins(callType_ != CallType::VOICE,
+                              callType_ == CallType::SCREEN,
+                              screenShareType_,
+                              &errorMessage)) {
         emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
         hangUp(CallHangUp::Reason::UserMediaFailed);
         return;
@@ -712,12 +749,6 @@ CallManager::callsSupported()
 #endif
 }
 
-bool
-CallManager::screenShareSupported()
-{
-    return std::getenv("DISPLAY") && !std::getenv("WAYLAND_DISPLAY");
-}
-
 QStringList
 CallManager::devices(bool isVideo) const
 {
@@ -746,6 +777,7 @@ CallManager::generateCallID()
 void
 CallManager::clear(bool endAllCalls)
 {
+    closeScreenShare();
     roomid_.clear();
     callParty_.clear();
     callPartyDisplayName_.clear();
@@ -810,9 +842,47 @@ CallManager::stopRingtone()
     player_.setPlaylist(nullptr);
 }
 
+bool
+CallManager::screenShareReady() const
+{
+#ifdef GSTREAMER_AVAILABLE
+    if (screenShareType_ == ScreenShareType::X11) {
+        return true;
+    } else {
+        return ScreenCastPortal::instance().ready();
+    }
+#else
+    return false;
+#endif
+}
+
+QStringList
+CallManager::screenShareTypeList()
+{
+    QStringList ret;
+    ret.reserve(2);
+    for (ScreenShareType type : screenShareTypes_) {
+        switch (type) {
+        case ScreenShareType::X11:
+            ret.append(tr("X11"));
+            break;
+        case ScreenShareType::XDP:
+            ret.append(tr("PipeWire"));
+            break;
+        }
+    }
+
+    return ret;
+}
+
 QStringList
 CallManager::windowList()
 {
+    if (!(std::find(screenShareTypes_.begin(), screenShareTypes_.end(), ScreenShareType::X11) !=
+          screenShareTypes_.end())) {
+        return {};
+    }
+
     windows_.clear();
     windows_.push_back({tr("Entire screen"), 0});
 
@@ -880,25 +950,51 @@ namespace {
 GstElement *pipe_        = nullptr;
 unsigned int busWatchId_ = 0;
 
+void
+close_preview_stream()
+{
+    if (pipe_) {
+        gst_element_set_state(GST_ELEMENT(pipe_), GST_STATE_NULL);
+        gst_object_unref(pipe_);
+        pipe_ = nullptr;
+    }
+    if (busWatchId_) {
+        g_source_remove(busWatchId_);
+        busWatchId_ = 0;
+    }
+}
+
 gboolean
 newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer G_GNUC_UNUSED)
 {
     switch (GST_MESSAGE_TYPE(msg)) {
     case GST_MESSAGE_EOS:
-        if (pipe_) {
-            gst_element_set_state(GST_ELEMENT(pipe_), GST_STATE_NULL);
-            gst_object_unref(pipe_);
-            pipe_ = nullptr;
-        }
-        if (busWatchId_) {
-            g_source_remove(busWatchId_);
-            busWatchId_ = 0;
-        }
+        close_preview_stream();
         break;
+    case GST_MESSAGE_ERROR: {
+        GError *err     = nullptr;
+        gchar *dbg_info = nullptr;
+        gst_message_parse_error(msg, &err, &dbg_info);
+        nhlog::ui()->error("GST error: {}", dbg_info);
+        g_error_free(err);
+        g_free(dbg_info);
+        close_preview_stream();
+        break;
+    }
     default:
         break;
     }
     return TRUE;
+}
+
+static GstElement *
+make_preview_sink()
+{
+    if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
+        return gst_element_factory_make("waylandsink", nullptr);
+    } else {
+        return gst_element_factory_make("ximagesink", nullptr);
+    }
 }
 }
 #endif
@@ -907,38 +1003,81 @@ void
 CallManager::previewWindow(unsigned int index) const
 {
 #ifdef GSTREAMER_AVAILABLE
-    if (windows_.empty() || index >= windows_.size() || !gst_is_initialized())
+    if (!gst_is_initialized())
         return;
 
-    GstElement *ximagesrc = gst_element_factory_make("ximagesrc", nullptr);
-    if (!ximagesrc) {
-        nhlog::ui()->error("Failed to create ximagesrc");
+    if (pipe_ != nullptr) {
+        nhlog::ui()->warn("Preview already started");
         return;
     }
+
+    if (screenShareType_ == ScreenShareType::X11 &&
+        (windows_.empty() || index >= windows_.size())) {
+        nhlog::ui()->error("X11 screencast not available");
+        return;
+    }
+
+    auto settings = ChatPage::instance()->userSettings();
+
+    pipe_ = gst_pipeline_new(nullptr);
+
     GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
     GstElement *videoscale   = gst_element_factory_make("videoscale", nullptr);
     GstElement *capsfilter   = gst_element_factory_make("capsfilter", nullptr);
-    GstElement *ximagesink   = gst_element_factory_make("ximagesink", nullptr);
+    GstElement *preview_sink = make_preview_sink();
+    GstElement *videorate    = gst_element_factory_make("videorate", nullptr);
 
-    g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
-    g_object_set(ximagesrc, "show-pointer", FALSE, nullptr);
-    g_object_set(ximagesrc, "xid", windows_[index].second, nullptr);
+    gst_bin_add_many(
+      GST_BIN(pipe_), videorate, videoconvert, videoscale, capsfilter, preview_sink, nullptr);
 
     GstCaps *caps = gst_caps_new_simple(
-      "video/x-raw", "width", G_TYPE_INT, 480, "height", G_TYPE_INT, 360, nullptr);
+      "video/x-raw", "framerate", GST_TYPE_FRACTION, settings->screenShareFrameRate(), 1, nullptr);
     g_object_set(capsfilter, "caps", caps, nullptr);
     gst_caps_unref(caps);
 
-    pipe_ = gst_pipeline_new(nullptr);
-    gst_bin_add_many(
-      GST_BIN(pipe_), ximagesrc, videoconvert, videoscale, capsfilter, ximagesink, nullptr);
+    GstElement *screencastsrc = nullptr;
+    if (screenShareType_ == ScreenShareType::X11) {
+        GstElement *ximagesrc = gst_element_factory_make("ximagesrc", nullptr);
+        if (!ximagesrc) {
+            nhlog::ui()->error("Failed to create ximagesrc");
+            gst_object_unref(pipe_);
+            pipe_ = nullptr;
+            return;
+        }
+        g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
+        g_object_set(ximagesrc, "xid", windows_[index].second, nullptr);
+        g_object_set(ximagesrc, "show-pointer", !settings->screenShareHideCursor(), nullptr);
+        g_object_set(ximagesrc, "do-timestamp", (gboolean)1, nullptr);
+
+        gst_bin_add(GST_BIN(pipe_), ximagesrc);
+        screencastsrc = ximagesrc;
+    } else {
+        ScreenCastPortal &sc_portal            = ScreenCastPortal::instance();
+        const ScreenCastPortal::Stream *stream = sc_portal.getStream();
+        if (stream == nullptr) {
+            nhlog::ui()->error("xdg-desktop-portal stream not started");
+            gst_object_unref(pipe_);
+            pipe_ = nullptr;
+            return;
+        }
+        GstElement *pipewiresrc = gst_element_factory_make("pipewiresrc", nullptr);
+        g_object_set(pipewiresrc, "fd", (gint)stream->fd.fileDescriptor(), nullptr);
+        std::string path = std::to_string(stream->nodeId);
+        g_object_set(pipewiresrc, "path", path.c_str(), nullptr);
+        g_object_set(pipewiresrc, "do-timestamp", (gboolean)1, nullptr);
+
+        gst_bin_add(GST_BIN(pipe_), pipewiresrc);
+        screencastsrc = pipewiresrc;
+    }
+
     if (!gst_element_link_many(
-          ximagesrc, videoconvert, videoscale, capsfilter, ximagesink, nullptr)) {
+          screencastsrc, videorate, videoconvert, videoscale, capsfilter, preview_sink, nullptr)) {
         nhlog::ui()->error("Failed to link preview window elements");
         gst_object_unref(pipe_);
         pipe_ = nullptr;
         return;
     }
+
     if (gst_element_set_state(pipe_, GST_STATE_PLAYING) == GST_STATE_CHANGE_FAILURE) {
         nhlog::ui()->error("Unable to start preview pipeline");
         gst_object_unref(pipe_);
@@ -951,6 +1090,41 @@ CallManager::previewWindow(unsigned int index) const
     gst_object_unref(bus);
 #else
     (void)index;
+#endif
+}
+
+void
+CallManager::setupScreenShareXDP()
+{
+#ifdef GSTREAMER_AVAILABLE
+    ScreenCastPortal &sc_portal = ScreenCastPortal::instance();
+    sc_portal.init();
+#endif
+}
+
+void
+CallManager::setScreenShareType(unsigned int index)
+{
+#ifdef GSTREAMER_AVAILABLE
+    closeScreenShare();
+    if (index >= screenShareTypes_.size())
+        nhlog::ui()->error("WebRTC: Screen share type index out of range");
+    screenShareType_ = screenShareTypes_[index];
+    emit screenShareChanged();
+#else
+    (void)index;
+#endif
+}
+
+void
+CallManager::closeScreenShare()
+{
+#ifdef GSTREAMER_AVAILABLE
+    close_preview_stream();
+    if (!isOnCall()) {
+        ScreenCastPortal &sc_portal = ScreenCastPortal::instance();
+        sc_portal.close();
+    }
 #endif
 }
 

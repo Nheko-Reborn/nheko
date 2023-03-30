@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include <QGuiApplication>
 #include <QQmlEngine>
 #include <QQuickItem>
 #include <algorithm>
@@ -19,6 +20,7 @@
 #include "Logging.h"
 #include "UserSettingsPage.h"
 #include "WebRTCSession.h"
+#include "voip/ScreenCastPortal.h"
 
 #ifdef GSTREAMER_AVAILABLE
 extern "C"
@@ -40,9 +42,11 @@ extern "C"
 #define STUN_SERVER "stun://turn.matrix.org:3478"
 
 Q_DECLARE_METATYPE(webrtc::CallType)
+Q_DECLARE_METATYPE(webrtc::ScreenShareType)
 Q_DECLARE_METATYPE(webrtc::State)
 
 using webrtc::CallType;
+using webrtc::ScreenShareType;
 using webrtc::State;
 
 WebRTCSession::WebRTCSession()
@@ -54,6 +58,14 @@ WebRTCSession::WebRTCSession()
                                      1,
                                      0,
                                      "CallType",
+                                     QStringLiteral("Can't instantiate enum"));
+
+    qRegisterMetaType<webrtc::ScreenShareType>();
+    qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
+                                     "im.nheko",
+                                     1,
+                                     0,
+                                     "ScreenShareType",
                                      QStringLiteral("Can't instantiate enum"));
 
     qRegisterMetaType<webrtc::State>();
@@ -578,13 +590,13 @@ getMediaAttributes(const GstSDPMessage *sdp,
 }
 
 bool
-WebRTCSession::havePlugins(bool isVideo, bool isX11Screenshare, std::string *errorMessage)
+WebRTCSession::havePlugins(bool isVideo,
+                           bool isScreenshare,
+                           ScreenShareType screenShareType,
+                           std::string *errorMessage)
 {
     if (!initialised_ && !init(errorMessage))
         return false;
-    if (haveVoicePlugins_ && (!isVideo || haveVideoPlugins_) &&
-        (!isX11Screenshare || haveX11ScreensharePlugins_))
-        return true;
 
     static constexpr std::initializer_list<const char *> audio_elements = {
       "audioconvert",
@@ -610,10 +622,6 @@ WebRTCSession::havePlugins(bool isVideo, bool isX11Screenshare, std::string *err
       "videoconvert",
       "videoscale",
       "vp8enc",
-    };
-    static constexpr std::initializer_list<const char *> screenshare_elements = {
-      "ximagesink",
-      "ximagesrc",
     };
 
     std::string strError("Missing GStreamer elements: ");
@@ -641,18 +649,35 @@ WebRTCSession::havePlugins(bool isVideo, bool isX11Screenshare, std::string *err
     // check both elements at once
     if (isVideo)
         haveVideoPlugins_ = check_plugins(video_elements);
-    if (isX11Screenshare)
-        haveX11ScreensharePlugins_ = check_plugins(screenshare_elements);
+
+    bool haveScreensharePlugins = false;
+    if (isScreenshare) {
+        haveScreensharePlugins = check_plugins({"videorate"});
+        if (haveScreensharePlugins) {
+            if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
+                haveScreensharePlugins = check_plugins({"waylandsink"});
+            } else {
+                haveScreensharePlugins = check_plugins({"ximagesink"});
+            }
+        }
+        if (haveScreensharePlugins) {
+            if (screenShareType == ScreenShareType::X11) {
+                haveScreensharePlugins = check_plugins({"ximagesrc"});
+            } else {
+                haveScreensharePlugins = check_plugins({"pipewiresrc"});
+            }
+        }
+    }
 
     if (!haveVoicePlugins_ || (isVideo && !haveVideoPlugins_) ||
-        (isX11Screenshare && !haveX11ScreensharePlugins_)) {
+        (isScreenshare && !haveScreensharePlugins)) {
         nhlog::ui()->error(strError);
         if (errorMessage)
             *errorMessage = strError;
         return false;
     }
 
-    if (isVideo || isX11Screenshare) {
+    if (isVideo || isScreenshare) {
         // load qmlglsink to register GStreamer's GstGLVideoItem QML type
         GstElement *qmlglsink = gst_element_factory_make("qmlglsink", nullptr);
         gst_object_unref(qmlglsink);
@@ -661,12 +686,15 @@ WebRTCSession::havePlugins(bool isVideo, bool isX11Screenshare, std::string *err
 }
 
 bool
-WebRTCSession::createOffer(CallType callType, uint32_t shareWindowId)
+WebRTCSession::createOffer(CallType callType,
+                           ScreenShareType screenShareType,
+                           uint32_t shareWindowId)
 {
     clear();
-    isOffering_    = true;
-    callType_      = callType;
-    shareWindowId_ = shareWindowId;
+    isOffering_      = true;
+    callType_        = callType;
+    screenShareType_ = screenShareType;
+    shareWindowId_   = shareWindowId;
 
     // opus and vp8 rtp payload types must be defined dynamically
     // therefore from the range [96-127]
@@ -924,6 +952,7 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
     GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
     GstElement *tee          = gst_element_factory_make("tee", "videosrctee");
     gst_bin_add_many(GST_BIN(pipe_), videoconvert, tee, nullptr);
+
     if (callType_ == CallType::VIDEO || (settings->screenSharePiP() && devices_.haveCamera())) {
         std::pair<int, int> resolution;
         std::pair<int, int> frameRate;
@@ -969,16 +998,56 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
         nhlog::ui()->debug("WebRTC: screen share hide mouse cursor: {}",
                            settings->screenShareHideCursor());
 
-        GstElement *ximagesrc = gst_element_factory_make("ximagesrc", "screenshare");
-        if (!ximagesrc) {
-            nhlog::ui()->error("WebRTC: failed to create ximagesrc");
-            return false;
+        GstElement *screencastsrc = nullptr;
+
+        if (screenShareType_ == ScreenShareType::X11) {
+            GstElement *ximagesrc = gst_element_factory_make("ximagesrc", "screenshare");
+            if (!ximagesrc) {
+                nhlog::ui()->error("WebRTC: failed to create ximagesrc");
+                return false;
+            }
+            g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
+            g_object_set(ximagesrc, "xid", shareWindowId_, nullptr);
+            g_object_set(ximagesrc, "show-pointer", !settings->screenShareHideCursor(), nullptr);
+            g_object_set(ximagesrc, "do-timestamp", (gboolean)1, nullptr);
+
+            gst_bin_add(GST_BIN(pipe_), ximagesrc);
+            screencastsrc = ximagesrc;
+        } else {
+            ScreenCastPortal &sc_portal = ScreenCastPortal::instance();
+            GstElement *pipewiresrc     = gst_element_factory_make("pipewiresrc", "screenshare");
+            if (!pipewiresrc) {
+                nhlog::ui()->error("WebRTC: failed to create pipewiresrc");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return false;
+            }
+
+            const ScreenCastPortal::Stream *stream = sc_portal.getStream();
+            if (stream == nullptr) {
+                nhlog::ui()->error("xdg-desktop-portal stream not started");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return false;
+            }
+            g_object_set(pipewiresrc, "fd", (gint)stream->fd.fileDescriptor(), nullptr);
+            std::string path = std::to_string(stream->nodeId);
+            g_object_set(pipewiresrc, "path", path.c_str(), nullptr);
+            g_object_set(pipewiresrc, "do-timestamp", (gboolean)1, nullptr);
+            gst_bin_add(GST_BIN(pipe_), pipewiresrc);
+            GstElement *videorate = gst_element_factory_make("videorate", nullptr);
+            gst_bin_add(GST_BIN(pipe_), videorate);
+            if (!gst_element_link(pipewiresrc, videorate)) {
+                nhlog::ui()->error("WebRTC: failed to link pipewiresrc -> videorate");
+                return false;
+            }
+            screencastsrc = videorate;
         }
-        g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
-        g_object_set(ximagesrc, "xid", shareWindowId_, nullptr);
-        g_object_set(ximagesrc, "show-pointer", !settings->screenShareHideCursor(), nullptr);
 
         GstCaps *caps          = gst_caps_new_simple("video/x-raw",
+                                            "format",
+                                            G_TYPE_STRING,
+                                            "I420", // For vp8enc
                                             "framerate",
                                             GST_TYPE_FRACTION,
                                             settings->screenShareFrameRate(),
@@ -987,13 +1056,13 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
         GstElement *capsfilter = gst_element_factory_make("capsfilter", nullptr);
         g_object_set(capsfilter, "caps", caps, nullptr);
         gst_caps_unref(caps);
-        gst_bin_add_many(GST_BIN(pipe_), ximagesrc, capsfilter, nullptr);
+        gst_bin_add(GST_BIN(pipe_), capsfilter);
 
         if (settings->screenSharePiP() && devices_.haveCamera()) {
             GstElement *compositor = gst_element_factory_make("compositor", nullptr);
             g_object_set(compositor, "background", 1, nullptr);
             gst_bin_add(GST_BIN(pipe_), compositor);
-            if (!gst_element_link_many(ximagesrc, compositor, capsfilter, tee, nullptr)) {
+            if (!gst_element_link_many(screencastsrc, compositor, capsfilter, tee, nullptr)) {
                 nhlog::ui()->error("WebRTC: failed to link screen share elements");
                 return false;
             }
@@ -1006,7 +1075,7 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                 return false;
             }
             gst_object_unref(srcpad);
-        } else if (!gst_element_link_many(ximagesrc, videoconvert, capsfilter, tee, nullptr)) {
+        } else if (!gst_element_link_many(screencastsrc, videoconvert, capsfilter, tee, nullptr)) {
             nhlog::ui()->error("WebRTC: failed to link screen share elements");
             return false;
         }
@@ -1157,7 +1226,7 @@ WebRTCSession::end()
 #else
 
 bool
-WebRTCSession::havePlugins(bool, bool, std::string *)
+WebRTCSession::havePlugins(bool, bool, ScreenShareType, std::string *)
 {
     return false;
 }
@@ -1171,8 +1240,11 @@ WebRTCSession::haveLocalPiP() const
 // clang-format off
 // clang-format < 12 is buggy on this
 bool
-WebRTCSession::createOffer(webrtc::CallType, uint32_t)
+WebRTCSession::createOffer(webrtc::CallType,
+                           ScreenShareType screenShareType,
+                           uint32_t)
 {
+    (void)screenShareType;
     return false;
 }
 // clang-format on

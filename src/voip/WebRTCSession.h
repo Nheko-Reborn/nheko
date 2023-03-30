@@ -26,6 +26,13 @@ enum class CallType
 };
 Q_ENUM_NS(CallType)
 
+enum class ScreenShareType
+{
+    X11,
+    XDP
+};
+Q_ENUM_NS(ScreenShareType)
+
 enum class State
 {
     DISCONNECTED,
@@ -52,7 +59,10 @@ public:
         return instance;
     }
 
-    bool havePlugins(bool isVideo, bool isX11Screenshare, std::string *errorMessage = nullptr);
+    bool havePlugins(bool isVideo,
+                     bool isScreenshare,
+                     webrtc::ScreenShareType screenShareType,
+                     std::string *errorMessage = nullptr);
     webrtc::CallType callType() const { return callType_; }
     webrtc::State state() const { return state_; }
     bool haveLocalPiP() const;
@@ -60,7 +70,7 @@ public:
     bool isRemoteVideoRecvOnly() const { return isRemoteVideoRecvOnly_; }
     bool isRemoteVideoSendOnly() const { return isRemoteVideoSendOnly_; }
 
-    bool createOffer(webrtc::CallType, uint32_t shareWindowId);
+    bool createOffer(webrtc::CallType, webrtc::ScreenShareType, uint32_t shareWindowId);
     bool acceptOffer(const std::string &sdp);
     bool acceptAnswer(const std::string &sdp);
     bool acceptNegotiation(const std::string &sdp);
@@ -91,19 +101,19 @@ private:
     WebRTCSession();
 
     CallDevices &devices_;
-    bool initialised_               = false;
-    bool haveVoicePlugins_          = false;
-    bool haveVideoPlugins_          = false;
-    bool haveX11ScreensharePlugins_ = false;
-    webrtc::CallType callType_      = webrtc::CallType::VOICE;
-    webrtc::State state_            = webrtc::State::DISCONNECTED;
-    bool isOffering_                = false;
-    bool isRemoteVideoRecvOnly_     = false;
-    bool isRemoteVideoSendOnly_     = false;
-    QQuickItem *videoItem_          = nullptr;
-    GstElement *pipe_               = nullptr;
-    GstElement *webrtc_             = nullptr;
-    unsigned int busWatchId_        = 0;
+    bool initialised_                        = false;
+    bool haveVoicePlugins_                   = false;
+    bool haveVideoPlugins_                   = false;
+    webrtc::CallType callType_               = webrtc::CallType::VOICE;
+    webrtc::ScreenShareType screenShareType_ = webrtc::ScreenShareType::X11;
+    webrtc::State state_                     = webrtc::State::DISCONNECTED;
+    bool isOffering_                         = false;
+    bool isRemoteVideoRecvOnly_              = false;
+    bool isRemoteVideoSendOnly_              = false;
+    QQuickItem *videoItem_                   = nullptr;
+    GstElement *pipe_                        = nullptr;
+    GstElement *webrtc_                      = nullptr;
+    unsigned int busWatchId_                 = 0;
     std::vector<std::string> turnServers_;
     uint32_t shareWindowId_ = 0;
 
