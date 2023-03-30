@@ -152,6 +152,16 @@ directChat(const QString &userId)
         interface.call(QDBus::NoBlock, QStringLiteral("directChat"), userId);
 }
 
+QString
+statusMessage()
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        return QDBusReply<QString>{interface.call(QStringLiteral("statusMessage"))}.value();
+    else
+        return {};
+}
+
 void
 setStatusMessage(const QString &message)
 {

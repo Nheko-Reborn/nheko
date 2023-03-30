@@ -100,6 +100,12 @@ NhekoDBusBackend::directChat(const QString &userId) const
     ChatPage::instance()->startChat(userId);
 }
 
+QString
+NhekoDBusBackend::statusMessage() const
+{
+    return ChatPage::instance()->status();
+}
+
 void
 NhekoDBusBackend::setStatusMessage(const QString &message)
 {
