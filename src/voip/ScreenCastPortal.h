@@ -12,6 +12,7 @@
 #include <QDBusPendingReply>
 #include <QDBusUnixFileDescriptor>
 #include <QObject>
+#include <optional>
 
 class ScreenCastPortal final : public QObject
 {
