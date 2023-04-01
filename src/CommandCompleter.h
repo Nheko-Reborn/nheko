@@ -47,7 +47,6 @@ public:
         Confetti,
         RainbowConfetti,
         Rainfall,
-        RainbowRain,
         Msgtype,
         Goto,
         ConvertToDm,

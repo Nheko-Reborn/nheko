@@ -282,7 +282,6 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("confetti"),
                                              QStringLiteral("rainbowconfetti"),
                                              QStringLiteral("rainfall"),
-                                             QStringLiteral("rainbowrain"),
                                              QStringLiteral("msgtype"),
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
@@ -627,9 +626,9 @@ InputBar::confetti(const QString &body, bool rainbowify)
 }
 
 void
-InputBar::rainfall(const QString &body, bool rainbowify)
+InputBar::rainfall(const QString &body)
 {
-    auto html = utils::markdownToHtml(body, rainbowify);
+    auto html = utils::markdownToHtml(body);
 
     mtx::events::msg::Unknown rain;
     rain.msgtype = "io.element.effect.rainfall";
@@ -942,9 +941,7 @@ InputBar::command(const QString &command, QString args)
     } else if (command == QLatin1String("rainbowconfetti")) {
         confetti(args, true);
     } else if (command == QLatin1String("rainfall")) {
-        rainfall(args, false);
-    } else if (command == QLatin1String("rainbowrain")) {
-        rainfall(args, true);
+        rainfall(args);
     } else if (command == QLatin1String("msgtype")) {
         customMsgtype(args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("goto")) {

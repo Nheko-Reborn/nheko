@@ -89,8 +89,6 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QStringLiteral("/rainbowconfetti ");
             case Rainfall:
                 return QStringLiteral("/rainfall ");
-            case RainbowRain:
-                return QStringLiteral("/rainbowrain ");
             case Msgtype:
                 return QStringLiteral("/msgtype ");
             case Goto:
@@ -164,8 +162,6 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("/rainbowconfetti [message]");
             case Rainfall:
                 return tr("/rainfall [message]");
-            case RainbowRain:
-                return tr("/rainbowrain [message]");
             case Msgtype:
                 return tr("/msgtype <msgtype> [message]");
             case Goto:
@@ -239,8 +235,6 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("Send a message in rainbow colors with confetti.");
             case Rainfall:
                 return tr("Send a message with rain.");
-            case RainbowRain:
-                return tr("Send a message in rainbow colors with rain.");
             case Msgtype:
                 return tr("Send a message with a custom message type.");
             case Goto:
