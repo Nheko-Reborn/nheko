@@ -609,8 +609,9 @@ InputBar::confetti(const QString &body, bool rainbowify)
 {
     auto html = utils::markdownToHtml(body, rainbowify);
 
-    mtx::events::msg::Confetti confetti;
-    confetti.body = body.trimmed().toStdString();
+    mtx::events::msg::ElementEffect confetti;
+    confetti.msgtype = "nic.custom.confetti";
+    confetti.body    = body.trimmed().toStdString();
 
     if (html != body.trimmed().toHtmlEscaped() &&
         ChatPage::instance()->userSettings()->markdown()) {

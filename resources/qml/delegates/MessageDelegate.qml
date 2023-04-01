@@ -116,7 +116,7 @@ Item {
         }
 
         DelegateChoice {
-            roleValue: MtxEvent.ConfettiMessage
+            roleValue: MtxEvent.ElementEffectMessage
 
             TextMessage {
                 formatted: d.formattedBody

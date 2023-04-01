@@ -99,7 +99,7 @@ enum EventType
     Widget,
     /// m.room.message
     AudioMessage,
-    ConfettiMessage,
+    ElementEffectMessage,
     EmoteMessage,
     FileMessage,
     ImageMessage,

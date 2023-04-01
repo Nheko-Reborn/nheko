@@ -95,21 +95,21 @@ messageDescription(const QString &username = QString(),
                    const QString &body     = QString(),
                    const bool isLocal      = false)
 {
-    using Audio      = mtx::events::RoomEvent<mtx::events::msg::Audio>;
-    using Emote      = mtx::events::RoomEvent<mtx::events::msg::Emote>;
-    using File       = mtx::events::RoomEvent<mtx::events::msg::File>;
-    using Image      = mtx::events::RoomEvent<mtx::events::msg::Image>;
-    using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
-    using Sticker    = mtx::events::Sticker;
-    using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
-    using Unknown    = mtx::events::RoomEvent<mtx::events::msg::Unknown>;
-    using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
-    using Confetti   = mtx::events::RoomEvent<mtx::events::msg::Confetti>;
-    using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
-    using CallAnswer = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
-    using CallHangUp = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
-    using CallReject = mtx::events::RoomEvent<mtx::events::voip::CallReject>;
-    using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
+    using Audio         = mtx::events::RoomEvent<mtx::events::msg::Audio>;
+    using Emote         = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+    using File          = mtx::events::RoomEvent<mtx::events::msg::File>;
+    using Image         = mtx::events::RoomEvent<mtx::events::msg::Image>;
+    using Notice        = mtx::events::RoomEvent<mtx::events::msg::Notice>;
+    using Sticker       = mtx::events::Sticker;
+    using Text          = mtx::events::RoomEvent<mtx::events::msg::Text>;
+    using Unknown       = mtx::events::RoomEvent<mtx::events::msg::Unknown>;
+    using Video         = mtx::events::RoomEvent<mtx::events::msg::Video>;
+    using ElementEffect = mtx::events::RoomEvent<mtx::events::msg::ElementEffect>;
+    using CallInvite    = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
+    using CallAnswer    = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
+    using CallHangUp    = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
+    using CallReject    = mtx::events::RoomEvent<mtx::events::voip::CallReject>;
+    using Encrypted     = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
     if (std::is_same<T, Audio>::value) {
         if (isLocal)
@@ -156,14 +156,15 @@ messageDescription(const QString &username = QString(),
         else
             return QCoreApplication::translate("message-description sent:", "%1: %2")
               .arg(username, body);
-    } else if (std::is_same<T, Confetti>::value) {
+    } else if (std::is_same<T, ElementEffect>::value) {
         if (body.isEmpty()) {
+            // TODO: what is the best way to handle this?
             if (isLocal)
                 return QCoreApplication::translate("message-description sent:",
-                                                   "You sent some confetti");
+                                                   "You sent a chat effect");
             else
                 return QCoreApplication::translate("message-description sent:",
-                                                   "%1 sent some confetti")
+                                                   "%1 sent a chat effect")
                   .arg(username);
         } else {
             if (isLocal)

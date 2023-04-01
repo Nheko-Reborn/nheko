@@ -54,9 +54,9 @@ struct RoomEventType
         return qml_mtx_events::EventType::AudioMessage;
     }
     constexpr qml_mtx_events::EventType
-    operator()(const mtx::events::Event<mtx::events::msg::Confetti> &)
+    operator()(const mtx::events::Event<mtx::events::msg::ElementEffect> &)
     {
-        return qml_mtx_events::EventType::ConfettiMessage;
+        return qml_mtx_events::EventType::ElementEffectMessage;
     }
     constexpr qml_mtx_events::EventType
     operator()(const mtx::events::Event<mtx::events::msg::Emote> &)
@@ -367,7 +367,7 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
         return mtx::events::EventType::SpaceChild;
     /// m.room.message
     case qml_mtx_events::AudioMessage:
-    case qml_mtx_events::ConfettiMessage:
+    case qml_mtx_events::ElementEffectMessage:
     case qml_mtx_events::EmoteMessage:
     case qml_mtx_events::FileMessage:
     case qml_mtx_events::ImageMessage:
@@ -1091,14 +1091,17 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
                 msg.contains("🎉") || msg.contains("🎊")) {
                 needsSpecialEffects_ = true;
                 specialEffects_.setFlag(Confetti);
-            } else if (std::get<RoomEvent<mtx::events::msg::Unknown>>(e).content.msgtype ==
-                       "io.element.effect.rainfall") {
+            }
+        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::ElementEffect>>(e)) {
+            if (auto msgtype =
+                  std::get<RoomEvent<mtx::events::msg::ElementEffect>>(e).content.msgtype;
+                msgtype == "nic.custom.confetti") {
+                needsSpecialEffects_ = true;
+                specialEffects_.setFlag(Confetti);
+            } else if (msgtype == "io.element.effect.rainfall") {
                 needsSpecialEffects_ = true;
                 specialEffects_.setFlag(Rainfall);
             }
-        } else if (std::holds_alternative<RoomEvent<mtx::events::msg::Confetti>>(e)) {
-            needsSpecialEffects_ = true;
-            specialEffects_.setFlag(Confetti);
         }
     }
 
@@ -2949,7 +2952,7 @@ TimelineModel::setEdit(const QString &newEdit)
             if (msgType == mtx::events::MessageType::Text ||
                 msgType == mtx::events::MessageType::Notice ||
                 msgType == mtx::events::MessageType::Emote ||
-                msgType == mtx::events::MessageType::Confetti ||
+                msgType == mtx::events::MessageType::ElementEffect ||
                 msgType == mtx::events::MessageType::Unknown) {
                 auto relInfo  = relatedInfo(newEdit);
                 auto editText = relInfo.quoted_body;
@@ -2971,14 +2974,23 @@ TimelineModel::setEdit(const QString &newEdit)
 
                 if (msgType == mtx::events::MessageType::Emote)
                     input()->setText("/me " + editText);
-                else if (msgType == mtx::events::MessageType::Confetti)
-                    input()->setText("/confetti " + editText);
-                else if (msgType == mtx::events::MessageType::Unknown) {
-                    if (auto u = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Unknown>>(&e);
-                        u && u->content.msgtype == "io.element.effect.rainfall")
+                else if (msgType == mtx::events::MessageType::ElementEffect)
+                {
+                    auto u =
+                      std::get_if<mtx::events::RoomEvent<mtx::events::msg::ElementEffect>>(&e);
+                    auto msgtypeString = u ? u->content.msgtype : "";
+                    if (msgtypeString == "io.element.effect.rainfall")
                         input()->setText("/rainfall " + editText);
+                    else if (msgtypeString == "nic.custom.confetti")
+                        input()->setText("/confetti " + editText);
                     else
-                        input()->setText(editText);
+                        input()->setText("/msgtype " + QString::fromStdString(msgtypeString) + " " +
+                                         editText);
+                } else if (msgType == mtx::events::MessageType::Unknown) {
+                    auto u = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Unknown>>(&e);
+                    input()->setText("/msgtype " +
+                                     (u ? QString::fromStdString(u->content.msgtype) : "") + " " +
+                                     editText);
                 } else
                     input()->setText(editText);
             } else {
