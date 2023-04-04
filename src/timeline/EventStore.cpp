@@ -928,8 +928,7 @@ EventStore::fetchMore()
           if (cache::client()->previousBatchToken(room_id_) != opts.from) {
               nhlog::net()->warn("Cache cleared while fetching more messages, dropping "
                                  "/messages response");
-              if (!opts.to.empty())
-                  emit fetchedMore();
+              emit fetchedMore();
               return;
           }
           if (err) {
