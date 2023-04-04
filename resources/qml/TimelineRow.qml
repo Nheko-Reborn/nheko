@@ -102,12 +102,32 @@ AbstractButton {
         }
     }
 
+    AbstractButton {
+        anchors.leftMargin: Settings.smallAvatars? 0 : (Nheko.avatarSize + 8) // align bubble with section header
+        anchors.left: parent.left
+        visible: threadId
+        width: 4
+        height: parent.height
+
+        Rectangle {
+            id: threadLine
+
+            color: TimelineManager.userColor(threadId, Nheko.colors.base)
+            anchors.fill: parent
+        }
+
+        ToolTip.visible: hovered
+        ToolTip.delay: Nheko.tooltipDelay
+        ToolTip.text: qsTr("Part of a thread")
+        onClicked: room.thread = threadId
+    }
+
     Rectangle {
         id: row
         property bool bubbleOnRight : isSender && Settings.bubbles
-        anchors.leftMargin: isStateEvent || Settings.smallAvatars? 0 : Nheko.avatarSize+8 // align bubble with section header
-        anchors.left: isStateEvent? undefined : (bubbleOnRight? undefined : parent.left)
-        anchors.right: isStateEvent? undefined: (bubbleOnRight? parent.right : undefined)
+        anchors.leftMargin: (isStateEvent || Settings.smallAvatars? 0 : (Nheko.avatarSize + 8)) + (threadId ? 6 : 0) // align bubble with section header
+        anchors.left: (isStateEvent || bubbleOnRight) ? undefined : parent.left
+        anchors.right: (isStateEvent || !bubbleOnRight) ? undefined : parent.right
         anchors.horizontalCenter: isStateEvent? parent.horizontalCenter : undefined
         property int maxWidth: (parent.width-(Settings.smallAvatars || isStateEvent? 0 : Nheko.avatarSize+8))*(Settings.bubbles && !isStateEvent? 0.9 : 1)
         width: Settings.bubbles? Math.min(maxWidth,Math.max(reply.implicitWidth+8,contentItem.implicitWidth+metadata.width+20)) : maxWidth
