@@ -238,8 +238,8 @@ ApplicationWindow {
             }
 
             EncryptionIndicator {
-                Layout.preferredHeight: 16
-                Layout.preferredWidth: 16
+                Layout.preferredHeight: 32
+                Layout.preferredWidth: 32
                 encrypted: profile.userVerificationEnabled
                 trust: profile.userVerified
                 Layout.alignment: Qt.AlignHCenter
@@ -265,6 +265,8 @@ ApplicationWindow {
                 spacing: Nheko.paddingSmall
 
                 ImageButton {
+                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 24
                     image: ":/icons/icons/ui/chat.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
@@ -273,6 +275,8 @@ ApplicationWindow {
                 }
 
                 ImageButton {
+                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 24
                     image: ":/icons/icons/ui/round-remove-button.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
@@ -282,6 +286,8 @@ ApplicationWindow {
                 }
 
                 ImageButton {
+                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 24
                     image: ":/icons/icons/ui/ban.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
@@ -291,6 +297,8 @@ ApplicationWindow {
                 }
 
                 ImageButton {
+                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 24
                     image: ":/icons/icons/ui/refresh.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
