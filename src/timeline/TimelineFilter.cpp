@@ -41,6 +41,8 @@ TimelineFilter::startFiltering()
     incrementalSearchIndex = 0;
     emit isFilteringChanged();
     invalidateFilter();
+    beginResetModel();
+    endResetModel();
 
     continueFiltering();
 }
