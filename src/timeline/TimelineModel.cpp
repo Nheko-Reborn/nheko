@@ -1264,10 +1264,14 @@ TimelineModel::readEvent(const std::string &id)
     http::client()->read_event(
       room_id_.toStdString(),
       id,
-      [this](mtx::http::RequestErr err) {
+      [this, newId = id, oldId = currentReadId](mtx::http::RequestErr err) {
           if (err) {
-              nhlog::net()->warn(
-                "failed to read_event ({}, {})", room_id_.toStdString(), currentId.toStdString());
+              nhlog::net()->warn("failed to read_event ({}, {})", room_id_.toStdString(), newId);
+
+              ChatPage::instance()->callFunctionOnGuiThread([this, newId, oldId] {
+                  if (currentReadId.toStdString() == newId)
+                      this->currentReadId = oldId;
+              });
           }
       },
       !UserSettings::instance()->readReceipts());
