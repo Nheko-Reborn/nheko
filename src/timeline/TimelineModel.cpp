@@ -2974,8 +2974,7 @@ TimelineModel::setEdit(const QString &newEdit)
 
                 if (msgType == mtx::events::MessageType::Emote)
                     input()->setText("/me " + editText);
-                else if (msgType == mtx::events::MessageType::ElementEffect)
-                {
+                else if (msgType == mtx::events::MessageType::ElementEffect) {
                     auto u =
                       std::get_if<mtx::events::RoomEvent<mtx::events::msg::ElementEffect>>(&e);
                     auto msgtypeString = u ? u->content.msgtype : "";
