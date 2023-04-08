@@ -6,13 +6,13 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+109"/>
         <source>Calling...</source>
-        <translation>Wählt…</translation>
+        <translation>Wählen …</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Verbindet…</translation>
+        <translation>Verbinden …</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -48,7 +48,7 @@
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation>Konnte die Raumadressen nicht aktualisieren: %1</translation>
+        <translation>Konnte die Aliase nicht aktualisieren: %1</translation>
     </message>
 </context>
 <context>
@@ -56,42 +56,42 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+27"/>
         <source>Aliases to %1</source>
-        <translation>Raumaddressen für %1</translation>
+        <translation>Aliase für %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation>Raumaddressen dieses Raumes. Normalerweise kannst du Addressen nur für deinen eigenen Server hinzufügen. Du kannst eine primäre Adresse und beliebig viele Zweitadressen hinzufügen.</translation>
+        <translation>Aliase dieses Raumes. Normalerweise kannst du Aliase nur für deinen eigenen Server hinzufügen. Du kannst einen primären Alias und beliebig viele Zweitaliase hinzufügen.</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>Primary alias</source>
-        <translation>Primäre Adresse</translation>
+        <translation>Primärer Alias</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation>Zur primären Adresse machen</translation>
+        <translation>Zum primären Alias machen</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation>Als Raumadresse bewerben</translation>
+        <translation>Als einen Alias in diesen Raum bewerben</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation>Raumadresse in dem Raumverzeichnis veröffentlichen</translation>
+        <translation>Im Raumverzeichnis veröffentlichen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation>Adresse entfernen</translation>
+        <translation>Diesen Alias entfernen</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation>#neue-addresse:server.domain</translation>
+        <translation>#neuer-alias:server.tld</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -114,7 +114,7 @@
     <message>
         <location line="+40"/>
         <source>Parent community</source>
-        <translation>Übergeordnete Community</translation>
+        <translation>Übergeordnete Gruppe</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -259,7 +259,7 @@
     <message>
         <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation>Raum konnte nicht erstellt werden: Invalide Raumaddresse</translation>
+        <translation>Raumerstellung fehlgeschlagen: Ungültiger Alias</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -295,7 +295,7 @@
     <message>
         <location line="+3"/>
         <source>Banned user: %1</source>
-        <translation>Verbannter Nutzer: %1</translation>
+        <translation>Benutzer verbannt: %1</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -838,12 +838,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+17"/>
         <source>Create Direct Chat</source>
-        <translation>Eine Person direkt anschreiben</translation>
+        <translation>Direkt-Chat erstellen</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation>Einzuladener Benutzer</translation>
+        <translation>Einzuladender Benutzer</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -896,7 +896,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation>Raumaddresse</translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -911,12 +911,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+13"/>
         <source>Trusted</source>
-        <translation>Vertrauenswürdig Konversation</translation>
+        <translation>Vertrauenswürdig</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation>Alle Eingeladenen Personen haben die gleichen Bereichtigungen wie der Ersteller</translation>
+        <translation>Alle eingeladenen Personen erhalten die gleichen Berechtigungen wie der Ersteller</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -926,7 +926,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation>Achtung: Die Verschlüsselung kann nicht nachträglich deaktiviert werden</translation>
+        <translation>Vorsicht! Die Verschlüsselung kann nicht deaktiviert werden</translation>
     </message>
 </context>
 <context>
@@ -1086,7 +1086,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation>Der Schlüssel für diese Nachricht wurde schon einmal verwendet! Vermutlich versucht jemand falsche Nachrichten in diese Unterhaltung einzufügen!</translation>
+        <translation>Der Schlüssel dieser Nachricht wurde schon einmal verwendet! Eventuell versucht jemand, falsche Nachrichten in diese Unterhaltung einzufügen!</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1225,7 +1225,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation>Betreten und verlassen des Raumes so wie Bild- und Namesänderungen und Verbannungen.</translation>
+        <translation>Betreten und Verlassen, Bild- und Namensänderungen, Verbannungen, …</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1590,7 +1590,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation>Weiter mit Facebook</translation>
+        <translation>Mit Facebook fortfahren</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1894,7 +1894,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+5"/>
         <source>&amp;Read receipts</source>
-        <translation>&amp;Lesebestätigung</translation>
+        <translation>&amp;Lesebestätigungen</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2908,7 +2908,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation>Raumavatar ändern</translation>
+        <translation>Raumavatar ändern.</translation>
     </message>
     <message>
         <location line="+93"/>
@@ -3822,12 +3822,12 @@ Grund: %4</translation>
     <message>
         <location line="+12"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation>%1 hat den eigenen Avatar und Namen geändert zu %2.</translation>
+        <translation>%1 hat den eigenen Avatar und Namen zu %2 geändert.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed their display name to %2.</source>
-        <translation>%1 hat den eigenen Namen geändert zu %2.</translation>
+        <translation>%1 hat den eigenen Anzeigenamen zu %2 geändert.</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -4220,7 +4220,7 @@ Grund: %4</translation>
     <message>
         <location line="+4"/>
         <source>Scrollbars in room list</source>
-        <translation>Srollleisten in der Raumliste</translation>
+        <translation>Scrollleisten in der Raumliste</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4717,7 +4717,8 @@ Betrifft nur Nachrichten in verschlüsselten Chats.</translation>
         <location line="+14"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation>Die Zeitliste wird unscharf, wenn das Fenster den Fokus verliert.</translation>
+        <translation>Die Zeitliste wird unscharf, wenn das Fenster
+den Fokus verliert.</translation>
     </message>
     <message>
         <location line="+2"/>
