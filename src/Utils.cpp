@@ -215,19 +215,20 @@ utils::getMessageDescription(const TimelineEvent &event,
                              const QString &localUser,
                              const QString &displayName)
 {
-    using Audio      = mtx::events::RoomEvent<mtx::events::msg::Audio>;
-    using Emote      = mtx::events::RoomEvent<mtx::events::msg::Emote>;
-    using File       = mtx::events::RoomEvent<mtx::events::msg::File>;
-    using Image      = mtx::events::RoomEvent<mtx::events::msg::Image>;
-    using Notice     = mtx::events::RoomEvent<mtx::events::msg::Notice>;
-    using Text       = mtx::events::RoomEvent<mtx::events::msg::Text>;
-    using Video      = mtx::events::RoomEvent<mtx::events::msg::Video>;
-    using Confetti   = mtx::events::RoomEvent<mtx::events::msg::Confetti>;
-    using CallInvite = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
-    using CallAnswer = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
-    using CallHangUp = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
-    using CallReject = mtx::events::RoomEvent<mtx::events::voip::CallReject>;
-    using Encrypted  = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
+    using Audio         = mtx::events::RoomEvent<mtx::events::msg::Audio>;
+    using Emote         = mtx::events::RoomEvent<mtx::events::msg::Emote>;
+    using File          = mtx::events::RoomEvent<mtx::events::msg::File>;
+    using Image         = mtx::events::RoomEvent<mtx::events::msg::Image>;
+    using Notice        = mtx::events::RoomEvent<mtx::events::msg::Notice>;
+    using Text          = mtx::events::RoomEvent<mtx::events::msg::Text>;
+    using Unknown       = mtx::events::RoomEvent<mtx::events::msg::Unknown>;
+    using Video         = mtx::events::RoomEvent<mtx::events::msg::Video>;
+    using ElementEffect = mtx::events::RoomEvent<mtx::events::msg::ElementEffect>;
+    using CallInvite    = mtx::events::RoomEvent<mtx::events::voip::CallInvite>;
+    using CallAnswer    = mtx::events::RoomEvent<mtx::events::voip::CallAnswer>;
+    using CallHangUp    = mtx::events::RoomEvent<mtx::events::voip::CallHangUp>;
+    using CallReject    = mtx::events::RoomEvent<mtx::events::voip::CallReject>;
+    using Encrypted     = mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>;
 
     if (std::holds_alternative<Audio>(event)) {
         return createDescriptionInfo<Audio>(event, localUser, displayName);
@@ -241,10 +242,12 @@ utils::getMessageDescription(const TimelineEvent &event,
         return createDescriptionInfo<Notice>(event, localUser, displayName);
     } else if (std::holds_alternative<Text>(event)) {
         return createDescriptionInfo<Text>(event, localUser, displayName);
+    } else if (std::holds_alternative<Unknown>(event)) {
+        return createDescriptionInfo<Unknown>(event, localUser, displayName);
     } else if (std::holds_alternative<Video>(event)) {
         return createDescriptionInfo<Video>(event, localUser, displayName);
-    } else if (std::holds_alternative<Confetti>(event)) {
-        return createDescriptionInfo<Confetti>(event, localUser, displayName);
+    } else if (std::holds_alternative<ElementEffect>(event)) {
+        return createDescriptionInfo<ElementEffect>(event, localUser, displayName);
     } else if (std::holds_alternative<CallInvite>(event)) {
         return createDescriptionInfo<CallInvite>(event, localUser, displayName);
     } else if (std::holds_alternative<CallAnswer>(event)) {

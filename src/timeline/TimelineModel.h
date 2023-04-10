@@ -99,16 +99,17 @@ enum EventType
     Widget,
     /// m.room.message
     AudioMessage,
-    ConfettiMessage,
+    ElementEffectMessage,
     EmoteMessage,
     FileMessage,
     ImageMessage,
     LocationMessage,
     NoticeMessage,
     TextMessage,
+    UnknownMessage,
     VideoMessage,
     Redacted,
-    UnknownMessage,
+    UnknownEvent,
     KeyVerificationRequest,
     KeyVerificationStart,
     KeyVerificationMac,
@@ -265,6 +266,13 @@ public:
         RelatedEventCacheBuster,
     };
     Q_ENUM(Roles);
+
+    enum SpecialEffect
+    {
+        Confetti,
+        Rainfall,
+    };
+    Q_DECLARE_FLAGS(SpecialEffects, SpecialEffect)
 
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -450,6 +458,8 @@ signals:
     void scrollToIndex(int index);
     void confetti();
     void confettiDone();
+    void rainfall();
+    void rainfallDone();
 
     void lastMessageChanged();
     void notificationsChanged();
@@ -521,14 +531,16 @@ private:
     std::string last_event_id;
     std::string fullyReadEventId_;
 
-    // TODO (Loren): This should hopefully handle more than just confetti in the future
     bool needsSpecialEffects_ = false;
+    QFlags<SpecialEffect> specialEffects_;
 
     std::unique_ptr<RoomSummary, DeleteLaterDeleter> parentSummary = nullptr;
     bool parentChecked                                             = false;
 
     friend void EventStore::refetchOnlineKeyBackupKeys(TimelineModel *room);
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(TimelineModel::SpecialEffects)
 
 template<class T>
 void

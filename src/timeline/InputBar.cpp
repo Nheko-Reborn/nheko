@@ -281,6 +281,8 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("rainbownotice"),
                                              QStringLiteral("confetti"),
                                              QStringLiteral("rainbowconfetti"),
+                                             QStringLiteral("rainfall"),
+                                             QStringLiteral("msgtype"),
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
                                              QStringLiteral("converttoroom")};
@@ -607,8 +609,9 @@ InputBar::confetti(const QString &body, bool rainbowify)
 {
     auto html = utils::markdownToHtml(body, rainbowify);
 
-    mtx::events::msg::Confetti confetti;
-    confetti.body = body.trimmed().toStdString();
+    mtx::events::msg::ElementEffect confetti;
+    confetti.msgtype = "nic.custom.confetti";
+    confetti.body    = body.trimmed().toStdString();
 
     if (html != body.trimmed().toHtmlEscaped() &&
         ChatPage::instance()->userSettings()->markdown()) {
@@ -621,6 +624,54 @@ InputBar::confetti(const QString &body, bool rainbowify)
     confetti.relations = generateRelations();
 
     room->sendMessageEvent(confetti, mtx::events::EventType::RoomMessage);
+}
+
+void
+InputBar::rainfall(const QString &body)
+{
+    auto html = utils::markdownToHtml(body);
+
+    mtx::events::msg::Unknown rain;
+    rain.msgtype = "io.element.effect.rainfall";
+    rain.body    = body.trimmed().toStdString();
+
+    if (html != body.trimmed().toHtmlEscaped() &&
+        ChatPage::instance()->userSettings()->markdown()) {
+        nlohmann::json j;
+        j["formatted_body"] = html.toStdString();
+        j["format"]         = "org.matrix.custom.html";
+        rain.content        = j.dump();
+        // Remove markdown links by completer
+        rain.body = replaceMatrixToMarkdownLink(body.trimmed()).toStdString();
+    }
+
+    rain.relations = generateRelations();
+
+    room->sendMessageEvent(rain, mtx::events::EventType::RoomMessage);
+}
+
+void
+InputBar::customMsgtype(const QString &msgtype, const QString &body)
+{
+    auto html = utils::markdownToHtml(body);
+
+    mtx::events::msg::Unknown msg;
+    msg.msgtype = msgtype.toStdString();
+    msg.body    = body.trimmed().toStdString();
+
+    if (html != body.trimmed().toHtmlEscaped() &&
+        ChatPage::instance()->userSettings()->markdown()) {
+        nlohmann::json j;
+        j["formatted_body"] = html.toStdString();
+        j["format"]         = "org.matrix.custom.html";
+        msg.content         = j.dump();
+        // Remove markdown links by completer
+        msg.body = replaceMatrixToMarkdownLink(body.trimmed()).toStdString();
+    }
+
+    msg.relations = generateRelations();
+
+    room->sendMessageEvent(msg, mtx::events::EventType::RoomMessage);
 }
 
 void
@@ -890,6 +941,10 @@ InputBar::command(const QString &command, QString args)
         confetti(args, false);
     } else if (command == QLatin1String("rainbowconfetti")) {
         confetti(args, true);
+    } else if (command == QLatin1String("rainfall")) {
+        rainfall(args);
+    } else if (command == QLatin1String("msgtype")) {
+        customMsgtype(args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("goto")) {
         // Goto has three different modes:
         // 1 - Going directly to a given event ID
