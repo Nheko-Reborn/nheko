@@ -113,7 +113,7 @@ public slots:
 
     QObject *completerFor(const QString &completerName,
                           const QString &roomId = QLatin1String(QLatin1String("")));
-    void forwardMessageToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
+    void forwardMessageToRoom(mtx::events::collections::TimelineEvents const *e, QString roomId);
 
     RoomlistModel *rooms() { return rooms_; }
 

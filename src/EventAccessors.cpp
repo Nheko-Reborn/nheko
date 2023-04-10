@@ -461,7 +461,7 @@ mtx::accessors::media_width(const mtx::events::collections::TimelineEvents &even
 nlohmann::json
 mtx::accessors::serialize_event(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit([](const auto &e) { return nlohmann::json(e); }, event);
+    return nlohmann::json(event);
 }
 
 bool

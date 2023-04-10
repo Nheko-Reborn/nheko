@@ -37,8 +37,6 @@
 #include "UserSettingsPage.h"
 #include "timeline/Permissions.h"
 
-using TimelineEvent = mtx::events::collections::TimelineEvents;
-
 template<class T, class Event>
 static DescInfo
 createDescriptionInfo(const Event &event, const QString &localUser, const QString &displayName)
@@ -89,7 +87,9 @@ utils::stripReplyFromFormattedBody(const std::string &formatted_bodyi)
 }
 
 RelatedInfo
-utils::stripReplyFallbacks(const TimelineEvent &event, std::string id, QString room_id_)
+utils::stripReplyFallbacks(const mtx::events::collections::TimelineEvents &event,
+                           std::string id,
+                           QString room_id_)
 {
     RelatedInfo related   = {};
     related.quoted_user   = QString::fromStdString(mtx::accessors::sender(event));
@@ -211,7 +211,7 @@ utils::descriptiveTime(const QDateTime &then)
 }
 
 DescInfo
-utils::getMessageDescription(const TimelineEvent &event,
+utils::getMessageDescription(const mtx::events::collections::TimelineEvents &event,
                              const QString &localUser,
                              const QString &displayName)
 {

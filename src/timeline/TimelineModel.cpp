@@ -776,13 +776,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 return qml_mtx_events::NotificationLevel::Nothing;
 
             const auto &id = event_id(event);
-            std::vector<std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvent>>
+            std::vector<std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvents>>
               relatedEvents;
             for (const auto &r : mtx::accessors::relations(event).relations) {
                 auto related = events.get(r.event_id, id);
                 if (related) {
-                    relatedEvents.emplace_back(r,
-                                               mtx::events::collections::TimelineEvent{*related});
+                    relatedEvents.emplace_back(r, *related);
                 }
             }
 
@@ -1790,7 +1789,7 @@ TimelineModel::openMedia(const QString &eventId)
 bool
 TimelineModel::saveMedia(const QString &eventId) const
 {
-    mtx::events::collections::TimelineEvents *event = events.get(eventId.toStdString(), "");
+    auto event = events.get(eventId.toStdString(), "");
     if (!event)
         return false;
 
@@ -1865,7 +1864,7 @@ void
 TimelineModel::cacheMedia(const QString &eventId,
                           const std::function<void(const QString)> &callback)
 {
-    mtx::events::collections::TimelineEvents *event = events.get(eventId.toStdString(), "");
+    auto event = events.get(eventId.toStdString(), "");
     if (!event)
         return;
 
@@ -2150,7 +2149,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
 QString
 TimelineModel::formatJoinRuleEvent(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return {};
 
@@ -2187,7 +2186,7 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
 QString
 TimelineModel::formatGuestAccessEvent(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return {};
 
@@ -2211,7 +2210,7 @@ TimelineModel::formatGuestAccessEvent(const QString &id)
 QString
 TimelineModel::formatHistoryVisibilityEvent(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return {};
 
@@ -2243,7 +2242,7 @@ TimelineModel::formatHistoryVisibilityEvent(const QString &id)
 QString
 TimelineModel::formatPowerLevelEvent(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return {};
 
@@ -2251,7 +2250,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     if (!event)
         return QString();
 
-    mtx::events::StateEvent<mtx::events::state::PowerLevels> *prevEvent = nullptr;
+    mtx::events::StateEvent<mtx::events::state::PowerLevels> const *prevEvent = nullptr;
     if (!event->unsigned_data.replaces_state.empty()) {
         auto tempPrevEvent = events.get(event->unsigned_data.replaces_state, event->event_id);
         if (tempPrevEvent) {
@@ -2519,7 +2518,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 QString
 TimelineModel::formatImagePackEvent(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return {};
 
@@ -2527,7 +2526,7 @@ TimelineModel::formatImagePackEvent(const QString &id)
     if (!event)
         return {};
 
-    mtx::events::StateEvent<mtx::events::msc2545::ImagePack> *prevEvent = nullptr;
+    mtx::events::StateEvent<mtx::events::msc2545::ImagePack> const *prevEvent = nullptr;
     if (!event->unsigned_data.replaces_state.empty()) {
         auto tempPrevEvent = events.get(event->unsigned_data.replaces_state, event->event_id);
         if (tempPrevEvent) {
@@ -2591,8 +2590,8 @@ TimelineModel::formatImagePackEvent(const QString &id)
 QString
 TimelineModel::formatPolicyRule(const QString &id)
 {
-    auto idStr                                  = id.toStdString();
-    mtx::events::collections::TimelineEvents *e = events.get(idStr, "");
+    auto idStr = id.toStdString();
+    auto e     = events.get(idStr, "");
     if (!e)
         return {};
 
@@ -2683,7 +2682,7 @@ QVariantMap
 TimelineModel::formatRedactedEvent(const QString &id)
 {
     QVariantMap pair{{"first", ""}, {"second", ""}};
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return pair;
 
@@ -2720,7 +2719,7 @@ TimelineModel::formatRedactedEvent(const QString &id)
 void
 TimelineModel::acceptKnock(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return;
 
@@ -2745,7 +2744,7 @@ TimelineModel::acceptKnock(const QString &id)
 bool
 TimelineModel::showAcceptKnockButton(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return false;
 
@@ -2766,7 +2765,7 @@ TimelineModel::showAcceptKnockButton(const QString &id)
 void
 TimelineModel::joinReplacementRoom(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return;
 
@@ -2792,7 +2791,7 @@ TimelineModel::joinReplacementRoom(const QString &id)
 QString
 TimelineModel::formatMemberEvent(const QString &id)
 {
-    mtx::events::collections::TimelineEvents *e = events.get(id.toStdString(), "");
+    auto e = events.get(id.toStdString(), "");
     if (!e)
         return {};
 
@@ -2800,7 +2799,7 @@ TimelineModel::formatMemberEvent(const QString &id)
     if (!event)
         return {};
 
-    mtx::events::StateEvent<mtx::events::state::Member> *prevEvent = nullptr;
+    mtx::events::StateEvent<mtx::events::state::Member> const *prevEvent = nullptr;
     if (!event->unsigned_data.replaces_state.empty()) {
         auto tempPrevEvent = events.get(event->unsigned_data.replaces_state, event->event_id);
         if (tempPrevEvent) {

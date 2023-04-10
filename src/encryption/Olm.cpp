@@ -1273,13 +1273,13 @@ decryptEvent(const MegolmSessionIndex &index,
         body["origin_server_ts"] = event.origin_server_ts;
         body["unsigned"]         = event.unsigned_data;
 
-        mtx::events::collections::TimelineEvent te;
-        from_json(body, te);
+        mtx::events::collections::TimelineEvents te =
+          body.get<mtx::events::collections::TimelineEvents>();
 
         // relations are unencrypted in content...
-        mtx::accessors::set_relations(te.data, std::move(event.content.relations));
+        mtx::accessors::set_relations(te, std::move(event.content.relations));
 
-        return {DecryptionErrorCode::NoError, std::nullopt, std::move(te.data)};
+        return {DecryptionErrorCode::NoError, std::nullopt, std::move(te)};
     } catch (std::exception &e) {
         return {DecryptionErrorCode::ParsingFailed, e.what(), std::nullopt};
     }

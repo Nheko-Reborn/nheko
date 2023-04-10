@@ -483,7 +483,7 @@ signals:
     void isDirectChanged();
     void directChatOtherUserIdChanged();
     void permissionsChanged();
-    void forwardToRoom(mtx::events::collections::TimelineEvents *e, QString roomId);
+    void forwardToRoom(mtx::events::collections::TimelineEvents const *e, QString roomId);
 
     void scrollTargetChanged();
 

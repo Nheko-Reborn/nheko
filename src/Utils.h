@@ -39,9 +39,6 @@ struct RelatedInfo
 };
 
 namespace utils {
-
-using TimelineEvent = mtx::events::collections::TimelineEvents;
-
 //! Helper function to remove reply fallback from body
 std::string
 stripReplyFromBody(const std::string &body);
@@ -51,7 +48,9 @@ std::string
 stripReplyFromFormattedBody(const std::string &formatted_body);
 
 RelatedInfo
-stripReplyFallbacks(const TimelineEvent &event, std::string id, QString room_id_);
+stripReplyFallbacks(const mtx::events::collections::TimelineEvents &event,
+                    std::string id,
+                    QString room_id_);
 
 bool
 codepointIsEmoji(uint code);
@@ -75,7 +74,7 @@ descriptiveTime(const QDateTime &then);
 //! Generate a message description from the event to be displayed
 //! in the RoomList.
 DescInfo
-getMessageDescription(const TimelineEvent &event,
+getMessageDescription(const mtx::events::collections::TimelineEvents &event,
                       const QString &localUser,
                       const QString &displayName);
 

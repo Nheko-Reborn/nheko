@@ -270,7 +270,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
 
                     auto ctx = roomModel->pushrulesRoomContext();
                     std::vector<
-                      std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvent>>
+                      std::pair<mtx::common::Relation, mtx::events::collections::TimelineEvents>>
                       relatedEvents;
 
                     for (const auto &event : room.timeline.events) {
@@ -286,9 +286,9 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                         if (sender == http::client()->user_id().to_string())
                             continue;
 
-                        mtx::events::collections::TimelineEvent te{event};
+                        mtx::events::collections::TimelineEvents te{event};
                         std::visit([room_id = room_id](auto &event_) { event_.room_id = room_id; },
-                                   te.data);
+                                   te);
 
                         if (auto encryptedEvent =
                               std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
@@ -298,23 +298,24 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
 
                             auto result = olm::decryptEvent(index, *encryptedEvent);
                             if (result.event)
-                                te.data = result.event.value();
+                                te = std::move(result.event).value();
                         }
 
                         relatedEvents.clear();
-                        for (const auto &r : mtx::accessors::relations(te.data).relations) {
+                        for (const auto &r : mtx::accessors::relations(te).relations) {
                             auto related = cache::client()->getEvent(room_id, r.event_id);
                             if (related) {
                                 relatedEvents.emplace_back(r, *related);
                                 if (auto encryptedEvent = std::get_if<
                                       mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-                                      &related->data);
+                                      &related.value());
                                     encryptedEvent && userSettings_->decryptNotifications()) {
                                     MegolmSessionIndex index(room_id, encryptedEvent->content);
 
                                     auto result = olm::decryptEvent(index, *encryptedEvent);
                                     if (result.event)
-                                        relatedEvents.back().second.data = result.event.value();
+                                        relatedEvents.back().second =
+                                          std::move(result.event).value();
                                 }
                             }
                         }
@@ -343,7 +344,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                                           notificationsManager->postNotification(
                                             mtx::responses::Notification{
                                               .actions     = actions,
-                                              .event       = te.data,
+                                              .event       = std::move(te),
                                               .read        = false,
                                               .profile_tag = "",
                                               .room_id     = room_id,

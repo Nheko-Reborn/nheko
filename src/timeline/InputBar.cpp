@@ -53,7 +53,7 @@ threadFallbackEventId(const std::string &room_id, const std::string &thread_id)
     for (const auto &[index, event_id] : orderedEvents) {
         (void)index;
         if (auto event = cache::client()->getEvent(room_id, event_id)) {
-            if (mtx::accessors::relations(event->data).thread() == thread_id)
+            if (mtx::accessors::relations(event.value()).thread() == thread_id)
                 return std::string(event_id);
         }
     }

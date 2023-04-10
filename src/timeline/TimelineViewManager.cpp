@@ -461,7 +461,7 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
 }
 
 void
-TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEvents *e,
+TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEvents const *e,
                                           QString roomId)
 {
     auto room                                                = rooms_->getRoomById(roomId);

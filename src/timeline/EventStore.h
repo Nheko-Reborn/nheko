@@ -73,12 +73,12 @@ public:
 
     // optionally returns the event or nullptr and fetches it, after which it emits a
     // relatedFetched event
-    mtx::events::collections::TimelineEvents *get(const std::string &id,
-                                                  std::string_view related_to,
-                                                  bool decrypt       = true,
-                                                  bool resolve_edits = true);
+    mtx::events::collections::TimelineEvents const *get(const std::string &id,
+                                                        std::string_view related_to,
+                                                        bool decrypt       = true,
+                                                        bool resolve_edits = true);
     // always returns a proper event as long as the idx is valid
-    mtx::events::collections::TimelineEvents *get(int idx, bool decrypt = true);
+    mtx::events::collections::TimelineEvents const *get(int idx, bool decrypt = true);
 
     QVariantList reactions(const std::string &event_id);
     std::vector<mtx::events::collections::TimelineEvents> edits(const std::string &event_id);
@@ -126,7 +126,7 @@ public slots:
     void enableKeyRequests(bool suppressKeyRequests_);
 
 private:
-    olm::DecryptionResult *
+    olm::DecryptionResult const *
     decryptEvent(const IdIndex &idx,
                  const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e);
 

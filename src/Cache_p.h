@@ -193,14 +193,14 @@ public:
                                  uint64_t index = std::numeric_limits<uint64_t>::max(),
                                  bool forward   = false);
 
-    std::optional<mtx::events::collections::TimelineEvent>
+    std::optional<mtx::events::collections::TimelineEvents>
     getEvent(const std::string &room_id, std::string_view event_id);
     void storeEvent(const std::string &room_id,
                     const std::string &event_id,
-                    const mtx::events::collections::TimelineEvent &event);
+                    const mtx::events::collections::TimelineEvents &event);
     void replaceEvent(const std::string &room_id,
                       const std::string &event_id,
-                      const mtx::events::collections::TimelineEvent &event);
+                      const mtx::events::collections::TimelineEvents &event);
     std::vector<std::string> relatedEvents(const std::string &room_id, const std::string &event_id);
 
     struct TimelineRange
@@ -219,9 +219,9 @@ public:
     std::string previousBatchToken(const std::string &room_id);
     uint64_t saveOldMessages(const std::string &room_id, const mtx::responses::Messages &res);
     void savePendingMessage(const std::string &room_id,
-                            const mtx::events::collections::TimelineEvent &message);
+                            const mtx::events::collections::TimelineEvents &message);
     std::vector<std::string> pendingEvents(const std::string &room_id);
-    std::optional<mtx::events::collections::TimelineEvent>
+    std::optional<mtx::events::collections::TimelineEvents>
     firstPendingMessage(const std::string &room_id);
     void removePendingStatus(const std::string &room_id, const std::string &txn_id);
 

@@ -155,7 +155,7 @@ EventStore::EventStore(std::string room_id, QObject *)
                         }
                     });
           },
-          event->data);
+          event.value());
     });
 
     connect(
@@ -195,20 +195,20 @@ EventStore::EventStore(std::string room_id, QObject *)
                   mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> original_encrypted;
                   if (auto encrypted =
                         std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-                          &pending_event->data)) {
+                          &pending_event.value())) {
                       auto d_event = decryptEvent({room_id_, encrypted->event_id}, *encrypted);
                       if (d_event->event) {
-                          was_encrypted       = true;
-                          original_encrypted  = *encrypted;
-                          pending_event->data = *d_event->event;
+                          was_encrypted      = true;
+                          original_encrypted = std::move(*encrypted);
+                          *pending_event     = std::move(*d_event->event);
                       }
                   }
 
-                  auto relations = mtx::accessors::relations(pending_event->data);
+                  auto relations = mtx::accessors::relations(pending_event.value());
 
                   // Replace the blockquote in fallback reply
                   auto related_text = std::get_if<mtx::events::RoomEvent<mtx::events::msg::Text>>(
-                    &pending_event->data);
+                    &pending_event.value());
                   if (related_text && relations.reply_to() == txn_id) {
                       size_t index = related_text->content.formatted_body.find(txn_id);
                       if (index != std::string::npos) {
@@ -228,7 +228,7 @@ EventStore::EventStore(std::string room_id, QObject *)
                   if (!replaced_txn)
                       continue;
 
-                  mtx::accessors::set_relations(pending_event->data, std::move(relations));
+                  mtx::accessors::set_relations(pending_event.value(), std::move(relations));
 
                   // reencrypt. This is a bit of a hack and might make people able to read the
                   // message, that were in the room at the time of sending the last pending message.
@@ -246,7 +246,7 @@ EventStore::EventStore(std::string room_id, QObject *)
                                                   {"content", nlohmann::json(msg.content)},
                                                   {"room_id", room_id_}};
                         },
-                        pending_event->data);
+                        pending_event.value());
 
                       auto data = olm::encrypt_group_message_with_session(
                         session.session, http::client()->device_id(), std::move(doc));
@@ -255,8 +255,8 @@ EventStore::EventStore(std::string room_id, QObject *)
                         olm_outbound_group_session_message_index(session.session.get());
                       cache::updateOutboundMegolmSession(room_id_, session.data, session.session);
 
-                      original_encrypted.content = data;
-                      pending_event->data        = original_encrypted;
+                      original_encrypted.content = std::move(data);
+                      *pending_event             = std::move(original_encrypted);
                   }
 
                   cache::client()->replaceEvent(room_id_, pending_event_id, *pending_event);
@@ -629,7 +629,7 @@ EventStore::reactions(const std::string &event_id)
     return temp;
 }
 
-mtx::events::collections::TimelineEvents *
+mtx::events::collections::TimelineEvents const *
 EventStore::get(int idx, bool decrypt)
 {
     if (this->thread() != QThread::currentThread())
@@ -645,17 +645,17 @@ EventStore::get(int idx, bool decrypt)
         if (!event_id)
             return nullptr;
 
-        std::optional<mtx::events::collections::TimelineEvent> event;
+        std::optional<mtx::events::collections::TimelineEvents> event;
         auto edits_ = edits(*event_id);
         if (edits_.empty())
             event = cache::client()->getEvent(room_id_, *event_id);
         else
-            event = mtx::events::collections::TimelineEvent{edits_.back()};
+            event = mtx::events::collections::TimelineEvents{edits_.back()};
 
         if (!event)
             return nullptr;
         else
-            event_ptr = new mtx::events::collections::TimelineEvents(std::move(event->data));
+            event_ptr = new mtx::events::collections::TimelineEvents(std::move(*event));
         events_.insert(index, event_ptr);
     }
 
@@ -692,7 +692,7 @@ EventStore::indexToId(int idx) const
     return cache::client()->getTimelineEventId(room_id_, toInternalIdx(idx));
 }
 
-olm::DecryptionResult *
+olm::DecryptionResult const *
 EventStore::decryptEvent(const IdIndex &idx,
                          const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &e)
 {
@@ -813,7 +813,7 @@ EventStore::enableKeyRequests(bool suppressKeyRequests_)
         suppressKeyRequests = true;
 }
 
-mtx::events::collections::TimelineEvents *
+mtx::events::collections::TimelineEvents const *
 EventStore::get(const std::string &id,
                 std::string_view related_to,
                 bool decrypt,
@@ -856,7 +856,7 @@ EventStore::get(const std::string &id,
                                       });
             return nullptr;
         }
-        event_ptr = new mtx::events::collections::TimelineEvents(std::move(event->data));
+        event_ptr = new mtx::events::collections::TimelineEvents(std::move(*event));
         events_by_id_.insert(index, event_ptr);
     }
 
@@ -895,7 +895,7 @@ EventStore::decryptionError(std::string id)
         if (!event) {
             return olm::DecryptionErrorCode::NoError;
         }
-        event_ptr = new mtx::events::collections::TimelineEvents(std::move(event->data));
+        event_ptr = new mtx::events::collections::TimelineEvents(std::move(*event));
         events_by_id_.insert(index, event_ptr);
     }
 

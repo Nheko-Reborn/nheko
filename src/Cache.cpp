@@ -1284,9 +1284,8 @@ Cache::runMigrations()
                                else if (j["token"].get<std::string>() != oldMessages.prev_batch)
                                    break;
 
-                               mtx::events::collections::TimelineEvent te;
-                               from_json(j["event"], te);
-                               oldMessages.events.push_back(te.data);
+                               oldMessages.events.push_back(
+                                 j["event"].get<mtx::events::collections::TimelineEvents>());
                            }
                            // messages were stored in reverse order, so we
                            // need to reverse them
@@ -2398,15 +2397,13 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
         if (!success)
             continue;
 
-        mtx::events::collections::TimelineEvent te;
         try {
-            from_json(nlohmann::json::parse(event), te);
+            messages.timeline.events.push_back(
+              nlohmann::json::parse(event).get<mtx::events::collections::TimelineEvents>());
         } catch (std::exception &e) {
             nhlog::db()->error("Failed to parse message from cache {}", e.what());
             continue;
         }
-
-        messages.timeline.events.push_back(std::move(te.data));
     }
     cursor.close();
 
@@ -2417,7 +2414,7 @@ Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t 
     return messages;
 }
 
-std::optional<mtx::events::collections::TimelineEvent>
+std::optional<mtx::events::collections::TimelineEvents>
 Cache::getEvent(const std::string &room_id, std::string_view event_id)
 {
     auto txn      = ro_txn(env_);
@@ -2428,24 +2425,21 @@ Cache::getEvent(const std::string &room_id, std::string_view event_id)
     if (!success)
         return {};
 
-    mtx::events::collections::TimelineEvent te;
     try {
-        from_json(nlohmann::json::parse(event), te);
+        return nlohmann::json::parse(event).get<mtx::events::collections::TimelineEvents>();
     } catch (std::exception &e) {
         nhlog::db()->error("Failed to parse message from cache {}", e.what());
         return std::nullopt;
     }
-
-    return te;
 }
 void
 Cache::storeEvent(const std::string &room_id,
                   const std::string &event_id,
-                  const mtx::events::collections::TimelineEvent &event)
+                  const mtx::events::collections::TimelineEvents &event)
 {
     auto txn        = lmdb::txn::begin(env_);
     auto eventsDb   = getEventsDb(txn, room_id);
-    auto event_json = mtx::accessors::serialize_event(event.data);
+    auto event_json = mtx::accessors::serialize_event(event);
     eventsDb.put(txn, event_id, event_json.dump());
     txn.commit();
 }
@@ -2453,17 +2447,17 @@ Cache::storeEvent(const std::string &room_id,
 void
 Cache::replaceEvent(const std::string &room_id,
                     const std::string &event_id,
-                    const mtx::events::collections::TimelineEvent &event)
+                    const mtx::events::collections::TimelineEvents &event)
 {
     auto txn         = lmdb::txn::begin(env_);
     auto eventsDb    = getEventsDb(txn, room_id);
     auto relationsDb = getRelationsDb(txn, room_id);
-    auto event_json  = mtx::accessors::serialize_event(event.data).dump();
+    auto event_json  = mtx::accessors::serialize_event(event).dump();
 
     {
         eventsDb.del(txn, event_id);
         eventsDb.put(txn, event_id, event_json);
-        for (const auto &relation : mtx::accessors::relations(event.data).relations) {
+        for (const auto &relation : mtx::accessors::relations(event).relations) {
             relationsDb.put(txn, relation.event_id, event_id);
         }
     }
@@ -3430,19 +3424,19 @@ Cache::isRoomMember(const std::string &user_id, const std::string &room_id)
 
 void
 Cache::savePendingMessage(const std::string &room_id,
-                          const mtx::events::collections::TimelineEvent &message)
+                          const mtx::events::collections::TimelineEvents &message)
 {
     auto txn      = lmdb::txn::begin(env_);
     auto eventsDb = getEventsDb(txn, room_id);
 
     mtx::responses::Timeline timeline;
-    timeline.events.push_back(message.data);
+    timeline.events.push_back(message);
     saveTimelineMessages(txn, eventsDb, room_id, timeline);
 
     auto pending = getPendingMessagesDb(txn, room_id);
 
     int64_t now = QDateTime::currentMSecsSinceEpoch();
-    pending.put(txn, lmdb::to_sv(now), mtx::accessors::event_id(message.data));
+    pending.put(txn, lmdb::to_sv(now), mtx::accessors::event_id(message));
 
     txn.commit();
 }
@@ -3469,7 +3463,7 @@ Cache::pendingEvents(const std::string &room_id)
     return related_ids;
 }
 
-std::optional<mtx::events::collections::TimelineEvent>
+std::optional<mtx::events::collections::TimelineEvents>
 Cache::firstPendingMessage(const std::string &room_id)
 {
     auto txn     = lmdb::txn::begin(env_);
@@ -3487,8 +3481,8 @@ Cache::firstPendingMessage(const std::string &room_id)
             }
 
             try {
-                mtx::events::collections::TimelineEvent te;
-                from_json(nlohmann::json::parse(event), te);
+                mtx::events::collections::TimelineEvents te =
+                  nlohmann::json::parse(event).get<mtx::events::collections::TimelineEvents>();
 
                 pendingCursor.close();
                 return te;
@@ -3622,10 +3616,10 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
             if (!success)
                 continue;
 
-            mtx::events::collections::TimelineEvent te;
             try {
-                from_json(nlohmann::json::parse(std::string_view(oldEvent.data(), oldEvent.size())),
-                          te);
+                auto te = nlohmann::json::parse(std::string_view(oldEvent.data(), oldEvent.size()))
+                            .get<mtx::events::collections::TimelineEvents>();
+
                 // overwrite the content and add redation data
                 std::visit(
                   [&redaction, &room_id, &txn, &eventsDb, this](auto &ev) {
@@ -3652,8 +3646,8 @@ Cache::saveTimelineMessages(lmdb::txn &txn,
                                          mtx::events::collections::StateEvents{redactedEvent});
                       }
                   },
-                  te.data);
-                event = mtx::accessors::serialize_event(te.data);
+                  te);
+                event = mtx::accessors::serialize_event(te);
                 event["content"].clear();
 
             } catch (std::exception &e) {
