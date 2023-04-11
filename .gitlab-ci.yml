@@ -82,47 +82,6 @@ build-gcc11:
       - .hunter/
       - .ccache
 
-build-gcc10:
-  stage: build
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/debian:bullseye
-  tags: [docker]
-  variables:
-    TRAVIS_OS_NAME: linux
-  before_script:
-    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
-    - apt-get update
-    - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev
-        libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
-        qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev
-        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform
-        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev
-    # need recommended deps for wget
-    - apt-get -y install wget
-    - /usr/sbin/update-ccache-symlinks
-    - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
-    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
-  script:
-    - export PATH="/usr/lib/ccache:${PATH}"
-    - cmake -GNinja -H. -Bbuild
-        -DCMAKE_INSTALL_PREFIX=.deps/usr
-        -DHUNTER_ROOT="../.hunter"
-        -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_LMDB=OFF -DUSE_BUNDLED_QTKEYCHAIN=OFF
-        -DVOIP=OFF
-        -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
-        -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
-        -DJSON_ImplicitConversions=OFF
-        -DMAN=OFF
-    - cmake --build build
-  after_script:
-    - mv ../.hunter .hunter
-  rules:
-    - if : '$CI_PIPELINE_TRIGGERED == null'
-  cache:
-    key: "$CI_JOB_NAME"
-    paths:
-      - .hunter/
-      - .ccache
-
 build-tw:
   stage: build
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/opensuse/tumbleweed
