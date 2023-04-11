@@ -55,7 +55,7 @@ build-gcc11:
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
         qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev
         qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform
-        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc # libolm-dev
+        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc time # libolm-dev
     # need recommended deps for wget
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
@@ -71,7 +71,7 @@ build-gcc11:
         -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
         -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
         -DJSON_ImplicitConversions=OFF
-    - cmake --build build
+    - /usr/bin/time cmake --build build
   after_script:
     - mv ../.hunter .hunter
   rules:
@@ -127,6 +127,7 @@ build-tw:
         "pkgconfig(gstreamer-webrtc-1.0)"
         "pkgconfig(xcb)"
         "pkgconfig(xcb-ewmh)"
+        "time"
     - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib64/ccache:${PATH}"
@@ -138,7 +139,7 @@ build-tw:
         -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF
         # temporarily disabled because of mtxclient failures
         #-DJSON_ImplicitConversions=OFF
-    - cmake --build build
+    - /usr/bin/time cmake --build build
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   cache:
