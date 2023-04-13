@@ -44,7 +44,9 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool typingNotifications READ typingNotifications WRITE setTypingNotifications NOTIFY
                  typingNotificationsChanged)
     Q_PROPERTY(bool sortByImportance READ sortByImportance WRITE setSortByImportance NOTIFY
-                 roomSortingChanged)
+                 roomSortingChangedImportance)
+    Q_PROPERTY(bool sortByAlphabet READ sortByAlphabet WRITE setSortByAlphabet NOTIFY
+                 roomSortingChangedAlphabetical)
     Q_PROPERTY(bool buttonsInTimeline READ buttonsInTimeline WRITE setButtonsInTimeline NOTIFY
                  buttonInTimelineChanged)
     Q_PROPERTY(bool readReceipts READ readReceipts WRITE setReadReceipts NOTIFY readReceiptsChanged)
@@ -163,6 +165,7 @@ public:
     void setReadReceipts(bool state);
     void setTypingNotifications(bool state);
     void setSortByImportance(bool state);
+    void setSortByAlphabet(bool state);
     void setButtonsInTimeline(bool state);
     void setTimelineMaxWidth(int state);
     void setCommunityListWidth(int state);
@@ -231,6 +234,7 @@ public:
     bool animateImagesOnHover() const { return animateImagesOnHover_; }
     bool typingNotifications() const { return typingNotifications_; }
     bool sortByImportance() const { return sortByImportance_; }
+    bool sortByAlphabet() const { return sortByAlphabet_; }
     bool buttonsInTimeline() const { return buttonsInTimeline_; }
     bool mobileMode() const { return mobileMode_; }
     bool readReceipts() const { return readReceipts_; }
@@ -285,7 +289,8 @@ public:
 signals:
     void groupViewStateChanged(bool state);
     void scrollbarsInRoomlistChanged(bool state);
-    void roomSortingChanged(bool state);
+    void roomSortingChangedImportance(bool state);
+    void roomSortingChangedAlphabetical(bool state);
     void themeChanged(QString state);
     void messageHoverHighlightChanged(bool state);
     void enlargeEmojiOnlyMessagesChanged(bool state);
@@ -366,6 +371,7 @@ private:
     bool animateImagesOnHover_;
     bool typingNotifications_;
     bool sortByImportance_;
+    bool sortByAlphabet_;
     bool buttonsInTimeline_;
     bool readReceipts_;
     bool hasDesktopNotifications_;
@@ -469,6 +475,7 @@ class UserSettingsModel final : public QAbstractListModel
         SidebarSection,
         GroupView,
         SortByImportance,
+        SortByAlphabet,
         DecryptSidebar,
         SpaceNotifications,
 

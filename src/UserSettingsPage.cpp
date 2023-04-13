@@ -79,6 +79,7 @@ UserSettings::load(std::optional<QString> profile)
     typingNotifications_ =
       settings.value(QStringLiteral("user/typing_notifications"), true).toBool();
     sortByImportance_ = settings.value(QStringLiteral("user/sort_by_unread"), true).toBool();
+    sortByAlphabet_   = settings.value(QStringLiteral("user/sort_by_alphabet"), false).toBool();
     readReceipts_     = settings.value(QStringLiteral("user/read_receipts"), true).toBool();
     theme_            = settings.value(QStringLiteral("user/theme"), defaultTheme_).toString();
 
@@ -383,7 +384,17 @@ UserSettings::setSortByImportance(bool state)
     if (state == sortByImportance_)
         return;
     sortByImportance_ = state;
-    emit roomSortingChanged(state);
+    emit roomSortingChangedImportance(state);
+    save();
+}
+
+void
+UserSettings::setSortByAlphabet(bool state)
+{
+    if (state == sortByAlphabet_)
+        return;
+    sortByAlphabet_ = state;
+    emit roomSortingChangedAlphabetical(state);
     save();
 }
 
@@ -882,6 +893,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("font_size"), baseFontSize_);
     settings.setValue(QStringLiteral("typing_notifications"), typingNotifications_);
     settings.setValue(QStringLiteral("sort_by_unread"), sortByImportance_);
+    settings.setValue(QStringLiteral("sort_by_alphabet"), sortByAlphabet_);
     settings.setValue(QStringLiteral("minor_events"), sortByImportance_);
     settings.setValue(QStringLiteral("read_receipts"), readReceipts_);
     settings.setValue(QStringLiteral("group_view"), groupView_);
@@ -1010,6 +1022,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Typing notifications");
         case SortByImportance:
             return tr("Sort rooms by unreads");
+        case SortByAlphabet:
+            return tr("Sort rooms by alphabetical order instead of last message time");
         case ButtonsInTimeline:
             return tr("Show buttons in timeline");
         case TimelineMaxWidth:
@@ -1156,6 +1170,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->typingNotifications();
         case SortByImportance:
             return i->sortByImportance();
+        case SortByAlphabet:
+            return i->sortByAlphabet();
         case ButtonsInTimeline:
             return i->buttonsInTimeline();
         case TimelineMaxWidth:
@@ -1312,11 +1328,18 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case SortByImportance:
             return tr(
               "Display rooms with new messages first.\nIf this is off, the list of rooms will only "
-              "be sorted by the timestamp of the last message in a room.\nIf this is on, rooms "
+              "be sorted by the preferred sorting order.\nIf this is on, rooms "
               "which "
               "have active notifications (the small circle with a number in it) will be sorted on "
-              "top. Rooms that you have muted will still be sorted by timestamp, since you don't "
+              "top. Rooms that you have muted will still be sorted by the preferred sorting order, "
+              "since you don't "
               "seem to consider them as important as the other rooms.");
+        case SortByAlphabet:
+            return tr(
+              "Sort rooms alphabetically.\nIf this is off, the list of rooms will be sorted by the "
+              "timestamp of the last message in a room.\nIf this is on, rooms that come first "
+              "alphabetically "
+              "will be sorted earlier than ones that come later.");
         case ButtonsInTimeline:
             return tr(
               "Show buttons to quickly reply, react or access additional options next to each "
@@ -1460,6 +1483,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case AnimateImagesOnHover:
         case TypingNotifications:
         case SortByImportance:
+        case SortByAlphabet:
         case ButtonsInTimeline:
         case ReadReceipts:
         case DesktopNotifications:
@@ -1729,6 +1753,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case SortByImportance: {
             if (value.userType() == QMetaType::Bool) {
                 i->setSortByImportance(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case SortByAlphabet: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setSortByAlphabet(value.toBool());
                 return true;
             } else
                 return false;
@@ -2150,8 +2181,11 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     connect(s.get(), &UserSettings::scrollbarsInRoomlistChanged, this, [this]() {
         emit dataChanged(index(ScrollbarsInRoomlist), index(ScrollbarsInRoomlist), {Value});
     });
-    connect(s.get(), &UserSettings::roomSortingChanged, this, [this]() {
+    connect(s.get(), &UserSettings::roomSortingChangedImportance, this, [this]() {
         emit dataChanged(index(SortByImportance), index(SortByImportance), {Value});
+    });
+    connect(s.get(), &UserSettings::roomSortingChangedAlphabetical, this, [this]() {
+        emit dataChanged(index(SortByAlphabet), index(SortByAlphabet), {Value});
     });
     connect(s.get(), &UserSettings::decryptSidebarChanged, this, [this]() {
         emit dataChanged(index(DecryptSidebar), index(DecryptSidebar), {Value});
