@@ -232,6 +232,7 @@ build-flatpak:
     key: "$CI_JOB_NAME"
     paths:
       - build-flatpak/.flatpak-builder/
+    when: always # because the arm runner is slow and ooms often otherwise!
   artifacts:
     expose_as: 'flatpak'
     paths: ['build-flatpak/nheko-${ARCH}.flatpak']
