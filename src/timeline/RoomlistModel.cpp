@@ -915,7 +915,6 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
     this->sortByAlphabet   = UserSettings::instance()->sortByAlphabet();
     setSourceModel(model);
     setDynamicSortFilter(true);
-    setSortCaseSensitivity(Qt::CaseInsensitive);
 
     QObject::connect(UserSettings::instance().get(),
                      &UserSettings::roomSortingChangedImportance,
