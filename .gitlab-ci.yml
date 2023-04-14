@@ -224,8 +224,7 @@ build-flatpak:
   after_script:
     - echo -e "\e[0Ksection_start:`date +%s`:upload_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mUploading flatpak"
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-${ARCH}.flatpak
-    - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || true
-    - (mkdir -p artifacts && cp build-flatpak/nheko-${ARCH}.flatpak artifacts/) || true
+    - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || exit_code=$?
     - echo -e "\e[0Ksection_end:`date +%s`:upload_flatpak\r\e[0K"
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == null'
@@ -235,7 +234,7 @@ build-flatpak:
       - build-flatpak/.flatpak-builder/
   artifacts:
     expose_as: 'flatpak'
-    paths: ['artifacts/nheko-${ARCH}.flatpak']
+    paths: ['build-flatpak/nheko-${ARCH}.flatpak']
     name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-${ARCH}
 
 appimage-amd64:
