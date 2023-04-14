@@ -889,20 +889,19 @@ FilteredRoomlistModel::lessThan(const QModelIndex &left, const QModelIndex &righ
     // Now sort by recency or room name
     // Zero if empty, otherwise the time that the event occured
 
-    if (!this->sortByAlphabet) {
+    if (this->sortByAlphabet) {
+        QString a_order = sourceModel()->data(left_idx, RoomlistModel::RoomName).toString();
+        QString b_order = sourceModel()->data(right_idx, RoomlistModel::RoomName).toString();
+
+        auto comp = a_order.compare(b_order, Qt::CaseInsensitive);
+        if (comp != 0)
+            return comp < 0;
+    } else {
         uint64_t a_order = sourceModel()->data(left_idx, RoomlistModel::Timestamp).toULongLong();
         uint64_t b_order = sourceModel()->data(right_idx, RoomlistModel::Timestamp).toULongLong();
 
         if (a_order != b_order)
             return a_order > b_order;
-    } else {
-        QString a_order =
-          sourceModel()->data(left_idx, RoomlistModel::RoomName).toString().toLower();
-        QString b_order =
-          sourceModel()->data(right_idx, RoomlistModel::RoomName).toString().toLower();
-
-        if (a_order != b_order)
-            return a_order < b_order;
     }
 
     return left.row() < right.row();

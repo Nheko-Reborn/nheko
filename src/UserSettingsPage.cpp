@@ -1023,7 +1023,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case SortByImportance:
             return tr("Sort rooms by unreads");
         case SortByAlphabet:
-            return tr("Sort rooms by alphabetical order instead of last message time");
+            return tr("Sort rooms alphabetically");
         case ButtonsInTimeline:
             return tr("Show buttons in timeline");
         case TimelineMaxWidth:
