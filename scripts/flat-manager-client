@@ -570,9 +570,7 @@ def should_skip_delta(id, globs):
 def keep_host(location, original):
     loc_url = URL(location)
     org_url = URL(original)
-    loc_url.scheme = org_url.scheme
-    loc_url.authority = org_url.authority
-    return str(loc_url)
+    return str(loc_url.with_scheme(org_url.scheme).with_host(org_url.host).with_port(org_url.port))
 
 def build_url_to_api(build_url):
     parts = urlparse(build_url)
