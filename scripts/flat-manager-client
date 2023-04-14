@@ -26,6 +26,7 @@ import os
 import sys
 import time
 import traceback
+from yarl import URL
 from argparse import ArgumentParser
 from functools import reduce
 from urllib.parse import urljoin, urlparse, urlsplit, urlunparse, urlunsplit
@@ -375,7 +376,7 @@ async def wait_for_job(session, job_url, token):
                             if start_after and start_after > now:
                                 print("Waiting %d seconds before starting job" % (int(start_after - now)))
                     if job_status > 0 and old_job_status == 0:
-                        print("/ Job was started");
+                        print("/ Job was started")
                     old_job_status = job_status
                     log = job['log']
                     if len(log) > 0:
@@ -441,14 +442,14 @@ async def commit_build(session, build_url, eol, eol_rebase, token_type, wait, to
             raise ApiError(resp, await resp.text())
 
         job = await resp.json()
-        job_url = resp.headers['location'];
+        job_url = keep_host(resp.headers['location'], build_url)
 
         if wait:
             print("Waiting for commit job")
-            job = await wait_for_job(session, job_url, token);
+            job = await wait_for_job(session, job_url, token)
 
         reparse_job_results(job)
-        job["location"] = job_url
+        job["location"] = keep_host(job_url, build_url)
         return job
 
 
@@ -478,14 +479,14 @@ async def publish_build(session, build_url, wait, token):
             raise ApiError(resp, await resp.text())
 
         job = await resp.json()
-        job_url = resp.headers['location'];
+        job_url = keep_host(resp.headers['location'], build_url)
 
         if wait:
             print("Waiting for publish job")
-            job = await wait_for_job(session, job_url, token);
+            job = await wait_for_job(session, job_url, token)
 
         reparse_job_results(job)
-        job["location"] = job_url
+        job["location"] = keep_host(job_url, build_url)
         return job
 
 
@@ -547,7 +548,7 @@ async def create_command(session, args):
         if resp.status != 200:
             raise ApiError(resp, await resp.text())
         data = await resp.json()
-        data["location"] = resp.headers['location']
+        data["location"] = keep_host(resp.headers['location'], build_url)
         if not args.print_output:
             print(resp.headers['location'])
         return data
@@ -564,6 +565,14 @@ def should_skip_delta(id, globs):
             if fnmatch.fnmatch(id, glob):
                 return True
     return False
+
+# work around for url_for returning http urls when flat-manager is behind a reverse proxy and aiohttp not keeping the Authorization header across redirects in version < 4
+def keep_host(location, original):
+    loc_url = URL(location)
+    org_url = URL(original)
+    loc_url.scheme = org_url.scheme
+    loc_url.authority = org_url.authority
+    return str(loc_url)
 
 def build_url_to_api(build_url):
     parts = urlparse(build_url)
@@ -652,11 +661,11 @@ async def push_command(session, args):
             update_job_url = build_url_to_api(args.build_url) + "/job/" + str(update_job_id)
             if args.wait_update:
                 print("Waiting for repo update job")
-                update_job = await wait_for_job (session, update_job_url, token);
+                update_job = await wait_for_job (session, update_job_url, token)
             else:
                 update_job = await get_job(session, update_job_url, token)
             reparse_job_results(update_job)
-            update_job["location"] = update_job_url
+            update_job["location"] = keep_host(update_job_url, update_job_url)
 
     data = await get_build(session, args.build_url, args.token)
     if commit_job:
@@ -679,11 +688,11 @@ async def publish_command(session, args):
         update_job_url = build_url_to_api(args.build_url) + "/job/" + str(update_job_id)
         if args.wait_update:
             print("Waiting for repo update job")
-            update_job = await wait_for_job(session, update_job_url, args.token);
+            update_job = await wait_for_job(session, update_job_url, args.token)
         else:
             update_job = await get_job(session, update_job_url, args.token)
         reparse_job_results(update_job)
-        update_job["location"] = update_job_url
+        update_job["location"] = keep_host(update_job_url, args.build_url)
     return job
 
 async def purge_command(session, args):
