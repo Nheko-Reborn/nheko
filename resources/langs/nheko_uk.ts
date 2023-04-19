@@ -2241,37 +2241,37 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Other state events</source>
-        <translation></translation>
+        <translation>Інші адміністративні події</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Remove other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалити інших користувачів</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Забанити інших користувачів</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Запросити інших користувачів</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact events sent by others</source>
-        <translation type="unfinished"></translation>
+        <translation>Редагувати події, надіслані іншими</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reactions</source>
-        <translation type="unfinished"></translation>
+        <translation>Реакції</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Deprecated aliases events</source>
-        <translation type="unfinished"></translation>
+        <translation>Застарілі події псевдонімів</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2281,137 +2281,137 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Change the room addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити адреси кімнат</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати зашифровані повідомлення</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Увімкнути шифрування</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change guest access</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити гостьовий доступ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change history visibility</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити видимість історії</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change who can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити тих, хто може приєднатися</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати повідомлення</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити назву кімнати</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити дозволи кімнати</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the rooms topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити тему кімнат</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити віджети</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the widgets (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити віджети (експериментально)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact own events</source>
-        <translation type="unfinished"></translation>
+        <translation>Редагувати власні події</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the pinned events</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити закріплені події</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Upgrade the room</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновити кімнату</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслати наліпки</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ban users using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Заборонити користувачів за допомогою правил політики</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban rooms using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Заборонити кімнати за правилами політики</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban servers using policy rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Заборонити сервери за допомогою правил політики</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Edit child communities and rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Редагувати дочірні спільноти та кімнати</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change parent communities</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити батьківські громади</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Розпочати дзвінок</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Negotiate a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Домовитися про дзвінок</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Answer a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Відповісти на дзвінок</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Hang up a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Покласти трубку</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reject a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Відхилити дзвінок</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the room emotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити емоції кімнати</translation>
     </message>
 </context>
 <context>
@@ -2419,7 +2419,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+217"/>
         <source>Other users</source>
-        <translation type="unfinished"></translation>
+        <translation>Інші користувачі</translation>
     </message>
 </context>
 <context>
@@ -2427,17 +2427,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/main.cpp" line="+234"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
-        <translation type="unfinished"></translation>
+        <translation>Створити унікальний профіль, який дозволить вам входити в кілька облікових записів одночасно та запускати кілька екземплярів nheko.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>profile</source>
-        <translation type="unfinished"></translation>
+        <translation>профіль</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>profile name</source>
-        <translation type="unfinished"></translation>
+        <translation>імя профілю</translation>
     </message>
 </context>
 <context>
@@ -2445,32 +2445,32 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-26"/>
         <source>Alias for &apos;--log-level trace&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Псевдонім для &apos;--log-level trace&apos;.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set the global log level, or a comma-separated list of &lt;component&gt;=&lt;level&gt; pairs, or both. For example, to set the default log level to &apos;warn&apos; but disable logging for the &apos;ui&apos; component, pass &apos;warn,ui=off&apos;. levels:{trace,debug,info,warning,error,critical,off} components:{crypto,db,mtx,net,qml,ui}</source>
-        <translation type="unfinished"></translation>
+        <translation>Установіть глобальний рівень журналу або розділений комами список пар &lt;component&gt;=&lt;level&gt;, або обидва. Наприклад, щоб встановити рівень журналу за замовчуванням на «попередження», але вимкнути журналювання для компонента «ui», передайте «warn,ui=off». рівні: {trace,debug,info,warning,error,critical,off} компоненти:{crypto,db,mtx,net,qml,ui}</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>level</source>
-        <translation type="unfinished"></translation>
+        <translation>рівень</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановіть тип виведення журналу. Допускається список, розділений комами. Типовим є &apos;file,stderr&apos;. типи: {file, stderr, none}</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>type</source>
-        <translation type="unfinished"></translation>
+        <translation>тип</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-29"/>
         <source>Respond</source>
-        <translation type="unfinished"></translation>
+        <translation>Відповісти</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2488,7 +2488,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/ReadReceipts.qml" line="+42"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Прочитати квитанції</translation>
     </message>
 </context>
 <context>
@@ -2496,7 +2496,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/ReadReceiptsModel.cpp" line="+113"/>
         <source>Yesterday, %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Учора, %1</translation>
     </message>
 </context>
 <context>
@@ -2504,12 +2504,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/pages/RegisterPage.qml" line="+96"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Ім&apos;я користувача</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ім’я користувача не має бути порожнім і має містити лише символи a-z, 0-9, ., _, =, - та /.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -2525,12 +2525,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Виберіть надійний пароль. Точні вимоги до надійності пароля можуть залежати від вашого сервера.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Підтвердження паролю</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -2540,22 +2540,22 @@ Example: https://server.my:8787</source>
     <message>
         <location line="-109"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Домашній сервер</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation type="unfinished"></translation>
+        <translation>ваш.сервер</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер, який дозволяє реєструватися. Оскільки матриця децентралізована, вам потрібно спочатку знайти сервер, на якому можна зареєструватися, або розмістити власний.</translation>
     </message>
     <message>
         <location line="+95"/>
         <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваші паролі не збігаються!</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2565,7 +2565,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+33"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>ЗАРЕЄСТРУВАТИСЯ</translation>
     </message>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+85"/>
@@ -2600,27 +2600,27 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+11"/>
         <source>Server does not support querying registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер не підтримує потоки реєстрації запитів!</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Server does not support registration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сервер не підтримує реєстрацію.</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Invalid username.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невірне ім&apos;я користувача.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Name already in use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ім&apos;я вже використовується.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished"></translation>
+        <translation>Частина зарезервованого простору імен.</translation>
     </message>
 </context>
 <context>
@@ -2633,12 +2633,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Cancel Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Скасувати редагування</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Cancel Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Скасувати ланцюжок</translation>
     </message>
 </context>
 <context>
@@ -2646,17 +2646,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomDirectory.qml" line="+27"/>
         <source>Explore Public Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Досліджуйте громадські кімнати</translation>
     </message>
     <message>
         <location line="+143"/>
         <source>Search for public rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук громадських кімнат</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибрати спеціальний домашній сервер</translation>
     </message>
 </context>
 <context>
@@ -2664,7 +2664,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/Cache.cpp" line="+1974"/>
         <source>no version stored</source>
-        <translation type="unfinished"></translation>
+        <translation>версія не збережена</translation>
     </message>
 </context>
 <context>
@@ -2672,22 +2672,22 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/RoomList.qml" line="+158"/>
         <source>New tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Новий тег</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter the tag you want to use:</source>
-        <translation type="unfinished"></translation>
+        <translation>Введіть тег, який ви хочете використовувати:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкрити окремо</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Room settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування кімнати</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2697,12 +2697,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Копіювати посилання на кімнату</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Позначити кімнату як:</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2722,32 +2722,32 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation type="unfinished"></translation>
+        <translation>Створити новий тег…</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished"></translation>
+        <translation>Додати або видалити зі спільноти...</translation>
     </message>
     <message>
         <location line="+260"/>
         <source>Status Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Повідомлення про статус</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter your status message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Введіть своє повідомлення про статус:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Profile settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування профілю</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Set status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановити повідомлення про статус</translation>
     </message>
     <message>
         <location line="+81"/>
@@ -2758,19 +2758,19 @@ Example: https://server.my:8787</source>
         <location line="+40"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Шифрування не встановлено</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Неперевірений вхід</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Будь ласка, перевірте інші пристрої</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2780,7 +2780,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+64"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Почати новий чат</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2790,32 +2790,32 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+5"/>
         <source>Create a new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Створити нову кімнату</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Розпочати прямий чат</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>Створити нову спільноту</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Каталог кімнат</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Search rooms (Ctrl+K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук кімнат (Ctrl+K)</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування користувача</translation>
     </message>
 </context>
 <context>
@@ -2823,82 +2823,82 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomMembers.qml" line="+21"/>
         <source>Members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Члени %1</translation>
     </message>
     <message numerus="yes">
         <location line="+32"/>
         <source>%n people in %1</source>
         <comment>Summary above list of members</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n людина в %1</numerusform>
+            <numerusform>%n людини в %1</numerusform>
+            <numerusform>%n осіб у %1</numerusform>
         </translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Invite more people</source>
-        <translation type="unfinished"></translation>
+        <translation>Запросити більше людей</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Пошук...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Сортувати за: </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Ідентифікатор користувача</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Відображуване ім&apos;я</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Рівень доступу</translation>
     </message>
     <message>
         <location line="+105"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Адміністратор: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Модератор: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Користувач: %1</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ця кімната не зашифрована!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This user is verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Цей користувач перевірений.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user isn&apos;t verified, but is still using the same master key from the first time you met.</source>
-        <translation type="unfinished"></translation>
+        <translation>Цей користувач не перевірений, але все ще використовує той самий головний ключ, який був у вашій першій зустрічі.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user has unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Цей користувач має неперевірені пристрої!</translation>
     </message>
 </context>
 <context>
@@ -2906,17 +2906,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomSettings.qml" line="+29"/>
         <source>Room Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування кімнати</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити аватар кімнати.</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити назву цієї кімнати</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
@@ -2930,42 +2930,42 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Переглянути учасників %1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Тема не встановлена</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити тему цієї кімнати</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>SETTINGS</source>
-        <translation type="unfinished"></translation>
+        <translation>НАЛАШТУВАННЯ</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Сповіщення</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Приглушений</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Лише згадки</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Всі повідомлення</translation>
     </message>
     <message>
         <location line="+105"/>
@@ -2975,39 +2975,40 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+21"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Наскрізне шифрування</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Наразі шифрування є експериментальним і може несподівано вийти з ладу. &lt;br&gt;
+Будь ласка, зверніть увагу, що після цього його не можна буде вимкнути.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволи</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Переглянути та змінити дозволи в цій кімнаті</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Переглянути та змінити адреси/псевдоніми цієї кімнати</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування наліпок і емоцій</translation>
     </message>
     <message>
         <location line="-93"/>
         <location line="+98"/>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3019,97 +3020,97 @@ Example: https://server.my:8787</source>
         <location line="+12"/>
         <location line="+30"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштувати</translation>
     </message>
     <message>
         <location line="-180"/>
         <source>Anyone can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Будь-хто може приєднатися</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволити стукіт</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Allow joining via other rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволити приєднання через інші кімнати</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Rooms to join via</source>
-        <translation type="unfinished"></translation>
+        <translation>Кімнати для приєднання</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити список кімнат, через які користувачі можуть приєднатися до цієї кімнати. Зазвичай це офіційна спільнота цієї кімнати.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволити гостям приєднатися</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Застосувати правила доступу</translation>
     </message>
     <message>
         <location line="+57"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Псевдоніми</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити увімкнені пакети, видалити пакети або створіть нові</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибрати події, які потрібно приховати в цій кімнаті</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>INFO</source>
-        <translation type="unfinished"></translation>
+        <translation>ІНФО</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Внутрішній ID</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Скопійовано в буфер обміну</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Версія кімнати</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>показати менше</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>показати більше</translation>
     </message>
     <message>
         <location filename="../../src/ui/RoomSettings.cpp" line="+217"/>
         <source>Failed to enable encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося ввімкнути шифрування: %1</translation>
     </message>
     <message>
         <location line="+344"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибрати аватар</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -3119,18 +3120,18 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибраний файл не є зображенням</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка під час читання файлу: %1</translation>
     </message>
     <message>
         <location line="+32"/>
         <location line="+19"/>
         <source>Failed to upload image: %s</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося завантажити зображення: %s</translation>
     </message>
 </context>
 <context>
@@ -3138,17 +3139,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/timeline/RoomlistModel.cpp" line="+163"/>
         <source>Pending invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>Очікує запрошення.</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Previewing this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Попередній перегляд цієї кімнати</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>No preview available</source>
-        <translation type="unfinished"></translation>
+        <translation>Попередній перегляд недоступний</translation>
     </message>
 </context>
 <context>
@@ -3156,27 +3157,27 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/Root.qml" line="+263"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Щоб продовжити, введіть свій пароль для входу:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Щоб продовжити, введіть дійсну електронну адресу:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Щоб продовжити, введіть дійсний номер телефону:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Будь ласка, введіть токен, який вам було надіслано:</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Зачекайте, поки надійде посилання для підтвердження, а потім продовжуйте.</translation>
     </message>
 </context>
 <context>
@@ -3184,48 +3185,48 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/voip/ScreenShare.qml" line="+30"/>
         <source>Share desktop with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Поділитися робочим столом із %1?</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Window:</source>
-        <translation type="unfinished"></translation>
+        <translation>Вікно:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Frame rate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Частота кадрів:</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Увімкнути камеру «картинка в картинці»</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Запит на віддалену камеру</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Переглядайте камеру абонента, як під час звичайного відеодзвінка</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Hide mouse cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Приховати курсор миші</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Поділитися</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Попередній перегляд</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3238,12 +3239,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../../src/Cache.cpp" line="-4664"/>
         <source>Failed to connect to secret storage</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося підключитися до секретного сховища</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko не зміг підключитися до безпечного сховища для збереження секретів шифрування. Це може мати кілька причин. Перевірте, чи працює ваша служба D-Bus і чи налаштовано ви службу, наприклад KWallet, Gnome Keyring, KeePassXC або еквівалент для вашої платформи. Якщо у вас виникли проблеми, не соромтеся відкрити проблему тут: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -3251,49 +3252,51 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+41"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation>Це ваш ключ відновлення. Він знадобиться для відновлення доступу до ваших зашифрованих повідомлень і ключів підтвердження. Зберігайте його в безпеці. Ні з ким не діліться і не втрачайте! Не проходьте Go! Не збирайте 200$!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Шифрування налаштовано успішно</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося встановити шифрування: %1</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштувати шифрування</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Привіт і ласкаво просимо до Матриці!
+Здається, ти новачок. Перш ніж ви зможете надійно зашифрувати свої повідомлення, нам потрібно налаштувати кілька дрібниць. Ви можете відразу натиснути «Прийняти» або налаштувати кілька основних параметрів. Ми також намагаємося пояснити деякі основи. Ви можете пропустити ці частини, але вони можуть виявитися корисними!</translation>
     </message>
     <message>
         <location line="+124"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Активувати шифрування</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Здається, ви вже налаштували шифрування для цього облікового запису. Щоб отримати доступ до зашифрованих повідомлень і зробити цей пристрій надійним, ви можете підтвердити наявний пристрій або (якщо він у вас є) ввести парольну фразу для відновлення. Виберіть один із наведених нижче варіантів.
+Якщо ви виберете перевірку, у вас повинен бути доступний інший пристрій. Якщо ви вибрали «ввести парольну фразу», вам знадобиться ваш ключ відновлення або парольна фраза. Якщо ви натиснете «Скасувати», ви зможете підтвердити себе пізніше.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>перевірити</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>введіть парольну фразу</translation>
     </message>
 </context>
 <context>
@@ -3301,32 +3304,32 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+47"/>
         <source>Failed to create keys for cross-signing!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося створити ключі для перехресного підпису!</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Failed to create keys for online key backup!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося створити ключі для онлайн-резервного копіювання ключів!</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося створити ключі для безпечного секретного сховища на стороні сервера!</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Encryption Setup</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування шифрування</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Encryption setup failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка налаштування шифрування: %1</translation>
     </message>
     <message>
         <location line="+156"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ ідентифікації змінено. Це порушує роботу E2EE, тому виходимо із системи.</translation>
     </message>
 </context>
 <context>
@@ -3335,24 +3338,24 @@ If you choose verify, you need to have the other device available. If you choose
         <location filename="../../src/SingleImagePackModel.cpp" line="+279"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося оновити пакет зображень: %1</translation>
     </message>
     <message>
         <location line="-12"/>
         <source>Failed to delete old image pack: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося видалити старий пакет зображень: %1</translation>
     </message>
     <message>
         <location line="+27"/>
         <location line="+44"/>
         <source>Failed to open image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося відкрити зображення: %1</translation>
     </message>
     <message>
         <location line="-15"/>
         <location line="+29"/>
         <source>Failed to upload image: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося завантажити зображення: %1</translation>
     </message>
 </context>
 <context>
@@ -3360,37 +3363,37 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+17"/>
         <source>Add or remove from community</source>
-        <translation type="unfinished"></translation>
+        <translation>Додати або видалити зі спільноти</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Офіційна спільнота цієї кімнати</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Афілійована спільнота для цієї кімнати</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>Наведено лише для учасників спільноти</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Наведено лише для учасників кімнати</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>Не пов&apos;язано</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>Підспільноти</translation>
     </message>
 </context>
 <context>
@@ -3398,22 +3401,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+26"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Надіслано</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Отримано</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>Прочитано</translation>
     </message>
 </context>
 <context>
@@ -3429,12 +3432,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/device-verification/Success.qml" line="+13"/>
         <source>Successful Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Успішна перевірка</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевірка успішна!  Обидві сторони перевірили свої пристрої!</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3448,326 +3451,327 @@ If you choose verify, you need to have the other device available. If you choose
         <location filename="../../src/timeline/TimelineModel.cpp" line="+1394"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка редагування повідомлення: %1</translation>
     </message>
     <message>
         <location line="+115"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Не вдалося зашифрувати подію, надсилання перервано!</translation>
     </message>
     <message>
         <location line="+196"/>
         <source>Save image</source>
-        <translation type="unfinished"></translation>
+        <translation>Зберегти зображення</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save video</source>
-        <translation type="unfinished"></translation>
+        <translation>Зберегти відео</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Зберегти аудіо</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Save file</source>
-        <translation type="unfinished"></translation>
+        <translation>Зберегти файл</translation>
     </message>
     <message numerus="yes">
         <location line="+275"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1%2 друкує.</numerusform>
+            <numerusform>%1%2 друкують.</numerusform>
+            <numerusform>%1%2 друкують.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+67"/>
         <source>%1 opened the room to the public.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відкрив кімнату для всіх.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 allowed to join this room by knocking.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 дозволив приєднатися до цієї кімнати, постукавши.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 allowed members of the following rooms to automatically join this room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 дозволив членам наступних кімнат автоматично приєднатися до цієї кімнати: %2</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>%1 made the room open to guests.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відкрив кімнату для гостей.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 закрив кімнату для гостьового доступу.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 зробив історію кімнат читабельною. Події тепер можуть читати люди, які не приєдналися.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 зробив історію кімнати видимою для учасників з цього моменту.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 set the room history visible to members since they were invited.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 зробив історію кімнати видимою для учасників з моменту запрошення.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 set the room history visible to members since they joined the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 зробив історію кімнати видимою для учасників після того, як вони приєдналися до кімнати.</translation>
     </message>
     <message>
         <location line="+35"/>
         <location line="+244"/>
         <source>%1 has changed the room&apos;s permissions.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив дозволи кімнати.</translation>
     </message>
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу для можливості вигнання людей із кімнати з %2 на %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n учасник тепер може викидати учасників кімнати.</numerusform>
+            <numerusform>%n учасники тепер можуть викидати учасників кімнати.</numerusform>
+            <numerusform>%n учасників тепер можуть викидати учасників кімнати.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 тепер може викидати учасників кімнати.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень потужності редагування кімнати з %2 на %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n учасник тепер може редагувати повідомлення кімнати.</numerusform>
+            <numerusform>%n учасники тепер можуть редагувати повідомлення кімнати.</numerusform>
+            <numerusform>%n учасників тепер можуть редагувати повідомлення кімнати.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 тепер може редагувати повідомлення кімнати.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу для можливості блокування учасників з %2 на %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n учасник тепер може заблокувати учасників кімнати.</numerusform>
+            <numerusform>%n учасника тепер можуть заблокувати учасників кімнати.</numerusform>
+            <numerusform>%n учасників тепер можуть заблокувати учасників кімнати.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 тепер може блокувати учасників кімнати.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу кімнати state_default з %2 на %3.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n учасник тепер може надсилати події стану.</numerusform>
+            <numerusform>%n учасники тепер можуть надсилати події стану.</numerusform>
+            <numerusform>%n учасників тепер можуть надсилати події стану.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now send state events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 тепер може надсилати події стану.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу, потрібного для запрошення до кімнати з %2 на %3.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу events_default кімнати з %2 на %3. Нові користувачі тепер не можуть надсилати жодні події.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу events_default кімнати з %2 на %3. Нові користувачі тепер можуть надсилати події, які не обмежені іншим чином.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу events_default кімнати з %2 на %3.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has made %2 an administrator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 призначив %2 адміністратором цієї кімнати.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has made %2 a moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 призначив %2 модератором цієї кімнати.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 знизив статус %2 до модератора цієї кімнати.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу %2 з %3 на %4.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 дозволив лише адміністраторам надсилати &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 дозволив лише модераторам надсилати &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 дозволив усім надсилати &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу до типу події &quot;%2&quot; із типового на %3.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив рівень доступу до типу події &quot;%2&quot; з %3 на %4.</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>(empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>(порожньо)</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 видалив такі зображення з набору %2:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 додав такі зображення до набору %2:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 changed the sticker and emotes in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив наклейку та емоції в цій кімнаті.</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 вимкнув правило блокування користувачів, які відповідають %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 додав правило для блокування користувачів, які відповідають %2 за &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 вимкнув правило блокування кімнат, які відповідають %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 додав правило для блокування кімнат, які відповідають %2 для &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 вимкнув правило блокування серверів, які відповідають %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 додав правило для блокування серверів, які відповідають %2 для &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Removed by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалено %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) видалив це повідомлення в %3</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Removed by %1 because: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Видалено %1 через: %2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) видалив це повідомлення в %3
+Причина: %4</translation>
     </message>
     <message>
         <location line="+152"/>
         <source>%2 revoked the invite to %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 відкликав запрошення до %1.</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>%2 kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 вигнав %1.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%2 unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 розблоковано %1.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%2 rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 відхилив стукіт від %1.</translation>
     </message>
     <message>
         <location line="-32"/>
@@ -3777,78 +3781,78 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>%1 changed some profile info.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив деяку інформацію профілю.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 приєднався.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 joined via authorisation from %2&apos;s server.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 приєднався через авторизацію з сервера %2.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відхилив їхнє запрошення.</translation>
     </message>
     <message>
         <location line="-5"/>
         <source>%1 left the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 залишив кімнату.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Причина: %1</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>%1 redacted their knock.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 відредагував свій стукіт.</translation>
     </message>
     <message>
         <location line="-1628"/>
         <source>You joined this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви приєдналися до цієї кімнати.</translation>
     </message>
     <message>
         <location line="+926"/>
         <source>%1 made this room require an invitation to join.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 зробив так, щоб ця кімната потребувала запрошення, щоб приєднатися.</translation>
     </message>
     <message>
         <location line="+654"/>
         <source>%1 invited %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 запрошено %2.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив свій аватар і відображуване ім’я на %2.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 змінив своє відображуване ім’я на %2.</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 залишився після того, як уже пішов!</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 banned %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 заблоковано %2</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 knocked.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 постукав.</translation>
     </message>
 </context>
 <context>
@@ -3856,12 +3860,12 @@ Reason: %4</source>
     <message>
         <location filename="../qml/TimelineRow.qml" line="+248"/>
         <source>Edited</source>
-        <translation type="unfinished"></translation>
+        <translation>Відредаговано</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Part of a thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Частина нитки розмови</translation>
     </message>
 </context>
 <context>
@@ -3869,17 +3873,17 @@ Reason: %4</source>
     <message>
         <location filename="../qml/TimelineView.qml" line="+44"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Немає відкритих кімнат</translation>
     </message>
     <message>
         <location line="+158"/>
         <source>No preview available</source>
-        <translation type="unfinished"></translation>
+        <translation>Попередній перегляд недоступний</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування</translation>
     </message>
     <message numerus="yes">
         <location line="+12"/>
@@ -3893,37 +3897,37 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Переглянути учасників %1</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>join the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>приєднатися до розмови</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>accept invite</source>
-        <translation type="unfinished"></translation>
+        <translation>прийняти запрошення</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>decline invite</source>
-        <translation type="unfinished"></translation>
+        <translation>відхилити запрошення</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Hide invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Приховати причину запрошення</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Show invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Показати причину запрошення</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Назад до списку кімнат</translation>
     </message>
 </context>
 <context>
@@ -3931,62 +3935,62 @@ Reason: %4</source>
     <message>
         <location filename="../qml/TopBar.qml" line="+161"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Назад до списку кімнат</translation>
     </message>
     <message>
         <location line="-141"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Кімнату не вибрано</translation>
     </message>
     <message>
         <location line="+123"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>У %1</translation>
     </message>
     <message>
         <location line="+111"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показати членів кімнати.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This room contains only verified devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ця кімната містить лише перевірені пристрої.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ця кімната містить перевірені пристрої та пристрої, які ніколи не змінювали свій головний ключ.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ця кімната містить неперевірені пристрої!</translation>
     </message>
     <message>
         <location line="-44"/>
         <source>Show or hide pinned messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Показати або приховати закріплені повідомлення</translation>
     </message>
     <message>
         <location line="+66"/>
         <source>Search this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Шукати в цій кімнаті</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування кімнати</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Запросити користувачів</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Учасники</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3996,17 +4000,17 @@ Reason: %4</source>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування</translation>
     </message>
     <message>
         <location line="+74"/>
         <source>Unpin</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкріпити</translation>
     </message>
     <message>
         <location line="+63"/>
         <source>Enter search query</source>
-        <translation type="unfinished"></translation>
+        <translation>Введіть пошуковий запит</translation>
     </message>
 </context>
 <context>
@@ -4014,12 +4018,12 @@ Reason: %4</source>
     <message>
         <location filename="../../src/TrayIcon.cpp" line="+118"/>
         <source>Show</source>
-        <translation type="unfinished"></translation>
+        <translation>Показати</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Вийти</translation>
     </message>
 </context>
 <context>
@@ -4027,24 +4031,24 @@ Reason: %4</source>
     <message>
         <location filename="../../src/ui/UIA.cpp" line="+61"/>
         <source>No available registration flows!</source>
-        <translation type="unfinished"></translation>
+        <translation>Немає доступних потоків реєстрації!</translation>
     </message>
     <message>
         <location line="+56"/>
         <location line="+24"/>
         <location line="+17"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Реєстрацію скасовано</translation>
     </message>
     <message>
         <location line="-27"/>
         <source>Please enter a valid registration token.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введіть дійсний токен реєстрації.</translation>
     </message>
     <message>
         <location line="+165"/>
         <source>Invalid token</source>
-        <translation type="unfinished"></translation>
+        <translation>Неприпустимий токен</translation>
     </message>
 </context>
 <context>
@@ -4052,10 +4056,10 @@ Reason: %4</source>
     <message numerus="yes">
         <location filename="../qml/UploadBox.qml" line="+81"/>
         <source>Upload %n file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Завантажити файл</numerusform>
+            <numerusform>Завантажити %n файли</numerusform>
+            <numerusform>Завантажити %n файлів</numerusform>
         </translation>
     </message>
 </context>
@@ -4064,108 +4068,108 @@ Reason: %4</source>
     <message>
         <location filename="../qml/dialogs/UserProfile.qml" line="+27"/>
         <source>Global User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобальний профіль користувача</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Профіль користувача кімнати</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити аватар глобально.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити аватар. Стосуватиметься лише цієї кімнати.</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобально змінити відображуване ім’я.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити відображуване ім&apos;я. Стосуватиметься лише цієї кімнати.</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Кімната: %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Це спеціальний профіль кімнати. Ім&apos;я та аватар користувача можуть відрізнятися від їх глобальних версій.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкрити глобальний профіль цього користувача.</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+200"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевірити</translation>
     </message>
     <message>
         <location line="-162"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Почати приватний чат.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вигнати користувача.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Заблокувати користувача.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Оновити список пристроїв.</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вийти з цього пристрою.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити ім&apos;я пристрою.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Востаннє бачили %1 з %2</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>Зняти підтвердження</translation>
     </message>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+159"/>
         <source>Sign out device %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Вийти з пристрою %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви вийшли з цього пристрою.</translation>
     </message>
     <message>
         <location line="+222"/>
         <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>Виберіть аватар</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -4175,12 +4179,12 @@ Reason: %4</source>
     <message>
         <location line="+12"/>
         <source>The selected file is not an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Вибраний файл не є зображенням</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Error while reading file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка під час читання файлу: %1</translation>
     </message>
 </context>
 <context>
@@ -4189,7 +4193,7 @@ Reason: %4</source>
         <location filename="../../src/UserSettingsPage.cpp" line="+564"/>
         <location filename="../../src/UserSettingsPage.h" line="+252"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>За замовчуванням</translation>
     </message>
 </context>
 <context>
@@ -4197,568 +4201,584 @@ Reason: %4</source>
     <message>
         <location line="+409"/>
         <source>Theme</source>
-        <translation type="unfinished"></translation>
+        <translation>Тема</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scale factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Коефіцієнт масштабу</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Highlight message on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Виділити повідомлення при наведенні</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Великі емодзі на часовій шкалі</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Minimize to tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Згортати в трей</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Start in tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Мінімізувати до трею</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Scrollbars in room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Смуги прокрутки в списку кімнат</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Надсилати повідомлення як Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Use shift+enter to send and enter to start a new line</source>
-        <translation type="unfinished"></translation>
+        <translation>Використовувати клавіші shift+enter для надсилання та enter для початку нового рядка</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable message bubbles</source>
-        <translation type="unfinished"></translation>
+        <translation>Увімкнути бульбашки повідомлень</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enable small Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Увімкнути маленькі аватари</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
-        <translation type="unfinished"></translation>
+        <translation>Відтворення анімованих зображень тільки при наведенні</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Typing notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Повідомляти про набір повідомлення</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sort rooms by unreads</source>
-        <translation type="unfinished"></translation>
+        <translation>Сортувати кімнати за непрочитаними</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show buttons in timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Показати кнопки на часовій шкалі</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Limit width of timeline</source>
-        <translation type="unfinished"></translation>
+        <translation>Обмеження ширини часової шкали</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Прочитати квитанції</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Desktop notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Сповіщення на робочому столі</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Alert on notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Сповіщення про сповіщення</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Circular Avatars</source>
-        <translation type="unfinished"></translation>
+        <translation>Круглі аватари</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Use identicons</source>
-        <translation type="unfinished"></translation>
+        <translation>Використовувати ідентифікатори</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open images with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкривати зображення за допомогою зовнішньої програми</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open videos with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкривати відео за допомогою зовнішньої програми</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Розшифровувати повідомлення в бічній панелі</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Розшифровувати сповіщення</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Display fancy effects such as confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Відображати вигадливі ефекти, такі як конфетті</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Зменшити або вимкнути анімації</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Екран конфіденційності</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy screen timeout (in seconds [0 - 3600])</source>
-        <translation type="unfinished"></translation>
+        <translation>Тайм-аут екрану конфіденційності (у секундах [0 - 3600])</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Touchscreen mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим сенсорного екрану</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font size</source>
-        <translation type="unfinished"></translation>
+        <translation>Розмір шрифту</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Сімейство шрифтів</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished"></translation>
+        <translation>Сімейство шрифтів емодзі</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ringtone</source>
-        <translation type="unfinished"></translation>
+        <translation>Рингтон</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Microphone</source>
-        <translation type="unfinished"></translation>
+        <translation>Мікрофон</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Камера</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera resolution</source>
-        <translation type="unfinished"></translation>
+        <translation>Роздільна здатність камери</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Camera frame rate</source>
-        <translation type="unfinished"></translation>
+        <translation>Частота кадрів камери</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволити резервний сервер підтримки викликів</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished"></translation>
+        <translation>Надсилати зашифровані повідомлення лише перевіреним користувачам</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Share keys with verified users and devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Ділитися ключами з перевіреними користувачами та пристроями</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online Key Backup</source>
-        <translation type="unfinished"></translation>
+        <translation>Резервне копіювання ключів в Інтернеті</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Профіль</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Ідентифікатор користувача</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Accesstoken</source>
-        <translation type="unfinished"></translation>
+        <translation>Токен доступу</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Ідентифікатор пристрою</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device Fingerprint</source>
-        <translation type="unfinished"></translation>
+        <translation>Відбиток пристрою</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Домашній сервер</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Версія</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Platform</source>
-        <translation type="unfinished"></translation>
+        <translation>Платформа</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>GENERAL</source>
-        <translation type="unfinished"></translation>
+        <translation>ЗАГАЛЬНЕ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ACCESSIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>ДОСТУПНІСТЬ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TIMELINE</source>
-        <translation type="unfinished"></translation>
+        <translation>ШКАЛА ЧАСУ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SIDEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>БІЧНА ПАНЕЛЬ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TRAY</source>
-        <translation type="unfinished"></translation>
+        <translation>ТРЕЙ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>СПОВІЩЕННЯ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>CALLS</source>
-        <translation type="unfinished"></translation>
+        <translation>ДЗВІНКИ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ENCRYPTION</source>
-        <translation type="unfinished"></translation>
+        <translation>ШИФРОВАННЯ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>INFO</source>
-        <translation type="unfinished"></translation>
+        <translation>ІНФО</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Session Keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключі сеансу</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cross Signing Secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключі взаємного підпису</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Online backup key</source>
-        <translation type="unfinished"></translation>
+        <translation>Онлайн резервний ключ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Self signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ для самопідпису</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ підпису користувача</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Master signing key</source>
-        <translation type="unfinished"></translation>
+        <translation>Головний ключ підпису</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Expose room information via D-Bus</source>
-        <translation type="unfinished"></translation>
+        <translation>Відображення інформації про кімнату через D-Bus</translation>
     </message>
     <message>
         <location line="+107"/>
         <source>Default</source>
-        <translation type="unfinished"></translation>
+        <translation>За замовчуванням</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation type="unfinished"></translation>
+        <translation>Налаштування звуку сповіщення, який буде відтворюватися, коли надходить запрошення на дзвінок</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Задати таймаут (у секундах), через який час після втрати фокусу вікна
+перед тим, як екран буде розмито.
+Встановіть 0, щоб розмиття відбувалося одразу після втрати фокусу. Максимальне значення 1 година (3600 секунд)</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити колір фону повідомлень при наведенні на них курсору.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Збільшити розмір шрифту, якщо відображаються повідомлення з кількома смайликами.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Залишати програму працюючою у фоновому режимі після закриття вікна клієнта.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запускати програму у фоновому режимі, не показуючи вікно клієнта.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Shows scrollbars in the room list and communities list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показує смуги прокрутки у списку кімнат та списку спільнот.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволити використання розмітки в повідомленнях.
+Якщо вимкнено, всі повідомлення надсилаються як звичайний текст.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Інвертувати поведінку клавіші вводу при введенні тексту, щоб вона надсилала повідомлення при натисканні клавіш shift+enter і починала новий рядок при натисканні клавіші вводу.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
-        <translation type="unfinished"></translation>
+        <translation>Повідомлення отримують бульбашкове тло. Це також спричиняє деякі зміни у верстці (WIP).</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Avatars are resized to fit above the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Розмір аватарок змінюється так, щоб вони поміщалися над повідомленням.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Відтворює медіафайли типу GIF або WEBP лише при явному наведенні на них вказівника миші.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показувати, хто друкує в кімнаті.
+Це також увімкне або вимкне надсилання сповіщень про набір тексту іншим користувачам.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показувати кнопки для швидкої відповіді, реакції або доступу до додаткових опцій поруч з кожним повідомленням.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Notify about received messages when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сповіщати про отримані повідомлення, коли клієнт не сфокусований в даний момент.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Зміна вигляду аватарів користувачів у чатах.
+Вимкнено - квадрат, увімкнено - коло.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Decrypt messages shown in notifications for encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Розшифровувати повідомлення, що відображаються у сповіщеннях для зашифрованих чатів.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Choose where to show the total number of notifications contained within a community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Виберіть, де показувати загальну кількість сповіщень, що містяться у спільноті або тегу.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Деякі повідомлення можна надсилати з вигадливими ефектами. Наприклад, повідомлення, надіслані з командою &quot;/confetti&quot;, покажуть на екрані конфетті.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko використовує анімацію в кількох місцях, щоб бути красивіше. Це дозволяє вам вимкнути їх, якщо вони викликають у вас неприємні відчуття.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматично відповідає на запити ключів від інших користувачів, якщо вони підтверджені, навіть якщо цей пристрій не повинен мати доступу до цих ключів.</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ для перевірки власних пристроїв. Якщо він кешований, перевірка одного з ваших пристроїв позначить його як перевірений для всіх інших ваших пристроїв і користувачів, які вас верифікували.</translation>
     </message>
     <message>
         <location line="-76"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показувати сповіщення при отриманні повідомлення.
+Зазвичай це призводить до того, що іконка програми на панелі завдань певним чином анімується.</translation>
     </message>
     <message>
         <location line="-331"/>
         <source>Communities sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Бічна панель спільнот</translation>
     </message>
     <message>
         <location line="+40"/>
         <source>Show message counts for communities and tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Показати кількість повідомлень для спільнот і тегів</translation>
     </message>
     <message>
         <location line="+231"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation type="unfinished"></translation>
+        <translation>Встановити максимальну ширину повідомлень на часовій шкалі (у пікселях). Це може покращити читабельність на широкому екрані, коли Nheko максимізовано</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Show a column containing communities and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показати стовпчик зі спільнотами та тегами поруч зі списком кімнат.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the timestamp of the last message in a room.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by timestamp, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Спочатку показувати кімнати з новими повідомленнями.
+Якщо цю опцію вимкнено, список кімнат буде відсортовано лише за міткою часу останнього повідомлення в кімнаті.
+Якщо цей параметр увімкнено, кімнати, які мають активні сповіщення (маленьке коло з цифрою всередині), будуть відсортовані зверху. Кімнати, які ви вимкнули, все одно будуть відсортовані за міткою часу, оскільки, схоже, ви не вважаєте їх такими ж важливими, як інші кімнати.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
-        <translation type="unfinished"></translation>
+        <translation>Показує, чи було прочитано ваше повідомлення.
+Статус відображається поруч з мітками часу.
+Попередження: Якщо ваш домашній сервер не підтримує цю функцію, ваші кімнати ніколи не будуть позначені як прочитані!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Відображати іконку замість літери, якщо аватарка не встановлена.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Opens images with an external program when tapping the image.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкриває зображення за допомогою зовнішньої програми при натисканні на зображення.
+Зауважте, що коли цю опцію увімкнено, відкриті файли залишаються незашифрованими на диску і їх потрібно видалити вручну.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Opens videos with an external program when tapping the video.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкриває відео за допомогою зовнішньої програми при натисканні на відео.
+Зауважте, що коли цю опцію увімкнено, відкриті файли залишаються незашифрованими на диску і їх потрібно видалити вручну.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Розшифрувати повідомлення, показані в бічній панелі.
+Впливає лише на повідомлення в зашифрованих чатах.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Коли вікно втрачає фокус, часова шкала буде
+розмиватися.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished"></translation>
+        <translation>Запобігає виділенню тексту на шкалі часу, щоб полегшити сенсорну прокрутку.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface.</source>
-        <translation type="unfinished"></translation>
+        <translation>Змінити коефіцієнт масштабування всього інтерфейсу користувача.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Використовуватиме turn.matrix.org як допоміжний, якщо ваш домашній сервер його не пропонує.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вимагає верифікації користувача для відправки йому зашифрованих повідомлень. Це підвищує безпеку, але робить E2EE більш нудним.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Завантажуйте ключі шифрування повідомлень із зашифрованого онлайн сховища ключів та завантажуйте їх до нього.</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ для розшифрування резервних копій ключів в Інтернеті. Якщо він кешований, ви можете увімкнути резервне копіювання ключів в Інтернеті, щоб зберігати ключі шифрування на сервері в надійному зашифрованому вигляді.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ для верифікації інших користувачів. Якщо він кешований, при верифікації користувача будуть верифіковані всі його пристрої.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ваш найважливіший ключ. Вам не потрібно його кешувати, оскільки відсутність кешування зменшує ймовірність його викрадення, і він потрібен лише для ротації інших ключів підпису.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation type="unfinished"></translation>
+        <translation>Дозволити стороннім плагінам і додаткам завантажувати інформацію про кімнати, в яких ви перебуваєте, через D-Bus. Це може мати корисне застосування, але також може бути використано у зловмисних цілях. Увімкніть на свій страх і ризик.
+
+Це налаштування набуде чинності після перезапуску.</translation>
     </message>
     <message>
         <location line="+459"/>
@@ -4773,7 +4793,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+89"/>
         <source>Open Sessions File</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкрити файл сеансів</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4783,34 +4803,34 @@ This setting will take effect upon restart.</source>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Помилка</translation>
     </message>
     <message>
         <location line="-64"/>
         <location line="+26"/>
         <source>File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль до файлу</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished"></translation>
+        <translation>Введіть ключову фразу, щоб розшифрувати файл:</translation>
     </message>
     <message>
         <location line="+8"/>
         <location line="+26"/>
         <source>The password cannot be empty</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль не може бути порожнім</translation>
     </message>
     <message>
         <location line="-8"/>
         <source>Enter passphrase to encrypt your session keys:</source>
-        <translation type="unfinished"></translation>
+        <translation>Введіть пароль для шифрування сеансових ключів:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>File to save the exported session keys</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл для збереження експортованих сеансових ключів</translation>
     </message>
 </context>
 <context>
@@ -4818,22 +4838,22 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../qml/pages/UserSettingsPage.qml" line="+214"/>
         <source>REQUEST</source>
-        <translation type="unfinished"></translation>
+        <translation>ЗАПИТАТИ</translation>
     </message>
     <message>
         <location line="-4"/>
         <source>DOWNLOAD</source>
-        <translation type="unfinished"></translation>
+        <translation>ЗАВАНТАЖИТИ</translation>
     </message>
     <message>
         <location line="-20"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>КЕШОВАНО</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>НЕ КЕШОВАНО</translation>
     </message>
     <message>
         <location line="+49"/>
@@ -4843,12 +4863,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="-42"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>ІМПОРТУВАТИ</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>ЕКСПОРТУВАТИ</translation>
     </message>
 </context>
 <context>
@@ -4856,7 +4876,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+141"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Зашифрований приватний чат з цим користувачем не знайдено. Створіть зашифрований приватний чат з цим користувачем і спробуйте ще раз.</translation>
     </message>
 </context>
 <context>
@@ -4864,22 +4884,22 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+14"/>
         <source>Waiting for other party…</source>
-        <translation type="unfinished"></translation>
+        <translation>В очікуванні іншої сторони…</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Очікування, коли інша сторона прийме запит на верифікацію.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Очікування на продовження процесу верифікації іншою стороною.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Очікування завершення процесу верифікації іншою стороною.</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4892,17 +4912,17 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../qml/pages/WelcomePage.qml" line="+31"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ласкаво просимо до Nheko, десктопного клієнту для протоколу Matrix.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Enjoy your stay!</source>
-        <translation type="unfinished"></translation>
+        <translation>Приємного перебування!</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>РЕЄСТРУВАТИСЯ</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -4912,12 +4932,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Зменшити кількість анімацій</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko використовує анімацію в кількох місцях, щоб бути красивіше. Це дозволяє вам вимкнути їх, якщо вони викликають у вас неприємні відчуття.</translation>
     </message>
 </context>
 <context>
@@ -4925,7 +4945,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/Utils.cpp" line="+202"/>
         <source>Yesterday</source>
-        <translation type="unfinished"></translation>
+        <translation>Вчора</translation>
     </message>
 </context>
 <context>
@@ -4933,7 +4953,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/dialogs/FallbackAuth.cpp" line="+39"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкрити резервну копію в браузері</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4943,12 +4963,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Підтвердити</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкрийте резервну копію, виконайте кроки та підтвердіть їх після завершення.</translation>
     </message>
 </context>
 <context>
@@ -4956,7 +4976,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/dialogs/ReCaptcha.cpp" line="+39"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкрити reCAPTCHA</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -4966,12 +4986,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+1"/>
         <source>Confirm</source>
-        <translation type="unfinished"></translation>
+        <translation>Підтвердити</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation>Розгадайте reCAPTCHA і натисніть кнопку підтвердження</translation>
     </message>
 </context>
 <context>
@@ -4979,99 +4999,99 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/Utils.h" line="+117"/>
         <source>You sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви надіслали аудіозапис</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an audio clip</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав аудіозапис</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви надіслали зображення</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent an image</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав зображення</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви надіслали файл</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent a file</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав файл</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви надіслали відео</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent a video</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав відео</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви надіслали стікер</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 sent a sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав стікер</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви надіслали сповіщення</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a notification</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав сповіщення</translation>
     </message>
     <message>
         <location line="+5"/>
         <location line="+15"/>
         <source>You: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви: %1</translation>
     </message>
     <message>
         <location line="-13"/>
         <location line="+16"/>
         <source>%1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви надіслали конфетті</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав конфетті</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>You sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви надіслали зашифроване повідомлення</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 надіслав зашифроване повідомлення</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>You placed a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви зателефонували</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5081,7 +5101,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+4"/>
         <source>You answered a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви відповіли на дзвінок</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5091,17 +5111,17 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+4"/>
         <source>You ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви завершили дзвінок</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 ended a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 завершив дзвінок</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>You rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви відхилили дзвінок</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5114,7 +5134,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+3"/>
         <source>Unknown Message Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Невідомий тип повідомлення</translation>
     </message>
 </context>
 </TS>
