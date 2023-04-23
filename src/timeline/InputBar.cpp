@@ -148,6 +148,7 @@ InputBar::insertMimeData(const QMimeData *md)
 
     nhlog::ui()->debug("Got mime formats: {}",
                        md->formats().join(QStringLiteral(", ")).toStdString());
+    nhlog::ui()->debug("Has image: {}", md->hasImage());
     const auto formats = md->formats().filter(QStringLiteral("/"));
     const auto image   = formats.filter(QStringLiteral("image/"), Qt::CaseInsensitive);
     const auto audio   = formats.filter(QStringLiteral("audio/"), Qt::CaseInsensitive);

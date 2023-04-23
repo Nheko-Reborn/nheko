@@ -5,7 +5,9 @@
 #include "TimelineViewManager.h"
 
 #include <QApplication>
+#include <QClipboard>
 #include <QFileDialog>
+#include <QMimeData>
 #include <QStandardPaths>
 #include <QString>
 
@@ -28,8 +30,6 @@
 #include "encryption/VerificationManager.h"
 #include "voip/CallManager.h"
 #include "voip/WebRTCSession.h"
-
-namespace msgs = mtx::events::msg;
 
 namespace {
 template<template<class...> class Op, class... Args>
@@ -316,6 +316,37 @@ TimelineViewManager::saveMedia(QString mxcUrl)
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
                                  }
                              });
+}
+
+void
+TimelineViewManager::copyImage(const QString &mxcUrl) const
+{
+    const auto url = mxcUrl.toStdString();
+    QString mimeType;
+
+    http::client()->download(
+      url,
+      [url, mimeType](const std::string &data,
+                      const std::string &,
+                      const std::string &,
+                      mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::net()->warn("failed to retrieve media {}: {} {}",
+                                 url,
+                                 err->matrix_error.error,
+                                 static_cast<int>(err->status_code));
+              return;
+          }
+
+          try {
+              auto img = utils::readImage(QByteArray(data.data(), (qsizetype)data.size()));
+              QGuiApplication::clipboard()->setImage(img);
+
+              return;
+          } catch (const std::exception &e) {
+              nhlog::ui()->warn("Error while copying file to clipboard: {}", e.what());
+          }
+      });
 }
 
 void

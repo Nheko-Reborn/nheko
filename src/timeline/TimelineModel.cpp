@@ -12,6 +12,7 @@
 #include <QDesktopServices>
 #include <QFileDialog>
 #include <QGuiApplication>
+#include <QMimeData>
 #include <QMimeDatabase>
 #include <QRegularExpression>
 #include <QStandardPaths>
@@ -1857,6 +1858,60 @@ TimelineModel::saveMedia(const QString &eventId) const
                                      nhlog::ui()->warn("Error while saving file to: {}", e.what());
                                  }
                              });
+    return true;
+}
+
+bool
+TimelineModel::copyMedia(const QString &eventId) const
+{
+    auto event = events.get(eventId.toStdString(), "");
+    if (!event)
+        return false;
+
+    QString mxcUrl                      = QString::fromStdString(mtx::accessors::url(*event));
+    QString mimeType                    = QString::fromStdString(mtx::accessors::mimetype(*event));
+    qml_mtx_events::EventType eventType = toRoomEventType(*event);
+
+    auto encryptionInfo = mtx::accessors::file(*event);
+
+    const auto url = mxcUrl.toStdString();
+
+    http::client()->download(
+      url,
+      [url, mimeType, eventType, encryptionInfo](const std::string &data,
+                                                 const std::string &,
+                                                 const std::string &,
+                                                 mtx::http::RequestErr err) {
+          if (err) {
+              nhlog::net()->warn("failed to retrieve media {}: {} {}",
+                                 url,
+                                 err->matrix_error.error,
+                                 static_cast<int>(err->status_code));
+              return;
+          }
+
+          try {
+              auto temp = data;
+              if (encryptionInfo)
+                  temp =
+                    mtx::crypto::to_string(mtx::crypto::decrypt_file(temp, encryptionInfo.value()));
+
+              auto by                 = QByteArray(temp.data(), (qsizetype)temp.size());
+              QMimeData *clipContents = new QMimeData();
+              clipContents->setData(mimeType, by);
+
+              if (eventType == qml_mtx_events::EventType::ImageMessage) {
+                  auto img = utils::readImage(QByteArray(data.data(), (qsizetype)data.size()));
+                  clipContents->setImageData(img);
+              }
+
+              QGuiApplication::clipboard()->setMimeData(clipContents);
+
+              return;
+          } catch (const std::exception &e) {
+              nhlog::ui()->warn("Error while copying file to clipboard: {}", e.what());
+          }
+      });
     return true;
 }
 

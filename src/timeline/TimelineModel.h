@@ -320,6 +320,7 @@ public:
     Q_INVOKABLE void openMedia(const QString &eventId);
     Q_INVOKABLE void cacheMedia(const QString &eventId);
     Q_INVOKABLE bool saveMedia(const QString &eventId) const;
+    Q_INVOKABLE bool copyMedia(const QString &eventId) const;
     Q_INVOKABLE void showEvent(QString eventId);
     Q_INVOKABLE void copyLinkToEvent(const QString &eventId) const;
 
