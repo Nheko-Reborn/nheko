@@ -84,6 +84,8 @@ public:
     QString getRoomVersion(lmdb::txn &txn, lmdb::dbi &statesdb);
     //! Retrieve if the room is a space
     bool getRoomIsSpace(lmdb::txn &txn, lmdb::dbi &statesdb);
+    //! Retrieve if the room is tombstoned (closed or replaced by a different room)
+    bool getRoomIsTombstoned(lmdb::txn &txn, lmdb::dbi &statesdb);
 
     //! Get a specific state event
     template<typename T>

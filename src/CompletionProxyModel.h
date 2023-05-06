@@ -8,6 +8,8 @@
 
 #include <QAbstractProxyModel>
 
+#include <algorithm>
+
 enum class ElementRank
 {
     first,
@@ -17,7 +19,7 @@ enum class ElementRank
 template<typename Key, typename Value>
 struct trie
 {
-    std::vector<Value> values;
+    std::vector<std::pair<ElementRank, Value>> values;
     std::map<Key, trie> next;
 
     template<ElementRank r>
@@ -29,9 +31,11 @@ struct trie
         }
 
         if constexpr (r == ElementRank::first) {
-            t->values.insert(t->values.begin(), v);
+            auto it =
+              std::ranges::upper_bound(t->values, r, {}, &std::pair<ElementRank, Value>::first);
+            t->values.emplace(it, r, v);
         } else if constexpr (r == ElementRank::second) {
-            t->values.push_back(v);
+            t->values.emplace_back(r, v);
         }
     }
 
@@ -45,7 +49,7 @@ struct trie
             if (ret.size() >= limit)
                 return ret;
             else
-                ret.push_back(v);
+                ret.push_back(v.second);
         }
 
         for (const auto &[k, t] : next) {

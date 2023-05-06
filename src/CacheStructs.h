@@ -81,6 +81,8 @@ struct RoomInfo
     bool is_invite = false;
     //! Wheter or not the room is a space
     bool is_space = false;
+    //! Wheter or not the room has a tombstone event
+    bool is_tombstoned = false;
     //! Total number of members in the room.
     size_t member_count = 0;
     //! Who can access to the room.
@@ -106,6 +108,8 @@ from_json(const nlohmann::json &j, RoomInfo &info);
 struct RoomNameAlias
 {
     std::string id, name, alias;
+    std::uint64_t recent_activity;
+    bool is_tombstoned;
 };
 
 //! Basic information per member.

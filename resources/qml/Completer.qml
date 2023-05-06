@@ -292,6 +292,7 @@ Control {
                             text: model.roomName
                             font.pixelSize: popup.avatarHeight * 0.5
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            font.italic: model.isTombstoned
                             textFormat: Text.RichText
                         }
 
@@ -320,6 +321,7 @@ Control {
                         Label {
                             text: model.roomName
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            font.italic: model.isTombstoned
                             textFormat: Text.RichText
                         }
 

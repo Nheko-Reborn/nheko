@@ -20,18 +20,24 @@ RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
 
     if (showOnlyRoomWithAliases_)
         utils::erase_if(rooms, [](auto &r) { return r.alias.empty(); });
+
+    std::ranges::sort(rooms,
+                      [](auto &a, auto &b) { return a.recent_activity > b.recent_activity; });
 }
 
 QHash<int, QByteArray>
 RoomsModel::roleNames() const
 {
-    return {{CompletionModel::CompletionRole, "completionRole"},
-            {CompletionModel::SearchRole, "searchRole"},
-            {CompletionModel::SearchRole2, "searchRole2"},
-            {Roles::RoomAlias, "roomAlias"},
-            {Roles::AvatarUrl, "avatarUrl"},
-            {Roles::RoomID, "roomid"},
-            {Roles::RoomName, "roomName"}};
+    return {
+      {CompletionModel::CompletionRole, "completionRole"},
+      {CompletionModel::SearchRole, "searchRole"},
+      {CompletionModel::SearchRole2, "searchRole2"},
+      {Roles::RoomAlias, "roomAlias"},
+      {Roles::AvatarUrl, "avatarUrl"},
+      {Roles::RoomID, "roomid"},
+      {Roles::RoomName, "roomName"},
+      {Roles::IsTombstoned, "isTombstoned"},
+    };
 }
 
 QVariant
@@ -62,6 +68,8 @@ RoomsModel::data(const QModelIndex &index, int role) const
               cache::client()->singleRoomInfo(rooms[index.row()].id).avatar_url);
         case Roles::RoomID:
             return QString::fromStdString(rooms[index.row()].id).toHtmlEscaped();
+        case Roles::IsTombstoned:
+            return rooms[index.row()].is_tombstoned;
         }
     }
     return {};

@@ -1792,7 +1792,9 @@ Cache::updateState(const std::string &room, const mtx::responses::StateEvents &s
     updatedInfo.topic      = getRoomTopic(txn, statesdb).toStdString();
     updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
     updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
-    updatedInfo.is_space   = getRoomIsSpace(txn, statesdb);
+
+    updatedInfo.is_space      = getRoomIsSpace(txn, statesdb);
+    updatedInfo.is_tombstoned = getRoomIsTombstoned(txn, statesdb);
 
     roomsDb_.put(txn, room, nlohmann::json(updatedInfo).dump());
     updateSpaces(txn, {room}, {room});
@@ -2558,9 +2560,13 @@ Cache::roomNamesAndAliases()
                 alias = aliases->content.alias;
             }
 
-            result.push_back(RoomNameAlias{.id    = std::move(room_id_str),
-                                           .name  = std::move(info.name),
-                                           .alias = std::move(alias)});
+            result.push_back(RoomNameAlias{
+              .id              = std::move(room_id_str),
+              .name            = std::move(info.name),
+              .alias           = std::move(alias),
+              .recent_activity = info.approximate_last_modification_ts,
+              .is_tombstoned   = info.is_tombstoned,
+            });
         } catch (std::exception &e) {
             nhlog::db()->warn("Failed to add room {} to result: {}", room_id, e.what());
         }
@@ -3088,6 +3094,28 @@ Cache::getRoomIsSpace(lmdb::txn &txn, lmdb::dbi &statesdb)
     }
 
     nhlog::db()->warn("m.room.create event is missing room version, assuming version \"1\"");
+    return false;
+}
+
+bool
+Cache::getRoomIsTombstoned(lmdb::txn &txn, lmdb::dbi &statesdb)
+{
+    using namespace mtx::events;
+    using namespace mtx::events::state;
+
+    std::string_view event;
+    bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomCreate), event);
+
+    if (res) {
+        try {
+            StateEvent<Tombstone> msg = nlohmann::json::parse(event).get<StateEvent<Tombstone>>();
+
+            return true;
+        } catch (const nlohmann::json::exception &e) {
+            nhlog::db()->warn("failed to parse m.room.tombstone event: {}", e.what());
+        }
+    }
+
     return false;
 }
 
@@ -5138,6 +5166,7 @@ to_json(nlohmann::json &j, const RoomInfo &info)
     j["version"]      = info.version;
     j["is_invite"]    = info.is_invite;
     j["is_space"]     = info.is_space;
+    j["tombst"]       = info.is_tombstoned;
     j["join_rule"]    = info.join_rule;
     j["guest_access"] = info.guest_access;
 
@@ -5161,8 +5190,11 @@ from_json(const nlohmann::json &j, RoomInfo &info)
     info.avatar_url = j.at("avatar_url").get<std::string>();
     info.version    = j.value(
       "version", QCoreApplication::translate("RoomInfo", "no version stored").toStdString());
-    info.is_invite    = j.at("is_invite").get<bool>();
-    info.is_space     = j.value("is_space", false);
+
+    info.is_invite     = j.at("is_invite").get<bool>();
+    info.is_space      = j.value("is_space", false);
+    info.is_tombstoned = j.value("tombst", false);
+
     info.join_rule    = j.at("join_rule").get<mtx::events::state::JoinRule>();
     info.guest_access = j.at("guest_access").get<bool>();
 
