@@ -45,8 +45,7 @@ static const std::string_view OLM_ACCOUNT_KEY("olm_account");
 static const std::string_view CACHE_FORMAT_VERSION_KEY("cache_format_version");
 static const std::string_view CURRENT_ONLINE_BACKUP_VERSION("current_online_backup_version");
 
-static constexpr auto MAX_DBS    = 32384UL;
-static constexpr auto BATCH_SIZE = 100;
+static constexpr auto MAX_DBS = 32384UL;
 
 #if Q_PROCESSOR_WORDSIZE >= 5 // 40-bit or more, up to 2^(8*WORDSIZE) words addressable.
 static constexpr auto DB_SIZE                 = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
@@ -2360,60 +2359,6 @@ Cache::previousBatchToken(const std::string &room_id)
     } catch (...) {
         return "";
     }
-}
-
-Cache::Messages
-Cache::getTimelineMessages(lmdb::txn &txn, const std::string &room_id, uint64_t index, bool forward)
-{
-    // TODO(nico): Limit the messages returned by this maybe?
-    auto orderDb  = getOrderToMessageDb(txn, room_id);
-    auto eventsDb = getEventsDb(txn, room_id);
-
-    Messages messages{};
-
-    std::string_view indexVal, event_id;
-
-    auto cursor = lmdb::cursor::open(txn, orderDb);
-    if (index == std::numeric_limits<uint64_t>::max()) {
-        if (!cursor.get(indexVal, event_id, forward ? MDB_FIRST : MDB_LAST)) {
-            messages.end_of_cache = true;
-            return messages;
-        }
-    } else {
-        if (!cursor.get(indexVal, event_id, MDB_SET)) {
-            messages.end_of_cache = true;
-            return messages;
-        }
-    }
-
-    int counter = 0;
-
-    bool ret;
-    while ((ret = cursor.get(indexVal,
-                             event_id,
-                             counter == 0 ? (forward ? MDB_FIRST : MDB_LAST)
-                                          : (forward ? MDB_NEXT : MDB_PREV))) &&
-           counter++ < BATCH_SIZE) {
-        std::string_view event;
-        bool success = eventsDb.get(txn, event_id, event);
-        if (!success)
-            continue;
-
-        try {
-            messages.timeline.events.push_back(
-              nlohmann::json::parse(event).get<mtx::events::collections::TimelineEvents>());
-        } catch (std::exception &e) {
-            nhlog::db()->error("Failed to parse message from cache {}", e.what());
-            continue;
-        }
-    }
-    cursor.close();
-
-    // std::reverse(timeline.events.begin(), timeline.events.end());
-    messages.next_index   = lmdb::from_sv<uint64_t>(indexVal);
-    messages.end_of_cache = !ret;
-
-    return messages;
 }
 
 std::optional<mtx::events::collections::TimelineEvents>
