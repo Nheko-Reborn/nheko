@@ -1,6 +1,6 @@
 task:
   macos_instance:
-    image: ghcr.io/cirruslabs/macos-monterey-xcode:13
+    image: ghcr.io/cirruslabs/macos-ventura-xcode:14.3
   name: Build - macOS Apple Silicon
   environment:
     GITLAB_TRIGGER_TOKEN: ENCRYPTED[!5fb4bbdecbde3b2c766ac7383dca573cd5ec8b815c5ac9bede0cadfe9ad70ecd3e64b1728f7840da087099f3fc1fd4f7!]
