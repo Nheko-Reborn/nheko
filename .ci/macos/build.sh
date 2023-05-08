@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-set -u
+set -ue
 
 # unused
 #TAG=$(git tag -l --points-at HEAD)
@@ -21,9 +21,9 @@ cmake -GNinja -S. -Bbuild \
       -DUSE_BUNDLED_OPENSSL=ON \
       -DCI_BUILD=ON
 cmake --build build
-( cd build || exit 
+( cd build
   git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
-  ( cd qt-jdenticon || exit 
+  ( cd qt-jdenticon
     qmake
     make -j 4
     cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS
