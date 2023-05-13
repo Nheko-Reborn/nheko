@@ -30,7 +30,12 @@ Item {
     onRoomChanged: if (room != null) room.triggerSpecialEffects()
 
     // focus message input on key press, but not on Ctrl-C and such.
-    Keys.onPressed: if (event.text && !topBar.searchHasFocus) TimelineManager.focusMessageInput();
+    Keys.onPressed: {
+        if (event.text && !topBar.searchHasFocus) {
+            TimelineManager.focusMessageInput();
+            room.input.setText(room.input.text + event.text);
+        }
+    }
 
     Shortcut {
         sequence: StandardKey.Close
