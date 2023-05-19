@@ -82,8 +82,10 @@ SingleImagePackModel *
 ImagePackListModel::newPack(bool inRoom)
 {
     ImagePackInfo info{};
-    if (inRoom)
+    if (inRoom) {
         info.source_room = room_id;
+        info.state_key   = SingleImagePackModel::unconflictingStatekey(room_id, "");
+    }
     return new SingleImagePackModel(info);
 }
 

@@ -71,6 +71,8 @@ public:
     Q_INVOKABLE void remove(int index);
     Q_INVOKABLE void setAvatar(QUrl file);
 
+    static std::string unconflictingStatekey(const std::string &roomid, const std::string &key);
+
 signals:
     void globallyEnabledChanged();
     void statekeyChanged();
