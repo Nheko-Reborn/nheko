@@ -217,7 +217,7 @@ public slots:
                  MarkdownOverride useMarkdown = MarkdownOverride::NOT_SPECIFIED,
                  bool rainbowify              = false);
     void reaction(const QString &reactedEvent, const QString &reactionKey);
-    void sticker(CombinedImagePackModel *model, int row);
+    void sticker(QStringList descriptor);
 
     void acceptUploads();
     void declineUploads();

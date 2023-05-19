@@ -433,7 +433,7 @@ Rectangle {
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Stickers")
             onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId, function(row) {
-                room.input.sticker(stickerPopup.model.sourceModel, row);
+                room.input.sticker(row);
                 TimelineManager.focusMessageInput();
             })
 

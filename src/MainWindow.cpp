@@ -19,6 +19,7 @@
 #include "CompletionProxyModel.h"
 #include "Config.h"
 #include "EventAccessors.h"
+#include "GridImagePackModel.h"
 #include "ImagePackListModel.h"
 #include "InviteesModel.h"
 #include "JdenticonProvider.h"
@@ -150,6 +151,7 @@ MainWindow::registerQmlTypes()
     qRegisterMetaType<mtx::responses::User>();
     qRegisterMetaType<mtx::responses::Profile>();
     qRegisterMetaType<CombinedImagePackModel *>();
+    qRegisterMetaType<GridImagePackModel *>();
     qRegisterMetaType<RoomSettingsAllowedRoomsModel *>();
     qRegisterMetaType<mtx::events::collections::TimelineEvents>();
     qRegisterMetaType<std::vector<DeviceInfo>>();

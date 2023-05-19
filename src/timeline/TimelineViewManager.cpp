@@ -17,6 +17,7 @@
 #include "CommandCompleter.h"
 #include "CompletionProxyModel.h"
 #include "EventAccessors.h"
+#include "GridImagePackModel.h"
 #include "ImagePackListModel.h"
 #include "InviteesModel.h"
 #include "Logging.h"
@@ -477,6 +478,9 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
         auto proxy        = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
         stickerModel->setParent(proxy);
         return proxy;
+    } else if (completerName == QLatin1String("stickergrid")) {
+        auto stickerModel = new GridImagePackModel(roomId.toStdString(), true);
+        return stickerModel;
     } else if (completerName == QLatin1String("customEmoji")) {
         auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), false);
         auto proxy        = new CompletionProxyModel(stickerModel);

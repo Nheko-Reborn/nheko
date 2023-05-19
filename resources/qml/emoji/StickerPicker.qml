@@ -102,19 +102,41 @@ Menu {
                 }
             }
 
-            // emoji grid
-            GridView {
+            Component {
+                id: sectionHeading
+                Rectangle {
+                    width: gridView.width
+                    height: childrenRect.height
+                    color: Nheko.colors.alternateBase
+
+                    required property string section
+
+                    Text {
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        text: parent.section
+                        color: Nheko.colors.text
+                        font.bold: true
+                    }
+                }
+            }
+
+            // sticker grid
+            ListView {
                 id: gridView
 
-                model: roomid ? TimelineManager.completerFor("stickers", roomid) : null
+                model: roomid ? TimelineManager.completerFor("stickergrid", roomid) : null
                 Layout.preferredHeight: cellHeight * 3.5
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - Nheko.paddingSmall
-                cellWidth: stickerDimPad
-                cellHeight: stickerDimPad
+                property int cellHeight: stickerDimPad
                 boundsBehavior: Flickable.StopAtBounds
                 clip: true
                 currentIndex: -1 // prevent sorting from stealing focus
-                cacheBuffer: 500
+
+                section.property: "packname"
+                section.criteria: ViewSection.FullString
+                section.delegate: sectionHeading
+                section.labelPositioning: ViewSection.InlineLabels | ViewSection.CurrentLabelAtStart
 
                 ScrollHelper {
                     flickable: parent
@@ -123,23 +145,29 @@ Menu {
                 }
 
                 // Individual emoji
-                delegate: AbstractButton {
+                delegate: Row {
+                    required property var row;
+
+                    Repeater {
+                        model: row
+
+                    delegate: AbstractButton {
                     width: stickerDim
                     height: stickerDim
                     hoverEnabled: true
-                    ToolTip.text: ":" + model.shortcode + ": - " + model.body
+                    ToolTip.text: ":" + modelData.shortcode + ": - " + modelData.body
                     ToolTip.visible: hovered
                     // TODO: maybe add favorites at some point?
                     onClicked: {
-                        console.debug("Picked " + model.shortcode);
+                        console.debug("Picked " + modelData.descriptor);
                         stickerPopup.close();
-                        callback(model.originalRow);
+                        callback(modelData.descriptor);
                     }
 
                     contentItem: Image {
                         height: stickerDim
                         width: stickerDim
-                        source: model.url.replace("mxc://", "image://MxcImage/") + "?scale"
+                        source: modelData.url.replace("mxc://", "image://MxcImage/") + "?scale"
                         fillMode: Image.PreserveAspectFit
                     }
 
@@ -150,6 +178,8 @@ Menu {
                     }
 
                 }
+            }
+        }
 
                 ScrollBar.vertical: ScrollBar {
                     id: emojiScroll

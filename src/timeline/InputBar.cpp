@@ -836,28 +836,40 @@ InputBar::getCommandAndArgs(const QString &currentText) const
 }
 
 void
-InputBar::sticker(CombinedImagePackModel *model, int row)
+InputBar::sticker(QStringList descriptor)
 {
-    if (!model || row < 0)
+    if (descriptor.size() != 3)
         return;
 
-    auto img = model->imageAt(row);
+    auto originalPacks = cache::client()->getImagePacks(room->roomId().toStdString(), true);
 
-    mtx::events::msg::StickerImage sticker{};
-    sticker.info = img.info.value_or(mtx::common::ImageInfo{});
-    sticker.url  = img.url;
-    sticker.body = img.body.empty() ? model->shortcodeAt(row).toStdString() : img.body;
+    auto source_room = descriptor[0].toStdString();
+    auto state_key   = descriptor[1].toStdString();
+    auto short_code  = descriptor[2].toStdString();
 
-    // workaround for https://github.com/vector-im/element-ios/issues/2353
-    sticker.info.thumbnail_url           = sticker.url;
-    sticker.info.thumbnail_info.mimetype = sticker.info.mimetype;
-    sticker.info.thumbnail_info.size     = sticker.info.size;
-    sticker.info.thumbnail_info.h        = sticker.info.h;
-    sticker.info.thumbnail_info.w        = sticker.info.w;
+    for (auto &pack : originalPacks) {
+        if (pack.source_room == source_room && pack.state_key == state_key &&
+            pack.pack.images.contains(short_code)) {
+            auto img = pack.pack.images.at(short_code);
 
-    sticker.relations = generateRelations();
+            mtx::events::msg::StickerImage sticker{};
+            sticker.info = img.info.value_or(mtx::common::ImageInfo{});
+            sticker.url  = img.url;
+            sticker.body = img.body.empty() ? short_code : img.body;
 
-    room->sendMessageEvent(sticker, mtx::events::EventType::Sticker);
+            // workaround for https://github.com/vector-im/element-ios/issues/2353
+            sticker.info.thumbnail_url           = sticker.url;
+            sticker.info.thumbnail_info.mimetype = sticker.info.mimetype;
+            sticker.info.thumbnail_info.size     = sticker.info.size;
+            sticker.info.thumbnail_info.h        = sticker.info.h;
+            sticker.info.thumbnail_info.w        = sticker.info.w;
+
+            sticker.relations = generateRelations();
+
+            room->sendMessageEvent(sticker, mtx::events::EventType::Sticker);
+            break;
+        }
+    }
 }
 
 bool
