@@ -12,12 +12,16 @@
 #include "Cache_p.h"
 
 Q_DECLARE_METATYPE(StickerImage)
+Q_DECLARE_METATYPE(SectionDescription)
+Q_DECLARE_METATYPE(QList<SectionDescription>)
 
 GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers, QObject *parent)
   : QAbstractListModel(parent)
   , room_id(roomId)
 {
-    [[maybe_unused]] static auto id = qRegisterMetaType<StickerImage>();
+    [[maybe_unused]] static auto id  = qRegisterMetaType<StickerImage>();
+    [[maybe_unused]] static auto id2 = qRegisterMetaType<SectionDescription>();
+    [[maybe_unused]] static auto id3 = qRegisterMetaType<QList<SectionDescription>>();
 
     auto originalPacks = cache::client()->getImagePacks(room_id, stickers);
 
@@ -182,6 +186,58 @@ GridImagePackModel::nameFromPack(const PackDesc &pack) const
     return tr("Account Pack");
 }
 
+QString
+GridImagePackModel::avatarFromPack(const PackDesc &pack) const
+{
+    if (!pack.packavatar.isEmpty()) {
+        return pack.packavatar;
+    }
+
+    if (!pack.images.empty()) {
+        return QString::fromStdString(pack.images.begin()->first.url);
+    }
+
+    return "";
+}
+
+QList<SectionDescription>
+GridImagePackModel::sections() const
+{
+    QList<SectionDescription> sectionNames;
+    if (searchString_.isEmpty()) {
+        std::size_t packIdx = -1;
+        for (std::size_t i = 0; i < rowToPack.size(); i++) {
+            if (rowToPack[i] != packIdx) {
+                const auto &pack = packs[rowToPack[i]];
+                sectionNames.push_back({
+                  .name         = nameFromPack(pack),
+                  .url          = avatarFromPack(pack),
+                  .firstRowWith = static_cast<int>(i),
+                });
+                packIdx = rowToPack[i];
+            }
+        }
+    } else {
+        std::uint32_t packIdx = -1;
+        int row               = 0;
+        for (const auto &i : rowToFirstRowEntryFromSearch) {
+            const auto res = currentSearchResult[i];
+            if (res.first != packIdx) {
+                packIdx          = res.first;
+                const auto &pack = packs[packIdx];
+                sectionNames.push_back({
+                  .name         = nameFromPack(pack),
+                  .url          = avatarFromPack(pack),
+                  .firstRowWith = row,
+                });
+            }
+            row++;
+        }
+    }
+
+    return sectionNames;
+}
+
 void
 GridImagePackModel::setSearchString(QString key)
 {
@@ -194,7 +250,14 @@ GridImagePackModel::setSearchString(QString key)
         auto searchParts = key.toCaseFolded().toUcs4();
         auto tempResults =
           trie_.search(searchParts, static_cast<std::size_t>(columns * columns * 4));
-        std::ranges::sort(tempResults);
+
+        std::map<std::uint32_t, std::size_t> firstPositionOfPack;
+        for (const auto &e : tempResults)
+            firstPositionOfPack.emplace(e.first, firstPositionOfPack.size());
+
+        std::ranges::stable_sort(tempResults, [&firstPositionOfPack](auto a, auto b) {
+            return firstPositionOfPack[a.first] < firstPositionOfPack[b.first];
+        });
         currentSearchResult = std::move(tempResults);
 
         std::size_t lastPack = -1;

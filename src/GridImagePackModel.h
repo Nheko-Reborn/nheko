@@ -41,10 +41,24 @@ public:
     std::vector<std::string> descriptor_; // roomid, statekey, shortcode
 };
 
+struct SectionDescription
+{
+    Q_GADGET
+    Q_PROPERTY(QString url MEMBER url CONSTANT)
+    Q_PROPERTY(QString name MEMBER name CONSTANT)
+    Q_PROPERTY(int firstRowWith MEMBER firstRowWith CONSTANT)
+
+public:
+    QString name;
+    QString url;
+    int firstRowWith = 0;
+};
+
 class GridImagePackModel final : public QAbstractListModel
 {
     Q_OBJECT
     Q_PROPERTY(QString searchString READ searchString WRITE setSearchString NOTIFY newSearchString)
+    Q_PROPERTY(QList<SectionDescription> sections READ sections NOTIFY newSearchString)
 
 public:
     enum Roles
@@ -60,6 +74,8 @@ public:
 
     QString searchString() const { return searchString_; }
     void setSearchString(QString newValue);
+
+    QList<SectionDescription> sections() const;
 
 signals:
     void newSearchString();
@@ -87,4 +103,5 @@ private:
     std::vector<std::size_t> rowToFirstRowEntryFromSearch;
 
     QString nameFromPack(const PackDesc &pack) const;
+    QString avatarFromPack(const PackDesc &pack) const;
 };

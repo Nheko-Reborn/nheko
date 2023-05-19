@@ -24,6 +24,7 @@ Menu {
     readonly property int stickerDim: 128
     readonly property int stickerDimPad: 128 + Nheko.paddingSmall
     readonly property int stickersPerRow: 3
+    readonly property int sidebarAvatarSize: 24
 
     function show(showAt, roomid_, callback) {
         console.debug("Showing sticker picker");
@@ -40,28 +41,31 @@ Menu {
     modal: true
     focus: true
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
-    width: stickersPerRow * stickerDimPad + 20
+    width: sidebarAvatarSize + Nheko.paddingSmall + stickersPerRow * stickerDimPad + 20
 
     Rectangle {
         color: Nheko.colors.window
         height: columnView.implicitHeight + Nheko.paddingSmall*2
-        width: stickersPerRow * stickerDimPad + 20
+        width: sidebarAvatarSize + Nheko.paddingSmall + stickersPerRow * stickerDimPad + 20
 
-        ColumnLayout {
+        GridLayout {
             id: columnView
 
-            spacing: Nheko.paddingSmall
             anchors.leftMargin: Nheko.paddingSmall
             anchors.rightMargin: Nheko.paddingSmall
             anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.right: parent.right
+            columns: 2
+            rows: 2
 
             // Search field
             TextField {
                 id: emojiSearch
 
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - Nheko.paddingSmall
+                Layout.row: 0
+                Layout.column: 1
                 palette: Nheko.colors
                 background: null
                 placeholderTextColor: Nheko.colors.buttonText
@@ -102,9 +106,23 @@ Menu {
                 }
             }
 
-            Component {
-                id: sectionHeading
-                Rectangle {
+            // sticker grid
+            ListView {
+                id: gridView
+
+                model: roomid ? TimelineManager.completerFor("stickergrid", roomid) : null
+                Layout.row: 1
+                Layout.column: 1
+                Layout.preferredHeight: cellHeight * 3.5
+                Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - Nheko.paddingSmall
+                property int cellHeight: stickerDimPad
+                boundsBehavior: Flickable.StopAtBounds
+                clip: true
+                currentIndex: -1 // prevent sorting from stealing focus
+
+                section.property: "packname"
+                section.criteria: ViewSection.FullString
+                section.delegate: Rectangle {
                     width: gridView.width
                     height: childrenRect.height
                     color: Nheko.colors.alternateBase
@@ -119,23 +137,6 @@ Menu {
                         font.bold: true
                     }
                 }
-            }
-
-            // sticker grid
-            ListView {
-                id: gridView
-
-                model: roomid ? TimelineManager.completerFor("stickergrid", roomid) : null
-                Layout.preferredHeight: cellHeight * 3.5
-                Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - Nheko.paddingSmall
-                property int cellHeight: stickerDimPad
-                boundsBehavior: Flickable.StopAtBounds
-                clip: true
-                currentIndex: -1 // prevent sorting from stealing focus
-
-                section.property: "packname"
-                section.criteria: ViewSection.FullString
-                section.delegate: sectionHeading
                 section.labelPositioning: ViewSection.InlineLabels | ViewSection.CurrentLabelAtStart
 
                 spacing: Nheko.paddingSmall
@@ -191,6 +192,29 @@ Menu {
 
             }
 
+            ListView {
+                Layout.row: 1
+                Layout.column: 0
+                Layout.preferredWidth: sidebarAvatarSize
+                Layout.fillHeight: true
+                Layout.rightMargin: Nheko.paddingSmall
+
+                model: gridView.model ? gridView.model.sections : null
+                spacing: Nheko.paddingSmall
+
+                delegate: Avatar {
+                    height: sidebarAvatarSize
+                    width: sidebarAvatarSize
+                    url: modelData.url.replace("mxc://", "image://MxcImage/")
+                    displayName: modelData.name
+                    roomid: modelData.name
+
+                    hoverEnabled: true
+                    ToolTip.visible: hovered
+                    ToolTip.text: modelData.name
+                    onClicked: gridView.positionViewAtIndex(modelData.firstRowWith, ListView.Beginning)
+                }
+            }
         }
 
     }
