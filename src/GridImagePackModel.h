@@ -85,4 +85,6 @@ private:
     trie<uint, std::pair<std::uint32_t, std::uint32_t>> trie_;
     std::vector<std::pair<std::uint32_t, std::uint32_t>> currentSearchResult;
     std::vector<std::size_t> rowToFirstRowEntryFromSearch;
+
+    QString nameFromPack(const PackDesc &pack) const;
 };
