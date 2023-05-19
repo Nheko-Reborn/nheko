@@ -87,6 +87,8 @@ private slots:
     void addImageCb(std::string uri, std::string filename, mtx::common::ImageInfo info);
 
 private:
+    std::string unconflictingShortcode(const std::string &shortcode);
+
     std::string roomid_;
     std::string statekey_, old_statekey_;
 
