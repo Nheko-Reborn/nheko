@@ -201,6 +201,7 @@ Menu {
 
                 model: gridView.model ? gridView.model.sections : null
                 spacing: Nheko.paddingSmall
+                clip: true
 
                 delegate: Avatar {
                     height: sidebarAvatarSize
@@ -211,9 +212,26 @@ Menu {
 
                     hoverEnabled: true
                     ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: modelData.name
                     onClicked: gridView.positionViewAtIndex(modelData.firstRowWith, ListView.Beginning)
                 }
+            }
+
+            ImageButton {
+                Layout.row: 0
+                Layout.column: 0
+                Layout.preferredWidth: sidebarAvatarSize
+                Layout.preferredHeight: sidebarAvatarSize
+                Layout.rightMargin: Nheko.paddingSmall
+
+                image: ":/icons/icons/ui/settings.svg"
+
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.delay: Nheko.tooltipDelay
+                ToolTip.text: qsTr("Change what packs are enabled, remove packs, or create new ones")
+                onClicked: TimelineManager.openImagePackSettings(stickerPopup.roomid)
             }
         }
 
