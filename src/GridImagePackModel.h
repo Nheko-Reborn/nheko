@@ -5,10 +5,13 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QMultiMap>
 #include <QObject>
 #include <QString>
 
 #include <mtx/events/mscs/image_packs.hpp>
+
+#include "CompletionProxyModel.h"
 
 struct StickerImage
 {
@@ -41,6 +44,8 @@ public:
 class GridImagePackModel final : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(QString searchString READ searchString WRITE setSearchString NOTIFY newSearchString)
+
 public:
     enum Roles
     {
@@ -52,6 +57,12 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role) const override;
+
+    QString searchString() const { return searchString_; }
+    void setSearchString(QString newValue);
+
+signals:
+    void newSearchString();
 
 private:
     std::string room_id;
@@ -69,4 +80,9 @@ private:
     std::vector<PackDesc> packs;
     std::vector<size_t> rowToPack;
     int columns = 3;
+
+    QString searchString_;
+    trie<uint, std::pair<std::uint32_t, std::uint32_t>> trie_;
+    std::vector<std::pair<std::uint32_t, std::uint32_t>> currentSearchResult;
+    std::vector<std::size_t> rowToFirstRowEntryFromSearch;
 };
