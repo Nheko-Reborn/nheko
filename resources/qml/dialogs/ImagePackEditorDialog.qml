@@ -255,8 +255,13 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.columnSpan: 2
                         label: qsTr("Shortcode")
-                        text: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.ShortCode)
-                        onTextEdited: imagePack.setData(imagePack.index(currentImageIndex, 0), text, SingleImagePackModel.ShortCode)
+                        property int bindingCounter: 0
+                        text: bindingCounter, imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.ShortCode)
+                        onTextEdited: {
+                            imagePack.setData(imagePack.index(currentImageIndex, 0), text, SingleImagePackModel.ShortCode);
+                            // force text field to update in case the model disagreed with the new value.
+                            bindingCounter++;
+                        }
                     }
 
                     MatrixTextField {

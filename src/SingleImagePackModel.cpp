@@ -5,6 +5,7 @@
 #include "SingleImagePackModel.h"
 
 #include <QFile>
+#include <QFileInfo>
 #include <QMimeDatabase>
 
 #include <mtx/responses/media.hpp>
@@ -93,8 +94,7 @@ SingleImagePackModel::setData(const QModelIndex &index, const QVariant &value, i
             auto newCode = value.toString().toStdString();
 
             // otherwise we delete this by accident
-            if (pack.images.count(newCode))
-                return false;
+            newCode = unconflictingShortcode(newCode);
 
             auto tmp     = img;
             auto oldCode = shortcodes.at(index.row());
@@ -336,11 +336,12 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
         info.mimetype = QMimeDatabase().mimeTypeForFile(f.toLocalFile()).name().toStdString();
 
         auto filename = f.fileName().toStdString();
+        auto basename = QFileInfo(file).baseName().toStdString();
         http::client()->upload(
           bytes.toStdString(),
           QMimeDatabase().mimeTypeForFile(f.toLocalFile()).name().toStdString(),
           filename,
-          [this, filename, info](const mtx::responses::ContentURI &uri, mtx::http::RequestErr e) {
+          [this, basename, info](const mtx::responses::ContentURI &uri, mtx::http::RequestErr e) {
               if (e) {
                   ChatPage::instance()->showNotification(
                     tr("Failed to upload image: %1")
@@ -348,7 +349,7 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
                   return;
               }
 
-              emit addImage(uri.content_uri, filename, info);
+              emit addImage(uri.content_uri, basename, info);
           });
     }
 }
@@ -393,6 +394,20 @@ SingleImagePackModel::remove(int idx)
     }
 }
 
+std::string
+SingleImagePackModel::unconflictingShortcode(const std::string &shortcode)
+{
+    if (pack.images.count(shortcode)) {
+        for (int i = 0; i < 64'000; i++) {
+            auto tempCode = shortcode + std::to_string(i);
+            if (!pack.images.count(tempCode)) {
+                return tempCode;
+            }
+        }
+    }
+    return shortcode;
+}
+
 void
 SingleImagePackModel::addImageCb(std::string uri, std::string filename, mtx::common::ImageInfo info)
 {
@@ -402,8 +417,10 @@ SingleImagePackModel::addImageCb(std::string uri, std::string filename, mtx::com
     beginInsertRows(
       QModelIndex(), static_cast<int>(shortcodes.size()), static_cast<int>(shortcodes.size()));
 
-    pack.images[filename] = img;
-    shortcodes.push_back(filename);
+    auto shortcode = unconflictingShortcode(filename);
+
+    pack.images[shortcode] = img;
+    shortcodes.push_back(shortcode);
 
     endInsertRows();
 
