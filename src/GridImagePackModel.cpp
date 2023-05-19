@@ -8,6 +8,7 @@
 
 #include <algorithm>
 
+#include "Cache.h"
 #include "Cache_p.h"
 
 Q_DECLARE_METATYPE(StickerImage)
@@ -104,7 +105,7 @@ GridImagePackModel::data(const QModelIndex &index, int role) const
             const auto &pack = packs[rowToPack[index.row()]];
             switch (role) {
             case Roles::PackName:
-                return pack.packname;
+                return nameFromPack(pack);
             case Roles::Row: {
                 std::size_t offset = static_cast<std::size_t>(index.row()) - pack.firstRow;
                 QList<StickerImage> imgs;
@@ -135,7 +136,7 @@ GridImagePackModel::data(const QModelIndex &index, int role) const
 
             switch (role) {
             case Roles::PackName:
-                return pack.packname;
+                return nameFromPack(pack);
             case Roles::Row: {
                 QList<StickerImage> imgs;
                 for (auto img = firstIndex;
@@ -160,6 +161,25 @@ GridImagePackModel::data(const QModelIndex &index, int role) const
         }
     }
     return {};
+}
+
+QString
+GridImagePackModel::nameFromPack(const PackDesc &pack) const
+{
+    if (!pack.packname.isEmpty()) {
+        return pack.packname;
+    }
+
+    if (!pack.state_key.empty()) {
+        return QString::fromStdString(pack.state_key);
+    }
+
+    if (!pack.room_id.empty()) {
+        auto info = cache::singleRoomInfo(pack.room_id);
+        return QString::fromStdString(info.name);
+    }
+
+    return tr("Account Pack");
 }
 
 void

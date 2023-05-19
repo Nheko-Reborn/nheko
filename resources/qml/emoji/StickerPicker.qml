@@ -138,6 +138,8 @@ Menu {
                 section.delegate: sectionHeading
                 section.labelPositioning: ViewSection.InlineLabels | ViewSection.CurrentLabelAtStart
 
+                spacing: Nheko.paddingSmall
+
                 ScrollHelper {
                     flickable: parent
                     anchors.fill: parent
@@ -148,38 +150,40 @@ Menu {
                 delegate: Row {
                     required property var row;
 
+                    spacing: Nheko.paddingSmall
+
                     Repeater {
                         model: row
 
-                    delegate: AbstractButton {
-                    width: stickerDim
-                    height: stickerDim
-                    hoverEnabled: true
-                    ToolTip.text: ":" + modelData.shortcode + ": - " + modelData.body
-                    ToolTip.visible: hovered
-                    // TODO: maybe add favorites at some point?
-                    onClicked: {
-                        console.debug("Picked " + modelData.descriptor);
-                        stickerPopup.close();
-                        callback(modelData.descriptor);
-                    }
+                        delegate: AbstractButton {
+                            width: stickerDim
+                            height: stickerDim
+                            hoverEnabled: true
+                            ToolTip.text: ":" + modelData.shortcode + ": - " + modelData.body
+                            ToolTip.visible: hovered
+                            // TODO: maybe add favorites at some point?
+                            onClicked: {
+                                console.debug("Picked " + modelData.descriptor);
+                                stickerPopup.close();
+                                callback(modelData.descriptor);
+                            }
 
-                    contentItem: Image {
-                        height: stickerDim
-                        width: stickerDim
-                        source: modelData.url.replace("mxc://", "image://MxcImage/") + "?scale"
-                        fillMode: Image.PreserveAspectFit
-                    }
+                            contentItem: Image {
+                                height: stickerDim
+                                width: stickerDim
+                                source: modelData.url.replace("mxc://", "image://MxcImage/") + "?scale"
+                                fillMode: Image.PreserveAspectFit
+                            }
 
-                    background: Rectangle {
-                        anchors.fill: parent
-                        color: hovered ? Nheko.colors.highlight : 'transparent'
-                        radius: 5
-                    }
+                            background: Rectangle {
+                                anchors.fill: parent
+                                color: hovered ? Nheko.colors.highlight : 'transparent'
+                                radius: 5
+                            }
 
+                        }
+                    }
                 }
-            }
-        }
 
                 ScrollBar.vertical: ScrollBar {
                     id: emojiScroll
