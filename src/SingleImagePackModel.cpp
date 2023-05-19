@@ -8,6 +8,8 @@
 #include <QFileInfo>
 #include <QMimeDatabase>
 
+#include <unordered_set>
+
 #include <mtx/responses/media.hpp>
 
 #include "Cache_p.h"
@@ -237,6 +239,12 @@ SingleImagePackModel::setStatekey(QString val)
     auto val_ = val.toStdString();
     if (val_ != statekey_) {
         statekey_ = val_;
+
+        // prevent deleting current pack
+        if (!roomid_.empty() && statekey_ != old_statekey_) {
+            statekey_ = unconflictingStatekey(roomid_, statekey_);
+        }
+
         emit statekeyChanged();
     }
 }
@@ -290,6 +298,7 @@ SingleImagePackModel::save()
                         tr("Failed to delete old image pack: %1")
                           .arg(QString::fromStdString(e->matrix_error.error)));
               });
+            old_statekey_ = statekey_;
         }
 
         http::client()->send_state_event(
@@ -398,6 +407,7 @@ std::string
 SingleImagePackModel::unconflictingShortcode(const std::string &shortcode)
 {
     if (pack.images.count(shortcode)) {
+        // more images won't fit in an event anyway
         for (int i = 0; i < 64'000; i++) {
             auto tempCode = shortcode + std::to_string(i);
             if (!pack.images.count(tempCode)) {
@@ -406,6 +416,38 @@ SingleImagePackModel::unconflictingShortcode(const std::string &shortcode)
         }
     }
     return shortcode;
+}
+
+std::string
+SingleImagePackModel::unconflictingStatekey(const std::string &roomid, const std::string &key)
+{
+    if (roomid.empty())
+        return key;
+
+    std::unordered_set<std::string> statekeys;
+    auto currentPacks =
+      cache::client()->getStateEventsWithType<mtx::events::msc2545::ImagePack>(roomid);
+    for (const auto &pack : currentPacks) {
+        if (!pack.content.images.empty())
+            statekeys.insert(pack.state_key);
+    }
+    auto defaultPack = cache::client()->getStateEvent<mtx::events::msc2545::ImagePack>(roomid);
+    if (defaultPack && defaultPack->content.images.size()) {
+        statekeys.insert(defaultPack->state_key);
+    }
+
+    if (statekeys.count(key)) {
+        // arbitrary count. More than 64k image packs in a room are unlikely and if you have that,
+        // you probably know what you are doing :)
+        for (int i = 0; i < 64'000; i++) {
+            auto tempCode = key + std::to_string(i);
+            if (!statekeys.count(tempCode)) {
+                return tempCode;
+            }
+        }
+    }
+
+    return key;
 }
 
 void
