@@ -9,6 +9,7 @@
 #include <QAbstractProxyModel>
 
 #include <algorithm>
+#include <span>
 
 enum class ElementRank
 {
@@ -72,7 +73,7 @@ struct trie
         return ret;
     }
 
-    std::vector<Value> search(const QVector<Key> &keys, //< TODO(Nico): replace this with a span
+    std::vector<Value> search(const std::span<Key> &keys,
                               size_t result_count_limit,
                               size_t max_edit_distance_ = 2) const
     {
@@ -80,7 +81,7 @@ struct trie
         if (!result_count_limit)
             return ret;
 
-        if (keys.isEmpty())
+        if (keys.empty())
             return valuesAndSubvalues(result_count_limit);
 
         auto append = [&ret, result_count_limit](std::vector<Value> &&in) {
@@ -118,7 +119,7 @@ struct trie
                     }
 
                     if (t) {
-                        append(t->search(keys.mid(2), limit(), max_edit_distance));
+                        append(t->search(keys.subspan(2), limit(), max_edit_distance));
                     }
                 }
 
@@ -134,7 +135,7 @@ struct trie
                 }
 
                 // delete character case
-                append(this->search(keys.mid(1), limit(), max_edit_distance));
+                append(this->search(keys.subspan(1), limit(), max_edit_distance));
 
                 // substitute case
                 for (const auto &[k, t] : this->next) {
@@ -144,14 +145,14 @@ struct trie
                         break;
 
                     // substitute
-                    append(t.search(keys.mid(1), limit(), max_edit_distance));
+                    append(t.search(keys.subspan(1), limit(), max_edit_distance));
                 }
 
                 max_edit_distance += 1;
             }
 
             if (auto e = this->next.find(keys[0]); e != this->next.end()) {
-                append(e->second.search(keys.mid(1), limit(), max_edit_distance));
+                append(e->second.search(keys.subspan(1), limit(), max_edit_distance));
             }
         }
 
