@@ -31,7 +31,7 @@ Item {
 
     // focus message input on key press, but not on Ctrl-C and such.
     Keys.onPressed: {
-        if (event.text && !topBar.searchHasFocus) {
+        if (event.text && event.key !== Qt.Key_Enter && event.key !== Qt.Key_Return && !topBar.searchHasFocus) {
             TimelineManager.focusMessageInput();
             room.input.setText(room.input.text + event.text);
         }
