@@ -17,13 +17,14 @@ Menu {
     property var colors
     property string roomid
     property alias model: gridView.model
+    required property bool emoji
     property var textArea
     property real highlightHue: Nheko.colors.highlight.hslHue
     property real highlightSat: Nheko.colors.highlight.hslSaturation
     property real highlightLight: Nheko.colors.highlight.hslLightness
-    readonly property int stickerDim: 128
-    readonly property int stickerDimPad: 128 + Nheko.paddingSmall
-    readonly property int stickersPerRow: 3
+    readonly property int stickerDim: emoji ? 48 : 128
+    readonly property int stickerDimPad: stickerDim + Nheko.paddingSmall
+    readonly property int stickersPerRow: emoji ? 7 : 3
     readonly property int sidebarAvatarSize: 24
 
     function show(showAt, roomid_, callback) {
@@ -110,10 +111,10 @@ Menu {
             ListView {
                 id: gridView
 
-                model: roomid ? TimelineManager.completerFor("stickergrid", roomid) : null
+                model: roomid ? TimelineManager.completerFor(stickerPopup.emoji ? "emojigrid" : "stickergrid", roomid) : null
                 Layout.row: 1
                 Layout.column: 1
-                Layout.preferredHeight: cellHeight * 3.5
+                Layout.preferredHeight: cellHeight * (stickersPerRow + 0.5)
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - Nheko.paddingSmall
                 property int cellHeight: stickerDimPad
                 boundsBehavior: Flickable.StopAtBounds
@@ -157,23 +158,58 @@ Menu {
                         model: row
 
                         delegate: AbstractButton {
+                            id: del
+
+                            required property var modelData
+
                             width: stickerDim
                             height: stickerDim
                             hoverEnabled: true
-                            ToolTip.text: ":" + modelData.shortcode + ": - " + modelData.body
+                            ToolTip.text: ":" + modelData.shortcode + ": - " + (modelData.unicode ? model.unicodeName : modelData.body)
                             ToolTip.visible: hovered
                             // TODO: maybe add favorites at some point?
                             onClicked: {
-                                console.debug("Picked " + modelData.descriptor);
+                                console.debug("Picked " + modelData);
                                 stickerPopup.close();
-                                callback(modelData.descriptor);
+                                if (!stickerPopup.emoji) {
+                                    // return descriptor to calculate sticker to send
+                                    callback(modelData.descriptor);
+                                } else if (modelData.unicode) {
+                                    // return the emoji unicode as both plain text and markdown
+                                    callback(modelData.unicode, modelData.unicode);
+                                } else {
+                                    // return the emoji url as plain text and a markdown link as markdown
+                                    callback(modelData.url, modelData.markdown);
+                                }
                             }
 
-                            contentItem: Image {
-                                height: stickerDim
-                                width: stickerDim
-                                source: modelData.url.replace("mxc://", "image://MxcImage/") + "?scale"
-                                fillMode: Image.PreserveAspectFit
+                            contentItem: DelegateChooser {
+                                roleValue: del.modelData.unicode != undefined
+
+                                DelegateChoice {
+                                    roleValue: true
+
+                                    Text {
+                                        width: stickerDim
+                                        height: stickerDim
+                                        horizontalAlignment: Text.AlignHCenter
+                                        verticalAlignment: Text.AlignVCenter
+                                        font.family: Settings.emojiFont
+                                        font.pixelSize: 36
+                                        text: del.modelData.unicode.replace('\ufe0f', '')
+                                        color: Nheko.colors.text
+                                    }
+                                }
+
+                                DelegateChoice {
+                                    roleValue: false
+                                    Image {
+                                        height: stickerDim
+                                        width: stickerDim
+                                        source: del.modelData.url.replace("mxc://", "image://MxcImage/") + "?scale"
+                                        fillMode: Image.PreserveAspectFit
+                                    }
+                                }
                             }
 
                             background: Rectangle {

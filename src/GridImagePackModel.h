@@ -20,6 +20,7 @@ struct StickerImage
     Q_PROPERTY(QString shortcode MEMBER shortcode CONSTANT)
     Q_PROPERTY(QString body MEMBER body CONSTANT)
     Q_PROPERTY(QStringList descriptor READ descriptor CONSTANT)
+    Q_PROPERTY(QString markdown READ markdown CONSTANT)
 
 public:
     QStringList descriptor() const
@@ -32,6 +33,13 @@ public:
             };
         else
             return {};
+    }
+
+    QString markdown() const
+    {
+        return QStringLiteral(
+                 "<img data-mx-emoticon height=\"32\" src=\"%1\" alt=\"%2\" title=\"%2\">")
+          .arg(url.toHtmlEscaped(), !body.isEmpty() ? body : shortcode);
     }
 
     QString url;
@@ -52,6 +60,19 @@ public:
     QString name;
     QString url;
     int firstRowWith = 0;
+};
+
+struct TextEmoji
+{
+    Q_GADGET
+    Q_PROPERTY(QString unicode MEMBER unicode CONSTANT)
+    Q_PROPERTY(QString unicodeName MEMBER unicodeName CONSTANT)
+    Q_PROPERTY(QString shortcode MEMBER shortcode CONSTANT)
+
+public:
+    QString unicode;
+    QString unicodeName;
+    QString shortcode;
 };
 
 class GridImagePackModel final : public QAbstractListModel
@@ -90,6 +111,7 @@ private:
         std::string room_id, state_key;
 
         std::vector<std::pair<mtx::events::msc2545::PackImage, QString>> images;
+        std::vector<TextEmoji> emojis;
         std::size_t firstRow;
     };
 

@@ -60,7 +60,13 @@ AbstractButton {
         smooth: true
         sourceSize.width: avatar.width * Screen.devicePixelRatio
         sourceSize.height: avatar.height * Screen.devicePixelRatio
-        source: avatar.url ? (avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale")) : ""
+        source: if (avatar.url.startsWith('image://')) {
+            return avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale");
+        } else if (avatar.url.startsWith(':/')) {
+            return "image://colorimage/" + avatar.url + "?" + textColor;
+        } else {
+            return "";
+        }
 
     }
 

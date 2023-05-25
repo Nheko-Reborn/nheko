@@ -478,6 +478,9 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
         auto proxy        = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
         stickerModel->setParent(proxy);
         return proxy;
+    } else if (completerName == QLatin1String("emojigrid")) {
+        auto stickerModel = new GridImagePackModel(roomId.toStdString(), false);
+        return stickerModel;
     } else if (completerName == QLatin1String("stickergrid")) {
         auto stickerModel = new GridImagePackModel(roomId.toStdString(), true);
         return stickerModel;

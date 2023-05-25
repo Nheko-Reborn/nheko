@@ -4,24 +4,113 @@
 
 #include "GridImagePackModel.h"
 
+#include <QCoreApplication>
 #include <QTextBoundaryFinder>
 
 #include <algorithm>
 
 #include "Cache.h"
 #include "Cache_p.h"
+#include "emoji/Provider.h"
 
 Q_DECLARE_METATYPE(StickerImage)
+Q_DECLARE_METATYPE(TextEmoji)
 Q_DECLARE_METATYPE(SectionDescription)
 Q_DECLARE_METATYPE(QList<SectionDescription>)
+
+static QString
+categoryToName(emoji::Emoji::Category cat)
+{
+    switch (cat) {
+    case emoji::Emoji::Category::People:
+        return QCoreApplication::translate("emoji-catagory", "People");
+    case emoji::Emoji::Category::Nature:
+        return QCoreApplication::translate("emoji-catagory", "Nature");
+    case emoji::Emoji::Category::Food:
+        return QCoreApplication::translate("emoji-catagory", "Food");
+    case emoji::Emoji::Category::Activity:
+        return QCoreApplication::translate("emoji-catagory", "Activity");
+    case emoji::Emoji::Category::Travel:
+        return QCoreApplication::translate("emoji-catagory", "Travel");
+    case emoji::Emoji::Category::Objects:
+        return QCoreApplication::translate("emoji-catagory", "Objects");
+    case emoji::Emoji::Category::Symbols:
+        return QCoreApplication::translate("emoji-catagory", "Symbols");
+    case emoji::Emoji::Category::Flags:
+        return QCoreApplication::translate("emoji-catagory", "Flags");
+    default:
+        return "";
+    }
+}
+
+static QString
+categoryToIcon(emoji::Emoji::Category cat)
+{
+    switch (cat) {
+    case emoji::Emoji::Category::People:
+        return QStringLiteral(":/icons/icons/emoji-categories/people.svg");
+    case emoji::Emoji::Category::Nature:
+        return QStringLiteral(":/icons/icons/emoji-categories/nature.svg");
+    case emoji::Emoji::Category::Food:
+        return QStringLiteral(":/icons/icons/emoji-categories/foods.svg");
+    case emoji::Emoji::Category::Activity:
+        return QStringLiteral(":/icons/icons/emoji-categories/activity.svg");
+    case emoji::Emoji::Category::Travel:
+        return QStringLiteral(":/icons/icons/emoji-categories/travel.svg");
+    case emoji::Emoji::Category::Objects:
+        return QStringLiteral(":/icons/icons/emoji-categories/objects.svg");
+    case emoji::Emoji::Category::Symbols:
+        return QStringLiteral(":/icons/icons/emoji-categories/symbols.svg");
+    case emoji::Emoji::Category::Flags:
+        return QStringLiteral(":/icons/icons/emoji-categories/flags.svg");
+    default:
+        return "";
+    }
+}
 
 GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers, QObject *parent)
   : QAbstractListModel(parent)
   , room_id(roomId)
+  , columns(stickers ? 3 : 7)
 {
     [[maybe_unused]] static auto id  = qRegisterMetaType<StickerImage>();
-    [[maybe_unused]] static auto id2 = qRegisterMetaType<SectionDescription>();
-    [[maybe_unused]] static auto id3 = qRegisterMetaType<QList<SectionDescription>>();
+    [[maybe_unused]] static auto id2 = qRegisterMetaType<TextEmoji>();
+    [[maybe_unused]] static auto id3 = qRegisterMetaType<SectionDescription>();
+    [[maybe_unused]] static auto id4 = qRegisterMetaType<QList<SectionDescription>>();
+
+    if (!stickers) {
+        for (const auto &category : {
+               emoji::Emoji::Category::People,
+               emoji::Emoji::Category::Nature,
+               emoji::Emoji::Category::Food,
+               emoji::Emoji::Category::Activity,
+               emoji::Emoji::Category::Travel,
+               emoji::Emoji::Category::Objects,
+               emoji::Emoji::Category::Symbols,
+               emoji::Emoji::Category::Flags,
+             }) {
+            PackDesc newPack{};
+            newPack.packname   = categoryToName(category);
+            newPack.packavatar = categoryToIcon(category);
+
+            auto emojisInCategory = std::ranges::equal_range(
+              emoji::Provider::emoji, category, {}, &emoji::Emoji::category);
+            newPack.emojis.reserve(emojisInCategory.size());
+
+            for (const auto &e : emojisInCategory) {
+                newPack.emojis.push_back(TextEmoji{.unicode     = e.unicode(),
+                                                   .unicodeName = e.unicodeName(),
+                                                   .shortcode   = e.shortName()});
+            }
+
+            size_t packRowCount =
+              (newPack.emojis.size() / columns) + (newPack.emojis.size() % columns ? 1 : 0);
+            newPack.firstRow = rowToPack.size();
+            for (size_t i = 0; i < packRowCount; i++)
+                rowToPack.push_back(packs.size());
+            packs.push_back(std::move(newPack));
+        }
+    }
 
     auto originalPacks = cache::client()->getImagePacks(room_id, stickers);
 
@@ -63,6 +152,25 @@ GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers,
 
     std::uint32_t packIndex = 0;
     for (const auto &pack : packs) {
+        std::uint32_t emojiIndex = 0;
+        for (const auto &emoji : pack.emojis) {
+            std::pair<std::uint32_t, std::uint32_t> key{packIndex, emojiIndex};
+
+            QString string1 = emoji.shortcode.toCaseFolded();
+            QString string2 = emoji.unicodeName.toCaseFolded();
+
+            if (!string1.isEmpty()) {
+                trie_.insert<ElementRank::first>(string1.toUcs4(), key);
+                insertParts(string1, key);
+            }
+            if (!string2.isEmpty()) {
+                trie_.insert<ElementRank::first>(string2.toUcs4(), key);
+                insertParts(string2, key);
+            }
+
+            emojiIndex++;
+        }
+
         std::uint32_t imgIndex = 0;
         for (const auto &img : pack.images) {
             std::pair<std::uint32_t, std::uint32_t> key{packIndex, imgIndex};
@@ -112,20 +220,28 @@ GridImagePackModel::data(const QModelIndex &index, int role) const
                 return nameFromPack(pack);
             case Roles::Row: {
                 std::size_t offset = static_cast<std::size_t>(index.row()) - pack.firstRow;
-                QList<StickerImage> imgs;
-                auto endOffset = std::min((offset + 1) * columns, pack.images.size());
-                for (std::size_t img = offset * columns; img < endOffset; img++) {
-                    const auto &data = pack.images.at(img);
-                    imgs.push_back({.url         = QString::fromStdString(data.first.url),
-                                    .shortcode   = data.second,
-                                    .body        = QString::fromStdString(data.first.body),
-                                    .descriptor_ = std::vector{
-                                      pack.room_id,
-                                      pack.state_key,
-                                      data.second.toStdString(),
-                                    }});
+                if (pack.emojis.empty()) {
+                    QList<StickerImage> imgs;
+                    auto endOffset = std::min((offset + 1) * columns, pack.images.size());
+                    for (std::size_t img = offset * columns; img < endOffset; img++) {
+                        const auto &data = pack.images.at(img);
+                        imgs.push_back({.url         = QString::fromStdString(data.first.url),
+                                        .shortcode   = data.second,
+                                        .body        = QString::fromStdString(data.first.body),
+                                        .descriptor_ = std::vector{
+                                          pack.room_id,
+                                          pack.state_key,
+                                          data.second.toStdString(),
+                                        }});
+                    }
+                    return QVariant::fromValue(imgs);
+                } else {
+                    auto endOffset = std::min((offset + 1) * columns, pack.emojis.size());
+                    QList<TextEmoji> imgs(pack.emojis.begin() + offset * columns,
+                                          pack.emojis.begin() + endOffset);
+
+                    return QVariant::fromValue(imgs);
                 }
-                return QVariant::fromValue(imgs);
             }
             default:
                 return {};
@@ -142,22 +258,33 @@ GridImagePackModel::data(const QModelIndex &index, int role) const
             case Roles::PackName:
                 return nameFromPack(pack);
             case Roles::Row: {
-                QList<StickerImage> imgs;
-                for (auto img = firstIndex;
-                     imgs.size() < columns && img < currentSearchResult.size() &&
-                     currentSearchResult[img].first == firstEntry.first;
-                     img++) {
-                    const auto &data = pack.images.at(currentSearchResult[img].second);
-                    imgs.push_back({.url         = QString::fromStdString(data.first.url),
-                                    .shortcode   = data.second,
-                                    .body        = QString::fromStdString(data.first.body),
-                                    .descriptor_ = std::vector{
-                                      pack.room_id,
-                                      pack.state_key,
-                                      data.second.toStdString(),
-                                    }});
+                if (pack.emojis.empty()) {
+                    QList<StickerImage> imgs;
+                    for (auto img = firstIndex;
+                         imgs.size() < columns && img < currentSearchResult.size() &&
+                         currentSearchResult[img].first == firstEntry.first;
+                         img++) {
+                        const auto &data = pack.images.at(currentSearchResult[img].second);
+                        imgs.push_back({.url         = QString::fromStdString(data.first.url),
+                                        .shortcode   = data.second,
+                                        .body        = QString::fromStdString(data.first.body),
+                                        .descriptor_ = std::vector{
+                                          pack.room_id,
+                                          pack.state_key,
+                                          data.second.toStdString(),
+                                        }});
+                    }
+                    return QVariant::fromValue(imgs);
+                } else {
+                    QList<TextEmoji> emojis;
+                    for (auto emoji = firstIndex;
+                         emojis.size() < columns && emoji < currentSearchResult.size() &&
+                         currentSearchResult[emoji].first == firstEntry.first;
+                         emoji++) {
+                        emojis.push_back(pack.emojis.at(currentSearchResult[emoji].second));
+                    }
+                    return QVariant::fromValue(emojis);
                 }
-                return QVariant::fromValue(imgs);
             }
             default:
                 return {};

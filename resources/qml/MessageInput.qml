@@ -441,6 +441,7 @@ Rectangle {
                 id: stickerPopup
 
                 colors: Nheko.colors
+                emoji: false
             }
 
         }
@@ -456,10 +457,17 @@ Rectangle {
             image: ":/icons/icons/ui/smile.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
-            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, function(emoji) {
-                messageInput.insert(messageInput.cursorPosition, emoji);
+            onClicked: emojiPopup2.visible ? emojiPopup2.close() : emojiPopup2.show(emojiButton, room.roomId, function(plaintext, markdown) {
+                messageInput.insert(messageInput.cursorPosition, markdown);
                 TimelineManager.focusMessageInput();
             })
+
+            StickerPicker {
+                id: emojiPopup2
+
+                colors: Nheko.colors
+                emoji: true
+            }
         }
 
         ImageButton {
