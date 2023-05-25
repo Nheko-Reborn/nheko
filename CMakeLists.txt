@@ -356,8 +356,6 @@ set(SRC_FILES
 	src/dialogs/ReCaptcha.h
 
 	# Emoji
-	src/emoji/EmojiModel.cpp
-	src/emoji/EmojiModel.h
 	src/emoji/Provider.cpp
 	src/emoji/Provider.h
 

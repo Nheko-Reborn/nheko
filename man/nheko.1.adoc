@@ -91,11 +91,9 @@ Open username completer.
 Open room completer.
 
 *:*::
-Open unicode emoji picker.
-
-*~*::
-Open custom emoji picker. Requires an image pack with custom emojis. Selecting
-an emoji will add HTML code for the inline image into the input line.
+Open the emoji picker. Unicode emoji are inserted directly. Custom emoji will
+insert the HTML code for them into the input line. You can configure custom
+emoji in the room settings.
 
 == KEYBOARD SHORTCUTS
 

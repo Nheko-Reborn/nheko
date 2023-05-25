@@ -91,5 +91,7 @@ public:
     static const std::array<Emoji, 3681> emoji;
 };
 
+QString
+categoryToName(emoji::Emoji::Category cat);
 } // namespace emoji
 Q_DECLARE_METATYPE(emoji::Emoji)

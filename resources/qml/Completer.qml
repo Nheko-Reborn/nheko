@@ -21,7 +21,7 @@ Control {
     property int avatarHeight: 24
     property int avatarWidth: 24
     property int rowMargin: 0
-    property int rowSpacing: 5
+    property int rowSpacing: Nheko.paddingSmall
     property alias count: listView.count
 
     signal completionClicked(string completion)
@@ -199,14 +199,33 @@ Control {
                         spacing: rowSpacing
 
                         Label {
+                            visible: !!model.unicode
                             text: model.unicode
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
                             font: Settings.emojiFont
                         }
 
+                        Avatar {
+                            visible: !model.unicode
+                            height: popup.avatarHeight
+                            width: popup.avatarWidth
+                            displayName: model.shortcode
+                            //userid: model.shortcode
+                            url: (model.url ? model.url : "").replace("mxc://", "image://MxcImage/")
+                            enabled: false
+                            crop: false
+                        }
+
                         Label {
-                            text: model.shortName
+                            Layout.leftMargin: Nheko.paddingSmall
+                            Layout.rightMargin: Nheko.paddingSmall
+                            text: model.shortcode
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                        }
+
+                        Label {
+                            text: "(" + model.packname + ")"
+                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
 
                     }
@@ -230,39 +249,6 @@ Control {
 
                         Label {
                             text: model.description
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
-                        }
-
-                    }
-
-                }
-
-                DelegateChoice {
-                    roleValue: "customEmoji"
-
-                    RowLayout {
-                        id: del
-
-                        anchors.centerIn: parent
-                        spacing: rowSpacing
-
-                        Avatar {
-                            height: popup.avatarHeight
-                            width: popup.avatarWidth
-                            displayName: model.shortcode
-                            //userid: model.shortcode
-                            url: model.url.replace("mxc://", "image://MxcImage/")
-                            enabled: false
-                            crop: false
-                        }
-
-                        Label {
-                            text: model.shortcode
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
-                        }
-
-                        Label {
-                            text: "(" + model.packname + ")"
                             color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
 

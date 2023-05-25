@@ -6,14 +6,13 @@
 
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
+#include "emoji/Provider.h"
 
-CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId,
-                                               bool stickers,
-                                               QObject *parent)
+CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId, QObject *parent)
   : QAbstractListModel(parent)
   , room_id(roomId)
 {
-    auto packs = cache::client()->getImagePacks(room_id, stickers);
+    auto packs = cache::client()->getImagePacks(room_id, false);
 
     for (const auto &pack : packs) {
         QString packname =
@@ -32,7 +31,7 @@ CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId,
 int
 CombinedImagePackModel::rowCount(const QModelIndex &) const
 {
-    return (int)images.size();
+    return (int)(emoji::Provider::emoji.size() + images.size());
 }
 
 QHash<int, QByteArray>
@@ -46,36 +45,60 @@ CombinedImagePackModel::roleNames() const
       {Roles::ShortCode, "shortcode"},
       {Roles::Body, "body"},
       {Roles::PackName, "packname"},
-      {Roles::OriginalRow, "originalRow"},
+      {Roles::Unicode, "unicode"},
     };
 }
 
 QVariant
 CombinedImagePackModel::data(const QModelIndex &index, int role) const
 {
+    using emoji::Provider;
     if (hasIndex(index.row(), index.column(), index.parent())) {
-        switch (role) {
-        case CompletionModel::CompletionRole:
-            return QStringLiteral(
-                     "<img data-mx-emoticon height=\"32\" src=\"%1\" alt=\"%2\" title=\"%2\">")
-              .arg(QString::fromStdString(images[index.row()].image.url).toHtmlEscaped(),
-                   !images[index.row()].image.body.empty()
-                     ? QString::fromStdString(images[index.row()].image.body)
-                     : images[index.row()].shortcode);
-        case Roles::Url:
-            return QString::fromStdString(images[index.row()].image.url);
-        case CompletionModel::SearchRole:
-        case Roles::ShortCode:
-            return images[index.row()].shortcode;
-        case CompletionModel::SearchRole2:
-        case Roles::Body:
-            return QString::fromStdString(images[index.row()].image.body);
-        case Roles::PackName:
-            return images[index.row()].packname;
-        case Roles::OriginalRow:
-            return index.row();
-        default:
-            return {};
+        if (index.row() < (int)emoji::Provider::emoji.size()) {
+            switch (role) {
+            case CompletionModel::CompletionRole:
+            case Roles::Unicode:
+                return emoji::Provider::emoji[index.row()].unicode();
+
+            case Qt::ToolTipRole:
+                return Provider::emoji[index.row()].shortName() + ", " +
+                       Provider::emoji[index.row()].unicodeName();
+            case CompletionModel::SearchRole2:
+            case Roles::Body:
+                return Provider::emoji[index.row()].unicodeName();
+            case CompletionModel::SearchRole:
+            case Roles::ShortCode:
+                return Provider::emoji[index.row()].shortName();
+            case Roles::PackName:
+                return emoji::categoryToName(Provider::emoji[index.row()].category);
+            default:
+                return {};
+            }
+        } else {
+            int row = index.row() - static_cast<int>(emoji::Provider::emoji.size());
+            switch (role) {
+            case CompletionModel::CompletionRole:
+                return QStringLiteral(
+                         "<img data-mx-emoticon height=\"32\" src=\"%1\" alt=\"%2\" title=\"%2\">")
+                  .arg(QString::fromStdString(images[row].image.url).toHtmlEscaped(),
+                       !images[row].image.body.empty()
+                         ? QString::fromStdString(images[row].image.body)
+                         : images[row].shortcode);
+            case Roles::Url:
+                return QString::fromStdString(images[row].image.url);
+            case CompletionModel::SearchRole:
+            case Roles::ShortCode:
+                return images[row].shortcode;
+            case CompletionModel::SearchRole2:
+            case Roles::Body:
+                return QString::fromStdString(images[row].image.body);
+            case Roles::PackName:
+                return images[row].packname;
+            case Roles::Unicode:
+                return QString();
+            default:
+                return {};
+            }
         }
     }
     return {};

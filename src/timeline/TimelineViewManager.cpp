@@ -27,7 +27,6 @@
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "Utils.h"
-#include "emoji/EmojiModel.h"
 #include "encryption/VerificationManager.h"
 #include "voip/CallManager.h"
 #include "voip/WebRTCSession.h"
@@ -454,13 +453,8 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
         userModel->setParent(proxy);
         return proxy;
     } else if (completerName == QLatin1String("emoji")) {
-        auto emojiModel = new emoji::EmojiModel();
+        auto emojiModel = new CombinedImagePackModel(roomId.toStdString());
         auto proxy      = new CompletionProxyModel(emojiModel);
-        emojiModel->setParent(proxy);
-        return proxy;
-    } else if (completerName == QLatin1String("allemoji")) {
-        auto emojiModel = new emoji::EmojiModel();
-        auto proxy      = new CompletionProxyModel(emojiModel, 1, static_cast<size_t>(-1) / 4);
         emojiModel->setParent(proxy);
         return proxy;
     } else if (completerName == QLatin1String("room")) {
@@ -473,22 +467,12 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
         auto proxy     = new CompletionProxyModel(roomModel);
         roomModel->setParent(proxy);
         return proxy;
-    } else if (completerName == QLatin1String("stickers")) {
-        auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), true);
-        auto proxy        = new CompletionProxyModel(stickerModel, 1, static_cast<size_t>(-1) / 4);
-        stickerModel->setParent(proxy);
-        return proxy;
     } else if (completerName == QLatin1String("emojigrid")) {
         auto stickerModel = new GridImagePackModel(roomId.toStdString(), false);
         return stickerModel;
     } else if (completerName == QLatin1String("stickergrid")) {
         auto stickerModel = new GridImagePackModel(roomId.toStdString(), true);
         return stickerModel;
-    } else if (completerName == QLatin1String("customEmoji")) {
-        auto stickerModel = new CombinedImagePackModel(roomId.toStdString(), false);
-        auto proxy        = new CompletionProxyModel(stickerModel);
-        stickerModel->setParent(proxy);
-        return proxy;
     } else if (completerName == QLatin1String("command")) {
         auto commandCompleter = new CommandCompleter();
         auto proxy            = new CompletionProxyModel(commandCompleter);

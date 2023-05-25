@@ -18,8 +18,8 @@ Q_DECLARE_METATYPE(TextEmoji)
 Q_DECLARE_METATYPE(SectionDescription)
 Q_DECLARE_METATYPE(QList<SectionDescription>)
 
-static QString
-categoryToName(emoji::Emoji::Category cat)
+QString
+emoji::categoryToName(emoji::Emoji::Category cat)
 {
     switch (cat) {
     case emoji::Emoji::Category::People:
