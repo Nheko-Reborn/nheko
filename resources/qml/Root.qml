@@ -43,13 +43,6 @@ Pane {
     //    repeat: true
     //}
 
-    EmojiPicker {
-        id: emojiPopup
-
-        colors: palette
-        model: TimelineManager.completerFor("allemoji", "")
-    }
-
     function showAliasEditor(settings) {
         var component = Qt.createComponent("qrc:/qml/dialogs/AliasEditor.qml")
         if (component.status == Component.Ready) {

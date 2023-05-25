@@ -457,13 +457,13 @@ Rectangle {
             image: ":/icons/icons/ui/smile.svg"
             ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
-            onClicked: emojiPopup2.visible ? emojiPopup2.close() : emojiPopup2.show(emojiButton, room.roomId, function(plaintext, markdown) {
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, room.roomId, function(plaintext, markdown) {
                 messageInput.insert(messageInput.cursorPosition, markdown);
                 TimelineManager.focusMessageInput();
             })
 
             StickerPicker {
-                id: emojiPopup2
+                id: emojiPopup
 
                 colors: Nheko.colors
                 emoji: true

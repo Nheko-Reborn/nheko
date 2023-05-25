@@ -176,7 +176,6 @@
         <file>qml/dialogs/AllowedRoomsSettingsDialog.qml</file>
         <file>qml/dialogs/RoomSettings.qml</file>
         <file>qml/dialogs/UserProfile.qml</file>
-        <file>qml/emoji/EmojiPicker.qml</file>
         <file>qml/emoji/StickerPicker.qml</file>
         <file>qml/pages/LoginPage.qml</file>
         <file>qml/pages/RegisterPage.qml</file>

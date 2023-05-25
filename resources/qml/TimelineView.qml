@@ -29,6 +29,13 @@ Item {
 
     onRoomChanged: if (room != null) room.triggerSpecialEffects()
 
+    StickerPicker {
+        id: emojiPopup
+
+        colors: Nheko.colors
+        emoji: true
+    }
+
     // focus message input on key press, but not on Ctrl-C and such.
     Keys.onPressed: {
         if (event.text && event.key !== Qt.Key_Enter && event.key !== Qt.Key_Return && !topBar.searchHasFocus) {

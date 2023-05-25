@@ -149,9 +149,9 @@ Item {
                     ToolTip.visible: hovered
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("React")
-                    onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, function(emoji) {
+                    onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, room.roomId, function(plaintext, markdown) {
                         var event_id = row.model ? row.model.eventId : "";
-                        room.input.reaction(event_id, emoji);
+                        room.input.reaction(event_id, plaintext);
                         TimelineManager.focusMessageInput();
                     })
                 }
@@ -666,8 +666,9 @@ Item {
 
             visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
             text: qsTr("Re&act")
-            onTriggered: emojiPopup.show(null, function(emoji) {
-                room.input.reaction(messageContextMenu.eventId, emoji);
+            onTriggered: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(null, room.roomId, function(plaintext, markdown) {
+                room.input.reaction(messageContextMenu.eventId, plaintext);
+                TimelineManager.focusMessageInput();
             })
         }
 
