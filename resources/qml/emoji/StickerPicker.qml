@@ -165,7 +165,7 @@ Menu {
                             width: stickerDim
                             height: stickerDim
                             hoverEnabled: true
-                            ToolTip.text: ":" + modelData.shortcode + ": - " + (modelData.unicode ? model.unicodeName : modelData.body)
+                            ToolTip.text: ":" + modelData.shortcode + ": - " + (modelData.unicode ? modelData.unicodeName : modelData.body)
                             ToolTip.visible: hovered
                             // TODO: maybe add favorites at some point?
                             onClicked: {
