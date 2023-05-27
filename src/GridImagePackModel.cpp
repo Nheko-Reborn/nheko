@@ -225,10 +225,13 @@ GridImagePackModel::data(const QModelIndex &index, int role) const
                     auto endOffset = std::min((offset + 1) * columns, pack.images.size());
                     for (std::size_t img = offset * columns; img < endOffset; img++) {
                         const auto &data = pack.images.at(img);
-                        imgs.push_back({.url         = QString::fromStdString(data.first.url),
-                                        .shortcode   = data.second,
-                                        .body        = QString::fromStdString(data.first.body),
-                                        .descriptor_ = std::vector{
+                        // See
+                        // https://developercommunity.visualstudio.com/t/Internal-compile-error-while-compiling-c/1227337
+                        imgs.push_back({/*.url        =*/QString::fromStdString(data.first.url),
+                                        /*.shortcode  =*/data.second,
+                                        /*.body       =*/QString::fromStdString(data.first.body),
+                                        /*.descriptor_=*/
+                                        std::vector{
                                           pack.room_id,
                                           pack.state_key,
                                           data.second.toStdString(),
@@ -265,10 +268,13 @@ GridImagePackModel::data(const QModelIndex &index, int role) const
                          currentSearchResult[img].first == firstEntry.first;
                          img++) {
                         const auto &data = pack.images.at(currentSearchResult[img].second);
-                        imgs.push_back({.url         = QString::fromStdString(data.first.url),
-                                        .shortcode   = data.second,
-                                        .body        = QString::fromStdString(data.first.body),
-                                        .descriptor_ = std::vector{
+                        // See
+                        // https://developercommunity.visualstudio.com/t/Internal-compile-error-while-compiling-c/1227337
+                        imgs.push_back({/*.url         = */ QString::fromStdString(data.first.url),
+                                        /*.shortcode   = */ data.second,
+                                        /*.body        = */ QString::fromStdString(data.first.body),
+                                        /*.descriptor_ = */
+                                        std::vector{
                                           pack.room_id,
                                           pack.state_key,
                                           data.second.toStdString(),
