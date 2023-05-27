@@ -26,8 +26,6 @@ Flow {
             id: reaction
 
             hoverEnabled: true
-            implicitWidth: contentItem.childrenRect.width + contentItem.leftPadding * 2
-            implicitHeight: contentItem.childrenRect.height
             ToolTip.visible: hovered
             ToolTip.delay: Nheko.tooltipDelay
             onClicked: {
@@ -42,12 +40,11 @@ Flow {
                     return modelData.displayKey + "\n" + modelData.users;
                 })
             }
+                leftPadding: textMetrics.height / 2
+                rightPadding: textMetrics.height / 2
 
             contentItem: Row {
-                anchors.centerIn: parent
-                spacing: reactionText.implicitHeight / 4
-                leftPadding: reactionText.implicitHeight / 2
-                rightPadding: reactionText.implicitHeight / 2
+                spacing: textMetrics.height / 4
 
                 TextMetrics {
                     id: textMetrics
@@ -74,6 +71,15 @@ Flow {
                     font.family: Settings.emojiFont
                     color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlightedText: Nheko.colors.text
                     maximumLineCount: 1
+                    visible: !modelData.key.startsWith("mxc://")
+                }
+                Image {
+                    anchors.verticalCenter: divider.verticalCenter
+                    height: textMetrics.height
+                    width: textMetrics.height
+                    source: modelData.key.startsWith("mxc://") ? (modelData.key.replace("mxc://", "image://MxcImage/") + "?scale") : ""
+                    visible: modelData.key.startsWith("mxc://")
+                    fillMode: Image.PreserveAspectFit
                 }
 
                 Rectangle {
