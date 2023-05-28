@@ -3,9 +3,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "notifications/NotificationManagerProxy.h"
 #include "notifications/MacNotificationDelegate.h"
 #include "notifications/Manager.h"
+#include "notifications/NotificationManagerProxy.h"
 
 #include "ChatPage.h"
 
@@ -106,18 +106,14 @@ void NotificationsManager::objCxxPostNotification(
                                                                                 textInputButtonTitle:sendStr.toNSString()
                                                                                 textInputPlaceholder:placeholder.toNSString()];
 
-    UNNotificationCategory* category;
-    if(!room_id.isEmpty()){
-        category = [UNNotificationCategory categoryWithIdentifier:@"ReplyCategory"
-                                                          actions:@[ replyAction ]
-                                                intentIdentifiers:@[]
-                                                          options:UNNotificationCategoryOptionNone];
-    }else{
-        category = [UNNotificationCategory categoryWithIdentifier:@"ReplyCategory"
-                                                          actions:@[]
-                                                intentIdentifiers:@[]
-                                                          options:UNNotificationCategoryOptionNone];
-    }
+    UNNotificationCategory* replyCategory = [UNNotificationCategory categoryWithIdentifier:@"ReplyCategory"
+                                                                                   actions:@[ replyAction ]
+                                                                         intentIdentifiers:@[]
+                                                                                   options:UNNotificationCategoryOptionNone];
+    UNNotificationCategory* summaryCategory = [UNNotificationCategory categoryWithIdentifier:@"SummaryCategory"
+                                                                                     actions:@[]
+                                                                           intentIdentifiers:@[]
+                                                                                     options:UNNotificationCategoryOptionNone];
 
     NSString* title = room_name.toNSString();
     NSString* sub = subtitle.toNSString();
@@ -126,7 +122,7 @@ void NotificationsManager::objCxxPostNotification(
     NSString* identifier = event_id.toNSString();
     NSString* imgUrl = bodyImagePath.toNSString();
 
-    NSSet* categories = [NSSet setWithObject:category];
+    NSSet* categories = [NSSet setWithObjects:summaryCategory, replyCategory, nil];
     [center setNotificationCategories:categories];
     [center getNotificationSettingsWithCompletionHandler:^(
         UNNotificationSettings* _Nonnull settings) {
@@ -140,8 +136,12 @@ void NotificationsManager::objCxxPostNotification(
             if (enableSound) {
                 content.sound = [UNNotificationSound defaultSound];
             }
-            content.threadIdentifier = threadIdentifier;
-            content.categoryIdentifier = @"ReplyCategory";
+            if (!room_id.isEmpty()) {
+                content.threadIdentifier = threadIdentifier;
+                content.categoryIdentifier = @"ReplyCategory";
+            } else {
+                content.categoryIdentifier = @"SummaryCategory";
+            }
 
             if ([imgUrl length] != 0) {
                 NSURL* imageURL = [NSURL fileURLWithPath:imgUrl];
