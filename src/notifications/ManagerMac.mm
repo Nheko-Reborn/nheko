@@ -106,10 +106,18 @@ void NotificationsManager::objCxxPostNotification(
                                                                                 textInputButtonTitle:sendStr.toNSString()
                                                                                 textInputPlaceholder:placeholder.toNSString()];
 
-    UNNotificationCategory* category = [UNNotificationCategory categoryWithIdentifier:@"ReplyCategory"
-                                                                              actions:@[ replyAction ]
-                                                                    intentIdentifiers:@[]
-                                                                              options:UNNotificationCategoryOptionNone];
+    UNNotificationCategory* category;
+    if(!room_id.isEmpty()){
+        category = [UNNotificationCategory categoryWithIdentifier:@"ReplyCategory"
+                                                          actions:@[ replyAction ]
+                                                intentIdentifiers:@[]
+                                                          options:UNNotificationCategoryOptionNone];
+    }else{
+        category = [UNNotificationCategory categoryWithIdentifier:@"ReplyCategory"
+                                                          actions:@[]
+                                                intentIdentifiers:@[]
+                                                          options:UNNotificationCategoryOptionNone];
+    }
 
     NSString* title = room_name.toNSString();
     NSString* sub = subtitle.toNSString();
