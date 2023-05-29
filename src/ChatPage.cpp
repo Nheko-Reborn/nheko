@@ -373,8 +373,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                 }
                 QString body;
                 for (const auto &[roomModel, nbNotifs] : missedEvents) {
-                    body += tr("%1 unread messages in room %2\n")
-                              .arg(nbNotifs)
+                    body += tr("%n unread message(s) in room %1\n", nullptr, nbNotifs)
                               .arg(roomModel->roomName());
                 }
                 emit notificationsManager->systemPostNotificationCb(
