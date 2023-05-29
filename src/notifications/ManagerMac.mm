@@ -62,12 +62,12 @@
 @end
 
 void NotificationsManager::objCxxPostNotification(
-    const QString& room_name,
-    const QString& room_id,
-    const QString& event_id,
-    const QString& subtitle,
-    const QString& informativeText,
-    const QString& bodyImagePath,
+    const QString room_name,
+    const QString room_id,
+    const QString event_id,
+    const QString subtitle,
+    const QString informativeText,
+    const QString bodyImagePath,
     const bool enableSound)
 {
     // Request permissions for alerts (the generic type of notification), sound playback,
@@ -114,7 +114,7 @@ void NotificationsManager::objCxxPostNotification(
     NSString* identifier = event_id.toNSString();
     NSString* imgUrl = bodyImagePath.toNSString();
 
-    NSSet* categories = [NSSet setWithObjects:summaryCategory, replyCategory, nil];
+    NSSet* categories = [NSSet setWithArray:@[ summaryCategory, replyCategory ]];
     [center setNotificationCategories:categories];
     [center getNotificationSettingsWithCompletionHandler:^(
         UNNotificationSettings* _Nonnull settings) {
