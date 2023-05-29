@@ -61,11 +61,6 @@
 }
 @end
 
-NotificationsManager::NotificationsManager(QObject* parent)
-    : QObject(parent)
-{
-}
-
 void NotificationsManager::objCxxPostNotification(
     const QString& room_name,
     const QString& room_id,
@@ -73,9 +68,6 @@ void NotificationsManager::objCxxPostNotification(
     const QString& subtitle,
     const QString& informativeText,
     const QString& bodyImagePath,
-    const QString& respondStr,
-    const QString& sendStr,
-    const QString& placeholder,
     const bool enableSound)
 {
     // Request permissions for alerts (the generic type of notification), sound playback,
