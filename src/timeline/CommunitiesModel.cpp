@@ -383,6 +383,8 @@ CommunitiesModel::initializeSidebar()
     emit tagsChanged();
     emit hiddenTagsChanged();
     emit containsSubspacesChanged();
+    
+    setCurrentTagId(UserSettings::instance()->currentTagId());
 }
 
 void
@@ -585,6 +587,7 @@ CommunitiesModel::setCurrentTagId(const QString &tagId)
         for (const auto &t : qAsConst(tags_)) {
             if (t == tag) {
                 this->currentTagId_ = tagId;
+                UserSettings::instance()->setCurrentTagId(tagId);
                 emit currentTagIdChanged(currentTagId_);
                 return;
             }
@@ -594,17 +597,20 @@ CommunitiesModel::setCurrentTagId(const QString &tagId)
         for (const auto &t : spaceOrder_.tree) {
             if (t.id == tag) {
                 this->currentTagId_ = tagId;
+                UserSettings::instance()->setCurrentTagId(tagId);
                 emit currentTagIdChanged(currentTagId_);
                 return;
             }
         }
     } else if (tagId == QLatin1String("dm")) {
         this->currentTagId_ = tagId;
+        UserSettings::instance()->setCurrentTagId(tagId);
         emit currentTagIdChanged(currentTagId_);
         return;
     }
 
     this->currentTagId_ = QLatin1String("");
+    UserSettings::instance()->setCurrentTagId(tagId);
     emit currentTagIdChanged(currentTagId_);
 }
 
@@ -614,6 +620,7 @@ CommunitiesModel::trySwitchToSpace(const QString &tag)
     for (const auto &t : spaceOrder_.tree) {
         if (t.id == tag) {
             this->currentTagId_ = "space:" + tag;
+            UserSettings::instance()->setCurrentTagId(tag);
             emit currentTagIdChanged(currentTagId_);
             return true;
         }

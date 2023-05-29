@@ -198,6 +198,7 @@ public:
     void setUserId(QString userId);
     void setAccessToken(QString accessToken);
     void setDeviceId(QString deviceId);
+    void setCurrentTagId(QString currentTagId);
     void setHomeserver(QString homeserver);
     void setDisableCertificateValidation(bool disabled);
     void setHiddenTags(const QStringList &hiddenTags);
@@ -272,6 +273,7 @@ public:
     QString userId() const { return userId_; }
     QString accessToken() const { return accessToken_; }
     QString deviceId() const { return deviceId_; }
+    QString currentTagId() const { return currentTagId_; }
     QString homeserver() const { return homeserver_; }
     bool disableCertificateValidation() const { return disableCertificateValidation_; }
     QStringList hiddenTags() const { return hiddenTags_; }
@@ -410,6 +412,7 @@ private:
     QString userId_;
     QString accessToken_;
     QString deviceId_;
+    QString currentTagId_;
     QString homeserver_;
     QStringList hiddenTags_;
     QStringList mutedTags_;

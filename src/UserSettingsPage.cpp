@@ -140,6 +140,7 @@ UserSettings::load(std::optional<QString> profile)
     homeserver_    = settings.value(prefix + "auth/home_server", "").toString();
     userId_        = settings.value(prefix + "auth/user_id", "").toString();
     deviceId_      = settings.value(prefix + "auth/device_id", "").toString();
+    currentTagId_  = settings.value(prefix + "user/current_tag_id", "").toString();
     hiddenTags_    = settings.value(prefix + "user/hidden_tags", QStringList{}).toStringList();
     mutedTags_  = settings.value(prefix + "user/muted_tags", QStringList{"global"}).toStringList();
     hiddenPins_ = settings.value(prefix + "user/hidden_pins", QStringList{}).toStringList();
@@ -790,6 +791,15 @@ UserSettings::setDeviceId(QString deviceId)
 }
 
 void
+UserSettings::setCurrentTagId(const QString currentTagId)
+{
+    if (currentTagId == currentTagId_)
+        return;
+    currentTagId_ = currentTagId;
+    save();
+}
+
+void
 UserSettings::setHomeserver(QString homeserver)
 {
     if (homeserver == homeserver_)
@@ -937,7 +947,7 @@ UserSettings::save()
     settings.setValue(prefix + "auth/home_server", homeserver_);
     settings.setValue(prefix + "auth/user_id", userId_);
     settings.setValue(prefix + "auth/device_id", deviceId_);
-
+    settings.setValue(prefix + "user/current_tag_id", currentTagId_);
     settings.setValue(prefix + "user/automatically_share_keys_with_trusted_users",
                       shareKeysWithTrustedUsers_);
     settings.setValue(prefix + "user/only_share_keys_with_verified_users",
