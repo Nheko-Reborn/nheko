@@ -13,11 +13,11 @@ CMAKE_PREFIX_PATH="$(brew --prefix qt5)"
 export CMAKE_PREFIX_PATH
 
 cmake -GNinja -S. -Bbuild \
-      -DCMAKE_BUILD_TYPE=RelWithDebInfo \
+      -DCMAKE_BUILD_TYPE=Debug \
       -DCMAKE_INSTALL_PREFIX=.deps/usr \
       -DHUNTER_ROOT="../.hunter" \
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
-      -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
+      -DHUNTER_CONFIGURATION_TYPES=Debug \
       -DUSE_BUNDLED_OPENSSL=ON \
       -DCI_BUILD=ON
 cmake --build build
