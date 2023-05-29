@@ -22,6 +22,35 @@ formatNotification(const mtx::responses::Notification &notification)
     return utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body;
 }
 
+NotificationsManager::NotificationsManager(QObject *parent)
+  : QObject(parent)
+{
+    // Putting these here to pass along since I'm not sure how
+    // our translate step interacts with .mm files
+    respondStr  = QObject::tr("Respond");
+    sendStr     = QObject::tr("Send");
+    placeholder = QObject::tr("Write a message...");
+
+    connect(
+      this,
+      &NotificationsManager::systemPostNotificationCb,
+      this,
+      [this](const QString &room_id,
+             const QString &event_id,
+             const QString &roomName,
+             const QString &text,
+             const QImage &) {
+          objCxxPostNotification(roomName,
+                                 room_id,
+                                 event_id,
+                                 text,
+                                 /*const QString &informativeText*/ "",
+                                 "",
+                                 true);
+      },
+      Qt::QueuedConnection);
+}
+
 void
 NotificationsManager::postNotification(const mtx::responses::Notification &notification,
                                        const QImage &icon)
@@ -40,12 +69,6 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                                &notification.event) != nullptr;
     const auto isReply = utils::isReply(notification.event);
 
-    // Putting these here to pass along since I'm not sure how
-    // our translate step interacts with .mm files
-    const auto respondStr  = QObject::tr("Respond");
-    const auto sendStr     = QObject::tr("Send");
-    const auto placeholder = QObject::tr("Write a message...");
-
     auto playSound = false;
 
     if (std::find(notification.actions.begin(),
@@ -59,16 +82,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         const QString messageInfo = (isReply ? tr("%1 replied with an encrypted message")
                                              : tr("%1 sent an encrypted message"))
                                       .arg(sender);
-        objCxxPostNotification(room_name,
-                               room_id,
-                               event_id,
-                               messageInfo,
-                               "",
-                               "",
-                               respondStr,
-                               sendStr,
-                               placeholder,
-                               playSound);
+        objCxxPostNotification(room_name, room_id, event_id, messageInfo, "", "", playSound);
     } else {
         const QString messageInfo =
           (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
@@ -76,25 +90,14 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
             MxcImageProvider::download(
               QString::fromStdString(mtx::accessors::url(notification.event)).remove("mxc://"),
               QSize(200, 80),
-              [this,
-               notification,
-               room_name,
-               room_id,
-               event_id,
-               messageInfo,
-               respondStr,
-               sendStr,
-               placeholder,
-               playSound](QString, QSize, QImage, QString imgPath) {
+              [this, notification, room_name, room_id, event_id, messageInfo, playSound](
+                QString, QSize, QImage, QString imgPath) {
                   objCxxPostNotification(room_name,
                                          room_id,
                                          event_id,
                                          messageInfo,
                                          formatNotification(notification),
                                          imgPath,
-                                         respondStr,
-                                         sendStr,
-                                         placeholder,
                                          playSound);
               });
         else
@@ -104,9 +107,6 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                                    messageInfo,
                                    formatNotification(notification),
                                    "",
-                                   respondStr,
-                                   sendStr,
-                                   placeholder,
                                    playSound);
     }
 }

@@ -81,10 +81,11 @@ private:
                                 const QString &subtitle,
                                 const QString &informativeText,
                                 const QString &bodyImagePath,
-                                const QString &respondStr,
-                                const QString &sendStr,
-                                const QString &placeholder,
                                 const bool playSound);
+
+    QString respondStr;
+    QString sendStr;
+    QString placeholder;
 
 public:
     static void attachToMacNotifCenter();
