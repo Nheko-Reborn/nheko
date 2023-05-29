@@ -648,6 +648,16 @@ Item {
         }
 
         Platform.MenuItem {
+             visible: topBar.searchString !== ""
+             enabled: visible
+             text: qsTr("Go to eve&nt")
+             onTriggered: function() {
+                room.showEvent(messageContextMenu.eventId);
+                topBar.searchString = "";
+            }
+         }
+
+        Platform.MenuItem {
             visible: messageContextMenu.text
             enabled: visible
             text: qsTr("&Copy")
