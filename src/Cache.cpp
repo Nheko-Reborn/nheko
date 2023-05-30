@@ -1849,7 +1849,6 @@ isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
 // }
 }
 
-
 void
 Cache::saveState(const mtx::responses::Sync &res)
 {
@@ -1879,16 +1878,15 @@ Cache::saveState(const mtx::responses::Sync &res)
 
                   auto j = nlohmann::json(event);
                   try {
-                    accountDataDb.put(txn, j["type"].get<std::string>(), j.dump());
-                  }
-                  catch (const lmdb::error &e) {
-                    nhlog::db()->warn("failed to save state after sync: {}, skipping event", e.what());
-                    return;
+                      accountDataDb.put(txn, j["type"].get<std::string>(), j.dump());
+                  } catch (const lmdb::error &e) {
+                      nhlog::db()->warn("failed to save state after sync: {}, skipping event",
+                                        e.what());
+                      return;
                   }
               },
               ev);
-    } 
-          
+    }
 
     auto userKeyCacheDb = getUserKeysDb(txn);
 
