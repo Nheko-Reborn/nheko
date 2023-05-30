@@ -124,8 +124,6 @@ Item {
                 }
 
                 ImageButton {
-                    id: editButton
-
                     visible: !!row.model && row.model.isEditable
                     buttonTextColor: Nheko.colors.buttonText
                     width: 16
@@ -157,8 +155,6 @@ Item {
                 }
 
                 ImageButton {
-                    id: threadButton
-
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
                     width: 16
                     hoverEnabled: true
@@ -170,8 +166,6 @@ Item {
                 }
 
                 ImageButton {
-                    id: replyButton
-
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
                     width: 16
                     hoverEnabled: true
@@ -180,6 +174,21 @@ Item {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Reply")
                     onClicked: room.reply = row.model.eventId
+                }
+
+                ImageButton {
+                    visible: !!row.model && filteredTimeline.filterByContent
+                    buttonTextColor: Nheko.colors.buttonText
+                    width: 16
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/go-to.svg"
+                    ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Go to message")
+                    onClicked: {
+                        topBar.searchString = "";
+                        room.showEvent(row.model.eventId);
+                    }
                 }
 
                 ImageButton {
@@ -648,12 +657,12 @@ Item {
         }
 
         Platform.MenuItem {
-             visible: topBar.searchString !== ""
+             visible: filteredTimeline.filterByContent
              enabled: visible
-             text: qsTr("Go to eve&nt")
+             text: qsTr("Go to &message")
              onTriggered: function() {
-                room.showEvent(messageContextMenu.eventId);
                 topBar.searchString = "";
+                room.showEvent(messageContextMenu.eventId);
             }
          }
 
