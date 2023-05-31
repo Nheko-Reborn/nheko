@@ -106,21 +106,66 @@ Item {
 
                 Repeater {
                     model: Settings.recentReactions
+                    visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
 
-                    delegate: TextButton {
+                    delegate: AbstractButton {
+                        id: button
+
                         required property string modelData
 
-                        visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
+                        property color highlightColor: Nheko.colors.highlight
+                        property color buttonTextColor: Nheko.colors.buttonText
+                        property bool showImage: modelData.startsWith("mxc://")
 
-                        Layout.preferredHeight: fontMetrics.height
-                        font.family: Settings.emojiFont
+                        //Layout.preferredHeight: fontMetrics.height
+                        Layout.alignment: Qt.AlignBottom
 
-                        text: modelData
+                        focusPolicy: Qt.NoFocus
+                        width: showImage ? 16 : buttonText.implicitWidth
+                        height: showImage ? 16 : buttonText.implicitHeight
+                        implicitWidth: showImage ? 16 : buttonText.implicitWidth
+                        implicitHeight: showImage ? 16 : buttonText.implicitHeight
+
+                        Label {
+                            id: buttonText
+
+                            visible: !button.showImage
+
+                            anchors.centerIn: parent
+                            padding: 0
+                            text: button.modelData
+                            color: button.hovered ? button.highlightColor : button.buttonTextColor
+                            font.family: Settings.emojiFont
+                            verticalAlignment: Text.AlignVCenter
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+
+                        Image {
+                            id: buttonImg
+
+                            // Workaround, can't get icon.source working for now...
+                            anchors.fill: parent
+                            source: button.showImage ? (button.modelData.replace("mxc://", "image://MxcImage/") + "?scale") : ""
+                            sourceSize.height: button.height
+                            sourceSize.width: button.width
+                            fillMode: Image.PreserveAspectFit
+                        }
+
+                        CursorShape {
+                            anchors.fill: parent
+                            cursorShape: Qt.PointingHandCursor
+                        }
+
+                        Ripple {
+                            color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
+                        }
+
                         onClicked: {
                             room.input.reaction(row.model.eventId, modelData);
                             TimelineManager.focusMessageInput();
                         }
                     }
+
                 }
 
                 ImageButton {
