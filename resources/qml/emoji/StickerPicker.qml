@@ -13,14 +13,13 @@ Menu {
     id: stickerPopup
 
     property var callback
-    property var colors
     property string roomid
     property alias model: gridView.model
     required property bool emoji
     property var textArea
-    property real highlightHue: Nheko.colors.highlight.hslHue
-    property real highlightSat: Nheko.colors.highlight.hslSaturation
-    property real highlightLight: Nheko.colors.highlight.hslLightness
+    property real highlightHue: palette.highlight.hslHue
+    property real highlightSat: palette.highlight.hslSaturation
+    property real highlightLight: palette.highlight.hslLightness
     readonly property int stickerDim: emoji ? 48 : 128
     readonly property int stickerDimPad: stickerDim + Nheko.paddingSmall
     readonly property int stickersPerRow: emoji ? 7 : 3
@@ -44,7 +43,7 @@ Menu {
     width: sidebarAvatarSize + Nheko.paddingSmall + stickersPerRow * stickerDimPad + 20
 
     Rectangle {
-        color: Nheko.colors.window
+        color: palette.window
         height: columnView.implicitHeight + Nheko.paddingSmall*2
         width: sidebarAvatarSize + Nheko.paddingSmall + stickersPerRow * stickerDimPad + 20
 
@@ -66,10 +65,8 @@ Menu {
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - Nheko.paddingSmall
                 Layout.row: 0
                 Layout.column: 1
-                palette: Nheko.colors
                 background: null
-                placeholderTextColor: Nheko.colors.buttonText
-                color: Nheko.colors.text
+                placeholderTextColor: palette.buttonText
                 placeholderText: qsTr("Search")
                 selectByMouse: true
                 rightPadding: clearSearch.width
@@ -125,7 +122,7 @@ Menu {
                 section.delegate: Rectangle {
                     width: gridView.width
                     height: childrenRect.height
-                    color: Nheko.colors.alternateBase
+                    color: palette.alternateBase
 
                     required property string section
 
@@ -133,7 +130,6 @@ Menu {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         text: parent.section
-                        color: Nheko.colors.text
                         font.bold: true
                     }
                 }
@@ -196,7 +192,6 @@ Menu {
                                         font.family: Settings.emojiFont
                                         font.pixelSize: 36
                                         text: del.modelData.unicode.replace('\ufe0f', '')
-                                        color: Nheko.colors.text
                                     }
                                 }
 
@@ -213,7 +208,7 @@ Menu {
 
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: hovered ? Nheko.colors.highlight : 'transparent'
+                                color: hovered ? palette.highlight : 'transparent'
                                 radius: 5
                             }
 

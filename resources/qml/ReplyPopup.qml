@@ -15,7 +15,7 @@ Rectangle {
     visible: room && (room.reply || room.edit || room.thread)
     // Height of child, plus margins, plus border
     implicitHeight: (room && room.reply ? replyPreview.height : Math.max(closeEditButton.height, closeThreadButton.height)) + Nheko.paddingSmall
-    color: Nheko.colors.window
+    color: palette.window
     z: 3
 
     Reply {
@@ -31,7 +31,7 @@ Rectangle {
         anchors.rightMargin: replyPopup.width < 450? 2*(22+16) : 3*(22+16)
         anchors.top: parent.top
         anchors.topMargin: Nheko.paddingSmall
-        userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
+        userColor: TimelineManager.userColor(modelData.userId, palette.window)
         blurhash: modelData.blurhash ?? ""
         body: modelData.body ?? ""
         formattedBody: modelData.formattedBody ?? ""
@@ -46,7 +46,7 @@ Rectangle {
         isOnlyEmoji: modelData.isOnlyEmoji ?? false
         userId: modelData.userId ?? ""
         userName: modelData.userName ?? ""
-        encryptionError: modelData.encryptionError ?? ""
+        encryptionError: modelData.encryptionError ?? 0
         width: parent.width
     }
 
@@ -90,7 +90,7 @@ Rectangle {
         anchors.margins: 8
         anchors.top: parent.top
         hoverEnabled: true
-        buttonTextColor: room ? TimelineManager.userColor(room.thread, Nheko.colors.base) : Nheko.colors.buttonText
+        buttonTextColor: room ? TimelineManager.userColor(room.thread, palette.base) : palette.buttonText
         image: ":/icons/icons/ui/dismiss_thread.svg"
         width: 22
         height: 22

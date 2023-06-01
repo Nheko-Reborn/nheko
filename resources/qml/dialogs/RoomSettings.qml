@@ -20,8 +20,7 @@ ApplicationWindow {
     minimumHeight: 450
     width: 450
     height: 680
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     title: qsTr("Room Settings")
@@ -79,7 +78,7 @@ ApplicationWindow {
             Spinner {
                 Layout.alignment: Qt.AlignHCenter
                 visible: roomSettings.isLoading
-                foreground: Nheko.colors.mid
+                foreground: palette.mid
                 running: roomSettings.isLoading
             }
 
@@ -130,7 +129,7 @@ ApplicationWindow {
                 textFormat: isNameEditingAllowed ? TextEdit.PlainText : TextEdit.RichText
                 text: isNameEditingAllowed ? roomSettings.plainRoomName : roomSettings.roomName
                 font.pixelSize: fontMetrics.font.pixelSize * 2
-                color: Nheko.colors.text
+                color: palette.text
 
                 Layout.alignment: Qt.AlignHCenter
                 Layout.maximumWidth: parent.width - (Nheko.paddingSmall * 2) - nameChangeButton.anchors.leftMargin - (nameChangeButton.width * 2)
@@ -178,7 +177,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("%n member(s)", "", roomSettings.memberCount)
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 ImageButton {
@@ -213,7 +212,7 @@ ApplicationWindow {
                 wrapMode: TextEdit.WordWrap
                 background: null
                 selectByMouse: !Settings.mobileMode
-                color: Nheko.colors.text
+                color: palette.text
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: Nheko.openLink(link)
 
@@ -263,7 +262,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("SETTINGS")
                     font.bold: true
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 Item {
@@ -273,7 +272,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Notifications")
                     Layout.fillWidth: true
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 ComboBox {
@@ -289,7 +288,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Anyone can join")
                     Layout.fillWidth: true
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 ToggleButton {
@@ -303,7 +302,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Allow knocking")
                     Layout.fillWidth: true
-                    color: Nheko.colors.text
+                    color: palette.text
                     visible: knockingButton.visible
                 }
 
@@ -322,7 +321,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Allow joining via other rooms")
                     Layout.fillWidth: true
-                    color: Nheko.colors.text
+                    color: palette.text
                     visible: restrictedButton.visible
                 }
 
@@ -341,7 +340,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Rooms to join via")
                     Layout.fillWidth: true
-                    color: Nheko.colors.text
+                    color: palette.text
                     visible: allowedRoomsButton.visible
                 }
 
@@ -360,7 +359,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Allow guests to join")
                     Layout.fillWidth: true
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 ToggleButton {
@@ -383,7 +382,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Encryption")
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 ToggleButton {
@@ -422,7 +421,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Permission")
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 Button {
@@ -434,7 +433,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Aliases")
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 Button {
@@ -446,7 +445,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Sticker & Emote Settings")
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 Button {
@@ -458,7 +457,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Hidden events")
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 HiddenEventsDialog {
@@ -487,7 +486,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("INFO")
                     font.bold: true
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 Item {
@@ -496,7 +495,7 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Internal ID")
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 AbstractButton { // AbstractButton does not allow setting text color
@@ -507,7 +506,7 @@ ApplicationWindow {
                         id: idLabel
                         text: roomSettings.roomId
                         font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
-                        color: Nheko.colors.text
+                        color: palette.text
                         width: parent.width
                         horizontalAlignment: Text.AlignRight
                         wrapMode: Text.WrapAnywhere
@@ -531,14 +530,14 @@ ApplicationWindow {
 
                 Label {
                     text: qsTr("Room Version")
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 Label {
                     text: roomSettings.roomVersion
                     font.pixelSize: fontMetrics.font.pixelSize
                     Layout.alignment: Qt.AlignRight
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
             }

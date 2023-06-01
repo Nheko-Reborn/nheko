@@ -19,8 +19,7 @@ ApplicationWindow {
     title: summary.isSpace ? qsTr("Confirm community join") : qsTr("Confirm room join")
     modality: Qt.WindowModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     width: 350
     height: content.implicitHeight + Nheko.paddingLarge + footer.implicitHeight
 
@@ -48,7 +47,7 @@ ApplicationWindow {
         Spinner {
             Layout.alignment: Qt.AlignHCenter
             visible: !summary.isLoaded
-            foreground: Nheko.colors.mid
+            foreground: palette.mid
             running: !summary.isLoaded
         }
 
@@ -57,7 +56,7 @@ ApplicationWindow {
             textFormat: TextEdit.RichText
             text: summary.roomName
             font.pixelSize: fontMetrics.font.pixelSize * 2
-            color: Nheko.colors.text
+            color: palette.text
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -70,7 +69,7 @@ ApplicationWindow {
             textFormat: TextEdit.RichText
             text: summary.roomid
             font.pixelSize: fontMetrics.font.pixelSize * 0.8
-            color: Nheko.colors.text
+            color: palette.text
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -96,7 +95,7 @@ ApplicationWindow {
             readOnly: true
             textFormat: TextEdit.RichText
             text: summary.roomTopic
-            color: Nheko.colors.text
+            color: palette.text
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -109,7 +108,7 @@ ApplicationWindow {
             id: promptLabel
 
             text: summary.isKnockOnly ? qsTr("This room can't be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:") : qsTr("Do you want to join this room? You can optionally add a reason below:")
-            color: Nheko.colors.text
+            color: palette.text
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter
             wrapMode: Text.Wrap

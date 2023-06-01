@@ -12,8 +12,8 @@ Flow {
     id: reactionFlow
 
     // lower-contrast colors to avoid distracting from text & to enhance hover effect
-    property color gentleHighlight: Qt.hsla(Nheko.colors.highlight.hslHue, Nheko.colors.highlight.hslSaturation, Nheko.colors.highlight.hslLightness, 0.8)
-    property color gentleText: Qt.hsla(Nheko.colors.text.hslHue, Nheko.colors.text.hslSaturation, Nheko.colors.text.hslLightness, 0.6)
+    property color gentleHighlight: Qt.hsla(palette.highlight.hslHue, palette.highlight.hslSaturation, palette.highlight.hslLightness, 0.8)
+    property color gentleText: Qt.hsla(palette.text.hslHue, palette.text.hslSaturation, palette.text.hslLightness, 0.6)
     property string eventId
     property alias reactions: repeater.model
 
@@ -69,7 +69,7 @@ Flow {
                         return textMetrics.elidedText;
                     }
                     font.family: Settings.emojiFont
-                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlightedText: Nheko.colors.text
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText: palette.text
                     maximumLineCount: 1
                     visible: !modelData.key.startsWith("mxc://")
                 }
@@ -87,7 +87,7 @@ Flow {
 
                     height: Math.floor(reactionCounter.implicitHeight * 1.4)
                     width: 1
-                    color: reaction.hovered ? Nheko.colors.text: gentleText
+                    color: reaction.hovered ? palette.text: gentleText
                 }
 
                 Text {
@@ -96,7 +96,7 @@ Flow {
                     anchors.verticalCenter: divider.verticalCenter
                     text: modelData.count
                     font: reaction.font
-                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlightedText: Nheko.colors.windowText
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText: palette.windowText
                 }
 
             }
@@ -105,8 +105,8 @@ Flow {
                 anchors.centerIn: parent
                 implicitWidth: reaction.implicitWidth
                 implicitHeight: reaction.implicitHeight
-                border.color: reaction.hovered ? Nheko.colors.text: gentleText
-                color: reaction.hovered ? Nheko.colors.highlight : (modelData.selfReactedEvent !== '' ? gentleHighlight : Nheko.colors.window)
+                border.color: reaction.hovered ? palette.text: gentleText
+                color: reaction.hovered ? palette.highlight : (modelData.selfReactedEvent !== '' ? gentleHighlight : palette.window)
                 border.width: 1
                 radius: reaction.height / 2
             }

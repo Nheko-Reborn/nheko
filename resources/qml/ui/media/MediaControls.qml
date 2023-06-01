@@ -50,7 +50,7 @@ Rectangle {
     }
 
     color: {
-        var wc = Nheko.colors.alternateBase;
+        var wc = palette.alternateBase;
         return Qt.rgba(wc.r, wc.g, wc.b, 0.5);
     }
     opacity: control.shouldShowControls ? 1 : 0
@@ -95,7 +95,7 @@ Rectangle {
                 id: playbackStateImage
 
                 Layout.alignment: Qt.AlignLeft
-                buttonTextColor: Nheko.colors.text
+                buttonTextColor: palette.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
                 image: {
@@ -115,7 +115,7 @@ Rectangle {
                 id: volumeButton
 
                 Layout.alignment: Qt.AlignLeft
-                buttonTextColor: Nheko.colors.text
+                buttonTextColor: palette.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
                 image: {
@@ -214,7 +214,7 @@ Rectangle {
             Label {
                 Layout.alignment: Qt.AlignRight
                 text: (!control.mediaLoaded ? "-- " : durationToString(control.positionValue)) + " / " + durationToString(control.duration)
-                color: Nheko.colors.text
+                color: palette.text
             }
 
             Item {

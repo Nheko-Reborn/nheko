@@ -13,7 +13,7 @@ Item {
     required property bool isReply
     property bool keepFullText: !isReply
     property alias child: chooser.child
-    implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : 0
+    //implicitWidth: chooser.child?.implicitWidth ?? 0
     required property double proportionalHeight
     required property int type
     required property string typeString
@@ -48,7 +48,7 @@ Item {
         roleValue: type
         //anchors.fill: parent
 
-        width: parent.width? parent.width: 0 // this should get rid of "cannot read property 'width' of null"
+        width: parent?.width ?? 0 // this should get rid of "cannot read property 'width' of null"
 
         DelegateChoice {
             roleValue: MtxEvent.UnknownEvent
@@ -78,7 +78,6 @@ Item {
                 }
 
                 Button {
-                    palette: Nheko.colors
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Go to replacement room")
                     onClicked: room.joinReplacementRoom(eventId)
@@ -149,7 +148,7 @@ Item {
 
             NoticeMessage {
                 formatted: TimelineManager.escapeEmoji(d.userName) + " " + d.formattedBody
-                color: TimelineManager.userColor(d.userId, Nheko.colors.base)
+                color: TimelineManager.userColor(d.userId, palette.base)
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
@@ -617,7 +616,6 @@ Item {
 
                 Button {
                     visible: d.relatedEventCacheBuster, room.showAcceptKnockButton(d.eventId)
-                    palette: Nheko.colors
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Allow them in")
                     onClicked: room.acceptKnock(eventId)

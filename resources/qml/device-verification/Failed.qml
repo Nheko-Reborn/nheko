@@ -35,7 +35,7 @@ ColumnLayout {
                 return qsTr("Unknown verification error.");
             }
         }
-        color: Nheko.colors.text
+        color: palette.text
         verticalAlignment: Text.AlignVCenter
     }
 

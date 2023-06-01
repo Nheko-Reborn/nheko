@@ -20,7 +20,6 @@ import im.nheko.EmojiModel 1.0
 Pane {
     id: timelineRoot
 
-    palette: Nheko.colors
     background: null
     padding: 0
 

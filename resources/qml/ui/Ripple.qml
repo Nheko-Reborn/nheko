@@ -20,7 +20,7 @@ Item {
     PointHandler {
         id: ph
 
-        onGrabChanged: {
+        onGrabChanged: (_, point) => {
             circle.centerX = point.position.x
             circle.centerY = point.position.y
         }

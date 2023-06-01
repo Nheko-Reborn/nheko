@@ -28,7 +28,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter
         Layout.fillWidth: true
         text: qsTr("Welcome to nheko! The desktop client for the Matrix protocol.")
-        color: Nheko.colors.text
+        color: palette.text
         font.pointSize: fontMetrics.font.pointSize*2
         wrapMode: Text.Wrap
         horizontalAlignment: Text.AlignHCenter
@@ -38,7 +38,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter
         Layout.fillWidth: true
         text: qsTr("Enjoy your stay!")
-        color: Nheko.colors.text
+        color: palette.text
         font.pointSize: fontMetrics.font.pointSize*1.5
         wrapMode: Text.Wrap
         horizontalAlignment: Text.AlignHCenter
@@ -86,7 +86,7 @@ ColumnLayout {
             Layout.alignment: Qt.AlignLeft
             Layout.margins: Nheko.paddingLarge
             text: qsTr("Reduce animations")
-            color: Nheko.colors.text
+            color: palette.text
 
             HoverHandler {
                 id: hovered

@@ -27,7 +27,7 @@ Item {
         Rectangle {
             id: button
 
-            color: Nheko.colors.light
+            color: palette.light
             radius: 22
             height: 44
             width: 44
@@ -67,7 +67,7 @@ Item {
                 text: filename
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                color: Nheko.colors.text
+                color: palette.text
             }
 
             Text {
@@ -77,7 +77,7 @@ Item {
                 text: filesize
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                color: Nheko.colors.text
+                color: palette.text
             }
 
         }
@@ -85,7 +85,7 @@ Item {
     }
 
     Rectangle {
-        color: Nheko.colors.alternateBase
+        color: palette.alternateBase
         z: -1
         radius: 10
         anchors.fill: parent

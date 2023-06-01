@@ -30,14 +30,14 @@ ColumnLayout {
                     return "";
             }
         }
-        color: Nheko.colors.text
+        color: palette.text
         verticalAlignment: Text.AlignVCenter
     }
 
     Item { Layout.fillHeight: true; }
     Spinner {
         Layout.alignment: Qt.AlignHCenter
-        foreground: Nheko.colors.mid
+        foreground: palette.mid
     }
     Item { Layout.fillHeight: true; }
 

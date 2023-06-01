@@ -22,7 +22,7 @@ AbstractButton {
     property int tempWidth: originalWidth < 1? 400: originalWidth
 
     implicitWidth: Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1))
-    width: Math.min(parent.width,implicitWidth)
+    width: Math.min(parent?.width ?? 2000,implicitWidth)
     height: width*proportionalHeight
     hoverEnabled: true
 
@@ -106,14 +106,14 @@ AbstractButton {
     ]
 
     property int metadataWidth
-    property bool fitsMetadata: (parent.width - width) > metadataWidth+4
+    property bool fitsMetadata: parent != null ? (parent.width - width) > metadataWidth+4 : false
 
     Image {
         id: img
 
         visible: !mxcimage.loaded
         anchors.fill: parent
-        source: url.replace("mxc://", "image://MxcImage/") + "?scale"
+        source: url != "" ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         smooth: true
@@ -137,7 +137,7 @@ AbstractButton {
         id: blurhash_
 
         anchors.fill: parent
-        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + Nheko.colors.buttonText)
+        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + palette.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width * Screen.devicePixelRatio
@@ -158,7 +158,7 @@ AbstractButton {
             width: parent.width
             implicitHeight: imgcaption.implicitHeight
             anchors.bottom: overlay.bottom
-            color: Nheko.colors.window
+            color: palette.window
             opacity: 0.75
         }
 
@@ -171,7 +171,7 @@ AbstractButton {
             verticalAlignment: Text.AlignVCenter
             // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
             text: filename ? filename : body
-            color: Nheko.colors.text
+            color: palette.text
         }
 
     }

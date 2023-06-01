@@ -32,12 +32,11 @@ Item {
     StickerPicker {
         id: emojiPopup
 
-        colors: Nheko.colors
         emoji: true
     }
 
     // focus message input on key press, but not on Ctrl-C and such.
-    Keys.onPressed: {
+    Keys.onPressed: (event) => {
         if (event.text && event.key !== Qt.Key_Enter && event.key !== Qt.Key_Return && !topBar.searchHasFocus) {
             TimelineManager.focusMessageInput();
             room.input.setText(room.input.text + event.text);
@@ -54,13 +53,12 @@ Item {
         anchors.centerIn: parent
         text: qsTr("No room open")
         font.pointSize: 24
-        color: Nheko.colors.text
     }
 
     Spinner {
         visible: TimelineManager.isInitialSync
         anchors.centerIn: parent
-        foreground: Nheko.colors.mid
+        foreground: palette.mid
         running: TimelineManager.isInitialSync
         // height is somewhat arbitrary here... don't set width because width scales w/ height
         height: parent.height / 16
@@ -102,7 +100,7 @@ Item {
 
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: Nheko.colors.base
+            color: palette.base
 
             ColumnLayout {
                 anchors.fill: parent
@@ -223,7 +221,7 @@ Item {
             Layout.alignment: Qt.AlignHCenter
 
             MatrixText {
-                text: !roomPreview.isFetched ? qsTr("No preview available") : preview.roomName
+                text: !(roomPreview?.isFetched ?? false) ? qsTr("No preview available") : preview.roomName
                 font.pixelSize: 24
             }
 
@@ -264,13 +262,12 @@ Item {
             Layout.rightMargin: Nheko.paddingLarge
 
             TextArea {
-                text: roomPreview.isFetched ? TimelineManager.escapeEmoji(preview.roomTopic) : qsTr("This room is possibly inaccessible. If this room is private, you should remove it from this community.")
+                text: (roomPreview?.isFetched ?? false) ? TimelineManager.escapeEmoji(preview.roomTopic) : qsTr("This room is possibly inaccessible. If this room is private, you should remove it from this community.")
                 wrapMode: TextEdit.WordWrap
                 textFormat: TextEdit.RichText
                 readOnly: true
                 background: null
                 selectByMouse: true
-                color: Nheko.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: Nheko.openLink(link)
 
@@ -328,7 +325,6 @@ Item {
                 readOnly: true
                 background: null
                 selectByMouse: true
-                color: Nheko.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
             }
 

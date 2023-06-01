@@ -8,14 +8,14 @@ import im.nheko 1.0
 
 Label {
     property bool isStateEvent
-    color: Nheko.colors.text
+    color: palette.text
     horizontalAlignment: Text.AlignHCenter
     height: Math.round(fontMetrics.height * 1.4)
     width: contentWidth * 1.2
 
     background: Rectangle {
         radius: parent.height / 2
-        color: Nheko.colors.alternateBase
+        color: palette.alternateBase
     }
 
 }

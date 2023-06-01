@@ -127,8 +127,8 @@ Control {
 
             ListView.delayRemove: true
 
-            color: model.index == popup.currentIndex ? Nheko.colors.highlight : Nheko.colors.base
-            height: chooser.child.implicitHeight + 2 * popup.rowMargin
+            color: model.index == popup.currentIndex ? palette.highlight : palette.base
+            height: (chooser.child?.implicitHeight ?? 0) + 2 * popup.rowMargin
             implicitWidth: fullWidth ? ListView.view.width : chooser.child.implicitWidth + 4
 
             MouseArea {
@@ -146,7 +146,7 @@ Control {
                 }
             }
             Ripple {
-                color: Qt.rgba(Nheko.colors.base.r, Nheko.colors.base.g, Nheko.colors.base.b, 0.5)
+                color: Qt.rgba(palette.base.r, palette.base.g, palette.base.b, 0.5)
             }
 
             DelegateChooser {
@@ -177,12 +177,12 @@ Control {
 
                         Label {
                             text: model.displayName
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                         }
 
                         Label {
                             text: "(" + model.userid + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.buttonText
                         }
 
                     }
@@ -201,7 +201,7 @@ Control {
                         Label {
                             visible: !!model.unicode
                             text: model.unicode
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font: Settings.emojiFont
                         }
 
@@ -220,12 +220,12 @@ Control {
                             Layout.leftMargin: Nheko.paddingSmall
                             Layout.rightMargin: Nheko.paddingSmall
                             text: model.shortcode
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                         }
 
                         Label {
                             text: "(" + model.packname + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.buttonText
                         }
 
                     }
@@ -243,13 +243,13 @@ Control {
 
                         Label {
                             text: model.name
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font.bold: true
                         }
 
                         Label {
                             text: model.description
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.buttonText
                         }
 
                     }
@@ -277,7 +277,7 @@ Control {
                         Label {
                             text: model.roomName
                             font.pixelSize: popup.avatarHeight * 0.5
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font.italic: model.isTombstoned
                             textFormat: Text.RichText
                         }
@@ -306,14 +306,14 @@ Control {
 
                         Label {
                             text: model.roomName
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font.italic: model.isTombstoned
                             textFormat: Text.RichText
                         }
 
                         Label {
                             text: "(" + model.roomAlias + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.buttonText
                             textFormat: Text.RichText
                         }
 
@@ -329,8 +329,8 @@ Control {
 
 
     background: Rectangle {
-        color: Nheko.colors.base
-        border.color: Nheko.colors.mid
+        color: palette.base
+        border.color: palette.mid
     }
 
 }

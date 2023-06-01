@@ -32,7 +32,7 @@ Switch {
 
             PropertyChanges {
                 target: track
-                border.color: Nheko.colors.highlight
+                border.color: palette.highlight
             }
 
             PropertyChanges {
@@ -88,7 +88,7 @@ Switch {
             width: parent.height * 0.9
             height: width
             radius: width / 2
-            color: Nheko.colors.button
+            color: palette.button
             border.color: "#767676"
         }
 

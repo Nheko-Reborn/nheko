@@ -54,7 +54,7 @@ AbstractButton {
         anchors.top: replyContainer.top
         anchors.bottom: replyContainer.bottom
         width: 4
-        color: TimelineManager.userColor(userId, Nheko.colors.base)
+        color: TimelineManager.userColor(userId, palette.base)
     }
 
     onClicked: {
@@ -135,8 +135,8 @@ AbstractButton {
 
         z: -1
         anchors.fill: replyContainer
-        property color userColor: TimelineManager.userColor(userId, Nheko.colors.base)
-        property color bgColor: Nheko.colors.base
+        property color userColor: TimelineManager.userColor(userId, palette.base)
+        property color bgColor: palette.base
         color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.1))
     }
 

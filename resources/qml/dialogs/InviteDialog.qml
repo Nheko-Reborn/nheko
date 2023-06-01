@@ -40,8 +40,7 @@ ApplicationWindow {
     title: qsTr("Invite users to %1").arg(invitees.room.plainRoomName)
     height: 380
     width: 340
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -74,12 +73,12 @@ ApplicationWindow {
                         anchors.centerIn: parent
                         id: inviteeUserid
                         text: model.displayName != "" ? model.displayName : model.userid
-                        color: inviteeButton.hovered ? Nheko.colors.highlightedText: Nheko.colors.text
+                        color: inviteeButton.hovered ? palette.highlightedText: palette.text
                         maximumLineCount: 1
                     }
                     background: Rectangle {
-                        border.color: Nheko.colors.text
-                        color: inviteeButton.hovered ? Nheko.colors.highlight : Nheko.colors.window
+                        border.color: palette.text
+                        color: inviteeButton.hovered ? palette.highlight : palette.window
                         border.width: 1
                         radius: inviteeButton.height / 2
                     }
@@ -90,7 +89,7 @@ ApplicationWindow {
         Label {
             text: qsTr("Search user")
             Layout.fillWidth: true
-            color: Nheko.colors.text
+            color: palette.text
         }
         RowLayout {
             spacing: Nheko.paddingMedium
@@ -100,7 +99,7 @@ ApplicationWindow {
 
                 property bool isValidMxid: text.match("@.+?:.{3,}")
 
-                backgroundColor: Nheko.colors.window
+                backgroundColor: palette.window
                 placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
                 Layout.fillWidth: true
                 onAccepted: {
@@ -158,7 +157,7 @@ ApplicationWindow {
                 avatarUrl: profile? profile.avatarUrl : ""
                 userid: inviteeEntry.text
                 onClicked: addInvite(inviteeEntry.text, displayName, avatarUrl)
-                bgColor: del3.hovered ? Nheko.colors.dark : inviteDialogRoot.color
+                bgColor: del3.hovered ? palette.dark : inviteDialogRoot.color
             }
             ListView {
                 visible: !inviteeEntry.isValidMxid
@@ -175,7 +174,7 @@ ApplicationWindow {
                     userid: model.userid
                     avatarUrl: model.avatarUrl
                     onClicked: addInvite(userid, displayName, avatarUrl)
-                    bgColor: del2.hovered ? Nheko.colors.dark : inviteDialogRoot.color
+                    bgColor: del2.hovered ? palette.dark : inviteDialogRoot.color
                 }
             }
             Rectangle {
@@ -202,7 +201,7 @@ ApplicationWindow {
                     userid: model.mxid
                     avatarUrl: model.avatarUrl
                     displayName: model.displayName
-                    bgColor: del.hovered ? Nheko.colors.dark : inviteDialogRoot.color
+                    bgColor: del.hovered ? palette.dark : inviteDialogRoot.color
                     ImageButton {
                         anchors.right: parent.right
                         anchors.rightMargin: Nheko.paddingSmall

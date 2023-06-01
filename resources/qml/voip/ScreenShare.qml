@@ -19,7 +19,6 @@ Popup {
     Component.onDestruction: {
         CallManager.closeScreenShare();
     }
-    palette: Nheko.colors
 
     ColumnLayout {
         Label {
@@ -29,7 +28,7 @@ Popup {
             Layout.rightMargin: 8
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Share desktop with %1?").arg(room.roomName)
-            color: Nheko.colors.windowText
+            color: palette.windowText
         }
 
         RowLayout {
@@ -40,7 +39,7 @@ Popup {
             Label {
             Layout.alignment: Qt.AlignLeft
             text: qsTr("Method:")
-            color: Nheko.colors.windowText
+            color: palette.windowText
             }
 
           ComboBox {
@@ -60,7 +59,7 @@ Popup {
             Label {
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Window:")
-                color: Nheko.colors.windowText
+                color: palette.windowText
             }
 
             ComboBox {
@@ -91,7 +90,7 @@ Popup {
             Label {
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Frame rate:")
-                color: Nheko.colors.windowText
+                color: palette.windowText
             }
 
             ComboBox {
@@ -191,8 +190,8 @@ Popup {
     }
 
     background: Rectangle {
-        color: Nheko.colors.window
-        border.color: Nheko.colors.windowText
+        color: palette.window
+        border.color: palette.windowText
     }
 
 }

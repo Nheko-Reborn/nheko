@@ -47,9 +47,9 @@ Item {
                 width: dragArea.width; height: actualDelegate.implicitHeight + 4
 
                 border.width: dragArea.enabled ? 1 : 0
-                border.color: Nheko.colors.highlight
+                border.color: palette.highlight
 
-                color: dragArea.held ? Nheko.colors.highlight : Nheko.colors.base
+                color: dragArea.held ? palette.highlight : palette.base
                 Behavior on color { ColorAnimation { duration: 100 } }
 
                 radius: 2

@@ -16,7 +16,7 @@ Rectangle {
 
     readonly property string text: messageInput.text
 
-    color: Nheko.colors.window
+    color: palette.window
     Layout.fillWidth: true
     Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
@@ -90,7 +90,7 @@ Rectangle {
 
             Rectangle {
                 anchors.fill: parent
-                color: Nheko.colors.window
+                color: palette.window
                 visible: room && room.input.uploading
 
                 Spinner {
@@ -144,8 +144,8 @@ Rectangle {
 
                 selectByMouse: true
                 placeholderText: qsTr("Write a message...")
-                placeholderTextColor: Nheko.colors.buttonText
-                color: Nheko.colors.text
+                placeholderTextColor: palette.buttonText
+                color: palette.text
                 width: textInput.width 
                 verticalAlignment: TextEdit.AlignVCenter
                 wrapMode: TextEdit.Wrap
@@ -192,8 +192,8 @@ Rectangle {
                 onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 onSelectionEndChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
                 // Ensure that we get escape key press events first.
-                Keys.onShortcutOverride: event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter || event.key === Qt.Key_Space))
-                Keys.onPressed: {
+                Keys.onShortcutOverride: (event) => event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter || event.key === Qt.Key_Space))
+                Keys.onPressed: (event) => {
                     if (event.matches(StandardKey.Paste)) {
                         event.accepted = room.input.tryPasteAttachment(false);
                     } else if (event.key == Qt.Key_Space) {
@@ -438,7 +438,6 @@ Rectangle {
             StickerPicker {
                 id: stickerPopup
 
-                colors: Nheko.colors
                 emoji: false
             }
 
@@ -463,7 +462,6 @@ Rectangle {
             StickerPicker {
                 id: emojiPopup
 
-                colors: Nheko.colors
                 emoji: true
             }
         }
@@ -489,7 +487,6 @@ Rectangle {
         anchors.centerIn: parent
         visible: room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
         text: qsTr("You don't have permission to send messages in this room")
-        color: Nheko.colors.text
     }
 
 }

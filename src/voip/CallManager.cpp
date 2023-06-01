@@ -173,11 +173,11 @@ CallManager::CallManager(QObject *parent)
       });
 
     connect(&player_,
-            &QMediaPlayer::error,
+            &QMediaPlayer::errorOccurred,
             this,
-            [this]() {
+            [this](QMediaPlayer::Error error, QString errorString) {
                 stopRingtone();
-                switch (player_.error()) {
+                switch (error) {
                 case QMediaPlayer::FormatError:
                 case QMediaPlayer::ResourceError:
                     nhlog::ui()->error("WebRTC: valid ringtone file not found");
@@ -186,7 +186,7 @@ CallManager::CallManager(QObject *parent)
                     nhlog::ui()->error("WebRTC: access to ringtone file denied");
                     break;
                 default:
-                    nhlog::ui()->error("WebRTC: unable to play ringtone");
+                    nhlog::ui()->error("WebRTC: unable to play ringtone, {}", errorString.toStdString());
                     break;
                 }
             });

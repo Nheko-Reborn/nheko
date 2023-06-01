@@ -45,7 +45,7 @@ Popup {
     padding: Nheko.paddingLarge
 
     contentItem: Label {
-        color: Nheko.colors.light
+        color: palette.light
         width: Math.max(Overlay.overlay? Overlay.overlay.width/2 : 0, 400)
         text: snackbar.currentMessage
         font.bold: true
@@ -53,7 +53,7 @@ Popup {
 
     background: Rectangle {
         radius: Nheko.paddingLarge
-        color: Nheko.colors.dark
+        color: palette.dark
         opacity: 0.8
     }
 

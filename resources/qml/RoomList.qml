@@ -97,8 +97,7 @@ Page {
                 width: 420
                 minimumWidth: 150
                 minimumHeight: 150
-                palette: Nheko.colors
-                color: Nheko.colors.window
+                color: palette.window
                 title: room.plainRoomName
                 //flags: Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
@@ -197,8 +196,8 @@ Page {
 
                 Instantiator {
                     model: Communities.tagsWithDefault
-                    onObjectAdded: tagsMenu.insertItem(index, object)
-                    onObjectRemoved: tagsMenu.removeItem(object)
+                    onObjectAdded: (index, object) => tagsMenu.insertItem(index, object)
+                    onObjectRemoved: (index, object) => tagsMenu.removeItem(object)
 
                     delegate: Platform.MenuItem {
                         property string t: modelData
@@ -241,11 +240,11 @@ Page {
         delegate: ItemDelegate {
             id: roomItem
 
-            property color backgroundColor: Nheko.colors.window
-            property color importantText: Nheko.colors.text
-            property color unimportantText: Nheko.colors.buttonText
-            property color bubbleBackground: Nheko.colors.highlight
-            property color bubbleText: Nheko.colors.highlightedText
+            property color backgroundColor: palette.window
+            property color importantText: palette.text
+            property color unimportantText: palette.buttonText
+            property color bubbleBackground: palette.highlight
+            property color bubbleText: palette.highlightedText
             required property string roomName
             required property string roomId
             required property string avatarUrl
@@ -261,7 +260,7 @@ Page {
             required property string directChatOtherUserId
 
             Ripple {
-                color: Qt.rgba(Nheko.colors.dark.r, Nheko.colors.dark.g, Nheko.colors.dark.b, 0.5)
+                color: Qt.rgba(palette.dark.r, palette.dark.g, palette.dark.b, 0.5)
             }
 
             height: avatarSize + 2 * Nheko.paddingMedium
@@ -290,11 +289,11 @@ Page {
 
                     PropertyChanges {
                         target: roomItem
-                        backgroundColor: Nheko.colors.dark
-                        importantText: Nheko.colors.brightText
-                        unimportantText: Nheko.colors.brightText
-                        bubbleBackground: Nheko.colors.highlight
-                        bubbleText: Nheko.colors.highlightedText
+                        backgroundColor: palette.dark
+                        importantText: palette.brightText
+                        unimportantText: palette.brightText
+                        bubbleBackground: palette.highlight
+                        bubbleText: palette.highlightedText
                     }
 
                 },
@@ -304,11 +303,11 @@ Page {
 
                     PropertyChanges {
                         target: roomItem
-                        backgroundColor: Nheko.colors.highlight
-                        importantText: Nheko.colors.highlightedText
-                        unimportantText: Nheko.colors.highlightedText
-                        bubbleBackground: Nheko.colors.highlightedText
-                        bubbleText: Nheko.colors.highlight
+                        backgroundColor: palette.highlight
+                        importantText: palette.highlightedText
+                        unimportantText: palette.highlightedText
+                        bubbleBackground: palette.highlightedText
+                        bubbleText: palette.highlight
                     }
 
                 }
@@ -450,7 +449,7 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 height: parent.height - Nheko.paddingSmall * 2
                 width: 3
-                color: Nheko.colors.highlight
+                color: palette.highlight
                 visible: hasUnreadMessages
             }
 
@@ -491,7 +490,7 @@ Page {
             padding: Nheko.paddingMedium
             Layout.minimumHeight: 40
 
-            background: Rectangle {color: Nheko.colors.window}
+            background: Rectangle {color: palette.window}
 
             InputDialog {
                 id: statusDialog
@@ -572,7 +571,7 @@ Page {
 
                     ElidedLabel {
                         Layout.alignment: Qt.AlignTop
-                        color: Nheko.colors.buttonText
+                        color: palette.buttonText
                         font.pointSize: fontMetrics.font.pointSize * 0.9
                         elideWidth: col.width
                         fullText: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
@@ -627,7 +626,7 @@ Page {
 
                     Layout.margins: Nheko.paddingMedium
                     Layout.rightMargin: Nheko.paddingSmall
-                    color: Nheko.colors.buttonText
+                    color: palette.buttonText
                     Layout.fillWidth: true
                     text: {
                         switch (SelfVerificationStatus.status) {
@@ -711,7 +710,7 @@ Page {
             horizontalPadding: Nheko.paddingMedium
             verticalPadding: 0
 
-            background: Rectangle {color: Nheko.colors.window}
+            background: Rectangle {color: palette.window}
             contentItem: RowLayout {
                 id: buttonRow
 

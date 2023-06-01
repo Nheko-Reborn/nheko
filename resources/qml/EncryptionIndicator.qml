@@ -43,7 +43,7 @@ Image {
             case Crypto.Verified:
                 return sourceUrl + Nheko.theme.green;
             case Crypto.TOFU:
-                return sourceUrl + Nheko.colors.buttonText;
+                return sourceUrl + palette.buttonText;
             default:
                 return sourceUrl + Nheko.theme.error;
             }

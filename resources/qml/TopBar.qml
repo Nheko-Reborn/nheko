@@ -53,7 +53,7 @@ Pane {
 
     padding: 0
     background: Rectangle {
-        color: Nheko.colors.window
+        color: palette.window
     }
 
     TapHandler {
@@ -137,7 +137,7 @@ Pane {
                 Layout.column: 2
                 Layout.row: 0
                 Layout.fillWidth: true
-                color: Nheko.colors.text
+                color: palette.text
                 text: qsTr("In %1").arg(communityAvatar.displayName)
                 maximumLineCount: 1
                 elide: Text.ElideRight
@@ -178,7 +178,7 @@ Pane {
                 Layout.fillWidth: true
                 Layout.column: 2
                 Layout.row: 1
-                color: Nheko.colors.text
+                color: palette.text
                 font.pointSize: fontMetrics.font.pointSize * 1.1
                 font.bold: true
                 text: roomName
@@ -241,8 +241,8 @@ Pane {
                     trust: trustlevel
                     enabled: false
                     unencryptedIcon: ":/icons/icons/ui/people.svg"
-                    unencryptedColor: Nheko.colors.buttonText
-                    unencryptedHoverColor: Nheko.colors.highlight
+                    unencryptedColor: palette.buttonText
+                    unencryptedHoverColor: palette.highlight
                     hovered: parent.hovered
 
                     ToolTip.delay: Nheko.tooltipDelay
@@ -349,7 +349,6 @@ Pane {
                 visible: !!room && room.pinnedMessages.length > 0 && !Settings.hiddenPins.includes(roomId)
                 clip: true
 
-                palette: Nheko.colors
                 ScrollBar.horizontal.visible: false
 
                 ListView {
@@ -372,7 +371,7 @@ Pane {
                             Layout.fillWidth: true
                             Layout.preferredHeight: height
 
-                            userColor: TimelineManager.userColor(e.userId, Nheko.colors.window)
+                            userColor: TimelineManager.userColor(e.userId, palette.window)
                             blurhash: e.blurhash ?? ""
                             body: e.body ?? ""
                             formattedBody: e.formattedBody ?? ""
@@ -387,7 +386,7 @@ Pane {
                             isOnlyEmoji: e.isOnlyEmoji ?? false
                             userId: e.userId ?? ""
                             userName: e.userName ?? ""
-                            encryptionError: e.encryptionError ?? ""
+                            encryptionError: e.encryptionError ?? 0
                             keepFullText: true
                         }
 
@@ -430,7 +429,6 @@ Pane {
                 visible: !!room && room.widgetLinks.length > 0 && !Settings.hiddenWidgets.includes(roomId)
                 clip: true
 
-                palette: Nheko.colors
                 ScrollBar.horizontal.visible: false
 
                 ListView {
@@ -440,7 +438,7 @@ Pane {
                     delegate: MatrixText {
                         required property var modelData
 
-                        color: Nheko.colors.text
+                        color: palette.text
                         text: modelData
                     }
 

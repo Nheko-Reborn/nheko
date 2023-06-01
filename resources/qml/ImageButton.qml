@@ -12,8 +12,8 @@ AbstractButton {
 
     property alias cursor: mouseArea.cursorShape
     property string image: undefined
-    property color highlightColor: Nheko.colors.highlight
-    property color buttonTextColor: Nheko.colors.buttonText
+    property color highlightColor: palette.highlight
+    property color buttonTextColor: palette.buttonText
     property bool changeColorOnHover: true
     property bool ripple: true
 

@@ -37,7 +37,7 @@ Item {
                 Layout.maximumWidth: (Overlay.overlay ? Overlay.overlay.width : 400) - Nheko.paddingMedium * 4
                 Layout.fillWidth: true
                 text: qsTr("This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don't share it with anyone and don't lose it! Do not pass go! Do not collect $200!")
-                color: Nheko.colors.text
+                color: palette.text
                 wrapMode: Text.Wrap
             }
 
@@ -49,7 +49,7 @@ Item {
                 readOnly: true
                 selectByMouse: true
                 text: showRecoverKeyDialog.recoveryKey
-                color: Nheko.colors.text
+                color: palette.text
                 font.bold: true
                 wrapMode: TextEdit.Wrap
             }
@@ -57,7 +57,7 @@ Item {
         }
 
         background: Rectangle {
-            color: Nheko.colors.window
+            color: palette.window
             border.color: Nheko.theme.separator
             border.width: 1
             radius: Nheko.paddingSmall
@@ -101,7 +101,7 @@ Item {
                 Layout.columnSpan: 2
                 font.pointSize: fontMetrics.font.pointSize * 2
                 text: qsTr("Setup Encryption")
-                color: Nheko.colors.text
+                color: palette.text
                 wrapMode: Text.Wrap
             }
 
@@ -111,7 +111,7 @@ Item {
                 Layout.columnSpan: 2
                 Layout.maximumWidth: grid.width - Nheko.paddingMedium * 2
                 text: qsTr("Hello and welcome to Matrix!\nIt seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!")
-                color: Nheko.colors.text
+                color: palette.text
                 wrapMode: Text.Wrap
             }
 
@@ -121,7 +121,7 @@ Item {
                 Layout.columnSpan: 1
                 Layout.maximumWidth: Math.floor(grid.width / 2) - Nheko.paddingMedium * 2
                 text: "Store secrets online.\nYou have a few secrets to make all the encryption magic work. While you can keep them stored only locally, we recommend storing them encrypted on the server. Otherwise it will be painful to recover them. Only disable this if you are paranoid and like losing your data!"
-                color: Nheko.colors.text
+                color: palette.text
                 wrapMode: Text.Wrap
             }
 
@@ -148,7 +148,7 @@ Item {
                 Layout.maximumWidth: Math.floor(grid.width / 2) - Nheko.paddingMedium * 2
                 visible: storeSecretsOnline.checked
                 text: "Set an online backup password.\nWe recommend you DON'T set a password and instead only rely on the recovery key. You will get a recovery key in any case when storing the cross-signing secrets online, but passwords are usually not very random, so they are easier to attack than a completely random recovery key. If you choose to use a password, DON'T make it the same as your login password, otherwise your server can read all your encrypted messages. (You don't want that.)"
-                color: Nheko.colors.text
+                color: palette.text
                 wrapMode: Text.Wrap
             }
 
@@ -187,7 +187,7 @@ Item {
                 Layout.columnSpan: 1
                 Layout.maximumWidth: Math.floor(grid.width / 2) - Nheko.paddingMedium * 2
                 text: "Use online key backup.\nStore the keys for your messages securely encrypted online. In general you do want this, because it protects your messages from becoming unreadable, if you log out by accident. It does however carry a small security risk, if you ever share your recovery key by accident. Currently this also has some other weaknesses, that might allow the server to insert new keys into your backup. The server will however never be able to read your messages."
-                color: Nheko.colors.text
+                color: palette.text
                 wrapMode: Text.Wrap
             }
 
@@ -209,7 +209,7 @@ Item {
         }
 
         background: Rectangle {
-            color: Nheko.colors.window
+            color: palette.window
             border.color: Nheko.theme.separator
             border.width: 1
             radius: Nheko.paddingSmall
@@ -235,7 +235,7 @@ Item {
                 //Layout.columnSpan: 2
                 font.pointSize: fontMetrics.font.pointSize * 2
                 text: qsTr("Activate Encryption")
-                color: Nheko.colors.text
+                color: palette.text
                 wrapMode: Text.Wrap
             }
 
@@ -245,7 +245,7 @@ Item {
                 //Layout.columnSpan: 2
                 Layout.maximumWidth: grid.width - Nheko.paddingMedium * 2
                 text: qsTr("It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.\nIf you choose verify, you need to have the other device available. If you choose \"enter passphrase\", you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.")
-                color: Nheko.colors.text
+                color: palette.text
                 wrapMode: Text.Wrap
             }
 

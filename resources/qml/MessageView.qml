@@ -91,8 +91,8 @@ Item {
             z: 10
 
             background: Rectangle {
-                color: Nheko.colors.window
-                border.color: Nheko.colors.buttonText
+                color: palette.window
+                border.color: palette.buttonText
                 border.width: 1
                 radius: padding
             }
@@ -113,8 +113,8 @@ Item {
 
                         required property string modelData
 
-                        property color highlightColor: Nheko.colors.highlight
-                        property color buttonTextColor: Nheko.colors.buttonText
+                        property color highlightColor: palette.highlight
+                        property color buttonTextColor: palette.buttonText
                         property bool showImage: modelData.startsWith("mxc://")
 
                         //Layout.preferredHeight: fontMetrics.height
@@ -170,7 +170,7 @@ Item {
 
                 ImageButton {
                     visible: !!row.model && row.model.isEditable
-                    buttonTextColor: Nheko.colors.buttonText
+                    buttonTextColor: palette.buttonText
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
@@ -223,7 +223,7 @@ Item {
 
                 ImageButton {
                     visible: !!row.model && filteredTimeline.filterByContent
-                    buttonTextColor: Nheko.colors.buttonText
+                    buttonTextColor: palette.buttonText
                     width: 16
                     hoverEnabled: true
                     image: ":/icons/icons/ui/go-to.svg"
@@ -354,7 +354,7 @@ Item {
                     anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
                     visible: room && previousMessageDay !== day
                     text: room ? room.formatDateSeparator(timestamp) : ""
-                    color: Nheko.colors.text
+                    color: palette.text
                     height: Math.round(fontMetrics.height * 1.4)
                     width: contentWidth * 1.2
                     horizontalAlignment: Text.AlignHCenter
@@ -362,7 +362,7 @@ Item {
 
                     background: Rectangle {
                         radius: parent.height / 2
-                        color: Nheko.colors.window
+                        color: palette.window
                     }
 
                 }
@@ -404,7 +404,7 @@ Item {
                         contentItem: ElidedLabel {
                             id: userName_
                             fullText: userName
-                            color: TimelineManager.userColor(userId, Nheko.colors.base)
+                            color: TimelineManager.userColor(userId, palette.base)
                             textFormat: Text.RichText
                             elideWidth: Math.min(userInfo.remainingWidth-Math.min(statusMsg.implicitWidth,userInfo.remainingWidth/3), userName_.fullTextWidth)
                         }
@@ -427,7 +427,7 @@ Item {
                     Label {
                         id: statusMsg
                         anchors.baseline: userNameButton.baseline
-                        color: Nheko.colors.buttonText
+                        color: palette.buttonText
                         text: userStatus.replace(/\n/g, " ")
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
@@ -580,7 +580,7 @@ Item {
                     visible: true
                     z: 1
                     enabled: false
-                    color: Nheko.colors.highlight
+                    color: palette.highlight
 
                     states: State {
                         name: "revealed"
@@ -646,7 +646,7 @@ Item {
                 anchors.centerIn: parent
                 anchors.margins: Nheko.paddingLarge
                 running: (room && room.paginationInProgress) || chat.filteringInProgress
-                foreground: Nheko.colors.mid
+                foreground: palette.mid
                 z: 3
             }
 
@@ -892,9 +892,9 @@ Item {
         hoverEnabled: true
 
         background: Rectangle {
-            color: toEndButton.down ? Nheko.colors.highlight : Nheko.colors.button
+            color: toEndButton.down ? palette.highlight : palette.button
             opacity: enabled ? 1 : 0.3
-            border.color: toEndButton.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText
+            border.color: toEndButton.hovered ? palette.highlight : palette.buttonText
             border.width: 1
             radius: toEndButton.radius
         }
@@ -915,7 +915,7 @@ Item {
             id: buttonImg
             anchors.fill: parent
             anchors.margins: Nheko.paddingMedium
-            source: "image://colorimage/:/icons/icons/ui/download.svg?" + (toEndButton.down ? Nheko.colors.highlightedText : Nheko.colors.buttonText)
+            source: "image://colorimage/:/icons/icons/ui/download.svg?" + (toEndButton.down ? palette.highlightedText : palette.buttonText)
             fillMode: Image.PreserveAspectFit
         }
 

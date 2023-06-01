@@ -1033,12 +1033,12 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         }
 
         connect(mediaPlayer,
-&QMediaPlayer::error,
+&QMediaPlayer::errorOccurred,
                 this,
-                [mediaPlayer]() {
+                [](QMediaPlayer::Error error, QString errorString) {
                     nhlog::ui()->debug("Media player error {} and errorStr {}",
-                                       mediaPlayer->error(),
-                                       mediaPlayer->errorString().toStdString());
+                                       error,
+                                       errorString.toStdString());
                 });
         connect(mediaPlayer,
                 &QMediaPlayer::mediaStatusChanged,

@@ -19,7 +19,6 @@ Popup {
     x: Math.round(parent.width / 2 - width / 2)
     y: Math.round(parent.height / 4)
     modal: true
-    palette: Nheko.colors
     parent: Overlay.overlay
     width: timelineRoot.width * 0.8
     leftPadding: 10
@@ -39,7 +38,7 @@ Popup {
             text: qsTr("Forward Message")
             font.bold: true
             bottomPadding: 10
-            color: Nheko.colors.text
+            color: palette.text
         }
 
         Reply {
@@ -50,7 +49,7 @@ Popup {
 
             width: parent.width
 
-            userColor: TimelineManager.userColor(modelData.userId, Nheko.colors.window)
+            userColor: TimelineManager.userColor(modelData.userId, palette.window)
             blurhash: modelData.blurhash ?? ""
             body: modelData.body ?? ""
             formattedBody: modelData.formattedBody ?? ""
@@ -72,7 +71,7 @@ Popup {
             id: roomTextInput
 
             width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
-            color: Nheko.colors.text
+            color: palette.text
             onTextEdited: {
                 completerPopup.completer.searchString = text;
             }
@@ -123,11 +122,11 @@ Popup {
     }
 
     background: Rectangle {
-        color: Nheko.colors.window
+        color: palette.window
     }
 
     Overlay.modal: Rectangle {
-        color: Qt.rgba(Nheko.colors.window.r, Nheko.colors.window.g, Nheko.colors.window.b, 0.7)
+        color: Qt.rgba(palette.window.r, palette.window.g, palette.window.b, 0.7)
     }
 
 }

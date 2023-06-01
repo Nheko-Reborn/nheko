@@ -21,8 +21,7 @@ ApplicationWindow {
     minimumHeight: 450
     width: 450
     height: 680
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     title: qsTr("Apply permission changes")
@@ -43,7 +42,7 @@ ApplicationWindow {
             font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
             Layout.fillWidth: true
             Layout.fillHeight: false
-            color: Nheko.colors.text
+            color: palette.text
             Layout.bottomMargin: Nheko.paddingMedium
         }
 
@@ -55,7 +54,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Apply permissions recursively")
                     Layout.fillWidth: true
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 ToggleButton {
@@ -67,7 +66,7 @@ ApplicationWindow {
                 Label {
                     text: qsTr("Overwrite exisiting modifications in rooms")
                     Layout.fillWidth: true
-                    color: Nheko.colors.text
+                    color: palette.text
                 }
 
                 ToggleButton {
@@ -103,7 +102,7 @@ ApplicationWindow {
                     Text {
                         Layout.fillWidth: true
                         text: model.displayName
-                        color: Nheko.colors.text
+                        color: palette.text
                         textFormat: Text.PlainText
                         elide: Text.ElideRight
                     }
@@ -117,7 +116,7 @@ ApplicationWindow {
                             return qsTr("Permissions synchronized with community")
                         }
                         elide: Text.ElideRight
-                        color: Nheko.colors.buttonText
+                        color: palette.buttonText
                         textFormat: Text.PlainText
                     }
                 }

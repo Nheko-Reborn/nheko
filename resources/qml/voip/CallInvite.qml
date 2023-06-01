@@ -14,7 +14,6 @@ Popup {
     closePolicy: Popup.NoAutoClose
     width: parent.width
     height: parent.height
-    palette: Nheko.colors
 
     Component {
         id: deviceError
@@ -45,7 +44,7 @@ Popup {
             Layout.fillWidth: true
             text: CallManager.callPartyDisplayName
             font.pointSize: fontMetrics.font.pointSize * 2
-            color: Nheko.colors.windowText
+            color: palette.windowText
             horizontalAlignment: Text.AlignHCenter
         }
 
@@ -68,14 +67,14 @@ Popup {
                 Layout.alignment: Qt.AlignCenter
                 Layout.preferredWidth: callInv.height / 10
                 Layout.preferredHeight: callInv.height / 10
-                source: "image://colorimage/" + image + "?" + Nheko.colors.windowText
+                source: "image://colorimage/" + image + "?" + palette.windowText
             }
 
             Label {
                 Layout.alignment: Qt.AlignCenter
                 text: CallManager.callType == CallType.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
                 font.pointSize: fontMetrics.font.pointSize * 2
-                color: Nheko.colors.windowText
+                color: palette.windowText
             }
 
         }
@@ -94,7 +93,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + palette.windowText
                 }
 
                 ComboBox {
@@ -113,7 +112,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/video.svg?" + Nheko.colors.windowText
+                    source: "image://colorimage/:/icons/icons/ui/video.svg?" + palette.windowText
                 }
 
                 ComboBox {
@@ -201,8 +200,8 @@ Popup {
     }
 
     background: Rectangle {
-        color: Nheko.colors.window
-        border.color: Nheko.colors.windowText
+        color: palette.window
+        border.color: palette.windowText
     }
 
 }

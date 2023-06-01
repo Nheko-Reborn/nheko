@@ -55,14 +55,14 @@ ApplicationWindow {
             Label {
                 Layout.fillWidth: true
                 text: profile? profile.displayName : ""
-                color: TimelineManager.userColor(userID.text, Nheko.colors.window)
+                color: TimelineManager.userColor(userID.text, palette.window)
                 font.pointSize: fontMetrics.font.pointSize
             }
 
             Label {
                 Layout.fillWidth: true
                 text: userID.text
-                color: Nheko.colors.buttonText
+                color: palette.buttonText
                 font.pointSize: fontMetrics.font.pointSize * 0.9
             }
         }
@@ -89,7 +89,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft
                 text: qsTr("Encryption")
-                color: Nheko.colors.text
+                color: palette.text
             }
             ToggleButton {
                 Layout.alignment: Qt.AlignRight

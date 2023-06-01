@@ -47,7 +47,7 @@ Item {
     Rectangle {
         id: videoContainer
 
-        color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
+        color: type == MtxEvent.VideoMessage ? palette.window : "transparent"
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
@@ -57,7 +57,7 @@ Item {
 
         Image {
             anchors.fill: parent
-            source: thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : "image://colorimage/:/icons/icons/ui/video-file.svg?" + Nheko.colors.windowText
+            source: thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : "image://colorimage/:/icons/icons/ui/video-file.svg?" + palette.windowText
             asynchronous: true
             fillMode: Image.PreserveAspectFit
 
@@ -99,10 +99,10 @@ Item {
         text: body + " [" + filesize + "]"
         textFormat: Text.RichText
         elide: Text.ElideRight
-        color: Nheko.colors.text
+        color: palette.text
 
         background: Rectangle {
-            color: Nheko.colors.base
+            color: palette.base
         }
 
     }

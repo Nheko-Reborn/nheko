@@ -17,7 +17,7 @@ Rectangle {
     width: parent.width ? Math.min(parent.width, 700) : 0
     anchors.horizontalCenter: parent.horizontalCenter
     height: contents.implicitHeight + Nheko.paddingMedium * 2
-    color: Nheko.colors.alternateBase
+    color: palette.alternateBase
     border.color: Nheko.theme.green
     border.width: 2
 
@@ -43,13 +43,13 @@ Rectangle {
                 text: qsTr("%1 enabled end-to-end encryption").arg(r.username)
                 font.bold: true
                 font.pointSize: 14
-                color: Nheko.colors.text
+                color: palette.text
                 width: parent.width
             }
 
             MatrixText {
                 text: qsTr("Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.")
-                color: Nheko.colors.text
+                color: palette.text
                 width: parent.width
             }
 

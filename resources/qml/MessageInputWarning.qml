@@ -16,7 +16,7 @@ Rectangle {
     implicitHeight: visible ? warningDisplay.implicitHeight + 4 * Nheko.paddingSmall : 0
     height: implicitHeight
     Layout.fillWidth: true
-    color: Nheko.colors.window // required to hide the timeline behind this warning
+    color: palette.window // required to hide the timeline behind this warning
 
     Rectangle {
         id: warningRect
@@ -37,7 +37,6 @@ Rectangle {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.margins: Nheko.paddingSmall
-            color: Nheko.colors.text
             text: warningRoot.text
             textFormat: Text.PlainText
         }

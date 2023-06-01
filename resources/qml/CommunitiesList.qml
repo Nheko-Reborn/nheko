@@ -78,11 +78,11 @@ Page {
         delegate: ItemDelegate {
             id: communityItem
 
-            property color backgroundColor: Nheko.colors.window
-            property color importantText: Nheko.colors.text
-            property color unimportantText: Nheko.colors.buttonText
-            property color bubbleBackground: Nheko.colors.highlight
-            property color bubbleText: Nheko.colors.highlightedText
+            property color backgroundColor: palette.window
+            property color importantText: palette.text
+            property color unimportantText: palette.buttonText
+            property color bubbleBackground: palette.highlight
+            property color bubbleText: palette.highlightedText
             required property var model
 
             height: avatarSize + 2 * Nheko.paddingMedium
@@ -100,11 +100,11 @@ Page {
 
                     PropertyChanges {
                         target: communityItem
-                        backgroundColor: Nheko.colors.dark
-                        importantText: Nheko.colors.brightText
-                        unimportantText: Nheko.colors.brightText
-                        bubbleBackground: Nheko.colors.highlight
-                        bubbleText: Nheko.colors.highlightedText
+                        backgroundColor: palette.dark
+                        importantText: palette.brightText
+                        unimportantText: palette.brightText
+                        bubbleBackground: palette.highlight
+                        bubbleText: palette.highlightedText
                     }
 
                 },
@@ -114,11 +114,11 @@ Page {
 
                     PropertyChanges {
                         target: communityItem
-                        backgroundColor: Nheko.colors.highlight
-                        importantText: Nheko.colors.highlightedText
-                        unimportantText: Nheko.colors.highlightedText
-                        bubbleBackground: Nheko.colors.highlightedText
-                        bubbleText: Nheko.colors.highlight
+                        backgroundColor: palette.highlight
+                        importantText: palette.highlightedText
+                        unimportantText: palette.highlightedText
+                        bubbleBackground: palette.highlightedText
+                        bubbleText: palette.highlight
                     }
 
                 }

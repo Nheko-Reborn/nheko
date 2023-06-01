@@ -10,7 +10,7 @@ import im.nheko 1.0
 
 ColumnLayout {
     id: c
-    property color backgroundColor: Nheko.colors.base
+    property color backgroundColor: palette.base
     property alias color: labelC.color
     property alias textPadding: input.padding
     property alias text: input.text
@@ -61,8 +61,7 @@ ColumnLayout {
             y: contentHeight + input.padding + Nheko.paddingSmall
             enabled: false
 
-            palette: Nheko.colors
-            color: Nheko.colors.text
+            color: palette.text
             font.pixelSize: input.font.pixelSize
             font.weight: Font.DemiBold
             font.letterSpacing: input.font.pixelSize * 0.02
@@ -114,7 +113,6 @@ ColumnLayout {
         id: input
         Layout.fillWidth: true
 
-        palette: Nheko.colors
         color: labelC.color
         opacity: labelC.text ? 0 : 1
         focus: true
@@ -156,7 +154,7 @@ ColumnLayout {
 
         Layout.fillWidth: true
 
-        color: Nheko.colors.highlight
+        color: palette.highlight
         height: 1
 
         Rectangle {
@@ -166,7 +164,7 @@ ColumnLayout {
             anchors.horizontalCenter: parent.horizontalCenter
             height: parent.height*2
             width: 0
-            color: Nheko.colors.text
+            color: palette.text
 
             states: State {
                 name: "focused"
