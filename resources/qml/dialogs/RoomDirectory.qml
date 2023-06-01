@@ -34,11 +34,6 @@ ApplicationWindow {
         anchors.fill: parent
         model: publicRooms
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-        }
-
         delegate: Rectangle {
             id: roomDirDelegate
 

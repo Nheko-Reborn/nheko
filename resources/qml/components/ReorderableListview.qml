@@ -105,10 +105,6 @@ Item {
             clip: true
 
             anchors { fill: parent; margins: 2 }
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-        }
 
             model: visualModel
 

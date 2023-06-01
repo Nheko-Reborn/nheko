@@ -116,7 +116,6 @@
         <file>qml/PrivacyScreen.qml</file>
         <file>qml/Reactions.qml</file>
         <file>qml/ReplyPopup.qml</file>
-        <file>qml/ScrollHelper.qml</file>
         <file>qml/StatusIndicator.qml</file>
         <file>qml/TimelineRow.qml</file>
         <file>qml/TopBar.qml</file>

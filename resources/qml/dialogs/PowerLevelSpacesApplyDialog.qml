@@ -84,11 +84,6 @@ ApplicationWindow {
 
             clip: true
 
-            ScrollHelper {
-                flickable: parent
-                anchors.fill: parent
-            }
-
             model: editingModel.spaces
             spacing: 4
             cacheBuffer: 50

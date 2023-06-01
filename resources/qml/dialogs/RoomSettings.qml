@@ -29,10 +29,7 @@ ApplicationWindow {
         sequence: StandardKey.Cancel
         onActivated: roomSettingsDialog.close()
     }
-    ScrollHelper {
-        flickable: flickable
-        anchors.fill: flickable
-    }
+
     Flickable {
         id: flickable
         boundsBehavior: Flickable.StopAtBounds

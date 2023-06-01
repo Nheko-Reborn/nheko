@@ -137,12 +137,6 @@ Menu {
 
                 spacing: Nheko.paddingSmall
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
-
                 // Individual emoji
                 delegate: Row {
                     required property var row;

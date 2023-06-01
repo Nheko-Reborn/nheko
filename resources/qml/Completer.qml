@@ -97,11 +97,6 @@ Control {
         // that until we find something better.  Put is all together and you have the formula below!
         implicitHeight: Math.min(contentHeight, 6*rowSpacing + 7*(popup.avatarHeight + 2*rowMargin))
         clip: true 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
-        }
 
         Timer {
             id: deadTimer

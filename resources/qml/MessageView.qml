@@ -252,11 +252,6 @@ Item {
 
         }
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-        }
-
         Shortcut {
             sequence: StandardKey.MoveToPreviousPage
             onActivated: {

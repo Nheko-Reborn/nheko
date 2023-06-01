@@ -63,11 +63,6 @@ Page {
             parent: !collapsed && Settings.scrollbarsInRoomlist ? roomlist : null
         }
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-        }
-
         Connections {
             function onCurrentRoomChanged() {
                 if (Rooms.currentRoom)

@@ -39,12 +39,6 @@ Page {
             parent: !collapsed && Settings.scrollbarsInRoomlist ? communitiesList : null
         }
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
-        }
-
         Platform.Menu {
             id: communityContextMenu
 

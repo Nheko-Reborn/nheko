@@ -49,11 +49,6 @@ ApplicationWindow {
 
                 model: imagePack
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
 
                 header: AvatarListTile {
                     title: imagePack.packname

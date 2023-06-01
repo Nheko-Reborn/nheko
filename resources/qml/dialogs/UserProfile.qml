@@ -46,12 +46,6 @@ ApplicationWindow {
         anchors.margins: 10
         footerPositioning: ListView.OverlayFooter
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
-        }
-
         header: ColumnLayout {
             id: contentL
 

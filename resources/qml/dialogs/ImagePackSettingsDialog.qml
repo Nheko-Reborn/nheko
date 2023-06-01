@@ -55,11 +55,7 @@ ApplicationWindow {
                 model: packlist
                 clip: true
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
+                
 
                 footer: ColumnLayout {
                     Button {
@@ -217,11 +213,6 @@ ApplicationWindow {
                         currentIndex: -1 // prevent sorting from stealing focus
                         cacheBuffer: 500
 
-                        ScrollHelper {
-                            flickable: parent
-                            anchors.fill: parent
-                            enabled: !Settings.mobileMode
-                        }
 
                         // Individual emoji
                         delegate: AbstractButton {

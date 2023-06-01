@@ -53,10 +53,6 @@ ApplicationWindow {
 
             clip: true
 
-            ScrollHelper {
-                flickable: parent
-                anchors.fill: parent
-            }
 
             model: roomSettings.allowedRoomsModel
             spacing: 4

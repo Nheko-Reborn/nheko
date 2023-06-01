@@ -408,11 +408,6 @@ Pane {
                     }
 
 
-                    ScrollHelper {
-                        flickable: parent
-                        anchors.fill: parent
-                        enabled: !Settings.mobileMode
-                    }
                 }
             }
 
@@ -443,11 +438,6 @@ Pane {
                     }
 
 
-                    ScrollHelper {
-                        flickable: parent
-                        anchors.fill: parent
-                        enabled: !Settings.mobileMode
-                    }
                 }
             }
 
