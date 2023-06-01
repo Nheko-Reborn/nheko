@@ -2,11 +2,11 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtGraphicalEffects 1.12
-import QtQuick 2.9
-import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.2
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Effects
+import im.nheko
 
 // FIXME(Nico): Don't use hardcoded colors.
 Button {
@@ -18,14 +18,13 @@ Button {
 
     property string iconImage: ""
 
-    DropShadow {
+    MultiEffect {
         anchors.fill: control.background
-        horizontalOffset: 3
-        verticalOffset: 3
-        radius: 8
-        samples: 17
-        cached: true
-        color: "#80000000"
+        shadowHorizontalOffset: 3
+        shadowVerticalOffset: 3
+        shadowBlur: 8
+        shadowEnabled: true
+        shadowColor: "#80000000"
         source: control.background
     }
 

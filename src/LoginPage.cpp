@@ -25,6 +25,8 @@ LoginPage::LoginPage(QObject *parent)
   : QObject(parent)
   , inferredServerAddress_()
 {
+    [[maybe_unused]] static auto ignored = qRegisterMetaType<mtx::responses::Login>();
+
     connect(this, &LoginPage::versionOkCb, this, &LoginPage::versionOk, Qt::QueuedConnection);
     connect(this, &LoginPage::versionErrorCb, this, &LoginPage::versionError, Qt::QueuedConnection);
     connect(

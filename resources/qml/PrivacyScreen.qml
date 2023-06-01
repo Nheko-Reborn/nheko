@@ -2,10 +2,10 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtGraphicalEffects 1.0
-import QtQuick 2.12
-import QtQuick.Window 2.2
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Window
+import im.nheko
+import QtQuick.Effects
 
 Item {
     id: privacyScreen
@@ -100,12 +100,15 @@ Item {
             }
         ]
 
-        FastBlur {
+        MultiEffect {
             id: blur
+
+            blurEnabled: true
 
             anchors.fill: parent
             source: timelineRoot
-            radius: 50
+            blur: 1.0
+            blurMax: 32
         }
 
     }

@@ -4,11 +4,11 @@
 
 import "../"
 import "../ui/media"
-import QtMultimedia 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtMultimedia
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 Item {
     id: content
@@ -36,12 +36,12 @@ Item {
         id: mxcmedia
 
         // TODO: Show error in overlay or so?
-        onError: console.log(error)
         roomm: room
-        // desiredVolume is a float from 0.0 -> 1.0, MediaPlayer volume is an int from 0 to 100
-        // this value automatically gets clamped for us between these two values.
-        volume: mediaControls.desiredVolume * 100
-        muted: mediaControls.muted
+        audioOutput: AudioOutput {
+            muted: mediaControls.muted
+            volume: mediaControls.desiredVolume
+        }
+        videoOutput: videoOutput
     }
 
     Rectangle {
@@ -68,8 +68,6 @@ Item {
                 clip: true
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectFit
-                source: mxcmedia
-                flushMode: VideoOutput.FirstFrame
                 orientation: mxcmedia.orientation
             }
 
