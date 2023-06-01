@@ -16,13 +16,21 @@ Popup {
         mid = mid_in;
     }
 
-    x: Math.round(parent.width / 2 - width / 2)
-    y: Math.round(parent.height / 4)
+    leftPadding: 10
     modal: true
     parent: Overlay.overlay
-    width: timelineRoot.width * 0.8
-    leftPadding: 10
     rightPadding: 10
+    width: timelineRoot.width * 0.8
+    x: Math.round(parent.width / 2 - width / 2)
+    y: Math.round(parent.height / 4)
+
+    Overlay.modal: Rectangle {
+        color: Qt.rgba(palette.window.r, palette.window.g, palette.window.b, 0.7)
+    }
+    background: Rectangle {
+        color: palette.window
+    }
+
     onOpened: {
         roomTextInput.forceActiveFocus();
     }
@@ -35,46 +43,40 @@ Popup {
         Label {
             id: titleLabel
 
-            text: qsTr("Forward Message")
-            font.bold: true
             bottomPadding: 10
             color: palette.text
+            font.bold: true
+            text: qsTr("Forward Message")
         }
-
         Reply {
             id: replyPreview
 
-            property var modelData: room ? room.getDump(mid, "") : {
-            }
+            property var modelData: room ? room.getDump(mid, "") : {}
 
-            width: parent.width
-
-            userColor: TimelineManager.userColor(modelData.userId, palette.window)
             blurhash: modelData.blurhash ?? ""
             body: modelData.body ?? ""
-            formattedBody: modelData.formattedBody ?? ""
+            encryptionError: modelData.encryptionError ?? ""
             eventId: modelData.eventId ?? ""
             filename: modelData.filename ?? ""
             filesize: modelData.filesize ?? ""
+            formattedBody: modelData.formattedBody ?? ""
+            isOnlyEmoji: modelData.isOnlyEmoji ?? false
+            originalWidth: modelData.originalWidth ?? 0
             proportionalHeight: modelData.proportionalHeight ?? 1
             type: modelData.type ?? MtxEvent.UnknownMessage
             typeString: modelData.typeString ?? ""
             url: modelData.url ?? ""
-            originalWidth: modelData.originalWidth ?? 0
-            isOnlyEmoji: modelData.isOnlyEmoji ?? false
+            userColor: TimelineManager.userColor(modelData.userId, palette.window)
             userId: modelData.userId ?? ""
             userName: modelData.userName ?? ""
-            encryptionError: modelData.encryptionError ?? ""
+            width: parent.width
         }
-
         MatrixTextField {
             id: roomTextInput
 
-            width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
             color: palette.text
-            onTextEdited: {
-                completerPopup.completer.searchString = text;
-            }
+            width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
+
             Keys.onPressed: {
                 if (event.key == Qt.Key_Up || event.key == Qt.Key_Backtab) {
                     event.accepted = true;
@@ -90,43 +92,32 @@ Popup {
                     event.accepted = true;
                 }
             }
+            onTextEdited: {
+                completerPopup.completer.searchString = text;
+            }
         }
-
         Completer {
             id: completerPopup
 
-            width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
-            completerName: "room"
-            fullWidth: true
-            centerRowContent: false
             avatarHeight: 24
             avatarWidth: 24
             bottomToTop: false
+            centerRowContent: false
+            completerName: "room"
+            fullWidth: true
+            width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
         }
-
     }
-
     Connections {
         function onCompletionSelected(id) {
             room.forwardMessage(messageContextMenu.eventId, id);
             forwardMessagePopup.close();
         }
-
         function onCountChanged() {
             if (completerPopup.count > 0 && (completerPopup.currentIndex < 0 || completerPopup.currentIndex >= completerPopup.count))
                 completerPopup.currentIndex = 0;
-
         }
 
         target: completerPopup
     }
-
-    background: Rectangle {
-        color: palette.window
-    }
-
-    Overlay.modal: Rectangle {
-        color: Qt.rgba(palette.window.r, palette.window.g, palette.window.b, 0.7)
-    }
-
 }

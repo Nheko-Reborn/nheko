@@ -10,38 +10,35 @@ import im.nheko 1.0 // for cursor shape
 AbstractButton {
     id: button
 
-    property alias cursor: mouseArea.cursorShape
-    property string image: undefined
-    property color highlightColor: palette.highlight
     property color buttonTextColor: palette.buttonText
     property bool changeColorOnHover: true
+    property alias cursor: mouseArea.cursorShape
+    property color highlightColor: palette.highlight
+    property string image: undefined
     property bool ripple: true
 
     focusPolicy: Qt.NoFocus
-    width: 16
     height: 16
+    width: 16
 
     Image {
         id: buttonImg
 
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
+        fillMode: Image.PreserveAspectFit
         source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
         sourceSize.height: button.height
         sourceSize.width: button.width
-        fillMode: Image.PreserveAspectFit
     }
-
     CursorShape {
         id: mouseArea
 
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
     }
-
     Ripple {
-        enabled: button.ripple
         color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
+        enabled: button.ripple
     }
-
 }

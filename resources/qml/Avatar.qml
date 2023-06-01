@@ -11,45 +11,44 @@ import im.nheko 1.0
 AbstractButton {
     id: avatar
 
+    property alias color: bg.color
+    property bool crop: true
+    property string displayName
+    property string roomid
+    property alias textColor: label.color
     property string url
     property string userid
-    property string roomid
-    property string displayName
-    property alias textColor: label.color
-    property bool crop: true
-    property alias color: bg.color
 
-    width: 48
     height: 48
+    width: 48
+
     background: Rectangle {
         id: bg
-        radius: Settings.avatarCircles ? height / 2 : height / 8
+
         color: palette.alternateBase
+        radius: Settings.avatarCircles ? height / 2 : height / 8
     }
 
     Label {
         id: label
 
-        enabled: false
-
         anchors.fill: parent
+        color: palette.text
+        enabled: false
+        font.pixelSize: avatar.height / 2
+        horizontalAlignment: Text.AlignHCenter
         text: TimelineManager.escapeEmoji(displayName ? String.fromCodePoint(displayName.codePointAt(0)) : "")
         textFormat: Text.RichText
-        font.pixelSize: avatar.height / 2
         verticalAlignment: Text.AlignVCenter
-        horizontalAlignment: Text.AlignHCenter
         visible: img.status != Image.Ready && !Settings.useIdenticon
-        color: palette.text
     }
-
     Image {
         id: identicon
 
         anchors.fill: parent
-        visible: Settings.useIdenticon && img.status != Image.Ready
         source: Settings.useIdenticon ? ("image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25)) : ""
+        visible: Settings.useIdenticon && img.status != Image.Ready
     }
-
     Image {
         id: img
 
@@ -58,8 +57,6 @@ AbstractButton {
         fillMode: avatar.crop ? Image.PreserveAspectCrop : Image.PreserveAspectFit
         mipmap: true
         smooth: true
-        sourceSize.width: avatar.width * Screen.devicePixelRatio
-        sourceSize.height: avatar.height * Screen.devicePixelRatio
         source: if (avatar.url.startsWith('image://')) {
             return avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale");
         } else if (avatar.url.startsWith(':/')) {
@@ -67,19 +64,11 @@ AbstractButton {
         } else {
             return "";
         }
-
+        sourceSize.height: avatar.height * Screen.devicePixelRatio
+        sourceSize.width: avatar.width * Screen.devicePixelRatio
     }
-
     Rectangle {
         id: onlineIndicator
-
-        anchors.bottom: avatar.bottom
-        anchors.right: avatar.right
-        visible: !!userid
-        height: avatar.height / 6
-        width: height
-        radius: Settings.avatarCircles ? height / 2 : height / 8
-        color: updatePresence()
 
         function updatePresence() {
             switch (Presence.userPresence(userid)) {
@@ -94,22 +83,28 @@ AbstractButton {
             }
         }
 
-        Connections {
-            target: Presence
+        anchors.bottom: avatar.bottom
+        anchors.right: avatar.right
+        color: updatePresence()
+        height: avatar.height / 6
+        radius: Settings.avatarCircles ? height / 2 : height / 8
+        visible: !!userid
+        width: height
 
+        Connections {
             function onPresenceChanged(id) {
-                if (id == userid) onlineIndicator.color = onlineIndicator.updatePresence();
+                if (id == userid)
+                    onlineIndicator.color = onlineIndicator.updatePresence();
             }
+
+            target: Presence
         }
     }
-
     CursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
     }
-
     Ripple {
         color: Qt.rgba(palette.alternateBase.r, palette.alternateBase.g, palette.alternateBase.b, 0.5)
     }
-
 }
