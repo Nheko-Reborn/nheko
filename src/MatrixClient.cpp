@@ -15,8 +15,6 @@
 #include "nlohmann/json.hpp"
 #include <mtx/responses.hpp>
 
-
-
 namespace http {
 
 mtx::http::Client *

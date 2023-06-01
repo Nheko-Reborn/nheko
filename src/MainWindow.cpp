@@ -5,9 +5,9 @@
 #include <QApplication>
 #include <QMessageBox>
 
+#include <mtx/events/collections.hpp>
 #include <mtx/requests.hpp>
 #include <mtx/responses/login.hpp>
-#include <mtx/events/collections.hpp>
 
 #include "AliasEditModel.h"
 #include "BlurhashProvider.h"
@@ -132,8 +132,6 @@ MainWindow::MainWindow(QWindow *parent)
 void
 MainWindow::registerQmlTypes()
 {
-
-
     qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                      "im.nheko",
                                      1,
@@ -252,7 +250,6 @@ MainWindow::registerQmlTypes()
       });
 
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "Settings", userSettings_.data());
-
 
     qmlRegisterUncreatableType<FilteredCommunitiesModel>(
       "im.nheko",

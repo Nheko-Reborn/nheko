@@ -5,8 +5,8 @@
 #include "NhekoGlobalObject.h"
 
 #include <QApplication>
-#include <QGuiApplication>
 #include <QDesktopServices>
+#include <QGuiApplication>
 #include <QStyle>
 #include <QUrl>
 #include <QWindow>
@@ -184,9 +184,11 @@ Nheko::createRoom(bool space,
 void
 Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString newRole) const
 {
-    const QNativeInterface::QX11Application *x11Interface = qGuiApp->nativeInterface<QNativeInterface::QX11Application>();
+    const QNativeInterface::QX11Application *x11Interface =
+      qGuiApp->nativeInterface<QNativeInterface::QX11Application>();
 
-    if (!x11Interface) return;
+    if (!x11Interface)
+        return;
 
     auto connection = x11Interface->connection();
 
@@ -195,10 +197,15 @@ Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString new
     char WM_WINDOW_ROLE[] = "WM_WINDOW_ROLE";
     auto cookie = xcb_intern_atom(connection, false, std::size(WM_WINDOW_ROLE) - 1, WM_WINDOW_ROLE);
     xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, nullptr);
-    auto atom = reply ->atom;
+    auto atom                      = reply->atom;
     free(reply);
 
-        xcb_change_property(connection, XCB_PROP_MODE_REPLACE, win->winId(),
-                        atom, XCB_ATOM_STRING, 8,
-                        role.size(), role.data());
+    xcb_change_property(connection,
+                        XCB_PROP_MODE_REPLACE,
+                        win->winId(),
+                        atom,
+                        XCB_ATOM_STRING,
+                        8,
+                        role.size(),
+                        role.data());
 }

@@ -70,9 +70,7 @@ public:
     QImage m_image;
 };
 
-class MxcImageProvider
-  :
-  public QQuickAsyncImageProvider
+class MxcImageProvider : public QQuickAsyncImageProvider
 {
     Q_OBJECT
 

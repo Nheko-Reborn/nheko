@@ -4,7 +4,6 @@
 
 #include "Theme.h"
 
-
 QPalette
 Theme::paletteFromTheme(QStringView theme)
 {

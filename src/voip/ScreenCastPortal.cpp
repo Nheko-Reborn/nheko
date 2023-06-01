@@ -438,7 +438,6 @@ struct PipeWireStream
     QVariantMap map;
 };
 
-
 const QDBusArgument &
 operator>>(const QDBusArgument &argument, PipeWireStream &stream)
 {

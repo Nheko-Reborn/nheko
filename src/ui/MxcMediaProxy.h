@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include <QVideoSink>
 #include <QBuffer>
-#include <QUrl>
 #include <QMediaPlayer>
 #include <QObject>
 #include <QPointer>
 #include <QString>
+#include <QUrl>
+#include <QVideoSink>
 
 #include "Logging.h"
 

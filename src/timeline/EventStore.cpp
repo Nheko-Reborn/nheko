@@ -18,7 +18,6 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
-
 QCache<EventStore::IdIndex, olm::DecryptionResult> EventStore::decryptedEvents_{1000};
 QCache<EventStore::IdIndex, mtx::events::collections::TimelineEvents> EventStore::events_by_id_{
   1000};
@@ -27,7 +26,6 @@ QCache<EventStore::Index, mtx::events::collections::TimelineEvents> EventStore::
 EventStore::EventStore(std::string room_id, QObject *)
   : room_id_(std::move(room_id))
 {
-
     auto range = cache::client()->getTimelineRange(room_id_);
 
     if (range) {
@@ -289,7 +287,7 @@ EventStore::EventStore(std::string room_id, QObject *)
 }
 
 void
-EventStore::addPending(const mtx::events::collections::TimelineEvents& event)
+EventStore::addPending(const mtx::events::collections::TimelineEvents &event)
 {
     if (this->thread() != QThread::currentThread())
         nhlog::db()->warn("{} called from a different thread!", __func__);

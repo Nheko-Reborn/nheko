@@ -25,22 +25,15 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
 {
     connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::startDownload);
     connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
-        connect(this,
-&QMediaPlayer::errorOccurred,
-                this,
-                [](QMediaPlayer::Error error, QString errorString) {
-                    nhlog::ui()->debug("Media player error {} and errorStr {}",
-                                       error,
-                                       errorString.toStdString());
-                });
+    connect(
+      this, &QMediaPlayer::errorOccurred, this, [](QMediaPlayer::Error error, QString errorString) {
+          nhlog::ui()->debug(
+            "Media player error {} and errorStr {}", error, errorString.toStdString());
+      });
     connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
         nhlog::ui()->info("Media player status {} and error {}", status, this->error());
     });
-    connect(this,
-            &MxcMediaProxy::metaDataChanged,
-            [this]() {
-                    emit orientationChanged();
-            });
+    connect(this, &MxcMediaProxy::metaDataChanged, [this]() { emit orientationChanged(); });
 
     connect(ChatPage::instance()->timelineManager()->rooms(),
             &RoomlistModel::currentRoomChanged,
@@ -51,7 +44,8 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
 int
 MxcMediaProxy::orientation() const
 {
-    //nhlog::ui()->debug("metadata: {}", availableMetaData().join(QStringLiteral(",")).toStdString());
+    // nhlog::ui()->debug("metadata: {}",
+    // availableMetaData().join(QStringLiteral(",")).toStdString());
     auto orientation = metaData().value(QMediaMetaData::Orientation).toInt();
     nhlog::ui()->debug("Video orientation: {}", orientation);
     return orientation;

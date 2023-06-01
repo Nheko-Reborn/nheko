@@ -31,7 +31,6 @@
 #include "Utils.h"
 #include "encryption/Olm.h"
 
-
 namespace std {
 inline uint // clazy:exclude=qhash-namespace
 qHash(const std::string &key, uint seed = 0)

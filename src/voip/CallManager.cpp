@@ -41,7 +41,6 @@ extern "C"
 }
 #endif
 
-
 using namespace mtx::events;
 using namespace mtx::events::voip;
 
@@ -60,7 +59,6 @@ CallManager::CallManager(QObject *parent)
   , session_(WebRTCSession::instance())
   , turnServerTimer_(this)
 {
-
 #ifdef GSTREAMER_AVAILABLE
     std::string errorMessage;
     if (session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
@@ -186,7 +184,8 @@ CallManager::CallManager(QObject *parent)
                     nhlog::ui()->error("WebRTC: access to ringtone file denied");
                     break;
                 default:
-                    nhlog::ui()->error("WebRTC: unable to play ringtone, {}", errorString.toStdString());
+                    nhlog::ui()->error("WebRTC: unable to play ringtone, {}",
+                                       errorString.toStdString());
                     break;
                 }
             });
@@ -820,10 +819,9 @@ CallManager::retrieveTurnServer()
 void
 CallManager::playRingtone(const QUrl &ringtone, bool repeat)
 {
-     player_.setLoops(repeat ? QMediaPlayer::Infinite :
-                                   1);
+    player_.setLoops(repeat ? QMediaPlayer::Infinite : 1);
     player_.setSource(ringtone);
-    //player_.audioOutput()->setVolume(100);
+    // player_.audioOutput()->setVolume(100);
     player_.play();
 }
 

@@ -52,9 +52,7 @@ public:
     QImage m_pixmap;
 };
 
-class JdenticonProvider
-  :
-  public QQuickAsyncImageProvider
+class JdenticonProvider : public QQuickAsyncImageProvider
 {
     Q_OBJECT
 

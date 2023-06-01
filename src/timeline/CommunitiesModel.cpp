@@ -17,7 +17,6 @@
 #include "Utils.h"
 #include "timeline/TimelineModel.h"
 
-
 CommunitiesModel::CommunitiesModel(QObject *parent)
   : QAbstractListModel(parent)
   , hiddenTagIds_{UserSettings::instance()->hiddenTags()}

@@ -11,10 +11,10 @@
 #include <QObject>
 #include <QVariant>
 
+#include <mtx/common.hpp>
 #include <mtx/events/collections.hpp>
 #include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
-#include <mtx/common.hpp>
 
 #include "Reaction.h"
 #include "encryption/Olm.h"
@@ -107,7 +107,7 @@ signals:
     void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
     void eventFetched(std::string id,
                       std::string relatedTo,
-                      const mtx::events::collections::TimelineEvents& timeline);
+                      const mtx::events::collections::TimelineEvents &timeline);
     void oldMessagesRetrieved(const mtx::responses::Messages &);
     void fetchedMore();
 
@@ -119,7 +119,7 @@ signals:
     void updateFlowEventId(std::string event_id);
 
 public slots:
-    void addPending(const mtx::events::collections::TimelineEvents& event);
+    void addPending(const mtx::events::collections::TimelineEvents &event);
     void receivedSessionKey(const std::string &session_id);
     void clearTimeline();
     void enableKeyRequests(bool suppressKeyRequests_);

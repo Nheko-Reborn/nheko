@@ -330,15 +330,17 @@ main(int argc, char *argv[])
         QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
 
     QTranslator qtTranslator;
-    if(qtTranslator.load(QLocale(),
-                      QStringLiteral("qt"),
-                      QStringLiteral("_"),
-                      QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+    if (qtTranslator.load(QLocale(),
+                          QStringLiteral("qt"),
+                          QStringLiteral("_"),
+                          QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
         app.installTranslator(&qtTranslator);
 
     QTranslator appTranslator;
-    if(appTranslator.load(
-      QLocale(), QStringLiteral("nheko"), QStringLiteral("_"), QStringLiteral(":/translations")))
+    if (appTranslator.load(QLocale(),
+                           QStringLiteral("nheko"),
+                           QStringLiteral("_"),
+                           QStringLiteral(":/translations")))
         app.installTranslator(&appTranslator);
 
     MainWindow w;

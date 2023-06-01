@@ -41,7 +41,6 @@ extern "C"
 // https://github.com/vector-im/riot-web/issues/10173
 #define STUN_SERVER "stun://turn.matrix.org:3478"
 
-
 using webrtc::CallType;
 using webrtc::ScreenShareType;
 using webrtc::State;

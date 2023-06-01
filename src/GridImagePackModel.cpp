@@ -13,7 +13,6 @@
 #include "Cache_p.h"
 #include "emoji/Provider.h"
 
-
 QString
 emoji::categoryToName(emoji::Emoji::Category cat)
 {
@@ -69,7 +68,6 @@ GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers,
   , room_id(roomId)
   , columns(stickers ? 3 : 7)
 {
-
     if (!stickers) {
         for (const auto &category : {
                emoji::Emoji::Category::People,

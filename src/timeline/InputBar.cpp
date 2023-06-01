@@ -989,56 +989,58 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         blurhash_ =
           QString::fromStdString(blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
     } else if (mimeClass_ == u"video" || mimeClass_ == u"audio") {
-        auto mediaPlayer = new QMediaPlayer( this);
+        auto mediaPlayer = new QMediaPlayer(this);
         mediaPlayer->setAudioOutput(nullptr);
 
         if (mimeClass_ == u"video") {
             auto newSurface = new QVideoSink(this);
-            connect(
-              newSurface, &QVideoSink::videoFrameChanged, this, [this, mediaPlayer](const QVideoFrame& frame) {
-              QImage img = frame.toImage();
-                  if (img.size().isEmpty())
-                      return;
+            connect(newSurface,
+                    &QVideoSink::videoFrameChanged,
+                    this,
+                    [this, mediaPlayer](const QVideoFrame &frame) {
+                        QImage img = frame.toImage();
+                        if (img.size().isEmpty())
+                            return;
 
-                  mediaPlayer->stop();
+                        mediaPlayer->stop();
 
-                  auto orientation = mediaPlayer->metaData().value(QMediaMetaData::Orientation).toInt();
-                  if (orientation == 90 || orientation == 270 || orientation == 180) {
-                      img =
-                        img.transformed(QTransform().rotate(orientation), Qt::SmoothTransformation);
-                  }
+                        auto orientation =
+                          mediaPlayer->metaData().value(QMediaMetaData::Orientation).toInt();
+                        if (orientation == 90 || orientation == 270 || orientation == 180) {
+                            img = img.transformed(QTransform().rotate(orientation),
+                                                  Qt::SmoothTransformation);
+                        }
 
-                  nhlog::ui()->debug("Got image {}x{}", img.width(), img.height());
+                        nhlog::ui()->debug("Got image {}x{}", img.width(), img.height());
 
-                  this->setThumbnail(img);
+                        this->setThumbnail(img);
 
-                  if (!dimensions_.isValid())
-                      this->dimensions_ = img.size();
+                        if (!dimensions_.isValid())
+                            this->dimensions_ = img.size();
 
-                  if (img.height() > 200 && img.width() > 360)
-                      img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
-                  std::vector<unsigned char> data_;
-                  for (int y = 0; y < img.height(); y++) {
-                      for (int x = 0; x < img.width(); x++) {
-                          auto p = img.pixel(x, y);
-                          data_.push_back(static_cast<unsigned char>(qRed(p)));
-                          data_.push_back(static_cast<unsigned char>(qGreen(p)));
-                          data_.push_back(static_cast<unsigned char>(qBlue(p)));
-                      }
-                  }
-                  blurhash_ = QString::fromStdString(
-                    blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
-              });
+                        if (img.height() > 200 && img.width() > 360)
+                            img = img.scaled(360, 200, Qt::KeepAspectRatioByExpanding);
+                        std::vector<unsigned char> data_;
+                        for (int y = 0; y < img.height(); y++) {
+                            for (int x = 0; x < img.width(); x++) {
+                                auto p = img.pixel(x, y);
+                                data_.push_back(static_cast<unsigned char>(qRed(p)));
+                                data_.push_back(static_cast<unsigned char>(qGreen(p)));
+                                data_.push_back(static_cast<unsigned char>(qBlue(p)));
+                            }
+                        }
+                        blurhash_ = QString::fromStdString(
+                          blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
+                    });
             mediaPlayer->setVideoOutput(newSurface);
         }
 
         connect(mediaPlayer,
-&QMediaPlayer::errorOccurred,
+                &QMediaPlayer::errorOccurred,
                 this,
                 [](QMediaPlayer::Error error, QString errorString) {
-                    nhlog::ui()->debug("Media player error {} and errorStr {}",
-                                       error,
-                                       errorString.toStdString());
+                    nhlog::ui()->debug(
+                      "Media player error {} and errorStr {}", error, errorString.toStdString());
                 });
         connect(mediaPlayer,
                 &QMediaPlayer::mediaStatusChanged,
@@ -1046,25 +1048,22 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                     nhlog::ui()->debug(
                       "Media player status {} and error {}", status, mediaPlayer->error());
                 });
-        connect(mediaPlayer,
-&QMediaPlayer::metaDataChanged,
-                this,
-                [this, mediaPlayer]() {
-                    nhlog::ui()->debug("Got metadata {}");
+        connect(mediaPlayer, &QMediaPlayer::metaDataChanged, this, [this, mediaPlayer]() {
+            nhlog::ui()->debug("Got metadata {}");
 
-                    if (mediaPlayer->duration() > 0)
-                        this->duration_ = mediaPlayer->duration();
+            if (mediaPlayer->duration() > 0)
+                this->duration_ = mediaPlayer->duration();
 
-                    auto dimensions = mediaPlayer->metaData().value(QMediaMetaData::Resolution).toSize();
-                    if (!dimensions.isEmpty()) {
-                        dimensions_ = dimensions;
-                        auto orientation =
-                          mediaPlayer->metaData().value(QMediaMetaData::Orientation).toInt();
-                        if (orientation == 90 || orientation == 270) {
-                            dimensions_.transpose();
-                        }
-                    }
-                });
+            auto dimensions = mediaPlayer->metaData().value(QMediaMetaData::Resolution).toSize();
+            if (!dimensions.isEmpty()) {
+                dimensions_ = dimensions;
+                auto orientation =
+                  mediaPlayer->metaData().value(QMediaMetaData::Orientation).toInt();
+                if (orientation == 90 || orientation == 270) {
+                    dimensions_.transpose();
+                }
+            }
+        });
         connect(
           mediaPlayer, &QMediaPlayer::durationChanged, this, [this, mediaPlayer](qint64 duration) {
               if (duration > 0) {
@@ -1077,8 +1076,8 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
 
         auto originalFile = qobject_cast<QFile *>(source.get());
 
-        mediaPlayer->setSourceDevice(source.get(),
-          QUrl(originalFile ? originalFile->fileName() : originalFilename_));
+        mediaPlayer->setSourceDevice(
+          source.get(), QUrl(originalFile ? originalFile->fileName() : originalFilename_));
 
         mediaPlayer->play();
     }
