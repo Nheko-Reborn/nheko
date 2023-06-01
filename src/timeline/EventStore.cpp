@@ -264,7 +264,8 @@ EventStore::EventStore(std::string room_id, QObject *)
                   auto idx = idToIndex(pending_event_id);
 
                   events_by_id_.remove({room_id_, pending_event_id});
-                  events_.remove({room_id_, toInternalIdx(*idx)});
+                  if (idx)
+                      events_.remove({room_id_, toInternalIdx(*idx)});
               }
           }
 
