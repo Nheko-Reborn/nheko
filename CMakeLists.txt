@@ -57,7 +57,7 @@ option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL." OFF)
 option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDB "Use the bundled version of lmdb." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++." ${HUNTER_ENABLED})
-option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt5Keychain." ${HUNTER_ENABLED})
+option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt6Keychain." ${HUNTER_ENABLED})
 option(USE_BUNDLED_COEURL "Use a bundled version of the Curl wrapper"
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_LIBEVENT "Use the bundled version of libevent." ${HUNTER_ENABLED})
@@ -239,16 +239,17 @@ endif()
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 5.15 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
-find_package(Qt5QuickCompiler)
-find_package(Qt5DBus)
+find_package(Qt6 6.5 COMPONENTS Core Widgets LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
+#find_package(Qt6QuickCompiler)
+find_package(Qt6DBus)
 
 if (USE_BUNDLED_QTKEYCHAIN)
 	include(FetchContent)
+	set(BUILD_WITH_QT6 ON)
 	FetchContent_Declare(
-		qt5keychain
+		qt6keychain
 		GIT_REPOSITORY https://github.com/frankosterfeld/qtkeychain.git
-		GIT_TAG        v0.13.1
+		GIT_TAG        v0.14.0
 		)
 	if (BUILD_SHARED_LIBS)
 		set(QTKEYCHAIN_STATIC OFF CACHE INTERNAL "")
@@ -256,21 +257,21 @@ if (USE_BUNDLED_QTKEYCHAIN)
 		set(QTKEYCHAIN_STATIC ON CACHE INTERNAL "")
 	endif()
 	set(BUILD_TEST_APPLICATION OFF CACHE INTERNAL "")
-	FetchContent_MakeAvailable(qt5keychain)
+	FetchContent_MakeAvailable(qt6keychain)
 else()
-	find_package(Qt5Keychain REQUIRED)
+	find_package(Qt6Keychain REQUIRED)
 endif()
 
 if (APPLE)
-	find_package(Qt5MacExtras REQUIRED)
+	find_package(Qt6MacExtras REQUIRED)
 endif(APPLE)
 
-if (Qt5Widgets_FOUND)
-	if (Qt5Widgets_VERSION VERSION_LESS 5.15.0)
-		message(STATUS "Qt version ${Qt5Widgets_VERSION}")
-		message(WARNING "Minimum supported Qt5 version is 5.15!")
+if (Qt6Widgets_FOUND)
+	if (Qt6Widgets_VERSION VERSION_LESS 6.5.0)
+		message(STATUS "Qt version ${Qt6Widgets_VERSION}")
+		message(WARNING "Minimum supported Qt6 version is 6.5!")
 	endif()
-endif(Qt5Widgets_FOUND)
+endif(Qt6Widgets_FOUND)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 if(NOT MSVC)
@@ -690,15 +691,15 @@ set_target_properties(nheko
 		AUTOMOC ON)
 
 if(APPLE)
-	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
+	target_link_libraries (nheko PRIVATE Qt6::MacExtras)
 elseif(WIN32)
 	target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
-	target_link_libraries (nheko PRIVATE ${NTDLIB} Qt5::WinMain)
+	target_link_libraries (nheko PRIVATE ${NTDLIB} Qt6::WinMain)
 	if(MSVC)
 		target_compile_options(nheko PUBLIC "/Zc:__cplusplus")
 	endif()
 else()
-	target_link_libraries (nheko PRIVATE Qt5::DBus)
+	target_link_libraries (nheko PRIVATE Qt6::DBus)
 	if (FLATPAK)
 		target_compile_definitions(nheko PRIVATE NHEKO_FLATPAK)
 	endif()
@@ -729,7 +730,7 @@ endif()
 
 # Fixup bundled keychain include dirs
 if (USE_BUNDLED_QTKEYCHAIN)
-	target_include_directories(nheko PRIVATE ${qt5keychain_SOURCE_DIR} ${qt5keychain_BINARY_DIR})
+	target_include_directories(nheko PRIVATE ${qt6keychain_SOURCE_DIR} ${qt6keychain_BINARY_DIR})
 endif()
 
 if (NOT JSON_ImplicitConversions)
@@ -744,14 +745,12 @@ target_link_libraries(nheko PRIVATE
 	MatrixClient::MatrixClient
 	cmark::cmark
 	spdlog::spdlog
-	Qt5::Widgets
-	Qt5::Svg
-	Qt5::Concurrent
-	Qt5::Multimedia
-	Qt5::Qml
-	Qt5::QuickControls2
-	Qt5::QuickWidgets
-	qt5keychain
+	Qt::Widgets
+	Qt::Svg
+	Qt::Multimedia
+	Qt::Qml
+	Qt::QuickControls2
+	qt6keychain
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
 	liblmdb::lmdb
