@@ -16,6 +16,8 @@
 #include <QMimeDatabase>
 #include <QStandardPaths>
 #include <QTextBoundaryFinder>
+#include <QVideoFrame>
+#include <QVideoSink>
 
 #include <QRegularExpression>
 #include <mtx/responses/common.hpp>
@@ -72,55 +74,6 @@ MediaUpload::thumbnailDataUrl() const
     thumbnail_.save(&buffer, "PNG");
     QString base64 = QString::fromUtf8(byteArray.toBase64());
     return QString("data:image/png;base64,") + base64;
-}
-
-bool
-InputVideoSurface::present(const QVideoFrame &frame)
-{
-    QImage::Format format = QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat());
-
-    if (format == QImage::Format_Invalid) {
-        emit newImage({});
-        return false;
-    } else {
-        QVideoFrame frametodraw(frame);
-
-        if (!frametodraw.map(QAbstractVideoBuffer::ReadOnly)) {
-            emit newImage({});
-            return false;
-        }
-
-        // this is a shallow operation. it just refer the frame buffer
-        QImage image(qAsConst(frametodraw).bits(),
-                     frametodraw.width(),
-                     frametodraw.height(),
-                     frametodraw.bytesPerLine(),
-                     format);
-        image.detach();
-
-        frametodraw.unmap();
-
-        emit newImage(std::move(image));
-        return true;
-    }
-}
-
-QList<QVideoFrame::PixelFormat>
-InputVideoSurface::supportedPixelFormats(QAbstractVideoBuffer::HandleType type) const
-{
-    if (type == QAbstractVideoBuffer::NoHandle) {
-        return {
-          QVideoFrame::Format_ARGB32,
-          QVideoFrame::Format_ARGB32_Premultiplied,
-          QVideoFrame::Format_RGB24,
-          QVideoFrame::Format_BGR24,
-          QVideoFrame::Format_RGB32,
-          QVideoFrame::Format_RGB565,
-          QVideoFrame::Format_RGB555,
-        };
-    } else {
-        return {};
-    }
 }
 
 bool
@@ -536,7 +489,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         if (!related.quoted_user.startsWith("@room:")) {
             QString body;
             bool firstLine = true;
-            auto lines     = related.quoted_body.splitRef(u'\n');
+            auto lines     = QStringView(related.quoted_body).split(u'\n');
             for (auto line : qAsConst(lines)) {
                 if (firstLine) {
                     firstLine = false;
@@ -1036,21 +989,20 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         blurhash_ =
           QString::fromStdString(blurhash::encode(data_.data(), img.width(), img.height(), 4, 3));
     } else if (mimeClass_ == u"video" || mimeClass_ == u"audio") {
-        auto mediaPlayer = new QMediaPlayer(
-          this,
-          mimeClass_ == u"video" ? QFlags{QMediaPlayer::VideoSurface} : QMediaPlayer::Flags{});
-        mediaPlayer->setMuted(true);
+        auto mediaPlayer = new QMediaPlayer( this);
+        mediaPlayer->setAudioOutput(nullptr);
 
         if (mimeClass_ == u"video") {
-            auto newSurface = new InputVideoSurface(this);
+            auto newSurface = new QVideoSink(this);
             connect(
-              newSurface, &InputVideoSurface::newImage, this, [this, mediaPlayer](QImage img) {
+              newSurface, &QVideoSink::videoFrameChanged, this, [this, mediaPlayer](const QVideoFrame& frame) {
+              QImage img = frame.toImage();
                   if (img.size().isEmpty())
                       return;
 
                   mediaPlayer->stop();
 
-                  auto orientation = mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
+                  auto orientation = mediaPlayer->metaData().value(QMediaMetaData::Orientation).toInt();
                   if (orientation == 90 || orientation == 270 || orientation == 180) {
                       img =
                         img.transformed(QTransform().rotate(orientation), Qt::SmoothTransformation);
@@ -1081,11 +1033,11 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
         }
 
         connect(mediaPlayer,
-                qOverload<QMediaPlayer::Error>(&QMediaPlayer::error),
+&QMediaPlayer::error,
                 this,
-                [mediaPlayer](QMediaPlayer::Error error) {
+                [mediaPlayer]() {
                     nhlog::ui()->debug("Media player error {} and errorStr {}",
-                                       error,
+                                       mediaPlayer->error(),
                                        mediaPlayer->errorString().toStdString());
                 });
         connect(mediaPlayer,
@@ -1095,19 +1047,19 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                       "Media player status {} and error {}", status, mediaPlayer->error());
                 });
         connect(mediaPlayer,
-                qOverload<const QString &, const QVariant &>(&QMediaPlayer::metaDataChanged),
+&QMediaPlayer::metaDataChanged,
                 this,
-                [this, mediaPlayer](const QString &t, const QVariant &) {
-                    nhlog::ui()->debug("Got metadata {}", t.toStdString());
+                [this, mediaPlayer]() {
+                    nhlog::ui()->debug("Got metadata {}");
 
                     if (mediaPlayer->duration() > 0)
                         this->duration_ = mediaPlayer->duration();
 
-                    auto dimensions = mediaPlayer->metaData(QMediaMetaData::Resolution).toSize();
+                    auto dimensions = mediaPlayer->metaData().value(QMediaMetaData::Resolution).toSize();
                     if (!dimensions.isEmpty()) {
                         dimensions_ = dimensions;
                         auto orientation =
-                          mediaPlayer->metaData(QMediaMetaData::Orientation).toInt();
+                          mediaPlayer->metaData().value(QMediaMetaData::Orientation).toInt();
                         if (orientation == 90 || orientation == 270) {
                             dimensions_.transpose();
                         }
@@ -1125,8 +1077,8 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
 
         auto originalFile = qobject_cast<QFile *>(source.get());
 
-        mediaPlayer->setMedia(
-          QMediaContent(originalFile ? originalFile->fileName() : originalFilename_), source.get());
+        mediaPlayer->setSourceDevice(source.get(),
+          QUrl(originalFile ? originalFile->fileName() : originalFilename_));
 
         mediaPlayer->play();
     }

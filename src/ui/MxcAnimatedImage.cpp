@@ -152,9 +152,9 @@ MxcAnimatedImage::startDownload()
 }
 
 void
-MxcAnimatedImage::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+MxcAnimatedImage::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    QQuickItem::geometryChange(newGeometry, oldGeometry);
 
     if (newGeometry.size() != oldGeometry.size()) {
         if (height() != 0 && width() != 0) {

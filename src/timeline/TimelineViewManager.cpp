@@ -280,7 +280,7 @@ TimelineViewManager::saveMedia(QString mxcUrl)
 {
     const QString downloadsFolder =
       QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
-    const QString openLocation = downloadsFolder + "/" + mxcUrl.splitRef(u'/').constLast();
+    const QString openLocation = downloadsFolder + "/" + mxcUrl.split(u'/').constLast();
 
     const QString filename = QFileDialog::getSaveFileName(nullptr, {}, openLocation);
 

@@ -54,10 +54,6 @@ public:
 
 class JdenticonProvider
   :
-#if QT_VERSION < 0x60000
-  public QObject
-  ,
-#endif
   public QQuickAsyncImageProvider
 {
     Q_OBJECT
@@ -77,7 +73,7 @@ public slots:
         if (queryStart != -1) {
             id_            = id.left(queryStart);
             auto query     = id.mid(queryStart + 1);
-            auto queryBits = query.splitRef('&');
+            auto queryBits = QStringView(query).split('&');
 
             for (const auto &b : queryBits) {
                 if (b.startsWith(QStringView(u"radius="))) {

@@ -13,10 +13,6 @@
 #include "Cache_p.h"
 #include "emoji/Provider.h"
 
-Q_DECLARE_METATYPE(StickerImage)
-Q_DECLARE_METATYPE(TextEmoji)
-Q_DECLARE_METATYPE(SectionDescription)
-Q_DECLARE_METATYPE(QList<SectionDescription>)
 
 QString
 emoji::categoryToName(emoji::Emoji::Category cat)
@@ -73,10 +69,6 @@ GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers,
   , room_id(roomId)
   , columns(stickers ? 3 : 7)
 {
-    [[maybe_unused]] static auto id  = qRegisterMetaType<StickerImage>();
-    [[maybe_unused]] static auto id2 = qRegisterMetaType<TextEmoji>();
-    [[maybe_unused]] static auto id3 = qRegisterMetaType<SectionDescription>();
-    [[maybe_unused]] static auto id4 = qRegisterMetaType<QList<SectionDescription>>();
 
     if (!stickers) {
         for (const auto &category : {
@@ -144,7 +136,7 @@ GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers,
             finder.toNextBoundary();
             auto end = finder.position();
 
-            auto ref = str.midRef(start, end - start).trimmed();
+            auto ref = QStringView(str).mid(start, end - start).trimmed();
             if (!ref.isEmpty())
                 trie_.insert<ElementRank::second>(ref.toUcs4(), id);
         } while (finder.position() < str.size());

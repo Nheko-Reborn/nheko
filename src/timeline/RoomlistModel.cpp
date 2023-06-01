@@ -28,7 +28,6 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
   : QAbstractListModel(parent)
   , manager(parent)
 {
-    [[maybe_unused]] static auto id = qRegisterMetaType<RoomPreview>();
 
     connect(ChatPage::instance(), &ChatPage::decryptSidebarChanged, this, [this]() {
         auto decrypt = ChatPage::instance()->userSettings()->decryptSidebar();
@@ -819,7 +818,7 @@ RoomlistModel::refetchOnlineKeyBackupKeys()
         auto ptr = i.value();
 
         if (!ptr.isNull()) {
-            EventStore::refetchOnlineKeyBackupKeys(ptr.data());
+            ptr->refetchOnlineKeyBackupKeys();
         }
     }
 }

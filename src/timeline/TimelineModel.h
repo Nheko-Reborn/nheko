@@ -374,6 +374,8 @@ public:
             return std::nullopt;
     }
 
+    void refetchOnlineKeyBackupKeys() { events.refetchOnlineKeyBackupKeys(); };
+
 public slots:
     void setCurrentIndex(int index);
     int currentIndex() const { return idToIndex(currentId); }
@@ -537,8 +539,6 @@ private:
 
     std::unique_ptr<RoomSummary, DeleteLaterDeleter> parentSummary = nullptr;
     bool parentChecked                                             = false;
-
-    friend void EventStore::refetchOnlineKeyBackupKeys(TimelineModel *room);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(TimelineModel::SpecialEffects)

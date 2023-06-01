@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <QAbstractVideoSurface>
 #include <QIODevice>
 #include <QImage>
 #include <QObject>
@@ -39,25 +38,6 @@ enum class MarkdownOverride
     ON,
     OFF,
     CMARK,
-};
-
-class InputVideoSurface final : public QAbstractVideoSurface
-{
-    Q_OBJECT
-
-public:
-    InputVideoSurface(QObject *parent)
-      : QAbstractVideoSurface(parent)
-    {
-    }
-
-    bool present(const QVideoFrame &frame) override;
-
-    QList<QVideoFrame::PixelFormat>
-    supportedPixelFormats(QAbstractVideoBuffer::HandleType type) const override;
-
-signals:
-    void newImage(QImage img);
 };
 
 class MediaUpload final : public QObject

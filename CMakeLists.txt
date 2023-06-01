@@ -239,7 +239,7 @@ endif()
 #
 # Discover Qt dependencies.
 #
-find_package(Qt6 6.5 COMPONENTS Core Widgets LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
+find_package(Qt6 6.5 COMPONENTS Core Widgets Gui LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
 #find_package(Qt6QuickCompiler)
 find_package(Qt6DBus)
 
@@ -747,6 +747,7 @@ target_link_libraries(nheko PRIVATE
 	spdlog::spdlog
 	Qt::Widgets
 	Qt::Svg
+	Qt::Gui
 	Qt::Multimedia
 	Qt::Qml
 	Qt::QuickControls2

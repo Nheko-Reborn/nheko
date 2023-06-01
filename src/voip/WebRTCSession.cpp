@@ -41,9 +41,6 @@ extern "C"
 // https://github.com/vector-im/riot-web/issues/10173
 #define STUN_SERVER "stun://turn.matrix.org:3478"
 
-Q_DECLARE_METATYPE(webrtc::CallType)
-Q_DECLARE_METATYPE(webrtc::ScreenShareType)
-Q_DECLARE_METATYPE(webrtc::State)
 
 using webrtc::CallType;
 using webrtc::ScreenShareType;
@@ -52,7 +49,6 @@ using webrtc::State;
 WebRTCSession::WebRTCSession()
   : devices_(CallDevices::instance())
 {
-    qRegisterMetaType<webrtc::CallType>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
                                      "im.nheko",
                                      1,
@@ -60,7 +56,6 @@ WebRTCSession::WebRTCSession()
                                      "CallType",
                                      QStringLiteral("Can't instantiate enum"));
 
-    qRegisterMetaType<webrtc::ScreenShareType>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
                                      "im.nheko",
                                      1,
@@ -68,7 +63,6 @@ WebRTCSession::WebRTCSession()
                                      "ScreenShareType",
                                      QStringLiteral("Can't instantiate enum"));
 
-    qRegisterMetaType<webrtc::State>();
     qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
                                      "im.nheko",
                                      1,

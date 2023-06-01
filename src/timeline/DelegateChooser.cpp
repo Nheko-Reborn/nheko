@@ -77,13 +77,13 @@ DelegateChooser::appendChoice(QQmlListProperty<DelegateChoice> *p, DelegateChoic
     dc->choices_.append(c);
 }
 
-int
+qsizetype
 DelegateChooser::choiceCount(QQmlListProperty<DelegateChoice> *p)
 {
     return static_cast<DelegateChooser *>(p->object)->choices_.count();
 }
 DelegateChoice *
-DelegateChooser::choice(QQmlListProperty<DelegateChoice> *p, int index)
+DelegateChooser::choice(QQmlListProperty<DelegateChoice> *p, qsizetype index)
 {
     return static_cast<DelegateChooser *>(p->object)->choices_.at(index);
 }

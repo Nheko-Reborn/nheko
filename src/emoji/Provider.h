@@ -94,4 +94,3 @@ public:
 QString
 categoryToName(emoji::Emoji::Category cat);
 } // namespace emoji
-Q_DECLARE_METATYPE(emoji::Emoji)

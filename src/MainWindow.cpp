@@ -7,6 +7,7 @@
 
 #include <mtx/requests.hpp>
 #include <mtx/responses/login.hpp>
+#include <mtx/events/collections.hpp>
 
 #include "AliasEditModel.h"
 #include "BlurhashProvider.h"
@@ -62,13 +63,6 @@
 #ifdef NHEKO_DBUS_SYS
 #include "dbus/NhekoDBusApi.h"
 #endif
-
-Q_DECLARE_METATYPE(mtx::events::collections::TimelineEvents)
-Q_DECLARE_METATYPE(std::vector<DeviceInfo>)
-Q_DECLARE_METATYPE(std::vector<mtx::responses::PublicRoomsChunk>)
-Q_DECLARE_METATYPE(mtx::responses::PublicRoom)
-Q_DECLARE_METATYPE(mtx::responses::Profile)
-Q_DECLARE_METATYPE(mtx::responses::User)
 
 MainWindow *MainWindow::instance_ = nullptr;
 
@@ -138,27 +132,8 @@ MainWindow::MainWindow(QWindow *parent)
 void
 MainWindow::registerQmlTypes()
 {
-    qRegisterMetaType<mtx::events::msg::KeyVerificationAccept>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationCancel>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationDone>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationKey>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationMac>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationReady>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationRequest>();
-    qRegisterMetaType<mtx::events::msg::KeyVerificationStart>();
-    qRegisterMetaType<mtx::responses::PublicRoom>();
-    qRegisterMetaType<mtx::responses::User>();
-    qRegisterMetaType<mtx::responses::Profile>();
-    qRegisterMetaType<CombinedImagePackModel *>();
-    qRegisterMetaType<GridImagePackModel *>();
-    qRegisterMetaType<RoomSettingsAllowedRoomsModel *>();
-    qRegisterMetaType<mtx::events::collections::TimelineEvents>();
-    qRegisterMetaType<std::vector<DeviceInfo>>();
 
-    qRegisterMetaType<std::vector<mtx::responses::PublicRoomsChunk>>();
-    qRegisterMetaType<std::vector<mtx::responses::User>>();
 
-    qRegisterMetaType<mtx::responses::User>();
     qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
                                      "im.nheko",
                                      1,
@@ -278,8 +253,6 @@ MainWindow::registerQmlTypes()
 
     qmlRegisterSingletonInstance("im.nheko", 1, 0, "Settings", userSettings_.data());
 
-    qRegisterMetaType<mtx::events::collections::TimelineEvents>();
-    qRegisterMetaType<std::vector<DeviceInfo>>();
 
     qmlRegisterUncreatableType<FilteredCommunitiesModel>(
       "im.nheko",

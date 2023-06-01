@@ -72,16 +72,12 @@ public:
 
 class MxcImageProvider
   :
-#if QT_VERSION < 0x60000
-  public QObject
-  ,
-#endif
   public QQuickAsyncImageProvider
 {
     Q_OBJECT
 
 public:
-    MxcImageProvider(QObject *parent = nullptr);
+    MxcImageProvider();
 
 public slots:
     QQuickImageResponse *

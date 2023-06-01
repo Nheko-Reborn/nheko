@@ -8,7 +8,7 @@
 #include <QAbstractListModel>
 #include <QVector>
 
-class TimelineModel;
+#include "timeline/TimelineModel.h"
 
 class Invitee final : public QObject
 {

@@ -93,11 +93,6 @@ static constexpr auto MEGOLM_SESSIONS_DATA_DB("megolm_sessions_data_db");
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
-Q_DECLARE_METATYPE(RoomMember)
-Q_DECLARE_METATYPE(mtx::responses::Timeline)
-Q_DECLARE_METATYPE(RoomInfo)
-Q_DECLARE_METATYPE(mtx::responses::QueryKeys)
-
 namespace {
 std::unique_ptr<Cache> instance_ = nullptr;
 }
@@ -4429,7 +4424,8 @@ Cache::displayName(const QString &room_id, const QString &user_id)
 static bool
 isDisplaynameSafe(const std::string &s)
 {
-    for (QChar c : QString::fromStdString(s).toStdU32String()) {
+    for (std::uint32_t cc : QString::fromStdString(s).toStdU32String()) {
+        auto c = QChar(cc);
         if (c.isPrint() && !c.isSpace())
             return false;
     }
@@ -5293,13 +5289,6 @@ namespace cache {
 void
 init(const QString &user_id)
 {
-    qRegisterMetaType<RoomMember>();
-    qRegisterMetaType<RoomInfo>();
-    qRegisterMetaType<QMap<QString, RoomInfo>>();
-    qRegisterMetaType<std::map<QString, RoomInfo>>();
-    qRegisterMetaType<std::map<QString, mtx::responses::Timeline>>();
-    qRegisterMetaType<mtx::responses::QueryKeys>();
-
     instance_ = std::make_unique<Cache>(user_id);
 }
 

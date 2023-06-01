@@ -86,7 +86,7 @@ private:
     DelegateIncubator incubator{*this};
 
     static void appendChoice(QQmlListProperty<DelegateChoice> *, DelegateChoice *);
-    static int choiceCount(QQmlListProperty<DelegateChoice> *);
-    static DelegateChoice *choice(QQmlListProperty<DelegateChoice> *, int index);
+    static qsizetype choiceCount(QQmlListProperty<DelegateChoice> *);
+    static DelegateChoice *choice(QQmlListProperty<DelegateChoice> *, qsizetype index);
     static void clearChoices(QQmlListProperty<DelegateChoice> *);
 };

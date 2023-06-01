@@ -31,7 +31,6 @@
 #include "Utils.h"
 #include "encryption/Olm.h"
 
-Q_DECLARE_METATYPE(QModelIndex)
 
 namespace std {
 inline uint // clazy:exclude=qhash-namespace

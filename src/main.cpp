@@ -154,8 +154,6 @@ main(int argc, char *argv[])
     QCoreApplication::setApplicationVersion(nheko::version);
     QCoreApplication::setOrganizationName(QStringLiteral("nheko"));
     QCoreApplication::setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
-    QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     // Disable the qml disk cache by default to prevent crashes on updates. See
     // https://github.com/Nheko-Reborn/nheko/issues/1383
@@ -332,16 +330,16 @@ main(int argc, char *argv[])
         QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedKingdom));
 
     QTranslator qtTranslator;
-    qtTranslator.load(QLocale(),
+    if(qtTranslator.load(QLocale(),
                       QStringLiteral("qt"),
                       QStringLiteral("_"),
-                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
-    app.installTranslator(&qtTranslator);
+                      QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+        app.installTranslator(&qtTranslator);
 
     QTranslator appTranslator;
-    appTranslator.load(
-      QLocale(), QStringLiteral("nheko"), QStringLiteral("_"), QStringLiteral(":/translations"));
-    app.installTranslator(&appTranslator);
+    if(appTranslator.load(
+      QLocale(), QStringLiteral("nheko"), QStringLiteral("_"), QStringLiteral(":/translations")))
+        app.installTranslator(&appTranslator);
 
     MainWindow w;
     // QQuickView w;

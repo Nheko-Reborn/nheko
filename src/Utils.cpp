@@ -290,7 +290,7 @@ utils::firstChar(const QString &input)
             return QString::fromUcs4(&c, 1).toUpper();
     }
 
-    return QString::fromUcs4(&input.toUcs4().at(0), 1).toUpper();
+    return QString::fromUcs4(&input.toStdU32String().at(0), 1).toUpper();
 }
 
 QString

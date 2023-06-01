@@ -92,7 +92,6 @@ operator<<(QDBusArgument &arg, const RoomInfoItem &item);
 const QDBusArgument &
 operator>>(const QDBusArgument &arg, RoomInfoItem &item);
 } // nheko::dbus
-Q_DECLARE_METATYPE(nheko::dbus::RoomInfoItem)
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const QImage &image);
