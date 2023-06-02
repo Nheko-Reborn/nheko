@@ -539,13 +539,12 @@ Page {
                     id: textContent
 
                     Layout.alignment: Qt.AlignLeft
-                    Layout.fillWidth: true
                     Layout.minimumWidth: 100
                     Layout.preferredWidth: parent.width - avatar.width
                     height: avatar.height
                     spacing: Nheko.paddingSmall
                     visible: !collapsed
-                    width: parent.width - avatar.width
+                    width: roomItem.width - avatar.width
 
                     NotificationBubble {
                         id: notificationBubble
@@ -565,28 +564,29 @@ Page {
                         id: titleRow
 
                         Layout.alignment: Qt.AlignTop
-                        Layout.fillWidth: true
+                        Layout.preferredWidth: roomItem.width - avatar.width
                         spacing: Nheko.paddingSmall
 
-                        ElidedLabel {
-                            id: rN
-
-                            Layout.alignment: Qt.AlignBaseline
+                        Item {
                             Layout.fillWidth: true
-                            color: roomItem.importantText
-                            elideWidth: width
-                            fullText: TimelineManager.htmlEscape(roomName)
-                            textFormat: Text.RichText
+                            Layout.alignment: Qt.AlignBottom
+
+                            ElidedLabel {
+                                anchors.bottom: parent.bottom
+                                color: roomItem.importantText
+                                elideWidth: parent.width
+                                fullText: TimelineManager.htmlEscape(roomName)
+                                textFormat: Text.RichText
+                            }
                         }
                         Label {
                             id: timestamp
 
-                            Layout.alignment: Qt.AlignRight | Qt.AlignBaseline
+                            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
                             color: roomItem.unimportantText
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             text: time
                             visible: !isInvite && !isSpace
-                            width: visible ? 0 : undefined
                         }
                     }
                     RowLayout {
