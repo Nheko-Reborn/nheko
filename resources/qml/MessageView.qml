@@ -103,7 +103,7 @@ Item {
 
             ListView.delayRemove: true
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-            height: section.active ? section.height + timelinerow.height : timelinerow.height
+            height: (section.item?.height ?? 0) + timelinerow.height
             width: chat.delegateMaxWidth
 
             Loader {
@@ -506,7 +506,6 @@ Item {
 
             Column {
                 bottomPadding: Settings.bubbles ? (isSender && previousMessageDay == day ? 0 : 2) : 3
-                height: ((previousMessageDay !== day) ? dateBubble.height : 0) + (isStateEvent ? 0 : userName.height + 8)
                 spacing: 8
                 topPadding: userName_.visible ? 4 : 0
                 visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
