@@ -60,6 +60,8 @@ void
 Dock::setUnreadCount(const int count)
 {
     unitySetNotificationCount(count);
+
+    // qGuiApp->setBadgeNumber(count);
 }
 void
 Dock::unitySetNotificationCount(const int count)

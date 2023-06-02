@@ -4424,8 +4424,7 @@ Cache::displayName(const QString &room_id, const QString &user_id)
 static bool
 isDisplaynameSafe(const std::string &s)
 {
-    for (std::uint32_t cc : QString::fromStdString(s).toStdU32String()) {
-        auto c = QChar(cc);
+    for (QChar c : QString::fromStdString(s)) {
         if (c.isPrint() && !c.isSpace())
             return false;
     }
