@@ -91,7 +91,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             ElidedLabel {
-                                text: model.displayName
+                                fullText: model.displayName
                                 color: TimelineManager.userColor(model ? model.mxid : "", palette.window)
                                 font.pointSize: fontMetrics.font.pointSize
                                 elideWidth: del.width - Nheko.paddingMedium - avatar.width
@@ -99,7 +99,7 @@ ApplicationWindow {
                             }
 
                             ElidedLabel {
-                                text: model.timestamp
+                                fullText: model.timestamp
                                 color: palette.buttonText
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
                                 elideWidth: del.width - Nheko.paddingMedium - avatar.width

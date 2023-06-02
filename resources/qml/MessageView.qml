@@ -572,17 +572,23 @@ Item {
                         rightInset: 0
                         rightPadding: 0
 
-                        contentItem: ElidedLabel {
+                        contentItem: Label {
                             id: userName_
 
                             color: TimelineManager.userColor(userId, palette.base)
-                            elideWidth: Math.min(userInfo.remainingWidth - Math.min(statusMsg.implicitWidth, userInfo.remainingWidth / 3), userName_.fullTextWidth)
-                            fullText: userName
+                            text: TimelineManager.escapeEmoji(userNameTextMetrics.elidedText)
                             textFormat: Text.RichText
                         }
 
                         onClicked: room.openUserProfile(userId)
 
+                        TextMetrics {
+                            id: userNameTextMetrics
+
+                            elide: Text.ElideRight
+                            elideWidth: userInfo.remainingWidth - Math.min(statusMsg.implicitWidth, userInfo.remainingWidth / 3)
+                            text: userName
+                        }
                         CursorShape {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
