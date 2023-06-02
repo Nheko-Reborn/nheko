@@ -179,7 +179,7 @@ modules:
       - --auto-features=disabled
       -  -Dgood=enabled
       -  -Dgst-plugins-good:qt6=enabled
-      -  -Dqt6=enabled
+      #-  -Dqt6=enabled <- not available on 1.22
       -  -Dbase=enabled
       -  -Dgst-plugins-base:gl=enabled
       -  -Dgst-plugins-base:gl_platform=glx,egl
