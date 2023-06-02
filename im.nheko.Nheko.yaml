@@ -148,7 +148,7 @@ modules:
     name: QtKeychain
     sources:
       - commit: 69f993c47efed7e557d79a30a367014d9a27d809
-        tag: v0.14.1
+        tag: 0.14.1
         type: git
         url: https://github.com/frankosterfeld/qtkeychain.git
   - config-opts:
