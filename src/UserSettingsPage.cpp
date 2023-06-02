@@ -852,21 +852,8 @@ UserSettings::setOpenVideoExternal(bool state)
 void
 UserSettings::applyTheme()
 {
-    QFile stylefile;
-
-    if (this->theme() == QLatin1String("light")) {
-        stylefile.setFileName(QStringLiteral(":/styles/styles/nheko.qss"));
-    } else if (this->theme() == QLatin1String("dark")) {
-        stylefile.setFileName(QStringLiteral(":/styles/styles/nheko-dark.qss"));
-    } else {
-        stylefile.setFileName(QStringLiteral(":/styles/styles/system.qss"));
-    }
-    QApplication::setPalette(Theme::paletteFromTheme(this->theme()));
-
-    stylefile.open(QFile::ReadOnly);
-    QString stylesheet = QString(stylefile.readAll());
-
-    qobject_cast<QApplication *>(QApplication::instance())->setStyleSheet(stylesheet);
+  QGuiApplication::setPalette(Theme::paletteFromTheme(this->theme()));
+  QApplication::setPalette(Theme::paletteFromTheme(this->theme()));
 }
 
 void
