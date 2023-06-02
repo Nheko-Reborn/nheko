@@ -568,8 +568,8 @@ Page {
                         spacing: Nheko.paddingSmall
 
                         Item {
-                            Layout.fillWidth: true
                             Layout.alignment: Qt.AlignBottom
+                            Layout.fillWidth: true
 
                             ElidedLabel {
                                 anchors.bottom: parent.bottom

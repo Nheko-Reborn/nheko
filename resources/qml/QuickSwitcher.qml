@@ -41,7 +41,7 @@ Popup {
             font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
             width: parent.width
 
-            Keys.onPressed: (event) => {
+            Keys.onPressed: event => {
                 if (event.key == Qt.Key_Up || event.key == Qt.Key_Backtab) {
                     event.accepted = true;
                     completerPopup.up();

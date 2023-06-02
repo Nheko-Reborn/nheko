@@ -146,8 +146,10 @@ Page {
                     url: {
                         if (model.avatarUrl.startsWith("mxc://"))
                             return model.avatarUrl.replace("mxc://", "image://MxcImage/");
-                        else
+                        else if (model.avatarUrl.length > 0)
                             return "image://colorimage/" + model.avatarUrl + "?" + communityItem.unimportantText;
+                        else
+                            return "";
                     }
                     width: avatarSize
 
