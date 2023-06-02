@@ -213,9 +213,9 @@ build-flatpak:
     - mkdir -p build-flatpak
     - cd build-flatpak
     - echo -e "\e[0Ksection_start:`date +%s`:build_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mBuilding flatpak"
-    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../io.github.NhekoReborn.Nheko.yaml
+    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../im.nheko.Nheko.yaml
     - echo -e "\e[0Ksection_end:`date +%s`:build_flatpak\r\e[0K"
-    - flatpak build-bundle repo nheko-${ARCH}.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
+    - flatpak build-bundle repo nheko-${ARCH}.flatpak im.nheko.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
     - echo -e "\e[0Ksection_start:`date +%s`:upload_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mUploading flatpak"
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-${ARCH}.flatpak

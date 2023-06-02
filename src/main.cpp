@@ -254,7 +254,7 @@ main(int argc, char *argv[])
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("nheko"), QIcon{":/logos/nheko.png"}));
 #endif
 #ifdef NHEKO_FLATPAK
-    app.setDesktopFileName(QStringLiteral("io.github.NhekoReborn.Nheko"));
+    app.setDesktopFileName(QStringLiteral("im.nheko.Nheko"));
 #else
     app.setDesktopFileName(QStringLiteral("nheko"));
 #endif

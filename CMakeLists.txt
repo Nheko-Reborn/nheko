@@ -799,7 +799,7 @@ endif()
 
 if(UNIX AND NOT APPLE)
 	if(FLATPAK)
-		set(APPID "io.github.NhekoReborn.Nheko")
+		set(APPID "im.nheko.Nheko")
 		set_target_properties(nheko PROPERTIES OUTPUT_NAME "${APPID}")
 	else()
 		set(APPID "nheko")
