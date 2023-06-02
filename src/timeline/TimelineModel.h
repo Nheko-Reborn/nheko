@@ -277,6 +277,7 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+    void multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSpan) const override;
     QVariant data(const mtx::events::collections::TimelineEvents &event, int role) const;
     Q_INVOKABLE QVariant dataById(const QString &id, int role, const QString &relatedTo);
     Q_INVOKABLE QVariant dataByIndex(int i, int role = Qt::DisplayRole) const

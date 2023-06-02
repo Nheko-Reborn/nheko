@@ -875,7 +875,6 @@ QVariant
 TimelineModel::data(const QModelIndex &index, int role) const
 {
     using namespace mtx::accessors;
-    namespace acc = mtx::accessors;
     if (index.row() < 0 && index.row() >= rowCount())
         return {};
 
@@ -889,6 +888,28 @@ TimelineModel::data(const QModelIndex &index, int role) const
         return "";
 
     return data(*event, role);
+}
+
+void
+TimelineModel::multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSpan) const
+{
+    if (index.row() < 0 && index.row() >= rowCount())
+        return;
+
+    // HACK(Nico): fetchMore likes to break with dynamically sized delegates and reuseItems
+    if (index.row() + 1 == rowCount() && !m_paginationInProgress)
+        const_cast<TimelineModel *>(this)->fetchMore(index);
+
+    auto event = events.get(rowCount() - index.row() - 1);
+
+    if (!event)
+        return;
+
+    for (QModelRoleData &roleData : roleDataSpan) {
+        int role = roleData.role();
+
+        roleData.setData(data(*event, role));
+    }
 }
 
 QVariant

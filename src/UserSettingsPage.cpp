@@ -852,8 +852,8 @@ UserSettings::setOpenVideoExternal(bool state)
 void
 UserSettings::applyTheme()
 {
-  QGuiApplication::setPalette(Theme::paletteFromTheme(this->theme()));
-  QApplication::setPalette(Theme::paletteFromTheme(this->theme()));
+    QGuiApplication::setPalette(Theme::paletteFromTheme(this->theme()));
+    QApplication::setPalette(Theme::paletteFromTheme(this->theme()));
 }
 
 void
