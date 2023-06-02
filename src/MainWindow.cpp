@@ -318,18 +318,6 @@ MainWindow::setWindowTitle(int notificationCount)
     QQuickView::setTitle(name);
 }
 
-bool
-MainWindow::event(QEvent *event)
-{
-    auto type = event->type();
-
-    if (type == QEvent::Close) {
-        closeEvent(static_cast<QCloseEvent *>(event));
-    }
-
-    return QQuickView::event(event);
-}
-
 // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
 void
 MainWindow::mousePressEvent(QMouseEvent *event)
@@ -403,6 +391,7 @@ MainWindow::closeEvent(QCloseEvent *event)
     if (!qApp->isSavingSession() && isVisible() && pageSupportsTray() && userSettings_->tray()) {
         event->ignore();
         hide();
+        return;
     }
 }
 

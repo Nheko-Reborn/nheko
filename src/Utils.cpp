@@ -66,9 +66,9 @@ utils::stripReplyFromBody(const std::string &bodyi)
     if (body.startsWith(QLatin1String("> <"))) {
         auto segments = body.split('\n');
         while (!segments.isEmpty() && segments.begin()->startsWith('>'))
-            segments.erase(segments.begin());
+            segments.erase(segments.cbegin());
         if (!segments.empty() && segments.first().isEmpty())
-            segments.erase(segments.begin());
+            segments.erase(segments.cbegin());
         body = segments.join('\n');
     }
 
@@ -80,8 +80,9 @@ std::string
 utils::stripReplyFromFormattedBody(const std::string &formatted_bodyi)
 {
     QString formatted_body = QString::fromStdString(formatted_bodyi);
-    formatted_body.remove(QRegularExpression(QStringLiteral("<mx-reply>.*</mx-reply>"),
-                                             QRegularExpression::DotMatchesEverythingOption));
+    static QRegularExpression replyRegex(QStringLiteral("<mx-reply>.*</mx-reply>"),
+                                         QRegularExpression::DotMatchesEverythingOption);
+    formatted_body.remove(replyRegex);
     formatted_body.replace(QLatin1String("@room"), QString::fromUtf8("@\u2060room"));
     return formatted_body.toStdString();
 }
@@ -409,9 +410,10 @@ utils::linkifyMessage(const QString &body)
     // Convert to valid XML.
     auto doc = body;
     doc.replace(conf::strings::url_regex, conf::strings::url_html);
-    doc.replace(
-      QRegularExpression(QStringLiteral("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b")),
-      conf::strings::url_html);
+
+    static QRegularExpression matrixURIRegex(
+      QStringLiteral("\\b(?<![\"'])(?>(matrix:[\\S]{5,}))(?![\"'])\\b"));
+    doc.replace(matrixURIRegex, conf::strings::url_html);
 
     return doc;
 }
