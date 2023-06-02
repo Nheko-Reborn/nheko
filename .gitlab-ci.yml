@@ -37,7 +37,8 @@ build-clazy:
     paths:
       - .ccache
 
-build-gcc11:
+# disabled until I find a qt6.5 ppa
+.build-gcc11:
   stage: build
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:22.04
   tags: [docker]
@@ -232,7 +233,8 @@ build-flatpak:
     paths: ['build-flatpak/nheko-${ARCH}.flatpak']
     name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-${ARCH}
 
-appimage-amd64:
+# disabled until I find a qt6.5 ppa for Ubuntu
+.appimage-amd64:
   stage: build
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:22.04
   tags: [docker]
@@ -324,7 +326,7 @@ github-release:
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'
   dependencies:
-    - appimage-amd64
+    #- appimage-amd64 <- disabled because of missing packages
     - build-flatpak
     - codesign-macos
   before_script:
