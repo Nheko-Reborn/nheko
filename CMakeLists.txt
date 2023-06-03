@@ -266,10 +266,6 @@ else()
 	find_package(Qt6Keychain REQUIRED)
 endif()
 
-if (APPLE)
-	find_package(Qt6MacExtras REQUIRED)
-endif(APPLE)
-
 if (Qt6Widgets_FOUND)
 	if (Qt6Widgets_VERSION VERSION_LESS 6.5.0)
 		message(STATUS "Qt version ${Qt6Widgets_VERSION}")
@@ -695,9 +691,7 @@ set_target_properties(nheko
 		CMAKE_SKIP_INSTALL_RPATH TRUE
 		AUTOMOC ON)
 
-if(APPLE)
-	target_link_libraries (nheko PRIVATE Qt6::MacExtras)
-elseif(WIN32)
+if(WIN32)
 	target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
 	if(MSVC)
 		target_compile_options(nheko PUBLIC "/Zc:__cplusplus")
