@@ -1340,7 +1340,7 @@ TimelineModel::formatDateSeparator(QDate date) const
     QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
 
     if (now.date().year() == date.year()) {
-        QRegularExpression rx(QStringLiteral("[^a-zA-Z]*y+[^a-zA-Z]*"));
+        static QRegularExpression rx(QStringLiteral("[^a-zA-Z]*y+[^a-zA-Z]*"));
         fmt = fmt.remove(rx);
     }
 

@@ -776,7 +776,9 @@ InputBar::getCommandAndArgs(const QString &currentText) const
     if (!currentText.startsWith('/'))
         return {{}, currentText};
 
-    int command_end = currentText.indexOf(QRegularExpression(QStringLiteral("\\s")));
+    static QRegularExpression spaceRegex(QStringLiteral("\\s"));
+
+    int command_end = currentText.indexOf(spaceRegex);
     if (command_end == -1)
         command_end = currentText.size();
     auto name = currentText.mid(1, command_end - 1);
