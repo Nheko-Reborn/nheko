@@ -18,7 +18,9 @@
 #include "Utils.h"
 #include "voip/WebRTCSession.h"
 
+#if XCB_AVAILABLE
 #include <xcb/xproto.h>
+#endif
 
 Nheko::Nheko()
 {
@@ -184,6 +186,7 @@ Nheko::createRoom(bool space,
 void
 Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString newRole) const
 {
+#if XCB_AVAILABLE
     const QNativeInterface::QX11Application *x11Interface =
       qGuiApp->nativeInterface<QNativeInterface::QX11Application>();
 
@@ -208,4 +211,5 @@ Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString new
                         8,
                         role.size(),
                         role.data());
+#endif
 }
