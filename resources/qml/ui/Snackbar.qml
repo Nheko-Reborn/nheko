@@ -9,6 +9,9 @@ import im.nheko 1.0
 Popup {
     id: snackbar
 
+    // Workaround palettes not inheriting for popups
+    palette: timelineRoot.palette
+
     property var messages: []
     property string currentMessage: ""
 

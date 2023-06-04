@@ -10,12 +10,12 @@ import "./pages"
 import "./voip"
 import "./ui"
 import Qt.labs.platform 1.1 as Platform
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.3
-import QtQuick.Window 2.15
-import im.nheko 1.0
-import im.nheko.EmojiModel 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Window
+import im.nheko
+import im.nheko.EmojiModel
 
 Pane {
     id: timelineRoot

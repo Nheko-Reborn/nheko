@@ -21,6 +21,9 @@ Popup {
     x: Math.round(parent.width / 2 - contentWidth / 2)
     y: Math.round(parent.height / 4)
 
+    // Workaround palettes not inheriting for popups
+    palette: timelineRoot.palette
+
     Overlay.modal: Rectangle {
         color: "#aa1E1E1E"
     }
