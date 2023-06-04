@@ -4,11 +4,11 @@
 
 import "../"
 import "../../"
-import QtMultimedia 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtMultimedia
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 Rectangle {
     id: control
@@ -130,7 +130,7 @@ Rectangle {
             NhekoSlider {
                 id: volumeSlider
 
-                property real desiredVolume: QtMultimedia.convertVolume(volumeSlider.value, QtMultimedia.LogarithmicVolumeScale, QtMultimedia.LinearVolumeScale)
+                property real desiredVolume: volumeSlider.value
 
                 state: ""
                 Layout.alignment: Qt.AlignLeft

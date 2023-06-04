@@ -25,9 +25,9 @@ Item {
     property double divisor: isReply ? 4 : 2
     property int tempWidth: originalWidth < 1? 400: originalWidth
     implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
-    width: Math.min(parent.width, implicitWidth)
+    width: Math.min(parent?.width ?? implicitWidth, implicitWidth)
     height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
-    implicitHeight: height
+    //implicitHeight: height
 
     property int metadataWidth
     property bool fitsMetadata: (parent.width - fileInfoLabel.width) > metadataWidth+4
@@ -73,29 +73,28 @@ Item {
 
         }
 
-    }
+        MediaControls {
+            id: mediaControls
 
-    MediaControls {
-        id: mediaControls
-
-        anchors.left: content.left
-        anchors.right: content.right
-        anchors.bottom: fileInfoLabel.top
-        playingVideo: type == MtxEvent.VideoMessage
-        positionValue: mxcmedia.position
-        duration: mediaLoaded ? mxcmedia.duration : content.duration
-        mediaLoaded: mxcmedia.loaded
-        mediaState: mxcmedia.state
-        onPositionChanged: mxcmedia.position = position
-        onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
-        onLoadActivated: mxcmedia.eventId = eventId
+            anchors.left: videoContainer.left
+            anchors.right: videoContainer.right
+            anchors.bottom: videoContainer.bottom
+            playingVideo: type == MtxEvent.VideoMessage
+            positionValue: mxcmedia.position
+            duration: mediaLoaded ? mxcmedia.duration : content.duration
+            mediaLoaded: mxcmedia.loaded
+            mediaState: mxcmedia.playbackState
+            onPositionChanged: mxcmedia.position = position
+            onPlayPauseActivated: mxcmedia.playbackState == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+            onLoadActivated: mxcmedia.eventId = eventId
+        }
     }
 
     // information about file name and file size
     Label {
         id: fileInfoLabel
 
-        anchors.bottom: content.bottom
+        anchors.top: videoContainer.bottom
         text: body + " [" + filesize + "]"
         textFormat: Text.RichText
         elide: Text.ElideRight
