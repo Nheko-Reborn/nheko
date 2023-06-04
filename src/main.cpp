@@ -309,6 +309,9 @@ main(int argc, char *argv[])
         std::exit(1);
     }
 
+    auto filter = new NhekoFixupPaletteEventFilter(&app);
+    app.installEventFilter(filter);
+
     if (parser.isSet(configName))
         UserSettings::initialize(parser.value(configName));
     else

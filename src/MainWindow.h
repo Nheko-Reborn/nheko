@@ -37,6 +37,19 @@ class MemberList;
 class ReCaptcha;
 }
 
+class NhekoFixupPaletteEventFilter final : public QObject
+{
+    Q_OBJECT
+
+public:
+    NhekoFixupPaletteEventFilter(QObject *parent)
+      : QObject(parent)
+    {
+    }
+
+    bool eventFilter(QObject *obj, QEvent *event) override;
+};
+
 class MainWindow final : public QQuickView
 {
     Q_OBJECT

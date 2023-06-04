@@ -376,6 +376,20 @@ MainWindow::showChatPage()
     emit switchToChatPage();
 }
 
+bool
+NhekoFixupPaletteEventFilter::eventFilter(QObject *obj, QEvent *event)
+{
+    // Workaround for the QGuiApplication palette not being applied to toplevel windows for some
+    // reason?!?
+    if (event->type() == QEvent::ChildAdded &&
+        obj->metaObject()->className() == QStringLiteral("QQuickRootItem")) {
+        for (const auto window : QGuiApplication::topLevelWindows()) {
+            QGuiApplication::postEvent(window, new QEvent(QEvent::ApplicationPaletteChange));
+        }
+    }
+    return false;
+}
+
 void
 MainWindow::closeEvent(QCloseEvent *event)
 {
