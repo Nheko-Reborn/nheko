@@ -602,7 +602,7 @@ Item {
             roleValue: MtxEvent.Member
 
             ColumnLayout {
-                width: parent.width
+                width: parent?.width ?? 100
 
                 NoticeMessage {
                     body: formatted
