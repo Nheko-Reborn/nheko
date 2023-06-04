@@ -60,8 +60,6 @@ void
 Dock::setUnreadCount(const int count)
 {
     unitySetNotificationCount(count);
-
-    // qGuiApp->setBadgeNumber(count);
 }
 void
 Dock::unitySetNotificationCount(const int count)
@@ -87,7 +85,8 @@ Dock::Dock(QObject *parent)
 {
 }
 void
-Dock::setUnreadCount(const int)
+Dock::setUnreadCount(const int count)
 {
+    qGuiApp->setBadgeNumber(count);
 }
 #endif
