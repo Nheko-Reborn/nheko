@@ -14,7 +14,6 @@
 #import <UserNotifications/UserNotifications.h>
 
 #include <QImage>
-#include <QtMac>
 
 @interface UNNotificationAttachment (UNNotificationAttachmentAdditions)
 + (UNNotificationAttachment*)createFromImageData:(NSData*)imgData
