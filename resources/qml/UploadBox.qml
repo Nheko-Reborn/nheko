@@ -36,6 +36,7 @@ Page {
 
         }
         delegate: Pane {
+            id: pane
             height: uploadPopup.availableHeight - buttons.height - (scr.visible ? scr.height : 0)
             padding: Nheko.paddingSmall
             width: uploadPopup.availableHeight - buttons.height
@@ -63,8 +64,8 @@ Page {
                     mipmap: true
                     smooth: true
                     source: (modelData.thumbnail != "") ? modelData.thumbnail : ("image://colorimage/:/icons/icons/ui/" + typeStr + ".svg?" + palette.buttonText)
-                    sourceSize.height: parent.availableHeight - namefield.height
-                    sourceSize.width: parent.availableWidth
+                    sourceSize.height: pane.availableHeight - namefield.height
+                    sourceSize.width: pane.availableWidth
                 }
                 MatrixTextField {
                     id: namefield
