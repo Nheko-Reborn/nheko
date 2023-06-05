@@ -11,14 +11,13 @@ Item {
     required property string filename
     required property string filesize
 
-    height: row.height + (Settings.bubbles? 16: 24)
-    width: parent.width
-    implicitWidth: row.implicitWidth+metadataWidth
+    height: rowa.height + (Settings.bubbles? 16: 24)
+    implicitWidth: rowa.implicitWidth + metadataWidth
     property int metadataWidth
     property bool fitsMetadata: true
 
     RowLayout {
-        id: row
+        id: rowa
 
         anchors.centerIn: parent
         width: parent.width - (Settings.bubbles? 16 : 24)

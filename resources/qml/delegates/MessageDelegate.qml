@@ -39,6 +39,8 @@ Item {
     property bool fitsMetadata: (chooser.child && chooser.child.fitsMetadata) ? chooser.child.fitsMetadata : false
     property int metadataWidth
 
+    implicitWidth: chooser.child?.implicitWidth
+
     height: chooser.child ? chooser.child.height : Nheko.paddingLarge
 
     DelegateChooser {

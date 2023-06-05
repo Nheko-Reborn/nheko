@@ -164,6 +164,7 @@ Item {
                 userId: wrapper.userId
                 userName: wrapper.userName
                 y: section.visible && section.active ? section.y + section.height : 0
+                width: wrapper.width
 
                 background: Rectangle {
                     id: scrollHighlight

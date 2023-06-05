@@ -50,7 +50,6 @@ AbstractButton {
 
     height: row.height + (reactionRow.height > 0 ? reactionRow.height - 2 : 0) + unreadRow.height
     hoverEnabled: true
-    width: parent.width
 
     states: State {
         name: "dragging"

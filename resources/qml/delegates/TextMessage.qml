@@ -14,7 +14,7 @@ MatrixText {
     required property string formatted
     property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
     property int metadataWidth
-    property bool fitsMetadata: positionAt(width,height-4) == positionAt(width-metadataWidth-10, height-4)
+    property bool fitsMetadata: false //positionAt(width,height-4) == positionAt(width-metadataWidth-10, height-4)
 
     // table border-collapse doesn't seem to work
     text: "
