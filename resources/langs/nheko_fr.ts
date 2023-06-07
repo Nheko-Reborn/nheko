@@ -578,12 +578,12 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation>Exclue un utilisateur du salon courant. La raison est optionnelle.</translation>
+        <translation>Expulse un utilisateur du salon actuel. La raison est optionnelle.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Banni un utilisateur du salon courant. La raison est optionnelle.</translation>
     </message>
     <message>
         <location line="+2"/>
