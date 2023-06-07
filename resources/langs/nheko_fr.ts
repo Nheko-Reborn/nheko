@@ -339,7 +339,7 @@ Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, vous pouvez plutôt fer
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>La migration du cache vers la nouvelle version a échoué. Cela peut être pour diverses raisons. Merci d&apos;ouvrir un rapport de bug à https://github.com/Nheko-Reborn/nheko  et essayez d&apos;utiliser une version précédente entretemps. Une autre option est d&apos;effacer manuellement le cache.</translation>
     </message>
     <message>
         <location line="+12"/>
