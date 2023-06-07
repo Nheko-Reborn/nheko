@@ -583,12 +583,12 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation>Banni un utilisateur du salon courant. La raison est optionnelle.</translation>
+        <translation>Bannit un utilisateur du salon actuel. La raison est optionnelle.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Annule le bannissement d&apos;un utilisateur du salon courant. La raison est optionnelle.</translation>
     </message>
     <message>
         <location line="+2"/>
