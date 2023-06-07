@@ -706,7 +706,7 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation>Cache par défaut les salons avec ce label ou provenant de cette communauté.</translation>
+        <translation>Cache par défaut les salons avec cette étiquette ou provenant de cette communauté.</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -774,7 +774,7 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+660"/>
         <source>Failed to update community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Echec de mise à jour de la communauté : %1</translation>
     </message>
     <message>
         <location line="+18"/>
