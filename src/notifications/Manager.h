@@ -111,10 +111,3 @@ private:
     // Only populated on Linux atm
     QMap<uint, roomEventId> notificationIds;
 };
-
-#if defined(NHEKO_DBUS_SYS)
-QDBusArgument &
-operator<<(QDBusArgument &arg, const QImage &image);
-const QDBusArgument &
-operator>>(const QDBusArgument &arg, QImage &);
-#endif

@@ -190,20 +190,17 @@ operator<<(QDBusArgument &arg, const QImage &image)
         return arg;
     }
 
-    QImage i = image.height() > 100 || image.width() > 100
-                 ? image.scaledToHeight(100, Qt::SmoothTransformation)
-                 : image;
-    i        = std::move(i).convertToFormat(QImage::Format_RGBA8888);
+    QImage i      = image.height() > 100 || image.width() > 100
+                      ? image.scaledToHeight(100, Qt::SmoothTransformation)
+                      : image;
+    bool hasAlpha = i.hasAlphaChannel();
+    i = std::move(i).convertToFormat(hasAlpha ? QImage::Format_RGBA8888 : QImage::Format_RGB888);
 
+    int channels = hasAlpha ? 4 : 3;
+    QByteArray arr(reinterpret_cast<const char *>(i.bits()), static_cast<int>(i.sizeInBytes()));
     arg.beginStructure();
-    arg << i.width();
-    arg << i.height();
-    arg << i.bytesPerLine();
-    arg << i.hasAlphaChannel();
-    int channels = i.hasAlphaChannel() ? 4 : 3;
-    arg << i.depth() / channels;
-    arg << channels;
-    arg << QByteArray(reinterpret_cast<const char *>(i.bits()), static_cast<int>(i.sizeInBytes()));
+    arg << i.width() << i.height() << (int)i.bytesPerLine() << i.hasAlphaChannel()
+        << i.depth() / channels << channels << arr;
     arg.endStructure();
 
     return arg;
