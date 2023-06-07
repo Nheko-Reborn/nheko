@@ -668,17 +668,17 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoie un message de robot aux couleurs de l&apos;arc-en-ciel.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoie un message avec des confettis.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoie des confettis avec un message aux couleurs de l&apos;arc-en-ciel.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -701,12 +701,12 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+65"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne pas afficher le compteur de notifications pour cette communauté ou cette étiquette.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cache par défaut les salons avec ce label ou provenant de cette communauté.</translation>
     </message>
     <message>
         <location line="+86"/>
