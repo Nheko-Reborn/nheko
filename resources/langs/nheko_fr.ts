@@ -588,12 +588,12 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation>Annule le bannissement d&apos;un utilisateur du salon courant. La raison est optionnelle.</translation>
+        <translation>Dé-bannit un utilisateur du salon actuel. La raison est optionnelle.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Retire un évènement ou tous les messages en cache d&apos;un utilisateur.</translation>
     </message>
     <message>
         <location line="+2"/>
