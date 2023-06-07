@@ -573,12 +573,12 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation>Invite un utilisateur au salon courant. La raison est optionnelle.</translation>
+        <translation>Invite un utilisateur dans le salon actuel. La raison est optionnelle.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Exclue un utilisateur du salon courant. La raison est optionnelle.</translation>
     </message>
     <message>
         <location line="+2"/>
