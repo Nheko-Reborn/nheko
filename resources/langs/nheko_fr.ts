@@ -339,7 +339,7 @@ Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, vous pouvez plutôt fer
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation>La migration du cache vers la nouvelle version a échoué. Cela peut être pour diverses raisons. Merci d&apos;ouvrir un rapport de bug à https://github.com/Nheko-Reborn/nheko  et essayez d&apos;utiliser une version précédente entretemps. Une autre option est d&apos;effacer manuellement le cache.</translation>
+        <translation>La migration du cache vers la version actuelle a échoué. Plusieurs causes sont possibles. Merci d&apos;ouvrir un rapport d&apos;anomalie sur https://github.com/Nheko-Reborn/nheko et essayez d&apos;utiliser une version antérieure entretemps. Vous pouvez également tenter d&apos;effacer le cache manuellement.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -373,7 +373,8 @@ Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, vous pouvez plutôt fer
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous n&apos;avez pas pu rejoindre %1. Vous pouvez essayer de frapper au salon afin que les autres membres vous invitent. Voulez-vous le faire ?
+Vous pouvez éventuellement fournir une raison afin que les membres acceptent votre requête&#xa0;:</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -431,27 +432,27 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+106"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;message&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;texte&gt;</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [raison]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [raison]</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>/roomnick &lt;displayname&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/roomnick &lt;nomaffiché&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -567,7 +568,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Quitte un salon. La raison est optionnelle.</translation>
     </message>
     <message>
         <location line="+2"/>
