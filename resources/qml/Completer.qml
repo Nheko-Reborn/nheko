@@ -24,9 +24,6 @@ Control {
     property int rowMargin: 0
     property int rowSpacing: Nheko.paddingSmall
 
-    // Workaround palettes not inheriting for popups
-    palette: timelineRoot.palette
-
     signal completionClicked(string completion)
     signal completionSelected(string id)
 
@@ -76,6 +73,9 @@ Control {
 
     bottomPadding: 1
     leftPadding: 1
+
+    // Workaround palettes not inheriting for popups
+    palette: timelineRoot.palette
     rightPadding: 1
     topPadding: 1
 

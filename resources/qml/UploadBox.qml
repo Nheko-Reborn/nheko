@@ -37,6 +37,7 @@ Page {
         }
         delegate: Pane {
             id: pane
+
             height: uploadPopup.availableHeight - buttons.height - (scr.visible ? scr.height : 0)
             padding: Nheko.paddingSmall
             width: uploadPopup.availableHeight - buttons.height

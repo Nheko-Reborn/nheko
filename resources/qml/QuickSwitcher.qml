@@ -16,13 +16,13 @@ Popup {
     background: null
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
     modal: true
+
+    // Workaround palettes not inheriting for popups
+    palette: timelineRoot.palette
     parent: Overlay.overlay
     width: Math.min(Math.max(Math.round(parent.width / 2), 450), parent.width) // limiting width to parent.width/2 can be a bit narrow
     x: Math.round(parent.width / 2 - contentWidth / 2)
     y: Math.round(parent.height / 4)
-
-    // Workaround palettes not inheriting for popups
-    palette: timelineRoot.palette
 
     Overlay.modal: Rectangle {
         color: "#aa1E1E1E"

@@ -23,6 +23,9 @@ Item {
         height: content.height + implicitFooterHeight + implicitHeaderHeight
         modal: true
         padding: 0
+
+        // Workaround palettes not inheriting for popups
+        palette: timelineRoot.palette
         parent: Overlay.overlay
         standardButtons: Dialog.Ok
         width: content.width
@@ -77,6 +80,9 @@ Item {
     }
     MainWindowDialog {
         id: bootstrapCrosssigning
+
+        // Workaround palettes not inheriting for popups
+        palette: timelineRoot.palette
 
         background: Rectangle {
             border.color: Nheko.theme.separator
@@ -202,6 +208,8 @@ Item {
     MainWindowDialog {
         id: verifyMasterKey
 
+        // Workaround palettes not inheriting for popups
+        palette: timelineRoot.palette
         standardButtons: Dialog.Cancel
 
         GridLayout {
