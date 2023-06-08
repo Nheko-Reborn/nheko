@@ -14,6 +14,7 @@
 #if defined(NHEKO_DBUS_SYS)
 #include <QtDBus/QDBusArgument>
 #include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusServiceWatcher>
 #endif
 
 struct roomEventId
@@ -58,7 +59,8 @@ public:
 #endif
 
 private:
-    QDBusInterface dbus;
+    std::optional<QDBusInterface> dbus;
+    QDBusServiceWatcher watcher;
 
     void systemPostNotification(const QString &room_id,
                                 const QString &event_id,
@@ -67,8 +69,8 @@ private:
                                 const QImage &icon);
     void closeNotification(uint id);
 
-    const bool hasMarkup_;
-    const bool hasImages_;
+    bool hasMarkup_ = false;
+    bool hasImages_ = false;
 #endif
 
 #if defined(Q_OS_MACOS)

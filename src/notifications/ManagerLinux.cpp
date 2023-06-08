@@ -22,6 +22,7 @@
 
 #include "Cache.h"
 #include "EventAccessors.h"
+#include "Logging.h"
 #include "MxcImageProvider.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -29,47 +30,45 @@
 
 NotificationsManager::NotificationsManager(QObject *parent)
   : QObject(parent)
-  , dbus(QStringLiteral("org.freedesktop.Notifications"),
-         QStringLiteral("/org/freedesktop/Notifications"),
-         QStringLiteral("org.freedesktop.Notifications"),
-         QDBusConnection::sessionBus(),
-         this)
-  , hasMarkup_{std::invoke([this]() -> bool {
-      auto caps = dbus.call("GetCapabilities").arguments();
-      for (const auto &x : qAsConst(caps))
-          if (x.toStringList().contains("body-markup"))
-              return true;
-      return false;
-  })}
-  , hasImages_{std::invoke([this]() -> bool {
-      auto caps = dbus.call("GetCapabilities").arguments();
-      for (const auto &x : qAsConst(caps))
-          if (x.toStringList().contains("body-images"))
-              return true;
-      return false;
-  })}
+  , watcher(this)
 {
     qDBusRegisterMetaType<QImage>();
 
+    connect(&watcher, &QDBusServiceWatcher::serviceRegistered, this, [this](QString) {
+        dbus.emplace(QStringLiteral("org.freedesktop.Notifications"),
+                     QStringLiteral("/org/freedesktop/Notifications"),
+                     QStringLiteral("org.freedesktop.Notifications"),
+                     QDBusConnection::sessionBus(),
+                     this);
+
+        connect(
+          &*dbus, SIGNAL(ActionInvoked(uint, QString)), this, SLOT(actionInvoked(uint, QString)));
+        connect(&*dbus,
+                SIGNAL(NotificationClosed(uint, uint)),
+                this,
+                SLOT(notificationClosed(uint, uint)));
+        connect(&*dbus,
+                SIGNAL(NotificationReplied(uint, QString)),
+                this,
+                SLOT(notificationReplied(uint, QString)));
+
+        hasMarkup_ = false;
+        hasImages_ = false;
+
+        auto caps = dbus->call("GetCapabilities").arguments();
+        for (const auto &x : qAsConst(caps)) {
+            if (x.toStringList().contains("body-markup"))
+                hasMarkup_ = true;
+            if (x.toStringList().contains("body-images"))
+                hasImages_ = true;
+        }
+    });
+
+    watcher.setWatchMode(QDBusServiceWatcher::WatchForRegistration);
+    watcher.setConnection(QDBusConnection::sessionBus());
+    watcher.addWatchedService(QStringLiteral("org.freedesktop.Notifications"));
     // clang-format off
-    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.Notifications"),
-                                          QStringLiteral("/org/freedesktop/Notifications"),
-                                          QStringLiteral("org.freedesktop.Notifications"),
-                                          QStringLiteral("ActionInvoked"),
-                                          this,
-                                          SLOT(actionInvoked(uint,QString)));
-    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.Notifications"),
-                                          QStringLiteral("/org/freedesktop/Notifications"),
-                                          QStringLiteral("org.freedesktop.Notifications"),
-                                          QStringLiteral("NotificationClosed"),
-                                          this,
-                                          SLOT(notificationClosed(uint,uint)));
-    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.Notifications"),
-                                          QStringLiteral("/org/freedesktop/Notifications"),
-                                          QStringLiteral("org.freedesktop.Notifications"),
-                                          QStringLiteral("NotificationReplied"),
-                                          this,
-                                          SLOT(notificationReplied(uint,QString)));
+
     // clang-format on
 
     connect(this,
@@ -155,6 +154,12 @@ NotificationsManager::systemPostNotification(const QString &room_id,
                                              const QString &text,
                                              const QImage &icon)
 {
+    if (!dbus) {
+        nhlog::ui()->warn(
+          "Dropping notification because we could not connect to the dbus interface.");
+        return;
+    }
+
     QVariantMap hints;
     hints[QStringLiteral("image-data")]    = icon;
     hints[QStringLiteral("sound-name")]    = "message-new-instant";
@@ -196,7 +201,7 @@ NotificationsManager::systemPostNotification(const QString &room_id,
     argumentList << hints;   // hints
     argumentList << (int)-1; // timeout in ms
 
-    QDBusPendingCall call = dbus.asyncCallWithArgumentList(QStringLiteral("Notify"), argumentList);
+    QDBusPendingCall call = dbus->asyncCallWithArgumentList(QStringLiteral("Notify"), argumentList);
     auto watcher          = new QDBusPendingCallWatcher{call, this};
     connect(
       watcher, &QDBusPendingCallWatcher::finished, this, [watcher, this, room_id, event_id]() {
@@ -212,7 +217,13 @@ NotificationsManager::systemPostNotification(const QString &room_id,
 void
 NotificationsManager::closeNotification(uint id)
 {
-    auto call    = dbus.asyncCall(QStringLiteral("CloseNotification"), (uint)id); // replace_id
+    if (!dbus) {
+        nhlog::ui()->warn(
+          "Not removing notification because we could not connect to the dbus interface.");
+        return;
+    }
+
+    auto call    = dbus->asyncCall(QStringLiteral("CloseNotification"), (uint)id); // replace_id
     auto watcher = new QDBusPendingCallWatcher{call, this};
     connect(watcher, &QDBusPendingCallWatcher::finished, this, [watcher]() {
         if (watcher->reply().type() == QDBusMessage::ErrorMessage) {
