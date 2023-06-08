@@ -6,10 +6,10 @@ set -ue
 #TAG=$(git tag -l --points-at HEAD)
 
 # Add Qt binaries to path
-PATH="$(brew --prefix qt5):${PATH}"
+PATH="$(brew --prefix qt6):${PATH}"
 export PATH
 
-CMAKE_PREFIX_PATH="$(brew --prefix qt5)"
+CMAKE_PREFIX_PATH="$(brew --prefix qt6)"
 export CMAKE_PREFIX_PATH
 
 cmake -GNinja -S. -Bbuild \
@@ -28,5 +28,5 @@ cmake --build build
     make -j 4
     cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS
   )
-  "$(brew --prefix qt5)/bin/macdeployqt" nheko.app -always-overwrite -qmldir=../resources/qml/
+  "$(brew --prefix qt6)/bin/macdeployqt" nheko.app -always-overwrite -qmldir=../resources/qml/
 )
