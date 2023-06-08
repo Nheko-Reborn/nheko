@@ -143,12 +143,14 @@ Page {
                     enabled: false
                     height: avatarSize
                     roomid: model.id
+                    textColor: model.avatarUrl.startsWith(":/") ? communityItem.unimportantText : communityItem.importantText
                     url: {
                         if (model.avatarUrl.startsWith("mxc://"))
                             return model.avatarUrl.replace("mxc://", "image://MxcImage/");
-                        else if (model.avatarUrl.length > 0)
-                            return "image://colorimage/" + model.avatarUrl + "?" + communityItem.unimportantText;
-                        else
+                        else if (model.avatarUrl.length > 0) {
+                            console.log("image://colorimage/" + model.avatarUrl + "?" + communityItem.unimportantText);
+                            return model.avatarUrl;
+                        } else
                             return "";
                     }
                     width: avatarSize

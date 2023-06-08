@@ -231,6 +231,7 @@ Menu {
                     height: sidebarAvatarSize
                     width: sidebarAvatarSize
                     url: modelData.url.replace("mxc://", "image://MxcImage/")
+                    textColor: modelData.url.startsWith("mxc://") ? palette.text : palette.buttonText
                     displayName: modelData.name
                     roomid: modelData.name
 
