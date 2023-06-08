@@ -147,10 +147,9 @@ Page {
                     url: {
                         if (model.avatarUrl.startsWith("mxc://"))
                             return model.avatarUrl.replace("mxc://", "image://MxcImage/");
-                        else if (model.avatarUrl.length > 0) {
-                            console.log("image://colorimage/" + model.avatarUrl + "?" + communityItem.unimportantText);
+                        else if (model.avatarUrl.length > 0)
                             return model.avatarUrl;
-                        } else
+                        else
                             return "";
                     }
                     width: avatarSize

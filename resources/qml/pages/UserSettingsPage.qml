@@ -99,6 +99,7 @@ Rectangle {
                                 model: r.model.values
                                 currentIndex: r.model.value
                                 onCurrentIndexChanged: r.model.value = currentIndex
+                                implicitContentWidthPolicy: ComboBox.WidestTextWhenCompleted
 
                                 WheelHandler{} // suppress scrolling changing values
                             }
