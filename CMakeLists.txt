@@ -633,10 +633,13 @@ if (NOT APPLE AND NOT WIN32)
 endif()
 
 #
-# Bundle translations.
+# Bundle resources
 #
-include(Translations)
-set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
+if(Qt6QuickCompiler_FOUND AND COMPILE_QML)
+	qtquick_compiler_add_resources(QRC resources/res.qrc)
+else()
+	qt_add_resources(QRC resources/res.qrc)
+endif()
 
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")
@@ -668,7 +671,7 @@ endif ()
 
 set(NHEKO_DEPS
 	${SRC_FILES}
-	${TRANSLATION_DEPS}
+	${QRC}
 	${META_FILES_TO_INCLUDE})
 
 if(ASAN)
@@ -690,6 +693,12 @@ set_target_properties(nheko
 	PROPERTIES
 		CMAKE_SKIP_INSTALL_RPATH TRUE
 		AUTOMOC ON)
+
+#
+# Bundle translations
+#
+file(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
+qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES ${LANG_TS_SRC})
 
 if(WIN32)
 	target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
