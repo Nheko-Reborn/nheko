@@ -33,15 +33,17 @@ Rectangle {
 
             spacing: Nheko.paddingMedium
 
+            width: scroll.availableWidth
             anchors.fill: parent
             anchors.leftMargin: userSettingsDialog.collapsed ? 0 : (userSettingsDialog.width-userSettingsDialog.collapsePoint) * 0.4 + Nheko.paddingLarge
             anchors.rightMargin: anchors.leftMargin
 
+
             Repeater {
                 model: UserSettingsModel
-                Layout.fillWidth:true
 
                 delegate: GridLayout {
+                    width: scroll.availableWidth
                     columns: collapsed? 1 : 2
                     rows: collapsed? 2: 1
                     required property var model
@@ -78,7 +80,7 @@ Rectangle {
 
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
                         Layout.preferredHeight: child.height
-                        Layout.preferredWidth: Math.min(child.implicitWidth, child.width || 1000)
+                        Layout.preferredWidth: child.implicitWidth
                         Layout.maximumWidth: model.type == UserSettingsModel.SectionTitle ? Number.POSITIVE_INFINITY : 400
                         Layout.fillWidth: model.type == UserSettingsModel.SectionTitle || model.type == UserSettingsModel.Options || model.type == UserSettingsModel.Number
                         Layout.rightMargin: model.type == UserSettingsModel.SectionTitle ? 0 : Nheko.paddingMedium
@@ -95,9 +97,9 @@ Rectangle {
                             roleValue: UserSettingsModel.Options
                             ComboBox {
                                 anchors.right: parent.right
-                                width: Math.min(parent.width, implicitWidth)
                                 model: r.model.values
                                 currentIndex: r.model.value
+                                width: Math.min(implicitWidth, scroll.availableWidth - Nheko.paddingMedium)
                                 onCurrentIndexChanged: r.model.value = currentIndex
                                 implicitContentWidthPolicy: ComboBox.WidestTextWhenCompleted
 
@@ -109,7 +111,6 @@ Rectangle {
 
                             SpinBox {
                                 anchors.right: parent.right
-                                width: Math.min(parent.width, implicitWidth)
                                 from: model.valueLowerBound
                                 to: model.valueUpperBound
                                 stepSize: model.valueStep
@@ -130,7 +131,6 @@ Rectangle {
                                 readonly property int decimals: 2
 
                                 anchors.right: parent.right
-                                width: Math.min(parent.width, implicitWidth)
                                 from: model.valueLowerBound * div
                                 to: model.valueUpperBound * div
                                 stepSize: model.valueStep * div
