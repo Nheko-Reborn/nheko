@@ -283,6 +283,20 @@ Item {
         }
 
         DelegateChoice {
+            roleValue: MtxEvent.ServerAcl
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: qsTr("%1 changed which servers are allowed in this room.").arg(d.userName)
+            }
+
+        }
+
+        DelegateChoice {
             roleValue: MtxEvent.Name
 
             NoticeMessage {

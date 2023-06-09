@@ -216,6 +216,8 @@ qml_mtx_events::toRoomEventType(mtx::events::EventType e)
         return qml_mtx_events::EventType::Topic;
     case EventType::RoomTombstone:
         return qml_mtx_events::EventType::Tombstone;
+    case EventType::RoomServerAcl:
+        return qml_mtx_events::EventType::ServerAcl;
     case EventType::RoomRedaction:
         return qml_mtx_events::EventType::Redaction;
     case EventType::RoomPinnedEvents:
@@ -334,6 +336,9 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     /// m.room.tombstone
     case qml_mtx_events::Tombstone:
         return mtx::events::EventType::RoomTombstone;
+    /// m.room.server_acl
+    case qml_mtx_events::ServerAcl:
+        return mtx::events::EventType::RoomServerAcl;
     /// m.room.topic
     case qml_mtx_events::Topic:
         return mtx::events::EventType::RoomTopic;

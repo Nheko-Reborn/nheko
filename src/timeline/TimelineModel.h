@@ -85,6 +85,8 @@ enum EventType
     PowerLevels,
     /// m.room.tombstone
     Tombstone,
+    /// m.room.server_acl
+    ServerAcl,
     /// m.room.topic
     Topic,
     /// m.room.redaction
