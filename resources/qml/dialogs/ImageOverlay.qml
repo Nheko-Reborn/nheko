@@ -25,12 +25,12 @@ Window {
     Component.onCompleted: Nheko.setWindowRole(imageOverlay, "imageoverlay")
 
     Shortcut {
-        sequence: StandardKey.Cancel
+        sequences: [StandardKey.Cancel]
         onActivated: imageOverlay.close()
     }
 
     Shortcut {
-        sequence: StandardKey.Copy
+        sequences: [StandardKey.Copy]
         onActivated: {
             if (room) {
                 room.copyMedia(eventId);
@@ -98,6 +98,10 @@ Window {
 
         WheelHandler {
             property: "scale"
+            // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
+            // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
+            // and we don't yet distinguish mice and trackpads on Wayland either
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
             target: imgContainer
         }
 
