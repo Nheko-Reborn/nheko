@@ -376,6 +376,7 @@ InputBar::openFileSelection()
     if (fileNames.isEmpty())
         return;
 
+    ChatPage::instance()->timelineManager()->focusMessageInput();
     for (const auto &fileName : fileNames)
         startUploadFromPath(fileName);
 }
