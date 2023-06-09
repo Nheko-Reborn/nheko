@@ -283,6 +283,29 @@ Item {
 
             onClicked: TimelineManager.openLeaveRoomDialog(room.roomId)
         }
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            spacing: Nheko.paddingMedium
+            visible: roomPreview && roomPreview.isInvite && reasonField.showReason
+
+            MatrixText {
+                text: qsTr("Invited by %1 (%2)").arg(TimelineManager.escapeEmoji(inviterAvatar.displayName)).arg(TimelineManager.escapeEmoji(TimelineManager.htmlEscape(inviterAvatar.userid)))
+            }
+            Avatar {
+                id: inviterAvatar
+
+                Layout.alignment: Qt.AlignHCenter
+                displayName: roomPreview?.inviterDisplayName ?? ""
+                enabled: true
+                height: 48
+                roomid: preview.roomId
+                url: (roomPreview?.inviterAvatarUrl ?? "").replace("mxc://", "image://MxcImage/")
+                userid: roomPreview?.inviterUserId ?? ""
+                width: 48
+
+                onClicked: TimelineManager.openGlobalUserProfile(roomPreview.inviterUserId)
+            }
+        }
         ScrollView {
             id: reasonField
 
@@ -312,7 +335,7 @@ Item {
             Layout.leftMargin: Nheko.paddingLarge
             Layout.rightMargin: Nheko.paddingLarge
             text: reasonField.showReason ? qsTr("Hide invite reason") : qsTr("Show invite reason")
-            visible: preview.reason !== ""
+            visible: roomPreview && roomPreview.isInvite
 
             onClicked: {
                 reasonField.showReason = !reasonField.showReason;

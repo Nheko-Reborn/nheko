@@ -1235,3 +1235,49 @@ FilteredRoomlistModel::previousRoom()
         }
     }
 }
+
+QString
+RoomPreview::inviterAvatarUrl() const
+{
+    if (isInvite_) {
+        auto self = cache::client()->getInviteMember(roomid_.toStdString(),
+                                                     http::client()->user_id().to_string());
+        if (self && !self->inviter.empty()) {
+            auto other = cache::client()->getInviteMember(roomid_.toStdString(), self->inviter);
+            if (other && other->avatar_url.starts_with("mxc://")) {
+                return QString::fromStdString(other->avatar_url);
+            }
+        }
+    }
+
+    return QString();
+}
+QString
+RoomPreview::inviterDisplayName() const
+{
+    if (isInvite_) {
+        auto self = cache::client()->getInviteMember(roomid_.toStdString(),
+                                                     http::client()->user_id().to_string());
+        if (self && !self->inviter.empty()) {
+            auto other = cache::client()->getInviteMember(roomid_.toStdString(), self->inviter);
+            if (other) {
+                return QString::fromStdString(other->name).toHtmlEscaped();
+            }
+        }
+    }
+
+    return QString();
+}
+QString
+RoomPreview::inviterUserId() const
+{
+    if (isInvite_) {
+        auto self = cache::client()->getInviteMember(roomid_.toStdString(),
+                                                     http::client()->user_id().to_string());
+        if (self && !self->inviter.empty()) {
+            return QString::fromStdString(self->inviter);
+        }
+    }
+
+    return QString();
+}

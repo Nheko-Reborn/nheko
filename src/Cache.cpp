@@ -2128,8 +2128,16 @@ Cache::saveInvite(lmdb::txn &txn,
             auto display_name =
               msg->content.display_name.empty() ? msg->state_key : msg->content.display_name;
 
-            MemberInfo tmp{
-              display_name, msg->content.avatar_url, msg->content.reason, msg->content.is_direct};
+            std::string inviter = "";
+            if (msg->content.membership == mtx::events::state::Membership::Invite) {
+                inviter = msg->sender;
+            }
+
+            MemberInfo tmp{display_name,
+                           msg->content.avatar_url,
+                           inviter,
+                           msg->content.reason,
+                           msg->content.is_direct};
 
             membersdb.put(txn, msg->state_key, nlohmann::json(tmp).dump());
         } else {
@@ -5173,6 +5181,8 @@ to_json(nlohmann::json &j, const MemberInfo &info)
 {
     j["name"]       = info.name;
     j["avatar_url"] = info.avatar_url;
+    if (!info.inviter.empty())
+        j["inviter"] = info.inviter;
     if (info.is_direct)
         j["is_direct"] = info.is_direct;
     if (!info.reason.empty())
@@ -5186,6 +5196,7 @@ from_json(const nlohmann::json &j, MemberInfo &info)
     info.avatar_url = j.value("avatar_url", "");
     info.is_direct  = j.value("is_direct", false);
     info.reason     = j.value("reason", "");
+    info.inviter    = j.value("inviter", "");
 }
 
 void

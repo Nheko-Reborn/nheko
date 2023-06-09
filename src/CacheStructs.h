@@ -117,6 +117,7 @@ struct MemberInfo
 {
     std::string name;
     std::string avatar_url;
+    std::string inviter = "";
     std::string reason = "";
     bool is_direct     = false;
 };

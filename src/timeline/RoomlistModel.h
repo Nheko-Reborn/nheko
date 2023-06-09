@@ -31,6 +31,9 @@ class RoomPreview
     Q_PROPERTY(QString roomTopic READ roomTopic CONSTANT)
     Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl CONSTANT)
     Q_PROPERTY(QString reason READ reason CONSTANT)
+    Q_PROPERTY(QString inviterAvatarUrl READ inviterAvatarUrl CONSTANT)
+    Q_PROPERTY(QString inviterDisplayName READ inviterDisplayName CONSTANT)
+    Q_PROPERTY(QString inviterUserId READ inviterUserId CONSTANT)
     Q_PROPERTY(bool isInvite READ isInvite CONSTANT)
     Q_PROPERTY(bool isFetched READ isFetched CONSTANT)
 
@@ -42,6 +45,9 @@ public:
     QString roomTopic() const { return roomTopic_; }
     QString roomAvatarUrl() const { return roomAvatarUrl_; }
     QString reason() const { return reason_; }
+    QString inviterAvatarUrl() const;
+    QString inviterDisplayName() const;
+    QString inviterUserId() const;
     bool isInvite() const { return isInvite_; }
     bool isFetched() const { return isFetched_; }
 

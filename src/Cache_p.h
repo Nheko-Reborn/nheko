@@ -394,8 +394,19 @@ private:
                 auto display_name =
                   e->content.display_name.empty() ? e->state_key : e->content.display_name;
 
+                std::string inviter = "";
+                if (e->content.membership == mtx::events::state::Membership::Invite) {
+                    inviter = e->sender;
+                }
+
                 // Lightweight representation of a member.
-                MemberInfo tmp{display_name, e->content.avatar_url, e->content.reason};
+                MemberInfo tmp{
+                  display_name,
+                  e->content.avatar_url,
+                  inviter,
+                  e->content.reason,
+                  e->content.is_direct,
+                };
 
                 membersdb.put(txn, e->state_key, nlohmann::json(tmp).dump());
                 break;
