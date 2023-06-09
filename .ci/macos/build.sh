@@ -6,7 +6,7 @@ set -ue
 #TAG=$(git tag -l --points-at HEAD)
 
 # Add Qt binaries to path
-PATH="$(brew --prefix qt6):${PATH}"
+PATH="$(brew --prefix qt6)/bin/:${PATH}"
 export PATH
 
 CMAKE_PREFIX_PATH="$(brew --prefix qt6)"
@@ -29,4 +29,6 @@ cmake --build build
     cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS
   )
   "$(brew --prefix qt6)/bin/macdeployqt" nheko.app -always-overwrite -qmldir=../resources/qml/
+  # workaround for https://bugreports.qt.io/browse/QTBUG-100686
+  cp "$(brew --prefix brotli)/lib/libbrotlicommon.1.dylib" nheko.app/Contents/Frameworks/libbrotlicommon.1.dylib
 )
