@@ -108,6 +108,8 @@ GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers,
         PackDesc newPack{};
         newPack.packname =
           pack.pack.pack ? QString::fromStdString(pack.pack.pack->display_name) : QString();
+        newPack.packavatar =
+          pack.pack.pack ? QString::fromStdString(pack.pack.pack->avatar_url) : QString();
         newPack.room_id   = pack.source_room;
         newPack.state_key = pack.state_key;
 
