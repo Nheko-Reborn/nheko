@@ -15,6 +15,7 @@ Rectangle {
     required property color bubbleTextColor
     property bool mayBeVisible: true
     property alias font: notificationBubbleText.font
+    baselineOffset: notificationBubbleText.baseline - bubbleRoot.top
 
     visible: mayBeVisible && notificationCount > 0
     implicitHeight: notificationBubbleText.height + Nheko.paddingMedium

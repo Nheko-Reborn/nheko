@@ -546,65 +546,72 @@ Page {
                     visible: !collapsed
                     width: roomItem.width - avatar.width
 
-                    NotificationBubble {
-                        id: notificationBubble
-
-                        Layout.alignment: Qt.AlignRight
-                        Layout.leftMargin: Nheko.paddingSmall
-                        Layout.preferredHeight: implicitHeight
-                        Layout.preferredWidth: implicitWidth
-                        bubbleBackgroundColor: roomItem.bubbleBackground
-                        bubbleTextColor: roomItem.bubbleText
-                        hasLoudNotification: roomItem.hasLoudNotification
-                        mayBeVisible: !collapsed && (isSpace ? Settings.spaceNotifications : true)
-                        notificationCount: roomItem.notificationCount
-                        parent: isSpace ? titleRow : subtextRow
-                    }
-                    RowLayout {
+                    Item {
                         id: titleRow
 
                         Layout.alignment: Qt.AlignTop
-                        Layout.preferredWidth: roomItem.width - avatar.width
-                        spacing: Nheko.paddingSmall
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: subtitleText.implicitHeight
 
-                        Item {
-                            Layout.alignment: Qt.AlignBottom
-                            Layout.fillWidth: true
+                        ElidedLabel {
+                            id: titleText
 
-                            ElidedLabel {
-                                anchors.bottom: parent.bottom
-                                color: roomItem.importantText
-                                elideWidth: parent.width
-                                fullText: TimelineManager.htmlEscape(roomName)
-                                textFormat: Text.RichText
-                            }
+                            anchors.left: parent.left
+                            color: roomItem.importantText
+                            elideWidth: parent.width - (timestamp.visible ? timestamp.implicitWidth : 0) - (spaceNotificationBubble.visible ? spaceNotificationBubble.implicitWidth : 0)
+                            fullText: TimelineManager.htmlEscape(roomName)
+                            textFormat: Text.RichText
                         }
                         Label {
                             id: timestamp
 
-                            Layout.alignment: Qt.AlignRight | Qt.AlignBottom
+                            anchors.baseline: titleText.baseline
+                            anchors.right: parent.right
                             color: roomItem.unimportantText
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             text: time
                             visible: !isInvite && !isSpace
                         }
+                        NotificationBubble {
+                            id: spaceNotificationBubble
+
+                            anchors.right: parent.right
+                            bubbleBackgroundColor: roomItem.bubbleBackground
+                            bubbleTextColor: roomItem.bubbleText
+                            hasLoudNotification: roomItem.hasLoudNotification
+                            mayBeVisible: !collapsed && (isSpace ? Settings.spaceNotifications : false)
+                            notificationCount: roomItem.notificationCount
+                            parent: isSpace ? titleRow : subtextRow
+                        }
                     }
-                    RowLayout {
+                    Item {
                         id: subtextRow
 
                         Layout.alignment: Qt.AlignBottom
                         Layout.fillWidth: true
-                        height: visible ? 0 : undefined
-                        spacing: 0
+                        Layout.preferredHeight: subtitleText.implicitHeight
                         visible: !isSpace
 
                         ElidedLabel {
-                            Layout.fillWidth: true
+                            id: subtitleText
+
+                            anchors.left: parent.left
                             color: roomItem.unimportantText
-                            elideWidth: width
+                            elideWidth: subtextRow.width - (subtextNotificationBubble.visible ? subtextNotificationBubble.implicitWidth : 0)
                             font.pixelSize: fontMetrics.font.pixelSize * 0.9
                             fullText: TimelineManager.htmlEscape(lastMessage)
                             textFormat: Text.RichText
+                        }
+                        NotificationBubble {
+                            id: subtextNotificationBubble
+
+                            anchors.baseline: subtitleText.baseline
+                            anchors.right: parent.right
+                            bubbleBackgroundColor: roomItem.bubbleBackground
+                            bubbleTextColor: roomItem.bubbleText
+                            hasLoudNotification: roomItem.hasLoudNotification
+                            mayBeVisible: !collapsed
+                            notificationCount: roomItem.notificationCount
                         }
                     }
                 }
