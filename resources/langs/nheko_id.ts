@@ -1401,6 +1401,11 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Pengunggahan &apos;%1&apos; gagal</translation>
     </message>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
+        <source>Select file(s)</source>
+        <translation>Pilih berkas</translation>
+    </message>
 </context>
 <context>
     <name>InviteDialog</name>
