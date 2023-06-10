@@ -774,7 +774,7 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+660"/>
         <source>Failed to update community: %1</source>
-        <translation>Echec de mise à jour de la communauté : %1</translation>
+        <translation>Erreur lors de la mise à jour de cette communauté&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+18"/>
