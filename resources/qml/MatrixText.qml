@@ -6,10 +6,20 @@ import QtQuick 2.5
 import QtQuick.Controls 2.3
 import im.nheko 1.0
 
-TextEdit {
+TextArea {
     id: r
 
     property alias cursorShape: cs.cursorShape
+
+    leftInset: 0
+    bottomInset: 0
+    rightInset: 0
+    topInset: 0
+    leftPadding: 0
+    bottomPadding: 0
+    rightPadding: 0
+    topPadding: 0
+    background: null
 
     ToolTip.text: hoveredLink
     ToolTip.visible: hoveredLink || false
@@ -28,6 +38,11 @@ TextEdit {
         TimelineManager.fixImageRendering(r.textDocument, r);
     }
     onLinkActivated: Nheko.openLink(link)
+
+
+    // propagate events up
+    onPressAndHold: (event) => event.accepted = false
+    onPressed: (event) => event.accepted = (event.button == Qt.LeftButton)
 
     CursorShape {
         id: cs
