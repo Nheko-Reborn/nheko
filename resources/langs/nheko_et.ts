@@ -1403,6 +1403,11 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>„%1“ üleslaadimine ei õnnestunud</translation>
     </message>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
+        <source>Select file(s)</source>
+        <translation>Vali fail(id)</translation>
+    </message>
 </context>
 <context>
     <name>InviteDialog</name>
