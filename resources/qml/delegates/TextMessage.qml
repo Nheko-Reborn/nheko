@@ -19,7 +19,6 @@ MatrixText {
     // table border-collapse doesn't seem to work
     text: "
     <style type=\"text/css\">
-    a { color:" + palette.link + ";}
     code { background-color: " + palette.alternateBase + "; white-space: pre-wrap; }
     pre { background-color: " + palette.alternateBase + "; white-space: pre-wrap; }
     table {
