@@ -804,6 +804,20 @@ if(MAN)
 	add_subdirectory(man)
 endif()
 
+# potential workaround for macdeployqt issues
+if(APPLE)
+    install(TARGETS nheko
+        BUNDLE  DESTINATION .
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+    qt_generate_deploy_qml_app_script(
+        TARGET nheko
+        OUTPUT_SCRIPT deploy_script
+        NO_UNSUPPORTED_PLATFORM_ERROR
+    )
+    install(SCRIPT ${deploy_script}) 
+endif()
+
 if(UNIX AND NOT APPLE)
 	if(FLATPAK)
 		set(APPID "im.nheko.Nheko")
