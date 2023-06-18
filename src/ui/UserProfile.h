@@ -6,6 +6,7 @@
 
 #include <QAbstractListModel>
 #include <QObject>
+#include <QQmlEngine>
 #include <QString>
 #include <QVector>
 #include <mtx/responses.hpp>
@@ -16,6 +17,7 @@
 
 namespace verification {
 Q_NAMESPACE
+QML_NAMED_ELEMENT(VerificationStatus)
 
 enum Status
 {

@@ -8,6 +8,7 @@
 #include <QAbstractListModel>
 #include <QDateTime>
 #include <QObject>
+#include <QQmlEngine>
 #include <QSortFilterProxyModel>
 #include <QString>
 
@@ -53,6 +54,9 @@ private:
 class ReadReceiptsProxy final : public QSortFilterProxyModel
 {
     Q_OBJECT
+
+    QML_ELEMENT
+    QML_UNCREATABLE("")
 
     Q_PROPERTY(QString eventId READ eventId CONSTANT)
     Q_PROPERTY(QString roomId READ roomId CONSTANT)

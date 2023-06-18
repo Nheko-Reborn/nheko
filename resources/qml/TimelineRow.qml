@@ -173,7 +173,7 @@ AbstractButton {
                 Layout.row: 0
                 blurhash: r.relatedEventCacheBuster, fromModel(Room.Blurhash) ?? ""
                 body: r.relatedEventCacheBuster, fromModel(Room.Body) ?? ""
-                callType: r.relatedEventCacheBuster, fromModel(Room.CallType) ?? ""
+                callType: r.relatedEventCacheBuster, fromModel(Room.Voip) ?? ""
                 duration: r.relatedEventCacheBuster, fromModel(Room.Duration) ?? 0
                 encryptionError: r.relatedEventCacheBuster, fromModel(Room.EncryptionError) ?? 0
                 eventId: fromModel(Room.EventId) ?? ""

@@ -47,7 +47,7 @@ Popup {
 
             Layout.fillWidth: true
             model: CallManager.screenShareTypeList()
-            onCurrentIndexChanged: CallManager.setScreenShareType(currentIndex);
+            onCurrentIndexChanged: CallManager.setVoip(currentIndex);
           }
         }
 
@@ -63,7 +63,7 @@ Popup {
             }
 
             ComboBox {
-                visible: CallManager.screenShareType == ScreenShareType.X11
+                visible: CallManager.screenShareType == Voip.X11
                 id: windowCombo
 
                 Layout.fillWidth: true
@@ -71,7 +71,7 @@ Popup {
             }
 
             Button {
-                visible: CallManager.screenShareType == ScreenShareType.XDP
+                visible: CallManager.screenShareType == Voip.XDP
                 highlighted: !CallManager.screenShareReady
                 text: qsTr("Request screencast")
                 onClicked: {
@@ -165,7 +165,7 @@ Popup {
                     Settings.screenShareRemoteVideo = remoteVideoCheckBox.checked;
                     Settings.screenShareHideCursor = hideCursorCheckBox.checked;
 
-                    CallManager.sendInvite(room.roomId, CallType.SCREEN, windowCombo.currentIndex);
+                    CallManager.sendInvite(room.roomId, Voip.SCREEN, windowCombo.currentIndex);
                     close();
                 }
             }

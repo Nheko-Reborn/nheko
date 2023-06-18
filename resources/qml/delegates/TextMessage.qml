@@ -46,7 +46,7 @@ MatrixText {
     enabled: !Settings.mobileMode
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
-    CursorShape {
+    NhekoCursorShape {
         enabled: isReply
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor

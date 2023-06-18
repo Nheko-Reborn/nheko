@@ -16,7 +16,7 @@ Rectangle {
     MouseArea {
         anchors.fill: parent
         onClicked: {
-            if (CallManager.callType != CallType.VOICE)
+            if (CallManager.callType != Voip.VOICE)
                 stackLayout.currentIndex = stackLayout.currentIndex ? 0 : 1;
 
         }
@@ -58,7 +58,7 @@ Rectangle {
             states: [
                 State {
                     name: "VOICE"
-                    when: CallManager.callType == CallType.VOICE
+                    when: CallManager.callType == Voip.VOICE
 
                     PropertyChanges {
                         target: callTypeIcon
@@ -68,7 +68,7 @@ Rectangle {
                 },
                 State {
                     name: "VIDEO"
-                    when: CallManager.callType == CallType.VIDEO
+                    when: CallManager.callType == Voip.VIDEO
 
                     PropertyChanges {
                         target: callTypeIcon
@@ -78,7 +78,7 @@ Rectangle {
                 },
                 State {
                     name: "SCREEN"
-                    when: CallManager.callType == CallType.SCREEN
+                    when: CallManager.callType == Voip.SCREEN
 
                     PropertyChanges {
                         target: callTypeIcon
@@ -100,7 +100,7 @@ Rectangle {
             states: [
                 State {
                     name: "OFFERSENT"
-                    when: CallManager.callState == WebRTCState.OFFERSENT
+                    when: CallManager.callState == Voip.OFFERSENT
 
                     PropertyChanges {
                         target: callStateLabel
@@ -110,7 +110,7 @@ Rectangle {
                 },
                 State {
                     name: "CONNECTING"
-                    when: CallManager.callState == WebRTCState.CONNECTING
+                    when: CallManager.callState == Voip.CONNECTING
 
                     PropertyChanges {
                         target: callStateLabel
@@ -120,7 +120,7 @@ Rectangle {
                 },
                 State {
                     name: "ANSWERSENT"
-                    when: CallManager.callState == WebRTCState.ANSWERSENT
+                    when: CallManager.callState == Voip.ANSWERSENT
 
                     PropertyChanges {
                         target: callStateLabel
@@ -130,7 +130,7 @@ Rectangle {
                 },
                 State {
                     name: "CONNECTED"
-                    when: CallManager.callState == WebRTCState.CONNECTED
+                    when: CallManager.callState == Voip.CONNECTED
 
                     PropertyChanges {
                         target: callStateLabel
@@ -144,13 +144,13 @@ Rectangle {
 
                     PropertyChanges {
                         target: stackLayout
-                        currentIndex: CallManager.callType != CallType.VOICE ? 1 : 0
+                        currentIndex: CallManager.callType != Voip.VOICE ? 1 : 0
                     }
 
                 },
                 State {
                     name: "DISCONNECTED"
-                    when: CallManager.callState == WebRTCState.DISCONNECTED
+                    when: CallManager.callState == Voip.DISCONNECTED
 
                     PropertyChanges {
                         target: callStateLabel
@@ -176,7 +176,7 @@ Rectangle {
             }
 
             interval: 1000
-            running: CallManager.callState == WebRTCState.CONNECTED
+            running: CallManager.callState == Voip.CONNECTED
             repeat: true
             onTriggered: {
                 var d = new Date();
@@ -190,7 +190,7 @@ Rectangle {
 
         Label {
             Layout.leftMargin: 16
-            visible: CallManager.callType == CallType.SCREEN && CallManager.callState == WebRTCState.CONNECTED
+            visible: CallManager.callType == Voip.SCREEN && CallManager.callState == Voip.CONNECTED
             text: qsTr("You are screen sharing")
             font.pointSize: fontMetrics.font.pointSize * 1.1
             color: "#000000"

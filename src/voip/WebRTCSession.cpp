@@ -48,26 +48,26 @@ using webrtc::State;
 WebRTCSession::WebRTCSession()
   : devices_(CallDevices::instance())
 {
-    qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "CallType",
-                                     QStringLiteral("Can't instantiate enum"));
+    // qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
+    //                                  "im.nheko",
+    //                                  1,
+    //                                  0,
+    //                                  "CallType",
+    //                                  QStringLiteral("Can't instantiate enum"));
 
-    qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "ScreenShareType",
-                                     QStringLiteral("Can't instantiate enum"));
+    // qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
+    //                                  "im.nheko",
+    //                                  1,
+    //                                  0,
+    //                                  "ScreenShareType",
+    //                                  QStringLiteral("Can't instantiate enum"));
 
-    qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "WebRTCState",
-                                     QStringLiteral("Can't instantiate enum"));
+    // qmlRegisterUncreatableMetaObject(webrtc::staticMetaObject,
+    //                                  "im.nheko",
+    //                                  1,
+    //                                  0,
+    //                                  "WebRTCState",
+    //                                  QStringLiteral("Can't instantiate enum"));
 
     connect(this, &WebRTCSession::stateChanged, this, &WebRTCSession::setState);
     init();

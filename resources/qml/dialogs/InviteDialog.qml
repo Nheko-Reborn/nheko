@@ -212,7 +212,7 @@ ApplicationWindow {
                         onClicked: invitees.removeUser(model.mxid)
                     }
 
-                    CursorShape {
+                    NhekoCursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                     }

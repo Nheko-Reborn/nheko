@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.13..3.21)
 
 option(APPVEYOR_BUILD "Build on appveyor" OFF)
 option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
@@ -395,8 +395,6 @@ set(SRC_FILES
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.cpp
 	src/ui/NhekoDropArea.h
-	src/ui/NhekoEventObserver.cpp
-	src/ui/NhekoEventObserver.h
 	src/ui/NhekoGlobalObject.cpp
 	src/ui/NhekoGlobalObject.h
 	src/ui/RoomSettings.cpp
@@ -499,8 +497,6 @@ set(SRC_FILES
 	src/SingleImagePackModel.h
 	src/TrayIcon.cpp
 	src/TrayIcon.h
-	src/UserDirectoryModel.cpp
-	src/UserDirectoryModel.h
 	src/UserSettingsPage.cpp
 	src/UserSettingsPage.h
 	src/UsersModel.cpp
@@ -679,10 +675,10 @@ if(ASAN)
 endif()
 
 if(WIN32)
-	add_executable (nheko WIN32 ${OS_BUNDLE} ${NHEKO_DEPS})
+	qt_add_executable (nheko WIN32 ${OS_BUNDLE} ${NHEKO_DEPS})
 	target_compile_definitions(nheko PRIVATE _WIN32_WINNT=0x0601 NOMINMAX WIN32_LEAN_AND_MEAN STRICT)
 else()
-	add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
+	qt_add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
 
 	if (HAVE_BACKTRACE_SYMBOLS_FD AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 		set_target_properties(nheko PROPERTIES ENABLE_EXPORTS ON)
@@ -700,6 +696,130 @@ set_target_properties(nheko
 file(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
 qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES ${LANG_TS_SRC})
 
+
+#
+# Add qml files
+#
+
+set(QML_SOURCES
+        resources/qml/Root.qml
+        resources/qml/ChatPage.qml
+        resources/qml/CommunitiesList.qml
+        resources/qml/RoomList.qml
+        resources/qml/TimelineView.qml
+        resources/qml/Avatar.qml
+        resources/qml/Completer.qml
+        resources/qml/EncryptionIndicator.qml
+        resources/qml/ImageButton.qml
+        resources/qml/ElidedLabel.qml
+        resources/qml/MatrixText.qml
+        resources/qml/MatrixTextField.qml
+        resources/qml/ToggleButton.qml
+        resources/qml/UploadBox.qml
+        resources/qml/MessageInput.qml
+        resources/qml/MessageView.qml
+        resources/qml/PrivacyScreen.qml
+        resources/qml/Reactions.qml
+        resources/qml/ReplyPopup.qml
+        resources/qml/StatusIndicator.qml
+        resources/qml/TimelineRow.qml
+        resources/qml/TopBar.qml
+        resources/qml/QuickSwitcher.qml
+        resources/qml/ForwardCompleter.qml
+        resources/qml/SelfVerificationCheck.qml
+        resources/qml/TypingIndicator.qml
+        resources/qml/MessageInputWarning.qml
+        resources/qml/components/AdaptiveLayout.qml
+        resources/qml/components/AdaptiveLayoutElement.qml
+        resources/qml/components/AvatarListTile.qml
+        resources/qml/components/FlatButton.qml
+        resources/qml/components/MainWindowDialog.qml
+        resources/qml/components/NhekoTabButton.qml
+        resources/qml/components/NotificationBubble.qml
+        resources/qml/components/ReorderableListview.qml
+        resources/qml/components/SpaceMenuLevel.qml
+        resources/qml/components/TextButton.qml
+        resources/qml/components/UserListRow.qml
+        resources/qml/delegates/Encrypted.qml
+        resources/qml/delegates/FileMessage.qml
+        resources/qml/delegates/ImageMessage.qml
+        resources/qml/delegates/MessageDelegate.qml
+        resources/qml/delegates/NoticeMessage.qml
+        resources/qml/delegates/Pill.qml
+        resources/qml/delegates/Placeholder.qml
+        resources/qml/delegates/PlayableMediaMessage.qml
+        resources/qml/delegates/Redacted.qml
+        resources/qml/delegates/Reply.qml
+        resources/qml/delegates/TextMessage.qml
+        resources/qml/device-verification/DeviceVerification.qml
+        resources/qml/device-verification/DigitVerification.qml
+        resources/qml/device-verification/EmojiVerification.qml
+        resources/qml/device-verification/Failed.qml
+        resources/qml/device-verification/NewVerificationRequest.qml
+        resources/qml/device-verification/Success.qml
+        resources/qml/device-verification/Waiting.qml
+        resources/qml/dialogs/AliasEditor.qml
+        resources/qml/dialogs/ConfirmJoinRoomDialog.qml
+        resources/qml/dialogs/CreateDirect.qml
+        resources/qml/dialogs/CreateRoom.qml
+        resources/qml/dialogs/HiddenEventsDialog.qml
+        resources/qml/dialogs/ImageOverlay.qml
+        resources/qml/dialogs/ImagePackEditorDialog.qml
+        resources/qml/dialogs/ImagePackSettingsDialog.qml
+        resources/qml/dialogs/InputDialog.qml
+        resources/qml/dialogs/InviteDialog.qml
+        resources/qml/dialogs/JoinRoomDialog.qml
+        resources/qml/dialogs/LeaveRoomDialog.qml
+        resources/qml/dialogs/LogoutDialog.qml
+        resources/qml/dialogs/PhoneNumberInputDialog.qml
+        resources/qml/dialogs/PowerLevelEditor.qml
+        resources/qml/dialogs/PowerLevelSpacesApplyDialog.qml
+        resources/qml/dialogs/RawMessageDialog.qml
+        resources/qml/dialogs/ReadReceipts.qml
+        resources/qml/dialogs/RoomDirectory.qml
+        resources/qml/dialogs/RoomMembers.qml
+        resources/qml/dialogs/AllowedRoomsSettingsDialog.qml
+        resources/qml/dialogs/RoomSettings.qml
+        resources/qml/dialogs/UserProfile.qml
+        resources/qml/emoji/StickerPicker.qml
+        resources/qml/pages/LoginPage.qml
+        resources/qml/pages/RegisterPage.qml
+        resources/qml/pages/UserSettingsPage.qml
+        resources/qml/pages/WelcomePage.qml
+        resources/qml/ui/NhekoSlider.qml
+        resources/qml/ui/Ripple.qml
+        resources/qml/ui/Snackbar.qml
+        resources/qml/ui/Spinner.qml
+        resources/qml/ui/animations/BlinkAnimation.qml
+        resources/qml/ui/media/MediaControls.qml
+        resources/qml/voip/ActiveCallBar.qml
+        resources/qml/voip/CallDevices.qml
+        resources/qml/voip/CallInvite.qml
+        resources/qml/voip/CallInviteBar.qml
+        resources/qml/voip/DeviceError.qml
+        resources/qml/voip/PlaceCall.qml
+        resources/qml/voip/ScreenShare.qml
+        resources/qml/voip/VideoCall.qml
+        resources/qml/delegates/EncryptionEnabled.qml
+        resources/qml/ui/TimelineEffects.qml
+)
+qt_add_qml_module(nheko
+	URI im.nheko
+	NO_RESOURCE_TARGET_PATH
+	RESOURCE_PREFIX "/"
+	VERSION 1.1
+	DEPENDENCIES QtQml QtQuick # https://bugreports.qt.io/browse/QTBUG-102554
+	QML_FILES
+	${QML_SOURCES}
+	SOURCES
+	src/UserDirectoryModel.cpp
+	src/UserDirectoryModel.h
+	)
+	#qt_target_qml_sources(nheko
+	#	#PREFIX "/"
+	#)
+
+
 if(WIN32)
 	target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
 	if(MSVC)
@@ -712,7 +832,7 @@ else()
 	endif()
 endif()
 
-target_include_directories(nheko PRIVATE src includes)
+target_include_directories(nheko PRIVATE src includes src/timeline/ src/ui/ src/encryption/ src/voip/)
 
 if (USE_BUNDLED_CPPHTTPLIB)
 	target_include_directories(nheko PRIVATE third_party/cpp-httplib-0.5.12)

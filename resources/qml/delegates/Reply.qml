@@ -43,7 +43,7 @@ AbstractButton {
     implicitHeight: replyContainer.height
     implicitWidth: visible? colorLine.width+Math.max(replyContainer.implicitWidth,userName_.fullTextWidth) : 0 // visible? seems to be causing issues
 
-    CursorShape {
+    NhekoCursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
     }

@@ -15,7 +15,6 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Window
 import im.nheko
-import im.nheko.EmojiModel
 
 Pane {
     id: timelineRoot
@@ -93,13 +92,12 @@ Pane {
         id: fontMetrics
 
     }
-    RoomDirectoryModel {
-        id: publicRooms
-
-    }
     UserDirectoryModel {
         id: userDirectory
 
+    }
+    RoomDirectoryModel {
+        id: publicRooms
     }
     Component {
         id: readReceiptsDialog

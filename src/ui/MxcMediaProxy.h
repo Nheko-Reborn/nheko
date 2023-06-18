@@ -8,6 +8,7 @@
 #include <QMediaPlayer>
 #include <QObject>
 #include <QPointer>
+#include <QQuickItem>
 #include <QString>
 #include <QUrl>
 #include <QVideoSink>
@@ -21,6 +22,8 @@ class TimelineModel;
 class MxcMediaProxy : public QMediaPlayer
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(MxcMedia)
+
     Q_PROPERTY(TimelineModel *roomm READ room WRITE setRoom NOTIFY roomChanged REQUIRED)
     Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged)
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)

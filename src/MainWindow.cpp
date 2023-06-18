@@ -25,21 +25,15 @@
 #include "InviteesModel.h"
 #include "JdenticonProvider.h"
 #include "Logging.h"
-#include "LoginPage.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
 #include "MemberList.h"
 #include "MxcImageProvider.h"
 #include "PowerlevelsEditModels.h"
-#include "ReadReceiptsModel.h"
-#include "RegisterPage.h"
-#include "RoomDirectoryModel.h"
-#include "RoomsModel.h"
 #include "SingleImagePackModel.h"
 #include "TrayIcon.h"
 #include "UserDirectoryModel.h"
 #include "UserSettingsPage.h"
-#include "UsersModel.h"
 #include "Utils.h"
 #include "dock/Dock.h"
 #include "emoji/Provider.h"
@@ -48,12 +42,6 @@
 #include "timeline/DelegateChooser.h"
 #include "timeline/TimelineFilter.h"
 #include "timeline/TimelineViewManager.h"
-#include "ui/HiddenEvents.h"
-#include "ui/MxcAnimatedImage.h"
-#include "ui/MxcMediaProxy.h"
-#include "ui/NhekoCursorShape.h"
-#include "ui/NhekoDropArea.h"
-#include "ui/NhekoEventObserver.h"
 #include "ui/NhekoGlobalObject.h"
 #include "ui/RoomSummary.h"
 #include "ui/UIA.h"
@@ -83,7 +71,7 @@ MainWindow::MainWindow(QWindow *parent)
     registerQmlTypes();
 
     setColor(Theme::paletteFromTheme(userSettings_->theme()).window().color());
-    setSource(QUrl(QStringLiteral("qrc:///qml/Root.qml")));
+    setSource(QUrl(QStringLiteral("qrc:///resources/qml/Root.qml")));
 
     trayIcon_ = new TrayIcon(QStringLiteral(":/logos/nheko.svg"), this);
 
@@ -132,156 +120,57 @@ MainWindow::MainWindow(QWindow *parent)
 void
 MainWindow::registerQmlTypes()
 {
-    qmlRegisterUncreatableMetaObject(qml_mtx_events::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "MtxEvent",
-                                     QStringLiteral("Can't instantiate enum!"));
-    qmlRegisterUncreatableMetaObject(
-      olm::staticMetaObject, "im.nheko", 1, 0, "Olm", QStringLiteral("Can't instantiate enum!"));
-    qmlRegisterUncreatableMetaObject(crypto::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "Crypto",
-                                     QStringLiteral("Can't instantiate enum!"));
-    qmlRegisterUncreatableMetaObject(verification::staticMetaObject,
-                                     "im.nheko",
-                                     1,
-                                     0,
-                                     "VerificationStatus",
-                                     QStringLiteral("Can't instantiate enum!"));
+    // qmlRegisterUncreatableType<DeviceVerificationFlow>(
+    //   "im.nheko",
+    //   1,
+    //   0,
+    //   "DeviceVerificationFlow",
+    //   QStringLiteral("Can't create verification flow from QML!"));
+    // qmlRegisterUncreatableType<UserProfile>(
+    //   "im.nheko",
+    //   1,
+    //   0,
+    //   "UserProfileModel",
+    //   QStringLiteral("UserProfile needs to be instantiated on the C++ side"));
+    // qmlRegisterUncreatableType<MemberList>(
+    //   "im.nheko",
+    //   1,
+    //   0,
+    //   "MemberList",
+    //   QStringLiteral("MemberList needs to be instantiated on the C++ side"));
+    // qmlRegisterUncreatableType<RoomSettings>(
+    //   "im.nheko",
+    //   1,
+    //   0,
+    //   "RoomSettingsModel",
+    //   QStringLiteral("Room Settings needs to be instantiated on the C++ side"));
+    // qmlRegisterUncreatableType<TimelineModel>(
+    //   "im.nheko", 1, 0, "Room", QStringLiteral("Room needs to be instantiated on the C++ side"));
+    // qmlRegisterUncreatableType<ImagePackListModel>(
+    //   "im.nheko",
+    //   1,
+    //   0,
+    //   "ImagePackListModel",
+    //   QStringLiteral("ImagePackListModel needs to be instantiated on the C++ side"));
+    // qmlRegisterUncreatableType<SingleImagePackModel>(
+    //   "im.nheko",
+    //   1,
+    //   0,
+    //   "SingleImagePackModel",
+    //   QStringLiteral("SingleImagePackModel needs to be instantiated on the C++ side"));
+    // qmlRegisterUncreatableType<InviteesModel>(
+    //   "im.nheko",
+    //   1,
+    //   0,
+    //   "InviteesModel",
+    //   QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
 
-    qmlRegisterType<DelegateChoice>("im.nheko", 1, 0, "DelegateChoice");
-    qmlRegisterType<DelegateChooser>("im.nheko", 1, 0, "DelegateChooser");
-    qmlRegisterType<NhekoDropArea>("im.nheko", 1, 0, "NhekoDropArea");
-    qmlRegisterType<NhekoCursorShape>("im.nheko", 1, 0, "CursorShape");
-    qmlRegisterType<NhekoEventObserver>("im.nheko", 1, 0, "EventObserver");
-    qmlRegisterType<MxcAnimatedImage>("im.nheko", 1, 0, "MxcAnimatedImage");
-    qmlRegisterType<MxcMediaProxy>("im.nheko", 1, 0, "MxcMedia");
-    qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
-    qmlRegisterType<UserDirectoryModel>("im.nheko", 1, 0, "UserDirectoryModel");
-    qmlRegisterType<LoginPage>("im.nheko", 1, 0, "Login");
-    qmlRegisterType<RegisterPage>("im.nheko", 1, 0, "Registration");
-    qmlRegisterType<HiddenEvents>("im.nheko", 1, 0, "HiddenEvents");
-    qmlRegisterType<TimelineFilter>("im.nheko", 1, 0, "TimelineFilter");
-    qmlRegisterUncreatableType<RoomSummary>(
-      "im.nheko",
-      1,
-      0,
-      "RoomSummary",
-      QStringLiteral("Please use joinRoom to create a room summary."));
-    qmlRegisterUncreatableType<AliasEditingModel>(
-      "im.nheko",
-      1,
-      0,
-      "AliasEditingModel",
-      QStringLiteral("Please use editAliases to create the models"));
-
-    qmlRegisterUncreatableType<PowerlevelEditingModels>(
-      "im.nheko",
-      1,
-      0,
-      "PowerlevelEditingModels",
-      QStringLiteral("Please use editPowerlevels to create the models"));
-    qmlRegisterUncreatableType<DeviceVerificationFlow>(
-      "im.nheko",
-      1,
-      0,
-      "DeviceVerificationFlow",
-      QStringLiteral("Can't create verification flow from QML!"));
-    qmlRegisterUncreatableType<UserProfile>(
-      "im.nheko",
-      1,
-      0,
-      "UserProfileModel",
-      QStringLiteral("UserProfile needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<MemberList>(
-      "im.nheko",
-      1,
-      0,
-      "MemberList",
-      QStringLiteral("MemberList needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<RoomSettings>(
-      "im.nheko",
-      1,
-      0,
-      "RoomSettingsModel",
-      QStringLiteral("Room Settings needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<TimelineModel>(
-      "im.nheko", 1, 0, "Room", QStringLiteral("Room needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<ImagePackListModel>(
-      "im.nheko",
-      1,
-      0,
-      "ImagePackListModel",
-      QStringLiteral("ImagePackListModel needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<SingleImagePackModel>(
-      "im.nheko",
-      1,
-      0,
-      "SingleImagePackModel",
-      QStringLiteral("SingleImagePackModel needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<InviteesModel>(
-      "im.nheko",
-      1,
-      0,
-      "InviteesModel",
-      QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
-    qmlRegisterUncreatableType<ReadReceiptsProxy>(
-      "im.nheko",
-      1,
-      0,
-      "ReadReceiptsProxy",
-      QStringLiteral("ReadReceiptsProxy needs to be instantiated on the C++ side"));
-
-    qmlRegisterSingletonType<Clipboard>(
-      "im.nheko", 1, 0, "Clipboard", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return new Clipboard();
-      });
-    qmlRegisterSingletonType<Nheko>(
-      "im.nheko", 1, 0, "Nheko", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return new Nheko();
-      });
-    qmlRegisterSingletonType<UserSettingsModel>(
-      "im.nheko", 1, 0, "UserSettingsModel", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          return new UserSettingsModel();
-      });
-
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "Settings", userSettings_.data());
-
-    qmlRegisterUncreatableType<FilteredCommunitiesModel>(
-      "im.nheko",
-      1,
-      0,
-      "FilteredCommunitiesModel",
-      QStringLiteral("Use Communities.filtered() to create a FilteredCommunitiesModel"));
-
-    qmlRegisterUncreatableType<MediaUpload>(
-      "im.nheko", 1, 0, "MediaUpload", QStringLiteral("MediaUploads can not be created in Qml"));
-    qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
-                                     "im.nheko.EmojiModel",
-                                     1,
-                                     0,
-                                     "EmojiCategory",
-                                     QStringLiteral("Error: Only enums"));
-
-    qmlRegisterType<RoomDirectoryModel>("im.nheko", 1, 0, "RoomDirectoryModel");
-
-    qmlRegisterSingletonType<SelfVerificationStatus>(
-      "im.nheko", 1, 0, "SelfVerificationStatus", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          auto ptr = new SelfVerificationStatus();
-          QObject::connect(ChatPage::instance(),
-                           &ChatPage::initializeEmptyViews,
-                           ptr,
-                           &SelfVerificationStatus::invalidate);
-          return ptr;
-      });
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "MainWindow", this);
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "UIA", UIA::instance());
-    qmlRegisterSingletonInstance(
-      "im.nheko", 1, 0, "CallManager", ChatPage::instance()->callManager());
+    // qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
+    //                                  "im.nheko.EmojiModel",
+    //                                  1,
+    //                                  0,
+    //                                  "EmojiCategory",
+    //                                  QStringLiteral("Error: Only enums"));
 
     imgProvider = new MxcImageProvider();
     engine()->addImageProvider(QStringLiteral("MxcImage"), imgProvider);

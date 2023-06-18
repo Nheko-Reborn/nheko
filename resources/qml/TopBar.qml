@@ -369,7 +369,7 @@ Pane {
                 onAccepted: topBar.searchString = text
             }
         }
-        CursorShape {
+        NhekoCursorShape {
             anchors.bottomMargin: (pinnedMessages.visible ? pinnedMessages.height : 0) + (widgets.visible ? widgets.height : 0)
             anchors.fill: parent
             cursorShape: Qt.PointingHandCursor

@@ -12,7 +12,7 @@
 class NhekoCursorShape : public QQuickItem
 {
     Q_OBJECT
-
+    QML_ELEMENT
     Q_PROPERTY(
       Qt::CursorShape cursorShape READ cursorShape WRITE setCursorShape NOTIFY cursorShapeChanged)
 

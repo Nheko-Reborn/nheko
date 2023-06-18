@@ -167,12 +167,36 @@ private:
 class FilteredRoomlistModel final : public QSortFilterProxyModel
 {
     Q_OBJECT
+
+    QML_NAMED_ELEMENT(Rooms)
+    QML_SINGLETON
+
     Q_PROPERTY(
       TimelineModel *currentRoom READ currentRoom NOTIFY currentRoomChanged RESET resetCurrentRoom)
     Q_PROPERTY(RoomPreview currentRoomPreview READ currentRoomPreview NOTIFY currentRoomChanged
                  RESET resetCurrentRoom)
 public:
     FilteredRoomlistModel(RoomlistModel *model, QObject *parent = nullptr);
+
+    static FilteredRoomlistModel *create(QQmlEngine *qmlEngine, QJSEngine *)
+    {
+        // The instance has to exist before it is used. We cannot replace it.
+        Q_ASSERT(instance_);
+
+        // The engine has to have the same thread affinity as the singleton.
+        Q_ASSERT(qmlEngine->thread() == instance_->thread());
+
+        // There can only be one engine accessing the singleton.
+        static QJSEngine *s_engine = nullptr;
+        if (s_engine)
+            Q_ASSERT(qmlEngine == s_engine);
+        else
+            s_engine = qmlEngine;
+
+        QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
+        return instance_;
+    }
+
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
     bool filterAcceptsRow(int sourceRow, const QModelIndex &) const override;
 
@@ -249,4 +273,6 @@ private:
     FilterBy filterType = FilterBy::Nothing;
     QStringList hiddenTags, hiddenSpaces;
     bool hideDMs = false;
+
+    inline static FilteredRoomlistModel *instance_ = nullptr;
 };

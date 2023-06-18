@@ -96,29 +96,21 @@ TimelineViewManager::userColor(QString id, QColor background)
 TimelineViewManager::TimelineViewManager(CallManager *, ChatPage *parent)
   : QObject(parent)
   , rooms_(new RoomlistModel(this))
+  , frooms_(new FilteredRoomlistModel(this->rooms_))
   , communities_(new CommunitiesModel(this))
   , verificationManager_(new VerificationManager(this))
   , presenceEmitter(new PresenceEmitter(this))
 {
-    static auto self = this;
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "TimelineManager", self);
-    qmlRegisterSingletonType<RoomlistModel>(
-      "im.nheko", 1, 0, "Rooms", [](QQmlEngine *, QJSEngine *) -> QObject * {
-          auto ptr = new FilteredRoomlistModel(self->rooms_);
+    instance_ = this;
 
-          connect(self->communities_,
-                  &CommunitiesModel::currentTagIdChanged,
-                  ptr,
-                  &FilteredRoomlistModel::updateFilterTag);
-          connect(self->communities_,
-                  &CommunitiesModel::hiddenTagsChanged,
-                  ptr,
-                  &FilteredRoomlistModel::updateHiddenTagsAndSpaces);
-          return ptr;
-      });
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "Communities", self->communities_);
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "VerificationManager", verificationManager_);
-    qmlRegisterSingletonInstance("im.nheko", 1, 0, "Presence", presenceEmitter);
+    connect(this->communities_,
+            &CommunitiesModel::currentTagIdChanged,
+            frooms_,
+            &FilteredRoomlistModel::updateFilterTag);
+    connect(this->communities_,
+            &CommunitiesModel::hiddenTagsChanged,
+            frooms_,
+            &FilteredRoomlistModel::updateHiddenTagsAndSpaces);
 
     updateColorPalette();
 

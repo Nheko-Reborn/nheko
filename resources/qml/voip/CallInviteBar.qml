@@ -57,12 +57,12 @@ Rectangle {
             Layout.leftMargin: 4
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
-            source: CallManager.callType == CallType.VIDEO ? "qrc:/icons/icons/ui/video.svg" : "qrc:/icons/icons/ui/place-call.svg"
+            source: CallManager.callType == Voip.VIDEO ? "qrc:/icons/icons/ui/video.svg" : "qrc:/icons/icons/ui/place-call.svg"
         }
 
         Label {
             font.pointSize: fontMetrics.font.pointSize * 1.1
-            text: CallManager.callType == CallType.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
+            text: CallManager.callType == Voip.VIDEO ? qsTr("Video Call") : qsTr("Voice Call")
             color: "#000000"
         }
 
@@ -88,7 +88,7 @@ Rectangle {
 
         Button {
             Layout.rightMargin: 4
-            icon.source: CallManager.callType == CallType.VIDEO ? "qrc:/icons/icons/ui/video.svg" : "qrc:/icons/icons/ui/place-call.svg"
+            icon.source: CallManager.callType == Voip.VIDEO ? "qrc:/icons/icons/ui/video.svg" : "qrc:/icons/icons/ui/place-call.svg"
             text: qsTr("Accept")
             onClicked: {
                 if (CallManager.mics.length == 0) {
@@ -108,7 +108,7 @@ Rectangle {
             timelineRoot.destroyOnClose(dialog);
                     return ;
                 }
-                if (CallManager.callType == CallType.VIDEO && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
+                if (CallManager.callType == Voip.VIDEO && CallManager.cameras.length > 0 && !CallManager.cameras.includes(Settings.camera)) {
                     var dialog = deviceError.createObject(timelineRoot, {
                         "errorString": qsTr("Unknown camera: %1").arg(Settings.camera),
                         "image": ":/icons/icons/ui/video.svg"

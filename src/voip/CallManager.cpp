@@ -54,6 +54,27 @@ std::vector<std::string>
 getTurnURIs(const mtx::responses::TurnServer &turnServer);
 }
 
+CallManager *
+CallManager::create(QQmlEngine *qmlEngine, QJSEngine *)
+{
+    // The instance has to exist before it is used. We cannot replace it.
+    auto instance = ChatPage::instance()->callManager();
+    Q_ASSERT(instance);
+
+    // The engine has to have the same thread affinity as the singleton.
+    Q_ASSERT(qmlEngine->thread() == instance->thread());
+
+    // There can only be one engine accessing the singleton.
+    static QJSEngine *s_engine = nullptr;
+    if (s_engine)
+        Q_ASSERT(qmlEngine == s_engine);
+    else
+        s_engine = qmlEngine;
+
+    QJSEngine::setObjectOwnership(instance, QJSEngine::CppOwnership);
+    return instance;
+}
+
 CallManager::CallManager(QObject *parent)
   : QObject(parent)
   , session_(WebRTCSession::instance())

@@ -909,6 +909,8 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
   : QSortFilterProxyModel(parent)
   , roomlistmodel(model)
 {
+    instance_ = this;
+
     this->sortByImportance = UserSettings::instance()->sortByImportance();
     this->sortByAlphabet   = UserSettings::instance()->sortByAlphabet();
     setSourceModel(model);

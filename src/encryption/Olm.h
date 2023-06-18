@@ -9,10 +9,13 @@
 #include <mtx/events/encrypted.hpp>
 #include <mtxclient/crypto/client.hpp>
 
+#include <QQmlEngine>
+
 #include <CacheCryptoStructs.h>
 
 namespace olm {
 Q_NAMESPACE
+QML_NAMED_ELEMENT(Olm)
 
 enum DecryptionErrorCode
 {

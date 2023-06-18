@@ -87,7 +87,7 @@ Container {
         x: parent.preferredWidth
         z: 3
 
-        CursorShape {
+        NhekoCursorShape {
             height: parent.height
             width: container.splitterGrabMargin * 2
             x: -container.splitterGrabMargin

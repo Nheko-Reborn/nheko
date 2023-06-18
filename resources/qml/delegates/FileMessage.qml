@@ -49,7 +49,7 @@ Item {
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
-            CursorShape {
+            NhekoCursorShape {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
             }

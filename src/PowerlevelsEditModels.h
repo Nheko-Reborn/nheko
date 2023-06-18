@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QQmlEngine>
 #include <QSortFilterProxyModel>
 
 #include <mtx/events/power_levels.hpp>
@@ -195,6 +196,9 @@ public:
 class PowerlevelEditingModels final : public QObject
 {
     Q_OBJECT
+
+    QML_ELEMENT
+    QML_UNCREATABLE("Please use editPowerlevels to create the models")
 
     Q_PROPERTY(PowerlevelsUserListModel *users READ users CONSTANT)
     Q_PROPERTY(PowerlevelsTypeListModel *types READ types CONSTANT)

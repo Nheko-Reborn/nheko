@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QQmlEngine>
 #include <QVector>
 
 #include <mtx/events/canonical_alias.hpp>
@@ -29,6 +30,9 @@ signals:
 class AliasEditingModel final : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("Please use editAliases to create the models")
+
     Q_PROPERTY(bool canAdvertize READ canAdvertize CONSTANT)
 
 public:

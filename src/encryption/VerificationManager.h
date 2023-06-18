@@ -6,6 +6,7 @@
 
 #include <QHash>
 #include <QObject>
+#include <QQmlEngine>
 #include <QSharedPointer>
 
 #include <mtx/events.hpp>
@@ -21,8 +22,30 @@ class VerificationManager final : public QObject
 {
     Q_OBJECT
 
+    QML_ELEMENT
+    QML_SINGLETON
+
 public:
-    VerificationManager(TimelineViewManager *o = nullptr);
+    VerificationManager(TimelineViewManager *o);
+
+    static VerificationManager *create(QQmlEngine *qmlEngine, QJSEngine *)
+    {
+        // The instance has to exist before it is used. We cannot replace it.
+        Q_ASSERT(instance_);
+
+        // The engine has to have the same thread affinity as the singleton.
+        Q_ASSERT(qmlEngine->thread() == instance_->thread());
+
+        // There can only be one engine accessing the singleton.
+        static QJSEngine *s_engine = nullptr;
+        if (s_engine)
+            Q_ASSERT(qmlEngine == s_engine);
+        else
+            s_engine = qmlEngine;
+
+        QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
+        return instance_;
+    }
 
     Q_INVOKABLE void removeVerificationFlow(DeviceVerificationFlow *flow);
     void verifyUser(QString userid);
@@ -45,4 +68,6 @@ private:
     QHash<QString, QSharedPointer<DeviceVerificationFlow>> dvList;
     bool isInitialSync_ = false;
     RoomlistModel *rooms_;
+
+    inline static VerificationManager *instance_ = nullptr;
 };

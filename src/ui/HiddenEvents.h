@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QString>
 #include <QVariantList>
 
@@ -13,6 +14,7 @@
 class HiddenEvents : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(QString roomid READ roomid WRITE setRoomid NOTIFY roomidChanged REQUIRED)
     Q_PROPERTY(QVariantList hiddenEvents READ hiddenEvents NOTIFY hiddenEventsChanged)
 public:

@@ -332,7 +332,7 @@ Item {
                             sourceSize.height: button.height
                             sourceSize.width: button.width
                         }
-                        CursorShape {
+                        NhekoCursorShape {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                         }
@@ -590,7 +590,7 @@ Item {
                             elideWidth: userInfo.remainingWidth - Math.min(statusMsg.implicitWidth, userInfo.remainingWidth / 3)
                             text: userName
                         }
-                        CursorShape {
+                        NhekoCursorShape {
                             anchors.fill: parent
                             cursorShape: Qt.PointingHandCursor
                         }

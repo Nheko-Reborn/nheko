@@ -1,4 +1,0 @@
-module im.nheko.UI
-NhekoSlider 1.0 NhekoSlider.qml
-Ripple 1.0 Ripple.qml
-Spinner 1.0 Spinner.qml

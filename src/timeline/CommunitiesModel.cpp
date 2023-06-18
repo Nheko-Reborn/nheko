@@ -22,6 +22,7 @@ CommunitiesModel::CommunitiesModel(QObject *parent)
   , hiddenTagIds_{UserSettings::instance()->hiddenTags()}
   , mutedTagIds_{UserSettings::instance()->mutedTags()}
 {
+    instance_ = this;
 }
 
 QHash<int, QByteArray>

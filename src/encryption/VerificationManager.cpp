@@ -15,6 +15,7 @@ VerificationManager::VerificationManager(TimelineViewManager *o)
   : QObject(o)
   , rooms_(o->rooms())
 {
+    instance_ = this;
 }
 
 static bool

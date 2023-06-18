@@ -102,7 +102,7 @@ AbstractButton {
             target: Presence
         }
     }
-    CursorShape {
+    NhekoCursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
     }

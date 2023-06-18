@@ -44,7 +44,7 @@ TextArea {
     onPressAndHold: (event) => event.accepted = false
     onPressed: (event) => event.accepted = (event.button == Qt.LeftButton)
 
-    CursorShape {
+    NhekoCursorShape {
         id: cs
 
         anchors.fill: parent

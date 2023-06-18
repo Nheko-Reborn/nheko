@@ -34,12 +34,34 @@ class TimelineViewManager final : public QObject
 {
     Q_OBJECT
 
+    QML_NAMED_ELEMENT(TimelineManager)
+    QML_SINGLETON
+
     Q_PROPERTY(
       bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY isConnectedChanged)
 
 public:
     TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
+
+    static TimelineViewManager *create(QQmlEngine *qmlEngine, QJSEngine *)
+    {
+        // The instance has to exist before it is used. We cannot replace it.
+        Q_ASSERT(instance_);
+
+        // The engine has to have the same thread affinity as the singleton.
+        Q_ASSERT(qmlEngine->thread() == instance_->thread());
+
+        // There can only be one engine accessing the singleton.
+        static QJSEngine *s_engine = nullptr;
+        if (s_engine)
+            Q_ASSERT(qmlEngine == s_engine);
+        else
+            s_engine = qmlEngine;
+
+        QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
+        return instance_;
+    }
 
     void sync(const mtx::responses::Sync &sync_);
 
@@ -123,6 +145,7 @@ private:
     bool isConnected_   = true;
 
     RoomlistModel *rooms_          = nullptr;
+    FilteredRoomlistModel *frooms_ = nullptr;
     CommunitiesModel *communities_ = nullptr;
 
     // don't move this above the rooms_
@@ -130,4 +153,6 @@ private:
     PresenceEmitter *presenceEmitter          = nullptr;
 
     QHash<QPair<QString, quint64>, QColor> userColors;
+
+    inline static TimelineViewManager *instance_ = nullptr;
 };

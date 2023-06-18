@@ -213,7 +213,7 @@ ApplicationWindow {
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: Nheko.openLink(link)
 
-                CursorShape {
+                NhekoCursorShape {
                     anchors.fill: parent
                     cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }

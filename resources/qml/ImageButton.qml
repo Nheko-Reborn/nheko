@@ -31,7 +31,7 @@ AbstractButton {
         sourceSize.height: button.height
         sourceSize.width: button.width
     }
-    CursorShape {
+    NhekoCursorShape {
         id: mouseArea
 
         anchors.fill: parent

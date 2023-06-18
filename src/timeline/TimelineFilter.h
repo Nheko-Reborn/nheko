@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <QQmlEngine>
 #include <QSortFilterProxyModel>
 #include <QString>
 
@@ -14,6 +15,7 @@
 class TimelineFilter : public QSortFilterProxyModel
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(QString filterByThread READ filterByThread WRITE setThreadId NOTIFY threadIdChanged)
     Q_PROPERTY(QString filterByContent READ filterByContent WRITE setContentFilter NOTIFY

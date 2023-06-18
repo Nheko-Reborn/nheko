@@ -11,6 +11,7 @@
 #include <QTimer>
 #include <QVariant>
 
+#include <mtx/responses/common.hpp>
 #include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
@@ -36,6 +37,7 @@ struct RelatedInfo;
 
 namespace qml_mtx_events {
 Q_NAMESPACE
+QML_NAMED_ELEMENT(MtxEvent)
 
 enum EventType
 {
@@ -193,6 +195,9 @@ class TimelineViewManager;
 class TimelineModel final : public QAbstractListModel
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(Room)
+    QML_UNCREATABLE("")
+
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
     Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
                  typingUsersChanged)

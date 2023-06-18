@@ -32,7 +32,7 @@ AbstractButton {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    CursorShape {
+    NhekoCursorShape {
         id: mouseArea
 
         anchors.fill: parent
