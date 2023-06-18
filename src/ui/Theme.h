@@ -6,10 +6,13 @@
 
 #include <QColor>
 #include <QPalette>
+#include <QQmlEngine>
 
 class Theme final : public QPalette
 {
     Q_GADGET
+    QML_ANONYMOUS
+
     Q_PROPERTY(QColor sidebarBackground READ sidebarBackground CONSTANT)
     Q_PROPERTY(QColor alternateButton READ alternateButton CONSTANT)
     Q_PROPERTY(QColor separator READ separator CONSTANT)
