@@ -367,6 +367,8 @@ Item {
     TimelineEffects {
         id: timelineEffects
 
+        shouldEffectsRun: timelineView.shouldEffectsRun
+
         anchors.fill: parent
     }
     NhekoDropArea {
@@ -416,7 +418,7 @@ Item {
             effectsTimer.restart();
         }
         function onShowRawMessageDialog(rawMessage) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/RawMessageDialog.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/RawMessageDialog.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
                         "rawMessage": rawMessage

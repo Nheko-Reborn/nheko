@@ -126,7 +126,7 @@ Page {
                     width: 22
 
                     onClicked: {
-                        var component = Qt.createComponent("qrc:/qml/QuickSwitcher.qml");
+                        var component = Qt.createComponent("qrc:/resources/qml/QuickSwitcher.qml");
                         if (component.status == Component.Ready) {
                             var quickSwitch = component.createObject(timelineRoot);
                             quickSwitch.open();
@@ -162,7 +162,7 @@ Page {
 
             function openUserProfile() {
                 Nheko.updateUserProfile();
-                var component = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml");
+                var component = Qt.createComponent("qrc:/resources/qml/dialogs/UserProfile.qml");
                 if (component.status == Component.Ready) {
                     var userProfile = component.createObject(timelineRoot, {
                             "profile": Nheko.currentUser

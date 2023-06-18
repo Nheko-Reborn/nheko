@@ -36,7 +36,7 @@ Pane {
     //    repeat: true
     //}
     function showAliasEditor(settings) {
-        var component = Qt.createComponent("qrc:/qml/dialogs/AliasEditor.qml");
+        var component = Qt.createComponent("qrc:/resources/qml/dialogs/AliasEditor.qml");
         if (component.status == Component.Ready) {
             var dialog = component.createObject(timelineRoot, {
                     "roomSettings": settings
@@ -48,7 +48,7 @@ Pane {
         }
     }
     function showAllowedRoomsEditor(settings) {
-        var component = Qt.createComponent("qrc:/qml/dialogs/AllowedRoomsSettingsDialog.qml");
+        var component = Qt.createComponent("qrc:/resources/qml/dialogs/AllowedRoomsSettingsDialog.qml");
         if (component.status == Component.Ready) {
             var dialog = component.createObject(timelineRoot, {
                     "roomSettings": settings
@@ -60,7 +60,7 @@ Pane {
         }
     }
     function showPLEditor(settings) {
-        var component = Qt.createComponent("qrc:/qml/dialogs/PowerLevelEditor.qml");
+        var component = Qt.createComponent("qrc:/resources/qml/dialogs/PowerLevelEditor.qml");
         if (component.status == Component.Ready) {
             var dialog = component.createObject(timelineRoot, {
                     "roomSettings": settings
@@ -72,7 +72,7 @@ Pane {
         }
     }
     function showSpacePLApplyPrompt(settings, editingModel) {
-        var component = Qt.createComponent("qrc:/qml/dialogs/PowerLevelSpacesApplyDialog.qml");
+        var component = Qt.createComponent("qrc:/resources/qml/dialogs/PowerLevelSpacesApplyDialog.qml");
         if (component.status == Component.Ready) {
             var dialog = component.createObject(timelineRoot, {
                     "roomSettings": settings,
@@ -114,7 +114,7 @@ Pane {
         sequence: "Ctrl+K"
 
         onActivated: {
-            var component = Qt.createComponent("qrc:/qml/QuickSwitcher.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/QuickSwitcher.qml");
             if (component.status == Component.Ready) {
                 var quickSwitch = component.createObject(timelineRoot);
                 quickSwitch.open();
@@ -142,7 +142,7 @@ Pane {
     }
     Connections {
         function onOpenJoinRoomDialog() {
-            var component = Qt.createComponent("qrc:/qml/dialogs/JoinRoomDialog.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/JoinRoomDialog.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot);
                 dialog.show();
@@ -152,7 +152,7 @@ Pane {
             }
         }
         function onOpenLogoutDialog() {
-            var component = Qt.createComponent("qrc:/qml/dialogs/LogoutDialog.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/LogoutDialog.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot);
                 dialog.open();
@@ -162,7 +162,7 @@ Pane {
             }
         }
         function onShowRoomJoinPrompt(summary) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/ConfirmJoinRoomDialog.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/ConfirmJoinRoomDialog.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
                         "summary": summary
@@ -178,7 +178,7 @@ Pane {
     }
     Connections {
         function onNewDeviceVerificationRequest(flow) {
-            var component = Qt.createComponent("qrc:/qml/device-verification/DeviceVerification.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/device-verification/DeviceVerification.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
                         "flow": flow
@@ -194,7 +194,7 @@ Pane {
     }
     Connections {
         function onOpenInviteUsersDialog(invitees) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/InviteDialog.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/InviteDialog.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
                         "invitees": invitees
@@ -206,7 +206,7 @@ Pane {
             }
         }
         function onOpenLeaveRoomDialog(roomid, reason) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/LeaveRoomDialog.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/LeaveRoomDialog.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
                         "roomId": roomid,
@@ -219,7 +219,7 @@ Pane {
             }
         }
         function onOpenProfile(profile) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/UserProfile.qml");
             if (component.status == Component.Ready) {
                 var userProfile = component.createObject(timelineRoot, {
                         "profile": profile
@@ -231,7 +231,7 @@ Pane {
             }
         }
         function onOpenRoomMembersDialog(members, room) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/RoomMembers.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/RoomMembers.qml");
             if (component.status == Component.Ready) {
                 var membersDialog = component.createObject(timelineRoot, {
                         "members": members,
@@ -244,7 +244,7 @@ Pane {
             }
         }
         function onOpenRoomSettingsDialog(settings) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/RoomSettings.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/RoomSettings.qml");
             if (component.status == Component.Ready) {
                 var roomSettings = component.createObject(timelineRoot, {
                         "roomSettings": settings
@@ -256,7 +256,7 @@ Pane {
             }
         }
         function onShowImageOverlay(room, eventId, url, originalWidth, proportionalHeight) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/ImageOverlay.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/ImageOverlay.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
                         "room": room,
@@ -272,7 +272,7 @@ Pane {
             }
         }
         function onShowImagePackSettings(room, packlist) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/ImagePackSettingsDialog.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/ImagePackSettingsDialog.qml");
             if (component.status == Component.Ready) {
                 var packSet = component.createObject(timelineRoot, {
                         "room": room,
@@ -290,7 +290,7 @@ Pane {
     Connections {
         function onNewInviteState() {
             if (CallManager.haveCallInvite && Settings.mobileMode) {
-                var component = Qt.createComponent("qrc:/qml/voip/CallInvite.qml");
+                var component = Qt.createComponent("qrc:/resources/qml/voip/CallInvite.qml");
                 if (component.status == Component.Ready) {
                     var dialog = component.createObject(timelineRoot);
                     dialog.open();
