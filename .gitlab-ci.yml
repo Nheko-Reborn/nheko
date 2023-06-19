@@ -200,7 +200,10 @@ build-flatpak:
     - docker-${ARCH}
   parallel:
     matrix:
-      - ARCH: [amd64, arm64]
+      - ARCH: amd64
+        JOBS: 0
+      - ARCH: arm64
+        JOBS: 1
   before_script:
     - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - apt-get update && apt-get -y install flatpak-builder git python3 curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
@@ -213,7 +216,7 @@ build-flatpak:
     - mkdir -p build-flatpak
     - cd build-flatpak
     - echo -e "\e[0Ksection_start:`date +%s`:build_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mBuilding flatpak"
-    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../im.nheko.Nheko.yaml
+    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../im.nheko.Nheko.yaml --jobs=$JOBS
     - echo -e "\e[0Ksection_end:`date +%s`:build_flatpak\r\e[0K"
     - flatpak build-bundle repo nheko-${ARCH}.flatpak im.nheko.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
