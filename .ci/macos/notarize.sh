@@ -20,25 +20,23 @@ if [ -n "${CI_PIPELINE_TRIGGERED:-}" ] && [ "${TRIGGERED_BY:-}" = "cirrus" ]; th
   unzip binaries.zip
   # we zip 'build/nheko.app' in cirrus ci, cirrus itself puts it in a 'build' directory
   # so move it to the right place for the rest of the process.
-  ( cd build || exit
-    unzip nheko.zip
-  )
+  unzip nheko.zip
 fi
 
-if [ ! -d "build/nheko.app" ]; then
+if [ ! -d "nheko.app" ]; then
   echo "nheko.app is missing, you did something wrong!"
   exit 1
 fi
 
 echo "[INFO] Signing app contents"
-find "build/nheko.app/Contents"|while read -r fname; do
+find "nheko.app/Contents"|while read -r fname; do
     if [ -f "$fname" ]; then
         echo "[INFO] Signing $fname"
         codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "$fname"
     fi
 done
 
-codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "build/nheko.app"
+codesign --force --timestamp --options=runtime --sign "${APPLE_DEV_IDENTITY}" "nheko.app"
 
 NOTARIZE_SUBMIT_LOG=$(mktemp /tmp/notarize-submit.XXXXXX)
 NOTARIZE_STATUS_LOG=$(mktemp /tmp/notarize-status.XXXXXX)

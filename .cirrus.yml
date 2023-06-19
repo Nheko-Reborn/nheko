@@ -13,9 +13,9 @@ task:
     - export PATH="$(brew --prefix qt5)/bin/:${PATH}"
     - ./.ci/macos/build.sh
   zip_script:
-    - ditto -c -k --sequesterRsrc --keepParent build/nheko.app build/nheko.zip
+    - ditto -c -k --sequesterRsrc --keepParent nheko.app nheko.zip
   gitlab_script:
     - >
       [ "${CIRRUS_BRANCH}" == "master" ] && curl -X POST --fail -F token="${GITLAB_TRIGGER_TOKEN}" -F ref="${CIRRUS_BRANCH}" -F "variables[TRIGGER_BUILD_ID]=${CIRRUS_BUILD_ID}" -F "variables[TRIGGERED_BY]=cirrus" "https://nheko.im/api/v4/projects/2/trigger/pipeline" || true
   binaries_artifacts:
-    path: build/nheko.zip
+    path: nheko.zip

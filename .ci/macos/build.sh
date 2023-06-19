@@ -21,15 +21,15 @@ cmake -GNinja -S. -Bbuild \
       -DUSE_BUNDLED_OPENSSL=ON \
       -DCI_BUILD=ON
 cmake --build build
+cmake --install build
 ( cd build
   git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
   ( cd qt-jdenticon
     qmake
     make -j 4
-    cp libqtjdenticon.dylib ../nheko.app/Contents/MacOS
+    cp libqtjdenticon.dylib ../../nheko.app/Contents/MacOS
   )
   # "$(brew --prefix qt6)/bin/macdeployqt" nheko.app -always-overwrite -qmldir=../resources/qml/
   # # workaround for https://bugreports.qt.io/browse/QTBUG-100686
   # cp "$(brew --prefix brotli)/lib/libbrotlicommon.1.dylib" nheko.app/Contents/Frameworks/libbrotlicommon.1.dylib
-  cmake --install .
 )

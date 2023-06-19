@@ -155,7 +155,7 @@ build-macos:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   artifacts:
     paths:
-      - build/nheko.app # not putting this in 'artifacts' subdir because we don't want to put it on releases
+      - nheko.app # not putting this in 'artifacts' subdir because we don't want to put it on releases
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos-app
     expose_as: 'macos-app'
     public: false
