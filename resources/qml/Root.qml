@@ -98,6 +98,7 @@ Pane {
     }
     RoomDirectoryModel {
         id: publicRooms
+
     }
     Component {
         id: readReceiptsDialog

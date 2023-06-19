@@ -37,7 +37,7 @@ AbstractButton {
         enabled: false
         font.pixelSize: avatar.height / 2
         horizontalAlignment: Text.AlignHCenter
-        text: TimelineManager.escapeEmoji(displayName ? String.fromCodePoint(displayName.codePointAt(0)) : "")
+        text: TimelineManager.escapeEmoji(avatar.displayName ? String.fromCodePoint(avatar.displayName.codePointAt(0)) : "")
         textFormat: Text.RichText
         verticalAlignment: Text.AlignVCenter
         visible: img.status != Image.Ready && !Settings.useIdenticon
@@ -46,7 +46,7 @@ AbstractButton {
         id: identicon
 
         anchors.fill: parent
-        source: Settings.useIdenticon ? ("image://jdenticon/" + (userid !== "" ? userid : roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25)) : ""
+        source: Settings.useIdenticon ? ("image://jdenticon/" + (avatar.userid !== "" ? avatar.userid : avatar.roomid) + "?radius=" + (Settings.avatarCircles ? 100 : 25)) : ""
         visible: Settings.useIdenticon && img.status != Image.Ready
     }
     Image {
@@ -62,7 +62,7 @@ AbstractButton {
         } else if (avatar.url.startsWith('image://')) {
             return avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale");
         } else if (avatar.url.startsWith(':/')) {
-            return "image://colorimage/" + avatar.url + "?" + textColor;
+            return "image://colorimage/" + avatar.url + "?" + label.color;
         } else {
             return "";
         }
@@ -73,7 +73,7 @@ AbstractButton {
         id: onlineIndicator
 
         function updatePresence() {
-            switch (Presence.userPresence(userid)) {
+            switch (Presence.userPresence(avatar.userid)) {
             case "online":
                 return Nheko.theme.online;
             case "unavailable":
@@ -90,12 +90,12 @@ AbstractButton {
         color: updatePresence()
         height: avatar.height / 6
         radius: Settings.avatarCircles ? height / 2 : height / 8
-        visible: !!userid
+        visible: !!avatar.userid
         width: height
 
         Connections {
             function onPresenceChanged(id) {
-                if (id == userid)
+                if (id == avatar.userid)
                     onlineIndicator.color = onlineIndicator.updatePresence();
             }
 

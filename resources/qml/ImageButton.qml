@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+pragma ComponentBehavior
 import "./ui"
 import QtQuick 2.3
 import QtQuick.Controls 2.3
@@ -27,7 +28,7 @@ AbstractButton {
         // Workaround, can't get icon.source working for now...
         anchors.fill: parent
         fillMode: Image.PreserveAspectFit
-        source: image != "" ? ("image://colorimage/" + image + "?" + ((button.hovered && changeColorOnHover) ? highlightColor : buttonTextColor)) : ""
+        source: button.image != "" ? ("image://colorimage/" + button.image + "?" + ((button.hovered && button.changeColorOnHover) ? button.highlightColor : button.buttonTextColor)) : ""
         sourceSize.height: button.height
         sourceSize.width: button.width
     }
@@ -38,7 +39,7 @@ AbstractButton {
         cursorShape: Qt.PointingHandCursor
     }
     Ripple {
-        color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
+        color: Qt.rgba(button.buttonTextColor.r, button.buttonTextColor.g, button.buttonTextColor.b, 0.5)
         enabled: button.ripple
     }
 }

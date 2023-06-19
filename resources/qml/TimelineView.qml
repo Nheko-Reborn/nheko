@@ -367,9 +367,8 @@ Item {
     TimelineEffects {
         id: timelineEffects
 
-        shouldEffectsRun: timelineView.shouldEffectsRun
-
         anchors.fill: parent
+        shouldEffectsRun: timelineView.shouldEffectsRun
     }
     NhekoDropArea {
         anchors.fill: parent

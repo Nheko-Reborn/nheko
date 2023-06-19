@@ -39,7 +39,6 @@ TextEdit {
     }
     onLinkActivated: Nheko.openLink(link)
 
-
     //// propagate events up
     //onPressAndHold: (event) => event.accepted = false
     //onPressed: (event) => event.accepted = (event.button == Qt.LeftButton)

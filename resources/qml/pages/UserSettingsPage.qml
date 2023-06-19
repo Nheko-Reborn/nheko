@@ -1,6 +1,7 @@
 // SPDX-FileCopyrightText: Nheko Contributors
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
+
 pragma ComponentBehavior: Bound
 import ".."
 import "../ui"
