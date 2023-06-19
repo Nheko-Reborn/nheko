@@ -67,8 +67,8 @@ Popup {
 
             Avatar {
                 Layout.rightMargin: cameraCombo.visible ? 16 : 64
-                width: Nheko.avatarSize
-                height: Nheko.avatarSize
+                Layout.preferredWidth: Nheko.avatarSize
+                Layout.preferredHeight: Nheko.avatarSize
                 url: room.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 displayName: room.roomName
                 roomid: room.roomId
