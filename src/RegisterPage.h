@@ -14,7 +14,7 @@
 class RegisterPage : public QObject
 {
     Q_OBJECT
-    QML_ELEMENT
+    QML_NAMED_ELEMENT(Registration)
 
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
     Q_PROPERTY(QString hsError READ hsError NOTIFY hsErrorChanged)
