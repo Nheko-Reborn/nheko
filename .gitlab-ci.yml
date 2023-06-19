@@ -189,7 +189,7 @@ codesign-macos:
   artifacts:
     paths:
       - artifacts/nheko-${CI_COMMIT_SHORT_SHA}-${PLAT}.dmg
-      - /tmp/notarize*
+      - artifacts/notarize*
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos
 
 build-flatpak:
