@@ -100,7 +100,7 @@ Control {
 
         // Broken, see https://bugreports.qt.io/browse/QTBUG-102811
         //reuseItems: true
-        implicitWidth: listView.contentItem.childrenRect.width
+        implicitWidth: Math.max(listView.contentItem.childrenRect.width, 20)
         model: completer
         pixelAligned: true
         spacing: rowSpacing

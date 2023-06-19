@@ -436,7 +436,7 @@ TimelineViewManager::focusMessageInput()
     emit focusInput();
 }
 
-QObject *
+QAbstractItemModel *
 TimelineViewManager::completerFor(const QString &completerName, const QString &roomId)
 {
     if (completerName == QLatin1String("user")) {
