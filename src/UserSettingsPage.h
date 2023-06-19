@@ -456,6 +456,7 @@ class UserSettingsModel : public QAbstractListModel
 {
     Q_OBJECT
     QML_ELEMENT
+    QML_SINGLETON
 
     enum Indices
     {

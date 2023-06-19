@@ -154,7 +154,7 @@ public:
         void restoreCollapsed();
     };
 
-    CommunitiesModel(QObject *parent = nullptr);
+    CommunitiesModel(QObject *parent);
 
     static CommunitiesModel *create(QQmlEngine *qmlEngine, QJSEngine *)
     {
