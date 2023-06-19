@@ -5,9 +5,9 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
-import im.nheko 1.0
 
 Popup {
+    id: r
     property string errorString
     property var image
 
@@ -24,11 +24,11 @@ Popup {
         Image {
             Layout.preferredWidth: 16
             Layout.preferredHeight: 16
-            source: "image://colorimage/" + image + "?" + palette.windowText
+            source: "image://colorimage/" + r.image + "?" + palette.windowText
         }
 
         Label {
-            text: errorString
+            text: r.errorString
             color: palette.windowText
         }
 

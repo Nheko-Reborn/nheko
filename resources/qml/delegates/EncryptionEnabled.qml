@@ -4,7 +4,6 @@
 
 import ".."
 import QtQuick 2.15
-import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import im.nheko 1.0
 
@@ -15,7 +14,6 @@ Rectangle {
 
     radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
     width: parent.width ? Math.min(parent.width, 700) : 0
-    anchors.horizontalCenter: parent.horizontalCenter
     height: contents.implicitHeight + Nheko.paddingMedium * 2
     color: palette.alternateBase
     border.color: Nheko.theme.green
@@ -31,8 +29,8 @@ Rectangle {
         Image {
             source: "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?" + Nheko.theme.green
             Layout.alignment: Qt.AlignVCenter
-            width: 24
-            height: width
+            Layout.preferredWidth: 24
+            Layout.preferredHeight: 24
         }
 
         Column {
