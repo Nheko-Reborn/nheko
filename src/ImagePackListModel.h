@@ -8,10 +8,14 @@
 #include <QQmlEngine>
 #include <QSharedPointer>
 
-class SingleImagePackModel;
-class ImagePackListModel final : public QAbstractListModel
+#include "SingleImagePackModel.h"
+
+class ImagePackListModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("")
+
     Q_PROPERTY(bool containsAccountPack READ containsAccountPack CONSTANT)
 public:
     enum Roles
