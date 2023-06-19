@@ -47,7 +47,7 @@ Popup {
 
             Layout.fillWidth: true
             model: CallManager.screenShareTypeList()
-            onCurrentIndexChanged: CallManager.setVoip(currentIndex);
+            onCurrentIndexChanged: CallManager.setScreenShareType(currentIndex);
           }
         }
 

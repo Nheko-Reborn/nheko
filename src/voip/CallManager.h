@@ -27,7 +27,7 @@ struct TurnServer;
 
 class QUrl;
 
-class CallManager final : public QObject
+class CallManager : public QObject
 {
     Q_OBJECT
 
