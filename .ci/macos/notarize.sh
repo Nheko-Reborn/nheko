@@ -42,10 +42,7 @@ NOTARIZE_SUBMIT_LOG=$(mktemp /tmp/notarize-submit.XXXXXX)
 NOTARIZE_STATUS_LOG=$(mktemp /tmp/notarize-status.XXXXXX)
 
 finish() {
-  # rm "$NOTARIZE_SUBMIT_LOG" "$NOTARIZE_STATUS_LOG"
-  mkdir -p artifacts
-  cp "$NOTARIZE_SUBMIT_LOG" artifacts/
-  cp "$NOTARIZE_STATUS_LOG" artifacts/
+  rm "$NOTARIZE_SUBMIT_LOG" "$NOTARIZE_STATUS_LOG"
 }
 trap finish EXIT
 
