@@ -95,37 +95,11 @@ AbstractButton {
             onClicked: room.openUserProfile(userId)
         }
 
-        MessageDelegate {
+        Rectangle {
             Layout.leftMargin: 4
-            Layout.preferredHeight: height
-            id: reply
-            blurhash: r.blurhash
-            body: r.body
-            formattedBody: r.formattedBody
-            eventId: r.eventId
-            filename: r.filename
-            filesize: r.filesize
-            proportionalHeight: r.proportionalHeight
-            type: r.type
-            typeString: r.typeString ?? ""
-            url: r.url
-            thumbnailUrl: r.thumbnailUrl
-            duration: r.duration
-            originalWidth: r.originalWidth
-            isOnlyEmoji: r.isOnlyEmoji
-            isStateEvent: r.isStateEvent
-            userId: r.userId
-            userName: r.userName
-            roomTopic: r.roomTopic
-            roomName: r.roomName
-            callType: r.callType
-            relatedEventCacheBuster: r.relatedEventCacheBuster
-            encryptionError: r.encryptionError
-            // This is disabled so that left clicking the reply goes to its location
-            enabled: false
+            Layout.preferredHeight: 20
             Layout.fillWidth: true
-            isReply: true
-            keepFullText: r.keepFullText
+            color: "green"
         }
 
     }

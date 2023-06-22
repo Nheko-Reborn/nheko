@@ -20,6 +20,7 @@ Item {
     property int availableWidth: width
     property int padding: Nheko.paddingMedium
     property string searchString: ""
+    property Room roommodel: room
 
     // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
     Connections {
@@ -58,173 +59,33 @@ Item {
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
 
-        delegate: Item {
+        delegate: EventDelegateChooser {
             id: wrapper
-
-            required property string blurhash
-            required property string body
-            required property string callType
-            required property var day
-            required property string duration
-            required property int encryptionError
-            required property string eventId
-            required property string filename
-            required property string filesize
-            required property string formattedBody
-            required property int index
-            required property bool isEditable
-            required property bool isEdited
-            required property bool isEncrypted
-            required property bool isOnlyEmoji
-            required property bool isSender
-            required property bool isStateEvent
-            required property int notificationlevel
-            required property int originalWidth
-            property var previousMessageDay: (index + 1) >= chat.count ? 0 : chat.model.dataByIndex(index + 1, Room.Day)
-            property bool previousMessageIsStateEvent: (index + 1) >= chat.count ? true : chat.model.dataByIndex(index + 1, Room.IsStateEvent)
-            property string previousMessageUserId: (index + 1) >= chat.count ? "" : chat.model.dataByIndex(index + 1, Room.UserId)
-            required property double proportionalHeight
-            required property var reactions
-            required property int relatedEventCacheBuster
-            required property string replyTo
-            required property string roomName
-            required property string roomTopic
-            property bool scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
-            required property int status
-            required property string threadId
-            required property string thumbnailUrl
-            required property var timestamp
-            required property int trustlevel
-            required property int type
-            required property string typeString
-            required property string url
-            required property string userId
-            required property string userName
-            required property int userPowerlevel
-
             ListView.delayRemove: true
-            anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-            height: (section.item?.height ?? 0) + timelinerow.height
             width: chat.delegateMaxWidth
+            height: main?.height ?? 10
+            room: chatRoot.roommodel
 
-            Loader {
-                id: section
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.TextMessage,
+                    MtxEvent.NoticeMessage,
+                ]
+                TextArea {
+                    required property string body
 
-                property var day: wrapper.day
-                property bool isSender: wrapper.isSender
-                property bool isStateEvent: wrapper.isStateEvent
-                property int parentWidth: parent.width
-                property var previousMessageDay: wrapper.previousMessageDay
-                property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
-                property string previousMessageUserId: wrapper.previousMessageUserId
-                property date timestamp: wrapper.timestamp
-                property string userId: wrapper.userId
-                property string userName: wrapper.userName
-                property int userPowerlevel: wrapper.userPowerlevel
-
-                active: previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
-                //asynchronous: true
-                sourceComponent: sectionHeader
-                visible: status == Loader.Ready
-                z: 4
-            }
-            TimelineRow {
-                id: timelinerow
-
-                blurhash: wrapper.blurhash
-                body: wrapper.body
-                callType: wrapper.callType
-                duration: wrapper.duration
-                encryptionError: wrapper.encryptionError
-                eventId: chat.model, wrapper.eventId
-                filename: wrapper.filename
-                filesize: wrapper.filesize
-                formattedBody: wrapper.formattedBody
-                index: wrapper.index
-                isEditable: wrapper.isEditable
-                isEdited: wrapper.isEdited
-                isEncrypted: wrapper.isEncrypted
-                isOnlyEmoji: wrapper.isOnlyEmoji
-                isSender: wrapper.isSender
-                isStateEvent: wrapper.isStateEvent
-                notificationlevel: wrapper.notificationlevel
-                originalWidth: wrapper.originalWidth
-                proportionalHeight: wrapper.proportionalHeight
-                reactions: wrapper.reactions
-                relatedEventCacheBuster: wrapper.relatedEventCacheBuster
-                replyTo: wrapper.replyTo
-                roomName: wrapper.roomName
-                roomTopic: wrapper.roomTopic
-                status: wrapper.status
-                threadId: wrapper.threadId
-                thumbnailUrl: wrapper.thumbnailUrl
-                timestamp: wrapper.timestamp
-                trustlevel: wrapper.trustlevel
-                type: chat.model, wrapper.type
-                typeString: wrapper.typeString
-                url: wrapper.url
-                userId: wrapper.userId
-                userName: wrapper.userName
-                width: wrapper.width
-                y: section.visible && section.active ? section.y + section.height : 0
-
-                background: Rectangle {
-                    id: scrollHighlight
-
-                    color: palette.highlight
-                    enabled: false
-                    opacity: 0
-                    visible: true
-                    z: 1
-
-                    states: State {
-                        name: "revealed"
-                        when: wrapper.scrolledToThis
-                    }
-                    transitions: Transition {
-                        from: ""
-                        to: "revealed"
-
-                        SequentialAnimation {
-                            PropertyAnimation {
-                                duration: 500
-                                easing.type: Easing.InOutQuad
-                                from: 0
-                                properties: "opacity"
-                                target: scrollHighlight
-                                to: 1
-                            }
-                            PropertyAnimation {
-                                duration: 500
-                                easing.type: Easing.InOutQuad
-                                from: 1
-                                properties: "opacity"
-                                target: scrollHighlight
-                                to: 0
-                            }
-                            ScriptAction {
-                                script: room.eventShown()
-                            }
-                        }
-                    }
-                }
-
-                onHoveredChanged: {
-                    if (!Settings.mobileMode && hovered) {
-                        if (!messageActions.hovered) {
-                            messageActions.attached = timelinerow;
-                            messageActions.model = timelinerow;
-                        }
-                    }
+                    width: parent.width
+                    text: body
                 }
             }
-            Connections {
-                function onMovementEnded() {
-                    if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height)
-                        chat.model.currentIndex = index;
-                }
 
-                target: chat
+            EventDelegateChoice {
+                roleValues: [
+                ]
+                TextArea {
+                    width: parent.width
+                    text: "Unsupported"
+                }
             }
         }
         footer: Item {

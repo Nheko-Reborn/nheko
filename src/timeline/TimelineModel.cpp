@@ -926,6 +926,26 @@ TimelineModel::multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSp
     }
 }
 
+void
+TimelineModel::multiData(const QString &id,
+                         const QString &relatedTo,
+                         QModelRoleDataSpan roleDataSpan) const
+{
+    if (id.isEmpty())
+        return;
+
+    auto event = events.get(id.toStdString(), relatedTo.toStdString());
+
+    if (!event)
+        return;
+
+    for (QModelRoleData &roleData : roleDataSpan) {
+        int role = roleData.role();
+
+        roleData.setData(data(*event, role));
+    }
+}
+
 QVariant
 TimelineModel::dataById(const QString &id, int role, const QString &relatedTo)
 {

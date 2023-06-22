@@ -359,6 +359,8 @@ set(SRC_FILES
 	src/timeline/CommunitiesModel.h
 	src/timeline/DelegateChooser.cpp
 	src/timeline/DelegateChooser.h
+	src/timeline/EventDelegateChooser.cpp
+	src/timeline/EventDelegateChooser.h
 	src/timeline/EventStore.cpp
 	src/timeline/EventStore.h
 	src/timeline/InputBar.cpp
@@ -882,6 +884,7 @@ target_link_libraries(nheko PRIVATE
 	Qt::Gui
 	Qt::Multimedia
 	Qt::Qml
+	Qt::QmlPrivate
 	Qt::QuickControls2
 	qt6keychain
 	nlohmann_json::nlohmann_json

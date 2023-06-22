@@ -1,0 +1,244 @@
+// SPDX-FileCopyrightText: Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+#include "EventDelegateChooser.h"
+#include "TimelineModel.h"
+
+#include "Logging.h"
+
+#include <QQmlEngine>
+#include <QtGlobal>
+
+// privat qt headers to access required properties
+#include <QtQml/private/qqmlincubator_p.h>
+#include <QtQml/private/qqmlobjectcreator_p.h>
+
+QQmlComponent *
+EventDelegateChoice::delegate() const
+{
+    return delegate_;
+}
+
+void
+EventDelegateChoice::setDelegate(QQmlComponent *delegate)
+{
+    if (delegate != delegate_) {
+        delegate_ = delegate;
+        emit delegateChanged();
+        emit changed();
+    }
+}
+
+QList<int>
+EventDelegateChoice::roleValues() const
+{
+    return roleValues_;
+}
+
+void
+EventDelegateChoice::setRoleValues(const QList<int> &value)
+{
+    if (value != roleValues_) {
+        roleValues_ = value;
+        emit roleValuesChanged();
+        emit changed();
+    }
+}
+
+QQmlListProperty<EventDelegateChoice>
+EventDelegateChooser::choices()
+{
+    return QQmlListProperty<EventDelegateChoice>(this,
+                                                 this,
+                                                 &EventDelegateChooser::appendChoice,
+                                                 &EventDelegateChooser::choiceCount,
+                                                 &EventDelegateChooser::choice,
+                                                 &EventDelegateChooser::clearChoices);
+}
+
+void
+EventDelegateChooser::appendChoice(QQmlListProperty<EventDelegateChoice> *p, EventDelegateChoice *c)
+{
+    EventDelegateChooser *dc = static_cast<EventDelegateChooser *>(p->object);
+    dc->choices_.append(c);
+}
+
+qsizetype
+EventDelegateChooser::choiceCount(QQmlListProperty<EventDelegateChoice> *p)
+{
+    return static_cast<EventDelegateChooser *>(p->object)->choices_.count();
+}
+EventDelegateChoice *
+EventDelegateChooser::choice(QQmlListProperty<EventDelegateChoice> *p, qsizetype index)
+{
+    return static_cast<EventDelegateChooser *>(p->object)->choices_.at(index);
+}
+void
+EventDelegateChooser::clearChoices(QQmlListProperty<EventDelegateChoice> *p)
+{
+    static_cast<EventDelegateChooser *>(p->object)->choices_.clear();
+}
+
+void
+EventDelegateChooser::componentComplete()
+{
+    QQuickItem::componentComplete();
+    // eventIncubator.reset(eventIndex);
+}
+
+void
+EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
+{
+    auto item = qobject_cast<QQuickItem *>(obj);
+    if (!item)
+        return;
+
+    item->setParentItem(&chooser);
+
+    auto roleNames = chooser.room_->roleNames();
+    QHash<QByteArray, int> nameToRole;
+    for (const auto &[k, v] : roleNames.asKeyValueRange()) {
+        nameToRole.insert(v, k);
+    }
+
+    QHash<int, int> roleToPropIdx;
+    std::vector<QModelRoleData> roles;
+
+    // Workaround for https://bugreports.qt.io/browse/QTBUG-98846
+    QHash<QString, RequiredPropertyKey> requiredProperties;
+    for (const auto &[propKey, prop] :
+         QQmlIncubatorPrivate::get(this)->requiredProperties()->asKeyValueRange()) {
+        requiredProperties.insert(prop.propertyName, propKey);
+    }
+
+    // collect required properties
+    auto mo = obj->metaObject();
+    for (int i = 0; i < mo->propertyCount(); i++) {
+        auto prop = mo->property(i);
+        // nhlog::ui()->critical("Found prop {}", prop.name());
+        //  See https://bugreports.qt.io/browse/QTBUG-98846
+        if (!prop.isRequired() && !requiredProperties.contains(prop.name()))
+            continue;
+
+        if (auto role = nameToRole.find(prop.name()); role != nameToRole.end()) {
+            roleToPropIdx.insert(*role, i);
+            roles.emplace_back(*role);
+
+            nhlog::ui()->critical("Found prop {}, idx {}, role {}", prop.name(), i, *role);
+        } else {
+            nhlog::ui()->critical("Required property {} not found in model!", prop.name());
+        }
+    }
+
+    nhlog::ui()->debug("Querying data for id {}", currentId.toStdString());
+    chooser.room_->multiData(currentId, forReply ? chooser.eventId_ : QString(), roles);
+
+    QVariantMap rolesToSet;
+    for (const auto &role : roles) {
+        const auto &roleName = roleNames[role.role()];
+        nhlog::ui()->critical("Setting role {}, {}", role.role(), roleName.toStdString());
+
+        mo->property(roleToPropIdx[role.role()]).write(obj, role.data());
+        rolesToSet.insert(roleName, role.data());
+
+        if (const auto &req = requiredProperties.find(roleName); req != requiredProperties.end())
+            QQmlIncubatorPrivate::get(this)->requiredProperties()->remove(*req);
+    }
+
+    // setInitialProperties(rolesToSet);
+
+    auto update =
+      [this, obj, roleToPropIdx = std::move(roleToPropIdx)](const QList<int> &changedRoles) {
+          std::vector<QModelRoleData> rolesToRequest;
+
+          if (changedRoles.empty()) {
+              for (auto role : roleToPropIdx.keys())
+                  rolesToRequest.emplace_back(role);
+          } else {
+              for (auto role : changedRoles) {
+                  if (roleToPropIdx.contains(role)) {
+                      rolesToRequest.emplace_back(role);
+                  }
+              }
+          }
+
+          if (rolesToRequest.empty())
+              return;
+
+          auto mo = obj->metaObject();
+          chooser.room_->multiData(
+            currentId, forReply ? chooser.eventId_ : QString(), rolesToRequest);
+          for (const auto &role : rolesToRequest) {
+              mo->property(roleToPropIdx[role.role()]).write(obj, role.data());
+          }
+      };
+
+    if (!forReply) {
+        auto row = chooser.room_->idToIndex(currentId);
+        connect(chooser.room_,
+                &QAbstractItemModel::dataChanged,
+                obj,
+                [row, update](const QModelIndex &topLeft,
+                              const QModelIndex &bottomRight,
+                              const QList<int> &changedRoles) {
+                    if (row < topLeft.row() || row > bottomRight.row())
+                        return;
+
+                    update(changedRoles);
+                });
+    }
+}
+
+void
+EventDelegateChooser::DelegateIncubator::reset(QString id)
+{
+    if (!chooser.room_ || id.isEmpty())
+        return;
+
+    nhlog::ui()->debug("Reset with id {}, reply {}", id.toStdString(), forReply);
+
+    this->currentId = id;
+
+    auto role =
+      chooser.room_
+        ->dataById(id, TimelineModel::Roles::Type, forReply ? chooser.eventId_ : QString())
+        .toInt();
+
+    for (const auto choice : qAsConst(chooser.choices_)) {
+        const auto &choiceValue = choice->roleValues();
+        if (choiceValue.contains(role) || choiceValue.empty()) {
+            if (auto child = qobject_cast<QQuickItem *>(object())) {
+                child->setParentItem(nullptr);
+            }
+
+            choice->delegate()->create(*this, QQmlEngine::contextForObject(&chooser));
+            return;
+        }
+    }
+}
+
+void
+EventDelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status status)
+{
+    if (status == QQmlIncubator::Ready) {
+        auto child = qobject_cast<QQuickItem *>(object());
+        if (child == nullptr) {
+            nhlog::ui()->error("Delegate has to be derived of Item!");
+            return;
+        }
+
+        child->setParentItem(&chooser);
+        QQmlEngine::setObjectOwnership(child, QQmlEngine::ObjectOwnership::JavaScriptOwnership);
+        if (forReply)
+            emit chooser.replyChanged();
+        else
+            emit chooser.mainChanged();
+
+    } else if (status == QQmlIncubator::Error) {
+        auto errors_ = errors();
+        for (const auto &e : qAsConst(errors_))
+            nhlog::ui()->error("Error instantiating delegate: {}", e.toString().toStdString());
+    }
+}
+
