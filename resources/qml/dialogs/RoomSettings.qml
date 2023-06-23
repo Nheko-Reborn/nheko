@@ -378,6 +378,37 @@ ApplicationWindow {
                 }
 
                 Label {
+                    text: qsTr("History visibility")
+                    Layout.fillWidth: true
+                    color: palette.text
+                }
+
+                ComboBox {
+                    id: visComboBox
+                    model: [qsTr("Readable to anyone without joining the room"), qsTr("Past messages visible to all current members"), qsTr("Only visible to members who were invited or joined when the message was sent"), qsTr("Only visible to members who were joined when the message was sent")]
+                    currentIndex: roomSettings.historyVisibility
+                    onActivated: {
+                        roomSettings.changeHistoryVisibility(index);
+                    }
+                    Layout.fillWidth: true
+                    WheelHandler{} // suppress scrolling changing values
+                    enabled: roomSettings.canChangeHistoryVisibility
+
+                    delegate: ItemDelegate {
+                        text: modelData
+                        width: implicitWidth
+                        highlighted: visComboBox.highlightedIndex === index
+                        ToolTip.text: modelData
+                        ToolTip.visible: hovered
+                        ToolTip.delay: Nheko.tooltipDelay
+                    }
+
+                    ToolTip.text: displayText
+                    ToolTip.visible: hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+                }
+
+                Label {
                     text: qsTr("Encryption")
                     color: palette.text
                 }
