@@ -54,6 +54,7 @@ class EventDelegateChooser : public QQuickItem
 public:
     Q_PROPERTY(QQmlListProperty<EventDelegateChoice> choices READ choices CONSTANT FINAL)
     Q_PROPERTY(QQuickItem *main READ main NOTIFY mainChanged FINAL)
+    Q_PROPERTY(QQuickItem *reply READ reply NOTIFY replyChanged FINAL)
     Q_PROPERTY(TimelineModel *room READ room WRITE setRoom NOTIFY roomChanged REQUIRED FINAL)
     Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged REQUIRED FINAL)
     Q_PROPERTY(QString replyTo READ replyTo WRITE setReplyTo NOTIFY replyToChanged REQUIRED FINAL)
@@ -63,6 +64,10 @@ public:
     [[nodiscard]] QQuickItem *main() const
     {
         return qobject_cast<QQuickItem *>(eventIncubator.object());
+    }
+    [[nodiscard]] QQuickItem *reply() const
+    {
+        return qobject_cast<QQuickItem *>(replyIncubator.object());
     }
 
     void setRoom(TimelineModel *m)

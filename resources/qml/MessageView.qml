@@ -63,28 +63,160 @@ Item {
             id: wrapper
             ListView.delayRemove: true
             width: chat.delegateMaxWidth
-            height: main?.height ?? 10
+            height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight, 10)
+            anchors.horizontalCenter: ListView.view.contentItem.horizontalCenter
             room: chatRoot.roommodel
+
+            required property var day
+            required property bool isSender
+            required property bool isStateEvent
+            //required property var previousMessageDay
+            //required property bool previousMessageIsStateEvent
+            //required property string previousMessageUserId
+            required property int index
+            property var previousMessageDay: (index + 1) >= chat.count ? 0 : chat.model.dataByIndex(index + 1, Room.Day)
+            property bool previousMessageIsStateEvent: (index + 1) >= chat.count ? true : chat.model.dataByIndex(index + 1, Room.IsStateEvent)
+            property string previousMessageUserId: (index + 1) >= chat.count ? "" : chat.model.dataByIndex(index + 1, Room.UserId)
+            required property date timestamp
+            required property string userId
+            required property string userName
+            required property string threadId
+
+            data: [
+            Loader {
+                id: section
+
+                property var day: wrapper.day
+                property bool isSender: wrapper.isSender
+                property bool isStateEvent: wrapper.isStateEvent
+                property int parentWidth: wrapper.width
+                property var previousMessageDay: wrapper.previousMessageDay
+                property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
+                property string previousMessageUserId: wrapper.previousMessageUserId
+                property date timestamp: wrapper.timestamp
+                property string userId: wrapper.userId
+                property string userName: wrapper.userName
+
+                active: previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
+                //asynchronous: true
+                sourceComponent: sectionHeader
+                visible: status == Loader.Ready
+                z: 4
+            }, 
+                GridLayout {
+                    id: gridContainer
+
+                    width: wrapper.width
+                    y: section.visible && section.active ? section.y + section.height : 0
+
+                    ColumnLayout {
+                        id: contentColumn
+                        Layout.fillWidth: true
+                        Layout.leftMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) + (wrapper.threadId ? 6 : 0) // align bubble with section header
+
+                        AbstractButton {
+                            id: replyRow
+                            visible: wrapper.reply
+                            Layout.fillWidth: true
+                            Layout.maximumHeight: timelineView.height / 8
+                            Layout.preferredWidth: replyRowLay.implicitWidth
+                            Layout.preferredHeight: replyRowLay.implicitHeight
+
+                            property color userColor: TimelineManager.userColor(wrapper.reply?.userId ?? '', palette.base)
+
+                            clip: true
+
+                            contentItem: RowLayout {
+                                id: replyRowLay
+
+                                anchors.fill: parent
+
+
+                                Rectangle {
+                                    id: replyLine
+                                    Layout.fillHeight: true
+                                    color: replyRow.userColor
+                                    Layout.preferredWidth: 4
+                                }
+
+                                ColumnLayout {
+                                    AbstractButton {
+                                        id: replyUserButton
+                                        Layout.fillWidth: true
+                                        contentItem: ElidedLabel {
+                                            id: userName_
+                                            fullText: wrapper.reply?.userName ?? ''
+                                            color: replyRow.userColor
+                                            textFormat: Text.RichText
+                                            width: parent.width
+                                            elideWidth: width
+                                        }
+                                        onClicked: room.openUserProfile(wrapper.reply?.userId)
+                                    }
+                                    data: [
+                                        replyUserButton,
+                                        wrapper.reply,
+                                    ]
+                                }
+                            }
+
+                            background: Rectangle {
+                                width: replyRow.implicitContentWidth
+                                color: Qt.tint(palette.base, Qt.hsla(replyRow.userColor.hslHue, 0.5, replyRow.userColor.hslLightness, 0.1))
+                            }
+                        }
+
+                        data: [
+                            replyRow, wrapper.main,
+                        ]
+                    }
+
+                    Rectangle {
+                        color: 'yellow'
+                        Layout.preferredWidth: 100
+                        Layout.preferredHeight: 20
+                        Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    }
+                },
+
+                Rectangle {
+                    width: Math.min(contentColumn.implicitWidth, contentColumn.width)
+                    height: contentColumn.implicitHeight
+                    color: "blue"
+                    opacity: 0.2
+                }
+            ]
 
             EventDelegateChoice {
                 roleValues: [
                     MtxEvent.TextMessage,
                     MtxEvent.NoticeMessage,
                 ]
-                TextArea {
-                    required property string body
+                TextMessage {
+                    id: textMes
 
-                    width: parent.width
-                    text: body
+                    keepFullText: true
+                    required property string userId
+                    required property string userName
+
+                    Layout.fillWidth: true
+                    //Layout.maximumWidth: implicitWidth
+
                 }
             }
 
             EventDelegateChoice {
                 roleValues: [
                 ]
-                TextArea {
-                    width: parent.width
-                    text: "Unsupported"
+                MatrixText {
+                    Layout.fillWidth: true
+
+                    required property string typeString
+
+                    text: "Unsupported: " + typeString
+
+                    required property string userId
+                    required property string userName
                 }
             }
         }

@@ -85,6 +85,7 @@ EventDelegateChooser::componentComplete()
 {
     QQuickItem::componentComplete();
     // eventIncubator.reset(eventIndex);
+    // eventIncubator.forceCompletion();
 }
 
 void
@@ -104,6 +105,7 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
 
     QHash<int, int> roleToPropIdx;
     std::vector<QModelRoleData> roles;
+    bool isReplyNeeded = false;
 
     // Workaround for https://bugreports.qt.io/browse/QTBUG-98846
     QHash<QString, RequiredPropertyKey> requiredProperties;
@@ -121,7 +123,10 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
         if (!prop.isRequired() && !requiredProperties.contains(prop.name()))
             continue;
 
-        if (auto role = nameToRole.find(prop.name()); role != nameToRole.end()) {
+        if (prop.name() == std::string_view("isReply")) {
+            isReplyNeeded = true;
+            roleToPropIdx.insert(-1, i);
+        } else if (auto role = nameToRole.find(prop.name()); role != nameToRole.end()) {
             roleToPropIdx.insert(*role, i);
             roles.emplace_back(*role);
 
@@ -134,13 +139,26 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
     nhlog::ui()->debug("Querying data for id {}", currentId.toStdString());
     chooser.room_->multiData(currentId, forReply ? chooser.eventId_ : QString(), roles);
 
-    QVariantMap rolesToSet;
     for (const auto &role : roles) {
         const auto &roleName = roleNames[role.role()];
-        nhlog::ui()->critical("Setting role {}, {}", role.role(), roleName.toStdString());
+        nhlog::ui()->critical("Setting role {}, {} to {}",
+                              role.role(),
+                              roleName.toStdString(),
+                              role.data().toString().toStdString());
 
+        nhlog::ui()->critical("Setting {}", mo->property(roleToPropIdx[role.role()]).name());
         mo->property(roleToPropIdx[role.role()]).write(obj, role.data());
-        rolesToSet.insert(roleName, role.data());
+
+        if (const auto &req = requiredProperties.find(roleName); req != requiredProperties.end())
+            QQmlIncubatorPrivate::get(this)->requiredProperties()->remove(*req);
+    }
+
+    if (isReplyNeeded) {
+        const auto roleName = QByteArray("isReply");
+        nhlog::ui()->critical("Setting role {} to {}", roleName.toStdString(), forReply);
+
+        nhlog::ui()->critical("Setting {}", mo->property(roleToPropIdx[-1]).name());
+        mo->property(roleToPropIdx[-1]).write(obj, forReply);
 
         if (const auto &req = requiredProperties.find(roleName); req != requiredProperties.end())
             QQmlIncubatorPrivate::get(this)->requiredProperties()->remove(*req);
