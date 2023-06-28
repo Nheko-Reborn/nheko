@@ -63,7 +63,6 @@ option(USE_BUNDLED_COEURL "Use a bundled version of the Curl wrapper"
 option(USE_BUNDLED_LIBEVENT "Use the bundled version of libevent." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LIBCURL "Use the bundled version of libcurl." ${HUNTER_ENABLED})
 option(USE_BUNDLED_RE2 "Use the bundled version of re2." ${HUNTER_ENABLED})
-option(USE_BUNDLED_CPPHTTPLIB "Use the bundled version of cpp-httplib." ON)
 option(USE_BUNDLED_BLURHASH "Use the bundled version of blurhash." ON)
 
 include(CMakeDependentOption)
@@ -243,7 +242,7 @@ endif()
 #
 # Discover Qt dependencies.
 #
-find_package(Qt6 6.5 COMPONENTS Core Widgets Gui LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
+find_package(Qt6 6.5 COMPONENTS Core Widgets Gui LinguistTools Svg Multimedia Qml QuickControls2 HttpServer REQUIRED)
 #find_package(Qt6QuickCompiler)
 find_package(Qt6DBus)
 
@@ -834,14 +833,6 @@ endif()
 
 target_include_directories(nheko PRIVATE src includes src/timeline/ src/ui/ src/encryption/ src/voip/)
 
-if (USE_BUNDLED_CPPHTTPLIB)
-	target_include_directories(nheko PRIVATE third_party/cpp-httplib-0.5.12)
-	target_sources(nheko PRIVATE third_party/cpp-httplib-0.5.12/httplib.h)
-else()
-	find_package(httplib REQUIRED)
-	target_link_libraries(nheko PRIVATE httplib::httplib)
-endif()
-
 if (USE_BUNDLED_BLURHASH)
 	target_include_directories(nheko PRIVATE third_party/blurhash)
 	set(BLURHASH_SRC_FILES
@@ -878,6 +869,7 @@ target_link_libraries(nheko PRIVATE
 	Qt::Multimedia
 	Qt::Qml
 	Qt::QuickControls2
+	Qt::HttpServer
 	qt6keychain
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
