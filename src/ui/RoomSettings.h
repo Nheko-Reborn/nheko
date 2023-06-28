@@ -72,6 +72,9 @@ private:
 class RoomSettings final : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("")
+
     Q_PROPERTY(QString roomId READ roomId CONSTANT)
     Q_PROPERTY(QString roomVersion READ roomVersion CONSTANT)
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)

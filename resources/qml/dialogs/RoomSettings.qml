@@ -257,13 +257,12 @@ ApplicationWindow {
                 Layout.fillWidth: true
 
                 Label {
-                    text: qsTr("SETTINGS")
+                    text: qsTr("NOTIFICATIONS")
                     font.bold: true
                     color: palette.text
-                }
-
-                Item {
+                    Layout.columnSpan: 2
                     Layout.fillWidth: true
+                    Layout.topMargin: Nheko.paddingLarge
                 }
 
                 Label {
@@ -280,6 +279,15 @@ ApplicationWindow {
                     }
                     Layout.fillWidth: true
                     WheelHandler{} // suppress scrolling changing values
+                }
+
+                Label {
+                    text: qsTr("ENTRY PERMISSIONS")
+                    font.bold: true
+                    color: palette.text
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.topMargin: Nheko.paddingLarge
                 }
 
                 Label {
@@ -378,34 +386,128 @@ ApplicationWindow {
                 }
 
                 Label {
-                    text: qsTr("History visibility")
-                    Layout.fillWidth: true
+                    text: qsTr("MESSAGE VISIBILITY")
+                    font.bold: true
                     color: palette.text
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.topMargin: Nheko.paddingLarge
                 }
 
-                ComboBox {
-                    id: visComboBox
-                    model: [qsTr("Readable to anyone without joining the room"), qsTr("Past messages visible to all current members"), qsTr("Only visible to members who were invited or joined when the message was sent"), qsTr("Only visible to members who were joined when the message was sent")]
-                    currentIndex: roomSettings.historyVisibility
-                    onActivated: {
-                        roomSettings.changeHistoryVisibility(index);
-                    }
+                Label {
+                    text: qsTr("Allow viewing history without joining")
                     Layout.fillWidth: true
-                    WheelHandler{} // suppress scrolling changing values
-                    enabled: roomSettings.canChangeHistoryVisibility
+                    color: palette.text
+                    ToolTip.text: qsTr("This is useful to see previews of the room or view it on public websites.")
+                    ToolTip.visible: publicHistoryHover.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
 
-                    delegate: ItemDelegate {
-                        text: modelData
-                        width: implicitWidth
-                        highlighted: visComboBox.highlightedIndex === index
-                        ToolTip.text: modelData
+                    HoverHandler {
+                        id: publicHistoryHover
+
+                    }
+                }
+
+                ToggleButton {
+                    id: publicHistoryButton
+
+                    enabled: roomSettings.canChangeHistoryVisibility
+                    checked: roomSettings.historyVisibility == RoomSettings.WorldReadable
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
+                    visible: !publicHistoryButton.checked
+                    text: qsTr("Members can see messages since")
+                    Layout.fillWidth: true
+                    color: palette.text
+                    Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                    ToolTip.text: qsTr("How much of the history is visible to joined members. Changing this won't affect the visibility of already sent messages. It only applies to new messages.")
+                    ToolTip.visible: privateHistoryHover.hovered
+                    ToolTip.delay: Nheko.tooltipDelay
+
+                    HoverHandler {
+                        id: privateHistoryHover
+
+                    }
+                }
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    visible: !publicHistoryButton.checked
+                    enabled: roomSettings.canChangeHistoryVisibility
+                    Layout.alignment: Qt.AlignTop | Qt.AlignRight
+
+                    RadioButton {
+                        id: sharedHistory
+                        checked: roomSettings.historyVisibility == RoomSettings.Shared
+                        text: qsTr("Everything")
+                        ToolTip.text: qsTr("As long as the user joined, they can see all previous messages.")
                         ToolTip.visible: hovered
                         ToolTip.delay: Nheko.tooltipDelay
                     }
+                    RadioButton {
+                        id: invitedHistory
+                        checked: roomSettings.historyVisibility == RoomSettings.Invited
+                        text: qsTr("They got invited")
+                        ToolTip.text: qsTr("Members can only see messages from when they got invited going forward.")
+                        ToolTip.visible: hovered
+                        ToolTip.delay: Nheko.tooltipDelay
+                    }
+                    RadioButton {
+                        id: joinedHistory
+                        checked: roomSettings.historyVisibility == RoomSettings.Joined || roomSettings.historyVisibility == RoomSettings.WorldReadable
+                        text: qsTr("They joined")
+                        ToolTip.text: qsTr("Members can only see messages since after they joined.")
+                        ToolTip.visible: hovered
+                        ToolTip.delay: Nheko.tooltipDelay
+                    }
+                }
 
-                    ToolTip.text: displayText
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
+                Button {
+                    visible: roomSettings.historyVisibility != selectedVisibility
+                    enabled: roomSettings.canChangeHistoryVisibility
+
+                    text: qsTr("Apply visibility changes")
+                    property int selectedVisibility: {
+                        if (publicHistoryButton.checked)
+                            return RoomSettings.WorldReadable;
+                        else if (sharedHistory.checked)
+                            return RoomSettings.Shared;
+                        else if (invitedHistory.checked)
+                            return RoomSettings.Invited;
+                        return RoomSettings.Joined;
+                    }
+                    onClicked: roomSettings.changeHistoryVisibility(selectedVisibility)
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                }
+
+                Label {
+                    text: qsTr("Locally hidden events")
+                    color: palette.text
+                }
+
+                HiddenEventsDialog {
+                    id: hiddenEventsDialog
+                    roomid: roomSettings.roomId
+                    roomName: roomSettings.roomName
+                }
+
+                Button {
+                    text: qsTr("Configure")
+                    ToolTip.text: qsTr("Select events to hide in this room")
+                    onClicked: hiddenEventsDialog.show()
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
+                    text: qsTr("GENERAL SETTINGS")
+                    font.bold: true
+                    color: palette.text
+                    Layout.columnSpan: 2
+                    Layout.fillWidth: true
+                    Layout.topMargin: Nheko.paddingLarge
                 }
 
                 Label {
@@ -484,40 +586,11 @@ ApplicationWindow {
                 }
 
                 Label {
-                    text: qsTr("Hidden events")
-                    color: palette.text
-                }
-
-                HiddenEventsDialog {
-                    id: hiddenEventsDialog
-                    roomid: roomSettings.roomId
-                    roomName: roomSettings.roomName
-                }
-
-                Button {
-                    text: qsTr("Configure")
-                    ToolTip.text: qsTr("Select events to hide in this room")
-                    onClicked: hiddenEventsDialog.show()
-                    Layout.alignment: Qt.AlignRight
-                }
-
-                Item {
-                    // for adding extra space between sections
-                    Layout.fillWidth: true
-                }
-
-                Item {
-                    // for adding extra space between sections
-                    Layout.fillWidth: true
-                }
-
-                Label {
                     text: qsTr("INFO")
                     font.bold: true
                     color: palette.text
-                }
-
-                Item {
+                    Layout.columnSpan: 2
+                    Layout.topMargin: Nheko.paddingLarge
                     Layout.fillWidth: true
                 }
 
