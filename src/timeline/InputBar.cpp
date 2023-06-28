@@ -1041,14 +1041,16 @@ MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
                 &QMediaPlayer::errorOccurred,
                 this,
                 [](QMediaPlayer::Error error, QString errorString) {
-                    nhlog::ui()->debug(
-                      "Media player error {} and errorStr {}", error, errorString.toStdString());
+                    nhlog::ui()->debug("Media player error {} and errorStr {}",
+                                       static_cast<int>(error),
+                                       errorString.toStdString());
                 });
         connect(mediaPlayer,
                 &QMediaPlayer::mediaStatusChanged,
                 [mediaPlayer](QMediaPlayer::MediaStatus status) {
-                    nhlog::ui()->debug(
-                      "Media player status {} and error {}", status, mediaPlayer->error());
+                    nhlog::ui()->debug("Media player status {} and error {}",
+                                       static_cast<int>(status),
+                                       static_cast<int>(mediaPlayer->error()));
                 });
         connect(mediaPlayer, &QMediaPlayer::metaDataChanged, this, [this, mediaPlayer]() {
             nhlog::ui()->debug("Got metadata {}");

@@ -434,7 +434,7 @@ Cache::loadSecretsFromStore(
                 if (job->error() && job->error() != QKeychain::Error::EntryNotFound) {
                     nhlog::db()->error("Restoring secret '{}' failed ({}): {}",
                                        name.toStdString(),
-                                       job->error(),
+                                       static_cast<int>(job->error()),
                                        job->errorString().toStdString());
 
                     fatalSecretError();

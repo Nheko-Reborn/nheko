@@ -27,11 +27,14 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
     connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
     connect(
       this, &QMediaPlayer::errorOccurred, this, [](QMediaPlayer::Error error, QString errorString) {
-          nhlog::ui()->debug(
-            "Media player error {} and errorStr {}", error, errorString.toStdString());
+          nhlog::ui()->debug("Media player error {} and errorStr {}",
+                             static_cast<int>(error),
+                             errorString.toStdString());
       });
     connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
-        nhlog::ui()->info("Media player status {} and error {}", status, this->error());
+        nhlog::ui()->info("Media player status {} and error {}",
+                          static_cast<int>(status),
+                          static_cast<int>(this->error()));
     });
     connect(this, &MxcMediaProxy::metaDataChanged, [this]() { emit orientationChanged(); });
 
