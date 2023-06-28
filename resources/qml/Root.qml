@@ -360,6 +360,7 @@ Pane {
 
         onAccepted: UIA.continue3pidReceived()
     }
+
     Connections {
         function onConfirm3pidToken() {
             uiaConfirmationLinkDialog.open();
@@ -380,6 +381,18 @@ Pane {
         }
         function onPrompt3pidToken() {
             uiaTokenPrompt.show();
+        }
+        function onReCaptcha(recaptcha) {
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/ReCaptchaDialog.qml");
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {
+                        "recaptcha": recaptcha
+                    });
+                dialog.show();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         target: UIA

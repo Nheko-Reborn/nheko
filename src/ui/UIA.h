@@ -9,6 +9,8 @@
 
 #include <mtxclient/http/client.hpp>
 
+#include "ReCaptcha.h"
+
 class UIA final : public QObject
 {
     Q_OBJECT
@@ -39,7 +41,7 @@ public:
         return instance();
     }
 
-    UIA(QObject *parent = nullptr)
+    UIA(QObject *parent)
       : QObject(parent)
     {
     }
@@ -59,6 +61,7 @@ signals:
     void password();
     void email();
     void phoneNumber();
+    void reCaptcha(ReCaptcha *recaptcha);
 
     void confirm3pidToken();
     void prompt3pidToken();

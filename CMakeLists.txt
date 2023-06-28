@@ -353,8 +353,6 @@ set(SRC_FILES
 	# Dialogs
 	src/dialogs/FallbackAuth.cpp
 	src/dialogs/FallbackAuth.h
-	src/dialogs/ReCaptcha.cpp
-	src/dialogs/ReCaptcha.h
 
 	# Emoji
 	src/emoji/Provider.cpp
@@ -485,6 +483,8 @@ set(SRC_FILES
 	src/PowerlevelsEditModels.h
 	src/ReadReceiptsModel.cpp
 	src/ReadReceiptsModel.h
+	src/ReCaptcha.cpp
+	src/ReCaptcha.h
 	src/RegisterPage.cpp
 	src/RegisterPage.h
 	src/RoomDirectoryModel.cpp
@@ -776,6 +776,7 @@ set(QML_SOURCES
         resources/qml/dialogs/PowerLevelSpacesApplyDialog.qml
         resources/qml/dialogs/RawMessageDialog.qml
         resources/qml/dialogs/ReadReceipts.qml
+        resources/qml/dialogs/ReCaptchaDialog.qml
         resources/qml/dialogs/RoomDirectory.qml
         resources/qml/dialogs/RoomMembers.qml
         resources/qml/dialogs/AllowedRoomsSettingsDialog.qml
