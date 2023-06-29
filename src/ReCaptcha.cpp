@@ -10,13 +10,14 @@
 #include "MatrixClient.h"
 
 ReCaptcha::ReCaptcha(const QString &session, const QString &context, QObject *parent)
-    : QObject{parent},
-      m_session{session},
-      m_context{context}
+  : QObject{parent}
+  , m_session{session}
+  , m_context{context}
 {
 }
 
-void ReCaptcha::openReCaptcha()
+void
+ReCaptcha::openReCaptcha()
 {
     const auto url = QString("https://%1:%2/_matrix/client/r0/auth/m.login.recaptcha/"
                              "fallback/web?session=%3")

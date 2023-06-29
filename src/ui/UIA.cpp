@@ -13,8 +13,8 @@
 
 #include "Logging.h"
 #include "MatrixClient.h"
-#include "dialogs/FallbackAuth.h"
 #include "ReCaptcha.h"
+#include "dialogs/FallbackAuth.h"
 
 UIA *
 UIA::instance()
