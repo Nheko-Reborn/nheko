@@ -43,12 +43,12 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation>Konnte den Alias %1 nicht depublizieren: %2</translation>
+        <translation>Konnte die Raumadresse %1 nicht entfernen: %2</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation>Konnte die Aliasse nicht aktualisieren: %1</translation>
+        <translation>Konnte die Raumadressen nicht aktualisieren: %1</translation>
     </message>
 </context>
 <context>
@@ -56,12 +56,12 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+27"/>
         <source>Aliases to %1</source>
-        <translation>Aliasse für %1</translation>
+        <translation>Aliase für %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation>Aliasse dieses Raumes. Normalerweise kannst du Aliasse nur für deinen eigenen Server hinzufügen. Du kannst einen primären Alias und beliebig viele Zweitaliasse hinzufügen.</translation>
+        <translation>Aliase dieses Raumes. Normalerweise kannst du Aliase nur für deinen eigenen Server hinzufügen. Du kannst einen primären Alias und beliebig viele Zweitaliase hinzufügen.</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -320,7 +320,7 @@
     <message>
         <location line="+376"/>
         <source>Do you really want to start a private chat with %1?</source>
-        <translation>Möchtest du wirklich eine privaten Chat mit %1 beginnen?</translation>
+        <translation>Möchtest du wirklich eine private Konversation mit %1 beginnen?</translation>
     </message>
     <message>
         <location line="-922"/>
@@ -373,7 +373,7 @@ Wenn du glaubst, dass das ein Fehler ist, dann kannst du Nheko schließen und vi
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation>Du konntest %1 nicht betreten. Du kannst versuchen, anzuklopfen, so dass andere Leute dich einladen können. Möchtest du das tun?
+        <translation>Du konntest %1 nicht betreten. Du kannst versuchen anzuklopfen, so dass andere Leute dich einladen können. Möchtest du das tun?
 Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen annehmen sollten:</translation>
     </message>
     <message>
@@ -399,17 +399,17 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+56"/>
         <source>Reason for the kick</source>
-        <translation>Grund für den Rauswurf des Nutzers</translation>
+        <translation>Grund für das Entfernen des Nutzers</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation>Gib einen Grund für den Rauswurf von %1 (%2) ein oder drücke Eingabe für keinen Grund:</translation>
+        <translation>Grund warum %1 (%2) aus dem Raum geworfen wird oder die Entertaste drücken um keinen Grund anzugeben:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Failed to kick %1 from %2: %3</source>
-        <translation>Konnte %1 nicht aus %2 hinauswerfen: %3</translation>
+        <translation>Konnte %1 nicht aus %2 entfernen: %3</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -562,38 +562,38 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation>Anfragen, einen Raum zu betreten zu dürfen. Der Grund ist optional.</translation>
+        <translation>Anfragen einen Raum zu betreten. Ein Grund ist optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation>Raum verlassen. Der Grund ist optional.</translation>
+        <translation>Raum verlassen. Ein Grund ist optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation>Einen Nutzer in diesen Raum einladen. Der Grund ist optional.</translation>
+        <translation>Einen Nutzer in diesen Raum einladen. Ein Grund ist optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation>Einen Nutzer aus diesem Raum werfen. Der Grund ist optional.</translation>
+        <translation>Einen Nutzer aus diesem Raum werfen. Ein Grund ist optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation>Einen Nutzer aus diesen Raum verbannen. Der Grund ist optional.</translation>
+        <translation>Einen Nutzer von diesem Raum verbannen. Ein Grund ist optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation>Verbannung eines Nutzers aufheben. Der Grund ist optional.</translation>
+        <translation>Verbannung eines Nutzers aufheben. Ein Grund ist optional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation>Ein Event oder alle lokal zwischengespeicherten Nachrichten eines Nutzers zurückziehen.</translation>
+        <translation>Eine bestimmte Nachricht oder alle lokal geladenen Nachrichten eines Nutzers löschen.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -663,12 +663,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation>Sende eine Bot-Nachricht.</translation>
+        <translation>Sende eine Nachricht als wärst du ein Bot.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation>Sende eine Bot-Nachricht, aber in Regenbogenfarben.</translation>
+        <translation>Sende eine Botnachricht, aber in Regenbogenfarben.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -688,12 +688,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation>Verwandle diesen Raum zu einen Direktchat.</translation>
+        <translation>Verwandel diesen Raum in eine Direktnachricht.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation>Verwandle diesen Direktchat zu einen Raum.</translation>
+        <translation>Verwandle diese Direktnachricht in einen normalen Chatraum.</translation>
     </message>
 </context>
 <context>
@@ -734,12 +734,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+23"/>
         <source>Direct Chats</source>
-        <translation>Direktchats</translation>
+        <translation>Direktnachrichten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation>Zeige Direktchats an.</translation>
+        <translation>Zeige 1:1 Konversationen an.</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -749,7 +749,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation>Von dir favorisierte Räume.</translation>
+        <translation>Favorisierte Räume.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -815,12 +815,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+25"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation>Möchtest du den Raum betreten? Du kannst unten einen Grund angeben (optional):</translation>
+        <translation>Möchtest du den Raum betreten? Du kannst unten einen Grund angeben:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation>Dieser Raum kann nicht direkt betreten werden. Du kannst jedoch anklopfen, und Raummitglieder können diese Beitrittsanfrage akzeptieren oder ablehnen. Optional kannst du auch einen Grund angeben, um eingelassen zu werden:</translation>
+        <translation>Dieser Raum kann nicht direkt betreten werden. Du kanns aber anklopfen und die Personen in dem Raum können dich dann reinlassen oder auch nicht. Optional kannst du auch einen Grund angeben, warum sie das tun sollten.</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -848,7 +848,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation>@nutzer.server.tld</translation>
+        <translation>@nutzer:server.tld</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -876,7 +876,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation>Neuer Raum</translation>
+        <translation>Neuer Chatraum</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -916,7 +916,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation>Alle eingeladenen Personen erhalten das gleiche Powerlevel wie der Ersteller</translation>
+        <translation>Alle eingeladenen Personen erhalten die gleichen Berechtigungen wie der Ersteller</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -967,7 +967,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+8"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Bitte verifiziere die folgenden Ziffern. Du solltest die gleichen Zahlen auf beiden Seiten sehen. Wenn diese sich unterscheiden, bitte klicke auf „Sie stimmen nicht überein!“, um die Verifizierung abzubrechen!</translation>
+        <translation>Bitte verifiziere die folgenden Ziffern. Stelle sicher dass beide Seiten die gleichen Zahlen sehen. Wenn diese sich unterscheiden, bitte klicke auf &apos;Sie stimmen nicht überein!&apos; um die Verifizierung abzubrechen!</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -1038,12 +1038,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Bitte verifiziere die folgenden Emojis. Stelle sicher, dass du auf beiden Seiten das gleiche Emoji siehst. Wenn diese sich unterscheiden, bitte klicke auf „Sie stimmen nicht überein!“, um die Verifizierung abzubrechen!</translation>
+        <translation>Bitte verifiziere die folgenden Emoji. Stelle sicher dass beide Seiten die gleichen Emoji sehen. Wenn diese sich unterscheiden, bitte klicke auf &apos;Sie stimmen nicht überein!&apos; um die Verifizierung abzubrechen!</translation>
     </message>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation>Je nach Schriftart können die angezeigten Emojis sich in unterschiedlichen Applikationen leicht unterscheiden. Auf die selbe Art kann sich die Übersetzung unter dem Emoji je nach Sprache unterscheiden. Trotzdem sollten die 64 möglichen Zeichen eindeutig genug sein. Z.B. sind eine Katze und ein Löwe unterschiedlich, aber in der einen Applikation ist die Katze eventuell nur als Gesicht dargestellt und nicht als ganze Katze.</translation>
+        <translation>Je nach Schriftart können die angezeigten Emoji sich in unterschiedlichen Applikationen leicht unterscheiden. Auf die selbe Art kann sich die Übersetzung unter dem Emoji je nach Sprache unterscheiden. Trotzdem sollten die 64 möglichen Zeichen eindeutig genug sein. Z.B. sind eine Katze und ein Löwe unterschiedlich, aber in der einen Applikation ist die Katze eventuell nur als Gesicht dargestellt und nicht als ganze Katze.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1071,7 +1071,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation>Beim Lesen des Entschlüsselungsschlüssels aus der Datenbank ist ein interner Fehler aufgetreten.</translation>
+        <translation>Es ist ein interner Fehler beim Laden des Schlüssels aus der Datenbank aufgetreten.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1081,12 +1081,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation>Die Nachricht konnte nicht geparst werden.</translation>
+        <translation>Nheko hat die Nachricht nach der Entschlüsselung nicht verstanden.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation>Der Verschlüsselungsschlüssel wurde wiederverwendet. Möglicherweise versucht jemand, falsche Nachrichten in diesen Chat einzufügen!</translation>
+        <translation>Der Schlüssel dieser Nachricht wurde schon einmal verwendet! Eventuell versucht jemand, falsche Nachrichten in diese Unterhaltung einzufügen!</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1155,7 +1155,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>Device verification timed out.</source>
-        <translation>Zeitlimit für die Geräteverifizierung abgelaufen.</translation>
+        <translation>Verifizierung abgelaufen, die andere Seite antwortet nicht.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1220,7 +1220,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation>Benutzerevents</translation>
+        <translation>Benutzeränderungen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1230,7 +1230,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation>Powerlevelveränderungen</translation>
+        <translation>Berechtigungsveränderungen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1248,7 +1248,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+24"/>
         <source>Editing image pack</source>
-        <translation>Bilderpaket bearbeiten</translation>
+        <translation>Bilderpackung bearbeiten</translation>
     </message>
     <message>
         <location line="+63"/>
@@ -1263,17 +1263,17 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation>Wähle Bilder für dieses Paket</translation>
+        <translation>Wähle Bilder für diese Packung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation>Zum Paket hinzufügen</translation>
+        <translation>Zur Packung hinzufügen</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation>Ändere das Vorschaubild dieses Pakets</translation>
+        <translation>Ändere das Vorschaubild dieser Packung</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1283,12 +1283,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation>Wähle ein Vorschaubild für das Paket aus</translation>
+        <translation>Wähle ein Vorschaubild für diese Packung aus</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>State key</source>
-        <translation>Zustandsschlüssel</translation>
+        <translation>Eindeutiger Name</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1338,37 +1338,37 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+25"/>
         <source>Image pack settings</source>
-        <translation>Bilderpaketeinstellungen</translation>
+        <translation>Bilderpackungseinstellungen</translation>
     </message>
     <message>
         <location line="+54"/>
         <source>Create account pack</source>
-        <translation>Kontopaket erstellen</translation>
+        <translation>Neue private Packung</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>New room pack</source>
-        <translation>Neues Raumpaket</translation>
+        <translation>Neue raumspezifische Packung</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Private pack</source>
-        <translation>Privates Paket</translation>
+        <translation>Private Packung</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation>Paket für diesen Raum</translation>
+        <translation>Packung aus diesem Raum</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation>Paket von übergeordneter Gruppe</translation>
+        <translation>Packung von übergeordneter Gruppe</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation>Global aktiviertes Paket</translation>
+        <translation>Global aktivierte Packung</translation>
     </message>
     <message>
         <location line="+66"/>
@@ -1378,7 +1378,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation>Macht dieses Paket in allen Räumen verfügbar</translation>
+        <translation>Macht diese Packung in allen Räumen verfügbar</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1401,7 +1401,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+810"/>
         <source>Upload of &apos;%1&apos; failed</source>
-        <translation>Das Hochladen von „%1“ ist fehlgeschlagen</translation>
+        <translation>Das Hochladen von &apos;%1&apos; ist fehlgeschlagen</translation>
     </message>
 </context>
 <context>
@@ -1487,10 +1487,10 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>Dein Anmeldename. Eine mxid sollte mit einem „@“ anfangen gefolgt von der Nutzer-ID. Nach dem Nutzernamen folgt dein Servername, getrennt durch einen „:“.
-Wenn dein Server den „.well-known“-Lookup nicht unterstützt, kannst du auch deine Heimserveradresse angeben.
+        <translation>Dein Anmeldename. Eine mxid sollte mit eine @ anfangen gefolgt von der Nutzerid. Nach dem Nutzernamen folgt der servername, getrennt durch ein :.
+Wenn dein Server keinen .well-known unterstützt, kannst du auch eine Serveradresse angeben.
 Beispiel: @nutzer:mein.server
-Wenn Nheko den Server nicht finden kann, wird es dir ein Eingabefeld anzeigen, in das du den Server manuell eingeben kannst.</translation>
+Wenn Nheko den Server nicht finden kann, wird es dich nach der Serveradresse fragen.</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1527,7 +1527,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation>mein.server:8787</translation>
+        <translation>dein.server:8787</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -1555,7 +1555,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+6"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation>Automatische Erkennung fehlgeschlagen. Unbekannter Fehler bei Anfrage von „.well-known“.</translation>
+        <translation>Automatische Erkennung fehlgeschlagen. Unbekannter Fehler bei Anfrage .well-known.</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -1565,17 +1565,17 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+6"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation>Erhaltene Antwort war fehlerhaft. Bitte prüfe, ob die Heimserver-Domain gültig ist.</translation>
+        <translation>Erhaltene Antwort war fehlerhaft. Bitte Homeserverdomain prüfen.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation>Ein unbekannter Fehler ist aufgetreten. Bitte prüfe, ob die Heimserver-Domain gültig ist.</translation>
+        <translation>Ein unbekannter Fehler ist aufgetreten. Bitte Homeserverdomain prüfen.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>Der ausgewählte Server unterstützt keine Version des Matrixprotokolls, die Nheko versteht (v1.1 bis v1.5). Du kannst dich nicht anmelden.</translation>
+        <translation>Der ausgewählte Server unterstützt keine der Matrix versionen, die Nheko versteht (v1.1 bis v1.5). Du kannst dich nicht anmelden.</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1605,7 +1605,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+9"/>
         <source>SSO LOGIN</source>
-        <translation>SSO-ANMELDUNG</translation>
+        <translation>SSO ANMELDUNG</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -1615,7 +1615,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+55"/>
         <source>SSO login failed</source>
-        <translation>SSO-Anmeldung fehlgeschlagen</translation>
+        <translation>SSO Anmeldung fehlgeschlagen</translation>
     </message>
 </context>
 <context>
@@ -1665,7 +1665,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+34"/>
         <source>%2 changed the room name to: %1</source>
-        <translation>%2 hat den Raumnamen geändert zu: %1</translation>
+        <translation>%2 hat den Raumnamen geändert auf: %1</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1675,7 +1675,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+14"/>
         <source>%2 changed the topic to: %1</source>
-        <translation>%2 hat das Thema geändert zu: %1</translation>
+        <translation>%2 hat das Thema geändert auf: %1</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1685,7 +1685,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 changed the room avatar</source>
-        <translation>%1 hat das Raumavatar geändert</translation>
+        <translation>%1 hat dem Raumavatar geändert</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1779,7 +1779,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+56"/>
         <source>Write a message...</source>
-        <translation>Schreibe eine Nachricht …</translation>
+        <translation>Schreibe eine Nachricht…</translation>
     </message>
     <message>
         <location line="+288"/>
@@ -1812,7 +1812,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+15"/>
         <source>React</source>
-        <translation>Reagieren</translation>
+        <translation>Reaktion senden</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1842,7 +1842,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+1"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation>Grund für die Löschung eingeben oder Eingabetaste drücken für keinen Grund:</translation>
+        <translation>Grund für das Nachrichtenlöschen oder Entertaste drücken für keinen Grund:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1972,12 +1972,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+2"/>
         <source>%1 using the device %2 has requested to be verified.</source>
-        <translation>%1 mit dem Gerät %2 hat angefragt, verifiziert zu werden.</translation>
+        <translation>%1 mit dem Gerät %2 hat angefragt verifiziert zu werden.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your device (%1) has requested to be verified.</source>
-        <translation>Dein Gerät (%1) hat angefragt, verifiziert zu werden.</translation>
+        <translation>Dein Gerät %1 hat angefragt verifiziert zu werden.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -2152,7 +2152,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+16"/>
         <source>Move users up or down to change their permissions</source>
-        <translation>Verschiebe Nutzer hoch oder runter, um ihre Berechtigungen zu ändern</translation>
+        <translation>Verschiebe Nutzer zwischen Rollen um deren Rolle zu ändern</translation>
     </message>
     <message>
         <location line="+142"/>
@@ -2190,7 +2190,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+46"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation>Keine Berechtigung, die Berechtigungen hier zu verändern</translation>
+        <translation>Keine Berechtigung die Berechtigungen hier zu verändern</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2213,7 +2213,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="+739"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation>Konnte Powerlevel nicht aktualisieren: %1</translation>
+        <translation>Konnte Berechtigungen nicht aktualisieren: %1</translation>
     </message>
 </context>
 <context>
@@ -2221,7 +2221,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="-116"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation>Konnte Powerlevel nicht aktualisieren: %1</translation>
+        <translation>Konnte Berechtigungen nicht aktualisieren: %1</translation>
     </message>
 </context>
 <context>
@@ -2254,7 +2254,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+2"/>
         <source>Redact events sent by others</source>
-        <translation>Von anderen Teilnehmern gesendete Events zurückziehen</translation>
+        <translation>Fremde Nachrichten löschen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2264,7 +2264,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+2"/>
         <source>Deprecated aliases events</source>
-        <translation>Veraltete Aliasse-Events</translation>
+        <translation>Veraltetes Raumaddressenevent</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2334,12 +2334,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+2"/>
         <source>Redact own events</source>
-        <translation>Eigene Events zurückziehen</translation>
+        <translation>Eigene Nachrichten löschen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change the pinned events</source>
-        <translation>Angeheftete Events ändern</translation>
+        <translation>Angeheftete Nachrichten ändern</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2473,7 +2473,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation>Schreibe eine Nachricht …</translation>
+        <translation>Schreibe eine Nachricht…</translation>
     </message>
 </context>
 <context>
@@ -2568,7 +2568,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+7"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation>Automatische Erkennung fehlgeschlagen. Unbekannter Fehler bei Anfrage nach „.well-known“.</translation>
+        <translation>Automatische Erkennung fehlgeschlagen. Unbekannter Fehler bei Anfrage .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -2578,12 +2578,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+7"/>
         <source>Received malformed response. Make sure the homeserver domain is valid.</source>
-        <translation>Erhaltene Antwort war fehlerhaft. Bitte prüfe, ob die Heimserver-Domain gültig ist.</translation>
+        <translation>Erhaltene Antwort war fehlerhaft. Bitte Homeserverdomain prüfen.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation>Ein unbekannter Fehler ist aufgetreten. Bitte prüfe, ob die Heimserver-Domain gültig ist.</translation>
+        <translation>Ein unbekannter Fehler ist aufgetreten. Bitte Homeserverdomain prüfen.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -2665,12 +2665,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/RoomList.qml" line="+158"/>
         <source>New tag</source>
-        <translation>Neues Tag</translation>
+        <translation>Neuer Tag</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter the tag you want to use:</source>
-        <translation>Gib das Tag, das du verwenden willst, ein:</translation>
+        <translation>Gib den Tag, den du verwenden willst, ein:</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2715,12 +2715,12 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Neues Tag erstellen …</translation>
+        <translation>Neuen Tag erstellen…</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Add or remove from community...</source>
-        <translation>Zu Gruppe hinzufügen oder entfernen ...</translation>
+        <translation>Zu Gruppe hinzufügen oder entfernen...</translation>
     </message>
     <message>
         <location line="+260"/>
@@ -2835,7 +2835,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation>Suchen ...</translation>
+        <translation>Suchen...</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2855,7 +2855,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation>Powerlevel</translation>
+        <translation>Berechtigung</translation>
     </message>
     <message>
         <location line="+105"/>
@@ -2988,7 +2988,7 @@ Bitte beachte, dass die Verschlüsselung hinterher nicht mehr deaktiviert werden
     <message>
         <location line="+12"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation>Addressen/Aliasse dieses Raums betrachen und ändern</translation>
+        <translation>Raumadressen anzeigen und ändern</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3041,7 +3041,7 @@ Bitte beachte, dass die Verschlüsselung hinterher nicht mehr deaktiviert werden
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation>Erlaube Gästen, beizutreten</translation>
+        <translation>Erlaube Gästen beizutreten</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -3051,12 +3051,12 @@ Bitte beachte, dass die Verschlüsselung hinterher nicht mehr deaktiviert werden
     <message>
         <location line="+57"/>
         <source>Aliases</source>
-        <translation>Aliasse</translation>
+        <translation>Raumaddressen</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation>Ändere, welche Pakete aktiv sind, entferne oder erstelle neue Pakete</translation>
+        <translation>Ändere welche Packungen aktiv sind, entferne oder erstelle neue Packungen.</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -3148,22 +3148,22 @@ Bitte beachte, dass die Verschlüsselung hinterher nicht mehr deaktiviert werden
     <message>
         <location filename="../qml/Root.qml" line="+263"/>
         <source>Please enter your login password to continue:</source>
-        <translation>Bitte gib dein Anmeldepasswort ein, um fortzufahren:</translation>
+        <translation>Bitte gib dein Anmeldepassword an um fortzufahren:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation>Bitte gib eine gültige E-Mail-Adresse an, um fortzufahren:</translation>
+        <translation>Bitte gib eine gültige Emailadresse an um fortzufahren:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation>Bitte gib eine gültige Telefonnummer an, um fortzufahren:</translation>
+        <translation>Bitte gib eine gültige Telefonnummer an um fortzufahren:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token which has been sent to you:</source>
-        <translation>Bitte gib das Token ein, das dir geschickt wurde:</translation>
+        <translation>Bitte gib das Token ein, dass dir geschickt wurde:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3235,7 +3235,7 @@ Bitte beachte, dass die Verschlüsselung hinterher nicht mehr deaktiviert werden
     <message>
         <location line="+1"/>
         <source>Nheko could not connect to the secure storage to save encryption secrets to. This can have multiple reasons. Check if your D-Bus service is running and you have configured a service like KWallet, Gnome Keyring, KeePassXC or the equivalent for your platform. If you are having trouble, feel free to open an issue here: https://github.com/Nheko-Reborn/nheko/issues</source>
-        <translation>Nheko konnte sich nicht mit dem Dienst zum sicheren Speichern von Verschlüsselungsgeheimnissen verbinden. Das kann verschiedene Gründe haben. Prüfe, ob der D-Bus-Dienst aktiv ist und du einen Dienst wie KWallet, Gnome Keyring, KeePassXC oder das Äquivalent für deine Plattform konfiguriert hast. Wenn du Probleme hast, kannst du gerne einen Issue hier eröffnen (auf Englisch): https://github.com/Nheko-Reborn/nheko/issues</translation>
+        <translation>Nheko konnte sich nicht mit dem Dienst zum sicheren speichern von Schlüsseln verbinden. Das kann verschiedene Gründe haben. Prüfe, ob der D-Bus-Dienst aktiv ist und du einen Dienst wie KWallet, Gnome Keyring, KeePassXC oder das Äquivalent für deine Platform. Wenn du Probleme hast, scheue dich nicht Hilfe hier zu suchen: https://github.com/Nheko-Reborn/nheko/issues</translation>
     </message>
 </context>
 <context>
@@ -3243,7 +3243,7 @@ Bitte beachte, dass die Verschlüsselung hinterher nicht mehr deaktiviert werden
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+41"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation>Dies ist dein Wiederherstellungsschlüssel. Du brauchst ihn, um auf deine verschüsselten Nachrichten und Verifizierungsschlüssel zugreifen zu können. Pass gut auf ihn auf. Teile den Schlüssel mit niemandem und verliere ihn nicht! Gehe nicht über Los! Ziehe keine 2000€ ein!</translation>
+        <translation>Dies ist dein Wiederherstellungsschlüssel. Du brauchst diesen um auf deine verschüsselten Nachrichten und Verifizierungsschlüssel zugreifen zu können. Pass gut drauf auf. Teile den Schlüssel mit niemandem und verliere ihn nicht! Gehe nicht über Los! Ziehe nicht 2000€ ein!</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -3265,7 +3265,7 @@ Bitte beachte, dass die Verschlüsselung hinterher nicht mehr deaktiviert werden
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
         <translation>Hallo und willkommen zu Matrix!
-Sieht so aus, als wärst du neu hier. Bevor du deine Nachrichten sicher verschlüsseln kannst, müssen wir ein paar Sachen konfigurieren. Du kannst entweder sofort auf „Akzeptieren“ drücken, oder ein paar grundlegende Einstellungen anpassen. Wir versuchen, einige der Grundlagen zu erklären. Du kannst diese Teile überspringen, aber sie könnten hilfreich sein!</translation>
+Sieht so aus als wärst du neu hier. Bevor wir deine Nachrichten verschlüsseln können, müssen wir ein paar Sachen konfigurieren. Keine Panik, du kannst auch einfach weiter klicken, ohne irgendentwas umzustellen, aber du kannst natürlich auch ein paar der Optionen ändern. Die Erklärungen sind etwas länger in der Hoffnung, dass sie weiterhelfen. Du kannst sie überspringen, aber einmal durchlesen ist vielleicht vorteilhaft!</translation>
     </message>
     <message>
         <location line="+124"/>
@@ -3276,7 +3276,7 @@ Sieht so aus, als wärst du neu hier. Bevor du deine Nachrichten sicher verschl�
         <location line="+10"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation>Es sieht so aus, als hättest du die Verschlüsselung für dieses Konto schon aktiviert. Damit dieses Gerät auf verschlüsselte Nachrichten zugreifen kann und vertrauenswürdig erscheint, kannst du es jetzt entweder mit einem anderen Gerät verifizieren oder (wenn du einen hast) mit deinem Wiederherstellungsschlüssel bestätigen. Bitte wähle eine der folgenden Optionen.
+        <translation>Es sieht so aus als hättest du die Verschlüsselung für dieses Konto schon aktiviert. Damit dieses Gerät auf verschlüsselte Nachrichten zugreifen kann und vertrauenswürdig erschein, kannst du es jetzt entweder mit einem anderen Gerät verifizieren oder (wenn du einen hast) mit deinem Wiederherstellungsschlüssel bestätigen. Bitte wähle eine der folgenden Optionen.
 Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn du den Wiederherstellungsschlüssel wählst, brauchst du deine Wiederherstellungsphrase oder -passwort. Mit Abbrechen kannst du diesen Schritt auf später verschieben.</translation>
     </message>
     <message>
@@ -3305,7 +3305,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="+29"/>
         <source>Failed to create keys for secure server side secret storage!</source>
-        <translation>Konnte Schlüssel für den sicheren serverseitigen Speicher nicht erzeugen!</translation>
+        <translation>Konnte Schlüssel für den sicheren, server-seitigen Speicher nicht erzeugen!</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -3320,7 +3320,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="+156"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation>Der Identitätschlüssel hat sich geändert. Das macht die Ende-zu-Ende-Verschlüsselung kaputt, also wirst du abgemeldet.</translation>
+        <translation>Die Identitätschlüssel haben sich geändert. Das stört die Verschlüsselung, deswegen wirst du abgemeldet.</translation>
     </message>
 </context>
 <context>
@@ -3329,12 +3329,12 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <location filename="../../src/SingleImagePackModel.cpp" line="+279"/>
         <location line="+25"/>
         <source>Failed to update image pack: %1</source>
-        <translation>Konnte das Bilderpaket nicht aktualisieren: %1</translation>
+        <translation>Konnte die Bilderpackung nicht aktualisieren: %1</translation>
     </message>
     <message>
         <location line="-12"/>
         <source>Failed to delete old image pack: %1</source>
-        <translation>Konnte das alte Bilderpaket nicht löschen: %1</translation>
+        <translation>Konnte die alte Bilderpackung nicht löschen: %1</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3442,13 +3442,13 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <location filename="../../src/timeline/TimelineModel.cpp" line="+1394"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
-        <translation>Zurückziehen der Nachricht fehlgeschlagen: %1</translation>
+        <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
     </message>
     <message>
         <location line="+115"/>
         <location line="+5"/>
         <source>Failed to encrypt event, sending aborted!</source>
-        <translation>Event konnte nicht verschlüsselt werden, das Versenden wurde abgebrochen!</translation>
+        <translation>Event konnte nicht verschlüsselt werden, senden wurde abgebrochen!</translation>
     </message>
     <message>
         <location line="+196"/>
@@ -3487,32 +3487,32 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="+4"/>
         <source>%1 allowed to join this room by knocking.</source>
-        <translation>%1 hat erlaubt, diesen Raum durch Anklopfen beizutreten.</translation>
+        <translation>%1 hat erlaubt Leuten diesen Raum durch Anklopfen beizutreten.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 allowed members of the following rooms to automatically join this room: %2</source>
-        <translation>%1 hat Mitgliedern aus den folgenden Räumen erlaubt, diesem Raum automatisch beizutreten: %2</translation>
+        <translation>%1 hat Mitgliedern aus folgenden Räumen erlaubt diesen Raum automatisch zu betreten: %2</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>%1 made the room open to guests.</source>
-        <translation>%1 hat Gästen erlaubt, den Raum zu betreten.</translation>
+        <translation>%1 hat Gästen erlaubt den Raum zu betreten.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 has closed the room to guest access.</source>
-        <translation>%1 hat Gästen verboten, den Raum zu betreten.</translation>
+        <translation>%1 hat Gästen verboten den Raum zu betreten.</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>%1 made the room history world readable. Events may be now read by non-joined people.</source>
-        <translation>%1 hat den Raum lesbar für alle gemacht. Nutzer, die nicht Teilnehmer dieses Raums sind, können nun Events in diesem Raum lesen.</translation>
+        <translation>%1 hat den Raum lesbar für alle gemacht. Nutzer, die nicht Teilnehmer dieses Raums sind, können nun Nachrichten in diesem Raum lesen.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 set the room history visible to members from this point on.</source>
-        <translation>%1 hat die Raumhistorie von diesen Zeitpunkt an sichtbar für Mitglieder gemacht.</translation>
+        <translation>%1 hat eingestellt, dass nur Teilnehmer Nachrichten in diesem Raum lesen können (ab diesem Punkt).</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3533,61 +3533,61 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="-221"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
-        <translation>%1 hat das nötige Powerlevel, um Leute aus dem Raum zu werfen, von %2 auf %3 geändert.</translation>
+        <translation>%1 hat die benötigte Berechtigungen um Leute aus dem Raum zu werfen von %2 auf %3 geändert.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
         <translation>
-            <numerusform>%n Mitglied kann nun Raummitglieder hinauswerfen.</numerusform>
-            <numerusform>%n Mitglieder können nun Raummitglieder hinauswerfen.</numerusform>
+            <numerusform>%n Teilnehmer kann nun Mitglieder aus dem Raum entfernen.</numerusform>
+            <numerusform>%n Teilnehmer können nun Mitglieder aus dem Raum entfernen.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now kick room members.</source>
-        <translation>%1 kann nun Raummitglieder aus den Raum werfen.</translation>
+        <translation>%1 kann nun andere Nutzer aus dem Raum werfen.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s redact powerlevel from %2 to %3.</source>
-        <translation>%1 hat das nötige Powerlevel, um Nachrichten in diesem Raum zurückzuziehen, von %2 auf %3 geändert.</translation>
+        <translation>%1 hat die nötigen Berechtigungen um Nachrichten in diesem Raum zu löschen von %2 auf %3 geändert.</translation>
     </message>
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
         <translation>
-            <numerusform>%n Mitglied kann nun Raumnachrichten zurückziehen.</numerusform>
-            <numerusform>%n Mitglieder können nun Raumnachrichten zurückziehen.</numerusform>
+            <numerusform>%1 Teilnehmer kann nun Nachrichten löschen.</numerusform>
+            <numerusform>%1 Teilnehmer können nun Nachrichten löschen.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 can now redact room messages.</source>
-        <translation>%1 kann nun Nachrichten zurückziehen.</translation>
+        <translation>%1 kann nun Nachrichten löschen.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has changed the room&apos;s ban powerlevel from %2 to %3.</source>
-        <translation>%1 hat das nötige Powerlevel, um Leute aus dem Raum zu verbannen, von %2 auf %3 geändert.</translation>
+        <translation>%1 hat die benötigten Berechtigungen um Leute aus dem Raum zu verbannen von %2 auf %3 geändert.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
         <translation>
-            <numerusform>%n Mitglied kann nun Raummitglieder verbannen.</numerusform>
-            <numerusform>%n Mitglieder können nun Raummitglieder verbannen.</numerusform>
+            <numerusform>%n Teilnehmer kann nun Leute aus dem Rau verbannen.</numerusform>
+            <numerusform>%n Teilnehmer können nun Leute aus dem Rau verbannen.</numerusform>
         </translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 can now ban room members.</source>
-        <translation>%1 kann nun Raummitglieder verbannen.</translation>
+        <translation>%1 kann nun Leute aus dem Raum verbannen.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>%1 has changed the room&apos;s state_default powerlevel from %2 to %3.</source>
-        <translation>%1 hat das Powerlevel für die restlichen Zustandsevents (state_default) von %2 auf %3 geändert.</translation>
+        <translation>%1 hat das Berechtigungslevel für die restlichen Zustandsevents von %2 auf %3 geändert.</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
@@ -3605,67 +3605,67 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="+14"/>
         <source>%1 has changed the room&apos;s invite powerlevel from %2 to %3.</source>
-        <translation>%1 hat das nötige Powerlevel, um Nutzer einzuladen, von %2 auf %3 geändert.</translation>
+        <translation>%1 hat die nötigen Berechtigungen um Nutzer einzuladen von %2 auf %3 geändert.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now not send any events.</source>
-        <translation>%1 hat das „events_default“-Powerlevel von %2 auf %3 geändert. Neue Nutzer können ab jetzt keine Events mehr senden.</translation>
+        <translation>%1 hat die nötigen Berechtigungen für beliebige Events von %2 auf %3 geändert. Neue Nutzer können jetzt keine Events mehr senden.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3. New users can now send events that are not otherwise restricted.</source>
-        <translation>%1 hat das nötige „events_default“-Powerlevel von %2 auf %3 geändert. Neue Nutzer können jetzt Events senden, solange keine anderen Einschränkungen vorliegen.</translation>
+        <translation>%1 hat die nötigen Berechtigungen für beliebige Events von %2 auf %3 geändert. Neue Nutzer können jetzt Events senden, solange keine anderen Einschränkungen vorliegen.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 has changed the room&apos;s events_default powerlevel from %2 to %3.</source>
-        <translation>%1 hat das „events_default“-Powerlevel dieses Raumes von %2 auf %3 geändert.</translation>
+        <translation>%1 hat die nötigen Berechtigungen für beliebige Events von %2 auf %3 geändert.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>%1 has made %2 an administrator of this room.</source>
-        <translation>%1 hat %2 zum Administrator dieses Raumes befördert.</translation>
+        <translation>%1 hat %2 zum Administrator befördert.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has made %2 a moderator of this room.</source>
-        <translation>%1 hat %2 zu einem Moderator in dieses Raumes gemacht.</translation>
+        <translation>%1 hat %2 zu einem Moderator gemacht.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has downgraded %2 to moderator of this room.</source>
-        <translation>%1 hat %2 zum Moderator dieses Raumes degradiert.</translation>
+        <translation>%1 hat %2 zum Moderator degradiert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
-        <translation>%1 hat das Powerlevel von %2 von %3 auf %4 geändert.</translation>
+        <translation>%1 hat die Berechtigungen von %2 von %3 auf %4 geändert.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation>%1 hat nur Administratoren erlaubt, „%2“ zu senden.</translation>
+        <translation>%1 hat nur Administratoren erlaubt &quot;%2&quot; zu senden.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation>%1 hat nur Moderatoren erlaubt, „%2“ zu senden.</translation>
+        <translation>%1 hat nur Moderatoren erlaubt &quot;%2&quot; zu senden.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation>%1 hat allen erlaubt, „%2“ zu senden.</translation>
+        <translation>%1 hat allen erlaubt &quot;%2&quot; zu senden.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation>%1 hat das Powerlevel für den Eventtyp „%2“ vom Standardwert auf %3 geändert.</translation>
+        <translation>%1 hat die Berechtigungen für Events vom Typ &quot;%2&quot; vom Standard auf %3 geändert.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from %3 to %4.</source>
-        <translation>%1 hat das nötige Powerlevel für Events vom Typ „%2“ von %3 auf %4 geändert.</translation>
+        <translation>%1 hat die nötigen Berechtigungen für Events vom Typ &quot;%2&quot; von %3 auf %4 geändert.</translation>
     </message>
     <message>
         <location line="+66"/>
@@ -3675,12 +3675,12 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="+6"/>
         <source>%1 removed the following images from the pack %2:&lt;br&gt;%3</source>
-        <translation>%1 hat die folgenden Bilder vom Paket %2 entfernt:&lt;br&gt;%3</translation>
+        <translation>%1 hat die folgenden Bilder vom der Bilderpackung %2 entfernt:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 added the following images to the pack %2:&lt;br&gt;%3</source>
-        <translation>%1 hat die folgenden Bilder zum Paket %2 hinzugefügt:&lt;br&gt;%3</translation>
+        <translation>%1 hat die folgenden Bilder zu der Bilderpackung %2 hinzugefügt:&lt;br&gt;%3</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3690,32 +3690,32 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="+35"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation>%1 hat die Regel zum Verbannen von Nutzern, deren Name mit %2 zusammenpasst, deaktiviert.</translation>
+        <translation>%1 hat die Regel zum bannen von Nutzern die %2 entsprechen deaktiviert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation>%1 hat eine Regel für das Verbannen von Nutzern, deren Name mit %2 zusammenpasst, hinzugefügt. Grund: „%3“.</translation>
+        <translation>%1 hat eine Regel für das Verbannen von Nutzern wegen &apos;%3&apos;, die %2 entsprechen, hinzugefügt.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation>%1 hat die Regel zum Verbannen von Räumen, deren Name mit %2 zusammenpasst, deaktiviert.</translation>
+        <translation>%1 hat die Regel zum bannen von Räumen, die %2 entsprechen deaktiviert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation>%1 hat eine Regel für das Verbannen von Räumen, deren Namem mit %2 zusammenpasst, hinzugefügt. Grund: „%3“.</translation>
+        <translation>%1 hat eine Regel für das Verbannen von Räumen wegen &apos;%3&apos;, die %2 entsprechen, hinzugefügt.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation>%1 hat die Regel zum Verbannen von Servern, deren Name mit %2 zusammenpasst, deaktiviert.</translation>
+        <translation>%1 hat die Regel zum bannen von Servern, die %2 entsprechen deaktiviert.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation>%1 hat die Regel zum Verbannen von Servern, deren Name mit %2 zusammenpasst, hinzugefügt. Grund: „%3“.</translation>
+        <translation>%1 hat eine Regel für das Verbannen von Servern wegen &apos;%3&apos;, die %2 entsprechen, hinzugefügt.</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -3777,7 +3777,7 @@ Grund: %4</translation>
     <message>
         <location line="+3"/>
         <source>%1 joined via authorisation from %2&apos;s server.</source>
-        <translation>%1 hat den Raum durch Autorisierung vom Server von %2 betreten.</translation>
+        <translation>%1 hat den Raum durch Authorisierung von %2s Server betreten.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -3797,7 +3797,7 @@ Grund: %4</translation>
     <message>
         <location line="-19"/>
         <source>%1 redacted their knock.</source>
-        <translation>%1 hat das eigene Anklopfen zurückgezogen.</translation>
+        <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
         <location line="-1628"/>
@@ -3828,7 +3828,7 @@ Grund: %4</translation>
         <location line="+36"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
-        <translation>%1 hat den Raum verlassen, nachdem der Raum bereits von dieser Person verlassen wurde!</translation>
+        <translation>%1 hat den Raum verlassen, obwohl er gar nicht mehr am Raum teilnahm!</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4200,7 +4200,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation>Großes Emoji in der Nachrichtenliste</translation>
+        <translation>Große Emoji in der Nachrichtenliste</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4220,7 +4220,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation>Nachrichten als Markdown formatiert senden</translation>
+        <translation>Sende Nachrichten als Markdown formatiert</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4310,17 +4310,17 @@ Grund: %4</translation>
     <message>
         <location line="+4"/>
         <source>Display fancy effects such as confetti</source>
-        <translation>Ausgefallene Chateffekte wie Konfetti anzeigen</translation>
+        <translation>Lustige Chateffekte wie Konfetti anzeigen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation>Animationen reduzieren oder deaktivieren</translation>
+        <translation>Reduziere oder deaktiviere Animationen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Privacy Screen</source>
-        <translation>Sichtschutz</translation>
+        <translation>Blickschutz</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4375,7 +4375,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation>Erlaube, den Fallback-Assistenzserver zu verwenden</translation>
+        <translation>Erlaube den Fallbackassistenzserver zu verwenden</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4400,7 +4400,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>User ID</source>
-        <translation>Benutzer-ID</translation>
+        <translation>Anmeldename</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4490,7 +4490,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Online backup key</source>
-        <translation>Online-Backupschlüssel</translation>
+        <translation>Online Backupschlüssel</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4520,16 +4520,16 @@ Grund: %4</translation>
     <message>
         <location line="+35"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation>Setze den zu spielenden Benachrichtigungston für eingehende Anrufseinladungen</translation>
+        <translation>Ändere den Klingelton für eingehende Anrufe</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation>Zeitbegrenzung (in Sekunden), bis der Bildschirm verschwommen angezeigt wird, nachdem das Fenster den Fokus verliert.
-Bei 0 wird der Sichtschutz sofort aktiv.
-Maximaler Wert ist eine Stunde (3600 Sekunden)</translation>
+        <translation>Zeitbegrenzung (in Sekunden) bis der Bildschirm verschwommen angezeigt wird, nachdem das Fenster den Fokus verliert.
+Bei 0 wird der Blickschutz sofort aktiv.
+Maximaler Wert ist eine Stunde (3600 Sekunden).</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4539,7 +4539,7 @@ Maximaler Wert ist eine Stunde (3600 Sekunden)</translation>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation>Erhöht die Schriftgröße, wenn die Nachricht nur aus ein paar Emojis besteht.</translation>
+        <translation>Erhöht die Schriftgröße, wenn die Nachricht nur aus ein paar Emoji besteht.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4549,7 +4549,7 @@ Maximaler Wert ist eine Stunde (3600 Sekunden)</translation>
     <message>
         <location line="+3"/>
         <source>Start the application in the background without showing the client window.</source>
-        <translation>Starte die Applikation im Hintergrund, ohne ein Fenster zu öffnen.</translation>
+        <translation>Starte die Applikation im Hintergrund ohne ein Fenster zu öffnen.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4560,13 +4560,13 @@ Maximaler Wert ist eine Stunde (3600 Sekunden)</translation>
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation>Die Verwendung von Markdown in Nachrichten erlauben.
-Wenn deaktiviert, werden alle Nachrichten als unformatierter Text gesendet.</translation>
+        <translation>Nutze Markdown als Format für Nachrichten.
+Wenn deaktiviert werden alle Nachrichten als unformatierter Text gesendet.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation>Kehrt die Bedeutung der Eingabetaste im Texteingabefeld um, wodurch die Nachricht mit Umschalt+Eingabe gesendet wird und mit der Eingabetaste allein wird eine neue Zeile begonnen.</translation>
+        <translation>Erlaubt das invertieren des Verhaltens der Enter taste. Kontrolliert ob Umschalt+Enter eine Neuzeile einfügt oder die Nachricht sendet.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4576,7 +4576,7 @@ Wenn deaktiviert, werden alle Nachrichten als unformatierter Text gesendet.</tra
     <message>
         <location line="+3"/>
         <source>Avatars are resized to fit above the message.</source>
-        <translation>Die Größe von Avataren wird angepasst, damit sie oberhalb der Nachricht passen.</translation>
+        <translation>Benutzerbilder werden verkleinert um über die Nachricht zu passen.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4587,55 +4587,55 @@ Wenn deaktiviert, werden alle Nachrichten als unformatierter Text gesendet.</tra
         <location line="+2"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
-        <translation>Anzeigen, wer gerade in einem Raum tippt.
-Diese Einstellung legt auch fest, ob das eigene Tippen an andere gesendet wird.</translation>
+        <translation>Zeige wer gerade in einem Raum tippt.
+Diese Einstellung steuert auch, ob das eigene Tippen an andere gesendet wird.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
-        <translation>Zeige Buttons für das schnelle Antworten, Reagieren und zusätzliche Optionen neben jeder Nachricht.</translation>
+        <translation>Zeige Knöpfe für das schnelle Antworten, Reagieren und zusätzliche Optionen neben jeder Nachricht.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Notify about received messages when the client is not currently focused.</source>
-        <translation>Benachrichtigungen über neue Nachrichten, wenn der Client nicht im Vordergrund ist.</translation>
+        <translation>Benachrichtigungen pber neue Nachrichten, wenn der Client nicht im Vordergrund ist.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - circle.</source>
-        <translation>Ändere das Aussehen der Chat-Avatare.
-AUS: Quadratisch; AN: Kreisförmig.</translation>
+        <translation>Ändere das aussehen der Chatavatare.
+AUS - Quadratisch, AN - Kreisförmig.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Decrypt messages shown in notifications for encrypted chats.</source>
-        <translation>Nachrichten, die in den Benachrichtigungen für verschlüsselte Chats angezeigt werden, entschlüsseln.</translation>
+        <translation>Nachrichten in Benachrichtigungen entschlüsseln in verschlüsselten Räumen.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Choose where to show the total number of notifications contained within a community or tag.</source>
-        <translation>Wähl aus, wo die Gesamtzahl der Benachrichtigungen innerhalb einer Gemeinschaft oder eines Tags gezeigt werden soll.</translation>
+        <translation>Wähle aus ob die Benachrichtigungsanzahl für Gruppen und Tags angezeigt werden oder nicht.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation>Manche Nachrichten können mit ausgefallenen Effekten versendet werden. Zum Beispiel werden Nachrichten, die mit „/confetti“ gesendet wurden, Konfetti auf den Bildschirm zeigen.</translation>
+        <translation>Manche Nachrichten lösen extra Effekte aus. Z.B. erzeugen Nachrichten, die mit /confetti gesendet wurden, einen kleinen Konfettischauer.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation>Für besseres Aussehen verwendet Nheko an verschiedenen Stellen Animationen. Diese Option erlaubt dir, die Animationen zu deaktiveren, wenn diese bei dir Unwohlsein hervorrufen.</translation>
+        <translation>Für besseres Aussehen verwendet Nheko an verschiedenen Stellen Animationen. Diese Option erlaubt dir die Animationen zu deaktiveren, wenn diese bei dir Unwohlsein hervorrufen.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation>Antwortet automatisch auf Schlüsselanfragen von anderen Benutzern, wenn diese verifiziert sind, selbst, wenn das entsprechende Gerät sonst keinen Zugriff auf diese Schlüssel hätte.</translation>
+        <translation>Teilt automatisch Schlüssel für Nachrichten mit verifizierten Nutzern (auf Anfrage), selbst wenn diese sonst keinen Zugriff darauf hätten.</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation>Der Schlüssel, um deine eigenen Geräte zu verifizieren. Wenn dieser im Cache ist, dann wird die Verifizierung eines deiner Geräte es als verifiziert für all deine anderen Geräte markieren und für Benutzer, die dich verfifiziert haben.</translation>
+        <translation>Der Schlüssel um deine eigenen Geräte zu verifizieren. Wenn dieser im Cache ist, dann werden alle deine Geräte als verifiziert für andere Nutzer erscheinen, wenn du diese verifiziert hast.</translation>
     </message>
     <message>
         <location line="-76"/>
@@ -4657,7 +4657,7 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
     <message>
         <location line="+231"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation>Setze eine maximale Breite für Nachrichten im Chat (in Pixeln). Das kann die Lesbarkeit auf breiten Bildschirmen, wenn Nheko maximiert ist, erhöhen</translation>
+        <translation>Setze eine maximale Breite für Nachrichten im Chat (in Pixeln). Das kann die Lesbarkeit auf breiten Bildschirmen erhöhen.</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4718,7 +4718,7 @@ den Fokus verliert.</translation>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation>Wird die Textauswahl in der Nachrichtenliste verhindern, um das Scrolling mit Touchscreens zu vereinfachen.</translation>
+        <translation>Deaktiviert Textselektion in Nachrichten, damit das nicht beim Scrollen mit den Fingern stört.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4743,12 +4743,12 @@ den Fokus verliert.</translation>
     <message>
         <location line="+24"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation>Der Schlüssel, um Online-Schlüssel-Backups zu entschlüsseln. Wenn er im Cache liegt, kannst du das Online-Schlüssel-Backup aktivieren, um Verschlüsselungsschlüssel sicher verschlüsselt auf dem Server abzuspeichern.</translation>
+        <translation>Der Schlüssel um Schlüssel aus der Onlinesicherung zu laden. Wenn dieser vorhanden ist, können die Schlüssel für verschlüsselte Nachrichten sicher online gespeichert und wieder runtergeladen werden.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation>Der Schlüssel, um andere Nutzer zu verifizieren. Wenn dieser lokal zwischengespeichert ist, dann wird die Verifikation eines Benutzers all seine Geräte verifizieren.</translation>
+        <translation>Der Schlüssel um andere Nutzer zu verifizieren. Wenn der lokal zwischengespeichert ist, dann werden durch eine Nutzerverifizierung alle Geräte verifiziert.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4760,9 +4760,9 @@ den Fokus verliert.</translation>
         <source>Allow third-party plugins and applications to load information about rooms you are in via D-Bus. This can have useful applications, but it also could be used for nefarious purposes. Enable at your own risk.
 
 This setting will take effect upon restart.</source>
-        <translation>Erlaubt anderen Anwendungen und Plugins, Informationen über die Räume, in denen du dich befindest, mittels der D-Bus-Schnittstelle zu laden. Dies kann nützlich sein, aber auch missbraucht werden. Aktivieren auf eigene Gefahr.
+        <translation>Erlaubt anderen Anwendungen informationen über deine Matrixräume durch die D-Bus Schnittstelle zu laden. Dies kann nützlich sein, aber auch missbraucht werden. Aktivieren auf eigene Gefahr.
 
-Diese Einstellung wird nach einem Neustart aktiv.</translation>
+Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     </message>
     <message>
         <location line="+459"/>
@@ -4793,7 +4793,7 @@ Diese Einstellung wird nach einem Neustart aktiv.</translation>
         <location line="-64"/>
         <location line="+26"/>
         <source>File Password</source>
-        <translation>Dateipasswort</translation>
+        <translation>Password für Datei</translation>
     </message>
     <message>
         <location line="-25"/>
@@ -4860,7 +4860,7 @@ Diese Einstellung wird nach einem Neustart aktiv.</translation>
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+141"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation>Keinen verschlüsselten Privatchat mit diesem User gefunden. Erstelle einen verschlüsselten Privatchat mit diesem Nutzer und versuche es erneut.</translation>
+        <translation>Keinen verschlüsselten Chat mit diesem User gefunden. Erstelle einen verschlüsselten 1:1 Chat mit diesem Nutzer und versuche es erneut.</translation>
     </message>
 </context>
 <context>
@@ -4868,7 +4868,7 @@ Diese Einstellung wird nach einem Neustart aktiv.</translation>
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+14"/>
         <source>Waiting for other party…</source>
-        <translation>Auf Gegenseite warten …</translation>
+        <translation>Auf Gegenseite warten…</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4921,7 +4921,7 @@ Diese Einstellung wird nach einem Neustart aktiv.</translation>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation>Für besseres Aussehen verwendet Nheko an verschiedenen Stellen Animationen. Diese Option erlaubt dir, die Animationen zu deaktiveren, wenn diese bei dir Unwohlsein hervorrufen.</translation>
+        <translation>Für besseres Aussehen verwendet Nheko an verschiedenen Stellen Animationen. Diese Option erlaubt dir die Animationen zu deaktiveren, wenn diese bei dir Unwohlsein hervorrufen.</translation>
     </message>
 </context>
 <context>
@@ -4975,7 +4975,7 @@ Diese Einstellung wird nach einem Neustart aktiv.</translation>
     <message>
         <location line="+11"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation>Löse das reCAPTCHA und drücke den Bestätigungsknopf</translation>
+        <translation>Löse das reCAPTCHA und drücke den &quot;Bestätigen&quot;-Knopf</translation>
     </message>
 </context>
 <context>
