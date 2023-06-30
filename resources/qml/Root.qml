@@ -348,11 +348,6 @@ Pane {
         }
     }
     Platform.MessageDialog {
-        id: uiaErrorDialog
-
-        buttons: Platform.MessageDialog.Ok
-    }
-    Platform.MessageDialog {
         id: uiaConfirmationLinkDialog
 
         buttons: Platform.MessageDialog.Ok
@@ -367,10 +362,6 @@ Pane {
         }
         function onEmail() {
             uiaEmailPrompt.show();
-        }
-        function onError(msg) {
-            uiaErrorDialog.text = msg;
-            uiaErrorDialog.open();
         }
         function onPassword() {
             console.log("UIA: password needed");
