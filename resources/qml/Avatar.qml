@@ -55,8 +55,6 @@ AbstractButton {
         anchors.fill: parent
         asynchronous: true
         fillMode: avatar.crop ? Image.PreserveAspectCrop : Image.PreserveAspectFit
-        mipmap: true
-        smooth: true
         source: if (avatar.url.startsWith('image://colorimage')) {
             return avatar.url + "&radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale");
         } else if (avatar.url.startsWith('image://')) {
