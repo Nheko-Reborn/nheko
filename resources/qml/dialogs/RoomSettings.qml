@@ -502,6 +502,24 @@ ApplicationWindow {
                 }
 
                 Label {
+                    text: qsTr("Automatic event deletion")
+                    color: palette.text
+                }
+
+                EventExpirationDialog {
+                    id: eventExpirationDialog
+                    roomid: roomSettings.roomId
+                    roomName: roomSettings.roomName
+                }
+
+                Button {
+                    text: qsTr("Configure")
+                    ToolTip.text: qsTr("Select if your events get automatically deleted in this room.")
+                    onClicked: eventExpirationDialog.show()
+                    Layout.alignment: Qt.AlignRight
+                }
+
+                Label {
                     text: qsTr("GENERAL SETTINGS")
                     font.bold: true
                     color: palette.text

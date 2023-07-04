@@ -128,6 +128,7 @@ class UserSettings final : public QObject
       bool exposeDBusApi READ exposeDBusApi WRITE setExposeDBusApi NOTIFY exposeDBusApiChanged)
     Q_PROPERTY(bool updateSpaceVias READ updateSpaceVias WRITE setUpdateSpaceVias NOTIFY
                  updateSpaceViasChanged)
+    Q_PROPERTY(bool expireEvents READ expireEvents WRITE setExpireEvents NOTIFY expireEventsChanged)
 
     UserSettings();
 
@@ -233,6 +234,7 @@ public:
     void setCollapsedSpaces(QList<QStringList> spaces);
     void setExposeDBusApi(bool state);
     void setUpdateSpaceVias(bool state);
+    void setExpireEvents(bool state);
 
     QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
     bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -308,6 +310,7 @@ public:
     QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }
     bool exposeDBusApi() const { return exposeDBusApi_; }
     bool updateSpaceVias() const { return updateSpaceVias_; }
+    bool expireEvents() const { return expireEvents_; }
 
 signals:
     void groupViewStateChanged(bool state);
@@ -372,6 +375,7 @@ signals:
     void recentReactionsChanged();
     void exposeDBusApiChanged(bool state);
     void updateSpaceViasChanged(bool state);
+    void expireEventsChanged(bool state);
 
 private:
     // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -446,6 +450,7 @@ private:
     bool openVideoExternal_;
     bool exposeDBusApi_;
     bool updateSpaceVias_;
+    bool expireEvents_;
 
     QSettings settings;
 
@@ -478,6 +483,7 @@ class UserSettingsModel : public QAbstractListModel
         ExposeDBusApi,
 #endif
         UpdateSpaceVias,
+        ExpireEvents,
 
         AccessibilitySection,
         ReducedMotion,

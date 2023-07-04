@@ -1610,8 +1610,7 @@ std::atomic<bool> event_expiration_running = false;
 void
 utils::removeExpiredEvents()
 {
-    // TODO(Nico): Add its own toggle...
-    if (!UserSettings::instance()->updateSpaceVias())
+    if (!UserSettings::instance()->expireEvents())
         return;
 
     if (event_expiration_running.exchange(true)) {
@@ -1645,18 +1644,20 @@ utils::removeExpiredEvents()
         std::string currentRoom;
         std::uint64_t currentRoomCount = 0;
         std::string currentRoomPrevToken;
+        std::set<std::pair<std::string, std::string>> currentRoomStateEvents;
         std::vector<std::string> currentRoomRedactionQueue;
         mtx::events::account_data::nheko_extensions::EventExpiry currentExpiry;
 
         static void next(std::shared_ptr<ApplyEventExpiration> state)
         {
             if (!state->currentRoomRedactionQueue.empty()) {
+                auto evid = state->currentRoomRedactionQueue.back();
+                auto room = state->currentRoom;
                 http::client()->redact_event(
-                  state->currentRoom,
-                  state->currentRoomRedactionQueue.back(),
-                  [state = std::move(state)](const mtx::responses::EventId &,
-                                             mtx::http::RequestErr e) mutable {
-                      const auto &event_id = state->currentRoomRedactionQueue.back();
+                  room,
+                  evid,
+                  [state = std::move(state), evid](const mtx::responses::EventId &,
+                                                   mtx::http::RequestErr e) mutable {
                       if (e) {
                           if (e->status_code == 429 && e->matrix_error.retry_after.count() != 0) {
                               ChatPage::instance()->callFunctionOnGuiThread(
@@ -1669,17 +1670,19 @@ utils::removeExpiredEvents()
                                                        });
                                 });
                               return;
+                          } else {
+                              nhlog::net()->error("Failed to redact event {} in {}: {}",
+                                                  evid,
+                                                  state->currentRoom,
+                                                  *e);
+                              state->currentRoomRedactionQueue.pop_back();
+                              next(std::move(state));
                           }
-
-                          nhlog::net()->error("Failed to redact event {} in {}: {}",
-                                              event_id,
-                                              state->currentRoom,
-                                              *e);
+                      } else {
+                          nhlog::net()->info("Redacted event {} in {}", evid, state->currentRoom);
+                          state->currentRoomRedactionQueue.pop_back();
+                          next(std::move(state));
                       }
-                      nhlog::net()->info(
-                        "Redacted event {} in {}: {}", event_id, state->currentRoom, *e);
-                      state->currentRoomRedactionQueue.pop_back();
-                      next(std::move(state));
                   });
             } else if (!state->currentRoom.empty()) {
                 mtx::http::MessagesOpts opts{};
@@ -1687,6 +1690,7 @@ utils::removeExpiredEvents()
                 opts.from  = state->currentRoomPrevToken;
                 opts.limit = 1000;
                 opts.filter = state->filter;
+                opts.room_id = state->currentRoom;
 
                 http::client()->messages(
                   opts,
@@ -1708,6 +1712,19 @@ utils::removeExpiredEvents()
                                     mtx::events::RedactionEvent<mtx::events::msg::Redaction>>(e))
                                   continue;
 
+                              if (std::holds_alternative<
+                                    mtx::events::RoomEvent<mtx::events::msg::Redacted>>(e))
+                                  continue;
+
+                              if (std::holds_alternative<
+                                    mtx::events::StateEvent<mtx::events::msg::Redacted>>(e))
+                                  continue;
+
+                              // skip events we don't know to protect us from mistakes.
+                              if (std::holds_alternative<
+                                    mtx::events::RoomEvent<mtx::events::Unknown>>(e))
+                                  continue;
+
                               if (mtx::accessors::sender(e) != us)
                                   continue;
 
@@ -1719,6 +1736,21 @@ utils::removeExpiredEvents()
                               if (state->currentExpiry.exclude_state_events &&
                                   mtx::accessors::is_state_event(e))
                                   continue;
+
+                              if (mtx::accessors::is_state_event(e)) {
+                                  // skip the first state event of a type
+                                  if (std::visit(
+                                        [&state](const auto &se) {
+                                            if constexpr (requires { se.state_key; })
+                                                return state->currentRoomStateEvents
+                                                  .emplace(to_string(se.type), se.state_key)
+                                                  .second;
+                                            else
+                                                return false;
+                                        },
+                                        e))
+                                      continue;
+                              }
 
                               if (state->currentExpiry.keep_only_latest &&
                                   state->currentRoomCount > state->currentExpiry.keep_only_latest) {
@@ -1738,6 +1770,7 @@ utils::removeExpiredEvents()
                           state->currentRoom.clear();
                           state->currentRoomCount = 0;
                           state->currentRoomPrevToken.clear();
+                          state->currentRoomStateEvents.clear();
                       }
 
                       next(std::move(state));
@@ -1764,20 +1797,11 @@ utils::removeExpiredEvents()
 
     auto asus = std::make_shared<ApplyEventExpiration>();
 
-    asus->filter =
-      nlohmann::json{
-        "room",
-        nlohmann::json::object({
-          {
-            "timeline",
-            nlohmann::json::object({
-              {"senders", nlohmann::json::array({us})},
-              {"not_types", nlohmann::json::array({"m.room.redaction"})},
-            }),
-          },
-        }),
-      }
-        .dump();
+    nlohmann::json filter;
+    filter["timeline"]["senders"]   = nlohmann::json::array({us});
+    filter["timeline"]["not_types"] = nlohmann::json::array({"m.room.redaction"});
+
+    asus->filter = filter.dump();
 
     asus->globalExpiry = getExpEv();
 

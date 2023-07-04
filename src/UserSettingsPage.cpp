@@ -101,6 +101,8 @@ UserSettings::load(std::optional<QString> profile)
     exposeDBusApi_ = settings.value(QStringLiteral("user/expose_dbus_api"), false).toBool();
     updateSpaceVias_ =
       settings.value(QStringLiteral("user/space_background_maintenance"), true).toBool();
+    expireEvents_ =
+      settings.value(QStringLiteral("user/expired_events_background_maintenance"), false).toBool();
 
     mobileMode_ = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
     emojiFont_  = settings.value(QStringLiteral("user/emoji_font_family"), "emoji").toString();
@@ -305,6 +307,17 @@ UserSettings::setUpdateSpaceVias(bool state)
 
     updateSpaceVias_ = state;
     emit updateSpaceViasChanged(state);
+    save();
+}
+
+void
+UserSettings::setExpireEvents(bool state)
+{
+    if (expireEvents_ == state)
+        return;
+
+    expireEvents_ = state;
+    emit expireEventsChanged(state);
     save();
 }
 
@@ -924,6 +937,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("open_video_external"), openVideoExternal_);
     settings.setValue(QStringLiteral("expose_dbus_api"), exposeDBusApi_);
     settings.setValue(QStringLiteral("space_background_maintenance"), updateSpaceVias_);
+    settings.setValue(QStringLiteral("expired_events_background_maintenance"), expireEvents_);
 
     settings.endGroup(); // user
 
@@ -1129,6 +1143,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Expose room information via D-Bus");
         case UpdateSpaceVias:
             return tr("Periodically update community routing information");
+        case ExpireEvents:
+            return tr("Periodically delete expired events");
         }
     } else if (role == Value) {
         switch (index.row()) {
@@ -1266,6 +1282,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->exposeDBusApi();
         case UpdateSpaceVias:
             return i->updateSpaceVias();
+        case ExpireEvents:
+            return i->expireEvents();
         }
     } else if (role == Description) {
         switch (index.row()) {
@@ -1449,6 +1467,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "information about what servers participate in a room to community members. Since "
               "the room participants can change over time, this needs to be updated from time to "
               "time. This setting enables a background job to do that automatically.");
+        case ExpireEvents:
+            return tr("Regularly redact expired events as specified in the event expiration "
+                      "configuration. Since this is currently not executed server side, you need "
+                      "to have one client running this regularly.");
         }
     } else if (role == Type) {
         switch (index.row()) {
@@ -1499,6 +1521,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case UseOnlineKeyBackup:
         case ExposeDBusApi:
         case UpdateSpaceVias:
+        case ExpireEvents:
         case SpaceNotifications:
         case FancyEffects:
         case ReducedMotion:
@@ -1994,6 +2017,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
+        case ExpireEvents: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setExpireEvents(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         }
     }
     return false;
@@ -2248,5 +2278,8 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::updateSpaceViasChanged, this, [this] {
         emit dataChanged(index(UpdateSpaceVias), index(UpdateSpaceVias), {Value});
+    });
+    connect(s.get(), &UserSettings::expireEventsChanged, this, [this] {
+        emit dataChanged(index(ExpireEvents), index(ExpireEvents), {Value});
     });
 }

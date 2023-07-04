@@ -87,6 +87,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
               if (lastSpacesUpdate < QDateTime::currentDateTime().addSecs(-20 * 60)) {
                   lastSpacesUpdate = QDateTime::currentDateTime();
                   utils::updateSpaceVias();
+                  utils::removeExpiredEvents();
               }
 
               if (!isConnected_)

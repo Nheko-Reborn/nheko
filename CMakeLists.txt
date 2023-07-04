@@ -387,6 +387,8 @@ set(SRC_FILES
 	# UI components
 	src/ui/HiddenEvents.cpp
 	src/ui/HiddenEvents.h
+	src/ui/EventExpiry.cpp
+	src/ui/EventExpiry.h
 	src/ui/MxcAnimatedImage.cpp
 	src/ui/MxcAnimatedImage.h
 	src/ui/MxcMediaProxy.cpp
@@ -599,7 +601,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
                 GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-                GIT_TAG        f4425af712afc6ad704a39b93c912432bd3c1914
+                GIT_TAG        0a4cc9421a97bea81a8921f3f5e040f0a34278fc
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -763,6 +765,7 @@ set(QML_SOURCES
         resources/qml/dialogs/CreateDirect.qml
         resources/qml/dialogs/CreateRoom.qml
         resources/qml/dialogs/HiddenEventsDialog.qml
+				resources/qml/dialogs/EventExpirationDialog.qml
         resources/qml/dialogs/ImageOverlay.qml
         resources/qml/dialogs/ImagePackEditorDialog.qml
         resources/qml/dialogs/ImagePackSettingsDialog.qml
