@@ -90,7 +90,7 @@ void
 EventExpiry::setExpireEventsAfterDays(int val)
 {
     if (val > 0)
-        this->event.expire_after_ms = val * (1000 * 60 * 60 * 24);
+        this->event.expire_after_ms = std::uint64_t(val) * (1000 * 60 * 60 * 24);
     else
         this->event.expire_after_ms = 0;
     emit expireEventsAfterDaysChanged();
@@ -100,7 +100,7 @@ void
 EventExpiry::setProtectLatestEvents(int val)
 {
     if (val > 0)
-        this->event.protect_latest = val;
+        this->event.protect_latest = std::uint64_t(val);
     else
         this->event.expire_after_ms = 0;
     emit protectLatestEventsChanged();
@@ -110,7 +110,7 @@ void
 EventExpiry::setExpireEventsAfterCount(int val)
 {
     if (val > 0)
-        this->event.keep_only_latest = val;
+        this->event.keep_only_latest = std::uint64_t(val);
     else
         this->event.keep_only_latest = 0;
     emit expireEventsAfterCountChanged();
