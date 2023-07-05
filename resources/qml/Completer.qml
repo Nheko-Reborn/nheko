@@ -11,124 +11,107 @@ import im.nheko 1.0
 Control {
     id: popup
 
-    property alias currentIndex: listView.currentIndex
-    property string roomId
-    property string completerName
-    property var completer
-    property bool bottomToTop: true
-    property bool fullWidth: false
-    property bool centerRowContent: true
     property int avatarHeight: 24
     property int avatarWidth: 24
+    property bool bottomToTop: true
+    property bool centerRowContent: true
+    property var completer
+    property string completerName
+    property alias count: listView.count
+    property alias currentIndex: listView.currentIndex
+    property bool fullWidth: false
+    property string roomId
     property int rowMargin: 0
     property int rowSpacing: Nheko.paddingSmall
-    property alias count: listView.count
 
     signal completionClicked(string completion)
     signal completionSelected(string id)
 
-    function up() {
-        if (bottomToTop)
-            down_();
-        else
-            up_();
+    function changeCompleter() {
+        if (completerName) {
+            completer = TimelineManager.completerFor(completerName, completerName == "room" ? "" : (popup.roomId != "" ? popup.roomId : room.roomId));
+            completer.setSearchString("");
+        } else {
+            completer = undefined;
+        }
+        currentIndex = -1;
     }
-
-    function down() {
-        if (bottomToTop)
-            up_();
-        else
-            down_();
-    }
-
-    function up_() {
-        currentIndex = currentIndex - 1;
-        if (currentIndex == -2)
-            currentIndex = listView.count - 1;
-
-    }
-
-    function down_() {
-        currentIndex = currentIndex + 1;
-        if (currentIndex >= listView.count)
-            currentIndex = -1;
-
-    }
-
     function currentCompletion() {
         if (currentIndex > -1 && currentIndex < listView.count)
             return completer.completionAt(currentIndex);
         else
             return null;
     }
-
+    function down() {
+        if (bottomToTop)
+            up_();
+        else
+            down_();
+    }
+    function down_() {
+        currentIndex = currentIndex + 1;
+        if (currentIndex >= listView.count)
+            currentIndex = -1;
+    }
     function finishCompletion() {
         if (popup.completerName == "room")
             popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.roomid);
         else if (popup.completerName == "user")
             popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.userid);
-
     }
-
-    function changeCompleter() {
-        if (completerName) {
-            completer = TimelineManager.completerFor(completerName, completerName == "room" ? "" : (popup.roomId != "" ? popup.roomId :  room.roomId));
-            completer.setSearchString("");
-        } else {
-            completer = undefined;
-        }
-        currentIndex = -1
+    function up() {
+        if (bottomToTop)
+            down_();
+        else
+            up_();
     }
-    onCompleterNameChanged: changeCompleter()
-    onRoomIdChanged: changeCompleter()
+    function up_() {
+        currentIndex = currentIndex - 1;
+        if (currentIndex == -2)
+            currentIndex = listView.count - 1;
+    }
 
     bottomPadding: 1
     leftPadding: 1
-    topPadding: 1
-    rightPadding: 1
 
+    // Workaround palettes not inheriting for popups
+    palette: timelineRoot.palette
+    rightPadding: 1
+    topPadding: 1
+
+    background: Rectangle {
+        border.color: palette.mid
+        color: palette.base
+    }
     contentItem: ListView {
         id: listView
 
-        // If we have fewer than 7 items, just use the list view's content height.  
+        clip: true
+        displayMarginBeginning: height / 2
+        displayMarginEnd: height / 2
+        highlightFollowsCurrentItem: true
+
+        // If we have fewer than 7 items, just use the list view's content height.
         // Otherwise, we want to show 7 items.  Each item consists of row spacing between rows, row margins
         // on each side of a row, 1px of padding above the first item and below the last item, and nominally
         // some kind of content height.  avatarHeight is used for just about every delegate, so we're using
         // that until we find something better.  Put is all together and you have the formula below!
-        implicitHeight: Math.min(contentHeight, 6*rowSpacing + 7*(popup.avatarHeight + 2*rowMargin))
-        clip: true 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
-        }
-
-        Timer {
-            id: deadTimer
-            interval: 50
-        }
-
-        onContentYChanged: deadTimer.restart()
+        implicitHeight: Math.min(contentHeight, 6 * rowSpacing + 7 * (popup.avatarHeight + 2 * rowMargin))
 
         // Broken, see https://bugreports.qt.io/browse/QTBUG-102811
         //reuseItems: true
-        implicitWidth: listView.contentItem.childrenRect.width
+        implicitWidth: Math.max(listView.contentItem.childrenRect.width, 20)
         model: completer
-        verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
-        spacing: rowSpacing
         pixelAligned: true
-        highlightFollowsCurrentItem: true
-
-        displayMarginBeginning: height / 2
-        displayMarginEnd: height / 2
+        spacing: rowSpacing
+        verticalLayoutDirection: popup.bottomToTop ? ListView.BottomToTop : ListView.TopToBottom
 
         delegate: Rectangle {
             property variant modelData: model
 
             ListView.delayRemove: true
-
-            color: model.index == popup.currentIndex ? Nheko.colors.highlight : Nheko.colors.base
-            height: chooser.child.implicitHeight + 2 * popup.rowMargin
+            color: model.index == popup.currentIndex ? palette.highlight : palette.base
+            height: (chooser.child?.implicitHeight ?? 0) + 2 * popup.rowMargin
             implicitWidth: fullWidth ? ListView.view.width : chooser.child.implicitWidth + 4
 
             MouseArea {
@@ -136,26 +119,27 @@ Control {
 
                 anchors.fill: parent
                 hoverEnabled: true
-                onPositionChanged: if (!listView.moving && !deadTimer.running) popup.currentIndex = model.index
+
                 onClicked: {
-                     popup.completionClicked(completer.completionAt(model.index));
-                     if (popup.completerName == "room")
-                         popup.completionSelected(model.roomid);
-                     else if (popup.completerName == "user")
-                         popup.completionSelected(model.userid);
+                    popup.completionClicked(completer.completionAt(model.index));
+                    if (popup.completerName == "room")
+                        popup.completionSelected(model.roomid);
+                    else if (popup.completerName == "user")
+                        popup.completionSelected(model.userid);
                 }
+                onPositionChanged: if (!listView.moving && !deadTimer.running)
+                    popup.currentIndex = model.index
             }
             Ripple {
-                color: Qt.rgba(Nheko.colors.base.r, Nheko.colors.base.g, Nheko.colors.base.b, 0.5)
+                color: Qt.rgba(palette.base.r, palette.base.g, palette.base.b, 0.5)
             }
-
             DelegateChooser {
                 id: chooser
 
-                roleValue: popup.completerName
                 anchors.fill: parent
                 anchors.margins: popup.rowMargin
                 enabled: false
+                roleValue: popup.completerName
 
                 DelegateChoice {
                     roleValue: "user"
@@ -167,28 +151,23 @@ Control {
                         spacing: rowSpacing
 
                         Avatar {
-                            height: popup.avatarHeight
-                            width: popup.avatarWidth
                             displayName: model.displayName
-                            userid: model.userid
-                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             enabled: false
+                            height: popup.avatarHeight
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            userid: model.userid
+                            width: popup.avatarWidth
                         }
-
                         Label {
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             text: model.displayName
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
                         }
-
                         Label {
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.buttonText
                             text: "(" + model.userid + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
-
                     }
-
                 }
-
                 DelegateChoice {
                     roleValue: "emoji"
 
@@ -199,39 +178,33 @@ Control {
                         spacing: rowSpacing
 
                         Label {
-                            visible: !!model.unicode
-                            text: model.unicode
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font: Settings.emojiFont
+                            text: model.unicode
+                            visible: !!model.unicode
                         }
-
                         Avatar {
-                            visible: !model.unicode
-                            height: popup.avatarHeight
-                            width: popup.avatarWidth
+                            crop: false
                             displayName: model.shortcode
+                            enabled: false
+                            height: popup.avatarHeight
                             //userid: model.shortcode
                             url: (model.url ? model.url : "").replace("mxc://", "image://MxcImage/")
-                            enabled: false
-                            crop: false
+                            visible: !model.unicode
+                            width: popup.avatarWidth
                         }
-
                         Label {
                             Layout.leftMargin: Nheko.paddingSmall
                             Layout.rightMargin: Nheko.paddingSmall
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             text: model.shortcode
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
                         }
-
                         Label {
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.buttonText
                             text: "(" + model.packname + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
-
                     }
-
                 }
-
                 DelegateChoice {
                     roleValue: "command"
 
@@ -242,20 +215,16 @@ Control {
                         spacing: rowSpacing
 
                         Label {
-                            text: model.name
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font.bold: true
+                            text: model.name
                         }
-
                         Label {
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.buttonText
                             text: model.description
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                         }
-
                     }
-
                 }
-
                 DelegateChoice {
                     roleValue: "room"
 
@@ -266,26 +235,22 @@ Control {
                         spacing: rowSpacing
 
                         Avatar {
-                            height: popup.avatarHeight
-                            width: popup.avatarWidth
                             displayName: model.roomName
+                            enabled: false
+                            height: popup.avatarHeight
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            enabled: false
+                            width: popup.avatarWidth
                         }
-
                         Label {
-                            text: model.roomName
-                            font.pixelSize: popup.avatarHeight * 0.5
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font.italic: model.isTombstoned
+                            font.pixelSize: popup.avatarHeight * 0.5
+                            text: model.roomName
                             textFormat: Text.RichText
                         }
-
                     }
-
                 }
-
                 DelegateChoice {
                     roleValue: "roomAliases"
 
@@ -296,41 +261,38 @@ Control {
                         spacing: rowSpacing
 
                         Avatar {
-                            height: popup.avatarHeight
-                            width: popup.avatarWidth
                             displayName: model.roomName
+                            enabled: false
+                            height: popup.avatarHeight
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            enabled: false
+                            width: popup.avatarWidth
                         }
-
                         Label {
-                            text: model.roomName
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.text
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font.italic: model.isTombstoned
+                            text: model.roomName
                             textFormat: Text.RichText
                         }
-
                         Label {
+                            color: model.index == popup.currentIndex ? palette.highlightedText : palette.buttonText
                             text: "(" + model.roomAlias + ")"
-                            color: model.index == popup.currentIndex ? Nheko.colors.highlightedText : Nheko.colors.buttonText
                             textFormat: Text.RichText
                         }
-
                     }
-
                 }
-
             }
-
         }
 
+        onContentYChanged: deadTimer.restart()
+
+        Timer {
+            id: deadTimer
+
+            interval: 50
+        }
     }
 
-
-    background: Rectangle {
-        color: Nheko.colors.base
-        border.color: Nheko.colors.mid
-    }
-
+    onCompleterNameChanged: changeCompleter()
+    onRoomIdChanged: changeCompleter()
 }

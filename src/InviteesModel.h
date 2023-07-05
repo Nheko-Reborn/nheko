@@ -6,9 +6,10 @@
 #define INVITEESMODEL_H
 
 #include <QAbstractListModel>
+#include <QQmlEngine>
 #include <QVector>
 
-class TimelineModel;
+#include "timeline/TimelineModel.h"
 
 class Invitee final : public QObject
 {
@@ -34,6 +35,8 @@ private:
 class InviteesModel final : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("")
 
     Q_PROPERTY(int count READ rowCount NOTIFY countChanged)
     Q_PROPERTY(TimelineModel *room READ room CONSTANT)

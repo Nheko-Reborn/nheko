@@ -339,4 +339,7 @@ roomVias(const std::string &roomid);
 
 void
 updateSpaceVias();
+
+void
+removeExpiredEvents();
 }

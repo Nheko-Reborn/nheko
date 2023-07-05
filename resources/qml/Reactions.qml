@@ -11,10 +11,11 @@ import im.nheko 1.0
 Flow {
     id: reactionFlow
 
-    // lower-contrast colors to avoid distracting from text & to enhance hover effect
-    property color gentleHighlight: Qt.hsla(Nheko.colors.highlight.hslHue, Nheko.colors.highlight.hslSaturation, Nheko.colors.highlight.hslLightness, 0.8)
-    property color gentleText: Qt.hsla(Nheko.colors.text.hslHue, Nheko.colors.text.hslSaturation, Nheko.colors.text.hslLightness, 0.6)
     property string eventId
+
+    // lower-contrast colors to avoid distracting from text & to enhance hover effect
+    property color gentleHighlight: Qt.hsla(palette.highlight.hslHue, palette.highlight.hslSaturation, palette.highlight.hslLightness, 0.8)
+    property color gentleText: Qt.hsla(palette.text.hslHue, palette.text.hslSaturation, palette.text.hslLightness, 0.6)
     property alias reactions: repeater.model
 
     spacing: 4
@@ -25,40 +26,39 @@ Flow {
         delegate: AbstractButton {
             id: reaction
 
-            hoverEnabled: true
-            ToolTip.visible: hovered
             ToolTip.delay: Nheko.tooltipDelay
-            onClicked: {
-                console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + ". selfReactedEvent: " + modelData.selfReactedEvent);
-                room.input.reaction(reactionFlow.eventId, modelData.key);
-            }
-            Component.onCompleted: {
-                ToolTip.text = Qt.binding(function() {
-                    if (textMetrics.elidedText === textMetrics.text) {
-                        return modelData.users;
-                    }
-                    return modelData.displayKey + "\n" + modelData.users;
-                })
-            }
-                leftPadding: textMetrics.height / 2
-                rightPadding: textMetrics.height / 2
+            ToolTip.visible: hovered
+            hoverEnabled: true
+            leftPadding: textMetrics.height / 2
+            rightPadding: textMetrics.height / 2
 
+            background: Rectangle {
+                anchors.centerIn: parent
+                border.color: reaction.hovered ? palette.text : gentleText
+                border.width: 1
+                color: reaction.hovered ? palette.highlight : (modelData.selfReactedEvent !== '' ? gentleHighlight : palette.window)
+                implicitHeight: reaction.implicitHeight
+                implicitWidth: reaction.implicitWidth
+                radius: reaction.height / 2
+            }
             contentItem: Row {
                 spacing: textMetrics.height / 4
 
                 TextMetrics {
                     id: textMetrics
 
-                    font.family: Settings.emojiFont
                     elide: Text.ElideRight
                     elideWidth: 150
+                    font.family: Settings.emojiFont
                     text: modelData.displayKey
                 }
-
                 Text {
                     id: reactionText
 
                     anchors.baseline: reactionCounter.baseline
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText : palette.text
+                    font.family: Settings.emojiFont
+                    maximumLineCount: 1
                     text: {
                         // When an emoji font is selected that doesn't have …, it is dropped from elidedText. So we add it back.
                         if (textMetrics.elidedText !== modelData.displayKey) {
@@ -68,51 +68,45 @@ Flow {
                         }
                         return textMetrics.elidedText;
                     }
-                    font.family: Settings.emojiFont
-                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlightedText: Nheko.colors.text
-                    maximumLineCount: 1
                     visible: !modelData.key.startsWith("mxc://")
                 }
                 Image {
                     anchors.verticalCenter: divider.verticalCenter
+                    fillMode: Image.PreserveAspectFit
                     height: textMetrics.height
-                    width: textMetrics.height
                     source: modelData.key.startsWith("mxc://") ? (modelData.key.replace("mxc://", "image://MxcImage/") + "?scale") : ""
                     visible: modelData.key.startsWith("mxc://")
-                    fillMode: Image.PreserveAspectFit
+                    width: textMetrics.height
                 }
-
                 Rectangle {
                     id: divider
 
+                    color: reaction.hovered ? palette.text : gentleText
                     height: Math.floor(reactionCounter.implicitHeight * 1.4)
                     width: 1
-                    color: reaction.hovered ? Nheko.colors.text: gentleText
                 }
-
                 Text {
                     id: reactionCounter
 
                     anchors.verticalCenter: divider.verticalCenter
-                    text: modelData.count
+                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText : palette.windowText
                     font: reaction.font
-                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? Nheko.colors.highlightedText: Nheko.colors.windowText
+                    text: modelData.count
                 }
-
             }
 
-            background: Rectangle {
-                anchors.centerIn: parent
-                implicitWidth: reaction.implicitWidth
-                implicitHeight: reaction.implicitHeight
-                border.color: reaction.hovered ? Nheko.colors.text: gentleText
-                color: reaction.hovered ? Nheko.colors.highlight : (modelData.selfReactedEvent !== '' ? gentleHighlight : Nheko.colors.window)
-                border.width: 1
-                radius: reaction.height / 2
+            Component.onCompleted: {
+                ToolTip.text = Qt.binding(function () {
+                        if (textMetrics.elidedText === textMetrics.text) {
+                            return modelData.users;
+                        }
+                        return modelData.displayKey + "\n" + modelData.users;
+                    });
             }
-
+            onClicked: {
+                console.debug("Picked " + modelData.key + "in response to " + reactionFlow.eventId + ". selfReactedEvent: " + modelData.selfReactedEvent);
+                room.input.reaction(reactionFlow.eventId, modelData.key);
+            }
         }
-
     }
-
 }

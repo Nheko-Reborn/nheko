@@ -14,8 +14,7 @@ ApplicationWindow {
     title: qsTr("Join room")
     modality: Qt.WindowModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     width: 350
     height: fontMetrics.lineSpacing * 7
 
@@ -33,7 +32,7 @@ ApplicationWindow {
             id: promptLabel
 
             text: qsTr("Room ID or alias")
-            color: Nheko.colors.text
+            color: palette.text
         }
 
         MatrixTextField {

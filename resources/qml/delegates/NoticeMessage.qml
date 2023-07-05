@@ -9,7 +9,7 @@ import im.nheko 1.0
 TextMessage {
     property bool isStateEvent
     font.italic: true
-    color: Nheko.colors.buttonText
+    color: palette.buttonText
     font.pointSize: isStateEvent? 0.8*Settings.fontSize : Settings.fontSize
     horizontalAlignment: isStateEvent? Text.AlignHCenter : undefined
 }

@@ -5,13 +5,10 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QVariantList>
 
-namespace mtx {
-namespace responses {
-struct Login;
-}
-}
+#include <mtx/responses/login.hpp>
 
 struct SSOProvider
 {
@@ -33,6 +30,7 @@ public:
 class LoginPage : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(Login)
 
     Q_PROPERTY(QString mxid READ mxid WRITE setMxid NOTIFY matrixIdChanged)
     Q_PROPERTY(QString homeserver READ homeserver WRITE setHomeserver NOTIFY homeserverChanged)

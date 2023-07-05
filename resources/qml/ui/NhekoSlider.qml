@@ -9,7 +9,7 @@ import im.nheko 1.0
 Slider {
     id: control
 
-    property color progressColor: Nheko.colors.highlight
+    property color progressColor: palette.highlight
     property bool alwaysShowSlider: true
     property int sliderRadius: 16
 
@@ -25,7 +25,7 @@ Slider {
         width: control.availableWidth - handle.width
         height: implicitHeight
         radius: height / 2
-        color: Nheko.colors.buttonText
+        color: palette.buttonText
 
         Rectangle {
             width: control.visualPosition * parent.width

@@ -1,7 +1,7 @@
-id: io.github.NhekoReborn.Nheko
-command: io.github.NhekoReborn.Nheko
+id: im.nheko.Nheko
+command: im.nheko.Nheko
 runtime: org.kde.Platform
-runtime-version: '5.15-22.08'
+runtime-version: '6.5'
 sdk: org.kde.Sdk
 finish-args:
   - --device=dri
@@ -44,9 +44,9 @@ cleanup:
 modules:
   - name: lmdb
     sources:
-      - sha256: f3927859882eb608868c8c31586bb7eb84562a40a6bf5cc3e13b6b564641ea28
+      - sha256: 8c5a93ac3cc97427c54571ad5a6140b7469389d01e6d2f43df39f96d3a4ccef7
         type: archive
-        url: https://github.com/LMDB/lmdb/archive/LMDB_0.9.22.tar.gz
+        url: https://git.openldap.org/openldap/openldap/-/archive/LMDB_0.9.30/openldap-LMDB_0.9.30.tar.gz
     make-install-args:
       - prefix=/app
     no-autogen: true
@@ -109,45 +109,46 @@ modules:
         tag: 0.20.4
         type: git
         url: https://gitlab.gnome.org/GNOME/libsecret.git
-  - config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DAVIF_CODEC_AOM=ON
-      #- -DBUILD_SHARED_LIBS=OFF
-    buildsystem: cmake-ninja
-    name: libavif
-    sources:
-      - sha256: 66e82854ceb84a3e542bc140a343bc90e56c68f3ecb4fff63e636c136ed9a05e
-        type: archive
-        url: https://github.com/AOMediaCodec/libavif/archive/refs/tags/v0.10.1.tar.gz
-  - config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DWITH_EXAMPLES=OFF
-      #- -DBUILD_SHARED_LIBS=OFF
-    buildsystem: cmake-ninja
-    name: libheif
-    sources:
-      - sha256: e1ac2abb354fdc8ccdca71363ebad7503ad731c84022cf460837f0839e171718
-        type: archive
-        url: https://github.com/strukturag/libheif/releases/download/v1.12.0/libheif-1.12.0.tar.gz
-  - config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DKIMAGEFORMATS_HEIF=ON
-    buildsystem: cmake-ninja
-    name: KImageFormats
-    sources:
-      - commit: ae6b724824fc2fdf71d50dc7ae0052ad1551b25a
-        tag: v5.93.0
-        type: git
-        url: https://invent.kde.org/frameworks/kimageformats.git
+  #- config-opts:
+  #    - -DCMAKE_BUILD_TYPE=Release
+  #    - -DAVIF_CODEC_AOM=ON
+  #    #- -DBUILD_SHARED_LIBS=OFF
+  #  buildsystem: cmake-ninja
+  #  name: libavif
+  #  sources:
+  #    - sha256: 66e82854ceb84a3e542bc140a343bc90e56c68f3ecb4fff63e636c136ed9a05e
+  #      type: archive
+  #      url: https://github.com/AOMediaCodec/libavif/archive/refs/tags/v0.10.1.tar.gz
+  #- config-opts:
+  #    - -DCMAKE_BUILD_TYPE=Release
+  #    - -DWITH_EXAMPLES=OFF
+  #    #- -DBUILD_SHARED_LIBS=OFF
+  #  buildsystem: cmake-ninja
+  #  name: libheif
+  #  sources:
+  #    - sha256: e1ac2abb354fdc8ccdca71363ebad7503ad731c84022cf460837f0839e171718
+  #      type: archive
+  #      url: https://github.com/strukturag/libheif/releases/download/v1.12.0/libheif-1.12.0.tar.gz
+  #- config-opts:
+  #    - -DCMAKE_BUILD_TYPE=Release
+  #    - -DKIMAGEFORMATS_HEIF=ON
+  #  buildsystem: cmake-ninja
+  #  name: KImageFormats
+  #  sources:
+  #    - commit: ae6b724824fc2fdf71d50dc7ae0052ad1551b25a
+  #      tag: v5.93.0
+  #      type: git
+  #      url: https://invent.kde.org/frameworks/kimageformats.git
   - config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_TEST_APPLICATION=OFF
       - -DQTKEYCHAIN_STATIC=ON
+      - -DBUILD_WITH_QT6=ON
     buildsystem: cmake-ninja
     name: QtKeychain
     sources:
-      - commit: f59ac26be709fd2d8d7a062fab1cf1e67a93806c
-        tag: v0.13.1
+      - commit: 69f993c47efed7e557d79a30a367014d9a27d809
+        tag: 0.14.1
         type: git
         url: https://github.com/frankosterfeld/qtkeychain.git
   - config-opts:
@@ -170,15 +171,15 @@ modules:
   - buildsystem: meson
     name: gstreamer
     sources:
-      - commit: f7806a854aad960eae3288db4a67a574f92428fe
-        tag: 1.20.5
+      - commit: ecd471f5ea4645102b206a43d863f0f0fe7d04ec
+        tag: 1.22.3
         type: git
         url: https://gitlab.freedesktop.org/gstreamer/gstreamer.git
     config-opts:
       - --auto-features=disabled
       -  -Dgood=enabled
-      -  -Dgst-plugins-good:qt5=enabled
-      -  -Dqt5=enabled
+      -  -Dgst-plugins-good:qt6=enabled
+      #-  -Dqt6=enabled <- not available on 1.22
       -  -Dbase=enabled
       -  -Dgst-plugins-base:gl=enabled
       -  -Dgst-plugins-base:gl_platform=glx,egl
@@ -213,7 +214,7 @@ modules:
     buildsystem: cmake-ninja
     name: mtxclient
     sources:
-      - commit: e136bc27b28d3bb5683735eb5a65d6ef2534ca3a
+      - commit: 0a4cc9421a97bea81a8921f3f5e040f0a34278fc
         #tag: v0.9.2
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git

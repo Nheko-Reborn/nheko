@@ -22,7 +22,7 @@ build:
     verbosity: minimal
 
 install:
-    - set QT_DIR=C:\Qt\5.15\msvc2019_64
+    - set QT_DIR=C:\Qt\6.5\msvc2019_64
     - set PATH=C:\Strawberry\perl\bin;C:\Python39-x64;%QT_DIR%\bin;%PATH%
 
 build_script:

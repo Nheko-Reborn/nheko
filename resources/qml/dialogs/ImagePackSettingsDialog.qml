@@ -23,8 +23,7 @@ ApplicationWindow {
     title: qsTr("Image pack settings")
     height: 600
     width: 800
-    palette: Nheko.colors
-    color: Nheko.colors.base
+    color: palette.base
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
@@ -56,15 +55,10 @@ ApplicationWindow {
                 model: packlist
                 clip: true
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
+                
 
                 footer: ColumnLayout {
                     Button {
-                        palette: Nheko.colors
                         onClicked: {
                             var dialog = packEditor.createObject(timelineRoot, {
                                 "imagePack": packlist.newPack(false)
@@ -78,7 +72,6 @@ ApplicationWindow {
                     }
 
                     Button {
-                        palette: Nheko.colors
                         onClicked: {
                             var dialog = packEditor.createObject(timelineRoot, {
                                 "imagePack": packlist.newPack(true)
@@ -96,11 +89,11 @@ ApplicationWindow {
                 delegate: AvatarListTile {
                     id: packItem
 
-                    property color background: Nheko.colors.window
-                    property color importantText: Nheko.colors.text
-                    property color unimportantText: Nheko.colors.buttonText
-                    property color bubbleBackground: Nheko.colors.highlight
-                    property color bubbleText: Nheko.colors.highlightedText
+                    property color background: palette.window
+                    property color importantText: palette.text
+                    property color unimportantText: palette.buttonText
+                    property color bubbleBackground: palette.highlight
+                    property color bubbleText: palette.highlightedText
                     required property string displayName
                     required property bool fromAccountData
                     required property bool fromCurrentRoom
@@ -135,7 +128,7 @@ ApplicationWindow {
             id: packinfoC
 
             Rectangle {
-                color: Nheko.colors.window
+                color: palette.window
 
                 ColumnLayout {
                     id: packinfo
@@ -220,11 +213,6 @@ ApplicationWindow {
                         currentIndex: -1 // prevent sorting from stealing focus
                         cacheBuffer: 500
 
-                        ScrollHelper {
-                            flickable: parent
-                            anchors.fill: parent
-                            enabled: !Settings.mobileMode
-                        }
 
                         // Individual emoji
                         delegate: AbstractButton {
@@ -243,7 +231,7 @@ ApplicationWindow {
 
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: hovered ? Nheko.colors.highlight : 'transparent'
+                                color: hovered ? palette.highlight : 'transparent'
                                 radius: 5
                             }
 

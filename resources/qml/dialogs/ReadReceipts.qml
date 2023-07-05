@@ -18,8 +18,7 @@ ApplicationWindow {
     width: 340
     minimumHeight: 380
     minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -35,14 +34,13 @@ ApplicationWindow {
         Label {
             id: headerTitle
 
-            color: Nheko.colors.text
+            color: palette.text
             Layout.alignment: Qt.AlignCenter
             text: qsTr("Read receipts")
             font.pointSize: fontMetrics.font.pointSize * 1.5
         }
 
         ScrollView {
-            palette: Nheko.colors
             padding: Nheko.paddingMedium
             ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
@@ -67,7 +65,7 @@ ApplicationWindow {
                     ToolTip.visible: hovered
                     ToolTip.text: model.mxid
                     background: Rectangle {
-                        color: del.hovered ? Nheko.colors.dark : readReceiptsRoot.color
+                        color: del.hovered ? palette.dark : readReceiptsRoot.color
                     }
 
                     RowLayout {
@@ -93,16 +91,16 @@ ApplicationWindow {
                             Layout.fillWidth: true
 
                             ElidedLabel {
-                                text: model.displayName
-                                color: TimelineManager.userColor(model ? model.mxid : "", Nheko.colors.window)
+                                fullText: model.displayName
+                                color: TimelineManager.userColor(model ? model.mxid : "", palette.window)
                                 font.pointSize: fontMetrics.font.pointSize
                                 elideWidth: del.width - Nheko.paddingMedium - avatar.width
                                 Layout.fillWidth: true
                             }
 
                             ElidedLabel {
-                                text: model.timestamp
-                                color: Nheko.colors.buttonText
+                                fullText: model.timestamp
+                                color: palette.buttonText
                                 font.pointSize: fontMetrics.font.pointSize * 0.9
                                 elideWidth: del.width - Nheko.paddingMedium - avatar.width
                                 Layout.fillWidth: true
@@ -112,7 +110,7 @@ ApplicationWindow {
 
                     }
 
-                    CursorShape {
+                    NhekoCursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                     }

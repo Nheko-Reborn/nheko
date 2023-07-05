@@ -14,19 +14,19 @@ import QtQml 2.15
 Rectangle {
     id: chatPage
 
-    color: Nheko.colors.window
+    color: palette.window
 
     ColumnLayout {
-        spacing: 0
         anchors.fill: parent
+        spacing: 0
 
         Rectangle {
             id: offlineIndicator
 
+            Layout.fillWidth: true
+            Layout.preferredHeight: offlineLabel.height + Nheko.paddingMedium
             color: Nheko.theme.error
             visible: !TimelineManager.isConnected
-            Layout.preferredHeight: offlineLabel.height + Nheko.paddingMedium
-            Layout.fillWidth: true
             z: 1
 
             Label {
@@ -36,17 +36,8 @@ Rectangle {
                 text: qsTr("No network connection")
             }
         }
-
         AdaptiveLayout {
             id: adaptiveView
-
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            singlePageMode: communityListC.preferredWidth + roomListC.preferredWidth + timlineViewC.minimumWidth > width
-            pageIndex: 1
-
-            Component.onCompleted: initializePageIndex()
-            onSinglePageModeChanged: initializePageIndex()
 
             function initializePageIndex() {
                 if (!singlePageMode)
@@ -57,67 +48,67 @@ Rectangle {
                     adaptiveView.pageIndex = 1;
             }
 
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            pageIndex: 1
+            singlePageMode: communityListC.preferredWidth + roomListC.preferredWidth + timlineViewC.minimumWidth > width
+
+            Component.onCompleted: initializePageIndex()
+            onSinglePageModeChanged: initializePageIndex()
+
             Connections {
-                target: Rooms
                 function onCurrentRoomChanged() {
                     adaptiveView.initializePageIndex();
                 }
-            }
 
+                target: Rooms
+            }
             AdaptiveLayoutElement {
                 id: communityListC
 
-                visible: Settings.groupView
-                minimumWidth: communitiesList.avatarSize * 4 + Nheko.paddingMedium * 2
                 collapsedWidth: communitiesList.avatarSize + 2 * Nheko.paddingMedium
-                preferredWidth: Settings.communityListWidth >= minimumWidth ? Settings.communityListWidth : collapsedWidth
                 maximumWidth: communitiesList.avatarSize * 10 + 2 * Nheko.paddingMedium
+                minimumWidth: communitiesList.avatarSize * 4 + Nheko.paddingMedium * 2
+                preferredWidth: Settings.communityListWidth >= minimumWidth ? Settings.communityListWidth : collapsedWidth
+                visible: Settings.groupView
 
                 CommunitiesList {
                     id: communitiesList
 
                     collapsed: parent.collapsed
                 }
-
                 Binding {
-                    target: Settings
+                    delayed: true
                     property: 'communityListWidth'
+                    restoreMode: Binding.RestoreBindingOrValue
+                    target: Settings
                     value: communityListC.preferredWidth
                     when: !adaptiveView.singlePageMode
-                    delayed: true
-                    restoreMode: Binding.RestoreBindingOrValue
                 }
-
             }
-
             AdaptiveLayoutElement {
                 id: roomListC
 
-                minimumWidth: roomlist.avatarSize * 4 + Nheko.paddingSmall * 2
-                preferredWidth: (Settings.roomListWidth == - 1)
-                    ? (roomlist.avatarSize * 5 + Nheko.paddingSmall * 2)
-                    : (Settings.roomListWidth >= minimumWidth ? Settings.roomListWidth : collapsedWidth)
-                maximumWidth: roomlist.avatarSize * 10 + Nheko.paddingSmall * 2
                 collapsedWidth: roomlist.avatarSize + 2 * Nheko.paddingMedium
+                maximumWidth: roomlist.avatarSize * 10 + Nheko.paddingSmall * 2
+                minimumWidth: roomlist.avatarSize * 4 + Nheko.paddingSmall * 2
+                preferredWidth: (Settings.roomListWidth == -1) ? (roomlist.avatarSize * 5 + Nheko.paddingSmall * 2) : (Settings.roomListWidth >= minimumWidth ? Settings.roomListWidth : collapsedWidth)
 
                 RoomList {
                     id: roomlist
 
-                    height: adaptiveView.height
                     collapsed: parent.collapsed
+                    height: adaptiveView.height
                 }
-
                 Binding {
-                    target: Settings
+                    delayed: true
                     property: 'roomListWidth'
+                    restoreMode: Binding.RestoreBindingOrValue
+                    target: Settings
                     value: roomListC.preferredWidth
                     when: !adaptiveView.singlePageMode
-                    delayed: true
-                    restoreMode: Binding.RestoreBindingOrValue
                 }
-
             }
-
             AdaptiveLayoutElement {
                 id: timlineViewC
 
@@ -127,25 +118,20 @@ Rectangle {
                     id: timeline
 
                     privacyScreen: privacyScreen
-                    showBackButton: adaptiveView.singlePageMode
                     room: Rooms.currentRoom
                     roomPreview: Rooms.currentRoomPreview.roomid ? Rooms.currentRoomPreview : null
+                    showBackButton: adaptiveView.singlePageMode
                 }
-
             }
-
         }
-
     }
-
     PrivacyScreen {
         id: privacyScreen
 
         anchors.fill: parent
-        visible: Settings.privacyScreen
         screenTimeout: Settings.privacyScreenTimeout
         timelineRoot: adaptiveView
+        visible: Settings.privacyScreen
         windowTarget: MainWindow
     }
-
 }

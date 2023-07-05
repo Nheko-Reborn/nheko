@@ -18,454 +18,142 @@ Page {
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     property bool collapsed: false
 
-    // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
-    Connections {
-        function onHideMenu() {
-            userInfoMenu.close()
-            roomContextMenu.close()
-        }
-        target: MainWindow
-    }
-
-    Component {
-        id: roomDirectoryComponent
-
-        RoomDirectory {
-        }
-
-    }
-
-    Component {
-        id: createRoomComponent
-
-        CreateRoom {
-        }
-    }
-
-    Component {
-        id: createDirectComponent
-
-        CreateDirect {
-        }
-    }
-
-    ListView {
-        id: roomlist
-
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: parent.height
-        model: Rooms
-        //reuseItems: true
-
-        ScrollBar.vertical: ScrollBar {
-            id: scrollbar
-            parent: !collapsed && Settings.scrollbarsInRoomlist ? roomlist : null
-        }
-
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-        }
-
-        Connections {
-            function onCurrentRoomChanged() {
-                if (Rooms.currentRoom)
-                    roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
-
-            }
-
-            target: Rooms
-        }
-
-        Component {
-            id: roomWindowComponent
-
-            ApplicationWindow {
-                id: roomWindowW
-
-                property var room: null
-                property var roomPreview: null
-
-                Component.onCompleted: {
-                    MainWindow.addPerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW);
-                    Nheko.setTransientParent(roomWindowW, null);
-                }
-                Component.onDestruction: MainWindow.removePerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW)
-
-                height: 650
-                width: 420
-                minimumWidth: 150
-                minimumHeight: 150
-                palette: Nheko.colors
-                color: Nheko.colors.window
-                title: room.plainRoomName
-                //flags: Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-
-                Shortcut {
-                    sequence: StandardKey.Cancel
-                    onActivated: roomWindowW.close()
-                }
-
-                TimelineView {
-                    id: timeline
-
-                    privacyScreen: privacyScreen
-                    anchors.fill: parent
-                    room: roomWindowW.room
-                    roomPreview: roomWindowW.roomPreview.roomid ? roomWindowW.roomPreview : null
-                }
-
-                PrivacyScreen {
-                    id: privacyScreen
-
-                    anchors.fill: parent
-                    visible: Settings.privacyScreen
-                    screenTimeout: Settings.privacyScreenTimeout
-                    timelineRoot: timeline
-                    windowTarget: roomWindowW
-                }
-
-                onActiveChanged: { room.lastReadIdOnWindowFocus(); }
-            }
-
-        }
-
-
-        Component {
-            id: nestedSpaceMenuLevel
-
-            SpaceMenuLevel {
-                roomid: roomContextMenu.roomid
-                childMenu: rootSpaceMenu.childMenu
-            }
-        }
-
-
-        Platform.Menu {
-            id: roomContextMenu
-
-            property string roomid
-            property var tags
-
-            function show(roomid_, tags_) {
-                roomid = roomid_;
-                tags = tags_;
-                open();
-            }
-
-            InputDialog {
-                id: newTag
-
-                title: qsTr("New tag")
-                prompt: qsTr("Enter the tag you want to use:")
-                onAccepted: function(text) {
-                    Rooms.toggleTag(roomContextMenu.roomid, "u." + text, true);
-                }
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Open separately")
-                onTriggered: {
-                    var roomWindow = roomWindowComponent.createObject(null, {
-                    "room": Rooms.getRoomById(roomContextMenu.roomid),
-                    "roomPreview": Rooms.getRoomPreviewById(roomContextMenu.roomid)
-                    });
-                    roomWindow.showNormal();
-                    destroyOnClose(roomWindow);
-                }
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Room settings")
-                onTriggered: TimelineManager.openRoomSettings(roomContextMenu.roomid)
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Leave room")
-                onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
-            }
-
-            Platform.MenuItem {
-                text: qsTr("Copy room link")
-                onTriggered: Rooms.copyLink(roomContextMenu.roomid)
-            }
-
-            Platform.Menu {
-                id: tagsMenu
-                title: qsTr("Tag room as:")
-
-                Instantiator {
-                    model: Communities.tagsWithDefault
-                    onObjectAdded: tagsMenu.insertItem(index, object)
-                    onObjectRemoved: tagsMenu.removeItem(object)
-
-                    delegate: Platform.MenuItem {
-                        property string t: modelData
-
-                        text: {
-                            switch (t) {
-                                case "m.favourite":
-                                return qsTr("Favourite");
-                                case "m.lowpriority":
-                                return qsTr("Low priority");
-                                case "m.server_notice":
-                                return qsTr("Server notice");
-                                default:
-                                return t.substring(2);
-                            }
-                        }
-                        checkable: true
-                        checked: roomContextMenu.tags !== undefined && roomContextMenu.tags.includes(t)
-                        onTriggered: Rooms.toggleTag(roomContextMenu.roomid, t, checked)
-                    }
-
-                }
-
-                Platform.MenuItem {
-                    text: qsTr("Create new tag...")
-                    onTriggered: newTag.show()
-                }
-            }
-
-            SpaceMenuLevel {
-                id: rootSpaceMenu
-
-                roomid: roomContextMenu.roomid
-                position: -1
-                title: qsTr("Add or remove from community...")
-                childMenu: nestedSpaceMenuLevel
-            }
-        }
-
-        delegate: ItemDelegate {
-            id: roomItem
-
-            property color backgroundColor: Nheko.colors.window
-            property color importantText: Nheko.colors.text
-            property color unimportantText: Nheko.colors.buttonText
-            property color bubbleBackground: Nheko.colors.highlight
-            property color bubbleText: Nheko.colors.highlightedText
-            required property string roomName
-            required property string roomId
-            required property string avatarUrl
-            required property string time
-            required property string lastMessage
-            required property var tags
-            required property bool isInvite
-            required property bool isSpace
-            required property int notificationCount
-            required property bool hasLoudNotification
-            required property bool hasUnreadMessages
-            required property bool isDirect
-            required property string directChatOtherUserId
-
-            Ripple {
-                color: Qt.rgba(Nheko.colors.dark.r, Nheko.colors.dark.g, Nheko.colors.dark.b, 0.5)
-            }
-
-            height: avatarSize + 2 * Nheko.paddingMedium
-            width: ListView.view.width - ((scrollbar.interactive && scrollbar.visible && scrollbar.parent) ? scrollbar.width : 0)
-            state: "normal"
-            ToolTip.visible: hovered && collapsed
-            ToolTip.delay: Nheko.tooltipDelay
-            ToolTip.text: roomName
-            onClicked: {
-                console.log("tapped " + roomId);
-
-                if (!Rooms.currentRoom || Rooms.currentRoom.roomId !== roomId)
-                    Rooms.setCurrentRoom(roomId);
-                else
-                    Rooms.resetCurrentRoom();
-            }
-            onPressAndHold: {
-                if (!isInvite)
-                    roomContextMenu.show(roomId, tags);
-
-            }
-            states: [
-                State {
-                    name: "highlight"
-                    when: roomItem.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId)
-
-                    PropertyChanges {
-                        target: roomItem
-                        backgroundColor: Nheko.colors.dark
-                        importantText: Nheko.colors.brightText
-                        unimportantText: Nheko.colors.brightText
-                        bubbleBackground: Nheko.colors.highlight
-                        bubbleText: Nheko.colors.highlightedText
-                    }
-
-                },
-                State {
-                    name: "selected"
-                    when: (Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId
-
-                    PropertyChanges {
-                        target: roomItem
-                        backgroundColor: Nheko.colors.highlight
-                        importantText: Nheko.colors.highlightedText
-                        unimportantText: Nheko.colors.highlightedText
-                        bubbleBackground: Nheko.colors.highlightedText
-                        bubbleText: Nheko.colors.highlight
-                    }
-
-                }
-            ]
-
-            // NOTE(Nico): We want to prevent the touch areas from overlapping. For some reason we need to add 1px of padding for that...
-            Item {
-                anchors.fill: parent
-                anchors.margins: 1
-
-                TapHandler {
-                    acceptedButtons: Qt.RightButton
-                    onSingleTapped: {
-                        if (!TimelineManager.isInvite)
-                            roomContextMenu.show(roomId, tags);
-
-                    }
-                    gesturePolicy: TapHandler.ReleaseWithinBounds
-                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
-                }
-
-            }
-
-            RowLayout {
-                spacing: Nheko.paddingMedium
-                anchors.fill: parent
-                anchors.margins: Nheko.paddingMedium
-
-                Avatar {
-                    id: avatar
-
-                    enabled: false
-                    Layout.alignment: Qt.AlignVCenter
-                    height: avatarSize
-                    width: avatarSize
-                    url: avatarUrl.replace("mxc://", "image://MxcImage/")
-                    displayName: roomName
-                    userid: isDirect ? directChatOtherUserId : ""
-                    roomid: roomId
-
-                    NotificationBubble {
-                        id: collapsedNotificationBubble
-
-                        notificationCount: roomItem.notificationCount
-                        hasLoudNotification: roomItem.hasLoudNotification
-                        bubbleBackgroundColor: roomItem.bubbleBackground
-                        bubbleTextColor: roomItem.bubbleText
-                        anchors.right: parent.right
-                        anchors.bottom: parent.bottom
-                        anchors.margins: -Nheko.paddingSmall
-                        mayBeVisible: collapsed && (isSpace ? Settings.spaceNotifications : true)
-                    }
-
-                }
-
-                ColumnLayout {
-                    id: textContent
-
-                    visible: !collapsed
-                    Layout.alignment: Qt.AlignLeft
-                    Layout.fillWidth: true
-                    Layout.minimumWidth: 100
-                    width: parent.width - avatar.width
-                    Layout.preferredWidth: parent.width - avatar.width
-                    height: avatar.height
-                    spacing: Nheko.paddingSmall
-
-                    NotificationBubble {
-                        id: notificationBubble
-
-                        parent: isSpace ? titleRow : subtextRow
-                        notificationCount: roomItem.notificationCount
-                        hasLoudNotification: roomItem.hasLoudNotification
-                        bubbleBackgroundColor: roomItem.bubbleBackground
-                        bubbleTextColor: roomItem.bubbleText
-                        Layout.alignment: Qt.AlignRight
-                        Layout.leftMargin: Nheko.paddingSmall
-                        Layout.preferredWidth: implicitWidth
-                        Layout.preferredHeight: implicitHeight
-                        mayBeVisible: !collapsed && (isSpace ? Settings.spaceNotifications : true)
-                    }
-
-                    RowLayout {
-                        id: titleRow
-
-                        Layout.alignment: Qt.AlignTop
-                        Layout.fillWidth: true
-                        spacing: Nheko.paddingSmall
-
-                        ElidedLabel {
-                            id: rN
-                            Layout.alignment: Qt.AlignBaseline
-                            color: roomItem.importantText
-                            elideWidth: width
-                            fullText: TimelineManager.htmlEscape(roomName)
-                            textFormat: Text.RichText
-                            Layout.fillWidth: true
-                        }
-
-                        Label {
-                            id: timestamp
-
-                            visible: !isInvite && !isSpace
-                            width: visible ? 0 : undefined
-                            Layout.alignment: Qt.AlignRight | Qt.AlignBaseline
-                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            color: roomItem.unimportantText
-                            text: time
-                        }
-
-                    }
-
-                    RowLayout {
-                        id: subtextRow
-
-                        Layout.fillWidth: true
-                        spacing: 0
-                        visible: !isSpace
-                        height: visible ? 0 : undefined
-                        Layout.alignment: Qt.AlignBottom
-
-                        ElidedLabel {
-                            color: roomItem.unimportantText
-                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            elideWidth: width
-                            fullText: TimelineManager.htmlEscape(lastMessage)
-                            textFormat: Text.RichText
-                            Layout.fillWidth: true
-                        }
-
-                    }
-
-                }
-
-            }
-
-            Rectangle {
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-                height: parent.height - Nheko.paddingSmall * 2
-                width: 3
-                color: Nheko.colors.highlight
-                visible: hasUnreadMessages
-            }
-
-            background: Rectangle {
-                color: backgroundColor
-            }
-
-        }
-
-    }
-
     background: Rectangle {
         color: Nheko.theme.sidebarBackground
     }
+    footer: ColumnLayout {
+        spacing: 0
 
+        Rectangle {
+            Layout.fillWidth: true
+            color: Nheko.theme.separator
+            height: 1
+        }
+        Pane {
+            Layout.alignment: Qt.AlignBottom
+            Layout.fillWidth: true
+            Layout.minimumHeight: 40
+            horizontalPadding: Nheko.paddingMedium
+            verticalPadding: 0
+
+            background: Rectangle {
+                color: palette.window
+            }
+            contentItem: RowLayout {
+                id: buttonRow
+
+                ImageButton {
+                    Layout.fillWidth: true
+                    Layout.margins: Nheko.paddingMedium
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Start a new chat")
+                    ToolTip.visible: hovered
+                    height: 22
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/add-square-button.svg"
+                    width: 22
+
+                    onClicked: roomJoinCreateMenu.open(parent)
+
+                    Platform.Menu {
+                        id: roomJoinCreateMenu
+
+                        Platform.MenuItem {
+                            text: qsTr("Join a room")
+
+                            onTriggered: Nheko.openJoinRoomDialog()
+                        }
+                        Platform.MenuItem {
+                            text: qsTr("Create a new room")
+
+                            onTriggered: {
+                                var createRoom = createRoomComponent.createObject(timelineRoot);
+                                createRoom.show();
+                                timelineRoot.destroyOnClose(createRoom);
+                            }
+                        }
+                        Platform.MenuItem {
+                            text: qsTr("Start a direct chat")
+
+                            onTriggered: {
+                                var createDirect = createDirectComponent.createObject(timelineRoot);
+                                createDirect.show();
+                                timelineRoot.destroyOnClose(createDirect);
+                            }
+                        }
+                        Platform.MenuItem {
+                            text: qsTr("Create a new community")
+
+                            onTriggered: {
+                                var createRoom = createRoomComponent.createObject(timelineRoot, {
+                                        "space": true
+                                    });
+                                createRoom.show();
+                                timelineRoot.destroyOnClose(createRoom);
+                            }
+                        }
+                    }
+                }
+                ImageButton {
+                    Layout.fillWidth: true
+                    Layout.margins: Nheko.paddingMedium
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Room directory")
+                    ToolTip.visible: hovered
+                    height: 22
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/room-directory.svg"
+                    visible: !collapsed
+                    width: 22
+
+                    onClicked: {
+                        var win = roomDirectoryComponent.createObject(timelineRoot);
+                        win.show();
+                        timelineRoot.destroyOnClose(win);
+                    }
+                }
+                ImageButton {
+                    Layout.fillWidth: true
+                    Layout.margins: Nheko.paddingMedium
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("Search rooms (Ctrl+K)")
+                    ToolTip.visible: hovered
+                    height: 22
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/search.svg"
+                    ripple: false
+                    visible: !collapsed
+                    width: 22
+
+                    onClicked: {
+                        var component = Qt.createComponent("qrc:/resources/qml/QuickSwitcher.qml");
+                        if (component.status == Component.Ready) {
+                            var quickSwitch = component.createObject(timelineRoot);
+                            quickSwitch.open();
+                            destroyOnClosed(quickSwitch);
+                        } else {
+                            console.error("Failed to create component: " + component.errorString());
+                        }
+                    }
+                }
+                ImageButton {
+                    Layout.fillWidth: true
+                    Layout.margins: Nheko.paddingMedium
+                    ToolTip.delay: Nheko.tooltipDelay
+                    ToolTip.text: qsTr("User settings")
+                    ToolTip.visible: hovered
+                    height: 22
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/settings.svg"
+                    ripple: false
+                    visible: !collapsed
+                    width: 22
+
+                    onClicked: mainWindow.push(userSettingsPage)
+                }
+            }
+        }
+    }
     header: ColumnLayout {
         spacing: 0
 
@@ -474,9 +162,11 @@ Page {
 
             function openUserProfile() {
                 Nheko.updateUserProfile();
-                var component = Qt.createComponent("qrc:/qml/dialogs/UserProfile.qml")
+                var component = Qt.createComponent("qrc:/resources/qml/dialogs/UserProfile.qml");
                 if (component.status == Component.Ready) {
-                    var userProfile = component.createObject(timelineRoot, {"profile": Nheko.currentUser});
+                    var userProfile = component.createObject(timelineRoot, {
+                            "profile": Nheko.currentUser
+                        });
                     userProfile.show();
                     timelineRoot.destroyOnClose(userProfile);
                 } else {
@@ -484,55 +174,15 @@ Page {
                 }
             }
 
-
-            Layout.fillWidth: true
             Layout.alignment: Qt.AlignBottom
+            Layout.fillWidth: true
+            Layout.minimumHeight: 40
             //Layout.preferredHeight: userInfoGrid.implicitHeight + 2 * Nheko.paddingMedium
             padding: Nheko.paddingMedium
-            Layout.minimumHeight: 40
 
-            background: Rectangle {color: Nheko.colors.window}
-
-            InputDialog {
-                id: statusDialog
-
-                title: qsTr("Status Message")
-                prompt: qsTr("Enter your status message:")
-                onAccepted: function(text) {
-                    Nheko.setStatusMessage(text);
-                }
+            background: Rectangle {
+                color: palette.window
             }
-
-            Platform.Menu {
-                id: userInfoMenu
-
-                Platform.MenuItem {
-                    text: qsTr("Profile settings")
-                    onTriggered: userInfoPanel.openUserProfile()
-                }
-
-                Platform.MenuItem {
-                    text: qsTr("Set status message")
-                    onTriggered: statusDialog.show()
-                }
-
-            }
-
-            TapHandler {
-                margin: -Nheko.paddingSmall
-                acceptedButtons: Qt.LeftButton
-                onSingleTapped: userInfoPanel.openUserProfile()
-                onLongPressed: userInfoMenu.open()
-                gesturePolicy: TapHandler.ReleaseWithinBounds
-            }
-
-            TapHandler {
-                margin: -Nheko.paddingSmall
-                acceptedButtons: Qt.RightButton
-                onSingleTapped: userInfoMenu.open()
-                gesturePolicy: TapHandler.ReleaseWithinBounds
-            }
-
             contentItem: RowLayout {
                 id: userInfoGrid
 
@@ -544,91 +194,123 @@ Page {
                     id: avatar
 
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: fontMetrics.lineSpacing * 2
                     Layout.preferredHeight: fontMetrics.lineSpacing * 2
-                    url: (userInfoGrid.profile ? userInfoGrid.profile.avatarUrl : "").replace("mxc://", "image://MxcImage/")
+                    Layout.preferredWidth: fontMetrics.lineSpacing * 2
                     displayName: userInfoGrid.profile ? userInfoGrid.profile.displayName : ""
-                    userid: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
                     enabled: false
+                    url: (userInfoGrid.profile ? userInfoGrid.profile.avatarUrl : "").replace("mxc://", "image://MxcImage/")
+                    userid: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
                 }
-
                 ColumnLayout {
                     id: col
 
-                    visible: !collapsed
                     Layout.alignment: Qt.AlignLeft
                     Layout.fillWidth: true
-                    width: parent.width - avatar.width - logoutButton.width - Nheko.paddingMedium * 2
                     Layout.preferredWidth: parent.width - avatar.width - logoutButton.width - Nheko.paddingMedium * 2
                     spacing: 0
+                    visible: !collapsed
+                    width: parent.width - avatar.width - logoutButton.width - Nheko.paddingMedium * 2
 
                     ElidedLabel {
                         Layout.alignment: Qt.AlignBottom
+                        elideWidth: col.width
                         font.pointSize: fontMetrics.font.pointSize * 1.1
                         font.weight: Font.DemiBold
                         fullText: userInfoGrid.profile ? userInfoGrid.profile.displayName : ""
-                        elideWidth: col.width
                     }
-
                     ElidedLabel {
                         Layout.alignment: Qt.AlignTop
-                        color: Nheko.colors.buttonText
-                        font.pointSize: fontMetrics.font.pointSize * 0.9
+                        color: palette.buttonText
                         elideWidth: col.width
+                        font.pointSize: fontMetrics.font.pointSize * 0.9
                         fullText: userInfoGrid.profile ? userInfoGrid.profile.userid : ""
                     }
-
                 }
-
                 Item {
                 }
-
                 ImageButton {
                     id: logoutButton
 
-                    visible: !collapsed
                     Layout.alignment: Qt.AlignVCenter
-                    Layout.preferredWidth: fontMetrics.lineSpacing * 2
                     Layout.preferredHeight: fontMetrics.lineSpacing * 2
-                    image: ":/icons/icons/ui/power-off.svg"
-                    ToolTip.visible: hovered
+                    Layout.preferredWidth: fontMetrics.lineSpacing * 2
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Logout")
+                    ToolTip.visible: hovered
+                    image: ":/icons/icons/ui/power-off.svg"
+                    visible: !collapsed
+
                     onClicked: Nheko.openLogoutDialog()
                 }
-
             }
 
-        }
+            InputDialog {
+                id: statusDialog
 
+                prompt: qsTr("Enter your status message:")
+                title: qsTr("Status Message")
+
+                onAccepted: function (text) {
+                    Nheko.setStatusMessage(text);
+                }
+            }
+            Platform.Menu {
+                id: userInfoMenu
+
+                Platform.MenuItem {
+                    text: qsTr("Profile settings")
+
+                    onTriggered: userInfoPanel.openUserProfile()
+                }
+                Platform.MenuItem {
+                    text: qsTr("Set status message")
+
+                    onTriggered: statusDialog.show()
+                }
+            }
+            TapHandler {
+                acceptedButtons: Qt.LeftButton
+                gesturePolicy: TapHandler.ReleaseWithinBounds
+                margin: -Nheko.paddingSmall
+
+                onLongPressed: userInfoMenu.open()
+                onSingleTapped: userInfoPanel.openUserProfile()
+            }
+            TapHandler {
+                acceptedButtons: Qt.RightButton
+                gesturePolicy: TapHandler.ReleaseWithinBounds
+                margin: -Nheko.paddingSmall
+
+                onSingleTapped: userInfoMenu.open()
+            }
+        }
         Rectangle {
+            Layout.fillWidth: true
             color: Nheko.theme.separator
             height: 2
-            Layout.fillWidth: true
         }
-
         Rectangle {
             id: unverifiedStuffBubble
 
-            color: Qt.lighter(Nheko.theme.orange, verifyButtonHovered.hovered ? 1.2 : 1)
             Layout.fillWidth: true
+            color: Qt.lighter(Nheko.theme.orange, verifyButtonHovered.hovered ? 1.2 : 1)
             implicitHeight: explanation.height + Nheko.paddingMedium * 2
             visible: SelfVerificationStatus.status != SelfVerificationStatus.AllVerified
 
             RowLayout {
                 id: unverifiedStuffBubbleContainer
 
-                width: parent.width
                 height: explanation.height + Nheko.paddingMedium * 2
                 spacing: 0
+                width: parent.width
 
                 Label {
                     id: explanation
 
+                    Layout.fillWidth: true
                     Layout.margins: Nheko.paddingMedium
                     Layout.rightMargin: Nheko.paddingSmall
-                    color: Nheko.colors.buttonText
-                    Layout.fillWidth: true
+                    color: palette.buttonText
                     text: {
                         switch (SelfVerificationStatus.status) {
                         case SelfVerificationStatus.NoMasterKey:
@@ -647,34 +329,32 @@ Page {
                     textFormat: Text.PlainText
                     wrapMode: Text.Wrap
                 }
-
                 ImageButton {
                     id: closeUnverifiedBubble
 
-                    Layout.rightMargin: Nheko.paddingMedium
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                    hoverEnabled: true
-                    width: fontMetrics.font.pixelSize
-                    height: fontMetrics.font.pixelSize
-                    image: ":/icons/icons/ui/dismiss.svg"
-                    ToolTip.visible: closeUnverifiedBubble.hovered
+                    Layout.rightMargin: Nheko.paddingMedium
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Close")
+                    ToolTip.visible: closeUnverifiedBubble.hovered
+                    height: fontMetrics.font.pixelSize
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/dismiss.svg"
+                    width: fontMetrics.font.pixelSize
+
                     onClicked: unverifiedStuffBubble.visible = false
                 }
-
             }
-
             HoverHandler {
                 id: verifyButtonHovered
 
-                enabled: !closeUnverifiedBubble.hovered
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
-            }
-
-            TapHandler {
                 enabled: !closeUnverifiedBubble.hovered
+            }
+            TapHandler {
                 acceptedButtons: Qt.LeftButton
+                enabled: !closeUnverifiedBubble.hovered
+
                 onSingleTapped: {
                     if (SelfVerificationStatus.status == SelfVerificationStatus.UnverifiedDevices)
                         SelfVerificationStatus.verifyUnverifiedDevices();
@@ -682,151 +362,431 @@ Page {
                         SelfVerificationStatus.statusChanged();
                 }
             }
-
         }
-
         Rectangle {
+            Layout.fillWidth: true
             color: Nheko.theme.separator
             height: 1
-            Layout.fillWidth: true
             visible: unverifiedStuffBubble.visible
         }
-
     }
 
-    footer: ColumnLayout {
-        spacing: 0
-
-        Rectangle {
-            color: Nheko.theme.separator
-            height: 1
-            Layout.fillWidth: true
+    // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
+    Connections {
+        function onHideMenu() {
+            userInfoMenu.close();
+            roomContextMenu.close();
         }
 
-        Pane {
-            Layout.fillWidth: true
-            Layout.alignment: Qt.AlignBottom
-            Layout.minimumHeight: 40
+        target: MainWindow
+    }
+    Component {
+        id: roomDirectoryComponent
 
-            horizontalPadding: Nheko.paddingMedium
-            verticalPadding: 0
+        RoomDirectory {
+        }
+    }
+    Component {
+        id: createRoomComponent
 
-            background: Rectangle {color: Nheko.colors.window}
-            contentItem: RowLayout {
-                id: buttonRow
+        CreateRoom {
+        }
+    }
+    Component {
+        id: createDirectComponent
 
-                ImageButton {
-                    Layout.fillWidth: true
-                    hoverEnabled: true
-                    width: 22
-                    height: 22
-                    image: ":/icons/icons/ui/add-square-button.svg"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Start a new chat")
-                    Layout.margins: Nheko.paddingMedium
-                    onClicked: roomJoinCreateMenu.open(parent)
+        CreateDirect {
+        }
+    }
+    ListView {
+        id: roomlist
 
-                    Platform.Menu {
-                        id: roomJoinCreateMenu
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: parent.height
+        model: Rooms
 
-                        Platform.MenuItem {
-                            text: qsTr("Join a room")
-                            onTriggered: Nheko.openJoinRoomDialog()
-                        }
+        //reuseItems: true
+        ScrollBar.vertical: ScrollBar {
+            id: scrollbar
 
-                        Platform.MenuItem {
-                            text: qsTr("Create a new room")
-                            onTriggered: {
-                                var createRoom = createRoomComponent.createObject(timelineRoot);
-                                createRoom.show();
-                                timelineRoot.destroyOnClose(createRoom);
-                            }
-                        }
+            parent: !collapsed && Settings.scrollbarsInRoomlist ? roomlist : null
+        }
+        delegate: ItemDelegate {
+            id: roomItem
 
-                        Platform.MenuItem {
-                            text: qsTr("Start a direct chat")
-                            onTriggered: {
-                                var createDirect = createDirectComponent.createObject(timelineRoot);
-                                createDirect.show();
-                                timelineRoot.destroyOnClose(createDirect);
-                            }
-                        }
+            required property string avatarUrl
+            property color backgroundColor: palette.window
+            property color bubbleBackground: palette.highlight
+            property color bubbleText: palette.highlightedText
+            required property string directChatOtherUserId
+            required property bool hasLoudNotification
+            required property bool hasUnreadMessages
+            property color importantText: palette.text
+            required property bool isDirect
+            required property bool isInvite
+            required property bool isSpace
+            required property string lastMessage
+            required property int notificationCount
+            required property string roomId
+            required property string roomName
+            required property var tags
+            required property string time
+            property color unimportantText: palette.buttonText
 
-                        Platform.MenuItem {
-                            text: qsTr("Create a new community")
-                            onTriggered: {
-                                var createRoom = createRoomComponent.createObject(timelineRoot, { "space": true });
-                                createRoom.show();
-                                timelineRoot.destroyOnClose(createRoom);
-                            }
-                        }
+            ToolTip.delay: Nheko.tooltipDelay
+            ToolTip.text: roomName
+            ToolTip.visible: hovered && collapsed
+            height: avatarSize + 2 * Nheko.paddingMedium
+            state: "normal"
+            width: ListView.view.width - ((scrollbar.interactive && scrollbar.visible && scrollbar.parent) ? scrollbar.width : 0)
 
+            background: Rectangle {
+                color: backgroundColor
+            }
+            states: [
+                State {
+                    name: "highlight"
+                    when: roomItem.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId)
+
+                    PropertyChanges {
+                        backgroundColor: palette.dark
+                        bubbleBackground: palette.highlight
+                        bubbleText: palette.highlightedText
+                        importantText: palette.brightText
+                        target: roomItem
+                        unimportantText: palette.brightText
                     }
+                },
+                State {
+                    name: "selected"
+                    when: (Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId
 
-                }
-
-                ImageButton {
-                    visible: !collapsed
-                    Layout.fillWidth: true
-                    hoverEnabled: true
-                    width: 22
-                    height: 22
-                    image: ":/icons/icons/ui/room-directory.svg"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Room directory")
-                    Layout.margins: Nheko.paddingMedium
-                    onClicked: {
-                        var win = roomDirectoryComponent.createObject(timelineRoot);
-                        win.show();
-                        timelineRoot.destroyOnClose(win);
-                    }
-                }
-
-                ImageButton {
-                    visible: !collapsed
-                    Layout.fillWidth: true
-                    hoverEnabled: true
-                    ripple: false
-                    width: 22
-                    height: 22
-                    image: ":/icons/icons/ui/search.svg"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Search rooms (Ctrl+K)")
-                    Layout.margins: Nheko.paddingMedium
-                    onClicked: {
-                        var component = Qt.createComponent("qrc:/qml/QuickSwitcher.qml")
-                        if (component.status == Component.Ready) {
-                            var quickSwitch = component.createObject(timelineRoot);
-                            quickSwitch.open();
-                            destroyOnClosed(quickSwitch);
-                        } else {
-                            console.error("Failed to create component: " + component.errorString());
-                        }
+                    PropertyChanges {
+                        backgroundColor: palette.highlight
+                        bubbleBackground: palette.highlightedText
+                        bubbleText: palette.highlight
+                        importantText: palette.highlightedText
+                        target: roomItem
+                        unimportantText: palette.highlightedText
                     }
                 }
+            ]
 
-                ImageButton {
-                    visible: !collapsed
-                    Layout.fillWidth: true
-                    hoverEnabled: true
-                    ripple: false
-                    width: 22
-                    height: 22
-                    image: ":/icons/icons/ui/settings.svg"
-                    ToolTip.visible: hovered
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("User settings")
-                    Layout.margins: Nheko.paddingMedium
-                    onClicked: mainWindow.push(userSettingsPage);
-                }
-
+            onClicked: {
+                console.log("tapped " + roomId);
+                if (!Rooms.currentRoom || Rooms.currentRoom.roomId !== roomId)
+                    Rooms.setCurrentRoom(roomId);
+                else
+                    Rooms.resetCurrentRoom();
+            }
+            onPressAndHold: {
+                if (!isInvite)
+                    roomContextMenu.show(roomId, tags);
             }
 
+            Ripple {
+                color: Qt.rgba(palette.dark.r, palette.dark.g, palette.dark.b, 0.5)
+            }
+
+            // NOTE(Nico): We want to prevent the touch areas from overlapping. For some reason we need to add 1px of padding for that...
+            Item {
+                anchors.fill: parent
+                anchors.margins: 1
+
+                TapHandler {
+                    acceptedButtons: Qt.RightButton
+                    acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
+                    gesturePolicy: TapHandler.ReleaseWithinBounds
+
+                    onSingleTapped: {
+                        if (!TimelineManager.isInvite)
+                            roomContextMenu.show(roomId, tags);
+                    }
+                }
+            }
+            RowLayout {
+                anchors.fill: parent
+                anchors.margins: Nheko.paddingMedium
+                spacing: Nheko.paddingMedium
+
+                Avatar {
+                    id: avatar
+
+                    Layout.alignment: Qt.AlignVCenter
+                    displayName: roomName
+                    enabled: false
+                    height: avatarSize
+                    roomid: roomId
+                    url: avatarUrl.replace("mxc://", "image://MxcImage/")
+                    userid: isDirect ? directChatOtherUserId : ""
+                    width: avatarSize
+
+                    NotificationBubble {
+                        id: collapsedNotificationBubble
+
+                        anchors.bottom: parent.bottom
+                        anchors.margins: -Nheko.paddingSmall
+                        anchors.right: parent.right
+                        bubbleBackgroundColor: roomItem.bubbleBackground
+                        bubbleTextColor: roomItem.bubbleText
+                        hasLoudNotification: roomItem.hasLoudNotification
+                        mayBeVisible: collapsed && (isSpace ? Settings.spaceNotifications : true)
+                        notificationCount: roomItem.notificationCount
+                    }
+                }
+                ColumnLayout {
+                    id: textContent
+
+                    Layout.alignment: Qt.AlignLeft
+                    Layout.minimumWidth: 100
+                    Layout.preferredWidth: parent.width - avatar.width
+                    height: avatar.height
+                    spacing: Nheko.paddingSmall
+                    visible: !collapsed
+                    width: roomItem.width - avatar.width
+
+                    Item {
+                        id: titleRow
+
+                        Layout.alignment: Qt.AlignTop
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: subtitleText.implicitHeight
+
+                        ElidedLabel {
+                            id: titleText
+
+                            anchors.left: parent.left
+                            color: roomItem.importantText
+                            elideWidth: parent.width - (timestamp.visible ? timestamp.implicitWidth : 0) - (spaceNotificationBubble.visible ? spaceNotificationBubble.implicitWidth : 0)
+                            fullText: TimelineManager.htmlEscape(roomName)
+                            textFormat: Text.RichText
+                        }
+                        Label {
+                            id: timestamp
+
+                            anchors.baseline: titleText.baseline
+                            anchors.right: parent.right
+                            color: roomItem.unimportantText
+                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
+                            text: time
+                            visible: !isInvite && !isSpace
+                        }
+                        NotificationBubble {
+                            id: spaceNotificationBubble
+
+                            anchors.right: parent.right
+                            bubbleBackgroundColor: roomItem.bubbleBackground
+                            bubbleTextColor: roomItem.bubbleText
+                            hasLoudNotification: roomItem.hasLoudNotification
+                            mayBeVisible: !collapsed && (isSpace ? Settings.spaceNotifications : false)
+                            notificationCount: roomItem.notificationCount
+                            parent: isSpace ? titleRow : subtextRow
+                        }
+                    }
+                    Item {
+                        id: subtextRow
+
+                        Layout.alignment: Qt.AlignBottom
+                        Layout.fillWidth: true
+                        Layout.preferredHeight: subtitleText.implicitHeight
+                        visible: !isSpace
+
+                        ElidedLabel {
+                            id: subtitleText
+
+                            anchors.left: parent.left
+                            color: roomItem.unimportantText
+                            elideWidth: subtextRow.width - (subtextNotificationBubble.visible ? subtextNotificationBubble.implicitWidth : 0)
+                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
+                            fullText: TimelineManager.htmlEscape(lastMessage)
+                            textFormat: Text.RichText
+                        }
+                        NotificationBubble {
+                            id: subtextNotificationBubble
+
+                            anchors.baseline: subtitleText.baseline
+                            anchors.right: parent.right
+                            bubbleBackgroundColor: roomItem.bubbleBackground
+                            bubbleTextColor: roomItem.bubbleText
+                            hasLoudNotification: roomItem.hasLoudNotification
+                            mayBeVisible: !collapsed
+                            notificationCount: roomItem.notificationCount
+                        }
+                    }
+                }
+            }
+            Rectangle {
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                color: palette.highlight
+                height: parent.height - Nheko.paddingSmall * 2
+                visible: hasUnreadMessages
+                width: 3
+            }
         }
 
-    }
+        Connections {
+            function onCurrentRoomChanged() {
+                if (Rooms.currentRoom)
+                    roomlist.positionViewAtIndex(Rooms.roomidToIndex(Rooms.currentRoom.roomId), ListView.Contain);
+            }
 
+            target: Rooms
+        }
+        Component {
+            id: roomWindowComponent
+
+            ApplicationWindow {
+                id: roomWindowW
+
+                property var room: null
+                property var roomPreview: null
+
+                color: palette.window
+                height: 650
+                minimumHeight: 150
+                minimumWidth: 150
+                title: room.plainRoomName
+                width: 420
+
+                Component.onCompleted: {
+                    MainWindow.addPerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW);
+                    Nheko.setTransientParent(roomWindowW, null);
+                }
+                Component.onDestruction: MainWindow.removePerRoomWindow(room.roomId || roomPreview.roomid, roomWindowW)
+                onActiveChanged: {
+                    room.lastReadIdOnWindowFocus();
+                }
+
+                //flags: Qt.Window | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+                Shortcut {
+                    sequence: StandardKey.Cancel
+
+                    onActivated: roomWindowW.close()
+                }
+                TimelineView {
+                    id: timeline
+
+                    anchors.fill: parent
+                    privacyScreen: privacyScreen
+                    room: roomWindowW.room
+                    roomPreview: roomWindowW.roomPreview.roomid ? roomWindowW.roomPreview : null
+                }
+                PrivacyScreen {
+                    id: privacyScreen
+
+                    anchors.fill: parent
+                    screenTimeout: Settings.privacyScreenTimeout
+                    timelineRoot: timeline
+                    visible: Settings.privacyScreen
+                    windowTarget: roomWindowW
+                }
+            }
+        }
+        Component {
+            id: nestedSpaceMenuLevel
+
+            SpaceMenuLevel {
+                childMenu: rootSpaceMenu.childMenu
+                roomid: roomContextMenu.roomid
+            }
+        }
+        Platform.Menu {
+            id: roomContextMenu
+
+            property string roomid
+            property var tags
+
+            function show(roomid_, tags_) {
+                roomid = roomid_;
+                tags = tags_;
+                open();
+            }
+
+            InputDialog {
+                id: newTag
+
+                prompt: qsTr("Enter the tag you want to use:")
+                title: qsTr("New tag")
+
+                onAccepted: function (text) {
+                    Rooms.toggleTag(roomContextMenu.roomid, "u." + text, true);
+                }
+            }
+            Platform.MenuItem {
+                text: qsTr("Open separately")
+
+                onTriggered: {
+                    var roomWindow = roomWindowComponent.createObject(null, {
+                            "room": Rooms.getRoomById(roomContextMenu.roomid),
+                            "roomPreview": Rooms.getRoomPreviewById(roomContextMenu.roomid)
+                        });
+                    roomWindow.showNormal();
+                    destroyOnClose(roomWindow);
+                }
+            }
+            Platform.MenuItem {
+                text: qsTr("Room settings")
+
+                onTriggered: TimelineManager.openRoomSettings(roomContextMenu.roomid)
+            }
+            Platform.MenuItem {
+                text: qsTr("Leave room")
+
+                onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
+            }
+            Platform.MenuItem {
+                text: qsTr("Copy room link")
+
+                onTriggered: Rooms.copyLink(roomContextMenu.roomid)
+            }
+            Platform.Menu {
+                id: tagsMenu
+
+                title: qsTr("Tag room as:")
+
+                Instantiator {
+                    model: Communities.tagsWithDefault
+
+                    delegate: Platform.MenuItem {
+                        property string t: modelData
+
+                        checkable: true
+                        checked: roomContextMenu.tags !== undefined && roomContextMenu.tags.includes(t)
+                        text: {
+                            switch (t) {
+                            case "m.favourite":
+                                return qsTr("Favourite");
+                            case "m.lowpriority":
+                                return qsTr("Low priority");
+                            case "m.server_notice":
+                                return qsTr("Server notice");
+                            default:
+                                return t.substring(2);
+                            }
+                        }
+
+                        onTriggered: Rooms.toggleTag(roomContextMenu.roomid, t, checked)
+                    }
+
+                    onObjectAdded: (index, object) => tagsMenu.insertItem(index, object)
+                    onObjectRemoved: (index, object) => tagsMenu.removeItem(object)
+                }
+                Platform.MenuItem {
+                    text: qsTr("Create new tag...")
+
+                    onTriggered: newTag.show()
+                }
+            }
+            SpaceMenuLevel {
+                id: rootSpaceMenu
+
+                childMenu: nestedSpaceMenuLevel
+                position: -1
+                roomid: roomContextMenu.roomid
+                title: qsTr("Add or remove from community...")
+            }
+        }
+    }
 }

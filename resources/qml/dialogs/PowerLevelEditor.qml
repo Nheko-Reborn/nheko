@@ -41,14 +41,13 @@ ApplicationWindow {
             font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
             Layout.fillWidth: true
             Layout.fillHeight: false
-            color: Nheko.colors.text
+            color: palette.text
             Layout.bottomMargin: Nheko.paddingMedium
         }
 
         TabBar {
             id: bar
             width: parent.width
-            palette: Nheko.colors
 
             NhekoTabButton {
                 text: qsTr("Roles")
@@ -60,7 +59,7 @@ ApplicationWindow {
         Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            color: Nheko.colors.alternateBase
+            color: palette.alternateBase
             border.width: 1
             border.color: Nheko.theme.separator
 
@@ -78,7 +77,7 @@ ApplicationWindow {
                         font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
                         Layout.fillWidth: true
                         Layout.fillHeight: false
-                        color: Nheko.colors.text
+                        color: palette.text
                     }
 
                     ReorderableListview {
@@ -91,7 +90,7 @@ ApplicationWindow {
                             Column {
                                 Layout.fillWidth: true
 
-                                Text { visible: model.isType; text: model.displayName; color: Nheko.colors.text}
+                                Text { visible: model.isType; text: model.displayName; color: palette.text}
                                 Text {
                                     visible: !model.isType;
                                     text: {
@@ -104,7 +103,7 @@ ApplicationWindow {
                                         else
                                         return qsTr("Custom (%1)").arg(model.powerlevel)
                                     }
-                                    color: Nheko.colors.text
+                                    color: palette.text
                                 }
                             }
 
@@ -137,7 +136,7 @@ ApplicationWindow {
                             z: 5
                             visible: false
 
-                            color: Nheko.colors.text
+                            color: palette.text
 
                             Keys.onPressed: {
                                 if (typeEntry.text.includes('.') && event.matches(StandardKey.InsertParagraphSeparator)) {
@@ -166,7 +165,7 @@ ApplicationWindow {
 
                             anchors.fill: parent
                             visible: false
-                            color: Nheko.colors.alternateBase
+                            color: palette.alternateBase
 
                             RowLayout {
                                 spacing: Nheko.paddingMedium
@@ -238,7 +237,7 @@ ApplicationWindow {
 
                                 width: parent.width
                                 //font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
-                                color: Nheko.colors.text
+                                color: palette.text
                                 onTextEdited: {
                                     userCompleter.completer.searchString = text;
                                 }
@@ -318,11 +317,11 @@ ApplicationWindow {
                                     if (model.isUser)
                                     return model.avatarUrl.replace("mxc://", "image://MxcImage/")
                                     else if (editingModel.adminLevel >= model.powerlevel)
-                                    return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?" + Nheko.colors.buttonText;
+                                    return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?" + palette.buttonText;
                                     else if (editingModel.moderatorLevel >= model.powerlevel)
-                                    return "image://colorimage/:/icons/icons/ui/ribbon.svg?" + Nheko.colors.buttonText;
+                                    return "image://colorimage/:/icons/icons/ui/ribbon.svg?" + palette.buttonText;
                                     else
-                                    return "image://colorimage/:/icons/icons/ui/person.svg?" + Nheko.colors.buttonText;
+                                    return "image://colorimage/:/icons/icons/ui/person.svg?" + palette.buttonText;
                                 }
                                 displayName: model.displayName
                                 enabled: false
@@ -330,8 +329,8 @@ ApplicationWindow {
                             Column {
                                 Layout.fillWidth: true
 
-                                Text { visible: model.isUser; text: model.displayName; color: Nheko.colors.text}
-                                Text { visible: model.isUser; text: model.mxid; color: Nheko.colors.text}
+                                Text { visible: model.isUser; text: model.displayName; color: palette.text}
+                                Text { visible: model.isUser; text: model.mxid; color: palette.text}
                                 Text {
                                     visible: !model.isUser;
                                     text: {
@@ -342,7 +341,7 @@ ApplicationWindow {
                                         else
                                         return qsTr("Custom (%1)").arg(model.powerlevel)
                                     }
-                                    color: Nheko.colors.text
+                                    color: palette.text
                                 }
                             }
 

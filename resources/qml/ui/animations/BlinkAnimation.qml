@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtGraphicalEffects 1.12
-import QtQuick 2.12
+import QtQuick
 
 SequentialAnimation {
     property alias target: numberAnimation.target

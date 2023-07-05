@@ -19,6 +19,7 @@ class QQmlAdaptorModel;
 class DelegateChoice : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_CLASSINFO("DefaultProperty", "delegate")
 
 public:
@@ -45,6 +46,7 @@ private:
 class DelegateChooser : public QQuickItem
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_CLASSINFO("DefaultProperty", "choices")
 
 public:
@@ -86,7 +88,7 @@ private:
     DelegateIncubator incubator{*this};
 
     static void appendChoice(QQmlListProperty<DelegateChoice> *, DelegateChoice *);
-    static int choiceCount(QQmlListProperty<DelegateChoice> *);
-    static DelegateChoice *choice(QQmlListProperty<DelegateChoice> *, int index);
+    static qsizetype choiceCount(QQmlListProperty<DelegateChoice> *);
+    static DelegateChoice *choice(QQmlListProperty<DelegateChoice> *, qsizetype index);
     static void clearChoices(QQmlListProperty<DelegateChoice> *);
 };

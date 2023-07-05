@@ -17,15 +17,12 @@
 #include "Utils.h"
 #include "timeline/TimelineModel.h"
 
-Q_DECLARE_METATYPE(SpaceItem)
-
 CommunitiesModel::CommunitiesModel(QObject *parent)
   : QAbstractListModel(parent)
   , hiddenTagIds_{UserSettings::instance()->hiddenTags()}
   , mutedTagIds_{UserSettings::instance()->mutedTags()}
 {
-    static auto ignore = qRegisterMetaType<SpaceItem>();
-    (void)ignore;
+    instance_ = this;
 }
 
 QHash<int, QByteArray>

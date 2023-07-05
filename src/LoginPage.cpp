@@ -19,18 +19,13 @@
 #include "SSOHandler.h"
 #include "UserSettingsPage.h"
 
-Q_DECLARE_METATYPE(LoginPage::LoginMethod)
-Q_DECLARE_METATYPE(SSOProvider)
-
 using namespace mtx::identifiers;
 
 LoginPage::LoginPage(QObject *parent)
   : QObject(parent)
   , inferredServerAddress_()
 {
-    [[maybe_unused]] static auto ignored =
-      qRegisterMetaType<LoginPage::LoginMethod>("LoginPage::LoginMethod");
-    [[maybe_unused]] static auto ignored2 = qRegisterMetaType<SSOProvider>();
+    [[maybe_unused]] static auto ignored = qRegisterMetaType<mtx::responses::Login>();
 
     connect(this, &LoginPage::versionOkCb, this, &LoginPage::versionOk, Qt::QueuedConnection);
     connect(this, &LoginPage::versionErrorCb, this, &LoginPage::versionError, Qt::QueuedConnection);

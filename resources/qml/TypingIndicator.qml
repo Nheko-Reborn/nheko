@@ -8,30 +8,28 @@ import QtQuick.Layouts 1.2
 import im.nheko 1.0
 
 Item {
-    implicitHeight: Math.max(fontMetrics.height * 1.2, typingDisplay.height)
     Layout.fillWidth: true
+    implicitHeight: Math.max(fontMetrics.height * 1.2, typingDisplay.height)
 
     Rectangle {
         id: typingRect
 
-        visible: (room && room.typingUsers.length > 0)
-        color: Nheko.colors.base
         anchors.fill: parent
+        color: palette.base
+        visible: (room && room.typingUsers.length > 0)
         z: 3
 
         Label {
             id: typingDisplay
 
+            anchors.bottom: parent.bottom
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.bottom: parent.bottom
-            color: Nheko.colors.text
-            text: room ? room.formatTypingUsers(room.typingUsers, Nheko.colors.base) : ""
+            color: palette.text
+            text: room ? room.formatTypingUsers(room.typingUsers, palette.base) : ""
             textFormat: Text.RichText
         }
-
     }
-
 }

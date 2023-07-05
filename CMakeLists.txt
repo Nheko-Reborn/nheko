@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.13..3.21)
 
 option(APPVEYOR_BUILD "Build on appveyor" OFF)
 option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
@@ -57,7 +57,7 @@ option(USE_BUNDLED_OPENSSL "Use the bundled version of OpenSSL." OFF)
 option(USE_BUNDLED_MTXCLIENT "Use the bundled version of the Matrix Client library." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDB "Use the bundled version of lmdb." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LMDBXX "Use the bundled version of lmdb++." ${HUNTER_ENABLED})
-option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt5Keychain." ${HUNTER_ENABLED})
+option(USE_BUNDLED_QTKEYCHAIN "Use the bundled version of Qt6Keychain." ${HUNTER_ENABLED})
 option(USE_BUNDLED_COEURL "Use a bundled version of the Curl wrapper"
 	${HUNTER_ENABLED})
 option(USE_BUNDLED_LIBEVENT "Use the bundled version of libevent." ${HUNTER_ENABLED})
@@ -72,7 +72,11 @@ if (APPLE OR WIN32)
 	set(VOIP_DEFAULT OFF)
 endif()
 option(VOIP "Whether to enable voip support. Disable this, if you don't have gstreamer." ${VOIP_DEFAULT})
-cmake_dependent_option(SCREENSHARE_X11 "Whether to enable screenshare support on X11." ON "VOIP" OFF)
+set(X11_DEFAULT)
+if (WIN32 OR APPLE OR HAIKU)
+	set(X11_DEFAULT OFF)
+endif()
+option(X11 "Whether to enable X11 specific features (screenshare, window roles)." ${X11_DEFAULT})
 cmake_dependent_option(SCREENSHARE_XDP "Whether to enable screenshare support using xdg-desktop-portal." ON "VOIP" OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
@@ -239,16 +243,17 @@ endif()
 #
 # Discover Qt dependencies.
 #
-find_package(Qt5 5.15 COMPONENTS Core Widgets LinguistTools Concurrent Svg Multimedia Qml QuickControls2 QuickWidgets REQUIRED)
-find_package(Qt5QuickCompiler)
-find_package(Qt5DBus)
+find_package(Qt6 6.5 COMPONENTS Core Widgets Gui LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
+#find_package(Qt6QuickCompiler)
+find_package(Qt6DBus)
 
 if (USE_BUNDLED_QTKEYCHAIN)
 	include(FetchContent)
+	set(BUILD_WITH_QT6 ON)
 	FetchContent_Declare(
-		qt5keychain
+		qt6keychain
 		GIT_REPOSITORY https://github.com/frankosterfeld/qtkeychain.git
-		GIT_TAG        v0.13.1
+		GIT_TAG        v0.14.0
 		)
 	if (BUILD_SHARED_LIBS)
 		set(QTKEYCHAIN_STATIC OFF CACHE INTERNAL "")
@@ -256,21 +261,17 @@ if (USE_BUNDLED_QTKEYCHAIN)
 		set(QTKEYCHAIN_STATIC ON CACHE INTERNAL "")
 	endif()
 	set(BUILD_TEST_APPLICATION OFF CACHE INTERNAL "")
-	FetchContent_MakeAvailable(qt5keychain)
+	FetchContent_MakeAvailable(qt6keychain)
 else()
-	find_package(Qt5Keychain REQUIRED)
+	find_package(Qt6Keychain REQUIRED)
 endif()
 
-if (APPLE)
-	find_package(Qt5MacExtras REQUIRED)
-endif(APPLE)
-
-if (Qt5Widgets_FOUND)
-	if (Qt5Widgets_VERSION VERSION_LESS 5.15.0)
-		message(STATUS "Qt version ${Qt5Widgets_VERSION}")
-		message(WARNING "Minimum supported Qt5 version is 5.15!")
+if (Qt6Widgets_FOUND)
+	if (Qt6Widgets_VERSION VERSION_LESS 6.5.0)
+		message(STATUS "Qt version ${Qt6Widgets_VERSION}")
+		message(WARNING "Minimum supported Qt6 version is 6.5!")
 	endif()
-endif(Qt5Widgets_FOUND)
+endif(Qt6Widgets_FOUND)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 if(NOT MSVC)
@@ -386,6 +387,8 @@ set(SRC_FILES
 	# UI components
 	src/ui/HiddenEvents.cpp
 	src/ui/HiddenEvents.h
+	src/ui/EventExpiry.cpp
+	src/ui/EventExpiry.h
 	src/ui/MxcAnimatedImage.cpp
 	src/ui/MxcAnimatedImage.h
 	src/ui/MxcMediaProxy.cpp
@@ -394,8 +397,6 @@ set(SRC_FILES
 	src/ui/NhekoCursorShape.h
 	src/ui/NhekoDropArea.cpp
 	src/ui/NhekoDropArea.h
-	src/ui/NhekoEventObserver.cpp
-	src/ui/NhekoEventObserver.h
 	src/ui/NhekoGlobalObject.cpp
 	src/ui/NhekoGlobalObject.h
 	src/ui/RoomSettings.cpp
@@ -498,8 +499,6 @@ set(SRC_FILES
 	src/SingleImagePackModel.h
 	src/TrayIcon.cpp
 	src/TrayIcon.h
-	src/UserDirectoryModel.cpp
-	src/UserDirectoryModel.h
 	src/UserSettingsPage.cpp
 	src/UserSettingsPage.h
 	src/UsersModel.cpp
@@ -602,7 +601,7 @@ if(USE_BUNDLED_MTXCLIENT)
 	FetchContent_Declare(
 		MatrixClient
                 GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-                GIT_TAG        e136bc27b28d3bb5683735eb5a65d6ef2534ca3a
+                GIT_TAG        0a4cc9421a97bea81a8921f3f5e040f0a34278fc
 		)
 	set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
 	set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")
@@ -614,9 +613,10 @@ endif()
 if (VOIP)
 	include(FindPkgConfig)
 	pkg_check_modules(GSTREAMER REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.18 gstreamer-webrtc-1.0>=1.18)
-	if (SCREENSHARE_X11 AND NOT WIN32 AND NOT APPLE)
-		pkg_check_modules(XCB REQUIRED IMPORTED_TARGET xcb xcb-ewmh)
-	endif()
+endif()
+
+if (X11 AND NOT WIN32 AND NOT APPLE AND NOT HAIKU)
+	pkg_check_modules(XCB REQUIRED IMPORTED_TARGET xcb xcb-ewmh)
 endif()
 
 # single instance functionality
@@ -631,10 +631,13 @@ if (NOT APPLE AND NOT WIN32)
 endif()
 
 #
-# Bundle translations.
+# Bundle resources
 #
-include(Translations)
-set(TRANSLATION_DEPS ${LANG_QRC} ${QRC} ${QM_SRC})
+if(Qt6QuickCompiler_FOUND AND COMPILE_QML)
+	qtquick_compiler_add_resources(QRC resources/res.qrc)
+else()
+	qt_add_resources(QRC resources/res.qrc)
+endif()
 
 if (APPLE)
 	set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")
@@ -666,7 +669,7 @@ endif ()
 
 set(NHEKO_DEPS
 	${SRC_FILES}
-	${TRANSLATION_DEPS}
+	${QRC}
 	${META_FILES_TO_INCLUDE})
 
 if(ASAN)
@@ -674,10 +677,10 @@ if(ASAN)
 endif()
 
 if(WIN32)
-	add_executable (nheko WIN32 ${OS_BUNDLE} ${NHEKO_DEPS})
+	qt_add_executable (nheko WIN32 ${OS_BUNDLE} ${NHEKO_DEPS})
 	target_compile_definitions(nheko PRIVATE _WIN32_WINNT=0x0601 NOMINMAX WIN32_LEAN_AND_MEAN STRICT)
 else()
-	add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
+	qt_add_executable (nheko ${OS_BUNDLE} ${NHEKO_DEPS})
 
 	if (HAVE_BACKTRACE_SYMBOLS_FD AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
 		set_target_properties(nheko PROPERTIES ENABLE_EXPORTS ON)
@@ -689,22 +692,150 @@ set_target_properties(nheko
 		CMAKE_SKIP_INSTALL_RPATH TRUE
 		AUTOMOC ON)
 
-if(APPLE)
-	target_link_libraries (nheko PRIVATE Qt5::MacExtras)
-elseif(WIN32)
+#
+# Bundle translations
+#
+file(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
+qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES ${LANG_TS_SRC})
+
+
+#
+# Add qml files
+#
+
+set(QML_SOURCES
+        resources/qml/Root.qml
+        resources/qml/ChatPage.qml
+        resources/qml/CommunitiesList.qml
+        resources/qml/RoomList.qml
+        resources/qml/TimelineView.qml
+        resources/qml/Avatar.qml
+        resources/qml/Completer.qml
+        resources/qml/EncryptionIndicator.qml
+        resources/qml/ImageButton.qml
+        resources/qml/ElidedLabel.qml
+        resources/qml/MatrixText.qml
+        resources/qml/MatrixTextField.qml
+        resources/qml/ToggleButton.qml
+        resources/qml/UploadBox.qml
+        resources/qml/MessageInput.qml
+        resources/qml/MessageView.qml
+        resources/qml/PrivacyScreen.qml
+        resources/qml/Reactions.qml
+        resources/qml/ReplyPopup.qml
+        resources/qml/StatusIndicator.qml
+        resources/qml/TimelineRow.qml
+        resources/qml/TopBar.qml
+        resources/qml/QuickSwitcher.qml
+        resources/qml/ForwardCompleter.qml
+        resources/qml/SelfVerificationCheck.qml
+        resources/qml/TypingIndicator.qml
+        resources/qml/MessageInputWarning.qml
+        resources/qml/components/AdaptiveLayout.qml
+        resources/qml/components/AdaptiveLayoutElement.qml
+        resources/qml/components/AvatarListTile.qml
+        resources/qml/components/FlatButton.qml
+        resources/qml/components/MainWindowDialog.qml
+        resources/qml/components/NhekoTabButton.qml
+        resources/qml/components/NotificationBubble.qml
+        resources/qml/components/ReorderableListview.qml
+        resources/qml/components/SpaceMenuLevel.qml
+        resources/qml/components/TextButton.qml
+        resources/qml/components/UserListRow.qml
+        resources/qml/delegates/Encrypted.qml
+        resources/qml/delegates/FileMessage.qml
+        resources/qml/delegates/ImageMessage.qml
+        resources/qml/delegates/MessageDelegate.qml
+        resources/qml/delegates/NoticeMessage.qml
+        resources/qml/delegates/Pill.qml
+        resources/qml/delegates/Placeholder.qml
+        resources/qml/delegates/PlayableMediaMessage.qml
+        resources/qml/delegates/Redacted.qml
+        resources/qml/delegates/Reply.qml
+        resources/qml/delegates/TextMessage.qml
+        resources/qml/device-verification/DeviceVerification.qml
+        resources/qml/device-verification/DigitVerification.qml
+        resources/qml/device-verification/EmojiVerification.qml
+        resources/qml/device-verification/Failed.qml
+        resources/qml/device-verification/NewVerificationRequest.qml
+        resources/qml/device-verification/Success.qml
+        resources/qml/device-verification/Waiting.qml
+        resources/qml/dialogs/AliasEditor.qml
+        resources/qml/dialogs/ConfirmJoinRoomDialog.qml
+        resources/qml/dialogs/CreateDirect.qml
+        resources/qml/dialogs/CreateRoom.qml
+        resources/qml/dialogs/HiddenEventsDialog.qml
+				resources/qml/dialogs/EventExpirationDialog.qml
+        resources/qml/dialogs/ImageOverlay.qml
+        resources/qml/dialogs/ImagePackEditorDialog.qml
+        resources/qml/dialogs/ImagePackSettingsDialog.qml
+        resources/qml/dialogs/InputDialog.qml
+        resources/qml/dialogs/InviteDialog.qml
+        resources/qml/dialogs/JoinRoomDialog.qml
+        resources/qml/dialogs/LeaveRoomDialog.qml
+        resources/qml/dialogs/LogoutDialog.qml
+        resources/qml/dialogs/PhoneNumberInputDialog.qml
+        resources/qml/dialogs/PowerLevelEditor.qml
+        resources/qml/dialogs/PowerLevelSpacesApplyDialog.qml
+        resources/qml/dialogs/RawMessageDialog.qml
+        resources/qml/dialogs/ReadReceipts.qml
+        resources/qml/dialogs/RoomDirectory.qml
+        resources/qml/dialogs/RoomMembers.qml
+        resources/qml/dialogs/AllowedRoomsSettingsDialog.qml
+        resources/qml/dialogs/RoomSettings.qml
+        resources/qml/dialogs/UserProfile.qml
+        resources/qml/emoji/StickerPicker.qml
+        resources/qml/pages/LoginPage.qml
+        resources/qml/pages/RegisterPage.qml
+        resources/qml/pages/UserSettingsPage.qml
+        resources/qml/pages/WelcomePage.qml
+        resources/qml/ui/NhekoSlider.qml
+        resources/qml/ui/Ripple.qml
+        resources/qml/ui/Snackbar.qml
+        resources/qml/ui/Spinner.qml
+        resources/qml/ui/animations/BlinkAnimation.qml
+        resources/qml/ui/media/MediaControls.qml
+        resources/qml/voip/ActiveCallBar.qml
+        resources/qml/voip/CallDevices.qml
+        resources/qml/voip/CallInvite.qml
+        resources/qml/voip/CallInviteBar.qml
+        resources/qml/voip/DeviceError.qml
+        resources/qml/voip/PlaceCall.qml
+        resources/qml/voip/ScreenShare.qml
+        resources/qml/voip/VideoCall.qml
+        resources/qml/delegates/EncryptionEnabled.qml
+        resources/qml/ui/TimelineEffects.qml
+)
+qt_add_qml_module(nheko
+	URI im.nheko
+	NO_RESOURCE_TARGET_PATH
+	RESOURCE_PREFIX "/"
+	VERSION 1.1
+	DEPENDENCIES QtQml QtQuick # https://bugreports.qt.io/browse/QTBUG-102554
+	QML_FILES
+	${QML_SOURCES}
+	SOURCES
+	src/UserDirectoryModel.cpp
+	src/UserDirectoryModel.h
+	)
+	#qt_target_qml_sources(nheko
+	#	#PREFIX "/"
+	#)
+
+
+if(WIN32)
 	target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
-	target_link_libraries (nheko PRIVATE ${NTDLIB} Qt5::WinMain)
 	if(MSVC)
 		target_compile_options(nheko PUBLIC "/Zc:__cplusplus")
 	endif()
 else()
-	target_link_libraries (nheko PRIVATE Qt5::DBus)
+	target_link_libraries (nheko PRIVATE Qt6::DBus)
 	if (FLATPAK)
 		target_compile_definitions(nheko PRIVATE NHEKO_FLATPAK)
 	endif()
 endif()
 
-target_include_directories(nheko PRIVATE src includes)
+target_include_directories(nheko PRIVATE src includes src/timeline/ src/ui/ src/encryption/ src/voip/)
 
 if (USE_BUNDLED_CPPHTTPLIB)
 	target_include_directories(nheko PRIVATE third_party/cpp-httplib-0.5.12)
@@ -729,7 +860,7 @@ endif()
 
 # Fixup bundled keychain include dirs
 if (USE_BUNDLED_QTKEYCHAIN)
-	target_include_directories(nheko PRIVATE ${qt5keychain_SOURCE_DIR} ${qt5keychain_BINARY_DIR})
+	target_include_directories(nheko PRIVATE ${qt6keychain_SOURCE_DIR} ${qt6keychain_BINARY_DIR})
 endif()
 
 if (NOT JSON_ImplicitConversions)
@@ -744,14 +875,13 @@ target_link_libraries(nheko PRIVATE
 	MatrixClient::MatrixClient
 	cmark::cmark
 	spdlog::spdlog
-	Qt5::Widgets
-	Qt5::Svg
-	Qt5::Concurrent
-	Qt5::Multimedia
-	Qt5::Qml
-	Qt5::QuickControls2
-	Qt5::QuickWidgets
-	qt5keychain
+	Qt::Widgets
+	Qt::Svg
+	Qt::Gui
+	Qt::Multimedia
+	Qt::Qml
+	Qt::QuickControls2
+	qt6keychain
 	nlohmann_json::nlohmann_json
 	lmdbxx::lmdbxx
 	liblmdb::lmdb
@@ -768,10 +898,10 @@ endif()
 if (TARGET PkgConfig::GSTREAMER)
 	target_link_libraries(nheko PRIVATE PkgConfig::GSTREAMER)
 	target_compile_definitions(nheko PRIVATE GSTREAMER_AVAILABLE)
-	if (TARGET PkgConfig::XCB)
-		target_link_libraries(nheko PRIVATE PkgConfig::XCB)
-		target_compile_definitions(nheko PRIVATE XCB_AVAILABLE)
-	endif()
+endif()
+if (TARGET PkgConfig::XCB)
+	target_link_libraries(nheko PRIVATE PkgConfig::XCB)
+	target_compile_definitions(nheko PRIVATE XCB_AVAILABLE)
 endif()
 
 if(MSVC)
@@ -797,9 +927,23 @@ if(MAN)
 	add_subdirectory(man)
 endif()
 
+# potential workaround for macdeployqt issues
+if(APPLE)
+    install(TARGETS nheko
+        BUNDLE  DESTINATION .
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+    qt_generate_deploy_qml_app_script(
+        TARGET nheko
+        OUTPUT_SCRIPT deploy_script
+        NO_UNSUPPORTED_PLATFORM_ERROR
+    )
+    install(SCRIPT ${deploy_script}) 
+endif()
+
 if(UNIX AND NOT APPLE)
 	if(FLATPAK)
-		set(APPID "io.github.NhekoReborn.Nheko")
+		set(APPID "im.nheko.Nheko")
 		set_target_properties(nheko PROPERTIES OUTPUT_NAME "${APPID}")
 	else()
 		set(APPID "nheko")

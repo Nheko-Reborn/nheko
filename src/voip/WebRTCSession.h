@@ -8,6 +8,7 @@
 #include <vector>
 
 #include <QObject>
+#include <QQmlEngine>
 
 #include "mtx/events/voip.hpp"
 
@@ -17,6 +18,7 @@ class QQuickItem;
 
 namespace webrtc {
 Q_NAMESPACE
+QML_NAMED_ELEMENT(Voip)
 
 enum class CallType
 {

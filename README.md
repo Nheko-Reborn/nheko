@@ -4,7 +4,7 @@ nheko
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/redsky17/nheko/branch/master)
 [![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/latest)
 [![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://matrix-static.neko.dev/room/!TshDrgpBNBDmfDeEGN:neko.dev/)
-<a href='https://flatpak.neko.dev/repo/nightly/appstream/io.github.NhekoReborn.Nheko.flatpakref' download='nheko-nightly.flatpakref'><img alt='Download Nightly Flatpak' src='https://img.shields.io/badge/download-flatpak--nightly-green'/></a>
+<a href='https://flatpak.neko.dev/repo/nightly/appstream/im.nheko.Nheko.flatpakref' download='nheko-nightly.flatpakref'><img alt='Download Nightly Flatpak' src='https://img.shields.io/badge/download-flatpak--nightly-green'/></a>
 [![#nheko-reborn:matrix.org](https://img.shields.io/matrix/nheko-reborn:matrix.org.svg?label=%23nheko-reborn:matrix.org)](https://matrix.to/#/#nheko-reborn:matrix.org)
 [![Arch package](https://repology.org/badge/version-for-repo/arch/nheko.svg)](https://archlinux.org/packages/community/x86_64/nheko/)
 <a href='https://flathub.org/apps/details/io.github.NhekoReborn.Nheko'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
@@ -249,7 +249,7 @@ KDE has similar plugins, that can extend the supported image types even more.
     - Voice call support: dtls, opus, rtpmanager, srtp, webrtc
     - Video call support (optional): compositor, opengl, qmlgl, rtp, vpx
     - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
-- XCB, XCB-EWMH: For screensharing support on X11. VOIP needs to be enabled. Can be disabled with `-DSCREENSHARE_X11=OFF`.
+- XCB, XCB-EWMH: For screensharing support on X11 and setting window roles. Can be disabled with `-DSCREENSHARE_X11=OFF`.
 - [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support. The bundled version requires libsecret, unless you pass `-DLIBSECRET_SUPPORT=OFF`.)
 - A compiler that supports C++ 20:
     - Clang 16 (Only clazy 16 is tested in CI)

@@ -36,7 +36,7 @@ ItemDelegate {
         Label {
             Layout.fillWidth: true
             text: displayName
-            color: TimelineManager.userColor(userid, Nheko.colors.window)
+            color: TimelineManager.userColor(userid, palette.window)
             font.pointSize: fontMetrics.font.pointSize
         }
 
@@ -44,7 +44,7 @@ ItemDelegate {
             Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
             text: userid
-            color: Nheko.colors.buttonText
+            color: palette.buttonText
             font.pointSize: fontMetrics.font.pointSize * 0.9
         }
     }

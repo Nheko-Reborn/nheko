@@ -7,68 +7,63 @@ import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import im.nheko 1.0
 
-
 ColumnLayout {
     id: c
-    property color backgroundColor: Nheko.colors.base
+
+    property color backgroundColor: palette.base
     property alias color: labelC.color
-    property alias textPadding: input.padding
-    property alias text: input.text
+    property alias echoMode: input.echoMode
+    property alias font: input.font
+    property var hasClear: false
     property alias label: labelC.text
     property alias placeholderText: input.placeholderText
-    property alias font: input.font
-    property alias echoMode: input.echoMode
     property alias selectByMouse: input.selectByMouse
-    property var hasClear: false
+    property alias text: input.text
+    property alias textPadding: input.padding
 
-    Timer {
-        id: timer
-        interval: 350
-        onTriggered: editingFinished()
-    }
-
-    onTextChanged: timer.restart()
-
-    signal textEdited
     signal accepted
     signal editingFinished
-
-    function forceActiveFocus() {
-        input.forceActiveFocus();
-    }
+    signal textEdited
 
     function clear() {
         input.clear();
     }
+    function forceActiveFocus() {
+        input.forceActiveFocus();
+    }
 
     ToolTip.delay: Nheko.tooltipDelay
     ToolTip.visible: hover.hovered
-
     spacing: 0
 
-    Item {
-        Layout.fillWidth: true
-        Layout.preferredHeight: labelC.contentHeight
-        Layout.margins: input.padding
-        Layout.bottomMargin: Nheko.paddingSmall
-        visible: labelC.text
+    onTextChanged: timer.restart()
 
+    Timer {
+        id: timer
+
+        interval: 350
+
+        onTriggered: editingFinished()
+    }
+    Item {
+        Layout.bottomMargin: Nheko.paddingSmall
+        Layout.fillWidth: true
+        Layout.margins: input.padding
+        Layout.preferredHeight: labelC.contentHeight
+        visible: labelC.text
         z: 1
 
         Label {
             id: labelC
 
-            y: contentHeight + input.padding + Nheko.paddingSmall
+            color: palette.text
             enabled: false
-
-            palette: Nheko.colors
-            color: Nheko.colors.text
+            font.letterSpacing: input.font.pixelSize * 0.02
             font.pixelSize: input.font.pixelSize
             font.weight: Font.DemiBold
-            font.letterSpacing: input.font.pixelSize * 0.02
-            width: parent.width
-
             state: labelC.text && (input.activeFocus == true || input.text) ? "focused" : ""
+            width: parent.width
+            y: contentHeight + input.padding + Nheko.paddingSmall
 
             states: State {
                 name: "focused"
@@ -77,51 +72,40 @@ ColumnLayout {
                     target: labelC
                     y: 0
                 }
-
                 PropertyChanges {
-                    target: input
                     opacity: 1
+                    target: input
                 }
-
             }
-
             transitions: Transition {
                 from: ""
-                to: "focused"
                 reversible: true
+                to: "focused"
 
                 NumberAnimation {
-                    target: labelC
+                    alwaysRunToEnd: true
+                    duration: 210
+                    easing.type: Easing.InCubic
                     properties: "y"
-                    duration: 210
-                    easing.type: Easing.InCubic
-                    alwaysRunToEnd: true
+                    target: labelC
                 }
-
                 NumberAnimation {
-                    target: input
-                    properties: "opacity"
+                    alwaysRunToEnd: true
                     duration: 210
                     easing.type: Easing.InCubic
-                    alwaysRunToEnd: true
+                    properties: "opacity"
+                    target: input
                 }
-
             }
         }
     }
-
     TextField {
         id: input
+
         Layout.fillWidth: true
-
-        palette: Nheko.colors
         color: labelC.color
-        opacity: labelC.text ? 0 : 1
         focus: true
-
-        onTextEdited: c.textEdited()
-        onAccepted: c.accepted()
-        onEditingFinished: c.editingFinished()
+        opacity: labelC.text ? 0 : 1
 
         background: Rectangle {
             id: backgroundRect
@@ -129,44 +113,46 @@ ColumnLayout {
             color: labelC.text ? "transparent" : backgroundColor
         }
 
+        onAccepted: c.accepted()
+        onEditingFinished: c.editingFinished()
+        onTextEdited: c.textEdited()
+
         ImageButton {
             id: clearText
 
+            focusPolicy: Qt.NoFocus
+            hoverEnabled: true
+            image: ":/icons/icons/ui/round-remove-button.svg"
             visible: c.hasClear && searchField.text !== ''
 
-            image: ":/icons/icons/ui/round-remove-button.svg"
-            focusPolicy: Qt.NoFocus
             onClicked: {
-                searchField.clear()
+                searchField.clear();
                 topBar.searchString = "";
             }
-            hoverEnabled: true
+
             anchors {
-                top: parent.top
                 bottom: parent.bottom
                 right: parent.right
                 rightMargin: Nheko.paddingSmall
+                top: parent.top
             }
         }
-
     }
-
     Rectangle {
         id: blueBar
 
         Layout.fillWidth: true
-
-        color: Nheko.colors.highlight
+        color: palette.highlight
         height: 1
 
         Rectangle {
             id: blackBar
 
-            anchors.top: parent.top
             anchors.horizontalCenter: parent.horizontalCenter
-            height: parent.height*2
+            anchors.top: parent.top
+            color: palette.text
+            height: parent.height * 2
             width: 0
-            color: Nheko.colors.text
 
             states: State {
                 name: "focused"
@@ -176,31 +162,25 @@ ColumnLayout {
                     target: blackBar
                     width: blueBar.width
                 }
-
             }
-
             transitions: Transition {
                 from: ""
-                to: "focused"
                 reversible: true
-
+                to: "focused"
 
                 NumberAnimation {
-                    target: blackBar
-                    properties: "width"
+                    alwaysRunToEnd: true
                     duration: 310
                     easing.type: Easing.InCubic
-                    alwaysRunToEnd: true
+                    properties: "width"
+                    target: blackBar
                 }
-
             }
-
         }
-
     }
-
     HoverHandler {
         id: hover
+
         enabled: c.ToolTip.text
     }
 }

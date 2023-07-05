@@ -1392,11 +1392,6 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
-        <source>Select a file</source>
-        <translation>Pilih sebuah file</translation>
-    </message>
-    <message>
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Semua File (*)</translation>
@@ -1405,6 +1400,11 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <location line="+810"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Pengunggahan &apos;%1&apos; gagal</translation>
+    </message>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
+        <source>Select file(s)</source>
+        <translation>Pilih berkas</translation>
     </message>
 </context>
 <context>

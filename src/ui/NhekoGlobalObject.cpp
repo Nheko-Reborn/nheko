@@ -6,14 +6,10 @@
 
 #include <QApplication>
 #include <QDesktopServices>
+#include <QGuiApplication>
 #include <QStyle>
 #include <QUrl>
 #include <QWindow>
-
-// for some reason that is not installed in our macOS env...
-#ifndef Q_OS_MAC
-#include <QtPlatformHeaders/QXcbWindowFunctions>
-#endif
 
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -21,6 +17,10 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 #include "voip/WebRTCSession.h"
+
+#if XCB_AVAILABLE
+#include <xcb/xproto.h>
+#endif
 
 Nheko::Nheko()
 {
@@ -186,7 +186,30 @@ Nheko::createRoom(bool space,
 void
 Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString newRole) const
 {
-#ifndef Q_OS_MAC
-    QXcbWindowFunctions::setWmWindowRole(win, newRole.toUtf8());
+#if XCB_AVAILABLE
+    const QNativeInterface::QX11Application *x11Interface =
+      qGuiApp->nativeInterface<QNativeInterface::QX11Application>();
+
+    if (!x11Interface)
+        return;
+
+    auto connection = x11Interface->connection();
+
+    auto role = newRole.toStdString();
+
+    char WM_WINDOW_ROLE[] = "WM_WINDOW_ROLE";
+    auto cookie = xcb_intern_atom(connection, false, std::size(WM_WINDOW_ROLE) - 1, WM_WINDOW_ROLE);
+    xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, nullptr);
+    auto atom                      = reply->atom;
+    free(reply);
+
+    xcb_change_property(connection,
+                        XCB_PROP_MODE_REPLACE,
+                        win->winId(),
+                        atom,
+                        XCB_ATOM_STRING,
+                        8,
+                        role.size(),
+                        role.data());
 #endif
 }

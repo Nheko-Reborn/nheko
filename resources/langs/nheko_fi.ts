@@ -1394,11 +1394,6 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
-        <source>Select a file</source>
-        <translation>Valitse tiedosto</translation>
-    </message>
-    <message>
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Kaikki Tiedostot (*)</translation>

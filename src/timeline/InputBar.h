@@ -4,15 +4,16 @@
 
 #pragma once
 
-#include <QAbstractVideoSurface>
 #include <QIODevice>
 #include <QImage>
 #include <QObject>
+#include <QQmlEngine>
 #include <QSize>
 #include <QStringList>
 #include <QTimer>
 #include <QUrl>
 #include <QVariantList>
+
 #include <deque>
 #include <memory>
 
@@ -41,28 +42,13 @@ enum class MarkdownOverride
     CMARK,
 };
 
-class InputVideoSurface final : public QAbstractVideoSurface
-{
-    Q_OBJECT
-
-public:
-    InputVideoSurface(QObject *parent)
-      : QAbstractVideoSurface(parent)
-    {
-    }
-
-    bool present(const QVideoFrame &frame) override;
-
-    QList<QVideoFrame::PixelFormat>
-    supportedPixelFormats(QAbstractVideoBuffer::HandleType type) const override;
-
-signals:
-    void newImage(QImage img);
-};
-
 class MediaUpload final : public QObject
 {
     Q_OBJECT
+
+    QML_ELEMENT
+    QML_UNCREATABLE("")
+
     Q_PROPERTY(int mediaType READ type NOTIFY mediaTypeChanged)
     // https://stackoverflow.com/questions/33422265/pass-qimage-to-qml/68554646#68554646
     Q_PROPERTY(QUrl thumbnail READ thumbnailDataUrl NOTIFY thumbnailChanged)

@@ -17,7 +17,7 @@ ColumnLayout {
         Layout.fillWidth: true
         wrapMode: Text.Wrap
         text: qsTr("Please verify the following digits. You should see the same numbers on both sides. If they differ, please press 'They do not match!' to abort verification!")
-        color: Nheko.colors.text
+        color: palette.text
         verticalAlignment: Text.AlignVCenter
     }
 
@@ -28,19 +28,19 @@ ColumnLayout {
         Label {
             font.pixelSize: Qt.application.font.pixelSize * 2
             text: flow.sasList[0]
-            color: Nheko.colors.text
+            color: palette.text
         }
 
         Label {
             font.pixelSize: Qt.application.font.pixelSize * 2
             text: flow.sasList[1]
-            color: Nheko.colors.text
+            color: palette.text
         }
 
         Label {
             font.pixelSize: Qt.application.font.pixelSize * 2
             text: flow.sasList[2]
-            color: Nheko.colors.text
+            color: palette.text
         }
 
     }

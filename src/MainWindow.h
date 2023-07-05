@@ -37,14 +37,48 @@ class MemberList;
 class ReCaptcha;
 }
 
-class MainWindow final : public QQuickView
+class NhekoFixupPaletteEventFilter final : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWindow *parent = nullptr);
+    NhekoFixupPaletteEventFilter(QObject *parent)
+      : QObject(parent)
+    {
+    }
+
+    bool eventFilter(QObject *obj, QEvent *event) override;
+};
+
+class MainWindow : public QQuickView
+{
+    Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
+public:
+    explicit MainWindow(QWindow *parent);
 
     static MainWindow *instance() { return instance_; }
+    static MainWindow *create(QQmlEngine *qmlEngine, QJSEngine *)
+    {
+        // The instance has to exist before it is used. We cannot replace it.
+        Q_ASSERT(instance_);
+
+        // The engine has to have the same thread affinity as the singleton.
+        Q_ASSERT(qmlEngine->thread() == instance_->thread());
+
+        // There can only be one engine accessing the singleton.
+        static QJSEngine *s_engine = nullptr;
+        if (s_engine)
+            Q_ASSERT(qmlEngine == s_engine);
+        else
+            s_engine = qmlEngine;
+
+        QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
+        return instance_;
+    }
+
     void saveCurrentWindowSize();
 
     void openJoinRoomDialog(std::function<void(const QString &room_id)> callback);
@@ -64,8 +98,7 @@ public:
     QString focusedRoom() const;
 
 protected:
-    void closeEvent(QCloseEvent *event);
-    bool event(QEvent *event) override;
+    void closeEvent(QCloseEvent *event) override;
     // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
     void mousePressEvent(QMouseEvent *) override;
 

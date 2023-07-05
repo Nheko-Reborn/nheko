@@ -22,8 +22,7 @@ ApplicationWindow {
     width: 420
     minimumWidth: 150
     minimumHeight: 150
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     title: profile.isGlobalUserProfile ? qsTr("Global User Profile") : qsTr("Room User Profile")
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
@@ -46,12 +45,6 @@ ApplicationWindow {
         anchors.fill: parent
         anchors.margins: 10
         footerPositioning: ListView.OverlayFooter
-
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-            enabled: !Settings.mobileMode
-        }
 
         header: ColumnLayout {
             id: contentL
@@ -89,7 +82,7 @@ ApplicationWindow {
                 Layout.alignment: Qt.AlignHCenter
                 running: profile.isLoading
                 visible: profile.isLoading
-                foreground: Nheko.colors.mid
+                foreground: palette.mid
             }
 
             Text {
@@ -137,7 +130,7 @@ ApplicationWindow {
                 readOnly: !isUsernameEditingAllowed
                 text: profile.displayName
                 font.pixelSize: 20
-                color: TimelineManager.userColor(profile.userid, Nheko.colors.window)
+                color: TimelineManager.userColor(profile.userid, palette.window)
                 font.bold: true
                 Layout.alignment: Qt.AlignHCenter
                 Layout.maximumWidth: parent.width - (Nheko.paddingSmall * 2) - usernameChangeButton.anchors.leftMargin - (usernameChangeButton.width * 2)
@@ -315,7 +308,6 @@ ApplicationWindow {
 
                 onCurrentIndexChanged: devicelist.selectedTab = currentIndex
 
-                palette: Nheko.colors
 
                 NhekoTabButton {
                     text: qsTr("Devices")
@@ -354,7 +346,7 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignLeft
                             elide: Text.ElideRight
                             font.bold: true
-                            color: Nheko.colors.text
+                            color: palette.text
                             text: deviceId
                         }
 
@@ -400,7 +392,7 @@ ApplicationWindow {
 
                             readOnly: !deviceNameRow.isEditingAllowed
                             text: deviceName
-                            color: Nheko.colors.text
+                            color: palette.text
                             Layout.alignment: Qt.AlignLeft
                             Layout.fillWidth: true
                             selectByMouse: true
@@ -435,7 +427,7 @@ ApplicationWindow {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignLeft
                         elide: Text.ElideRight
-                        color: Nheko.colors.text
+                        color: palette.text
                         text: qsTr("Last seen %1 from %2").arg(new Date(lastTs).toLocaleString(Locale.ShortFormat)).arg(lastIp ? lastIp : "???")
                     }
 
@@ -504,7 +496,7 @@ ApplicationWindow {
 
                 ElidedLabel {
                     Layout.alignment: Qt.AlignVCenter
-                    color: Nheko.colors.text
+                    color: palette.text
                     Layout.fillWidth: true
                     elideWidth: width
                     fullText: roomName
@@ -527,7 +519,7 @@ ApplicationWindow {
 
             background: Rectangle {
                 anchors.fill: parent
-                color: Nheko.colors.window
+                color: palette.window
             }
 
         }

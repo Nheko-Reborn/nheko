@@ -15,6 +15,7 @@
 class MxcAnimatedImage : public QQuickItem
 {
     Q_OBJECT
+    QML_ELEMENT
     Q_PROPERTY(TimelineModel *roomm READ room WRITE setRoom NOTIFY roomChanged REQUIRED)
     Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged)
     Q_PROPERTY(bool animatable READ animatable NOTIFY animatableChanged)
@@ -59,7 +60,7 @@ public:
         }
     }
 
-    void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry) override;
+    void geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry) override;
     QSGNode *updatePaintNode(QSGNode *oldNode,
                              QQuickItem::UpdatePaintNodeData *updatePaintNodeData) override;
 

@@ -24,12 +24,8 @@
 
 QHash<QString, mtx::crypto::EncryptedFile> infos;
 
-MxcImageProvider::MxcImageProvider(QObject *parent)
-#if QT_VERSION < 0x60000
-  : QObject(parent)
-#else
-  : QQuickAsyncImageProvider(parent)
-#endif
+MxcImageProvider::MxcImageProvider()
+  : QQuickAsyncImageProvider()
 {
     auto timer = new QTimer(this);
     timer->setInterval(std::chrono::hours(1));

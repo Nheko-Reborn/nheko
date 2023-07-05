@@ -20,8 +20,7 @@ ApplicationWindow {
     minimumHeight: 450
     width: 450
     height: 680
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     title: qsTr("Allowed rooms settings")
@@ -42,7 +41,7 @@ ApplicationWindow {
             font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
             Layout.fillWidth: true
             Layout.fillHeight: false
-            color: Nheko.colors.text
+            color: palette.text
             Layout.bottomMargin: Nheko.paddingMedium
         }
 
@@ -54,10 +53,6 @@ ApplicationWindow {
 
             clip: true
 
-            ScrollHelper {
-                flickable: parent
-                anchors.fill: parent
-            }
 
             model: roomSettings.allowedRoomsModel
             spacing: 4
@@ -72,14 +67,14 @@ ApplicationWindow {
                     Text {
                         Layout.fillWidth: true
                         text: model.name
-                        color: Nheko.colors.text
+                        color: palette.text
                         textFormat: Text.PlainText
                     }
 
                     Text {
                         Layout.fillWidth: true
                         text: model.isParent ? qsTr("Parent community") : qsTr("Other room")
-                        color: Nheko.colors.buttonText
+                        color: palette.buttonText
                         textFormat: Text.PlainText
                     }
                 }
@@ -122,7 +117,7 @@ ApplicationWindow {
 
                 placeholderText: qsTr("Enter additional rooms not in the list yet...")
 
-                color: Nheko.colors.text
+                color: palette.text
                 onTextEdited: {
                     roomCompleter.completer.searchString = text;
                 }

@@ -85,7 +85,8 @@ Dock::Dock(QObject *parent)
 {
 }
 void
-Dock::setUnreadCount(const int)
+Dock::setUnreadCount(const int count)
 {
+    qGuiApp->setBadgeNumber(count);
 }
 #endif

@@ -6,6 +6,7 @@
 
 #include <QAbstractListModel>
 #include <QList>
+#include <QQmlEngine>
 #include <QUrl>
 
 #include <mtx/events/mscs/image_packs.hpp>
@@ -15,6 +16,8 @@
 class SingleImagePackModel final : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("")
 
     Q_PROPERTY(QString roomid READ roomid CONSTANT)
     Q_PROPERTY(bool fromSpace READ fromSpace CONSTANT)

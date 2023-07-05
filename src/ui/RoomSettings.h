@@ -6,6 +6,7 @@
 
 #include <QAbstractListModel>
 #include <QObject>
+#include <QQmlEngine>
 #include <QSet>
 #include <QString>
 
@@ -13,6 +14,7 @@
 
 #include <mtx/events/event_type.hpp>
 #include <mtx/events/guest_access.hpp>
+#include <mtx/events/history_visibility.hpp>
 
 #include "CacheStructs.h"
 
@@ -26,6 +28,7 @@ signals:
     void error(const QString &msg);
     void nameEventSent(const QString &);
     void topicEventSent(const QString &);
+    void eventSent();
     void stopLoading();
 };
 
@@ -69,6 +72,9 @@ private:
 class RoomSettings final : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("")
+
     Q_PROPERTY(QString roomId READ roomId CONSTANT)
     Q_PROPERTY(QString roomVersion READ roomVersion CONSTANT)
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
@@ -78,6 +84,8 @@ class RoomSettings final : public QObject
     Q_PROPERTY(QString roomAvatarUrl READ roomAvatarUrl NOTIFY avatarUrlChanged)
     Q_PROPERTY(int memberCount READ memberCount CONSTANT)
     Q_PROPERTY(int notifications READ notifications NOTIFY notificationsChanged)
+    Q_PROPERTY(Visibility historyVisibility READ historyVisibility WRITE changeHistoryVisibility
+                 NOTIFY historyVisibilityChanged)
     Q_PROPERTY(bool privateAccess READ privateAccess NOTIFY accessJoinRulesChanged)
     Q_PROPERTY(bool guestAccess READ guestAccess NOTIFY accessJoinRulesChanged)
     Q_PROPERTY(bool knockingEnabled READ knockingEnabled NOTIFY accessJoinRulesChanged)
@@ -87,6 +95,7 @@ class RoomSettings final : public QObject
     Q_PROPERTY(bool canChangeJoinRules READ canChangeJoinRules CONSTANT)
     Q_PROPERTY(bool canChangeName READ canChangeName CONSTANT)
     Q_PROPERTY(bool canChangeTopic READ canChangeTopic CONSTANT)
+    Q_PROPERTY(bool canChangeHistoryVisibility READ canChangeHistoryVisibility CONSTANT)
     Q_PROPERTY(bool isEncryptionEnabled READ isEncryptionEnabled NOTIFY encryptionChanged)
     Q_PROPERTY(bool supportsKnocking READ supportsKnocking CONSTANT)
     Q_PROPERTY(bool supportsRestricted READ supportsRestricted CONSTANT)
@@ -98,6 +107,16 @@ class RoomSettings final : public QObject
       bool allowedRoomsModified READ allowedRoomsModified NOTIFY allowedRoomsModifiedChanged)
 
 public:
+    // match mtx::events::state::Visibility
+    enum Visibility
+    {
+        WorldReadable,
+        Shared,
+        Invited,
+        Joined,
+    };
+    Q_ENUM(Visibility)
+
     RoomSettings(QString roomid, QObject *parent = nullptr);
 
     QString roomId() const;
@@ -122,6 +141,7 @@ public:
     bool canChangeTopic() const;
     //! Whether the user has enough power level to send m.room.avatar event.
     bool canChangeAvatar() const;
+    bool canChangeHistoryVisibility() const;
     bool isEncryptionEnabled() const;
     bool supportsKnocking() const;
     bool supportsRestricted() const;
@@ -129,6 +149,9 @@ public:
     QStringList allowedRooms() const;
     void setAllowedRooms(QStringList rooms);
     bool allowedRoomsModified() const { return allowedRoomsModified_; }
+
+    Visibility historyVisibility() const;
+    Q_INVOKABLE void changeHistoryVisibility(Visibility visibility);
 
     Q_INVOKABLE void enableEncryption();
     Q_INVOKABLE void updateAvatar();
@@ -153,6 +176,7 @@ signals:
     void allowedRoomsChanged();
     void displayError(const QString &errorMessage);
     void allowedRoomsModifiedChanged();
+    void historyVisibilityChanged();
 
 public slots:
     void stopLoading();
@@ -173,7 +197,8 @@ private:
     int notifications_ = 0;
 
     mtx::events::state::JoinRules accessRules_;
-    mtx::events::state::AccessState guestRules_ = mtx::events::state::AccessState::Forbidden;
+    mtx::events::state::Visibility historyVisibility_ = mtx::events::state::Visibility::Shared;
+    mtx::events::state::AccessState guestRules_       = mtx::events::state::AccessState::Forbidden;
 
     RoomSettingsAllowedRoomsModel *allowedRoomsModel;
 };

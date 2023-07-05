@@ -11,28 +11,42 @@ TextEdit {
 
     property alias cursorShape: cs.cursorShape
 
-    textFormat: TextEdit.RichText
-    readOnly: true
-    focus: false
-    wrapMode: Text.Wrap
-    selectByMouse: !Settings.mobileMode
+    //leftInset: 0
+    //bottomInset: 0
+    //rightInset: 0
+    //topInset: 0
+    //leftPadding: 0
+    //bottomPadding: 0
+    //rightPadding: 0
+    //topPadding: 0
+    //background: null
+
+    ToolTip.text: hoveredLink
+    ToolTip.visible: hoveredLink || false
     // this always has to be enabled, otherwise you can't click links anymore!
     //enabled: selectByMouse
-    color: Nheko.colors.text
-    onLinkActivated: Nheko.openLink(link)
-    ToolTip.visible: hoveredLink || false
-    ToolTip.text: hoveredLink
+    color: palette.text
+    focus: false
+    readOnly: true
+    selectByMouse: !Settings.mobileMode
+    textFormat: TextEdit.RichText
+    wrapMode: Text.Wrap
+
     // Setting a tooltip delay makes the hover text empty .-.
     //ToolTip.delay: Nheko.tooltipDelay
     Component.onCompleted: {
         TimelineManager.fixImageRendering(r.textDocument, r);
     }
+    onLinkActivated: Nheko.openLink(link)
 
-    CursorShape {
+    //// propagate events up
+    //onPressAndHold: (event) => event.accepted = false
+    //onPressed: (event) => event.accepted = (event.button == Qt.LeftButton)
+
+    NhekoCursorShape {
         id: cs
 
         anchors.fill: parent
         cursorShape: hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
     }
-
 }

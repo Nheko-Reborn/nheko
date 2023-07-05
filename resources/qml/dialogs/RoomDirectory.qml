@@ -18,8 +18,7 @@ ApplicationWindow {
     minimumHeight: 340
     height: 420
     width: 650
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     title: qsTr("Explore Public Rooms")
@@ -35,17 +34,12 @@ ApplicationWindow {
         anchors.fill: parent
         model: publicRooms
 
-        ScrollHelper {
-            flickable: parent
-            anchors.fill: parent
-        }
-
         delegate: Rectangle {
             id: roomDirDelegate
 
-            property color background: Nheko.colors.window
-            property color importantText: Nheko.colors.text
-            property color unimportantText: Nheko.colors.buttonText
+            property color background: palette.window
+            property color importantText: palette.text
+            property color unimportantText: palette.buttonText
             property int avatarSize: fontMetrics.height * 3.2
 
             color: background
@@ -143,7 +137,7 @@ ApplicationWindow {
                 anchors.centerIn: parent
                 anchors.margins: Nheko.paddingLarge
                 running: visible
-                foreground: Nheko.colors.mid
+                foreground: palette.mid
             }
 
         }
@@ -164,7 +158,7 @@ ApplicationWindow {
             Layout.fillWidth: true
             selectByMouse: true
             font.pixelSize: fontMetrics.font.pixelSize
-            color: Nheko.colors.text
+            color: palette.text
             placeholderText: qsTr("Search for public rooms")
             onTextChanged: searchTimer.restart()
 
@@ -176,7 +170,7 @@ ApplicationWindow {
 
             Layout.minimumWidth: 0.3 * header.width
             Layout.maximumWidth: 0.3 * header.width
-            color: Nheko.colors.text
+            color: palette.text
             placeholderText: qsTr("Choose custom homeserver")
             onTextChanged: publicRooms.setMatrixServer(text)
         }

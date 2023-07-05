@@ -41,7 +41,7 @@ ApplicationWindow {
             font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
             Layout.fillWidth: true
             Layout.fillHeight: false
-            color: Nheko.colors.text
+            color: palette.text
             Layout.bottomMargin: Nheko.paddingMedium
         }
 
@@ -53,10 +53,6 @@ ApplicationWindow {
 
             clip: true
 
-            ScrollHelper {
-                flickable: parent
-                anchors.fill: parent
-            }
 
             model: editingModel
             spacing: 4
@@ -69,7 +65,7 @@ ApplicationWindow {
                 Text {
                     Layout.fillWidth: true
                     text: model.name
-                    color: model.isPublished ? Nheko.colors.text : Nheko.theme.error
+                    color: model.isPublished ? palette.text : Nheko.theme.error
                     textFormat: Text.PlainText
                 }
 
@@ -78,8 +74,8 @@ ApplicationWindow {
                     Layout.margins: 2
                     image: ":/icons/icons/ui/star.svg"
                     hoverEnabled: true
-                    buttonTextColor: model.isCanonical ? Nheko.colors.highlight : Nheko.colors.text
-                    highlightColor: editingModel.canAdvertize ? Nheko.colors.highlight : buttonTextColor
+                    buttonTextColor: model.isCanonical ? palette.highlight : palette.text
+                    highlightColor: editingModel.canAdvertize ? palette.highlight : buttonTextColor
 
                     ToolTip.visible: hovered
                     ToolTip.text: model.isCanonical ? qsTr("Primary alias") : qsTr("Make primary alias")
@@ -92,8 +88,8 @@ ApplicationWindow {
                     Layout.margins: 2
                     image: ":/icons/icons/ui/building-shop.svg"
                     hoverEnabled: true
-                    buttonTextColor: model.isAdvertized ? Nheko.colors.highlight : Nheko.colors.text
-                    highlightColor: editingModel.canAdvertize ? Nheko.colors.highlight : buttonTextColor
+                    buttonTextColor: model.isAdvertized ? palette.highlight : palette.text
+                    highlightColor: editingModel.canAdvertize ? palette.highlight : buttonTextColor
 
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Advertise as an alias in this room")
@@ -106,7 +102,7 @@ ApplicationWindow {
                     Layout.margins: 2
                     image: ":/icons/icons/ui/room-directory.svg"
                     hoverEnabled: true
-                    buttonTextColor: model.isPublished ? Nheko.colors.highlight : Nheko.colors.text
+                    buttonTextColor: model.isPublished ? palette.highlight : palette.text
 
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Publish in room directory")
@@ -139,7 +135,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 selectByMouse: true
                 font.pixelSize: fontMetrics.font.pixelSize
-                color: Nheko.colors.text
+                color: palette.text
                 placeholderText: qsTr("#new-alias:server.tld")
 
                 Component.onCompleted: forceActiveFocus()

@@ -4,13 +4,14 @@
 
 #pragma once
 
-#include <QAbstractVideoSurface>
 #include <QBuffer>
-#include <QMediaContent>
 #include <QMediaPlayer>
 #include <QObject>
 #include <QPointer>
+#include <QQuickItem>
 #include <QString>
+#include <QUrl>
+#include <QVideoSink>
 
 #include "Logging.h"
 
@@ -21,10 +22,10 @@ class TimelineModel;
 class MxcMediaProxy : public QMediaPlayer
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(MxcMedia)
+
     Q_PROPERTY(TimelineModel *roomm READ room WRITE setRoom NOTIFY roomChanged REQUIRED)
     Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged)
-    Q_PROPERTY(QAbstractVideoSurface *videoSurface READ getVideoSurface WRITE setVideoSurface NOTIFY
-                 videoSurfaceChanged)
     Q_PROPERTY(bool loaded READ loaded NOTIFY loadedChanged)
     Q_PROPERTY(int orientation READ orientation NOTIFY orientationChanged)
 
@@ -44,16 +45,13 @@ public:
         room_ = room;
         emit roomChanged();
     }
-    void setVideoSurface(QAbstractVideoSurface *surface);
-    QAbstractVideoSurface *getVideoSurface();
-
     int orientation() const;
 
 signals:
     void roomChanged();
     void eventIdChanged();
     void loadedChanged();
-    void newBuffer(QMediaContent, QIODevice *buf);
+    void newBuffer(QUrl, QIODevice *buf);
 
     void orientationChanged();
     void videoSurfaceChanged();
@@ -66,5 +64,5 @@ private:
     QString eventId_;
     QString filename_;
     QBuffer buffer;
-    QAbstractVideoSurface *m_surface = nullptr;
+    QObject *m_surface = nullptr;
 };

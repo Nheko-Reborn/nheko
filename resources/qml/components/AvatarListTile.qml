@@ -11,11 +11,11 @@ import im.nheko 1.0
 Rectangle {
     id: tile
 
-    property color background: Nheko.colors.window
-    property color importantText: Nheko.colors.text
-    property color unimportantText: Nheko.colors.buttonText
-    property color bubbleBackground: Nheko.colors.highlight
-    property color bubbleText: Nheko.colors.highlightedText
+    property color background: palette.window
+    property color importantText: palette.text
+    property color unimportantText: palette.buttonText
+    property color bubbleBackground: palette.highlight
+    property color bubbleText: palette.highlightedText
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     required property string avatarUrl
     required property string title
@@ -37,11 +37,11 @@ Rectangle {
 
             PropertyChanges {
                 target: tile
-                background: Nheko.colors.dark
-                importantText: Nheko.colors.brightText
-                unimportantText: Nheko.colors.brightText
-                bubbleBackground: Nheko.colors.highlight
-                bubbleText: Nheko.colors.highlightedText
+                background: palette.dark
+                importantText: palette.brightText
+                unimportantText: palette.brightText
+                bubbleBackground: palette.highlight
+                bubbleText: palette.highlightedText
             }
 
         },
@@ -51,11 +51,11 @@ Rectangle {
 
             PropertyChanges {
                 target: tile
-                background: Nheko.colors.highlight
-                importantText: Nheko.colors.highlightedText
-                unimportantText: Nheko.colors.highlightedText
-                bubbleBackground: Nheko.colors.highlightedText
-                bubbleText: Nheko.colors.highlight
+                background: palette.highlight
+                importantText: palette.highlightedText
+                unimportantText: palette.highlightedText
+                bubbleBackground: palette.highlightedText
+                bubbleText: palette.highlight
             }
 
         }

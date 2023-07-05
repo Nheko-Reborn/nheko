@@ -8,101 +8,97 @@ import "./device-verification"
 import "./emoji"
 import "./ui"
 import "./voip"
-import Qt.labs.platform 1.1 as Platform
-import QtQuick 2.15
-import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.3
-import QtQuick.Particles 2.15
-import QtQuick.Window 2.13
-import im.nheko 1.0
-import im.nheko.EmojiModel 1.0
+import Qt.labs.platform as Platform
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Particles
+import QtQuick.Window
+import im.nheko
 
 Item {
     id: timelineView
 
+    required property PrivacyScreen privacyScreen
     property var room: null
     property var roomPreview: null
-    property bool showBackButton: false
     property bool shouldEffectsRun: false
-    required property PrivacyScreen privacyScreen
+    property bool showBackButton: false
+
     clip: true
 
-    onRoomChanged: if (room != null) room.triggerSpecialEffects()
-
-    StickerPicker {
-        id: emojiPopup
-
-        colors: Nheko.colors
-        emoji: true
-    }
-
     // focus message input on key press, but not on Ctrl-C and such.
-    Keys.onPressed: {
+    Keys.onPressed: event => {
         if (event.text && event.key !== Qt.Key_Enter && event.key !== Qt.Key_Return && !topBar.searchHasFocus) {
             TimelineManager.focusMessageInput();
             room.input.setText(room.input.text + event.text);
         }
     }
+    onRoomChanged: if (room != null)
+        room.triggerSpecialEffects()
 
+    StickerPicker {
+        id: emojiPopup
+
+        emoji: true
+    }
     Shortcut {
         sequence: StandardKey.Close
+
         onActivated: Rooms.resetCurrentRoom()
     }
-
     Label {
-        visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)
         anchors.centerIn: parent
-        text: qsTr("No room open")
         font.pointSize: 24
-        color: Nheko.colors.text
+        text: qsTr("No room open")
+        visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)
     }
-
     Spinner {
-        visible: TimelineManager.isInitialSync
         anchors.centerIn: parent
-        foreground: Nheko.colors.mid
-        running: TimelineManager.isInitialSync
+        foreground: palette.mid
         // height is somewhat arbitrary here... don't set width because width scales w/ height
         height: parent.height / 16
-        z: 3
         opacity: hh.hovered ? 0.3 : 1
+        running: TimelineManager.isInitialSync
+        visible: TimelineManager.isInitialSync
+        z: 3
 
-        Behavior on opacity {
-            NumberAnimation { duration: 100; }
+        Behavior on opacity  {
+            NumberAnimation {
+                duration: 100
+            }
         }
 
         HoverHandler {
             id: hh
+
         }
     }
-
     ColumnLayout {
         id: timelineLayout
 
-        visible: room != null && !room.isSpace
-        enabled: visible
         anchors.fill: parent
+        enabled: visible
         spacing: 0
+        visible: room != null && !room.isSpace
 
         TopBar {
             id: topBar
 
             showBackButton: timelineView.showBackButton
         }
-
         Rectangle {
             Layout.fillWidth: true
+            color: Nheko.theme.separator
             height: 1
             z: 3
-            color: Nheko.theme.separator
         }
-
         Rectangle {
             id: msgView
 
-            Layout.fillWidth: true
             Layout.fillHeight: true
-            color: Nheko.colors.base
+            Layout.fillWidth: true
+            color: palette.base
 
             ColumnLayout {
                 anchors.fill: parent
@@ -120,143 +116,121 @@ Item {
 
                         target: timelineView
                     }
-
                     MessageView {
+                        Layout.fillWidth: true
                         implicitHeight: msgView.height - typingIndicator.height
                         searchString: topBar.searchString
-                        Layout.fillWidth: true
                     }
-
                     Loader {
-                        source: CallManager.isOnCall && CallManager.callType != CallType.VOICE ? "voip/VideoCall.qml" : ""
+                        source: CallManager.isOnCall && CallManager.callType != Voip.VOICE ? "voip/VideoCall.qml" : ""
+
                         onLoaded: TimelineManager.setVideoCallItem()
                     }
-
                 }
-
                 TypingIndicator {
                     id: typingIndicator
+
                 }
-
             }
-
         }
-
         CallInviteBar {
             id: callInviteBar
 
             Layout.fillWidth: true
             z: 3
         }
-
         ActiveCallBar {
             Layout.fillWidth: true
             z: 3
         }
-
         Rectangle {
             Layout.fillWidth: true
-            z: 3
-            height: 1
             color: Nheko.theme.separator
+            height: 1
+            z: 3
         }
-
-
         UploadBox {
         }
-
         MessageInputWarning {
             text: qsTr("You are about to notify the whole room")
             visible: (room && room.permissions.canPingRoom() && room.input.containsAtRoom)
         }
-
         MessageInputWarning {
             text: qsTr("The command /%1 is not recognized and will be sent as part of your message").arg(room ? room.input.currentCommand : "")
             visible: room ? room.input.containsInvalidCommand && !room.input.containsIncompleteCommand : false
         }
-
         MessageInputWarning {
+            bubbleColor: Nheko.theme.orange
             text: qsTr("/%1 looks like an incomplete command. To send it anyway, add a space to the end of your message.").arg(room ? room.input.currentCommand : "")
             visible: room ? room.input.containsIncompleteCommand : false
-            bubbleColor: Nheko.theme.orange
         }
-
         ReplyPopup {
         }
-
         MessageInput {
         }
-
     }
-
     ColumnLayout {
         id: preview
 
+        property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
+        property string reason: roomPreview ? roomPreview.reason : ""
         property string roomId: room ? room.roomId : (roomPreview ? roomPreview.roomid : "")
         property string roomName: room ? room.roomName : (roomPreview ? roomPreview.roomName : "")
         property string roomTopic: room ? room.roomTopic : (roomPreview ? roomPreview.roomTopic : "")
-        property string avatarUrl: room ? room.roomAvatarUrl : (roomPreview ? roomPreview.roomAvatarUrl : "")
-        property string reason: roomPreview ? roomPreview.reason : ""
 
-        visible: room != null && room.isSpace || roomPreview != null
-        enabled: visible
         anchors.fill: parent
         anchors.margins: Nheko.paddingLarge
+        enabled: visible
         spacing: Nheko.paddingLarge
+        visible: room != null && room.isSpace || roomPreview != null
 
         Item {
             Layout.fillHeight: true
         }
-
         Avatar {
-            url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
-            roomid: parent.roomId
+            Layout.alignment: Qt.AlignHCenter
             displayName: parent.roomName
-            height: 130
-            width: 130
-            Layout.alignment: Qt.AlignHCenter
             enabled: false
+            height: 130
+            roomid: parent.roomId
+            url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
+            width: 130
         }
-
         RowLayout {
-            spacing: Nheko.paddingMedium
             Layout.alignment: Qt.AlignHCenter
+            spacing: Nheko.paddingMedium
 
             MatrixText {
-                text: !roomPreview.isFetched ? qsTr("No preview available") : preview.roomName
                 font.pixelSize: 24
+                text: !(roomPreview?.isFetched ?? false) ? qsTr("No preview available") : preview.roomName
             }
-
             ImageButton {
+                ToolTip.text: qsTr("Settings")
+                ToolTip.visible: hovered
+                hoverEnabled: true
                 image: ":/icons/icons/ui/settings.svg"
                 visible: !!room
-                hoverEnabled: true
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Settings")
+
                 onClicked: TimelineManager.openRoomSettings(room.roomId)
             }
-
         }
-
         RowLayout {
-            visible: !!room
-            spacing: Nheko.paddingMedium
             Layout.alignment: Qt.AlignHCenter
+            spacing: Nheko.paddingMedium
+            visible: !!room
 
             MatrixText {
                 text: qsTr("%n member(s)", "", room ? room.roomMemberCount : 0)
             }
-
             ImageButton {
-                image: ":/icons/icons/ui/people.svg"
-                hoverEnabled: true
-                ToolTip.visible: hovered
                 ToolTip.text: qsTr("View members of %1").arg(room ? room.roomName : "")
+                ToolTip.visible: hovered
+                hoverEnabled: true
+                image: ":/icons/icons/ui/people.svg"
+
                 onClicked: TimelineManager.openRoomMembers(room)
             }
-
         }
-
         ScrollView {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
@@ -264,55 +238,76 @@ Item {
             Layout.rightMargin: Nheko.paddingLarge
 
             TextArea {
-                text: roomPreview.isFetched ? TimelineManager.escapeEmoji(preview.roomTopic) : qsTr("This room is possibly inaccessible. If this room is private, you should remove it from this community.")
-                wrapMode: TextEdit.WordWrap
-                textFormat: TextEdit.RichText
-                readOnly: true
                 background: null
-                selectByMouse: true
-                color: Nheko.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
+                readOnly: true
+                selectByMouse: true
+                text: (roomPreview?.isFetched ?? false) ? TimelineManager.escapeEmoji(preview.roomTopic) : qsTr("This room is possibly inaccessible. If this room is private, you should remove it from this community.")
+                textFormat: TextEdit.RichText
+                wrapMode: TextEdit.WordWrap
+
                 onLinkActivated: Nheko.openLink(link)
 
-                CursorShape {
+                NhekoCursorShape {
                     anchors.fill: parent
                     cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
                 }
-
             }
-
         }
-
         FlatButton {
-            visible: roomPreview && !roomPreview.isInvite
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("join the conversation")
+            visible: roomPreview && !roomPreview.isInvite
+
             onClicked: Rooms.joinPreview(roomPreview.roomid)
         }
-
         FlatButton {
-            visible: roomPreview && roomPreview.isInvite
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("accept invite")
+            visible: roomPreview && roomPreview.isInvite
+
             onClicked: Rooms.acceptInvite(roomPreview.roomid)
         }
-
         FlatButton {
-            visible: roomPreview && roomPreview.isInvite
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("decline invite")
+            visible: roomPreview && roomPreview.isInvite
+
             onClicked: Rooms.declineInvite(roomPreview.roomid)
         }
-
         FlatButton {
-            visible: !!room
             Layout.alignment: Qt.AlignHCenter
             text: qsTr("leave")
+            visible: !!room
+
             onClicked: TimelineManager.openLeaveRoomDialog(room.roomId)
         }
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            spacing: Nheko.paddingMedium
+            visible: roomPreview && roomPreview.isInvite && reasonField.showReason
 
+            MatrixText {
+                text: qsTr("Invited by %1 (%2)").arg(TimelineManager.escapeEmoji(inviterAvatar.displayName)).arg(TimelineManager.escapeEmoji(TimelineManager.htmlEscape(inviterAvatar.userid)))
+            }
+            Avatar {
+                id: inviterAvatar
+
+                Layout.alignment: Qt.AlignHCenter
+                displayName: roomPreview?.inviterDisplayName ?? ""
+                enabled: true
+                height: 48
+                roomid: preview.roomId
+                url: (roomPreview?.inviterAvatarUrl ?? "").replace("mxc://", "image://MxcImage/")
+                userid: roomPreview?.inviterUserId ?? ""
+                width: 48
+
+                onClicked: TimelineManager.openGlobalUserProfile(roomPreview.inviterUserId)
+            }
+        }
         ScrollView {
             id: reasonField
+
             property bool showReason: false
 
             Layout.alignment: Qt.AlignHCenter
@@ -322,18 +317,15 @@ Item {
             visible: preview.reason !== "" && showReason
 
             TextArea {
-                text: TimelineManager.escapeEmoji(preview.reason)
-                wrapMode: TextEdit.WordWrap
-                textFormat: TextEdit.RichText
-                readOnly: true
                 background: null
-                selectByMouse: true
-                color: Nheko.colors.text
                 horizontalAlignment: TextEdit.AlignHCenter
+                readOnly: true
+                selectByMouse: true
+                text: TimelineManager.escapeEmoji(preview.reason)
+                textFormat: TextEdit.RichText
+                wrapMode: TextEdit.WordWrap
             }
-
         }
-
         Button {
             id: showReasonButton
 
@@ -341,76 +333,95 @@ Item {
             //Layout.fillWidth: true
             Layout.leftMargin: Nheko.paddingLarge
             Layout.rightMargin: Nheko.paddingLarge
-
-            visible: preview.reason !== ""
             text: reasonField.showReason ? qsTr("Hide invite reason") : qsTr("Show invite reason")
+            visible: roomPreview && roomPreview.isInvite
+
             onClicked: {
                 reasonField.showReason = !reasonField.showReason;
             }
         }
-
         Item {
-            visible: room != null
             Layout.preferredHeight: Math.ceil(fontMetrics.lineSpacing * 2)
+            visible: room != null
         }
-
         Item {
             Layout.fillHeight: true
         }
-
     }
-
     ImageButton {
         id: backToRoomsButton
 
-        anchors.top: parent.top
+        ToolTip.text: qsTr("Back to room list")
+        ToolTip.visible: hovered
         anchors.left: parent.left
         anchors.margins: Nheko.paddingMedium
-        width: Nheko.avatarSize
-        height: Nheko.avatarSize
-        visible: (room == null || room.isSpace) && showBackButton
+        anchors.top: parent.top
         enabled: visible
+        height: Nheko.avatarSize
         image: ":/icons/icons/ui/angle-arrow-left.svg"
-        ToolTip.visible: hovered
-        ToolTip.text: qsTr("Back to room list")
+        visible: (room == null || room.isSpace) && showBackButton
+        width: Nheko.avatarSize
+
         onClicked: Rooms.resetCurrentRoom()
     }
-
     TimelineEffects {
         id: timelineEffects
 
         anchors.fill: parent
+        shouldEffectsRun: timelineView.shouldEffectsRun
     }
-
     NhekoDropArea {
         anchors.fill: parent
         roomid: room ? room.roomId : ""
     }
-
     Timer {
         id: effectsTimer
-        onTriggered: shouldEffectsRun = false;
+
         interval: timelineEffects.maxLifespan
         repeat: false
         running: false
-    }
 
+        onTriggered: shouldEffectsRun = false
+    }
     Connections {
+        function onConfetti() {
+            if (!Settings.fancyEffects)
+                return;
+            shouldEffectsRun = true;
+            timelineEffects.pulseConfetti();
+            room.markSpecialEffectsDone();
+        }
+        function onConfettiDone() {
+            if (!Settings.fancyEffects)
+                return;
+            effectsTimer.restart();
+        }
         function onOpenReadReceiptsDialog(rr) {
             var dialog = readReceiptsDialog.createObject(timelineRoot, {
-                "readReceipts": rr,
-                "room": room
-            });
+                    "readReceipts": rr,
+                    "room": room
+                });
             dialog.show();
             timelineRoot.destroyOnClose(dialog);
         }
-
+        function onRainfall() {
+            if (!Settings.fancyEffects)
+                return;
+            shouldEffectsRun = true;
+            timelineEffects.pulseRainfall();
+            room.markSpecialEffectsDone();
+        }
+        function onRainfallDone() {
+            if (!Settings.fancyEffects)
+                return;
+            effectsTimer.restart();
+        }
         function onShowRawMessageDialog(rawMessage) {
-            var component = Qt.createComponent("qrc:/qml/dialogs/RawMessageDialog.qml")
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/RawMessageDialog.qml");
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
-                    "rawMessage": rawMessage
-                });
+                        "rawMessage": rawMessage
+                    });
                 dialog.show();
                 timelineRoot.destroyOnClose(dialog);
             } else {
@@ -418,43 +429,6 @@ Item {
             }
         }
 
-        function onConfetti()
-        {
-            if (!Settings.fancyEffects)
-                return
-
-            shouldEffectsRun = true;
-            timelineEffects.pulseConfetti()
-            room.markSpecialEffectsDone()
-        }
-
-        function onConfettiDone()
-        {
-            if (!Settings.fancyEffects)
-                return
-
-            effectsTimer.restart();
-        }
-
-        function onRainfall()
-        {
-            if (!Settings.fancyEffects)
-                return
-
-            shouldEffectsRun = true;
-            timelineEffects.pulseRainfall()
-            room.markSpecialEffectsDone()
-        }
-
-        function onRainfallDone()
-        {
-            if (!Settings.fancyEffects)
-                return
-
-            effectsTimer.restart();
-        }
-
         target: room
     }
-
 }

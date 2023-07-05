@@ -19,7 +19,7 @@ ColumnLayout {
         Layout.fillWidth: true
         wrapMode: Text.Wrap
         text: qsTr("Verification successful! Both sides verified their devices!")
-        color: Nheko.colors.text
+        color: palette.text
         verticalAlignment: Text.AlignVCenter
     }
 

@@ -25,7 +25,6 @@ Item {
         id: scroll
 
         clip: false
-        palette: Nheko.colors
         ScrollBar.horizontal.visible: false
         anchors.left: parent.left
         anchors.right: parent.right
@@ -70,7 +69,7 @@ Item {
 
                     visible: running
                     running: regis.lookingUpHs
-                    foreground: Nheko.colors.mid
+                    foreground: palette.mid
                 }
             }
 
@@ -102,7 +101,7 @@ Item {
 
                     visible: running
                     running: regis.lookingUpUsername
-                    foreground: Nheko.colors.mid
+                    foreground: palette.mid
                 }
 
                 Image {
@@ -178,7 +177,7 @@ Item {
 
                     visible: running
                     running: regis.registering
-                    foreground: Nheko.colors.mid
+                    foreground: palette.mid
                 }
             }
 

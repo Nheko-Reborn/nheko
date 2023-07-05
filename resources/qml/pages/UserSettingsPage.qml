@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+pragma ComponentBehavior: Bound
 import ".."
 import "../ui"
 import Qt.labs.platform 1.1 as Platform
@@ -16,12 +17,11 @@ Rectangle {
 
     property int collapsePoint: 600
     property bool collapsed: width < collapsePoint
-    color: Nheko.colors.window
+    color: palette.window
 
     ScrollView {
         id: scroll
 
-        palette: Nheko.colors
         ScrollBar.horizontal.visible: false
         anchors.fill: parent
         anchors.topMargin: (collapsed? backButton.height : 0)+Nheko.paddingLarge
@@ -34,15 +34,17 @@ Rectangle {
 
             spacing: Nheko.paddingMedium
 
+            width: scroll.availableWidth
             anchors.fill: parent
             anchors.leftMargin: userSettingsDialog.collapsed ? 0 : (userSettingsDialog.width-userSettingsDialog.collapsePoint) * 0.4 + Nheko.paddingLarge
             anchors.rightMargin: anchors.leftMargin
 
+
             Repeater {
                 model: UserSettingsModel
-                Layout.fillWidth:true
 
                 delegate: GridLayout {
+                    width: scroll.availableWidth
                     columns: collapsed? 1 : 2
                     rows: collapsed? 2: 1
                     required property var model
@@ -51,7 +53,7 @@ Rectangle {
                     Label {
                         Layout.alignment: Qt.AlignLeft
                         Layout.fillWidth: true
-                        color: Nheko.colors.text
+                        color: palette.text
                         text: model.name
                         //Layout.column: 0
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
@@ -79,7 +81,7 @@ Rectangle {
 
                         Layout.columnSpan: (model.type == UserSettingsModel.SectionTitle && !userSettingsDialog.collapsed) ? 2 : 1
                         Layout.preferredHeight: child.height
-                        Layout.preferredWidth: Math.min(child.implicitWidth, child.width || 1000)
+                        Layout.preferredWidth: child.implicitWidth
                         Layout.maximumWidth: model.type == UserSettingsModel.SectionTitle ? Number.POSITIVE_INFINITY : 400
                         Layout.fillWidth: model.type == UserSettingsModel.SectionTitle || model.type == UserSettingsModel.Options || model.type == UserSettingsModel.Number
                         Layout.rightMargin: model.type == UserSettingsModel.SectionTitle ? 0 : Nheko.paddingMedium
@@ -96,10 +98,11 @@ Rectangle {
                             roleValue: UserSettingsModel.Options
                             ComboBox {
                                 anchors.right: parent.right
-                                width: Math.min(parent.width, implicitWidth)
                                 model: r.model.values
                                 currentIndex: r.model.value
+                                width: Math.min(implicitWidth, scroll.availableWidth - Nheko.paddingMedium)
                                 onCurrentIndexChanged: r.model.value = currentIndex
+                                implicitContentWidthPolicy: ComboBox.WidestTextWhenCompleted
 
                                 WheelHandler{} // suppress scrolling changing values
                             }
@@ -109,7 +112,6 @@ Rectangle {
 
                             SpinBox {
                                 anchors.right: parent.right
-                                width: Math.min(parent.width, implicitWidth)
                                 from: model.valueLowerBound
                                 to: model.valueUpperBound
                                 stepSize: model.valueStep
@@ -130,7 +132,6 @@ Rectangle {
                                 readonly property int decimals: 2
 
                                 anchors.right: parent.right
-                                width: Math.min(parent.width, implicitWidth)
                                 from: model.valueLowerBound * div
                                 to: model.valueUpperBound * div
                                 stepSize: model.valueStep * div
@@ -159,7 +160,7 @@ Rectangle {
                         DelegateChoice {
                             roleValue: UserSettingsModel.ReadOnlyText
                             TextEdit {
-                                color: Nheko.colors.text
+                                color: palette.text
                                 text: model.value
                                 readOnly: true
                                 selectByMouse: !Settings.mobileMode
@@ -176,7 +177,7 @@ Rectangle {
                                     anchors.top: parent.top
                                     anchors.left: parent.left
                                     anchors.right: parent.right
-                                    color: Nheko.colors.buttonText
+                                    color: palette.buttonText
                                     height: 1
                                 }
                             }

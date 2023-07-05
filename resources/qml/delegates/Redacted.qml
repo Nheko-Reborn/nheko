@@ -13,7 +13,7 @@ Rectangle{
     implicitWidth: redactedLayout.implicitWidth + 2 * Nheko.paddingMedium
     width: Math.min(parent.width,implicitWidth+1)
     radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
-    color: Nheko.colors.alternateBase
+    color: palette.alternateBase
     property int metadataWidth
     property bool fitsMetadata: parent.width - redactedLayout.width > metadataWidth + 4
 
@@ -28,7 +28,7 @@ Rectangle{
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
             Layout.preferredWidth: fontMetrics.font.pixelSize
             Layout.preferredHeight: fontMetrics.font.pixelSize
-            source: "image://colorimage/:/icons/icons/ui/delete.svg?" + Nheko.colors.text
+            source: "image://colorimage/:/icons/icons/ui/delete.svg?" + palette.text
         }
         Label {
             id: redactedLabel
@@ -39,7 +39,7 @@ Rectangle{
             property var redactedPair: room.formatRedactedEvent(eventId)
             text: redactedPair["first"]
             wrapMode: Label.WordWrap
-            color: Nheko.colors.text
+            color: palette.text
 
             ToolTip.text: redactedPair["second"]
             ToolTip.visible: hh.hovered

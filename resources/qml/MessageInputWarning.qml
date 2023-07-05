@@ -10,38 +10,35 @@ import im.nheko 1.0
 Rectangle {
     id: warningRoot
 
-    required property string text
     property color bubbleColor: Nheko.theme.error
+    required property string text
 
-    implicitHeight: visible ? warningDisplay.implicitHeight + 4 * Nheko.paddingSmall : 0
-    height: implicitHeight
     Layout.fillWidth: true
-    color: Nheko.colors.window // required to hide the timeline behind this warning
+    color: palette.window // required to hide the timeline behind this warning
+    height: implicitHeight
+    implicitHeight: visible ? warningDisplay.implicitHeight + 4 * Nheko.paddingSmall : 0
 
     Rectangle {
         id: warningRect
 
-        visible: warningRoot.visible
-        // TODO: Qt.alpha() would make more sense but it wasn't working...
-        color: Qt.rgba(bubbleColor.r, bubbleColor.g, bubbleColor.b, 0.3)
-        border.width: 1
-        border.color: bubbleColor
-        radius: 3
         anchors.fill: parent
         anchors.margins: visible ? Nheko.paddingSmall : 0
+        border.color: bubbleColor
+        border.width: 1
+        // TODO: Qt.alpha() would make more sense but it wasn't working...
+        color: Qt.rgba(bubbleColor.r, bubbleColor.g, bubbleColor.b, 0.3)
+        radius: 3
+        visible: warningRoot.visible
         z: 3
 
         Label {
             id: warningDisplay
 
             anchors.left: parent.left
-            anchors.verticalCenter: parent.verticalCenter
             anchors.margins: Nheko.paddingSmall
-            color: Nheko.colors.text
+            anchors.verticalCenter: parent.verticalCenter
             text: warningRoot.text
             textFormat: Text.PlainText
         }
-
     }
-
 }

@@ -7,6 +7,7 @@
 #include <optional>
 
 #include <QObject>
+#include <QQmlEngine>
 
 #include <mtx/responses/public_rooms.hpp>
 
@@ -24,6 +25,9 @@ signals:
 class RoomSummary final : public QObject
 {
     Q_OBJECT
+
+    QML_ELEMENT
+    QML_UNCREATABLE("Please use joinRoom to create a room summary.")
 
     Q_PROPERTY(QString reason READ reason WRITE setReason NOTIFY reasonChanged)
 

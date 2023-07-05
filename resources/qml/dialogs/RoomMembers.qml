@@ -20,8 +20,7 @@ ApplicationWindow {
     height: 650
     width: 420
     minimumHeight: 420
-    palette: Nheko.colors
-    color: Nheko.colors.window
+    color: palette.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     Shortcut {
@@ -77,7 +76,7 @@ ApplicationWindow {
 
             Label {
                 text: qsTr("Sort by: ")
-                color: Nheko.colors.text
+                color: palette.text
             }
 
             ComboBox {
@@ -94,7 +93,6 @@ ApplicationWindow {
         }
 
         ScrollView {
-            palette: Nheko.colors
             padding: Nheko.paddingMedium
             ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
@@ -108,11 +106,6 @@ ApplicationWindow {
                 boundsBehavior: Flickable.StopAtBounds
                 model: members
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
 
                 delegate: ItemDelegate {
                     id: del
@@ -123,7 +116,7 @@ ApplicationWindow {
                     height: memberLayout.implicitHeight + Nheko.paddingSmall * 2
                     hoverEnabled: true
                     background: Rectangle {
-                        color: del.hovered ? Nheko.colors.dark : roomMembersRoot.color
+                        color: del.hovered ? palette.dark : roomMembersRoot.color
                     }
 
                     RowLayout {
@@ -158,7 +151,7 @@ ApplicationWindow {
 
                             ElidedLabel {
                                 fullText: model.mxid
-                                color: del.hovered ? Nheko.colors.brightText : Nheko.colors.buttonText
+                                color: del.hovered ? palette.brightText : palette.buttonText
                                 font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
                                 elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                                 Layout.fillWidth: true
@@ -184,7 +177,7 @@ ApplicationWindow {
                             Layout.preferredHeight: 16
                             sourceSize.width: width
                             sourceSize.height: height
-                            source: sourceUrl + (ma.hovered ? Nheko.colors.highlight : Nheko.colors.buttonText)
+                            source: sourceUrl + (ma.hovered ? palette.highlight : palette.buttonText)
                             ToolTip.visible: ma.hovered
                             ToolTip.text: {
                                 if (isAdmin)
@@ -227,7 +220,7 @@ ApplicationWindow {
 
                     }
 
-                    CursorShape {
+                    NhekoCursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                     }

@@ -14,60 +14,54 @@ import im.nheko 1.0
 Rectangle {
     id: inputBar
 
+    property bool showAllButtons: width > 450 || (messageInput.length == 0 && !messageInput.inputMethodComposing)
     readonly property string text: messageInput.text
 
-    color: Nheko.colors.window
     Layout.fillWidth: true
-    Layout.preferredHeight: row.implicitHeight
     Layout.minimumHeight: 40
-    property bool showAllButtons: width > 450 || (messageInput.length == 0 && !messageInput.inputMethodComposing)
-
+    Layout.preferredHeight: row.implicitHeight
+    color: palette.window
 
     Component {
         id: placeCallDialog
 
         PlaceCall {
         }
-
     }
-
     Component {
         id: screenShareDialog
 
         ScreenShare {
         }
-
     }
-
     RowLayout {
         id: row
 
-        visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
         anchors.fill: parent
         spacing: 0
+        visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
 
         ImageButton {
-            visible: CallManager.callsSupported && showAllButtons
-            opacity: (CallManager.haveCallInvite || CallManager.isOnCallOnOtherDevice) ? 0.3 : 1
             Layout.alignment: Qt.AlignBottom
-            hoverEnabled: true
-            width: 22
-            height: 22
-            image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.svg" : ":/icons/icons/ui/place-call.svg"
-            ToolTip.visible: hovered
-            ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : (CallManager.isOnCallOnOtherDevice ? qsTr("Already on a call") : qsTr("Place a call"))
             Layout.margins: 8
+            ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : (CallManager.isOnCallOnOtherDevice ? qsTr("Already on a call") : qsTr("Place a call"))
+            ToolTip.visible: hovered
+            height: 22
+            hoverEnabled: true
+            image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.svg" : ":/icons/icons/ui/place-call.svg"
+            opacity: (CallManager.haveCallInvite || CallManager.isOnCallOnOtherDevice) ? 0.3 : 1
+            visible: CallManager.callsSupported && showAllButtons
+            width: 22
+
             onClicked: {
                 if (room) {
                     if (CallManager.haveCallInvite) {
-                        return ;
+                        return;
                     } else if (CallManager.isOnCall) {
                         CallManager.hangUp();
-                    } 
-                    else if(CallManager.isOnCallOnOtherDevice) {
+                    } else if (CallManager.isOnCallOnOtherDevice) {
                         return;
-                    }
-                    else {
+                    } else {
                         var dialog = placeCallDialog.createObject(timelineRoot);
                         dialog.open();
                         timelineRoot.destroyOnClose(dialog);
@@ -75,22 +69,22 @@ Rectangle {
                 }
             }
         }
-
         ImageButton {
-            visible: showAllButtons
             Layout.alignment: Qt.AlignBottom
-            hoverEnabled: true
-            width: 22
-            height: 22
-            image: ":/icons/icons/ui/attach.svg"
             Layout.margins: 8
-            onClicked: room.input.openFileSelection()
-            ToolTip.visible: hovered
             ToolTip.text: qsTr("Send a file")
+            ToolTip.visible: hovered
+            height: 22
+            hoverEnabled: true
+            image: ":/icons/icons/ui/attach.svg"
+            visible: showAllButtons
+            width: 22
+
+            onClicked: room.input.openFileSelection()
 
             Rectangle {
                 anchors.fill: parent
-                color: Nheko.colors.window
+                color: palette.window
                 visible: room && room.input.uploading
 
                 Spinner {
@@ -98,112 +92,67 @@ Rectangle {
                     height: parent.height / 2
                     running: parent.visible
                 }
-
             }
-
         }
-
         ScrollView {
             id: textInput
 
             Layout.alignment: Qt.AlignVCenter
+            Layout.fillWidth: true
             Layout.maximumHeight: Window.height / 4
             Layout.minimumHeight: fontMetrics.lineSpacing
             Layout.preferredHeight: contentHeight
-            Layout.fillWidth: true
-
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-
             contentWidth: availableWidth
 
             TextArea {
                 id: messageInput
 
                 property int completerTriggeredAt: 0
+                property string lastChar
 
                 function insertCompletion(completion) {
                     messageInput.remove(completerTriggeredAt, cursorPosition);
                     messageInput.insert(cursorPosition, completion);
                 }
-
                 function openCompleter(pos, type) {
-                    if (popup.opened) return;
+                    if (popup.opened)
+                        return;
                     completerTriggeredAt = pos;
                     completer.completerName = type;
                     popup.open();
-                    completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
+                    completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition) + messageInput.preeditText);
                 }
-
                 function positionCursorAtEnd() {
                     cursorPosition = messageInput.length;
                 }
-
                 function positionCursorAtStart() {
                     cursorPosition = 0;
                 }
 
-                selectByMouse: true
-                placeholderText: qsTr("Write a message...")
-                placeholderTextColor: Nheko.colors.buttonText
-                color: Nheko.colors.text
-                width: textInput.width 
-                verticalAlignment: TextEdit.AlignVCenter
-                wrapMode: TextEdit.Wrap
-                padding: 0
-                topPadding: 8
+                background: null
                 bottomPadding: 8
-                leftPadding: inputBar.showAllButtons? 0 : 8
+                color: palette.text
                 focus: true
-                property string lastChar
-                onTextChanged: {
-                    if (room)
-                        room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
-                    forceActiveFocus();
-                    if (cursorPosition > 0)
-                        lastChar = text.charAt(cursorPosition-1)
-                    else
-                        lastChar = ''
-                    if (lastChar == '@') {
-                        messageInput.openCompleter(selectionStart-1, "user");
-                    } else if (lastChar == ':') {
-                        messageInput.openCompleter(selectionStart-1, "emoji");
-                    } else if (lastChar == '#') {
-                        messageInput.openCompleter(selectionStart-1, "roomAliases");
-                    } else if (lastChar == "/" && cursorPosition == 1) {
-                        messageInput.openCompleter(selectionStart-1, "command");
-                    }
-                }
-                onCursorPositionChanged: {
-                    if (!room)
-                        return ;
+                leftPadding: inputBar.showAllButtons ? 0 : 8
+                padding: 0
+                placeholderText: qsTr("Write a message...")
+                placeholderTextColor: palette.buttonText
+                selectByMouse: true
+                topPadding: 8
+                verticalAlignment: TextEdit.AlignVCenter
+                width: textInput.width
+                wrapMode: TextEdit.Wrap
 
-                    room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
-                    if (popup.opened && cursorPosition <= completerTriggeredAt)
-                        popup.close();
-
-                    if (popup.opened)
-                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
-
-                }
-                onPreeditTextChanged: {
-                    if (popup.opened)
-                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition)+messageInput.preeditText);
-                }
-                onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
-                onSelectionEndChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
-                // Ensure that we get escape key press events first.
-                Keys.onShortcutOverride: event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter || event.key === Qt.Key_Space))
-                Keys.onPressed: {
+                Keys.onPressed: event => {
                     if (event.matches(StandardKey.Paste)) {
                         event.accepted = room.input.tryPasteAttachment(false);
                     } else if (event.key == Qt.Key_Space) {
                         // close popup if user enters space after colon
                         if (cursorPosition == completerTriggeredAt + 1)
                             popup.close();
-
                         if (popup.opened && completer.count <= 0)
                             popup.close();
-
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_U) {
                         messageInput.clear();
                     } else if (event.modifiers == Qt.ControlModifier && event.key == Qt.Key_P) {
@@ -218,8 +167,8 @@ Rectangle {
                         completer.completerName = "";
                         popup.close();
                     } else if (event.matches(StandardKey.InsertLineSeparator)) {
-                        if (popup.opened) popup.close();
-
+                        if (popup.opened)
+                            popup.close();
                         if (Settings.invertEnterKey && (!Qt.inputMethod.visible || Qt.platform.os === "windows")) {
                             room.input.send();
                             event.accepted = true;
@@ -253,16 +202,16 @@ Rectangle {
                                 console.log('"' + t + '"');
                                 if (t == '@') {
                                     messageInput.openCompleter(pos, "user");
-                                    return ;
+                                    return;
                                 } else if (t == ' ' || t == '\t') {
                                     messageInput.openCompleter(pos + 1, "user");
-                                    return ;
+                                    return;
                                 } else if (t == ':') {
                                     messageInput.openCompleter(pos, "emoji");
-                                    return ;
+                                    return;
                                 } else if (t == '~') {
                                     messageInput.openCompleter(pos, "customEmoji");
-                                    return ;
+                                    return;
                                 }
                                 pos = pos - 1;
                             }
@@ -312,21 +261,53 @@ Rectangle {
                         }
                     }
                 }
-                background: null
+                // Ensure that we get escape key press events first.
+                Keys.onShortcutOverride: event => event.accepted = (popup.opened && (event.key === Qt.Key_Escape || event.key === Qt.Key_Tab || event.key === Qt.Key_Enter || event.key === Qt.Key_Space))
+                onCursorPositionChanged: {
+                    if (!room)
+                        return;
+                    room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
+                    if (popup.opened && cursorPosition <= completerTriggeredAt)
+                        popup.close();
+                    if (popup.opened)
+                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition) + messageInput.preeditText);
+                }
+                onPreeditTextChanged: {
+                    if (popup.opened)
+                        completer.completer.setSearchString(messageInput.getText(completerTriggeredAt, cursorPosition) + messageInput.preeditText);
+                }
+                onSelectionEndChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onSelectionStartChanged: room.input.updateState(selectionStart, selectionEnd, cursorPosition, text)
+                onTextChanged: {
+                    if (room)
+                        room.input.updateState(selectionStart, selectionEnd, cursorPosition, text);
+                    forceActiveFocus();
+                    if (cursorPosition > 0)
+                        lastChar = text.charAt(cursorPosition - 1);
+                    else
+                        lastChar = '';
+                    if (lastChar == '@') {
+                        messageInput.openCompleter(selectionStart - 1, "user");
+                    } else if (lastChar == ':') {
+                        messageInput.openCompleter(selectionStart - 1, "emoji");
+                    } else if (lastChar == '#') {
+                        messageInput.openCompleter(selectionStart - 1, "roomAliases");
+                    } else if (lastChar == "/" && cursorPosition == 1) {
+                        messageInput.openCompleter(selectionStart - 1, "command");
+                    }
+                }
 
                 Connections {
                     function onRoomChanged() {
                         messageInput.clear();
                         if (room)
                             messageInput.append(room.input.text);
-
                         completer.completerName = "";
                         messageInput.forceActiveFocus();
                     }
 
                     target: timelineView
                 }
-
                 Connections {
                     function onCompletionClicked(completion) {
                         messageInput.insertCompletion(completion);
@@ -334,43 +315,39 @@ Rectangle {
 
                     target: completer
                 }
-
                 Popup {
                     id: popup
 
+                    background: null
+                    padding: 0
                     x: messageInput.positionToRectangle(messageInput.completerTriggeredAt).x
                     y: messageInput.positionToRectangle(messageInput.completerTriggeredAt).y - height
 
-                    background: null
-                    padding: 0
+                    enter: Transition {
+                        NumberAnimation {
+                            duration: 100
+                            from: 0
+                            property: "opacity"
+                            to: 1
+                        }
+                    }
+                    exit: Transition {
+                        NumberAnimation {
+                            duration: 100
+                            from: 1
+                            property: "opacity"
+                            to: 0
+                        }
+                    }
 
                     Completer {
-                        anchors.fill: parent
                         id: completer
+
+                        anchors.fill: parent
                         rowMargin: 2
                         rowSpacing: 0
                     }
-
-                    enter: Transition {
-                        NumberAnimation {
-                            property: "opacity"
-                            from: 0
-                            to: 1
-                            duration: 100
-                        }
-
-                    }
-
-                    exit: Transition {
-                        NumberAnimation {
-                            property: "opacity"
-                            from: 1
-                            to: 0
-                            duration: 100
-                        }
-                    }
                 }
-
                 Connections {
                     function onTextChanged(newText) {
                         messageInput.text = newText;
@@ -380,16 +357,13 @@ Rectangle {
                     ignoreUnknownSignals: true
                     target: room ? room.input : null
                 }
-
                 Connections {
-                    function onReplyChanged() {
-                        messageInput.forceActiveFocus();
-                    }
-
                     function onEditChanged() {
                         messageInput.forceActiveFocus();
                     }
-
+                    function onReplyChanged() {
+                        messageInput.forceActiveFocus();
+                    }
                     function onThreadChanged() {
                         messageInput.forceActiveFocus();
                     }
@@ -397,7 +371,6 @@ Rectangle {
                     ignoreUnknownSignals: true
                     target: room
                 }
-
                 Connections {
                     function onFocusInput() {
                         messageInput.forceActiveFocus();
@@ -405,91 +378,82 @@ Rectangle {
 
                     target: TimelineManager
                 }
-
                 MouseArea {
+                    acceptedButtons: Qt.MiddleButton
                     // workaround for wrong cursor shape on some platforms
                     anchors.fill: parent
-                    acceptedButtons: Qt.MiddleButton
                     cursorShape: Qt.IBeamCursor
-                    onPressed: (mouse) => mouse.accepted = room.input.tryPasteAttachment(true)
+
+                    onPressed: mouse => mouse.accepted = room.input.tryPasteAttachment(true)
                 }
-
             }
-
         }
-
         ImageButton {
             id: stickerButton
-            visible: showAllButtons
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
-            hoverEnabled: true
-            width: 22
-            height: 22
-            image: ":/icons/icons/ui/sticky-note-solid.svg"
-            ToolTip.visible: hovered
             ToolTip.text: qsTr("Stickers")
-            onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId, function(row) {
-                room.input.sticker(row);
-                TimelineManager.focusMessageInput();
-            })
+            ToolTip.visible: hovered
+            height: 22
+            hoverEnabled: true
+            image: ":/icons/icons/ui/sticky-note-solid.svg"
+            visible: showAllButtons
+            width: 22
+
+            onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId, function (row) {
+                    room.input.sticker(row);
+                    TimelineManager.focusMessageInput();
+                })
 
             StickerPicker {
                 id: stickerPopup
 
-                colors: Nheko.colors
                 emoji: false
             }
-
         }
-
         ImageButton {
             id: emojiButton
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
-            hoverEnabled: true
-            width: 22
-            height: 22
-            image: ":/icons/icons/ui/smile.svg"
-            ToolTip.visible: hovered
             ToolTip.text: qsTr("Emoji")
-            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, room.roomId, function(plaintext, markdown) {
-                messageInput.insert(messageInput.cursorPosition, markdown);
-                TimelineManager.focusMessageInput();
-            })
+            ToolTip.visible: hovered
+            height: 22
+            hoverEnabled: true
+            image: ":/icons/icons/ui/smile.svg"
+            width: 22
+
+            onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, room.roomId, function (plaintext, markdown) {
+                    messageInput.insert(messageInput.cursorPosition, markdown);
+                    TimelineManager.focusMessageInput();
+                })
 
             StickerPicker {
                 id: emojiPopup
 
-                colors: Nheko.colors
                 emoji: true
             }
         }
-
         ImageButton {
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
-            hoverEnabled: true
-            width: 22
-            height: 22
-            image: ":/icons/icons/ui/send.svg"
             Layout.rightMargin: 8
-            ToolTip.visible: hovered
             ToolTip.text: qsTr("Send")
+            ToolTip.visible: hovered
+            height: 22
+            hoverEnabled: true
+            image: ":/icons/icons/ui/send.svg"
+            width: 22
+
             onClicked: {
                 room.input.send();
             }
         }
-
     }
-
     Text {
         anchors.centerIn: parent
-        visible: room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
         text: qsTr("You don't have permission to send messages in this room")
-        color: Nheko.colors.text
+        visible: room ? (!room.permissions.canSend(MtxEvent.TextMessage)) : false
     }
-
 }

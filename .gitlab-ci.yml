@@ -18,14 +18,14 @@ build-clazy:
     TRAVIS_OS_NAME: linux
   before_script:
     - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apk dependencies"
-    - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt5-qtbase-dev qt5-qtdeclarative-dev qt5-qtmultimedia-dev qt5-qtquickcontrols2-dev qt5-qtsvg-dev qt5-qttools-dev qtkeychain-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang16 gcc musl-dev git re2-dev
+    - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qtmultimedia-dev qt6-qtsvg-dev qt6-qttools-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang16 gcc musl-dev git re2-dev libsecret-dev
     - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib/ccache:${PATH}"
     - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
     - cmake -GNinja -H. -Bbuild
         -DCMAKE_INSTALL_PREFIX=.deps/usr
-        -DHUNTER_ENABLED=OFF -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_MTXCLIENT=ON -DUSE_BUNDLED_COEURL=ON -DUSE_BUNDLED_OLM=ON
+        -DHUNTER_ENABLED=OFF -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_MTXCLIENT=ON -DUSE_BUNDLED_COEURL=ON -DUSE_BUNDLED_OLM=ON -DUSE_BUNDLED_QTKEYCHAIN=ON
         -DVOIP=OFF
         -DCMAKE_BUILD_TYPE=Release
         -DCI_BUILD=ON -DFETCHCONTENT_QUIET=OFF -DCMAKE_CXX_COMPILER=clazy
@@ -37,7 +37,8 @@ build-clazy:
     paths:
       - .ccache
 
-build-gcc11:
+# disabled until I find a qt6.5 ppa
+.build-gcc11:
   stage: build
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:22.04
   tags: [docker]
@@ -50,7 +51,7 @@ build-gcc11:
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
         qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev
         qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform
-        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc time # libolm-dev
+        qt5keychain-dev ccache libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc time # libolm-dev
     # need recommended deps for wget
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
@@ -107,16 +108,15 @@ build-tw:
         "zlib-devel"
         "libQt5PlatformHeaders-devel"
         "cmake(re2)"
-        "cmake(Qt5Concurrent)"
-        "cmake(Qt5Core)"
-        "cmake(Qt5DBus)"
-        "cmake(Qt5Keychain)"
-        "cmake(Qt5LinguistTools)"
-        "cmake(Qt5Multimedia)"
-        "cmake(Qt5Network)"
-        "cmake(Qt5QuickControls2)"
-        "cmake(Qt5Svg)"
-        "cmake(Qt5Widgets)"
+        "cmake(Qt6Core)"
+        "cmake(Qt6DBus)"
+        "cmake(Qt6Keychain)"
+        "cmake(Qt6LinguistTools)"
+        "cmake(Qt6Multimedia)"
+        "cmake(Qt6QuickControls2)"
+        "cmake(Qt6Svg)"
+        "cmake(Qt6Widgets)"
+        "cmake(Qt6Gui)"
         "pkgconfig(libcurl)"
         "pkgconfig(libevent)"
         "pkgconfig(gstreamer-webrtc-1.0)"
@@ -155,7 +155,7 @@ build-macos:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   artifacts:
     paths:
-      - build/nheko.app # not putting this in 'artifacts' subdir because we don't want to put it on releases
+      - nheko.app # not putting this in 'artifacts' subdir because we don't want to put it on releases
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos-app
     expose_as: 'macos-app'
     public: false
@@ -200,7 +200,10 @@ build-flatpak:
     - docker-${ARCH}
   parallel:
     matrix:
-      - ARCH: [amd64, arm64]
+      - ARCH: amd64
+        JOBS: 0
+      - ARCH: arm64
+        JOBS: 3
   before_script:
     - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - apt-get update && apt-get -y install flatpak-builder git python3 curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
@@ -213,9 +216,9 @@ build-flatpak:
     - mkdir -p build-flatpak
     - cd build-flatpak
     - echo -e "\e[0Ksection_start:`date +%s`:build_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mBuilding flatpak"
-    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../io.github.NhekoReborn.Nheko.yaml
+    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../im.nheko.Nheko.yaml --jobs=$JOBS
     - echo -e "\e[0Ksection_end:`date +%s`:build_flatpak\r\e[0K"
-    - flatpak build-bundle repo nheko-${ARCH}.flatpak io.github.NhekoReborn.Nheko ${CI_COMMIT_REF_NAME//\//_}
+    - flatpak build-bundle repo nheko-${ARCH}.flatpak im.nheko.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
     - echo -e "\e[0Ksection_start:`date +%s`:upload_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mUploading flatpak"
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-${ARCH}.flatpak
@@ -233,7 +236,8 @@ build-flatpak:
     paths: ['build-flatpak/nheko-${ARCH}.flatpak']
     name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-${ARCH}
 
-appimage-amd64:
+# disabled until I find a qt6.5 ppa for Ubuntu
+.appimage-amd64:
   stage: build
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:22.04
   tags: [docker]
@@ -249,7 +253,7 @@ appimage-amd64:
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
         qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
         qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
-        qt5keychain-dev ccache clazy libcurl4-openssl-dev libevent-dev libspdlog-dev nlohmann-json3-dev libcmark-dev asciidoc libre2-dev libgtest-dev libgl1-mesa-dev qml-module-qtquick-particles2
+        qt5keychain-dev ccache libcurl4-openssl-dev libevent-dev libspdlog-dev nlohmann-json3-dev libcmark-dev asciidoc libre2-dev libgtest-dev libgl1-mesa-dev qml-module-qtquick-particles2
 
     # Installing the packages needed to build AppImage
     - apt-get -yq install breeze-icon-theme desktop-file-utils elfutils fakeroot file gnupg2 gtk-update-icon-cache libgdk-pixbuf2.0-dev libgdk-pixbuf2.0-0 libglib2.0-bin librsvg2-dev libyaml-dev strace zsync squashfs-tools
@@ -325,7 +329,7 @@ github-release:
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'
   dependencies:
-    - appimage-amd64
+    #- appimage-amd64 <- disabled because of missing packages
     - build-flatpak
     - codesign-macos
   before_script:

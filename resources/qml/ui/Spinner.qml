@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./animations"
-import QtGraphicalEffects 1.12
-import QtQuick 2.12
+import QtQuick
+import QtQuick.Effects
 
 Item {
     id: spinner
@@ -139,11 +139,11 @@ Item {
 
     }
 
-    Glow {
+    MultiEffect {
         anchors.fill: row
-        radius: 14
-        samples: 17
-        color: spinner.foreground
+        shadowBlur: 14
+        shadowEnabled: true
+        shadowColor: spinner.foreground
         source: row
 
         transform: Matrix4x4 {

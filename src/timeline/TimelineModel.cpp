@@ -31,8 +31,6 @@
 #include "Utils.h"
 #include "encryption/Olm.h"
 
-Q_DECLARE_METATYPE(QModelIndex)
-
 namespace std {
 inline uint // clazy:exclude=qhash-namespace
 qHash(const std::string &key, uint seed = 0)
@@ -218,6 +216,8 @@ qml_mtx_events::toRoomEventType(mtx::events::EventType e)
         return qml_mtx_events::EventType::Topic;
     case EventType::RoomTombstone:
         return qml_mtx_events::EventType::Tombstone;
+    case EventType::RoomServerAcl:
+        return qml_mtx_events::EventType::ServerAcl;
     case EventType::RoomRedaction:
         return qml_mtx_events::EventType::Redaction;
     case EventType::RoomPinnedEvents:
@@ -336,6 +336,9 @@ qml_mtx_events::fromRoomEventType(qml_mtx_events::EventType t)
     /// m.room.tombstone
     case qml_mtx_events::Tombstone:
         return mtx::events::EventType::RoomTombstone;
+    /// m.room.server_acl
+    case qml_mtx_events::ServerAcl:
+        return mtx::events::EventType::RoomServerAcl;
     /// m.room.topic
     case qml_mtx_events::Topic:
         return mtx::events::EventType::RoomTopic;
@@ -877,7 +880,6 @@ QVariant
 TimelineModel::data(const QModelIndex &index, int role) const
 {
     using namespace mtx::accessors;
-    namespace acc = mtx::accessors;
     if (index.row() < 0 && index.row() >= rowCount())
         return {};
 
@@ -891,6 +893,28 @@ TimelineModel::data(const QModelIndex &index, int role) const
         return "";
 
     return data(*event, role);
+}
+
+void
+TimelineModel::multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSpan) const
+{
+    if (index.row() < 0 && index.row() >= rowCount())
+        return;
+
+    // HACK(Nico): fetchMore likes to break with dynamically sized delegates and reuseItems
+    if (index.row() + 1 == rowCount() && !m_paginationInProgress)
+        const_cast<TimelineModel *>(this)->fetchMore(index);
+
+    auto event = events.get(rowCount() - index.row() - 1);
+
+    if (!event)
+        return;
+
+    for (QModelRoleData &roleData : roleDataSpan) {
+        int role = roleData.role();
+
+        roleData.setData(data(*event, role));
+    }
 }
 
 QVariant
@@ -1321,7 +1345,7 @@ TimelineModel::formatDateSeparator(QDate date) const
     QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
 
     if (now.date().year() == date.year()) {
-        QRegularExpression rx(QStringLiteral("[^a-zA-Z]*y+[^a-zA-Z]*"));
+        static QRegularExpression rx(QStringLiteral("[^a-zA-Z]*y+[^a-zA-Z]*"));
         fmt = fmt.remove(rx);
     }
 

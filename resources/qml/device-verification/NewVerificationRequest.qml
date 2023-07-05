@@ -36,7 +36,7 @@ ColumnLayout {
                     return qsTr("Your device (%1) has requested to be verified.").arg(flow.deviceId);
             }
         }
-        color: Nheko.colors.text
+        color: palette.text
         verticalAlignment: Text.AlignVCenter
     }
 

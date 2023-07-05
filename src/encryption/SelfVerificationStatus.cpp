@@ -29,6 +29,11 @@ SelfVerificationStatus::SelfVerificationStatus(QObject *o)
                 Qt::UniqueConnection);
         cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
     });
+
+    connect(ChatPage::instance(),
+            &ChatPage::initializeEmptyViews,
+            this,
+            &SelfVerificationStatus::invalidate);
 }
 
 void

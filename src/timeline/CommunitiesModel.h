@@ -6,6 +6,7 @@
 
 #include <QAbstractListModel>
 #include <QHash>
+#include <QQmlEngine>
 #include <QSortFilterProxyModel>
 #include <QString>
 #include <QStringList>
@@ -21,6 +22,8 @@ class CommunitiesModel;
 class FilteredCommunitiesModel final : public QSortFilterProxyModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("Use Communities.filtered() to create a FilteredCommunitiesModel")
 
 public:
     explicit FilteredCommunitiesModel(CommunitiesModel *model, QObject *parent = nullptr);
@@ -73,6 +76,9 @@ public:
 class CommunitiesModel final : public QAbstractListModel
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(Communities)
+    QML_SINGLETON
+
     Q_PROPERTY(QString currentTagId READ currentTagId WRITE setCurrentTagId NOTIFY
                  currentTagIdChanged RESET resetCurrentTagId)
     Q_PROPERTY(QStringList tags READ tags NOTIFY tagsChanged)
@@ -148,7 +154,27 @@ public:
         void restoreCollapsed();
     };
 
-    CommunitiesModel(QObject *parent = nullptr);
+    CommunitiesModel(QObject *parent);
+
+    static CommunitiesModel *create(QQmlEngine *qmlEngine, QJSEngine *)
+    {
+        // The instance has to exist before it is used. We cannot replace it.
+        Q_ASSERT(instance_);
+
+        // The engine has to have the same thread affinity as the singleton.
+        Q_ASSERT(qmlEngine->thread() == instance_->thread());
+
+        // There can only be one engine accessing the singleton.
+        static QJSEngine *s_engine = nullptr;
+        if (s_engine)
+            Q_ASSERT(qmlEngine == s_engine);
+        else
+            s_engine = qmlEngine;
+
+        QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
+        return instance_;
+    }
+
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override
     {
@@ -221,4 +247,6 @@ private:
     mtx::responses::UnreadNotifications dmUnreads{};
 
     friend class FilteredCommunitiesModel;
+
+    inline static CommunitiesModel *instance_ = nullptr;
 };

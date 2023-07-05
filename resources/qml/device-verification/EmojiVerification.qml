@@ -17,7 +17,7 @@ ColumnLayout {
         Layout.fillWidth: true
         wrapMode: Text.Wrap
         text: qsTr("Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press 'They do not match!' to abort verification!")
-        color: Nheko.colors.text
+        color: palette.text
         verticalAlignment: Text.AlignVCenter
     }
 
@@ -373,13 +373,13 @@ ColumnLayout {
                         text: col.emoji.emoji
                         font.pixelSize: Qt.application.font.pixelSize * 2
                         font.family: Settings.emojiFont
-                        color: Nheko.colors.text
+                        color: palette.text
                     }
 
                     Label {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
                         text: col.emoji.description
-                        color: Nheko.colors.text
+                        color: palette.text
                     }
 
                 }
@@ -396,7 +396,7 @@ ColumnLayout {
         Layout.fillWidth: true
         wrapMode: Text.Wrap
         text: qsTr("The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.")
-        color: Nheko.colors.text
+        color: palette.text
         verticalAlignment: Text.AlignVCenter
     }
 

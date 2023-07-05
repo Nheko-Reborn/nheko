@@ -3,25 +3,22 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "../"
-import QtGraphicalEffects 1.0
-import QtQuick 2.9
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.3
-import im.nheko 1.0
-import im.nheko.EmojiModel 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 Menu {
     id: stickerPopup
 
     property var callback
-    property var colors
     property string roomid
     property alias model: gridView.model
     required property bool emoji
     property var textArea
-    property real highlightHue: Nheko.colors.highlight.hslHue
-    property real highlightSat: Nheko.colors.highlight.hslSaturation
-    property real highlightLight: Nheko.colors.highlight.hslLightness
+    property real highlightHue: palette.highlight.hslHue
+    property real highlightSat: palette.highlight.hslSaturation
+    property real highlightLight: palette.highlight.hslLightness
     readonly property int stickerDim: emoji ? 48 : 128
     readonly property int stickerDimPad: stickerDim + Nheko.paddingSmall
     readonly property int stickersPerRow: emoji ? 7 : 3
@@ -45,7 +42,7 @@ Menu {
     width: sidebarAvatarSize + Nheko.paddingSmall + stickersPerRow * stickerDimPad + 20
 
     Rectangle {
-        color: Nheko.colors.window
+        color: palette.window
         height: columnView.implicitHeight + Nheko.paddingSmall*2
         width: sidebarAvatarSize + Nheko.paddingSmall + stickersPerRow * stickerDimPad + 20
 
@@ -67,10 +64,8 @@ Menu {
                 Layout.preferredWidth: stickersPerRow * stickerDimPad + 20 - Nheko.paddingSmall
                 Layout.row: 0
                 Layout.column: 1
-                palette: Nheko.colors
                 background: null
-                placeholderTextColor: Nheko.colors.buttonText
-                color: Nheko.colors.text
+                placeholderTextColor: palette.buttonText
                 placeholderText: qsTr("Search")
                 selectByMouse: true
                 rightPadding: clearSearch.width
@@ -126,7 +121,7 @@ Menu {
                 section.delegate: Rectangle {
                     width: gridView.width
                     height: childrenRect.height
-                    color: Nheko.colors.alternateBase
+                    color: palette.alternateBase
 
                     required property string section
 
@@ -134,19 +129,12 @@ Menu {
                         anchors.left: parent.left
                         anchors.right: parent.right
                         text: parent.section
-                        color: Nheko.colors.text
                         font.bold: true
                     }
                 }
                 section.labelPositioning: ViewSection.InlineLabels | ViewSection.CurrentLabelAtStart
 
                 spacing: Nheko.paddingSmall
-
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
 
                 // Individual emoji
                 delegate: Row {
@@ -197,7 +185,6 @@ Menu {
                                         font.family: Settings.emojiFont
                                         font.pixelSize: 36
                                         text: del.modelData.unicode.replace('\ufe0f', '')
-                                        color: Nheko.colors.text
                                     }
                                 }
 
@@ -214,7 +201,7 @@ Menu {
 
                             background: Rectangle {
                                 anchors.fill: parent
-                                color: hovered ? Nheko.colors.highlight : 'transparent'
+                                color: hovered ? palette.highlight : 'transparent'
                                 radius: 5
                             }
 
@@ -243,6 +230,7 @@ Menu {
                     height: sidebarAvatarSize
                     width: sidebarAvatarSize
                     url: modelData.url.replace("mxc://", "image://MxcImage/")
+                    textColor: modelData.url.startsWith("mxc://") ? palette.text : palette.buttonText
                     displayName: modelData.name
                     roomid: modelData.name
 

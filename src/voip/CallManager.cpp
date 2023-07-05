@@ -10,7 +10,6 @@
 #include <memory>
 
 #include <QGuiApplication>
-#include <QMediaPlaylist>
 #include <QUrl>
 
 #include "Cache.h"
@@ -42,10 +41,6 @@ extern "C"
 }
 #endif
 
-Q_DECLARE_METATYPE(std::vector<mtx::events::voip::CallCandidates::Candidate>)
-Q_DECLARE_METATYPE(mtx::events::voip::CallCandidates::Candidate)
-Q_DECLARE_METATYPE(mtx::responses::TurnServer)
-
 using namespace mtx::events;
 using namespace mtx::events::voip;
 
@@ -59,15 +54,32 @@ std::vector<std::string>
 getTurnURIs(const mtx::responses::TurnServer &turnServer);
 }
 
+CallManager *
+CallManager::create(QQmlEngine *qmlEngine, QJSEngine *)
+{
+    // The instance has to exist before it is used. We cannot replace it.
+    auto instance = ChatPage::instance()->callManager();
+    Q_ASSERT(instance);
+
+    // The engine has to have the same thread affinity as the singleton.
+    Q_ASSERT(qmlEngine->thread() == instance->thread());
+
+    // There can only be one engine accessing the singleton.
+    static QJSEngine *s_engine = nullptr;
+    if (s_engine)
+        Q_ASSERT(qmlEngine == s_engine);
+    else
+        s_engine = qmlEngine;
+
+    QJSEngine::setObjectOwnership(instance, QJSEngine::CppOwnership);
+    return instance;
+}
+
 CallManager::CallManager(QObject *parent)
   : QObject(parent)
   , session_(WebRTCSession::instance())
   , turnServerTimer_(this)
 {
-    qRegisterMetaType<std::vector<mtx::events::voip::CallCandidates::Candidate>>();
-    qRegisterMetaType<mtx::events::voip::CallCandidates::Candidate>();
-    qRegisterMetaType<mtx::responses::TurnServer>();
-
 #ifdef GSTREAMER_AVAILABLE
     std::string errorMessage;
     if (session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
@@ -180,9 +192,9 @@ CallManager::CallManager(QObject *parent)
       });
 
     connect(&player_,
-            QOverload<QMediaPlayer::Error>::of(&QMediaPlayer::error),
+            &QMediaPlayer::errorOccurred,
             this,
-            [this](QMediaPlayer::Error error) {
+            [this](QMediaPlayer::Error error, QString errorString) {
                 stopRingtone();
                 switch (error) {
                 case QMediaPlayer::FormatError:
@@ -193,7 +205,8 @@ CallManager::CallManager(QObject *parent)
                     nhlog::ui()->error("WebRTC: access to ringtone file denied");
                     break;
                 default:
-                    nhlog::ui()->error("WebRTC: unable to play ringtone");
+                    nhlog::ui()->error("WebRTC: unable to play ringtone, {}",
+                                       errorString.toStdString());
                     break;
                 }
             });
@@ -827,19 +840,16 @@ CallManager::retrieveTurnServer()
 void
 CallManager::playRingtone(const QUrl &ringtone, bool repeat)
 {
-    static QMediaPlaylist playlist;
-    playlist.clear();
-    playlist.setPlaybackMode(repeat ? QMediaPlaylist::CurrentItemInLoop
-                                    : QMediaPlaylist::CurrentItemOnce);
-    playlist.addMedia(ringtone);
-    player_.setVolume(100);
-    player_.setPlaylist(&playlist);
+    player_.setLoops(repeat ? QMediaPlayer::Infinite : 1);
+    player_.setSource(ringtone);
+    // player_.audioOutput()->setVolume(100);
+    player_.play();
 }
 
 void
 CallManager::stopRingtone()
 {
-    player_.setPlaylist(nullptr);
+    player_.stop();
 }
 
 bool

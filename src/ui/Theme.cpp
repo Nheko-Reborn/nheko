@@ -4,12 +4,9 @@
 
 #include "Theme.h"
 
-Q_DECLARE_METATYPE(Theme)
-
 QPalette
 Theme::paletteFromTheme(QStringView theme)
 {
-    [[maybe_unused]] static auto meta = qRegisterMetaType<Theme>("Theme");
     static QPalette original;
     if (theme == u"light") {
         static QPalette lightActive = [] {

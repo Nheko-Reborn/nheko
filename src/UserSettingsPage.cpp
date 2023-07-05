@@ -101,6 +101,8 @@ UserSettings::load(std::optional<QString> profile)
     exposeDBusApi_ = settings.value(QStringLiteral("user/expose_dbus_api"), false).toBool();
     updateSpaceVias_ =
       settings.value(QStringLiteral("user/space_background_maintenance"), true).toBool();
+    expireEvents_ =
+      settings.value(QStringLiteral("user/expired_events_background_maintenance"), false).toBool();
 
     mobileMode_ = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
     emojiFont_  = settings.value(QStringLiteral("user/emoji_font_family"), "emoji").toString();
@@ -305,6 +307,17 @@ UserSettings::setUpdateSpaceVias(bool state)
 
     updateSpaceVias_ = state;
     emit updateSpaceViasChanged(state);
+    save();
+}
+
+void
+UserSettings::setExpireEvents(bool state)
+{
+    if (expireEvents_ == state)
+        return;
+
+    expireEvents_ = state;
+    emit expireEventsChanged(state);
     save();
 }
 
@@ -852,21 +865,8 @@ UserSettings::setOpenVideoExternal(bool state)
 void
 UserSettings::applyTheme()
 {
-    QFile stylefile;
-
-    if (this->theme() == QLatin1String("light")) {
-        stylefile.setFileName(QStringLiteral(":/styles/styles/nheko.qss"));
-    } else if (this->theme() == QLatin1String("dark")) {
-        stylefile.setFileName(QStringLiteral(":/styles/styles/nheko-dark.qss"));
-    } else {
-        stylefile.setFileName(QStringLiteral(":/styles/styles/system.qss"));
-    }
+    QGuiApplication::setPalette(Theme::paletteFromTheme(this->theme()));
     QApplication::setPalette(Theme::paletteFromTheme(this->theme()));
-
-    stylefile.open(QFile::ReadOnly);
-    QString stylesheet = QString(stylefile.readAll());
-
-    qobject_cast<QApplication *>(QApplication::instance())->setStyleSheet(stylesheet);
 }
 
 void
@@ -937,6 +937,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("open_video_external"), openVideoExternal_);
     settings.setValue(QStringLiteral("expose_dbus_api"), exposeDBusApi_);
     settings.setValue(QStringLiteral("space_background_maintenance"), updateSpaceVias_);
+    settings.setValue(QStringLiteral("expired_events_background_maintenance"), expireEvents_);
 
     settings.endGroup(); // user
 
@@ -1142,6 +1143,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Expose room information via D-Bus");
         case UpdateSpaceVias:
             return tr("Periodically update community routing information");
+        case ExpireEvents:
+            return tr("Periodically delete expired events");
         }
     } else if (role == Value) {
         switch (index.row()) {
@@ -1279,6 +1282,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->exposeDBusApi();
         case UpdateSpaceVias:
             return i->updateSpaceVias();
+        case ExpireEvents:
+            return i->expireEvents();
         }
     } else if (role == Description) {
         switch (index.row()) {
@@ -1462,6 +1467,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               "information about what servers participate in a room to community members. Since "
               "the room participants can change over time, this needs to be updated from time to "
               "time. This setting enables a background job to do that automatically.");
+        case ExpireEvents:
+            return tr("Regularly redact expired events as specified in the event expiration "
+                      "configuration. Since this is currently not executed server side, you need "
+                      "to have one client running this regularly.");
         }
     } else if (role == Type) {
         switch (index.row()) {
@@ -1512,6 +1521,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case UseOnlineKeyBackup:
         case ExposeDBusApi:
         case UpdateSpaceVias:
+        case ExpireEvents:
         case SpaceNotifications:
         case FancyEffects:
         case ReducedMotion:
@@ -1585,8 +1595,6 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
                 l.push_back(QString::fromStdString(d));
             return l;
         };
-        static QFontDatabase fontDb;
-
         switch (index.row()) {
         case Theme:
             return QStringList{
@@ -1605,9 +1613,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               i->camera().toStdString(), i->cameraResolution().toStdString()));
 
         case Font:
-            return fontDb.families();
+            return QFontDatabase::families();
         case EmojiFont:
-            return fontDb.families(QFontDatabase::WritingSystem::Symbol);
+            return QFontDatabase::families(QFontDatabase::WritingSystem::Symbol);
         case Ringtone: {
             QStringList l{
               QStringLiteral("Mute"),
@@ -1651,8 +1659,6 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
 bool
 UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    static QFontDatabase fontDb;
-
     auto i = UserSettings::instance();
     if (role == Value) {
         switch (index.row()) {
@@ -1677,7 +1683,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case ScaleFactor: {
-            if (value.canConvert(QMetaType::Double)) {
+            if (value.canConvert(QMetaType::fromType<double>())) {
                 utils::setScaleFactor(static_cast<float>(value.toDouble()));
                 return true;
             } else
@@ -1782,7 +1788,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case TimelineMaxWidth: {
-            if (value.canConvert(QMetaType::Int)) {
+            if (value.canConvert(QMetaType::fromType<int>())) {
                 i->setTimelineMaxWidth(value.toInt());
                 return true;
             } else
@@ -1880,7 +1886,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case PrivacyScreenTimeout: {
-            if (value.canConvert(QMetaType::Int)) {
+            if (value.canConvert(QMetaType::fromType<int>())) {
                 i->setPrivacyScreenTimeout(value.toInt());
                 return true;
             } else
@@ -1894,7 +1900,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return false;
         }
         case FontSize: {
-            if (value.canConvert(QMetaType::Double)) {
+            if (value.canConvert(QMetaType::fromType<double>())) {
                 i->setFontSize(value.toDouble());
                 return true;
             } else
@@ -1902,7 +1908,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         }
         case Font: {
             if (value.userType() == QMetaType::Int) {
-                i->setFontFamily(fontDb.families().at(value.toInt()));
+                i->setFontFamily(QFontDatabase::families().at(value.toInt()));
                 return true;
             } else
                 return false;
@@ -1910,7 +1916,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case EmojiFont: {
             if (value.userType() == QMetaType::Int) {
                 i->setEmojiFontFamily(
-                  fontDb.families(QFontDatabase::WritingSystem::Symbol).at(value.toInt()));
+                  QFontDatabase::families(QFontDatabase::WritingSystem::Symbol).at(value.toInt()));
                 return true;
             } else
                 return false;
@@ -2007,6 +2013,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case UpdateSpaceVias: {
             if (value.userType() == QMetaType::Bool) {
                 i->setUpdateSpaceVias(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case ExpireEvents: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setExpireEvents(value.toBool());
                 return true;
             } else
                 return false;
@@ -2265,5 +2278,8 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::updateSpaceViasChanged, this, [this] {
         emit dataChanged(index(UpdateSpaceVias), index(UpdateSpaceVias), {Value});
+    });
+    connect(s.get(), &UserSettings::expireEventsChanged, this, [this] {
+        emit dataChanged(index(ExpireEvents), index(ExpireEvents), {Value});
     });
 }

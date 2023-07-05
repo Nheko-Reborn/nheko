@@ -1395,11 +1395,6 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
-        <source>Select a file</source>
-        <translation>Elektu dosieron</translation>
-    </message>
-    <message>
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>Ĉiuj dosieroj (*)</translation>

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QQmlEngine>
 #include <QSortFilterProxyModel>
 
 #include <mtx/events/power_levels.hpp>
@@ -79,6 +80,8 @@ private:
 class MemberList final : public QSortFilterProxyModel
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("")
 
     Q_PROPERTY(QString roomName READ roomName NOTIFY roomNameChanged)
     Q_PROPERTY(int memberCount READ memberCount NOTIFY memberCountChanged)

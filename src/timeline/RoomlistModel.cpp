@@ -28,8 +28,6 @@ RoomlistModel::RoomlistModel(TimelineViewManager *parent)
   : QAbstractListModel(parent)
   , manager(parent)
 {
-    [[maybe_unused]] static auto id = qRegisterMetaType<RoomPreview>();
-
     connect(ChatPage::instance(), &ChatPage::decryptSidebarChanged, this, [this]() {
         auto decrypt = ChatPage::instance()->userSettings()->decryptSidebar();
         QHash<QString, QSharedPointer<TimelineModel>>::iterator i;
@@ -819,7 +817,7 @@ RoomlistModel::refetchOnlineKeyBackupKeys()
         auto ptr = i.value();
 
         if (!ptr.isNull()) {
-            EventStore::refetchOnlineKeyBackupKeys(ptr.data());
+            ptr->refetchOnlineKeyBackupKeys();
         }
     }
 }
@@ -911,6 +909,8 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
   : QSortFilterProxyModel(parent)
   , roomlistmodel(model)
 {
+    instance_ = this;
+
     this->sortByImportance = UserSettings::instance()->sortByImportance();
     this->sortByAlphabet   = UserSettings::instance()->sortByAlphabet();
     setSourceModel(model);
@@ -1236,4 +1236,50 @@ FilteredRoomlistModel::previousRoom()
             setCurrentRoom(data(index(idx, 0), RoomlistModel::Roles::RoomId).toString());
         }
     }
+}
+
+QString
+RoomPreview::inviterAvatarUrl() const
+{
+    if (isInvite_) {
+        auto self = cache::client()->getInviteMember(roomid_.toStdString(),
+                                                     http::client()->user_id().to_string());
+        if (self && !self->inviter.empty()) {
+            auto other = cache::client()->getInviteMember(roomid_.toStdString(), self->inviter);
+            if (other && other->avatar_url.starts_with("mxc://")) {
+                return QString::fromStdString(other->avatar_url);
+            }
+        }
+    }
+
+    return QString();
+}
+QString
+RoomPreview::inviterDisplayName() const
+{
+    if (isInvite_) {
+        auto self = cache::client()->getInviteMember(roomid_.toStdString(),
+                                                     http::client()->user_id().to_string());
+        if (self && !self->inviter.empty()) {
+            auto other = cache::client()->getInviteMember(roomid_.toStdString(), self->inviter);
+            if (other) {
+                return QString::fromStdString(other->name).toHtmlEscaped();
+            }
+        }
+    }
+
+    return QString();
+}
+QString
+RoomPreview::inviterUserId() const
+{
+    if (isInvite_) {
+        auto self = cache::client()->getInviteMember(roomid_.toStdString(),
+                                                     http::client()->user_id().to_string());
+        if (self && !self->inviter.empty()) {
+            return QString::fromStdString(self->inviter);
+        }
+    }
+
+    return QString();
 }

@@ -1306,7 +1306,7 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                                   const mtx::events::collections::DeviceEvents &event,
                                   bool force_new_session)
 {
-    static QMap<QPair<std::string, std::string>, qint64> rateLimit;
+    static QMap<std::pair<std::string, std::string>, qint64> rateLimit;
 
     nlohmann::json ev_json = std::visit([](const auto &e) { return nlohmann::json(e); }, event);
 
@@ -1363,12 +1363,12 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
 
                 auto session = cache::getLatestOlmSession(device_curve);
                 if (!session || force_new_session) {
-                    if (rateLimit.value(QPair(user, device)) + 60 * 60 * 10 < currentTime) {
+                    if (rateLimit.value(std::pair(user, device)) + 60 * 60 * 10 < currentTime) {
                         claims.one_time_keys[user][device] = mtx::crypto::SIGNED_CURVE25519;
                         pks[user][device].ed25519          = d.keys.at("ed25519:" + device);
                         pks[user][device].curve25519       = d.keys.at("curve25519:" + device);
 
-                        rateLimit.insert(QPair(user, device), currentTime);
+                        rateLimit.insert(std::pair(user, device), currentTime);
                     } else {
                         nhlog::crypto()->warn("Not creating new session with {}:{} "
                                               "because of rate limit",
@@ -1569,13 +1569,13 @@ send_encrypted_to_device_messages(const std::map<std::string, std::vector<std::s
                       }
 
                       auto currentTime = QDateTime::currentSecsSinceEpoch();
-                      if (rateLimit.value(QPair(user.first, device_id.get())) + 60 * 60 * 10 <
+                      if (rateLimit.value(std::pair(user.first, device_id.get())) + 60 * 60 * 10 <
                           currentTime) {
                           deviceKeys[user_id].emplace(device_id, pks);
                           claim_keys.one_time_keys[user.first][device_id] =
                             mtx::crypto::SIGNED_CURVE25519;
 
-                          rateLimit.insert(QPair(user.first, device_id.get()), currentTime);
+                          rateLimit.insert(std::pair(user.first, device_id.get()), currentTime);
                       } else {
                           nhlog::crypto()->warn("Not creating new session with {}:{} "
                                                 "because of rate limit",

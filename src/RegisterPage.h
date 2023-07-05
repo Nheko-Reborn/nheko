@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 #include <QString>
 
 #include <mtx/user_interactive.hpp>
@@ -13,6 +14,7 @@
 class RegisterPage : public QObject
 {
     Q_OBJECT
+    QML_NAMED_ELEMENT(Registration)
 
     Q_PROPERTY(QString error READ error NOTIFY errorChanged)
     Q_PROPERTY(QString hsError READ hsError NOTIFY hsErrorChanged)

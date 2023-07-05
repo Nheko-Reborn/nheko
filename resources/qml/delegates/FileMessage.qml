@@ -11,14 +11,13 @@ Item {
     required property string filename
     required property string filesize
 
-    height: row.height + (Settings.bubbles? 16: 24)
-    width: parent.width
-    implicitWidth: row.implicitWidth+metadataWidth
+    height: rowa.height + (Settings.bubbles? 16: 24)
+    implicitWidth: rowa.implicitWidth + metadataWidth
     property int metadataWidth
     property bool fitsMetadata: true
 
     RowLayout {
-        id: row
+        id: rowa
 
         anchors.centerIn: parent
         width: parent.width - (Settings.bubbles? 16 : 24)
@@ -27,7 +26,7 @@ Item {
         Rectangle {
             id: button
 
-            color: Nheko.colors.light
+            color: palette.light
             radius: 22
             height: 44
             width: 44
@@ -50,7 +49,7 @@ Item {
                 gesturePolicy: TapHandler.ReleaseWithinBounds
             }
 
-            CursorShape {
+            NhekoCursorShape {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
             }
@@ -67,7 +66,7 @@ Item {
                 text: filename
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                color: Nheko.colors.text
+                color: palette.text
             }
 
             Text {
@@ -77,7 +76,7 @@ Item {
                 text: filesize
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
-                color: Nheko.colors.text
+                color: palette.text
             }
 
         }
@@ -85,7 +84,7 @@ Item {
     }
 
     Rectangle {
-        color: Nheko.colors.alternateBase
+        color: palette.alternateBase
         z: -1
         radius: 10
         anchors.fill: parent

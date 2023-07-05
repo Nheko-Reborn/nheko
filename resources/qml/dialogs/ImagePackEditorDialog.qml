@@ -22,8 +22,7 @@ ApplicationWindow {
     title: qsTr("Editing image pack")
     height: 600
     width: 600
-    palette: Nheko.colors
-    color: Nheko.colors.base
+    color: palette.base
     modality: Qt.WindowModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
@@ -50,11 +49,6 @@ ApplicationWindow {
 
                 model: imagePack
 
-                ScrollHelper {
-                    flickable: parent
-                    anchors.fill: parent
-                    enabled: !Settings.mobileMode
-                }
 
                 header: AvatarListTile {
                     title: imagePack.packname
@@ -73,13 +67,12 @@ ApplicationWindow {
                         anchors.verticalCenter: parent.verticalCenter
                         height: parent.height - Nheko.paddingSmall * 2
                         width: 3
-                        color: Nheko.colors.highlight
+                        color: palette.highlight
                     }
 
                 }
 
                 footer: Button {
-                    palette: Nheko.colors
                     onClicked: addFilesDialog.open()
                     width: ListView.view.width
                     text: qsTr("Add images")
@@ -100,11 +93,11 @@ ApplicationWindow {
                 delegate: AvatarListTile {
                     id: packItem
 
-                    property color background: Nheko.colors.window
-                    property color importantText: Nheko.colors.text
-                    property color unimportantText: Nheko.colors.buttonText
-                    property color bubbleBackground: Nheko.colors.highlight
-                    property color bubbleText: Nheko.colors.highlightedText
+                    property color background: palette.window
+                    property color importantText: palette.text
+                    property color unimportantText: palette.buttonText
+                    property color bubbleBackground: palette.highlight
+                    property color bubbleText: palette.highlightedText
                     required property string shortCode
                     required property string url
                     required property string body
@@ -129,7 +122,7 @@ ApplicationWindow {
             id: packinfoC
 
             Rectangle {
-                color: Nheko.colors.window
+                color: palette.window
 
                 GridLayout {
                     anchors.fill: parent

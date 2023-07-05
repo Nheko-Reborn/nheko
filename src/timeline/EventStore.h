@@ -11,14 +11,13 @@
 #include <QObject>
 #include <QVariant>
 
+#include <mtx/common.hpp>
 #include <mtx/events/collections.hpp>
 #include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
 
 #include "Reaction.h"
 #include "encryption/Olm.h"
-
-class TimelineModel;
 
 class EventStore final : public QObject
 {
@@ -27,7 +26,7 @@ class EventStore final : public QObject
 public:
     EventStore(std::string room_id, QObject *parent);
 
-    static void refetchOnlineKeyBackupKeys(TimelineModel *room);
+    void refetchOnlineKeyBackupKeys();
 
     // taken from QtPrivate::QHashCombine
     static uint hashCombine(uint hash, uint seed)
@@ -108,7 +107,7 @@ signals:
     void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
     void eventFetched(std::string id,
                       std::string relatedTo,
-                      mtx::events::collections::TimelineEvents timeline);
+                      const mtx::events::collections::TimelineEvents &timeline);
     void oldMessagesRetrieved(const mtx::responses::Messages &);
     void fetchedMore();
 
@@ -120,7 +119,7 @@ signals:
     void updateFlowEventId(std::string event_id);
 
 public slots:
-    void addPending(mtx::events::collections::TimelineEvents event);
+    void addPending(const mtx::events::collections::TimelineEvents &event);
     void receivedSessionKey(const std::string &session_id);
     void clearTimeline();
     void enableKeyRequests(bool suppressKeyRequests_);

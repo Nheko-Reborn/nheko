@@ -4,11 +4,11 @@
 
 import "../"
 import "../../"
-import QtMultimedia 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtMultimedia
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 Rectangle {
     id: control
@@ -50,7 +50,7 @@ Rectangle {
     }
 
     color: {
-        var wc = Nheko.colors.alternateBase;
+        var wc = palette.alternateBase;
         return Qt.rgba(wc.r, wc.g, wc.b, 0.5);
     }
     opacity: control.shouldShowControls ? 1 : 0
@@ -95,7 +95,7 @@ Rectangle {
                 id: playbackStateImage
 
                 Layout.alignment: Qt.AlignLeft
-                buttonTextColor: Nheko.colors.text
+                buttonTextColor: palette.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
                 image: {
@@ -115,7 +115,7 @@ Rectangle {
                 id: volumeButton
 
                 Layout.alignment: Qt.AlignLeft
-                buttonTextColor: Nheko.colors.text
+                buttonTextColor: palette.text
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
                 image: {
@@ -130,7 +130,7 @@ Rectangle {
             NhekoSlider {
                 id: volumeSlider
 
-                property real desiredVolume: QtMultimedia.convertVolume(volumeSlider.value, QtMultimedia.LogarithmicVolumeScale, QtMultimedia.LinearVolumeScale)
+                property real desiredVolume: volumeSlider.value
 
                 state: ""
                 Layout.alignment: Qt.AlignLeft
@@ -214,7 +214,7 @@ Rectangle {
             Label {
                 Layout.alignment: Qt.AlignRight
                 text: (!control.mediaLoaded ? "-- " : durationToString(control.positionValue)) + " / " + durationToString(control.duration)
-                color: Nheko.colors.text
+                color: palette.text
             }
 
             Item {

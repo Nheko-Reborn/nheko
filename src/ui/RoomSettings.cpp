@@ -74,6 +74,11 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
     guestRules_ = info_.guest_access ? AccessState::CanJoin : AccessState::Forbidden;
     emit accessJoinRulesChanged();
 
+    if (auto ev = cache::client()->getStateEvent<mtx::events::state::HistoryVisibility>(
+          roomid_.toStdString())) {
+        this->historyVisibility_ = ev->content.history_visibility;
+    }
+
     this->allowedRoomsModel = new RoomSettingsAllowedRoomsModel(this);
 }
 
@@ -149,6 +154,22 @@ int
 RoomSettings::notifications()
 {
     return notifications_;
+}
+
+RoomSettings::Visibility
+RoomSettings::historyVisibility() const
+{
+    switch (this->historyVisibility_) {
+    case mtx::events::state::Visibility::WorldReadable:
+        return WorldReadable;
+    case mtx::events::state::Visibility::Joined:
+        return Joined;
+    case mtx::events::state::Visibility::Invited:
+        return Invited;
+    case mtx::events::state::Visibility::Shared:
+        return Shared;
+    }
+    return Shared;
 }
 
 bool
@@ -271,6 +292,20 @@ RoomSettings::canChangeAvatar() const
     try {
         return cache::hasEnoughPowerLevel(
           {EventType::RoomAvatar}, roomid_.toStdString(), utils::localUser().toStdString());
+    } catch (const lmdb::error &e) {
+        nhlog::db()->warn("lmdb error: {}", e.what());
+    }
+
+    return false;
+}
+
+bool
+RoomSettings::canChangeHistoryVisibility() const
+{
+    try {
+        return cache::hasEnoughPowerLevel({EventType::RoomHistoryVisibility},
+                                          roomid_.toStdString(),
+                                          utils::localUser().toStdString());
     } catch (const lmdb::error &e) {
         nhlog::db()->warn("lmdb error: {}", e.what());
     }
@@ -454,6 +489,52 @@ RoomSettings::changeName(const QString &name)
           }
 
           emit proxy->nameEventSent(QString::fromStdString(newName));
+      });
+}
+
+void
+RoomSettings::changeHistoryVisibility(Visibility value)
+{
+    auto tempVis = mtx::events::state::Visibility::Shared;
+
+    switch (value) {
+    case WorldReadable:
+        tempVis = mtx::events::state::Visibility::WorldReadable;
+        break;
+    case Joined:
+        tempVis = mtx::events::state::Visibility::Joined;
+        break;
+    case Invited:
+        tempVis = mtx::events::state::Visibility::Invited;
+        break;
+    case Shared:
+        tempVis = mtx::events::state::Visibility::Shared;
+        break;
+    default:
+        return;
+    }
+
+    using namespace mtx::events;
+    auto proxy = std::make_shared<ThreadProxy>();
+    connect(proxy.get(), &ThreadProxy::eventSent, this, [this, tempVis]() {
+        this->historyVisibility_ = tempVis;
+        emit historyVisibilityChanged();
+    });
+    connect(proxy.get(), &ThreadProxy::error, this, &RoomSettings::displayError);
+
+    state::HistoryVisibility body;
+    body.history_visibility = tempVis;
+
+    http::client()->send_state_event(
+      roomid_.toStdString(),
+      body,
+      [proxy](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+          if (err) {
+              emit proxy->error(QString::fromStdString(err->matrix_error.error));
+              return;
+          }
+
+          emit proxy->eventSent();
       });
 }
 

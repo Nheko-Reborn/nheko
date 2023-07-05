@@ -5,10 +5,14 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 
 class SelfVerificationStatus final : public QObject
 {
     Q_OBJECT
+
+    QML_ELEMENT
+    QML_SINGLETON
 
     Q_PROPERTY(Status status READ status NOTIFY statusChanged)
     Q_PROPERTY(bool hasSSSS READ hasSSSS NOTIFY hasSSSSChanged)

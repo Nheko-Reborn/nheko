@@ -15,11 +15,8 @@
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
-#include "TimelineModel.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-
-Q_DECLARE_METATYPE(Reaction)
 
 QCache<EventStore::IdIndex, olm::DecryptionResult> EventStore::decryptedEvents_{1000};
 QCache<EventStore::IdIndex, mtx::events::collections::TimelineEvents> EventStore::events_by_id_{
@@ -29,9 +26,6 @@ QCache<EventStore::Index, mtx::events::collections::TimelineEvents> EventStore::
 EventStore::EventStore(std::string room_id, QObject *)
   : room_id_(std::move(room_id))
 {
-    static auto reactionType = qRegisterMetaType<Reaction>();
-    (void)reactionType;
-
     auto range = cache::client()->getTimelineRange(room_id_);
 
     if (range) {
@@ -264,7 +258,8 @@ EventStore::EventStore(std::string room_id, QObject *)
                   auto idx = idToIndex(pending_event_id);
 
                   events_by_id_.remove({room_id_, pending_event_id});
-                  events_.remove({room_id_, toInternalIdx(*idx)});
+                  if (idx)
+                      events_.remove({room_id_, toInternalIdx(*idx)});
               }
           }
 
@@ -292,12 +287,12 @@ EventStore::EventStore(std::string room_id, QObject *)
 }
 
 void
-EventStore::addPending(mtx::events::collections::TimelineEvents event)
+EventStore::addPending(const mtx::events::collections::TimelineEvents &event)
 {
     if (this->thread() != QThread::currentThread())
         nhlog::db()->warn("{} called from a different thread!", __func__);
 
-    cache::client()->savePendingMessage(this->room_id_, {event});
+    cache::client()->savePendingMessage(this->room_id_, event);
     mtx::responses::Timeline events;
     events.limited = false;
     events.events.emplace_back(event);
@@ -760,11 +755,11 @@ EventStore::decryptEvent(const IdIndex &idx,
 }
 
 void
-EventStore::refetchOnlineKeyBackupKeys(TimelineModel *room)
+EventStore::refetchOnlineKeyBackupKeys()
 {
-    for (const auto &[session_id, request] : room->events.pending_key_requests) {
+    for (const auto &[session_id, request] : this->pending_key_requests) {
         (void)request;
-        olm::lookup_keybackup(room->events.room_id_, session_id);
+        olm::lookup_keybackup(this->room_id_, session_id);
     }
 }
 

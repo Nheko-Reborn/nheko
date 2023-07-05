@@ -20,8 +20,6 @@
 #include "timeline/Permissions.h"
 #include "timeline/TimelineModel.h"
 
-Q_DECLARE_METATYPE(mtx::common::ImageInfo)
-
 SingleImagePackModel::SingleImagePackModel(ImagePackInfo pack_, QObject *parent)
   : QAbstractListModel(parent)
   , roomid_(std::move(pack_.source_room))
@@ -30,8 +28,6 @@ SingleImagePackModel::SingleImagePackModel(ImagePackInfo pack_, QObject *parent)
   , pack(std::move(pack_.pack))
   , fromSpace_(pack_.from_space)
 {
-    [[maybe_unused]] static auto imageInfoType = qRegisterMetaType<mtx::common::ImageInfo>();
-
     if (!pack.pack)
         pack.pack = mtx::events::msc2545::ImagePack::PackDescription{};
 

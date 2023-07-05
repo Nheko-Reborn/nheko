@@ -4,11 +4,11 @@
 
 import "../"
 import "../ui/media"
-import QtMultimedia 5.15
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtMultimedia
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 Item {
     id: content
@@ -25,9 +25,9 @@ Item {
     property double divisor: isReply ? 4 : 2
     property int tempWidth: originalWidth < 1? 400: originalWidth
     implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
-    width: Math.min(parent.width, implicitWidth)
+    width: Math.min(parent?.width ?? implicitWidth, implicitWidth)
     height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
-    implicitHeight: height
+    //implicitHeight: height
 
     property int metadataWidth
     property bool fitsMetadata: (parent.width - fileInfoLabel.width) > metadataWidth+4
@@ -36,18 +36,18 @@ Item {
         id: mxcmedia
 
         // TODO: Show error in overlay or so?
-        onError: console.log(error)
         roomm: room
-        // desiredVolume is a float from 0.0 -> 1.0, MediaPlayer volume is an int from 0 to 100
-        // this value automatically gets clamped for us between these two values.
-        volume: mediaControls.desiredVolume * 100
-        muted: mediaControls.muted
+        audioOutput: AudioOutput {
+            muted: mediaControls.muted
+            volume: mediaControls.desiredVolume
+        }
+        videoOutput: videoOutput
     }
 
     Rectangle {
         id: videoContainer
 
-        color: type == MtxEvent.VideoMessage ? Nheko.colors.window : "transparent"
+        color: type == MtxEvent.VideoMessage ? palette.window : "transparent"
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
@@ -57,7 +57,7 @@ Item {
 
         Image {
             anchors.fill: parent
-            source: thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : "image://colorimage/:/icons/icons/ui/video-file.svg?" + Nheko.colors.windowText
+            source: thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : "image://colorimage/:/icons/icons/ui/video-file.svg?" + palette.windowText
             asynchronous: true
             fillMode: Image.PreserveAspectFit
 
@@ -68,43 +68,40 @@ Item {
                 clip: true
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectFit
-                source: mxcmedia
-                flushMode: VideoOutput.FirstFrame
                 orientation: mxcmedia.orientation
             }
 
         }
 
-    }
+        MediaControls {
+            id: mediaControls
 
-    MediaControls {
-        id: mediaControls
-
-        anchors.left: content.left
-        anchors.right: content.right
-        anchors.bottom: fileInfoLabel.top
-        playingVideo: type == MtxEvent.VideoMessage
-        positionValue: mxcmedia.position
-        duration: mediaLoaded ? mxcmedia.duration : content.duration
-        mediaLoaded: mxcmedia.loaded
-        mediaState: mxcmedia.state
-        onPositionChanged: mxcmedia.position = position
-        onPlayPauseActivated: mxcmedia.state == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
-        onLoadActivated: mxcmedia.eventId = eventId
+            anchors.left: videoContainer.left
+            anchors.right: videoContainer.right
+            anchors.bottom: videoContainer.bottom
+            playingVideo: type == MtxEvent.VideoMessage
+            positionValue: mxcmedia.position
+            duration: mediaLoaded ? mxcmedia.duration : content.duration
+            mediaLoaded: mxcmedia.loaded
+            mediaState: mxcmedia.playbackState
+            onPositionChanged: mxcmedia.position = position
+            onPlayPauseActivated: mxcmedia.playbackState == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
+            onLoadActivated: mxcmedia.eventId = eventId
+        }
     }
 
     // information about file name and file size
     Label {
         id: fileInfoLabel
 
-        anchors.bottom: content.bottom
+        anchors.top: videoContainer.bottom
         text: body + " [" + filesize + "]"
         textFormat: Text.RichText
         elide: Text.ElideRight
-        color: Nheko.colors.text
+        color: palette.text
 
         background: Rectangle {
-            color: Nheko.colors.base
+            color: palette.base
         }
 
     }

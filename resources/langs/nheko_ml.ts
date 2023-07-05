@@ -1391,11 +1391,6 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
-        <source>Select a file</source>
-        <translation>ഒരു ഫയൽ തിരഞ്ഞെടുക്കുക</translation>
-    </message>
-    <message>
         <location line="+0"/>
         <source>All Files (*)</source>
         <translation>എല്ലാ ഫയലുകളും (*)</translation>

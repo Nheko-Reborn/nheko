@@ -13,7 +13,7 @@ Item {
     required property bool isReply
     property bool keepFullText: !isReply
     property alias child: chooser.child
-    implicitWidth: (chooser.child && chooser.child.implicitWidth) ? chooser.child.implicitWidth : 0
+    //implicitWidth: chooser.child?.implicitWidth ?? 0
     required property double proportionalHeight
     required property int type
     required property string typeString
@@ -39,6 +39,8 @@ Item {
     property bool fitsMetadata: (chooser.child && chooser.child.fitsMetadata) ? chooser.child.fitsMetadata : false
     property int metadataWidth
 
+    implicitWidth: chooser.child?.implicitWidth
+
     height: chooser.child ? chooser.child.height : Nheko.paddingLarge
 
     DelegateChooser {
@@ -48,7 +50,7 @@ Item {
         roleValue: type
         //anchors.fill: parent
 
-        width: parent.width? parent.width: 0 // this should get rid of "cannot read property 'width' of null"
+        width: parent?.width ?? 0 // this should get rid of "cannot read property 'width' of null"
 
         DelegateChoice {
             roleValue: MtxEvent.UnknownEvent
@@ -78,7 +80,6 @@ Item {
                 }
 
                 Button {
-                    palette: Nheko.colors
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Go to replacement room")
                     onClicked: room.joinReplacementRoom(eventId)
@@ -149,7 +150,7 @@ Item {
 
             NoticeMessage {
                 formatted: TimelineManager.escapeEmoji(d.userName) + " " + d.formattedBody
-                color: TimelineManager.userColor(d.userId, Nheko.colors.base)
+                color: TimelineManager.userColor(d.userId, palette.base)
                 body: d.body
                 isOnlyEmoji: d.isOnlyEmoji
                 isReply: d.isReply
@@ -277,6 +278,20 @@ Item {
             Encrypted {
                 encryptionError: d.encryptionError
                 eventId: d.eventId
+            }
+
+        }
+
+        DelegateChoice {
+            roleValue: MtxEvent.ServerAcl
+
+            NoticeMessage {
+                body: formatted
+                isOnlyEmoji: false
+                isReply: d.isReply
+                keepFullText: d.keepFullText
+                isStateEvent: d.isStateEvent
+                formatted: qsTr("%1 changed which servers are allowed in this room.").arg(d.userName)
             }
 
         }
@@ -603,7 +618,7 @@ Item {
             roleValue: MtxEvent.Member
 
             ColumnLayout {
-                width: parent.width
+                width: parent?.width ?? 100
 
                 NoticeMessage {
                     body: formatted
@@ -617,7 +632,6 @@ Item {
 
                 Button {
                     visible: d.relatedEventCacheBuster, room.showAcceptKnockButton(d.eventId)
-                    palette: Nheko.colors
                     Layout.alignment: Qt.AlignHCenter
                     text: qsTr("Allow them in")
                     onClicked: room.acceptKnock(eventId)

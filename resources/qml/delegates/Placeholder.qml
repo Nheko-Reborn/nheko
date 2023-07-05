@@ -10,5 +10,5 @@ MatrixText {
 
     text: qsTr("unimplemented event: ") + typeString
 //    width: parent.width
-    color: Nheko.inactiveColors.text
+    color: palette.inactive.text
 }

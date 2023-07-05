@@ -6,34 +6,36 @@ import QtQuick 2.15
 import QtQuick.Particles 2.15
 
 Item {
+    id: effectRoot
     readonly property int maxLifespan: Math.max(confettiEmitter.lifeSpan, rainfallEmitter.lifeSpan)
+    required property bool shouldEffectsRun
 
     function pulseConfetti()
     {
-        confettiEmitter.pulse(parent.height * 2)
+        confettiEmitter.pulse(effectRoot.height * 2)
     }
 
     function pulseRainfall()
     {
-        rainfallEmitter.pulse(parent.height * 3.3)
+        rainfallEmitter.pulse(effectRoot.height * 3.3)
     }
 
     ParticleSystem {
         id: particleSystem
 
         Component.onCompleted: pause();
-        paused: !shouldEffectsRun
+        paused: !effectRoot.shouldEffectsRun
     }
 
     Emitter {
         id: confettiEmitter
 
         group: "confetti"
-        width: parent.width * 3/4
+        width: effectRoot.width * 3/4
         enabled: false
-        anchors.horizontalCenter: parent.horizontalCenter
-        y: parent.height
-        emitRate: Math.min(400 * Math.sqrt(parent.width * parent.height) / 870, 1000)
+        anchors.horizontalCenter: effectRoot.horizontalCenter
+        y: effectRoot.height
+        emitRate: Math.min(400 * Math.sqrt(effectRoot.width * effectRoot.height) / 870, 1000)
         lifeSpan: 15000
         system: particleSystem
         maximumEmitted: 500
@@ -42,8 +44,8 @@ Item {
         sizeVariation: 4
         velocity: PointDirection {
             x: 0
-            y: -Math.min(450 * parent.height / 700, 1000)
-            xVariation: Math.min(4 * parent.width / 7, 450)
+            y: -Math.min(450 * effectRoot.height / 700, 1000)
+            xVariation: Math.min(4 * effectRoot.width / 7, 450)
             yVariation: 250
         }
     }
@@ -74,7 +76,7 @@ Item {
     Gravity {
         system: particleSystem
         groups: ["confetti"]
-        anchors.fill: parent
+        anchors.fill: effectRoot
         magnitude: 350
         angle: 90
     }
@@ -83,11 +85,11 @@ Item {
         id: rainfallEmitter
 
         group: "rain"
-        width: parent.width
+        width: effectRoot.width
         enabled: false
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors.horizontalCenter: effectRoot.horizontalCenter
         y: -60
-        emitRate: parent.width / 50
+        emitRate: effectRoot.width / 50
         lifeSpan: 10000
         system: particleSystem
         velocity: PointDirection {

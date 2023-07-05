@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QAbstractListModel>
+#include <QQmlEngine>
 #include <QString>
 #include <string>
 #include <vector>
@@ -32,6 +33,7 @@ signals:
 class RoomDirectoryModel : public QAbstractListModel
 {
     Q_OBJECT
+    QML_ELEMENT
 
     Q_PROPERTY(bool loadingMoreRooms READ loadingMoreRooms NOTIFY loadingMoreRoomsChanged)
     Q_PROPERTY(
