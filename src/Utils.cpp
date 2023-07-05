@@ -1720,6 +1720,15 @@ utils::removeExpiredEvents()
                                     mtx::events::StateEvent<mtx::events::msg::Redacted>>(e))
                                   continue;
 
+                              // synapse protects these 2 against redaction
+                              if (std::holds_alternative<
+                                    mtx::events::StateEvent<mtx::events::state::Create>>(e))
+                                  continue;
+
+                              if (std::holds_alternative<
+                                    mtx::events::StateEvent<mtx::events::state::ServerAcl>>(e))
+                                  continue;
+
                               // skip events we don't know to protect us from mistakes.
                               if (std::holds_alternative<
                                     mtx::events::RoomEvent<mtx::events::Unknown>>(e))
@@ -1746,7 +1755,7 @@ utils::removeExpiredEvents()
                                                   .emplace(to_string(se.type), se.state_key)
                                                   .second;
                                             else
-                                                return false;
+                                                return true;
                                         },
                                         e))
                                       continue;
