@@ -1686,17 +1686,17 @@ utils::removeExpiredEvents()
                   });
             } else if (!state->currentRoom.empty()) {
                 mtx::http::MessagesOpts opts{};
-                opts.dir   = mtx::http::PaginationDirection::Backwards;
-                opts.from  = state->currentRoomPrevToken;
-                opts.limit = 1000;
-                opts.filter = state->filter;
+                opts.dir     = mtx::http::PaginationDirection::Backwards;
+                opts.from    = state->currentRoomPrevToken;
+                opts.limit   = 1000;
+                opts.filter  = state->filter;
                 opts.room_id = state->currentRoom;
 
                 http::client()->messages(
                   opts,
                   [state = std::move(state)](const mtx::responses::Messages &msgs,
-                                             mtx::http::RequestErr e) mutable {
-                      if (e || msgs.chunk.empty()) {
+                                             mtx::http::RequestErr error) mutable {
+                      if (error || msgs.chunk.empty()) {
                           state->currentRoom.clear();
                           state->currentRoomCount = 0;
                           state->currentRoomPrevToken.clear();
