@@ -1642,6 +1642,7 @@ utils::removeExpiredEvents()
         std::string filter;
 
         std::string currentRoom;
+        bool firstMessagesCall         = true;
         std::uint64_t currentRoomCount = 0;
         std::string currentRoomPrevToken;
         std::set<std::pair<std::string, std::string>> currentRoomStateEvents;
@@ -1685,6 +1686,13 @@ utils::removeExpiredEvents()
                       }
                   });
             } else if (!state->currentRoom.empty()) {
+                if (state->currentRoomPrevToken.empty() && !state->firstMessagesCall) {
+                    nhlog::net()->info("Finished room {}", state->currentRoom);
+                    state->currentRoom.clear();
+                    next(std::move(state));
+                    return;
+                }
+
                 mtx::http::MessagesOpts opts{};
                 opts.dir     = mtx::http::PaginationDirection::Backwards;
                 opts.from    = state->currentRoomPrevToken;
@@ -1692,17 +1700,21 @@ utils::removeExpiredEvents()
                 opts.filter  = state->filter;
                 opts.room_id = state->currentRoom;
 
+                state->firstMessagesCall = false;
+
                 http::client()->messages(
                   opts,
                   [state = std::move(state)](const mtx::responses::Messages &msgs,
                                              mtx::http::RequestErr error) mutable {
-                      if (error || msgs.chunk.empty()) {
+                      if (error) {
+                          // skip success handler
+                          nhlog::net()->info(
+                            "Finished room {} with error {}", state->currentRoom, *error);
                           state->currentRoom.clear();
-                          state->currentRoomCount = 0;
+                      } else if (msgs.chunk.empty()) {
                           state->currentRoomPrevToken.clear();
                       } else {
-                          if (!msgs.end.empty())
-                              state->currentRoomPrevToken = msgs.end;
+                          state->currentRoomPrevToken = msgs.end;
 
                           auto now = (uint64_t)QDateTime::currentMSecsSinceEpoch();
                           auto us  = http::client()->user_id().to_string();
@@ -1775,13 +1787,6 @@ utils::removeExpiredEvents()
                           }
                       }
 
-                      if (msgs.end.empty() && state->currentRoomRedactionQueue.empty()) {
-                          state->currentRoom.clear();
-                          state->currentRoomCount = 0;
-                          state->currentRoomPrevToken.clear();
-                          state->currentRoomStateEvents.clear();
-                      }
-
                       next(std::move(state));
                   });
             } else if (!state->roomsToUpdate.empty()) {
@@ -1795,6 +1800,12 @@ utils::removeExpiredEvents()
                     state->currentRoom   = room;
                     state->currentExpiry = state->globalExpiry->content;
                 }
+                state->firstMessagesCall    = true;
+                state->currentRoomCount     = 0;
+                state->currentRoomPrevToken = "";
+                state->currentRoomRedactionQueue.clear();
+                state->currentRoomStateEvents.clear();
+
                 state->roomsToUpdate.pop_back();
                 next(std::move(state));
             } else {
