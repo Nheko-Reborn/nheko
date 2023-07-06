@@ -82,6 +82,8 @@ static constexpr auto DEVICES_DB("devices");
 static constexpr auto DEVICE_KEYS_DB("device_keys");
 //! room_ids that have encryption enabled.
 static constexpr auto ENCRYPTED_ROOMS_DB("encrypted_rooms");
+//! Expiration progress for each room
+static constexpr auto EVENT_EXPIRATION_BG_JOB_DB("event_expiration_bg_job");
 
 //! room_id -> pickled OlmInboundGroupSession
 static constexpr auto INBOUND_MEGOLM_SESSIONS_DB("inbound_megolm_sessions");
@@ -327,7 +329,9 @@ Cache::setup()
     megolmSessionDataDb_     = lmdb::dbi::open(txn, MEGOLM_SESSIONS_DATA_DB, MDB_CREATE);
 
     // What rooms are encrypted
-    encryptedRooms_                      = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+    encryptedRooms_   = lmdb::dbi::open(txn, ENCRYPTED_ROOMS_DB, MDB_CREATE);
+    eventExpiryBgJob_ = lmdb::dbi::open(txn, EVENT_EXPIRATION_BG_JOB_DB, MDB_CREATE);
+
     [[maybe_unused]] auto verificationDb = getVerificationDb(txn);
     [[maybe_unused]] auto userKeysDb     = getUserKeysDb(txn);
 
@@ -582,6 +586,39 @@ Cache::pickleSecret()
     }
 
     return pickle_secret_;
+}
+
+void
+Cache::storeEventExpirationProgress(const std::string &room,
+                                    const std::string &expirationSettings,
+                                    const std::string &stopMarker)
+{
+    nlohmann::json j;
+    j["s"] = expirationSettings;
+    j["m"] = stopMarker;
+
+    auto txn = lmdb::txn::begin(env_);
+    eventExpiryBgJob_.put(txn, room, j.dump());
+    txn.commit();
+}
+
+std::string
+Cache::loadEventExpirationProgress(const std::string &room, const std::string &expirationSettings)
+
+{
+    try {
+        auto txn = ro_txn(env_);
+        std::string_view data;
+        if (!eventExpiryBgJob_.get(txn, room, data))
+            return "";
+
+        auto j = nlohmann::json::parse(data);
+        if (j.value("s", "") == expirationSettings)
+            return j.value("m", "");
+    } catch (...) {
+        return "";
+    }
+    return "";
 }
 
 void

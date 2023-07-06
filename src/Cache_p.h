@@ -87,6 +87,13 @@ public:
     //! Retrieve if the room is tombstoned (closed or replaced by a different room)
     bool getRoomIsTombstoned(lmdb::txn &txn, lmdb::dbi &statesdb);
 
+    // for the event expiry background job
+    void storeEventExpirationProgress(const std::string &room,
+                                      const std::string &expirationSettings,
+                                      const std::string &stopMarker);
+    std::string
+    loadEventExpirationProgress(const std::string &room, const std::string &expirationSettings);
+
     //! Get a specific state event
     template<typename T>
     std::optional<mtx::events::StateEvent<T>>
@@ -713,6 +720,8 @@ private:
     lmdb::dbi megolmSessionDataDb_;
 
     lmdb::dbi encryptedRooms_;
+
+    lmdb::dbi eventExpiryBgJob_;
 
     QString localUserId_;
     QString cacheDirectory_;

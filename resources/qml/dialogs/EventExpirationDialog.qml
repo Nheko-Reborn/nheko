@@ -104,7 +104,7 @@ ApplicationWindow {
             SpinBox {
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 from: 0
-                to: 1000
+                to: 1000000
                 stepSize: 1
                 value: eventExpiry.expireEventsAfterCount
                 onValueChanged: eventExpiry.expireEventsAfterCount = value
@@ -126,7 +126,7 @@ ApplicationWindow {
             SpinBox {
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 from: 0
-                to: 1000
+                to: 1000000
                 stepSize: 1
                 value: eventExpiry.protectLatestEvents
                 onValueChanged: eventExpiry.protectLatestEvents = value

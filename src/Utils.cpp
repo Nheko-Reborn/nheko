@@ -1467,7 +1467,7 @@ utils::updateSpaceVias()
                               ChatPage::instance()->callFunctionOnGuiThread(
                                 [state    = std::move(state),
                                  interval = e->matrix_error.retry_after]() {
-                                    QTimer::singleShot(interval,
+                                    QTimer::singleShot(interval * 3,
                                                        ChatPage::instance(),
                                                        [self = std::move(state)]() mutable {
                                                            next(std::move(self));
@@ -1502,7 +1502,7 @@ utils::updateSpaceVias()
                               ChatPage::instance()->callFunctionOnGuiThread(
                                 [state    = std::move(state),
                                  interval = e->matrix_error.retry_after]() {
-                                    QTimer::singleShot(interval,
+                                    QTimer::singleShot(interval * 3,
                                                        ChatPage::instance(),
                                                        [self = std::move(state)]() mutable {
                                                            next(std::move(self));
@@ -1644,9 +1644,19 @@ utils::removeExpiredEvents()
         std::string currentRoom;
         bool firstMessagesCall         = true;
         std::uint64_t currentRoomCount = 0;
+
+        // batch token for pagination
         std::string currentRoomPrevToken;
+        // event id of an event redacted in a previous run
+        std::string currentRoomStopAt;
+        // event id of first event redacted in the current run, hoping that the order stays the
+        // same.
+        std::string currentRoomFirstRedactedEvent;
+        // (evtype,state_key) tuple to keep the latest state event of each.
         std::set<std::pair<std::string, std::string>> currentRoomStateEvents;
+        // event ids pending redaction
         std::vector<std::string> currentRoomRedactionQueue;
+
         mtx::events::account_data::nheko_extensions::EventExpiry currentExpiry;
 
         static void next(std::shared_ptr<ApplyEventExpiration> state)
@@ -1664,7 +1674,8 @@ utils::removeExpiredEvents()
                               ChatPage::instance()->callFunctionOnGuiThread(
                                 [state    = std::move(state),
                                  interval = e->matrix_error.retry_after]() {
-                                    QTimer::singleShot(interval,
+                                    // triple interval to allow other traffic as well
+                                    QTimer::singleShot(interval * 3,
                                                        ChatPage::instance(),
                                                        [self = std::move(state)]() mutable {
                                                            next(std::move(self));
@@ -1681,6 +1692,10 @@ utils::removeExpiredEvents()
                           }
                       } else {
                           nhlog::net()->info("Redacted event {} in {}", evid, state->currentRoom);
+
+                          if (state->currentRoomFirstRedactedEvent.empty())
+                              state->currentRoomFirstRedactedEvent = evid;
+
                           state->currentRoomRedactionQueue.pop_back();
                           next(std::move(state));
                       }
@@ -1688,6 +1703,13 @@ utils::removeExpiredEvents()
             } else if (!state->currentRoom.empty()) {
                 if (state->currentRoomPrevToken.empty() && !state->firstMessagesCall) {
                     nhlog::net()->info("Finished room {}", state->currentRoom);
+
+                    if (!state->currentRoomFirstRedactedEvent.empty())
+                        cache::client()->storeEventExpirationProgress(
+                          state->currentRoom,
+                          nlohmann::json(state->currentExpiry).dump(),
+                          state->currentRoomFirstRedactedEvent);
+
                     state->currentRoom.clear();
                     next(std::move(state));
                     return;
@@ -1708,7 +1730,7 @@ utils::removeExpiredEvents()
                                              mtx::http::RequestErr error) mutable {
                       if (error) {
                           // skip success handler
-                          nhlog::net()->info(
+                          nhlog::net()->warn(
                             "Finished room {} with error {}", state->currentRoom, *error);
                           state->currentRoom.clear();
                       } else if (msgs.chunk.empty()) {
@@ -1725,8 +1747,22 @@ utils::removeExpiredEvents()
                                   continue;
 
                               if (std::holds_alternative<
-                                    mtx::events::RoomEvent<mtx::events::msg::Redacted>>(e))
+                                    mtx::events::RoomEvent<mtx::events::msg::Redacted>>(e) ||
+                                  std::holds_alternative<
+                                    mtx::events::StateEvent<mtx::events::msg::Redacted>>(e)) {
+                                  if (!state->currentRoomStopAt.empty() &&
+                                      mtx::accessors::event_id(e) == state->currentRoomStopAt) {
+                                      // There is no filter to remove redacted events from
+                                      // pagination, so we try to stop early by caching what event
+                                      // we redacted last if we reached the end of a room.
+                                      nhlog::net()->info(
+                                        "Found previous redaction marker, stopping early: {}",
+                                        state->currentRoom);
+                                      state->currentRoomPrevToken.clear();
+                                      break;
+                                  }
                                   continue;
+                              }
 
                               if (std::holds_alternative<
                                     mtx::events::StateEvent<mtx::events::msg::Redacted>>(e))
@@ -1805,6 +1841,9 @@ utils::removeExpiredEvents()
                 state->currentRoomPrevToken = "";
                 state->currentRoomRedactionQueue.clear();
                 state->currentRoomStateEvents.clear();
+
+                state->currentRoomStopAt = cache::client()->loadEventExpirationProgress(
+                  state->currentRoom, nlohmann::json(state->currentExpiry).dump());
 
                 state->roomsToUpdate.pop_back();
                 next(std::move(state));
