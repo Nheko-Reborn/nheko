@@ -348,11 +348,6 @@ Pane {
         }
     }
     Platform.MessageDialog {
-        id: uiaErrorDialog
-
-        buttons: Platform.MessageDialog.Ok
-    }
-    Platform.MessageDialog {
         id: uiaConfirmationLinkDialog
 
         buttons: Platform.MessageDialog.Ok
@@ -360,16 +355,13 @@ Pane {
 
         onAccepted: UIA.continue3pidReceived()
     }
+
     Connections {
         function onConfirm3pidToken() {
             uiaConfirmationLinkDialog.open();
         }
         function onEmail() {
             uiaEmailPrompt.show();
-        }
-        function onError(msg) {
-            uiaErrorDialog.text = msg;
-            uiaErrorDialog.open();
         }
         function onPassword() {
             console.log("UIA: password needed");
@@ -380,6 +372,18 @@ Pane {
         }
         function onPrompt3pidToken() {
             uiaTokenPrompt.show();
+        }
+        function onReCaptcha(recaptcha) {
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/ReCaptchaDialog.qml");
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {
+                        "recaptcha": recaptcha
+                    });
+                dialog.show();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
 
         target: UIA

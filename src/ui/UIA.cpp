@@ -13,13 +13,13 @@
 
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "ReCaptcha.h"
 #include "dialogs/FallbackAuth.h"
-#include "dialogs/ReCaptcha.h"
 
 UIA *
 UIA::instance()
 {
-    static UIA uia;
+    static UIA uia{nullptr};
     return &uia;
 }
 
@@ -99,24 +99,16 @@ UIA::genericHandler(QString context)
             } else if (current_stage == mtx::user_interactive::auth_types::msisdn) {
                 emit phoneNumber();
             } else if (current_stage == mtx::user_interactive::auth_types::recaptcha) {
-                auto captchaDialog =
-                  new dialogs::ReCaptcha(QString::fromStdString(u.session), nullptr);
-                captchaDialog->setWindowTitle(context);
-
-                connect(
-                  captchaDialog, &dialogs::ReCaptcha::confirmation, this, [captchaDialog, h, u]() {
-                      captchaDialog->close();
-                      captchaDialog->deleteLater();
-                      h.next(mtx::user_interactive::Auth{u.session,
-                                                         mtx::user_interactive::auth::Fallback{}});
-                  });
-
-                connect(captchaDialog, &dialogs::ReCaptcha::cancel, this, [this]() {
+                auto captcha = new ReCaptcha(QString::fromStdString(u.session), context, nullptr);
+                QQmlEngine::setObjectOwnership(captcha, QQmlEngine::JavaScriptOwnership);
+                connect(captcha, &ReCaptcha::confirmation, this, [h, u]() {
+                    h.next(mtx::user_interactive::Auth{u.session,
+                                                       mtx::user_interactive::auth::Fallback{}});
+                });
+                connect(captcha, &ReCaptcha::cancelled, this, [this]() {
                     emit error(tr("Registration aborted"));
                 });
-
-                QTimer::singleShot(0, this, [captchaDialog]() { captchaDialog->show(); });
-
+                emit reCaptcha(captcha);
             } else if (current_stage == mtx::user_interactive::auth_types::dummy) {
                 h.next(
                   mtx::user_interactive::Auth{u.session, mtx::user_interactive::auth::Dummy{}});

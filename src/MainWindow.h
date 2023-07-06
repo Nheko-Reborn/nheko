@@ -34,7 +34,6 @@ namespace dialogs {
 class CreateRoom;
 class InviteUsers;
 class MemberList;
-class ReCaptcha;
 }
 
 class NhekoFixupPaletteEventFilter final : public QObject
