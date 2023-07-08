@@ -105,11 +105,10 @@ Item {
             MatrixTextField {
                 id: hsLabel
                 enabled: visible
-                visible: login.homeserverNeeded
 
                 Layout.fillWidth: true
                 label: qsTr("Homeserver address")
-                placeholderText: qsTr("server.my:8787")
+                placeholderText: login.homeserverNeeded ? qsTr("need a homeserver, forExample: server.my:8787") : qsTr("martix.org")
                 text: login.homeserver
                 onEditingFinished: login.homeserver = text
                 ToolTip.text: qsTr("The address that can be used to contact you homeserver's client API.\nExample: https://server.my:8787")
