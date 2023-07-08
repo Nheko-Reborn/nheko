@@ -2,10 +2,11 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.3
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 AbstractButton {
     required property int type
@@ -17,13 +18,13 @@ AbstractButton {
     required property string filename
     required property bool isReply
     required property string eventId
+    required property int containerHeight
     property double divisor: isReply ? 5 : 3
 
     property int tempWidth: originalWidth < 1? 400: originalWidth
 
-    implicitWidth: Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1))
-    width: Math.min(parent?.width ?? 2000,implicitWidth)
-    height: width*proportionalHeight
+    Layout.preferredWidth: Math.round(tempWidth*Math.min((containerHeight/divisor)/(tempWidth*proportionalHeight), 1))
+    Layout.preferredHeight: width*proportionalHeight
     hoverEnabled: true
 
     state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"

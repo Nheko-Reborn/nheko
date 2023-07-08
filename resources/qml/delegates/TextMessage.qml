@@ -12,7 +12,7 @@ MatrixText {
     required property bool isOnlyEmoji
     required property bool isReply
     required property bool keepFullText
-    required property string formattedBody
+    required property string formatted
 
     property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
     property int metadataWidth: 100
@@ -40,7 +40,7 @@ MatrixText {
         background-color: " + palette.text + ";
     }" : "") +  // TODO(Nico): Figure out how to support mobile
     "</style>
-    " + formattedBody.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
+    " + formatted.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
     Layout.maximumHeight: !keepFullText ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
     clip: !keepFullText
     selectByMouse: !Settings.mobileMode && !isReply

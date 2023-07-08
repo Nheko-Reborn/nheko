@@ -191,17 +191,97 @@ Item {
                 roleValues: [
                     MtxEvent.TextMessage,
                     MtxEvent.NoticeMessage,
+                    MtxEvent.ElementEffectMessage,
+                    MtxEvent.UnknownMessage,
                 ]
                 TextMessage {
-                    id: textMes
-
                     keepFullText: true
                     required property string userId
                     required property string userName
+                    required property string formattedBody
+                    required property int type
+
+                    color: type == MtxEvent.NoticeMessage ? palette.buttonText : palette.text
+                    font.italic: type == MtxEvent.NoticeMessage
+                    formatted: formattedBody
 
                     Layout.fillWidth: true
                     //Layout.maximumWidth: implicitWidth
 
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.EmoteMessage,
+                ]
+                TextMessage {
+                    keepFullText: true
+                    required property string userId
+                    required property string userName
+                    required property string formattedBody
+
+                    formatted: TimelineManager.escapeEmoji(userName) + " " + formattedBody
+
+                    color: TimelineManager.userColor(userId, palette.base)
+                    font.italic: true
+
+                    Layout.fillWidth: true
+                    //Layout.maximumWidth: implicitWidth
+
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.CanonicalAlias,
+                    MtxEvent.ServerAcl,
+                    MtxEvent.Name,
+                    MtxEvent.Topic,
+                    MtxEvent.Avatar,
+                    MtxEvent.PinnedEvents,
+                    MtxEvent.ImagePackInRoom,
+                    MtxEvent.SpaceParent,
+                    MtxEvent.RoomCreate,
+                    MtxEvent.PowerLevels,
+                    MtxEvent.PolicyRuleUser,
+                    MtxEvent.PolicyRuleRoom,
+                    MtxEvent.PolicyRuleServer,
+                    MtxEvent.RoomJoinRules,
+                    MtxEvent.RoomHistoryVisibility,
+                    MtxEvent.RoomGuestAccess,
+                ]
+                TextMessage {
+                    keepFullText: true
+
+                    required property string userId
+                    required property string userName
+                    required property string formattedStateEvent
+
+                    isOnlyEmoji: false
+                    text: formattedStateEvent
+                    formatted: ''
+                    body: ''
+
+                    color: palette.buttonText
+                    font.italic: true
+
+                    Layout.fillWidth: true
+                    //Layout.maximumWidth: implicitWidth
+
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.ImageMessage,
+                    MtxEvent.Sticker,
+                ]
+                ImageMessage {
+                    Layout.fillWidth: true
+
+                    containerHeight: timelineView.height
+                    Layout.maximumWidth: tempWidth
                 }
             }
 

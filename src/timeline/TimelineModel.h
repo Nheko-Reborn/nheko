@@ -238,6 +238,7 @@ public:
         IsOnlyEmoji,
         Body,
         FormattedBody,
+        FormattedStateEvent,
         IsSender,
         UserId,
         UserName,
@@ -310,11 +311,15 @@ public:
     Q_INVOKABLE void joinReplacementRoom(const QString &id);
     Q_INVOKABLE QString formatMemberEvent(const QString &id);
     Q_INVOKABLE QString formatJoinRuleEvent(const QString &id);
-    Q_INVOKABLE QString formatHistoryVisibilityEvent(const QString &id);
-    Q_INVOKABLE QString formatGuestAccessEvent(const QString &id);
-    Q_INVOKABLE QString formatPowerLevelEvent(const QString &id);
-    Q_INVOKABLE QString formatImagePackEvent(const QString &id);
-    Q_INVOKABLE QString formatPolicyRule(const QString &id);
+    QString formatHistoryVisibilityEvent(
+      const mtx::events::StateEvent<mtx::events::state::HistoryVisibility> &event) const;
+    QString
+    formatGuestAccessEvent(const mtx::events::StateEvent<mtx::events::state::GuestAccess> &) const;
+    QString formatPowerLevelEvent(
+      const mtx::events::StateEvent<mtx::events::state::PowerLevels> &event) const;
+    QString formatImagePackEvent(
+      const mtx::events::StateEvent<mtx::events::msc2545::ImagePack> &event) const;
+    Q_INVOKABLE QString formatPolicyRule(const QString &id) const;
     Q_INVOKABLE QVariantMap formatRedactedEvent(const QString &id);
 
     Q_INVOKABLE void viewRawMessage(const QString &id);

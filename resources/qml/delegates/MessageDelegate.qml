@@ -175,6 +175,7 @@ Item {
                 isReply: d.isReply
                 eventId: d.eventId
                 metadataWidth: d.metadataWidth
+                containerHeight: timelineView.height
             }
 
         }
@@ -193,6 +194,7 @@ Item {
                 isReply: d.isReply
                 eventId: d.eventId
                 metadataWidth: d.metadataWidth
+                containerHeight: timelineView.height
             }
 
         }
