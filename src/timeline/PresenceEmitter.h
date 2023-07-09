@@ -20,7 +20,7 @@ class PresenceEmitter final : public QObject
     QML_SINGLETON
 
 public:
-    PresenceEmitter(QObject *p = nullptr)
+    PresenceEmitter(QObject *p)
       : QObject(p)
     {
         instance_ = this;
