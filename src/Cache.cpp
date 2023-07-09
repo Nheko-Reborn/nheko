@@ -3790,10 +3790,27 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
         }
     }
 
-    nlohmann::json orderEntry = nlohmann::json::object();
-    orderEntry["event_id"]    = event_id_val;
-    orderEntry["prev_batch"]  = res.end;
-    orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
+    if (!event_id_val.empty()) {
+        nlohmann::json orderEntry = nlohmann::json::object();
+        orderEntry["event_id"]    = event_id_val;
+        orderEntry["prev_batch"]  = res.end;
+        orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
+    } else if (!res.chunk.empty()) {
+        // to not break pagination, even if all events are redactions we try to persist something in
+        // the batch.
+
+        nlohmann::json orderEntry = nlohmann::json::object();
+        event_id_val              = mtx::accessors::event_id(res.chunk.back());
+        --index;
+
+        auto event = mtx::accessors::serialize_event(res.chunk.back()).dump();
+        eventsDb.put(txn, event_id_val, event);
+        evToOrderDb.put(txn, event_id_val, lmdb::to_sv(index));
+
+        orderEntry["event_id"]   = event_id_val;
+        orderEntry["prev_batch"] = res.end;
+        orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
+    }
 
     txn.commit();
 
