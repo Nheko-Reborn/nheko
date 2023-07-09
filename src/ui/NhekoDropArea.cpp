@@ -38,6 +38,7 @@ NhekoDropArea::dropEvent(QDropEvent *event)
         auto model = ChatPage::instance()->timelineManager()->rooms()->getRoomById(roomid_);
         if (model) {
             model->input()->insertMimeData(event->mimeData());
+            ChatPage::instance()->timelineManager()->focusMessageInput();
         }
     }
 }
