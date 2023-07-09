@@ -1490,9 +1490,12 @@ TimelineModel::redactEvent(const QString &id, const QString &reason)
           [this, id, reason](const mtx::responses::EventId &, mtx::http::RequestErr err) {
               if (err) {
                   if (err->status_code == 429 && err->matrix_error.retry_after.count() != 0) {
-                      QTimer::singleShot(err->matrix_error.retry_after, this, [this, id, reason]() {
-                          this->redactEvent(id, reason);
-                      });
+                      ChatPage::instance()->callFunctionOnGuiThread(
+                        [this, id, reason, interval = err->matrix_error.retry_after] {
+                            QTimer::singleShot(interval * 2, this, [this, id, reason]() {
+                                this->redactEvent(id, reason);
+                            });
+                        });
                       return;
                   }
                   emit redactionFailed(tr("Message redaction failed: %1")
