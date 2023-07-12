@@ -5059,12 +5059,12 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
     <message>
         <location line="-11"/>
         <source>You sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetit confetteja</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent some confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lähetti confetteja</translation>
     </message>
     <message>
         <location line="+15"/>
