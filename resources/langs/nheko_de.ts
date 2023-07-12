@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de">
+<TS version="2.1" language="de_DE">
 <context>
     <name>ActiveCallBar</name>
     <message>
@@ -1741,7 +1741,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+34"/>
         <source>%1 changed which servers are allowed in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat die erlaubten Server in diesem Raum geändert.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1913,7 +1913,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+11"/>
         <source>Go to message</source>
-        <translation type="unfinished"></translation>
+        <translation>Springe zu Nachricht</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1923,7 +1923,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+187"/>
         <source>%1&apos;s status message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1s Statusnachricht</translation>
     </message>
     <message>
         <location line="+69"/>
@@ -1938,7 +1938,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+9"/>
         <source>Go to &amp;message</source>
-        <translation type="unfinished"></translation>
+        <translation>Gehe zu &amp;Nachricht</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2569,22 +2569,22 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location filename="../qml/dialogs/ReCaptchaDialog.qml" line="+40"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished">Löse das reCAPTCHA und drücke den &quot;Bestätigen&quot;-Knopf</translation>
+        <translation>Löse das reCAPTCHA und drücke den &quot;Bestätigen&quot;-Knopf</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished">Öffne reCAPTCHA</translation>
+        <translation>Öffne reCAPTCHA</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cancel</source>
-        <translation type="unfinished">Abbrechen</translation>
+        <translation>Abbrechen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Confirm</source>
-        <translation type="unfinished">Bestätigen</translation>
+        <translation>Bestätigen</translation>
     </message>
 </context>
 <context>
@@ -3078,7 +3078,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+31"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished">BENACHRICHTIGUNGEN</translation>
+        <translation>BENACHRICHTIGUNGEN</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3103,7 +3103,7 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+10"/>
         <source>ENTRY PERMISSIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>ZUTRITTSBERECHTIGUNGEN</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3149,22 +3149,22 @@ Beispiel: https://mein.server:8787</translation>
     <message>
         <location line="+7"/>
         <source>MESSAGE VISIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>NACHRICHTEN SICHTBARKEIT</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Allow viewing history without joining</source>
-        <translation type="unfinished"></translation>
+        <translation>Erlaube Nachrichten ohne Beitritt zu lesen</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This is useful to see previews of the room or view it on public websites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dies ist nützlich um eine Vorschau des Raums zu ermöglichen oder diesen auf öffentlichen Webseiten sehen zu können.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Members can see messages since</source>
-        <translation type="unfinished"></translation>
+        <translation>Teilnehmer können Nachrichten sehen ab</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3627,7 +3627,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished">Ändere welche Packungen aktiv sind, entferne oder erstelle neue Packungen.</translation>
+        <translation>Ändere welche Packungen aktiv sind, entferne oder erstelle neue Packungen.</translation>
     </message>
 </context>
 <context>
@@ -4077,7 +4077,7 @@ Grund: %4</translation>
     <message>
         <location line="+102"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished">Du wirst den ganzen Raum eine Benachrichtigung schicken</translation>
+        <translation>Du wirst den ganzen Raum eine Benachrichtigung schicken</translation>
     </message>
     <message>
         <location line="+4"/>

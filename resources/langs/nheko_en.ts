@@ -3629,7 +3629,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished">Change what packs are enabled, remove packs, or create new ones</translation>
+        <translation>Change what packs are enabled, remove packs, or create new ones</translation>
     </message>
 </context>
 <context>
@@ -4084,7 +4084,7 @@ Reason: %4</translation>
     <message>
         <location line="+4"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
-        <translation type="unfinished"></translation>
+        <translation>The command /%1 is not recognized and will be sent as part of your message</translation>
     </message>
     <message>
         <location line="+5"/>
