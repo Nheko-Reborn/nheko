@@ -693,13 +693,6 @@ set_target_properties(nheko
 		AUTOMOC ON)
 
 #
-# Bundle translations
-#
-file(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
-qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES ${LANG_TS_SRC})
-
-
-#
 # Add qml files
 #
 
@@ -822,6 +815,14 @@ qt_add_qml_module(nheko
 	#qt_target_qml_sources(nheko
 	#	#PREFIX "/"
 	#)
+
+
+#
+# Bundle translations
+#
+file(GLOB LANG_TS_SRC "${CMAKE_CURRENT_SOURCE_DIR}/resources/langs/*.ts")
+qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES
+	${LANG_TS_SRC} SOURCES ${QML_SOURCES} ${SRC_FILES})
 
 
 if(WIN32)

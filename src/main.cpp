@@ -334,10 +334,21 @@ main(int argc, char *argv[])
 
     QTranslator qtTranslator;
     if (qtTranslator.load(QLocale(),
-                          QStringLiteral("qt"),
+                          QStringLiteral("qtbase"),
                           QStringLiteral("_"),
-                          QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+                          QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
         app.installTranslator(&qtTranslator);
+    } else
+        qDebug() << "Failed to load qtbase translations: "
+                 << QLibraryInfo::path(QLibraryInfo::TranslationsPath);
+    QTranslator qmlTranslator;
+    if (qmlTranslator.load(QLocale(),
+                           QStringLiteral("qtdeclarative"),
+                           QStringLiteral("_"),
+                           QLibraryInfo::path(QLibraryInfo::TranslationsPath))) {
+        app.installTranslator(&qmlTranslator);
+    } else
+        qDebug() << "Failed to load qtdeclarative translations";
 
     QTranslator appTranslator;
     if (appTranslator.load(QLocale(),
@@ -345,6 +356,8 @@ main(int argc, char *argv[])
                            QStringLiteral("_"),
                            QStringLiteral(":/translations")))
         app.installTranslator(&appTranslator);
+    else
+        qDebug() << "Failed to load nheko translations";
 
     MainWindow w(nullptr);
     // QQuickView w;
