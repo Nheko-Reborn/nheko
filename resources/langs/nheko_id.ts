@@ -38,12 +38,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+877"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -68,8 +68,8 @@
         <location line="-631"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n pesan yang belum dibaca dalam ruangan %1</numerusform>
         </translation>
     </message>
     <message>
@@ -383,12 +383,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+16"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;jenis pesan&gt; [pesan]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -534,12 +534,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan dengan hujan.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan dengan jenis pesan khusus.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -664,7 +664,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <location filename="../../src/ui/EventExpiry.cpp" line="+49"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished">Gagal menetapkan peristiwa tersembunyi: %1</translation>
+        <translation>Gagal menetapkan peristiwa tersembunyi: %1</translation>
     </message>
 </context>
 <context>
@@ -672,7 +672,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="+311"/>
         <source>Account Pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Paket Akun</translation>
     </message>
 </context>
 <context>
@@ -1218,7 +1218,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>This room is possibly inaccessible</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan ini mungkin tidak dapat diakses</translation>
     </message>
 </context>
 <context>
@@ -1848,7 +1848,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Sort rooms alphabetically</source>
-        <translation type="unfinished"></translation>
+        <translation>Urutkan ruangan secara abjad</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2113,12 +2113,12 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Periodically update community routing information</source>
-        <translation type="unfinished"></translation>
+        <translation>Perbarui informasi perutean komunitas secara berkala</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Periodically delete expired events</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus peristiwa yang telah kedaluwarsa secara berkala</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -2203,14 +2203,18 @@ Ini akan mengaktifkan atau menonaktifkan pengiriman pemberitahuan pengetikan ke 
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan ruangan dengan pesan baru terlebih dahulu.
+Jika tidak aktif, daftar ruangan hanya akan diurutkan berdasarkan urutan penyortiran yang diinginkan.
+Jika aktif, ruangan yang memiliki notifikasi aktif (lingkaran kecil dengan angka di dalamnya) akan diurutkan di atas. Ruangan yang telah kamu nonaktifkan masih akan disortir berdasarkan urutan pilihan, karena kamu tampaknya tidak menganggapnya sama pentingnya dengan ruangan lain.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Sort rooms alphabetically.
 If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
 If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Urutkan kamar berdasarkan abjad.
+Jika tidak aktif, daftar ruangan akan diurutkan berdasarkan stempel waktu pesan terakhir di sebuah ruangan.
+Jika diaktifkan, ruangan yang datang lebih dulu menurut abjad akan diurutkan lebih awal dari yang datang belakangan.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2380,12 +2384,12 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="+6"/>
         <source>To allow new users to join a community, the community needs to expose some information about what servers participate in a room to community members. Since the room participants can change over time, this needs to be updated from time to time. This setting enables a background job to do that automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>Untuk mengizinkan pengguna baru bergabung dengan komunitas, komunitas perlu mengungkapkan beberapa informasi tentang server apa yang berpartisipasi dalam suatu ruangan kepada anggota komunitas. Karena peserta ruangan dapat berubah dari waktu ke waktu, hal ini perlu diperbarui dari waktu ke waktu. Pengaturan ini memungkinkan pekerjaan latar belakang untuk melakukannya secara otomatis.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Regularly redact expired events as specified in the event expiration configuration. Since this is currently not executed server side, you need to have one client running this regularly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hapus peristiwa yang telahkedaluwarsa secara berkala seperti yang ditentukan dalam konfigurasi kedaluwarsa peristiwa. Karena ini saat ini tidak dijalankan di sisi server, kamu harus memiliki satu klien yang menjalankan ini secara berkala.</translation>
     </message>
     <message>
         <location line="+463"/>
@@ -2484,42 +2488,42 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="-290"/>
         <source>People</source>
-        <translation type="unfinished">Orang</translation>
+        <translation>Orang</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished">Alam</translation>
+        <translation>Alam</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished">Makanan</translation>
+        <translation>Makanan</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Aktivitas</translation>
+        <translation>Aktivitas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished">Tempat</translation>
+        <translation>Tempat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Objek</translation>
+        <translation>Objek</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Simbol</translation>
+        <translation>Simbol</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Bendera</translation>
+        <translation>Bendera</translation>
     </message>
 </context>
 <context>
@@ -2599,12 +2603,12 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="-11"/>
         <source>You sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamu mengirim efek pesan</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengirim efek pesan</translation>
     </message>
     <message>
         <location line="+15"/>
