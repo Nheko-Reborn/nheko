@@ -497,57 +497,57 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+28"/>
         <source>/confetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/confetti [viesti]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowconfetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowconfetti [viesti]</translation>
     </message>
     <message>
         <location line="-16"/>
         <source>/md &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/md &lt;viesti&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/md &lt;viesti&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/plain &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/plain &lt;viesti&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbow &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbow &lt;viesti&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowme &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowme &lt;viesti&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/notice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice &lt;viesti&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbownotice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbownotice &lt;viesti&gt;</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;viestin viite&gt;</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä tekemistä kuvaava viesti.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -593,7 +593,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Poista tapahtuma tai kaikki ḱäyttäjän paikallisessa välimuistissa olevat viestit.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -613,12 +613,12 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>┯━┯╭( º _ º╭)</source>
-        <translation type="unfinished"></translation>
+        <translation>┯━┯╭( º _ º╭)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ノ┬─┬ノ ︵ ( \o°o)\</source>
-        <translation type="unfinished"></translation>
+        <translation>ノ┬─┬ノ ︵ ( \o°o)\</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -643,7 +643,7 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä commonmark-muotoiltu viesti poistaen käytöstä enimmät laajennukset verrattaessa /md-komentoon.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -663,37 +663,37 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä bottiviesti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä bottiviesti sateenkaaren värein.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä viesti confetin kera.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lähetä viesti sateenkaaren väreissä confetin kera.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Siirry tiettyyn viestiin käyttäen tapahtumatunnistetta, indeksiä tai matrix: -linkkiä</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muunna huone yksityiskeskusteluksi.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muunna yksityiskeskustelu huoneeksi.</translation>
     </message>
 </context>
 <context>
@@ -1104,12 +1104,12 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+43"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 otti käyttöön päästä-päähän salauksen</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Salaus pitää viestisi turvallisena sallien vain vastaanottajien lukea sen. Saadaksesi lisäturvallisuutta varmistaen keskustelevasi oikeiden henkilöiden kanssa, voit varmistaa heidät oikeassa elämässä.</translation>
     </message>
 </context>
 <context>
@@ -1403,6 +1403,11 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Tiedoston &quot;%1&quot; lähetys epäonnistui</translation>
     </message>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
+        <source>Select file(s)</source>
+        <translation>Valitse tiedosto(t)</translation>
+    </message>
 </context>
 <context>
     <name>InviteDialog</name>
@@ -1420,12 +1425,12 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
     <message>
         <location line="-13"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Hae käyttäjää</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Hae palvelimella</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1734,7 +1739,7 @@ Esimerkki: https://palvelime.ni:8787</translation>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 valitsi vastauksen</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4214,7 +4219,7 @@ Syy: %4</translation>
     <message>
         <location line="+4"/>
         <source>Scrollbars in room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Vierityspalkit huoneluettelossa</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4309,12 +4314,12 @@ Syy: %4</translation>
     <message>
         <location line="+4"/>
         <source>Display fancy effects such as confetti</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä hienot tehosteet, kuten confetti</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Vähennä tai poista animaatiot</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4439,7 +4444,7 @@ Syy: %4</translation>
     <message>
         <location line="+2"/>
         <source>ACCESSIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>SAAVUTETTAVUUS</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4553,7 +4558,7 @@ Aseta nollaan, jotta sumennetaan heti kohdistus kadotetaan. Suurin arvo 1 tunti 
     <message>
         <location line="+4"/>
         <source>Shows scrollbars in the room list and communities list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näytä vierityspalkit huone- ja yhteisöluetteloissa.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4565,7 +4570,7 @@ Kun poissa päältä, kaikki viestit lähetetään tavallisena tekstinä.</trans
     <message>
         <location line="+4"/>
         <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Käänteistä Enter-näppäimen toiminta syötelaatikossa saaden vaihto+Enter painikkeet lähettämään viestin ja tehden uuden rivin pelkällä enter-painikkeella.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4619,12 +4624,12 @@ POIS - neliö, PÄÄLLÄ - ympyrä.</translation>
     <message>
         <location line="+3"/>
         <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Joitakin viestejä voidaan lähettää hienoilla tehosteilla. Esimerkiksi &apos;/confetti&apos;-komennolla lähetetyt viestit näyttävät confettia ruudulla.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko käyttää animaatioita useissa paikoissa tehden asioista nättejä. Tämä asetus sallii niiden poistamisen käytöstä jos ne aiheuttavat huonovointisuutta.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4915,12 +4920,12 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Vähennä animaatioita</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nheko käyttää animaatioita useissa paikoissa tehden asioista nättejä. Tämä asetus sallii niiden poistamisen käytöstä jos ne aiheuttavat huonovointisuutta.</translation>
     </message>
 </context>
 <context>
