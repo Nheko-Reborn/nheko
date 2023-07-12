@@ -1401,6 +1401,11 @@ You may optionally provide a reason for others to accept your knock:</source>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>上传 “%1” 失败</translation>
     </message>
+    <message>
+        <location filename="../../src/timeline/InputBar.cpp" line="+372"/>
+        <source>Select file(s)</source>
+        <translation>选择文件</translation>
+    </message>
 </context>
 <context>
     <name>InviteDialog</name>
