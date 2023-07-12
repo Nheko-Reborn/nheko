@@ -6,33 +6,33 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Bellen…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Verbinden…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm wordt gedeeld.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon/verberg miniatuur</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Microfoon aanzetten</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Microfoon dempen</translation>
     </message>
 </context>
 <context>
@@ -56,47 +56,47 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+26"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliassen voor %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>List van aliassen voor deze kamer. Normaal kan je alleen aliassen toevoegen op je eigen server. Je kan een enkele primaire alias hebben en meerdere secundaire aliassen.</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Primaire alias</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Primaire alias maken</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Als alias in deze kamer publiceren</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Publiceer in kamerlijst</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder deze alias</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#nieuwe-alias:server.domein</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen</translation>
     </message>
 </context>
 <context>
@@ -104,27 +104,27 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+26"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen voor toegestane kamers</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lijst van kamers die toegang tot deze kamer verlenen. Iedereen in eender van deze kamers kan deze kamer binnentreden.</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Moedergemeenschap</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Andere kamer</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer verdere kamers toe die nog niet in de lijst staan...</translation>
     </message>
 </context>
 <context>
@@ -149,17 +149,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+75"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Video oproep</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Audio oproep</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen microfoon gevonden.</translation>
     </message>
 </context>
 <context>
@@ -167,42 +167,42 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+65"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Video oproep</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Audio oproep</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Apparaten</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanvaarden</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen microfoon gevonden.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekende microfoon: %1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekende camera: %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Afwijzen</translation>
     </message>
 </context>
 <context>
@@ -443,7 +443,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/ChatPage.qml" line="+36"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen netwerkverbinding</translation>
     </message>
 </context>
 <context>
@@ -519,7 +519,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>/md &lt;bericht&gt;</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <source>/cmark &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>/plain &lt;message&gt;</source>
         <translation>/plain &lt;bericht&gt;</translation>
     </message>
@@ -554,12 +559,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>/rainbowconfetti [bericht]</translation>
     </message>
     <message>
-        <location line="-14"/>
-        <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
+        <location line="+2"/>
         <source>/rainfall [message]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -740,22 +740,22 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+123"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitvouwen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Invouwen</translation>
     </message>
     <message>
         <location line="+87"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat geen meldingteller zien voor deze groep of markering.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verberg standaard kamers met deze markering of uit deze groep.</translation>
     </message>
 </context>
 <context>
@@ -836,40 +836,40 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+19"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevestig groep binnentreden</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Bevestig kamer binnentreden</translation>
     </message>
     <message numerus="yes">
         <location line="+66"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n deelnemer</numerusform>
+            <numerusform>%n deelnemers</numerusform>
         </translation>
     </message>
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer is niet direct begaanbaar. Je kan echter aankloppen en deelnemers aan de kamer kunnen je verzoek dan inwilligen of afwijzen. Je kan optioneel hieronder nog een reden opgeven:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Wil je deze kamer binnentreden? Je kan optioneel hieronder een reden opgeven:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Aankloppen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Binnentreden</translation>
     </message>
 </context>
 <context>
@@ -877,22 +877,22 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+15"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Maak een privéchat</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker om uit te nodigen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@gebruiker:server.domein</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling</translation>
     </message>
 </context>
 <context>
@@ -900,72 +900,72 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+17"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe groep</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe kamer</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Naamloos</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Onderwerp</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Onderwerploos</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Publiek</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Publieke kamers zijn voor iedereen begaanbaar; privékamers vereisen een uitnodiging.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Trusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Vertrouwd</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle uitgenodigde deelnemers krijgen hetzelfde machtsniveau als de maker</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Let op: Versleuteling kan niet later worden uitgeschakeld</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer aanmaken</translation>
     </message>
 </context>
 <context>
@@ -1001,22 +1001,22 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificatiecode</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Controleer de volgende getallen.  Je zou dezelfde getallen moeten zien aan beide kanten.  Druk als ze verschillen op &apos;Ze komen niet overeen!&apos; om de verificatie te annuleren!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ze komen niet overeen!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ze zijn gelijk!</translation>
     </message>
 </context>
 <context>
@@ -1024,27 +1024,27 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificatiecode</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Vergelijk de volgende emoji. Je zou dezelfde moeten zien aan beide kanten. Als ze verschillen, druk dan op &apos;Ze komen niet overeen!&apos; om de verificatie te annuleren!</translation>
     </message>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>De weergegeven emoji kunnen er anders uit zien als bijvoorbeeld een ander lettertype wordt gebruikt. Ze kunnen ook vertaald zijn in andere talen. Hoe dan ook moeten ze één van 64 verschillende objecten of dieren weergeven. Bijvoorbeeld een leeuw en een kat zijn verschillend, maar een kat is een kat - ook als er bij de ene applicatie een kattengezicht verschijnt maar bij de andere een volledig kattenlichaam.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ze komen niet overeen!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ze zijn gelijk!</translation>
     </message>
 </context>
 <context>
@@ -1052,42 +1052,42 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+46"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is geen sleutel om dit bericht te ontsleutelen. We hebben de sleutel aangevraagd, maar je kan het opnieuw proberen als je ongeduldig bent.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het bericht kon niet worden ontsleuteld, omdat we alleen een sleutel hebben voor nieuwere berichten. Je kan proberen toegang tot dit bericht aan te vragen.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er was een interne fout bij het lezen van de sleutel uit de database.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Er was een fout bij het ontsleutelen van dit bericht.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het bericht kon niet worden verwerkt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
+        <translation>De versleuteling was herbruikt! Wellicht probeert iemand vervalsde berichten in dit gesprek te injecteren!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekende ontsleutelingsfout</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>Vraag sleutel aan</translation>
     </message>
 </context>
 <context>
@@ -1108,22 +1108,22 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit bericht is niet versleuteld!</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Encrypted by a verified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteld door een geverifieerd apparaat</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteld door een ongeverifieerd apparaat, maar je hebt de gebruiker tot nu toe vertrouwd.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteld door een ongeverifieerd apparaat of de sleutel komt van een niet te vertrouwen bron zoals een reservesleutel.</translation>
     </message>
 </context>
 <context>
@@ -1203,42 +1203,42 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+11"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificatie mislukt</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>De andere kant ondersteunt ons verificatieprotocol niet.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschil in sleutels gedetecteerd!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apparaatverificatie is verlopen.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>De andere kant heeft de verificatie geannuleerd.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificatieberichten in verkeerde volgorde ontvangen!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Onbekende verificatiefout.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
 </context>
 <context>
@@ -1246,7 +1246,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+52"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Bericht doorsturen</translation>
     </message>
 </context>
 <context>
@@ -1271,47 +1271,47 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+33"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Verborgen gebeurtenissen voor %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Verborgen gebeurtenissen</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze gebeurtenissen zullen &lt;b&gt;getoond&lt;/b&gt; worden in %1:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze gebeurtenissen zullen &lt;b&gt;getoond&lt;/b&gt; worden in alle kamers:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersgebeurtenissen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation type="unfinished"></translation>
+        <translation>Binnenkomen, vertrekken, avatar- en naamsveranderingen, verbanningen, …</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersrechtenveranderingen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuurd wanneer een beheerder wordt toegevoegd/verwijderd of de rechten van een kamer worden aangepast.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Stickers</translation>
     </message>
 </context>
 <context>
@@ -1319,89 +1319,89 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+22"/>
         <source>Editing image pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingspakket aanpassen</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingen toevoegen</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingen (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteer afbeeldingen voor pakket</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen aan pakket</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Pas het icoon voor dit pakket aan</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Overview Image (*.png *.webp *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Icoon afbeelding (*.png *.webp *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies icoon afbeelding voor pakket</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>State key</source>
-        <translation type="unfinished"></translation>
+        <translation>Staatsleutel</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingspakketnaam</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation>Bronvermelding</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+75"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik als emoji</translation>
     </message>
     <message>
         <location line="-62"/>
         <location line="+75"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruik als sticker</translation>
     </message>
     <message>
         <location line="-37"/>
         <source>Shortcode</source>
-        <translation type="unfinished"></translation>
+        <translation>Shortcode</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Tekstinhoud</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder uit afbeeldingspakket</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder</translation>
     </message>
 </context>
 <context>
@@ -1409,57 +1409,57 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+23"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingspakketinstellingen</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Maak pakket voor je eigen account aan</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuw afbeeldingspakket voor kamer</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Private pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Privé afbeeldingspakket</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Afbeeldingspakket uit deze kamer</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Pakket van een groepsouder</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Globaal geactiveerd afbeeldingspakket</translation>
     </message>
     <message>
         <location line="+68"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Globaal activeren</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Activeert dit afbeeldingspakket voor gebruik in alle kamers</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
 </context>
 <context>
@@ -1485,33 +1485,33 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/InviteDialog.qml" line="+40"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nodig gebruikers uit naar %1</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek gebruiker</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@jan:matrix.org</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek op server</translation>
     </message>
     <message>
         <location line="+86"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitnodigen</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
 </context>
 <context>
@@ -1519,17 +1519,17 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ga kamer binnen</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer ID of alias</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Binnentreden</translation>
     </message>
 </context>
 <context>
@@ -1537,12 +1537,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+17"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer verlaten</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Weet je zeker dat je de kamer wil verlaten?</translation>
     </message>
 </context>
 <context>
@@ -1628,12 +1628,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/pages/LoginPage.qml" line="+58"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix ID</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>bijv. @jan:matrix.org</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1641,53 +1641,57 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je inlognaam. Een mxid begint met een @ gevolgd door de gebruikersid. Na de gebruikersid moet je je servernaam toevoegen na een :.
+Je kan ook je thuisserver adres invullen als je server geen .well-known ondersteund.
+Voorbeeld: @gebruiker:mijn.server
+Als Nheko je thuisserver niet kan vinden, zal je worden gevraagd het adres op te geven.</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachtwoord</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je wachtwoord.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Apparaatnaam</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Een naam voor dit apparaat die zichtbaar is voor anderen als ze je apparaten bekijken of verifiëren. Als niets ingevuld is, wordt er een standaardwaarde gebruikt.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Thuisserveradres</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>mijnserver.nl:8787</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Het adres waarop je thuisserver&apos;s API voor gebruikers te bereiken is.
+Voorbeeld: https://mijn.server:8787</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>INLOGGEN</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug</translation>
     </message>
 </context>
 <context>
@@ -1695,17 +1699,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitloggen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Er is een oproep gaande. Uitloggen?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Weet je zeker dat je wil uitloggen?</translation>
     </message>
 </context>
 <context>
@@ -1722,17 +1726,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+79"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer is vervangen wegens de volgende reden: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished"></translation>
+        <translation>Ga naar de vervangende kamer</translation>
     </message>
     <message>
         <location line="+176"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft een bericht verwijderd</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -1742,93 +1746,93 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 heeft de naam van de kamer veranderd in: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de kamernaam verwijderd</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 heeft het onderwerp veranderd in: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het onderwerp verwijderd</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de kameravatar veranderd</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de vastgeprikte berichten aangepast.</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de adressen voor deze kamer aangepast.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de moedergroep voor deze kamer bijgewerkt.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 maakte en configureerde de kamer: %2</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 plaatste een spraakoproep.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 plaatste een video oproep.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 plaatste een oproep.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beantwoordde de oproep.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het gesprek afgewezen.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het gesprek beantwoord</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 beëindigde de oproep.</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+14"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 is het gesprek aan het opzetten...</translation>
     </message>
     <message>
         <location line="+122"/>
         <source>Allow them in</source>
-        <translation type="unfinished"></translation>
+        <translation>Binnenlaten</translation>
     </message>
 </context>
 <context>
@@ -1836,47 +1840,47 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageInput.qml" line="+47"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Ophangen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Reeds in een gesprek</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Plaats een oproep</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuur een bestand</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Typ een bericht…</translation>
+        <translation>Typ een bericht…</translation>
     </message>
     <message>
         <location line="+257"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Stickers</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Send</source>
-        <translation type="unfinished">Verstuur</translation>
+        <translation>Verstuur</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Je hebt geen toestemming om berichten te versturen in deze kamer</translation>
     </message>
 </context>
 <context>
@@ -1884,27 +1888,27 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageView.qml" line="+346"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reageren</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reply in thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Beantwoorden in een gespreksdraad</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe gespreksdraad</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Beantwoorden</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1914,7 +1918,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Opties</translation>
     </message>
     <message>
         <location line="+187"/>
@@ -1924,12 +1928,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+69"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer de reden voor verwijdering in of druk op enter voor geen reden:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Reden voor verwijdering</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1940,93 +1944,93 @@ Example: https://server.my:8787</source>
         <location line="+10"/>
         <location line="+138"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kopiëren</translation>
     </message>
     <message>
         <location line="-131"/>
         <location line="+138"/>
         <source>Copy &amp;link location</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieer &amp;link</translation>
     </message>
     <message>
         <location line="-130"/>
         <source>Re&amp;act</source>
-        <translation type="unfinished"></translation>
+        <translation>Re&amp;ageren</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Repl&amp;y</source>
-        <translation type="unfinished"></translation>
+        <translation>Beantwoo&amp;rden</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>B&amp;ewerken</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Gespreks&amp;draad</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Vast%prikken ongedaan maken</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&amp;Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Vast%prikken</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>&amp;Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Leesbevestigingen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Doorsturen</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>&amp;Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelezen &amp;markeren</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruw bericht bekijken</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontsleuteld ruw bericht bekijken</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Remo&amp;ve message</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Verwijder bericht</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>&amp;Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>Op&amp;slaan als</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Open in external program</source>
-        <translation type="unfinished"></translation>
+        <translation>In extern programma &amp;openen</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Copy link to eve&amp;nt</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieer link naar gebeurte&amp;nis</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>&amp;Go to quoted message</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ga naar geciteerd bericht</translation>
     </message>
 </context>
 <context>
@@ -2034,62 +2038,62 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+11"/>
         <source>Send Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuur verificatieverzoek</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Received Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontvangen verificatieverzoek</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Om aan andere gebruikers te laten zien welke apparaten echt van jou zijn, kan je ze verifiëren. Hierdoor worden ook sleutelreservekopieën automatisch uitgewisseld. Nu een ongeverifieerd apparaat verifiëren? (Zorg dat je een van deze apparaten bij de hand hebt.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Om aan andere gebruikers te laten zien welke apparaten echt van jou zijn, kan je ze verifiëren. Hierdoor worden ook sleutelreservekopieën automatisch uitgewisseld. Nu %1 verifiëren?</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.</source>
-        <translation type="unfinished"></translation>
+        <translation>Om zeker te zijn dat niemand meeleest met je versleutelde gesprek kan je de andere kant verifiëren.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has requested to verify their device %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft verzocht om hun apparaat %2 te verifiëren.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 using the device %2 has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1, gebruikmakend van apparaat %2 heeft verzocht om verificatie.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your device (%1) has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je apparaat (%1) heeft verzocht om verificatie.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Weigeren</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Begin verificatie</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Accepteren</translation>
     </message>
 </context>
 <context>
@@ -2127,32 +2131,32 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/voip/PlaceCall.qml" line="+39"/>
         <source>Place a call to %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Bel %1?</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen microfoon gevonden.</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Spraak</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Video</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
 </context>
 <context>
@@ -2160,7 +2164,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+11"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>Niet geïmplementeerd evenement: </translation>
     </message>
 </context>
 <context>
@@ -2168,85 +2172,85 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+26"/>
         <source>Permissions in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Machtniveaus in %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kijk uit bij het aanpassen van machtniveaus. Je kan het niveau van mensen met een gelijk of hoger niveau als jijzelf niet aanpassen. Let dus op bij het verhogen van het niveau van anderen.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Roles</source>
-        <translation type="unfinished"></translation>
+        <translation>Niveaus</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikers</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Move permissions between roles to change them</source>
-        <translation type="unfinished"></translation>
+        <translation>Verplaats toestemmingen tussen niveaus om ze te veranderen</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+240"/>
         <source>Administrator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Beheerder (%1)</translation>
     </message>
     <message>
         <location line="-238"/>
         <location line="+240"/>
         <source>Moderator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Toezichthouder (%1)</translation>
     </message>
     <message>
         <location line="-238"/>
         <source>User (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+238"/>
         <source>Custom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Aangepast (%1)</translation>
     </message>
     <message>
         <location line="-225"/>
         <source>Remove event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder evenementtype</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Evenementtype toevoegen</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Add new role</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuw niveau toevoegen</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Toevoegen</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Move users up or down to change their permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Verplaats gebruikers omhoog of omlaag om hun niveau en toestemmingen aan te passen</translation>
     </message>
     <message>
         <location line="+142"/>
         <source>Remove user</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder gebruiker</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker toevoegen</translation>
     </message>
 </context>
 <context>
@@ -2254,42 +2258,42 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+27"/>
         <source>Apply permission changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Aanpassingen aan rechten doorvoeren</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
-        <translation type="unfinished"></translation>
+        <translation>Welke groepen en kamers moeten deze rechten op van toepassing zijn?</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Apply permissions recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer rechten recursief door</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Overwrite exisiting modifications in rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Overschrijf huidige aanpassingen in kamers</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen rechten om de nieuwe rechten hier door te voeren</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No changes needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen veranderingen noodzakelijk</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Existing modifications to the permissions in this room will be overwritten</source>
-        <translation type="unfinished"></translation>
+        <translation>Huidige aanpassingen aan de rechten in deze kamer zullen overschreven worden</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Permissions synchronized with community</source>
-        <translation type="unfinished"></translation>
+        <translation>Rechten synchroniseren met de groep</translation>
     </message>
 </context>
 <context>
@@ -2565,12 +2569,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/ReCaptchaDialog.qml" line="+40"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Los de reCAPTCHA op en klik op &apos;Bevestigen&apos;</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Open reCAPTCHA</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2588,7 +2592,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/ReadReceipts.qml" line="+39"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Leesbevestigingen</translation>
+        <translation>Leesbevestigingen</translation>
     </message>
 </context>
 <context>
@@ -2659,68 +2663,68 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/pages/RegisterPage.qml" line="+58"/>
         <source>Homeserver</source>
-        <translation type="unfinished">Thuisserver</translation>
+        <translation>Thuisserver</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation type="unfinished"></translation>
+        <translation>jouwserver.example.com</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>Een server die registratie toestaat. Omdat Matrix gedecentraliseerd is, moet je eerst zelf een server vinden om je op te registeren, of je eigen server hosten.</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersnaam</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>De gebruikersnaam mag niet leeg zijn, en mag alleen de volgende tekens bevatten: a-z, 0-9, ., _, =, -, en /.</translation>
     </message>
     <message>
         <location line="+21"/>
         <location line="+102"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug</translation>
     </message>
     <message>
         <location line="-79"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachtwoord</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies a.u.b. een veilig wachtwoord. De exacte vereisten voor een wachtwoord kunnen per server verschillen.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachtwoord bevestigen</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Je wachtwoorden komen niet overeen!</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Apparaatnaam</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Een naam voor dit apparaat die zichtbaar is voor anderen. Als niets ingevuld is wordt er een standaardwaarde gebruikt.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTREREN</translation>
     </message>
 </context>
 <context>
@@ -2728,17 +2732,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+54"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Cancel Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken annuleren</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Cancel Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Gespreksdraad afbreken</translation>
     </message>
 </context>
 <context>
@@ -2746,17 +2750,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomDirectory.qml" line="+24"/>
         <source>Explore Public Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Verken openbare kamers</translation>
     </message>
     <message>
         <location line="+138"/>
         <source>Search for public rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoek naar openbare kamers</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies een aangepaste thuisserver</translation>
     </message>
 </context>
 <context>
@@ -2772,150 +2776,150 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/RoomList.qml" line="+49"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe chat beginnen</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer binnengaan</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Create a new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe kamer aanmaken</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Begin een privégesprek</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>Maak een nieuwe groep</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamerlijst</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Search rooms (Ctrl+K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Doorzoek kamers (Ctrl+K)</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersinstellingen</translation>
     </message>
     <message>
         <location line="+95"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitloggen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Enter your status message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer je statusbericht in:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Statusbericht</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Profile settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Profielinstellingen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Set status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Stel statusbericht in</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling niet ingesteld</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Ongeverifiëerde login</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Verifieer a.u.b. je andere apparaten</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location line="+372"/>
         <source>Enter the tag you want to use:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer de markering in die je wil gebruiken:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Nieuwe markering</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>In een apart venster openen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Room settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamerinstellingen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer verlaten</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopieer kamerlink</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Markeer kamer als:</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Favourite</source>
-        <translation type="unfinished"></translation>
+        <translation>Favoriet</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Lage prioriteit</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Server notice</source>
-        <translation type="unfinished"></translation>
+        <translation>Serverbericht</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation type="unfinished"></translation>
+        <translation>Maak nieuwe markering…</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished"></translation>
+        <translation>Aan groep toevoegen of uit groep verwijderen...</translation>
     </message>
 </context>
 <context>
@@ -2923,81 +2927,81 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomMembers.qml" line="+19"/>
         <source>Members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Deelnemers in %1</translation>
     </message>
     <message numerus="yes">
         <location line="+31"/>
         <source>%n people in %1</source>
         <comment>Summary above list of members</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n persoon in %1</numerusform>
+            <numerusform>%n personen in %1</numerusform>
         </translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Invite more people</source>
-        <translation type="unfinished"></translation>
+        <translation>Nodig meer mensen uit</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoeken...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteren op: </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished">Gebruikers ID</translation>
+        <translation>Gebruikers ID</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Weergavenaam</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Machtsniveau</translation>
     </message>
     <message>
         <location line="+98"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Beheerder: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Toezichthouder: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruiker: %1</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer is niet versleuteld!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This user is verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze gebruiker is geverifieerd.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user isn&apos;t verified, but is still using the same master key from the first time you met.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze gebruiker is niet geverifieerd, maar gebruikt nog dezelfde hoofdsleutel als de eerste keer.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user has unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze gebruiker heeft ongeverifieerde apparaten!</translation>
     </message>
 </context>
 <context>
@@ -3036,40 +3040,40 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomSettings.qml" line="+26"/>
         <source>Room Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamerinstellingen</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander kamerafbeelding.</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Naam van deze kamer veranderen</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n deelnemer</numerusform>
+            <numerusform>%n deelnemers</numerusform>
         </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijk deelnemers aan %1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen onderwerp</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander onderwerp van deze kamer</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3079,22 +3083,22 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Meldingen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Gedempt</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen vermeldingen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle berichten</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3104,43 +3108,43 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Anyone can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Iedereen kan binnentreden</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Sta aankloppen toe</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Allow joining via other rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Sta binnentreden via andere kamers toe</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Rooms to join via</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamers die hier binnentreden toestaan</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+242"/>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander de lijst van kamers waarlangs gebruikers kunnen binnentreden. Meestal is dit de officiële groep van deze kamer.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation type="unfinished"></translation>
+        <translation>Sta gasten toe om binnen te treden</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Toegangsregels doorvoeren</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3213,12 +3217,12 @@ Example: https://server.my:8787</source>
         <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellen</translation>
     </message>
     <message>
         <location line="-89"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteer gebeurtenissen die verborgen dienen te worden in deze kamer</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3238,78 +3242,79 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Eind-tot-eind versleuteling</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling is momenteel experimenteel en dingen gaan misschien stuk. &lt;br&gt;
+Wees ervan bewust dat het achteraf niet meer uitgeschakeld kan worden.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Toestemmingen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijken en aanpassen van toestemmingen in deze kamer</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliassen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijken en aanpassen van adressen/aliassen van deze kamer</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Sticker &amp; Emoji instellingen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander welke pakketten ingeschakeld zijn, verwijder ze, of maak nieuwe</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>INFO</source>
-        <translation type="unfinished">INFO</translation>
+        <translation>INFO</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Interne ID</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Gekopieerd naar klembord</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamerversie</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>minder tonen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>meer tonen</translation>
     </message>
 </context>
 <context>
@@ -3340,27 +3345,27 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/Root.qml" line="+313"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer a.u.b. je wachtwoord in om door te gaan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer a.u.b. een geldig email adres in om door te gaan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer a.u.b. een geldig telefoonnummer in om door te gaan:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer de sleutel (token) in die je hebt ontvangen:</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wacht op de bevestigingslink, en ga dan door.</translation>
     </message>
 </context>
 <context>
@@ -3368,7 +3373,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/voip/ScreenShare.qml" line="+30"/>
         <source>Share desktop with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm delen met %1?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -3378,7 +3383,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+20"/>
         <source>Window:</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3388,43 +3393,43 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Frame rate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Verversingssnelheid:</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat eigen cameraminiatuur zien</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Verzoek om camera van de andere kant</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijk de camera van degene die belt zoals bij een regulier videogesprek</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Hide mouse cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstop muiscursor</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Delen</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Voorbeeld</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
 </context>
 <context>
@@ -3445,49 +3450,51 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+50"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit is je herstelsleutel. Je hebt deze nodig om toegang tot je versleutelde berichten en sleutels te herstellen. Hou deze veilig. Deel hem met niemand, en raak hem niet kwijt! Ga niet langs start, ontvang geen €200!</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling succesvol ingesteld</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon versleuteling niet instellen: %1</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling instellen</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hallo, en welkom bij Matrix!
+Zo te zien ben je nieuw. Voordat je je berichten veilig kan versleutelen, moeten we een paar kleine dingen instellen. Je kan ofwel direct op accepteren drukken of een paar basisopties aanpassen. We proberen ook de basisprincipes uit te leggen. Je kan deze overslaan, maar wellicht vind je het behulpzaam!</translation>
     </message>
     <message>
         <location line="+108"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Activeer versleuteling</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het lijkt erop dat je versleuteling al hebt ingesteld voor dit account. Om bij je versleutelde berichten te kunnen en om dit apparaat als vertrouwd te laten verschijnen, kan je ofwel een bestaand apparaat verifiëren ofwel je herstelsleutel invoeren (als je er één hebt). Kies a.u.b een van de opties hieronder.
+Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebben. Als je &quot;Voer herstelsleutel in&quot; kiest moet je je herstelsleutel of wachtwoordzin hebben. Als je op annuleren klikt kan je later altijd alsnog jezelf verifiëren.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>verifieer</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>voer herstelsleutel in</translation>
     </message>
 </context>
 <context>
@@ -3554,37 +3561,37 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from community</source>
-        <translation type="unfinished"></translation>
+        <translation>Aan groep toevoegen of uit groep verwijderen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Officiële community voor deze kamer</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerelateerde community voor deze kamer</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen voor groepsdeelnemers zichtbaar</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Alleen voor kamer deelnemers zichtbaar</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>Ongerelateerd</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>Deelgroepen</translation>
     </message>
 </context>
 <context>
@@ -3592,22 +3599,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+18"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Mislukt</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuurd</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Ontvangen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelezen</translation>
     </message>
 </context>
 <context>
@@ -3615,12 +3622,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/emoji/StickerPicker.qml" line="+69"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Zoeken</translation>
     </message>
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Verander welke pakketten ingeschakeld zijn, verwijder ze, of maak nieuwe</translation>
     </message>
 </context>
 <context>
@@ -3628,17 +3635,17 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/device-verification/Success.qml" line="+11"/>
         <source>Successful Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Succesvolle verificatie</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verificatie gelukt!  Beide kanten hebben hun apparaat geverifieerd!</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sluiten</translation>
     </message>
 </context>
 <context>
@@ -4052,12 +4059,12 @@ Reden: %4</translation>
         <location filename="../qml/TimelineRow.qml" line="+107"/>
         <location line="+171"/>
         <source>Part of a thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Deel van een gespreksdraad</translation>
     </message>
     <message>
         <location line="-18"/>
         <source>Edited</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewerkt</translation>
     </message>
 </context>
 <context>
@@ -4065,12 +4072,12 @@ Reden: %4</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+53"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen kamer open</translation>
     </message>
     <message>
         <location line="+102"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Je staat op het punt de hele kamer een notificatie te sturen</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4085,25 +4092,25 @@ Reden: %4</translation>
     <message>
         <location line="+41"/>
         <source>No preview available</source>
-        <translation type="unfinished">Geen voorbeeld beschikbaar</translation>
+        <translation>Geen voorbeeld beschikbaar</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n deelnemer</numerusform>
+            <numerusform>%n deelnemers</numerusform>
         </translation>
     </message>
     <message>
         <location line="+3"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekijk deelnemers aan %1</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4113,17 +4120,17 @@ Reden: %4</translation>
     <message>
         <location line="+14"/>
         <source>join the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>Neem deel aan het gesprek</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>accept invite</source>
-        <translation type="unfinished"></translation>
+        <translation>accepteer uitnodiging</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>decline invite</source>
-        <translation type="unfinished"></translation>
+        <translation>wijs uitnodiging af</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4138,17 +4145,17 @@ Reden: %4</translation>
     <message>
         <location line="+45"/>
         <source>Hide invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Verberg uitnodigingsreden</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Show invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon uitnodigingsreden</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug naar kamerlijst</translation>
     </message>
 </context>
 <context>
@@ -4156,82 +4163,82 @@ Reden: %4</translation>
     <message>
         <location filename="../qml/TopBar.qml" line="+21"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen kamer geselecteerd</translation>
     </message>
     <message>
         <location line="+53"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>In %1</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug naar kamerlijst</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Show or hide pinned messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon of verberg vastgeprikte berichten</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat kamerdeelnemers zien.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This room contains only verified devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer bevat alleen geverifieerde apparaten.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer bevat alleen geverifiëerde apparaten en apparaten die nooit hun hoofdsleutel hebben veranderd.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer bevat ongeverifieerde apparaten!</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Search this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Doorzoek deze kamer</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Kameropties</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikers uitnodigen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Deelnemers</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer verlaten</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Instellingen</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>Unpin</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastprikken ongedaan maken</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Enter search query</source>
-        <translation type="unfinished"></translation>
+        <translation>Voer zoekopdracht in</translation>
     </message>
 </context>
 <context>
@@ -4277,9 +4284,9 @@ Reden: %4</translation>
     <message numerus="yes">
         <location filename="../qml/UploadBox.qml" line="+92"/>
         <source>Upload %n file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Bestand versturen</numerusform>
+            <numerusform>%n bestanden versturen</numerusform>
         </translation>
     </message>
 </context>
@@ -4318,32 +4325,32 @@ Reden: %4</translation>
     <message>
         <location filename="../qml/dialogs/UserProfile.qml" line="+26"/>
         <source>Global User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Globaal gebruikersprofiel</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamerspecifiek gebruikersprofiel</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander avatar globaal.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander avatar. Heeft alleen effect op deze kamer.</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander weergavenaam globaal.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander weergavenaam. Heeft alleen effect op deze kamer.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -4353,48 +4360,48 @@ Reden: %4</translation>
     <message>
         <location line="+25"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamer: %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit is een kamer-specifiek profiel. De weergavenaam en avatar kunnen verschillen van de globale versie.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Open het globale profiel van deze gebruiker.</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+232"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifiëren</translation>
     </message>
     <message>
         <location line="-192"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Begin een privéchat.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder de gebruiker.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verban de gebruiker.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ververs apparaatlijst.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Apparaten</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4404,22 +4411,22 @@ Reden: %4</translation>
     <message>
         <location line="+62"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Meld dit apparaat af.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verander apparaatnaam.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Laatst gezien %1 via %2</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>On-verifiëren</translation>
     </message>
 </context>
 <context>
@@ -4857,21 +4864,7 @@ This will also enable or disable sending typing notifications to others.</source
 Dit schakelt ook het versturen van je eigen typnotificaties naar anderen in of uit.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Display rooms with new messages first.
-If this is off, the list of rooms will only be sorted by the preferred sorting order.
-If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Sort rooms alphabetically.
-If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
-If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+19"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
         <translation>Laat knoppen zien om snel te reageren, beantwoorden, of extra opties te kunnen gebruiken naast elk bericht.</translation>
     </message>
@@ -4945,7 +4938,21 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <translation>Laat een zijbalk zien met groepen en markeringen naast de kamerlijst.</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+23"/>
+        <source>Display rooms with new messages first.
+If this is off, the list of rooms will only be sorted by the preferred sorting order.
+If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Sort rooms alphabetically.
+If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
+If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
@@ -5103,37 +5110,37 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
     <message>
         <location filename="../qml/pages/UserSettingsPage.qml" line="+189"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>IN CACHE</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>NIET IN CACHE</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORTEREN</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EXPORTEREN</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>DOWNLOAD</source>
-        <translation type="unfinished"></translation>
+        <translation>DOWNLOADEN</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>REQUEST</source>
-        <translation type="unfinished"></translation>
+        <translation>OPVRAGEN</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Terug</translation>
     </message>
 </context>
 <context>
@@ -5149,27 +5156,27 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+12"/>
         <source>Waiting for other party…</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachten op andere kant…</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachten op de andere kant om het verificatieverzoek te accepteren.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachten op de andere kant om het verificatieproces voort te zetten.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wachten op de andere kant om het verificatieproces af te ronden.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
 </context>
 <context>
@@ -5177,32 +5184,32 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
     <message>
         <location filename="../qml/pages/WelcomePage.qml" line="+30"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Welkom bij Nheko! De bureaubladclient voor het Matrix-protocol.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Enjoy your stay!</source>
-        <translation type="unfinished"></translation>
+        <translation>Geniet van je verblijf!</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTREREN</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>INLOGGEN</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Beperk animaties</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished">Nheko gebruikt animaties op verscheidene plaatsen om dingen mooier te maken. Met deze optie kan je de animaties uitschakelen als je je er niet goed door voelt.</translation>
+        <translation>Nheko gebruikt animaties op verscheidene plaatsen om dingen mooier te maken. Hiermee kan je deze uitschakelen als je je er niet goed door voelt.</translation>
     </message>
 </context>
 <context>

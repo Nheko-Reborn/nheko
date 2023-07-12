@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>വിളിക്കുന്നു...</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>ബന്ധിപ്പിക്കുന്നു...</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>നിങ്ങൾ സ്ക്രീൻ പങ്കിടുന്നു</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -26,12 +26,12 @@
     </message>
     <message>
         <location line="+13"/>
-        <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <source>Mute Mic</source>
+        <translation>മൈക്ക് നിശബ്ദമാക്കുക</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>Mute Mic</source>
+        <source>Unmute Mic</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -96,7 +96,7 @@
     <message>
         <location line="+12"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ചേർക്കുക</translation>
     </message>
 </context>
 <context>
@@ -149,17 +149,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+75"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>വീഡിയോ കോൾ</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>വോയ്സ് കോൾ</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>മൈക്രോഫോൺ കണ്ടെത്തിയില്ല.</translation>
     </message>
 </context>
 <context>
@@ -167,42 +167,42 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+65"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>വീഡിയോ കോൾ</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>വോയ്സ് കോൾ</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉപകരണങ്ങൾ</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്വീകരിക്കുക</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>മൈക്രോഫോണൊന്നും കണ്ടെത്തിയില്ല.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>അജ്ഞാത മൈക്രോഫോൺ:% 1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>അജ്ഞാത ക്യാമറ:% 1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>നിരസിക്കുക</translation>
     </message>
 </context>
 <context>
@@ -251,7 +251,29 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+1"/>
+        <source>Because of the following reason Nheko wants to drop you to the login page:
+%1
+If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+87"/>
+        <source>Cache migration failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Incompatible cache version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -261,12 +283,35 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+262"/>
-        <source>Knock on room</source>
+        <location line="+18"/>
+        <source>Failed to restore OLM account. Please login again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+4"/>
+        <location line="+4"/>
+        <location line="+4"/>
+        <source>Failed to restore save data. Please login again.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+54"/>
+        <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+178"/>
+        <source>Knock on room</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
+You may optionally provide a reason for others to accept your knock:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -276,7 +321,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+59"/>
+        <location line="+45"/>
+        <source>Failed to remove invite: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>Room creation failed: Bad Alias</source>
         <translation type="unfinished"></translation>
     </message>
@@ -286,7 +336,12 @@
         <translation>%1 മുറി സൃഷ്ടിച്ചു</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+13"/>
+        <source>Failed to leave room: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+30"/>
         <location line="+477"/>
         <source>Confirm invite</source>
         <translation>ക്ഷണം ഉറപ്പാക്കു</translation>
@@ -302,12 +357,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+32"/>
+        <location line="+13"/>
+        <source>Reason for the kick</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Failed to kick %1 from %2: %3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Kicked user: %1</source>
         <translation>ഉപയോക്താവിനെ പുറത്താക്കി: %1</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+10"/>
+        <source>Reason for the ban</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Failed to ban %1 in %2: %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -342,100 +422,20 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-934"/>
-        <source>Cache migration failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-87"/>
-        <source>Because of the following reason Nheko wants to drop you to the login page:
-%1
-If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+88"/>
-        <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>Incompatible cache version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+60"/>
-        <source>Failed to restore OLM account. Please login again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <location line="+4"/>
-        <location line="+4"/>
-        <source>Failed to restore save data. Please login again.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+54"/>
-        <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+35"/>
+        <location line="-760"/>
         <location line="+112"/>
         <source>Please try to login again: %1</source>
         <translation>ദയവായി വീണ്ടും ലോഗിൻ ചെയ്യാൻ നോക്കുക: %1</translation>
     </message>
     <message>
-        <location line="+34"/>
-        <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
-You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+52"/>
+        <location line="+86"/>
         <source>Failed to join room: %1</source>
         <translation>മുറിയിൽ ചേരുന്നതിൽ പരാജയം: %1</translation>
     </message>
     <message>
-        <location line="+9"/>
-        <source>Failed to remove invite: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+27"/>
+        <location line="+36"/>
         <source>Room creation failed: %1</source>
         <translation>മുറി സൃഷ്ടിക്കുന്നത് പരാജയപ്പെട്ടു: %1</translation>
-    </message>
-    <message>
-        <location line="+18"/>
-        <source>Failed to leave room: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+56"/>
-        <source>Reason for the kick</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+15"/>
-        <source>Failed to kick %1 from %2: %3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+13"/>
-        <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../qml/ChatPage.qml" line="+36"/>
@@ -456,37 +456,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location line="+2"/>
-        <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>/roomnick &lt;displayname&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/shrug [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+28"/>
-        <source>/confetti [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>/rainbowconfetti [message]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-50"/>
         <source>/join &lt;!roomid|#alias&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -496,7 +466,17 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+2"/>
+        <source>/part [reason]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/leave [reason]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>/invite &lt;@userid&gt; [reason]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -521,7 +501,17 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+2"/>
+        <source>/roomnick &lt;displayname&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/shrug [message]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>/md &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -556,7 +546,17 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+2"/>
+        <source>/confetti [message]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/rainbowconfetti [message]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>/rainfall [message]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -907,7 +907,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+27"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">പേര്</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -917,7 +917,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">വിഷയം</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -968,7 +968,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+291"/>
+        <location filename="../../src/ChatPage.cpp" line="+395"/>
         <source>Decrypt secrets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -998,7 +998,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉറപ്പാക്കൽ കോഡ്</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1008,12 +1008,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+33"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>അവ പൊരുത്തപ്പെടുന്നില്ല!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>അവ പൊരുത്തപ്പെടുന്നു!</translation>
     </message>
 </context>
 <context>
@@ -1021,7 +1021,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉറപ്പാക്കൽ കോഡ്</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1036,12 +1036,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+10"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>അവ പൊരുത്തപ്പെടുന്നില്ല!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അവ പൊരുത്തപ്പെടുന്നു!</translation>
     </message>
 </context>
 <context>
@@ -1084,7 +1084,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+9"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>കീ അഭ്യർ</translation>
     </message>
 </context>
 <context>
@@ -1200,7 +1200,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+11"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉറപ്പാക്കൽ പരാജയപ്പെട്ടു</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1235,7 +1235,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>അടയ്‌ക്കുക</translation>
     </message>
 </context>
 <context>
@@ -1308,7 +1308,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">സ്റ്റിക്കറുകൾ</translation>
     </message>
 </context>
 <context>
@@ -1321,7 +1321,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+56"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>ചിത്രങ്ങൾ ചേർക്കുക</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1361,7 +1361,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>പാക്കിന്റെ പേര്</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1372,13 +1372,13 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+9"/>
         <location line="+75"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>ഇമോജി ആയി ഉപയോഗിക്കുക</translation>
     </message>
     <message>
         <location line="-62"/>
         <location line="+75"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്റ്റിക്കറായി ഉപയോഗിക്കുക</translation>
     </message>
     <message>
         <location line="-37"/>
@@ -1398,7 +1398,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>നീക്കം ചെയ്യുക</translation>
     </message>
 </context>
 <context>
@@ -1411,12 +1411,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+48"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>അക്കൗണ്ട് പാക്ക് സൃഷ്ടിക്കുക</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>പുതിയ മുറി പാക്ക്</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1451,12 +1451,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">തിരുത്തുക</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അടയ്‌ക്കുക</translation>
     </message>
 </context>
 <context>
@@ -1482,7 +1482,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/InviteDialog.qml" line="+40"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - ലേക്ക് ഉപയോക്താക്കളെ ക്ഷണിക്കുക</translation>
     </message>
     <message>
         <location line="+50"/>
@@ -1493,7 +1493,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+13"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@joe:matrix.org</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -1503,7 +1503,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+86"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>ക്ഷണിക്കുക</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1625,12 +1625,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/pages/LoginPage.qml" line="+58"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix ID</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉദാ. @joe:matrix.org</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1643,7 +1643,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+27"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>പാസ്‍വേഡ്</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1653,7 +1653,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+8"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>ഉപകരണത്തിന്റെ പേര്</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1679,7 +1679,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+32"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>പ്രവേശിക്കുക</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -1825,7 +1825,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+122"/>
         <source>Allow them in</source>
-        <translation type="unfinished"></translation>
+        <translation>ഇവരെ അനുവദിക്കുക</translation>
     </message>
 </context>
 <context>
@@ -1848,27 +1848,27 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+28"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>ഒരു ഫയൽ അയയ്ക്കുക</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Write a message...</source>
-        <translation type="unfinished">ഒരു സന്ദേശം എഴുതുക….</translation>
+        <translation>ഒരു സന്ദേശം എഴുതുക….</translation>
     </message>
     <message>
         <location line="+257"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>സ്റ്റിക്കറുകൾ</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>ഇമോജി</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Send</source>
-        <translation type="unfinished">അയക്കുക</translation>
+        <translation>അയക്കുക</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1881,7 +1881,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageView.qml" line="+346"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>തിരുത്തുക</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1901,7 +1901,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+11"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>മറുപടി നൽകുക</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1988,7 +1988,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+11"/>
         <source>&amp;Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;വായിച്ചതായി കാണിക്കുക</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2071,21 +2071,21 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">റദ്ദാക്കു</translation>
+        <translation>റദ്ദാക്കു</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>നിരസിക്കുക</translation>
     </message>
     <message>
         <location line="+13"/>
-        <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <source>Accept</source>
+        <translation>സ്വീകരിക്കുക</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>Accept</source>
+        <source>Start verification</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2129,7 +2129,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>മൈക്രോഫോണൊന്നും കണ്ടെത്തിയില്ല.</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -2149,7 +2149,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Cancel</source>
-        <translation type="unfinished">റദ്ദാക്കു</translation>
+        <translation>റദ്ദാക്കു</translation>
     </message>
 </context>
 <context>
@@ -2228,7 +2228,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ചേർക്കുക</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2517,7 +2517,22 @@ Example: https://server.my:8787</source>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-26"/>
+        <location filename="../../src/notifications/ManagerMac.cpp" line="-58"/>
+        <source>Respond</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Send</source>
+        <translation type="unfinished">അയക്കുക</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Write a message...</source>
+        <translation type="unfinished">ഒരു സന്ദേശം എഴുതുക….</translation>
+    </message>
+    <message>
+        <location filename="../../src/main.cpp" line="-26"/>
         <source>Alias for &apos;--log-level trace&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2540,21 +2555,6 @@ Example: https://server.my:8787</source>
         <location line="+2"/>
         <source>type</source>
         <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../src/notifications/ManagerMac.cpp" line="-58"/>
-        <source>Respond</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Send</source>
-        <translation type="unfinished">അയക്കുക</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Write a message...</source>
-        <translation type="unfinished">ഒരു സന്ദേശം എഴുതുക….</translation>
     </message>
 </context>
 <context>
@@ -2598,6 +2598,72 @@ Example: https://server.my:8787</source>
 </context>
 <context>
     <name>RegisterPage</name>
+    <message>
+        <location filename="../qml/pages/RegisterPage.qml" line="+58"/>
+        <source>Homeserver</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>your.server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+32"/>
+        <source>Username</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <location line="+102"/>
+        <source>Back</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-79"/>
+        <source>Password</source>
+        <translation type="unfinished">പാസ്‍വേഡ്</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Password confirmation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Your passwords do not match!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Device name</source>
+        <translation type="unfinished">ഉപകരണത്തിന്റെ പേര്</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+31"/>
+        <source>REGISTER</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+82"/>
         <source>Autodiscovery failed. Received malformed response.</source>
@@ -2653,79 +2719,13 @@ Example: https://server.my:8787</source>
         <source>Part of the reserved namespace.</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../qml/pages/RegisterPage.qml" line="+58"/>
-        <source>Homeserver</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>your.server</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+32"/>
-        <source>Username</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+21"/>
-        <location line="+102"/>
-        <source>Back</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-79"/>
-        <source>Password</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>Device name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+31"/>
-        <source>REGISTER</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ReplyPopup</name>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+54"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അടയ്‌ക്കുക</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -2852,7 +2852,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അടയ്‌ക്കുക</translation>
     </message>
     <message>
         <location line="+372"/>
@@ -3006,13 +3006,13 @@ Example: https://server.my:8787</source>
     </message>
     <message>
         <location line="+404"/>
-        <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <source>All Files (*)</source>
+        <translation type="unfinished">എല്ലാ ഫയലുകളും (*)</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>All Files (*)</source>
-        <translation type="unfinished">എല്ലാ ഫയലുകളും (*)</translation>
+        <source>Select an avatar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3612,7 +3612,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/emoji/StickerPicker.qml" line="+69"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">തിരയുക</translation>
     </message>
     <message>
         <location line="+188"/>
@@ -3635,13 +3635,18 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+14"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">അടയ്‌ക്കുക</translation>
     </message>
 </context>
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1501"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1251"/>
+        <source>You joined this room.</source>
+        <translation type="unfinished">നിങ്ങൾ ഈ മുറിയിൽ ചേർന്നു.</translation>
+    </message>
+    <message>
+        <location line="+250"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation type="unfinished"></translation>
@@ -3687,7 +3692,12 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <source>%1 made this room require an invitation to join.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>%1 allowed to join this room by knocking.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3941,27 +3951,22 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+152"/>
-        <source>%2 revoked the invite to %1.</source>
+        <location line="+109"/>
+        <source>%1 invited %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-5"/>
-        <source>%2 kicked %1.</source>
+        <location line="+12"/>
+        <source>%1 has changed their avatar and changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
-        <source>%2 unbanned %1.</source>
+        <location line="+4"/>
+        <source>%1 has changed their display name to %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
-        <source>%2 rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-32"/>
+        <location line="+2"/>
         <source>%1 changed their avatar.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3981,52 +3986,42 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
-        <source>%1 rejected their invite.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-5"/>
+        <location line="+8"/>
         <source>%1 left the room.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
-        <source>Reason: %1</source>
+        <location line="+2"/>
+        <source>%2 kicked %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-19"/>
+        <location line="+3"/>
+        <source>%1 rejected their invite.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%2 revoked the invite to %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>%2 unbanned %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>%1 redacted their knock.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-1700"/>
-        <source>You joined this room.</source>
-        <translation type="unfinished">നിങ്ങൾ ഈ മുറിയിൽ ചേർന്നു.</translation>
-    </message>
-    <message>
-        <location line="+998"/>
-        <source>%1 made this room require an invitation to join.</source>
+        <location line="+2"/>
+        <source>%2 rejected the knock from %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+654"/>
-        <source>%1 invited %2.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+12"/>
-        <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
-        <source>%1 has changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+36"/>
+        <location line="+2"/>
         <source>%1 left after having already left!</source>
         <comment>This is a leave event after the user already left and shouldn&apos;t happen apart from state resets</comment>
         <translation type="unfinished"></translation>
@@ -4039,6 +4034,11 @@ Reason: %4</source>
     <message>
         <location line="+3"/>
         <source>%1 knocked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Reason: %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4293,13 +4293,13 @@ Reason: %4</source>
     </message>
     <message>
         <location line="+222"/>
-        <source>Select an avatar</source>
-        <translation type="unfinished"></translation>
+        <source>All Files (*)</source>
+        <translation type="unfinished">എല്ലാ ഫയലുകളും (*)</translation>
     </message>
     <message>
         <location line="+0"/>
-        <source>All Files (*)</source>
-        <translation type="unfinished">എല്ലാ ഫയലുകളും (*)</translation>
+        <source>Select an avatar</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4390,7 +4390,7 @@ Reason: %4</source>
     <message>
         <location line="+15"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">ഉപകരണങ്ങൾ</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4460,7 +4460,12 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <source>Communities sidebar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Scrollbars in room list</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4560,7 +4565,12 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <source>Show message counts for communities and tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Display fancy effects such as confetti</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4785,7 +4795,12 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+7"/>
+        <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
@@ -4812,7 +4827,12 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+2"/>
+        <source>Show a column containing communities and tags next to the room list.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Shows scrollbars in the room list and communities list.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4868,81 +4888,31 @@ If this is on, rooms that come first alphabetically will be sorted earlier than 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
-        <source>Notify about received messages when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Change the appearance of user avatars in chats.
-OFF - square, ON - circle.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Decrypt messages shown in notifications for encrypted chats.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
-        <source>Choose where to show the total number of notifications contained within a community or tag.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+3"/>
-        <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+32"/>
-        <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-76"/>
-        <source>Show an alert when a message is received.
-This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-350"/>
-        <source>Communities sidebar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+42"/>
-        <source>Show message counts for communities and tags</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+241"/>
-        <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>Show a column containing communities and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+42"/>
+        <location line="+4"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+4"/>
+        <source>Notify about received messages when the client is not currently focused.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show an alert when a message is received.
+This usually causes the application icon in the task bar to animate in some fashion.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Change the appearance of user avatars in chats.
+OFF - square, ON - circle.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4965,7 +4935,27 @@ Only affects messages in encrypted chats.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+3"/>
+        <source>Decrypt messages shown in notifications for encrypted chats.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Choose where to show the total number of notifications contained within a community or tag.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
         <translation type="unfinished"></translation>
@@ -4991,7 +4981,12 @@ be blurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+3"/>
+        <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5001,7 +4996,12 @@ be blurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+4"/>
+        <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+5"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5174,7 +5174,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+8"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">പ്രവേശിക്കുക</translation>
     </message>
     <message>
         <location line="+26"/>

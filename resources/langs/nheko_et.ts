@@ -6,33 +6,33 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>Helistan…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühendan…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa jagad ekraani.</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Peida/näita pilt-pildis vaade</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Unmute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Lülita mikrofon sisse</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mute Mic</source>
-        <translation type="unfinished"></translation>
+        <translation>Lülita mikrofon välja</translation>
     </message>
 </context>
 <context>
@@ -56,47 +56,47 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+26"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 aliased</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoa aliaste loend. Tavaliselt võid sa neid hallata vaid oma serveris. Seadistada võid ühe kanoonilise aliase ja palju alternatiivseid aliasi.</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Põhiline alias</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda põhiliseks aliaseks</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Levita selle jututoa aliasena</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Avalda jututubade loendis</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Kustuta see alias</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#uus-alias:server.tippdomeen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa</translation>
     </message>
 </context>
 <context>
@@ -104,27 +104,27 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+26"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Lubatud jututubade seadistused</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututubade loend, mis tagav ligipääsu ka siia jututuppa. Kõik nende jututubade liikmed võivad liituda ka selle jututoaga.</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Ülemkogukond</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Teine jututuba</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa täiendavaid jututube, mis pole veel loendis...</translation>
     </message>
 </context>
 <context>
@@ -149,17 +149,17 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+75"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videokõne</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Häälkõne</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei suuda tuvastada mikrofoni.</translation>
     </message>
 </context>
 <context>
@@ -167,42 +167,42 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+65"/>
         <source>Video Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Videokõne</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>Häälkõne</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadmed</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Võta vastu</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei suuda tuvastada mikrofoni.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Unknown microphone: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tundmatu mikrofon: %1</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Unknown camera: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tundmatu kaamera: %1</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>Keeldu</translation>
     </message>
 </context>
 <context>
@@ -443,7 +443,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/ChatPage.qml" line="+36"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Võrguühendus puudub</translation>
     </message>
 </context>
 <context>
@@ -740,22 +740,22 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+123"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Laienda</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Ahenda</translation>
     </message>
     <message>
         <location line="+87"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ära näita teavituste loendit selle kogukonna või sildi kohta.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaikimisi peaida selle sildiga või sellest kogukonnast pärit jututoad.</translation>
     </message>
 </context>
 <context>
@@ -836,40 +836,40 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+19"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita liitumine kogukonnaga</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Kinnita liitumine jututoaga</translation>
     </message>
     <message numerus="yes">
         <location line="+66"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n liige</numerusform>
+            <numerusform>%n liiget</numerusform>
         </translation>
     </message>
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoaga ei saa otse liituda. Küll aga saad sa jututoa uksele koputada ning liikmed saavad sinu liitumise lubada või sellest keelduda. Kui soovid, siis lisa alljärgnevas ka liitumise selgitus:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa soovid liituda selle jututoaga? Kui soovid, siis võid siia lisada ka selgituse:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Koputa</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu</translation>
     </message>
 </context>
 <context>
@@ -877,22 +877,22 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+15"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta otsevestlust</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsutav kasutaja</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@kasutaja:koduserver.tippdomeen</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine</translation>
     </message>
 </context>
 <context>
@@ -900,72 +900,72 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+17"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus kogukond</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus jututuba</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Nimi puudub</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema puudub</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Avalik jututuba</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Avalike jututubadega saavad liituda kõik huvilised ja privaatsed jututoad vajavad kutset.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Trusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Usaldusväärne</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik kutsutavad saavad jututoa loojaga samad õigused</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoiatus: krüptimist ei saa hiljem välja lülitada</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo jututuba</translation>
     </message>
 </context>
 <context>
@@ -1001,22 +1001,22 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/device-verification/DigitVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimise kood</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun võrdle järgmiseid numbreid. Sa peaks nägema samu numbreid mõlema osapoole seadmes. Kui nad omavahel ei klapi, siis palun vajuta verifitseerimise katkestamiseks „Nad ei klapi“ nuppu!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nad ei klapi!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Mõlemad on samad!</translation>
     </message>
 </context>
 <context>
@@ -1024,27 +1024,27 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/device-verification/EmojiVerification.qml" line="+11"/>
         <source>Verification Code</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimise kood</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun võrdle järgmiseid emojisid. Sa peaks nägema samu emojisid mõlema osapoole seadmes. Kui nad on erinevad, siis palun vajuta verifitseerimise katkestamiseks „Nad ei klapi“ nuppu!</translation>
     </message>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvatav emoji võib erinevate fondifailide tõttu eri klientides olla natuke erinev. Samuti võib nimi olla eri keeltes erinev. Sellele vaatamata kujutavad nad ühte 64&apos;st loomast või esemest. Näiteks lõvi või kass on ilmselgelt erinevad, kuid kass on siiski kass vaatamata sellele, et ühes fondis võib olla kuvatud vaid kassi nägu ja teises kogu kassi keha.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>They do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Nad ei klapi!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Mõlemal pool on ühesugused emojid!</translation>
     </message>
 </context>
 <context>
@@ -1052,42 +1052,42 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/delegates/Encrypted.qml" line="+46"/>
         <source>There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle sõnumi dekrüptimiseks pole veel vajalikke võtmeid. Me oleme neid serverist automaatselt laadimas, kuid kui sul on väga kiire, siis võid seda uuesti teha.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Meil on krüptovõtmed vaid uuemate sõnumite jaoks ja seda sõnumit ei saa dekrüptida. Sa võid proovida vajalikke võtmeid eraldi laadida.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptovõtmete andmekogust lugemisel tekkis rakenduses viga.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumi dekrüptimisel tekkis viga.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The message couldn&apos;t be parsed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumi töötlemisel tekkis viga.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptovõtit on kasutatud korduvalt! Keegi võib proovida siia vestlusesse valesõnumite lisamist!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation type="unfinished"></translation>
+        <translation>Teadmata viga dekrüptimisel</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Request key</source>
-        <translation type="unfinished"></translation>
+        <translation>Laadi krüptovõti</translation>
     </message>
 </context>
 <context>
@@ -1095,12 +1095,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+41"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 võttis kasutusele läbiva krüptimise</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine tagab, et sõnumeid saavad lugevad vaid need kasutajad, kellele sa sõnumeid saadad. Kui tahad kindel olla, et teised kasutajad on päriselt ka need, kellena nad end esitlevad, siis pead nad ka verifitseerima.</translation>
     </message>
 </context>
 <context>
@@ -1108,22 +1108,22 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
         <source>This message is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>See sõnum on krüptimata!</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Encrypted by a verified device</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud verifitseeritud seadmes</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud verifitseerimata seadmes, aga sa oled selle kasutajat seni usaldanud.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud verifitseerimata seadme poolt või krüptovõtmed on pärit allikast, mida sa pole üheselt usaldanud (näiteks varundatud võtmed).</translation>
     </message>
 </context>
 <context>
@@ -1203,42 +1203,42 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/device-verification/Failed.qml" line="+11"/>
         <source>Verification failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimine ei õnnestunud</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Other client does not support our verification protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teise osapoole rakendus ei toeta siinkasutatavat verifitseerimisprotokolli.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation type="unfinished"></translation>
+        <translation>Tuvastasin, et krüptovõtmed ei klapi omavahel!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Device verification timed out.</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadme verifitseerimine aegus.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Other party canceled the verification.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teine osapool katkestas verifitseerimise.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Saabunud verifitseerimissõnumid on vales järjekorras!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Teadmata viga verifitseerimisel.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -1246,7 +1246,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/ForwardCompleter.qml" line="+52"/>
         <source>Forward Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Suuna sõnum edasi</translation>
     </message>
 </context>
 <context>
@@ -1271,47 +1271,47 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+33"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 peidetud sündmused</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peidetud sündmused</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neid sündmusi &lt;b&gt;kuvatakse&lt;/b&gt; %1 jututoas:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Neid sündmusi &lt;b&gt;kuvatakse&lt;/b&gt; igas jututoas:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja sündmused</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitumised, lahkumised, keelamised ning tunnuspildi ja nime muutused…</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutused</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saadetakse siis, kui lisatakse või eemaldatakse moderaator või kui kasutajate õigused jututoas muutuvad.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleepsud</translation>
     </message>
 </context>
 <context>
@@ -1319,89 +1319,89 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/ImagePackEditorDialog.qml" line="+22"/>
         <source>Editing image pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Muudan pildipakki</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa pilte</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Pildid (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali pildid pildipaki jaoks</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa pildipakki</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda selle pildipaki reklaampilti</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Overview Image (*.png *.webp *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Reklaampilt (*.png *.webp *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali pildipaki reklaampilt</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>State key</source>
-        <translation type="unfinished"></translation>
+        <translation>Olekuvõti</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Packname</source>
-        <translation type="unfinished"></translation>
+        <translation>Pildikogu nimi</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Attribution</source>
-        <translation type="unfinished"></translation>
+        <translation>Viide allikale</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+75"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasuta emojina</translation>
     </message>
     <message>
         <location line="-62"/>
         <location line="+75"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasuta kleepsuna</translation>
     </message>
     <message>
         <location line="-37"/>
         <source>Shortcode</source>
-        <translation type="unfinished"></translation>
+        <translation>Lühend</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Body</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisu</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda pakist</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemalda</translation>
     </message>
 </context>
 <context>
@@ -1409,57 +1409,57 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+23"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Pildikogu seadistused</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Losa kasutajakontokohane pildipakk</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus jututoa pildipakk</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Private pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Isiklik pildipakk</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Pildipakk sellest jututoast</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Pildipakk ülemkogukonast</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Üldkasutatav pildipakk</translation>
     </message>
     <message>
         <location line="+68"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba kasutada üldiselt</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enables this pack to be used in all rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Sellega võimaldad pildipaki kasutamist kõikides jututubades</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -1485,33 +1485,33 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/InviteDialog.qml" line="+40"/>
         <source>Invite users to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu kasutajaid %1 jututuppa</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi kasutajat</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>@joe:matrix.org</source>
         <comment>Example user id. The name &apos;joe&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@kadri:matrix.org</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi serveris</translation>
     </message>
     <message>
         <location line="+86"/>
         <source>Invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada kutse</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">Katkesta</translation>
+        <translation>Loobu</translation>
     </message>
 </context>
 <context>
@@ -1519,17 +1519,17 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/JoinRoomDialog.qml" line="+14"/>
         <source>Join room</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu jututoaga</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Room ID or alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa tunnus või alias</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu</translation>
     </message>
 </context>
 <context>
@@ -1537,12 +1537,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/LeaveRoomDialog.qml" line="+17"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Are you sure you want to leave?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa oled kindel, et soovid lahkuda?</translation>
     </message>
 </context>
 <context>
@@ -1628,12 +1628,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/pages/LoginPage.qml" line="+58"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix&apos;i kasutajatunnus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>e.g @joe:matrix.org</source>
-        <translation type="unfinished"></translation>
+        <translation>näiteks @kadri:matrix.org</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1641,53 +1641,57 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:server.my
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu kasutajanimi sisselogimiseks. Matrix&apos;i kasutajatunnus algab @ märgiga ning sellele järgneb kasutajanimi. Seejärel peale koolonit
+on sinu koduserveri nimi. Kui sinu koduserver ei toeta .well-known nimelahendust, siis sa võid lisada ka koduserveri aadressi.
+Näiteks @kadri:server.minu
+Kui Nheko ei suuda tuvastada sinu koduserverit, siis ta kuvab sulle andmevälja selle sisestamiseks.</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu salasõna.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadme nimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided, a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu seadme nimi, mida teised osapooled verifitseerimise ajal ja vajadusel hiljem näevad. Kui sa midagi ei sisesta, siis kehtib vaikimisi väärtus.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Homeserver address</source>
-        <translation type="unfinished"></translation>
+        <translation>Koduserveri aadress</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>server.minu:8787</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>The address that can be used to contact you homeserver&apos;s client API.
 Example: https://server.my:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Aadress, mis võimaldab ligipääsu sinu koduserveri API&apos;le.
+Näiteks: https://minuserver.ee:8787</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGI SISSE</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi</translation>
     </message>
 </context>
 <context>
@@ -1695,17 +1699,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/LogoutDialog.qml" line="+13"/>
         <source>Log out</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi välja</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>A call is in progress. Log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõne on pooleli. Kas tõesti logime välja?</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Are you sure you want to log out?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa oled kindel, et soovid välja logida?</translation>
     </message>
 </context>
 <context>
@@ -1722,17 +1726,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/MessageDelegate.qml" line="+79"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututuba asendati järgneval põhjusel: %1</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished"></translation>
+        <translation>Mine uude jututuppa</translation>
     </message>
     <message>
         <location line="+176"/>
         <source>%1 removed a message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas sõnumi</translation>
     </message>
     <message>
         <location line="+34"/>
@@ -1742,93 +1746,93 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+14"/>
         <source>%2 changed the room name to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 muutis jututoa uueks nimeks: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the room name</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas jututoa nime</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%2 changed the topic to: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 muutis jututoa uueks teemaks: %1</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>%1 removed the topic</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 eemaldas jututoa teema</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the room avatar</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis jututoa tunnuspilti</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis klammerdatud sõnumeid.</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa aadresse.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis selle jututoa ülemkogukonda.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lõi ja seadistas jututoa: %2</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 helistas.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alustas videokõnet.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 helistas.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastas kõnele.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ei võtnud kõnet vastu.</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 select answer</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 - vali vastus</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 lõpetas kõne.</translation>
     </message>
     <message>
         <location line="+14"/>
         <location line="+14"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 alustab kõnet...</translation>
     </message>
     <message>
         <location line="+122"/>
         <source>Allow them in</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba neid</translation>
     </message>
 </context>
 <context>
@@ -1836,47 +1840,47 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageInput.qml" line="+47"/>
         <source>Hang up</source>
-        <translation type="unfinished"></translation>
+        <translation>Lõpeta kõne</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõne on juba pooleli</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Place a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Helista</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Send a file</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada fail</translation>
     </message>
     <message>
         <location line="+64"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Kirjuta sõnum…</translation>
+        <translation>Kirjuta sõnum…</translation>
     </message>
     <message>
         <location line="+257"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleepsud</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Emoji</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Send</source>
-        <translation type="unfinished">Saada</translation>
+        <translation>Saada</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>You don&apos;t have permission to send messages in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sul puuduvad selles jututoas õigused sõnumite saatmiseks</translation>
     </message>
 </context>
 <context>
@@ -1884,27 +1888,27 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/MessageView.qml" line="+346"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>React</source>
-        <translation type="unfinished"></translation>
+        <translation>Reageeri</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Reply in thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Vasta jutulõngana</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus jutulõng</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Reply</source>
-        <translation type="unfinished"></translation>
+        <translation>Vasta</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1914,7 +1918,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+17"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>Valikud</translation>
     </message>
     <message>
         <location line="+187"/>
@@ -1924,12 +1928,12 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+69"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa eemaldamise põhjus või põhjust lisada ei taha, siis vajuta Enter-klahvi:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemaldamise põhjus</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1940,93 +1944,93 @@ Example: https://server.my:8787</source>
         <location line="+10"/>
         <location line="+138"/>
         <source>&amp;Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Kopeeri</translation>
     </message>
     <message>
         <location line="-131"/>
         <location line="+138"/>
         <source>Copy &amp;link location</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri &amp;lingi asukoht</translation>
     </message>
     <message>
         <location line="-130"/>
         <source>Re&amp;act</source>
-        <translation type="unfinished"></translation>
+        <translation>Re&amp;ageeri</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Repl&amp;y</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vasta</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Muuda</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Jutulõng</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Võta &amp;lahti</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&amp;Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Määra püsisõnumiks</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>&amp;Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>Lugemisteatised</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>&amp;Forward</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Edasta</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>&amp;Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Märgi loetuks</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita sõnumi lähtekoodi</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita sõnumi dekrüptitud lähtekoodi</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Remo&amp;ve message</source>
-        <translation type="unfinished"></translation>
+        <translation>Eemal&amp;da sõnum</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>&amp;Save as</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Salvesta kui</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>&amp;Open in external program</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Ava välise rakendusega</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Copy link to eve&amp;nt</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri sündmuse li&amp;nk</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>&amp;Go to quoted message</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Vaata tsiteeritud sõnumit</translation>
     </message>
 </context>
 <context>
@@ -2034,62 +2038,62 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/device-verification/NewVerificationRequest.qml" line="+11"/>
         <source>Send Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada verifitseerimispäring</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Received Verification Request</source>
-        <translation type="unfinished"></translation>
+        <translation>Saabus verifitseerimispäring</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun verifitseeri oma seadmed. See tagab, et muud kasutajad saaks kontrollida missugused seadmed on sinu omad ning krüptovõtmete automaatne varundus toimiks. Kas verifitseerime mõne verifitseerimata seadme nüüd? (Selleks peab sul mõni verifitseeritud seadmetest käepärast olema.)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation type="unfinished"></translation>
+        <translation>Selleks, et muud kasutajad automaatselt usaldaks sinu seadmeid, peaksid nad verifitseerima. Samaga muutub ka krüptovõtmete varundus automaatseks. Kas verifitseerime seadme %1?</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To ensure that no malicious user can eavesdrop on your encrypted communications you can verify the other party.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagamaks, et mitte ainsamgi kõrvaline osapool ei saa sinu krüptitud suhtlust pealt kuulata, võid teise osapoole verifitseerida.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 has requested to verify their device %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 soovib verifitseerida oma seadet %2.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 using the device %2 has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutades seadet %2 on %1 palunud verifitseerimist.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Your device (%1) has requested to be verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu seadme (%1) jaoks on saabunud verifitseerimispäring.</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Cancel</source>
-        <translation type="unfinished">Katkesta</translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Deny</source>
-        <translation type="unfinished"></translation>
+        <translation>Keeldu</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Start verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta verifitseerimist</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Nõustu</translation>
     </message>
 </context>
 <context>
@@ -2127,32 +2131,32 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/voip/PlaceCall.qml" line="+39"/>
         <source>Place a call to %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas helistame kasutajale %1?</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ei suuda tuvastada mikrofoni.</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Voice</source>
-        <translation type="unfinished"></translation>
+        <translation>Häälkõne</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Video</source>
-        <translation type="unfinished"></translation>
+        <translation>Videokõne</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Screen</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekraan</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Cancel</source>
-        <translation type="unfinished">Katkesta</translation>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -2160,7 +2164,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/delegates/Placeholder.qml" line="+11"/>
         <source>unimplemented event: </source>
-        <translation type="unfinished"></translation>
+        <translation>implementeerimata sündmus: </translation>
     </message>
 </context>
 <context>
@@ -2168,85 +2172,85 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelEditor.qml" line="+26"/>
         <source>Permissions in %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jututoa õigused</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Be careful when editing permissions. You can&apos;t lower the permissions of people with a same or higher level than you. Be careful when promoting others.</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutmisel palun ole ettevaatlik. Sinuga samade või sinust kõrgemate õigustega kasutajate õigusi sa madalamaks muuta ei saa. Mõtle hoolega läbi, kui jagad teistele suuremaid õigusi.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Roles</source>
-        <translation type="unfinished"></translation>
+        <translation>Õigused</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajad</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Move permissions between roles to change them</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutmiseks liiguta toiminguid kasutajarollide vahel</translation>
     </message>
     <message>
         <location line="+22"/>
         <location line="+240"/>
         <source>Administrator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Peakasutaja (%1)</translation>
     </message>
     <message>
         <location line="-238"/>
         <location line="+240"/>
         <source>Moderator (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderaator (%1)</translation>
     </message>
     <message>
         <location line="-238"/>
         <source>User (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+238"/>
         <source>Custom (%1)</source>
-        <translation type="unfinished"></translation>
+        <translation>Kohandatud õigused (%1)</translation>
     </message>
     <message>
         <location line="-225"/>
         <source>Remove event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Sündmuse tüübi eemaldamine</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add event type</source>
-        <translation type="unfinished"></translation>
+        <translation>Sündmuse tüübi lisamine</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Add new role</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa uus roll</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Move users up or down to change their permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Õiguste muutmiseks nihuta kasutajaid üles või alla</translation>
     </message>
     <message>
         <location line="+142"/>
         <source>Remove user</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja eemaldamine</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Add user</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja lisamine</translation>
     </message>
 </context>
 <context>
@@ -2254,42 +2258,42 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/PowerLevelSpacesApplyDialog.qml" line="+27"/>
         <source>Apply permission changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Jõusta õiguste muudatused</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Which of the subcommunities and rooms should these permissions be applied to?</source>
-        <translation type="unfinished"></translation>
+        <translation>Millistele alamkogukondadele ja jututubadele peaks need muudatused kehtima?</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Apply permissions recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Jõusta õigused rekursiivselt</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Overwrite exisiting modifications in rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Asenda senised jututubades tehtud muudatused</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>No permissions to apply the new permissions here</source>
-        <translation type="unfinished"></translation>
+        <translation>Uute õiguste määramiseks pole sul õigusi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No changes needed</source>
-        <translation type="unfinished"></translation>
+        <translation>Muudatusi pole vaja teha</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Existing modifications to the permissions in this room will be overwritten</source>
-        <translation type="unfinished"></translation>
+        <translation>Senised õiguste muudatused selles jututoas kirjutatakse nüüd üle</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Permissions synchronized with community</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutame kogukonnaga samu õigusi</translation>
     </message>
 </context>
 <context>
@@ -2565,12 +2569,12 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/ReCaptchaDialog.qml" line="+40"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Vasta reCAPTCHA küsimustele ja vajuta kinnita-nuppu</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Ava reCAPTCHA</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -2588,7 +2592,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/ReadReceipts.qml" line="+39"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Lugemisteatised</translation>
+        <translation>Lugemisteatised</translation>
     </message>
 </context>
 <context>
@@ -2659,68 +2663,68 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/pages/RegisterPage.qml" line="+58"/>
         <source>Homeserver</source>
-        <translation type="unfinished">Koduserver</translation>
+        <translation>Koduserver</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>your.server</source>
-        <translation type="unfinished"></translation>
+        <translation>sinu.server</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation type="unfinished"></translation>
+        <translation>See on server, kus sa oma kasutajakonto registreerid. Kuna Matrix on hajutatud suhtlusvõrk, siis esmalt pead leidma sulle sobiliku koduserveri või panema püsti täitsa oma enda koduserveri.</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajanimi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajanimi ei tohi olla tühi ning võib sisaldada vaid a-z, 0-9, ., _, =, -, / tähemärke.</translation>
     </message>
     <message>
         <location line="+21"/>
         <location line="+102"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi</translation>
     </message>
     <message>
         <location line="-79"/>
         <source>Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõna</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun vali tutvaline salasõna. Täpsemad nõuded salasõnale sõltuvad sinu koduserveri seadistustest.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Password confirmation</source>
-        <translation type="unfinished"></translation>
+        <translation>Korda salasõna</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Your passwords do not match!</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu sisestatud salasõnad ei klapi!</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Device name</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadme nimi</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sinu seadme nimi, mida teised osapooled verifitseerimise ajal ja vajadusel hiljem näevad. Kui sa midagi ei sisesta, siis kehtib vaikimisi väärtus.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTREERI</translation>
     </message>
 </context>
 <context>
@@ -2728,17 +2732,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/ReplyPopup.qml" line="+54"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Cancel Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista muudatused</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Cancel Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Tühista jutulõng</translation>
     </message>
 </context>
 <context>
@@ -2746,17 +2750,17 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomDirectory.qml" line="+24"/>
         <source>Explore Public Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Tutvu avalike jututubadega</translation>
     </message>
     <message>
         <location line="+138"/>
         <source>Search for public rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi avalikke jututube</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Choose custom homeserver</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali oma koduserver</translation>
     </message>
 </context>
 <context>
@@ -2772,150 +2776,150 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/RoomList.qml" line="+49"/>
         <source>Start a new chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta uut vestlust</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Join a room</source>
-        <translation type="unfinished"></translation>
+        <translation>Liitu jututoaga</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Create a new room</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo uus jututuba</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Start a direct chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta otsevestlust</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Create a new community</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo uus kogukond</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututubade loend</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Search rooms (Ctrl+K)</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi jututubasid (Ctrl+K)</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>User settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja seadistused</translation>
     </message>
     <message>
         <location line="+95"/>
         <source>Logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi välja</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Enter your status message:</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisesta oma olekuteade:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Status Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Olekuteade</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Profile settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Profiili seadistused</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Set status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisesta olekuteade</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine pole veel kasutusel</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unverified login</source>
         <extracomment>The user just signed in with this device and hasn&apos;t verified their master key.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimata sisselogimissessioon</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Please verify your other devices</source>
         <extracomment>There are unverified devices signed in to this account.</extracomment>
-        <translation type="unfinished"></translation>
+        <translation>Palun verifitseeri oma muud seadmed</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
     <message>
         <location line="+372"/>
         <source>Enter the tag you want to use:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirjuta silt, mida soovid kasutada:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New tag</source>
-        <translation type="unfinished"></translation>
+        <translation>Uus silt</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Open separately</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava loend eraldi</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Room settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa seadistused</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Copy room link</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeri jututoa link</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Tag room as:</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa jututoale silt:</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Favourite</source>
-        <translation type="unfinished"></translation>
+        <translation>Lemmik</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Low priority</source>
-        <translation type="unfinished"></translation>
+        <translation>Vähetähtis</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Server notice</source>
-        <translation type="unfinished"></translation>
+        <translation>Serveriteade</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation type="unfinished"></translation>
+        <translation>Loo uus silt…</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa kogukonda või eemalda sealt...</translation>
     </message>
 </context>
 <context>
@@ -2923,81 +2927,81 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomMembers.qml" line="+19"/>
         <source>Members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 jututoa liikmed</translation>
     </message>
     <message numerus="yes">
         <location line="+31"/>
         <source>%n people in %1</source>
         <comment>Summary above list of members</comment>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n osaline %1 jututoas</numerusform>
+            <numerusform>%n osalist %1 jututoas</numerusform>
         </translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Invite more people</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu veel liikmeid</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Search...</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi...</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Sort by: </source>
-        <translation type="unfinished"></translation>
+        <translation>Sortimise alus: </translation>
     </message>
     <message>
         <location line="+6"/>
         <source>User ID</source>
-        <translation type="unfinished">Kasutaja tunnus</translation>
+        <translation>Kasutajatunnus</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display name</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvatav nimi</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja õigused</translation>
     </message>
     <message>
         <location line="+98"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Peakasutaja: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderaator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tavakasutaja: %1</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>See jututuba on krüptimata!</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>This user is verified.</source>
-        <translation type="unfinished"></translation>
+        <translation>See kasutaja on verifitseeritud.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user isn&apos;t verified, but is still using the same master key from the first time you met.</source>
-        <translation type="unfinished"></translation>
+        <translation>See kasutaja ei ole verifitseeritud, kuid ta kasutab jätkuvalt krüpto jaoks juurvõtmeid sellest ajast, kui te kohtusite.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This user has unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Sellel kasutajal on verifitseerimata seadmeid!</translation>
     </message>
 </context>
 <context>
@@ -3036,40 +3040,40 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/RoomSettings.qml" line="+26"/>
         <source>Room Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa seadistused</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda jututoa tunnuspilti.</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Change name of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda selle jututoa nime</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n liige</numerusform>
+            <numerusform>%n liiget</numerusform>
         </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaata %1 jututoa liikmeid</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished"></translation>
+        <translation>Teema on kirjeldamata</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda selle jututoa teemat</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -3079,22 +3083,22 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Teavitused</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Muted</source>
-        <translation type="unfinished"></translation>
+        <translation>Summutatud</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaid mainimised</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kõik sõnumid</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3104,43 +3108,43 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Anyone can join</source>
-        <translation type="unfinished"></translation>
+        <translation>Kes iganes võib liituda</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba uksele koputamine</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Allow joining via other rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba liitumine teiste jututubade kaudu</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Rooms to join via</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoad, mille kaudu on võimalik liituda</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+242"/>
         <source>Change</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda</translation>
     </message>
     <message>
         <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda jututube, mille kaudu on võimalik selle jututoaga liituda. Tavaliselt on selleks näiteks selle jututoa põhiline kogukond.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba külalistel liituda</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished"></translation>
+        <translation>Jõusta ligipääsureeglid</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3213,12 +3217,12 @@ Example: https://server.my:8787</source>
         <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista</translation>
     </message>
     <message>
         <location line="-89"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali sündmused, mida siin jututoas peita</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3238,78 +3242,79 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Läbiv krüptimine</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine on Nhekos hetkel veel katseline ning nii mõndagi võib ootamatult katki minna. &lt;br&gt;
+Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Õigused</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoa õiguste vaatamine ja muutmine</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Aliases</source>
-        <translation type="unfinished"></translation>
+        <translation>Aliased</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoa aadresside ja/või aliaste vaatamine ja muutmine</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleepsude ja emotikonide seadistused</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda kasutatavaid lisapakke, eemalda neid või lisa uusi</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>INFO</source>
-        <translation type="unfinished">TEAVE</translation>
+        <translation>TEAVE</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Internal ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisemine tunnus</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Kopeeritud lõikelauale</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa versioon</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished"></translation>
+        <translation>näita vähem</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished"></translation>
+        <translation>näita rohkem</translation>
     </message>
 </context>
 <context>
@@ -3340,27 +3345,27 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/Root.qml" line="+313"/>
         <source>Please enter your login password to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jätkamaks palun sisesta oma salasõna:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jätkamaks palun sisesta oma kehtiv e-posti aadress:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter a valid phone number to continue:</source>
-        <translation type="unfinished"></translation>
+        <translation>Jätkamaks palun sisesta kehtiv telefoninumber:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Please enter the token which has been sent to you:</source>
-        <translation type="unfinished"></translation>
+        <translation>Palun sisesta sulle saadetud tunnuskood:</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Wait for the confirmation link to arrive, then continue.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jätkamaks palun oota, kuni oled saanud kinnituslingi.</translation>
     </message>
 </context>
 <context>
@@ -3368,7 +3373,7 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/voip/ScreenShare.qml" line="+30"/>
         <source>Share desktop with %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa soovid jagada oma töölauda kasutajaga %1?</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -3378,7 +3383,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+20"/>
         <source>Window:</source>
-        <translation type="unfinished"></translation>
+        <translation>Aken:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3388,43 +3393,43 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+16"/>
         <source>Frame rate:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaadrisagedus:</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita oma kaamerat pilt-pildis vaates</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Request remote camera</source>
-        <translation type="unfinished"></translation>
+        <translation>Soovi teise osapoole kaameravaadet</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+9"/>
         <source>View your callee&apos;s camera like a regular video call</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaata teise osapoole kaamerat nii nagu tavalise videokõne puhul</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Hide mouse cursor</source>
-        <translation type="unfinished"></translation>
+        <translation>Peida hiirekursor</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Share</source>
-        <translation type="unfinished"></translation>
+        <translation>Jaga</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Preview</source>
-        <translation type="unfinished"></translation>
+        <translation>Eelvaade</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation type="unfinished">Katkesta</translation>
+        <translation>Loobu</translation>
     </message>
 </context>
 <context>
@@ -3445,49 +3450,51 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/SelfVerificationCheck.qml" line="+50"/>
         <source>This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don&apos;t share it with anyone and don&apos;t lose it! Do not pass go! Do not collect $200!</source>
-        <translation type="unfinished"></translation>
+        <translation>See on sinu taastevõti. Kui peaks olema vaja taastada ligipääsu sinu krüptitud sõnumitele või muudele võtmetele, siis sul läheb seda vaja. Hoia taastevõtit turvalises kohas. Ära jaga seda teistega ega ära kaota teda ära! Ega ära võta vastu sulle selle eest pakutavat 200 eurot!</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Encryption setup successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise kasutuselevõtmine õnnestus</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Failed to setup encryption: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise seadistamine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Setup Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadista krüptimine</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
-        <translation type="unfinished"></translation>
+        <translation>Hei ja tere tulemast Matrixi võrku!
+Tundub, et see on uus teema sinu jaoks. Enne, kui sa saad sõnumeid turvaliselt krüptida, on vaja paar asja ära teha. Sa võid kas nõustuda kõikide järgnevate toimingutega ühe korraga või kohendada seadistusi eraldi. Me üritame järgnevalt selgitada ka olulisemaid asjaolusid. Sa võid need küll vahele jätta, kuid selle teabe valdamine tegelikult on kasulik!</translation>
     </message>
     <message>
         <location line="+108"/>
         <source>Activate Encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimise aktiveerimine</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>It seems like you have encryption already configured for this account. To be able to access your encrypted messages and make this device appear as trusted, you can either verify an existing device or (if you have one) enter your recovery passphrase. Please select one of the options below.
 If you choose verify, you need to have the other device available. If you choose &quot;enter passphrase&quot;, you will need your recovery key or passphrase. If you click cancel, you can choose to verify yourself at a later point.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tundud, et sellel kontol juba on krüptimine kasutusel. Saamaks ligipääsu sinu krüptitud sõnumitele ja märkimaks seda seadet usaldusväärseks sa kas tee läbi verifitseerimine või sisesta oma taastamiseks mõeldud salafraas. Palun vali järgnevalt oma eelistus.
+Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui eelistad salafraasi sisestamist, siis peab sul olema käepärast oma konto taastevõti või salafraas. Kui praegu katkestad, siis verifitseerimist saad alati ka hiljem teha.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>verify</source>
-        <translation type="unfinished"></translation>
+        <translation>verifitseeri</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>enter passphrase</source>
-        <translation type="unfinished"></translation>
+        <translation>sisesta salafraas</translation>
     </message>
 </context>
 <context>
@@ -3554,37 +3561,37 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
         <source>Add or remove from community</source>
-        <translation type="unfinished"></translation>
+        <translation>Lisa kogukonda või eemalda sealt</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Official community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoa ametlik kogukond</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Affiliated community for this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle jututoaga seotud kogukond</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvatakse vaid kogukonna liikmetele</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Listed only for room members</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuvatakse vaid jututoa liikmetele</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Not related</source>
-        <translation type="unfinished"></translation>
+        <translation>Pole seotud</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
+        <translation>Alamkogukonnad</translation>
     </message>
 </context>
 <context>
@@ -3592,22 +3599,22 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+18"/>
         <source>Failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Ebaõnnestus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sent</source>
-        <translation type="unfinished"></translation>
+        <translation>Saadetud</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Received</source>
-        <translation type="unfinished"></translation>
+        <translation>Vastuvõetud</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Read</source>
-        <translation type="unfinished"></translation>
+        <translation>Loetud</translation>
     </message>
 </context>
 <context>
@@ -3615,12 +3622,12 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/emoji/StickerPicker.qml" line="+69"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi</translation>
     </message>
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Muuda kasutatavaid lisapakke, eemalda neid või lisa uusi</translation>
     </message>
 </context>
 <context>
@@ -3628,17 +3635,17 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/device-verification/Success.qml" line="+11"/>
         <source>Successful Verification</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimine õnnestus</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimine õnnestus! Mõlema osapoole seadmed on nüüd verifitseeritud!</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Sulge</translation>
     </message>
 </context>
 <context>
@@ -4052,12 +4059,12 @@ Põhjus: %4</translation>
         <location filename="../qml/TimelineRow.qml" line="+107"/>
         <location line="+171"/>
         <source>Part of a thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Osa jutulõngast</translation>
     </message>
     <message>
         <location line="-18"/>
         <source>Edited</source>
-        <translation type="unfinished"></translation>
+        <translation>Muudetud</translation>
     </message>
 </context>
 <context>
@@ -4065,12 +4072,12 @@ Põhjus: %4</translation>
     <message>
         <location filename="../qml/TimelineView.qml" line="+53"/>
         <source>No room open</source>
-        <translation type="unfinished"></translation>
+        <translation>Ühtegi jututuba pole avatud</translation>
     </message>
     <message>
         <location line="+102"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sa oled saatmas teavitust kogu jututoale</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4085,25 +4092,25 @@ Põhjus: %4</translation>
     <message>
         <location line="+41"/>
         <source>No preview available</source>
-        <translation type="unfinished">Eelvaade pole saadaval</translation>
+        <translation>Eelvaade pole saadaval</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadistused</translation>
     </message>
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n liige</numerusform>
+            <numerusform>%n liiget</numerusform>
         </translation>
     </message>
     <message>
         <location line="+3"/>
         <source>View members of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaata %1 jututoa liikmeid</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4113,17 +4120,17 @@ Põhjus: %4</translation>
     <message>
         <location line="+14"/>
         <source>join the conversation</source>
-        <translation type="unfinished"></translation>
+        <translation>liitu vestlusega</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>accept invite</source>
-        <translation type="unfinished"></translation>
+        <translation>võta kutse vastu</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>decline invite</source>
-        <translation type="unfinished"></translation>
+        <translation>lükka kutse tagasi</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4138,17 +4145,17 @@ Põhjus: %4</translation>
     <message>
         <location line="+45"/>
         <source>Hide invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Peida kutse põhjus</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Show invite reason</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita kutse põhjust</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi jututubade loendisse</translation>
     </message>
 </context>
 <context>
@@ -4156,82 +4163,82 @@ Põhjus: %4</translation>
     <message>
         <location filename="../qml/TopBar.qml" line="+21"/>
         <source>No room selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututuba on valimata</translation>
     </message>
     <message>
         <location line="+53"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 kogukonnas</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Back to room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi jututubade loendisse</translation>
     </message>
     <message>
         <location line="+55"/>
         <source>Show or hide pinned messages</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita klammerdatud sõnumeid või peida nad</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Show room members.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita jututoas osalejaid.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This room contains only verified devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selles jututoas on vaid verifitseeritud seadmed.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains verified devices and devices which have never changed their master key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selles jututoas on vaid verifitseeritud seadmed ning nad ei ole kunagi muutnud oma juurvõtit.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>This room contains unverified devices!</source>
-        <translation type="unfinished"></translation>
+        <translation>Selles jututoas leidub verifitseerimata seadmeid!</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Search this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Otsi siit jututoast</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Room options</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa valikud</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Invite users</source>
-        <translation type="unfinished"></translation>
+        <translation>Kutsu kasutajaid</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Members</source>
-        <translation type="unfinished"></translation>
+        <translation>Liikmed</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation type="unfinished"></translation>
+        <translation>Lahku jututoast</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Seadistused</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>Unpin</source>
-        <translation type="unfinished"></translation>
+        <translation>Võta lahti</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Enter search query</source>
-        <translation type="unfinished"></translation>
+        <translation>Sisesta otsing</translation>
     </message>
 </context>
 <context>
@@ -4277,9 +4284,9 @@ Põhjus: %4</translation>
     <message numerus="yes">
         <location filename="../qml/UploadBox.qml" line="+92"/>
         <source>Upload %n file(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Laadi fail üles</numerusform>
+            <numerusform>Laadi %n faili üles</numerusform>
         </translation>
     </message>
 </context>
@@ -4318,32 +4325,32 @@ Põhjus: %4</translation>
     <message>
         <location filename="../qml/dialogs/UserProfile.qml" line="+26"/>
         <source>Global User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Üldine kasutajaprofiil</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutajaprofiil jututoas</translation>
     </message>
     <message>
         <location line="+43"/>
         <source>Change avatar globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma tunnuspilti kõikjal.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change avatar. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma tunnuspilti vaid selles jututoas.</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Change display name globally.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma kuvatavat nime kõikjal.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda oma kuvatavat nime vaid selles jututoas.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -4353,48 +4360,48 @@ Põhjus: %4</translation>
     <message>
         <location line="+25"/>
         <source>Room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututuba: %1</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This is a room-specific profile. The user&apos;s name and avatar may be different from their global versions.</source>
-        <translation type="unfinished"></translation>
+        <translation>See kasutajaprofiil on vaid selle jututoa kohane. Kasutaja kuvatav nimi ja tunnuspilt võivad muudes jutubades olla teistsugused.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Open the global profile for this user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaata selle kasutaja üldist profiili.</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+232"/>
         <source>Verify</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseeri</translation>
     </message>
     <message>
         <location line="-192"/>
         <source>Start a private chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alusta privaatset vestlust.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Kick the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Müksa kasutaja välja.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Ban the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sea kasutajale suhtluskeeld.</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Refresh device list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Uuenda seadmete loendit.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Seadmed</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4404,22 +4411,22 @@ Põhjus: %4</translation>
     <message>
         <location line="+62"/>
         <source>Sign out this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Logi see seade võrgust välja.</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Change device name.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda seadme nime.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Viimati oli võrgus %1 %2 aadressil</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Unverify</source>
-        <translation type="unfinished"></translation>
+        <translation>Võta verifitseerimine tagasi</translation>
     </message>
 </context>
 <context>
@@ -4857,21 +4864,7 @@ This will also enable or disable sending typing notifications to others.</source
 Samaga lülitatakse sisse või välja ka sinu kirjutamisteatiste saatmine teistele kasutajatele.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Display rooms with new messages first.
-If this is off, the list of rooms will only be sorted by the preferred sorting order.
-If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Sort rooms alphabetically.
-If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
-If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
+        <location line="+19"/>
         <source>Show buttons to quickly reply, react or access additional options next to each message.</source>
         <translation>Näita iga sõnumi kõrval nuppe, mis võimaldavad kiiresti vastata, reageerida või teha sõnumiga muid toiminguid.</translation>
     </message>
@@ -4945,7 +4938,21 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <translation>Näita jututubade loendi kõrval veergu kogukondade ja siltidega.</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+23"/>
+        <source>Display rooms with new messages first.
+If this is off, the list of rooms will only be sorted by the preferred sorting order.
+If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Sort rooms alphabetically.
+If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
+If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
@@ -5103,37 +5110,37 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location filename="../qml/pages/UserSettingsPage.qml" line="+189"/>
         <source>CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>PUHVERDATUD</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>NOT CACHED</source>
-        <translation type="unfinished"></translation>
+        <translation>PUHVERDAMATA</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>IMPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>IMPORDI</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>EXPORT</source>
-        <translation type="unfinished"></translation>
+        <translation>EKSPORDI</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>DOWNLOAD</source>
-        <translation type="unfinished"></translation>
+        <translation>ALLALAADIMISED</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>REQUEST</source>
-        <translation type="unfinished"></translation>
+        <translation>PÄRING</translation>
     </message>
     <message>
         <location line="+25"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Tagasi</translation>
     </message>
 </context>
 <context>
@@ -5149,27 +5156,27 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location filename="../qml/device-verification/Waiting.qml" line="+12"/>
         <source>Waiting for other party…</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan teise osapoole tegevust…</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Waiting for other side to accept the verification request.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan, et teine osapool nõustuks verifitseerimispäringuga.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to continue the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan, et teine osapool jätkaks verifitseerimist.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Waiting for other side to complete the verification process.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ootan, et teine osapool lõpetaks verifitseerimise.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Cancel</source>
-        <translation type="unfinished">Katkesta</translation>
+        <translation>Tühista</translation>
     </message>
 </context>
 <context>
@@ -5177,32 +5184,32 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location filename="../qml/pages/WelcomePage.qml" line="+30"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tere tulemast Nheko kasutajaks! Töölauarakendus Matrix&apos;i protokolli jaoks.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Enjoy your stay!</source>
-        <translation type="unfinished"></translation>
+        <translation>Head suhtlemist!</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>REGISTER</source>
-        <translation type="unfinished"></translation>
+        <translation>REGISTREERU</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>LOGIN</source>
-        <translation type="unfinished"></translation>
+        <translation>LOGI SISSE</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Reduce animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Vähenda animatsioone</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished">Et kasutajaliides oleks toredam, kasutab Nheko mitmel puhul animatsioone. Kui see sulle ei sobi, siis saad nad välja lülitada.</translation>
+        <translation>Et kasutajaliides oleks toredam, kasutab Nheko mitmel puhul animatsioone. Kui see sulle ei sobi, siis saad nad välja lülitada.</translation>
     </message>
 </context>
 <context>

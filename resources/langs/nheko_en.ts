@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+107"/>
         <source>Calling...</source>
-        <translation>Calling...</translation>
+        <translation>Calling…</translation>
     </message>
     <message>
         <location line="+10"/>
         <location line="+10"/>
         <source>Connecting...</source>
-        <translation>Connecting...</translation>
+        <translation>Connecting…</translation>
     </message>
     <message>
         <location line="+67"/>
         <source>You are screen sharing</source>
-        <translation>You are screen sharing</translation>
+        <translation>You are screen sharing.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1008,7 +1008,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
     <message>
         <location line="+8"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</translation>
+        <translation>Please verify the following digits.  You should see the same numbers on both sides.  If they differ, please press &apos;They do not match!&apos; to abort verification!</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2189,7 +2189,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+3"/>
         <source>Users</source>
-        <translation></translation>
+        <translation>Users</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2778,7 +2778,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../qml/RoomList.qml" line="+49"/>
         <source>Start a new chat</source>
-        <translation></translation>
+        <translation>Start a new chat</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -2871,7 +2871,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+1"/>
         <source>New tag</source>
-        <translation></translation>
+        <translation>New tag</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2906,7 +2906,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Low priority</source>
-        <translation></translation>
+        <translation>Low priority</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2916,7 +2916,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation>Create new tag...</translation>
+        <translation>Create new tag…</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2929,7 +2929,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location filename="../qml/dialogs/RoomMembers.qml" line="+19"/>
         <source>Members of %1</source>
-        <translation></translation>
+        <translation>Members of %1</translation>
     </message>
     <message numerus="yes">
         <location line="+31"/>
@@ -2978,7 +2978,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation></translation>
+        <translation>Moderator: %1</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3256,12 +3256,12 @@ Example: https://server.my:8787</translation>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
         <translation>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
-                                Please take note that it can&apos;t be disabled afterwards.</translation>
+Please take note that it can&apos;t be disabled afterwards.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Permission</source>
-        <translation>Permission</translation>
+        <translation>Permissions</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3352,7 +3352,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+10"/>
         <source>Please enter a valid email address to continue:</source>
-        <translation></translation>
+        <translation>Please enter a valid email address to continue:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3400,7 +3400,7 @@ Example: https://server.my:8787</translation>
     <message>
         <location line="+19"/>
         <source>Include your camera picture-in-picture</source>
-        <translation></translation>
+        <translation>Include your camera picture-in-picture</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3479,7 +3479,7 @@ It seems like you are new. Before you can securely encrypt your messages, we nee
     <message>
         <location line="+108"/>
         <source>Activate Encryption</source>
-        <translation></translation>
+        <translation>Activate Encryption</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3496,7 +3496,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+9"/>
         <source>enter passphrase</source>
-        <translation></translation>
+        <translation>enter passphrase</translation>
     </message>
 </context>
 <context>
@@ -3578,7 +3578,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+8"/>
         <source>Listed only for community members</source>
-        <translation></translation>
+        <translation>Listed only for community members</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -3601,7 +3601,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+18"/>
         <source>Failed</source>
-        <translation></translation>
+        <translation>Failed</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3629,7 +3629,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation></translation>
+        <translation type="unfinished">Change what packs are enabled, remove packs, or create new ones</translation>
     </message>
 </context>
 <context>
@@ -3642,7 +3642,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+10"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation>Verification successful! Both sides verified their devices!</translation>
+        <translation>Verification successful!  Both sides verified their devices!</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4084,7 +4084,7 @@ Reason: %4</translation>
     <message>
         <location line="+4"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4165,7 +4165,7 @@ Reason: %4</translation>
     <message>
         <location filename="../qml/TopBar.qml" line="+21"/>
         <source>No room selected</source>
-        <translation></translation>
+        <translation>No room selected</translation>
     </message>
     <message>
         <location line="+53"/>
@@ -4200,7 +4200,7 @@ Reason: %4</translation>
     <message>
         <location line="+2"/>
         <source>This room contains unverified devices!</source>
-        <translation></translation>
+        <translation>This room contains unverified devices!</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -4225,7 +4225,7 @@ Reason: %4</translation>
     <message>
         <location line="+5"/>
         <source>Leave room</source>
-        <translation></translation>
+        <translation>Leave room</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4287,7 +4287,7 @@ Reason: %4</translation>
         <location filename="../qml/UploadBox.qml" line="+92"/>
         <source>Upload %n file(s)</source>
         <translation>
-            <numerusform>Upload %n file</numerusform>
+            <numerusform>Upload file</numerusform>
             <numerusform>Upload %n files</numerusform>
         </translation>
     </message>
@@ -4327,7 +4327,7 @@ Reason: %4</translation>
     <message>
         <location filename="../qml/dialogs/UserProfile.qml" line="+26"/>
         <source>Global User Profile</source>
-        <translation></translation>
+        <translation>Global User Profile</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -4352,7 +4352,7 @@ Reason: %4</translation>
     <message>
         <location line="+0"/>
         <source>Change display name. Will only apply to this room.</source>
-        <translation></translation>
+        <translation>Change display name. Will only apply to this room.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -4372,7 +4372,7 @@ Reason: %4</translation>
     <message>
         <location line="+15"/>
         <source>Open the global profile for this user.</source>
-        <translation></translation>
+        <translation>Open the global profile for this user.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -4398,7 +4398,7 @@ Reason: %4</translation>
     <message>
         <location line="+11"/>
         <source>Refresh device list.</source>
-        <translation></translation>
+        <translation>Refresh device list.</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -4423,7 +4423,7 @@ Reason: %4</translation>
     <message>
         <location line="+22"/>
         <source>Last seen %1 from %2</source>
-        <translation></translation>
+        <translation>Last seen %1 from %2</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -5126,7 +5126,7 @@ This setting will take effect upon restart.</translation>
     <message>
         <location line="+7"/>
         <source>IMPORT</source>
-        <translation></translation>
+        <translation>IMPORT</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5146,7 +5146,7 @@ This setting will take effect upon restart.</translation>
     <message>
         <location line="+25"/>
         <source>Back</source>
-        <translation></translation>
+        <translation>Back</translation>
     </message>
 </context>
 <context>
@@ -5190,12 +5190,12 @@ This setting will take effect upon restart.</translation>
     <message>
         <location filename="../qml/pages/WelcomePage.qml" line="+30"/>
         <source>Welcome to nheko! The desktop client for the Matrix protocol.</source>
-        <translation>Welcome to nheko! The desktop client for the Matrix protocol.</translation>
+        <translation>Welcome to Nheko! The desktop client for the Matrix protocol.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Enjoy your stay!</source>
-        <translation></translation>
+        <translation>Enjoy your stay!</translation>
     </message>
     <message>
         <location line="+14"/>
