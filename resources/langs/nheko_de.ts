@@ -39,12 +39,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+877"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -69,9 +69,9 @@
         <location line="-631"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ungelesene Nachricht in Raum %1</numerusform>
+            <numerusform>%n ungelesene Nachrichten in Raum %1</numerusform>
         </translation>
     </message>
     <message>
@@ -385,12 +385,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [Nachricht]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;Nachrichtentyp&gt; [Nachricht]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -536,12 +536,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendet einen Regeneffekt.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendet eine Nachricht mit benutzerdefinierten Nachrichtentyp.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -666,7 +666,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <location filename="../../src/ui/EventExpiry.cpp" line="+49"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished">Konnte die versteckten Events nicht ändern: %1</translation>
+        <translation>Konnte die versteckten Events nicht ändern: %1</translation>
     </message>
 </context>
 <context>
@@ -674,7 +674,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="+311"/>
         <source>Account Pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Account Packung</translation>
     </message>
 </context>
 <context>
@@ -696,7 +696,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+0"/>
         <source>Select file(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Datei(en) auswählen</translation>
     </message>
     <message>
         <location line="+901"/>
@@ -1220,7 +1220,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>This room is possibly inaccessible</source>
-        <translation type="unfinished"></translation>
+        <translation>Dieser Raum kann nicht betreten werden</translation>
     </message>
 </context>
 <context>
@@ -1855,7 +1855,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Sort rooms alphabetically</source>
-        <translation type="unfinished"></translation>
+        <translation>Räume alphabetisch sortieren</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2120,12 +2120,12 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Periodically update community routing information</source>
-        <translation type="unfinished"></translation>
+        <translation>Regelmäßig Beitrittsinformationen für Gruppen aktualisieren</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Periodically delete expired events</source>
-        <translation type="unfinished"></translation>
+        <translation>Regelmäßig abgelaufene Nachrichten löschen</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -2210,14 +2210,18 @@ Diese Einstellung steuert auch, ob das eigene Tippen an andere gesendet wird.</t
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeigt Nachrichten mit neuen Nachrichten zuerst an.
+Wenn dies AUS ist, dann werden die Räume nur nach der preferierten Sortierreihenfolge sortiert.
+Wenn dies AN ist, dann erscheinen Nachrichten mit ungelesenen Benachrichtigungen (der kleine Kreis mit der Zahl) zuerst angezeigt. Stummgeschaltene Räume werden nach der preferrierten Sortierreihenfolge sortiert, weil diese weniger Priorität haben.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Sort rooms alphabetically.
 If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
 If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sortiert Räume alphabetisch
+Wenn dies AUS ist, dann werden Nachrichten nach dem Zeitpunkt der letzen Nachricht sortiert.
+Wenn dies AN ist, dann werden Räume, die früher im Alphabet kommen, zuerst angezeigt.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2387,12 +2391,12 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     <message>
         <location line="+6"/>
         <source>To allow new users to join a community, the community needs to expose some information about what servers participate in a room to community members. Since the room participants can change over time, this needs to be updated from time to time. This setting enables a background job to do that automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>Damit neue Leute einer Gruppe oder den Räumen darin beitreten können, müssen diese wissen, welche Server aktuell an der Gruppe teilnehmen. Da sich dies mit der Zeit ändern kann, kann diese Einstellung das regelmäßig im Hintergrund aktualisieren.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Regularly redact expired events as specified in the event expiration configuration. Since this is currently not executed server side, you need to have one client running this regularly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Entfernt regelmäßig eigene Nachrichten, die du als abgelaufen konfiguriert hast. Dies kann aktuell nicht automatisch von deinem Server erledigt werden, weswegen du immer einen Client (z.B. Nheko) offen haben musst, damit diese Nachrichten gelöscht werden.</translation>
     </message>
     <message>
         <location line="+463"/>
@@ -2491,42 +2495,42 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="-290"/>
         <source>People</source>
-        <translation type="unfinished">Leute</translation>
+        <translation>Leute</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished">Natur</translation>
+        <translation>Natur</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished">Essen</translation>
+        <translation>Essen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Aktivitäten</translation>
+        <translation>Aktivitäten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished">Reisen</translation>
+        <translation>Reisen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Objekte</translation>
+        <translation>Objekte</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Symbole</translation>
+        <translation>Symbole</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Flaggen</translation>
+        <translation>Flaggen</translation>
     </message>
 </context>
 <context>
@@ -2606,12 +2610,12 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     <message>
         <location line="-11"/>
         <source>You sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>Du hast einen Effekt gesendet</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat einen Effekt gesendet</translation>
     </message>
     <message>
         <location line="+15"/>
