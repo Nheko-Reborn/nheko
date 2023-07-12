@@ -145,7 +145,6 @@ Control {
                     roleValue: "user"
 
                     RowLayout {
-                        id: del
 
                         anchors.centerIn: centerRowContent ? parent : undefined
                         spacing: rowSpacing
@@ -172,7 +171,6 @@ Control {
                     roleValue: "emoji"
 
                     RowLayout {
-                        id: del
 
                         anchors.centerIn: parent
                         spacing: rowSpacing
@@ -209,7 +207,6 @@ Control {
                     roleValue: "command"
 
                     RowLayout {
-                        id: del
 
                         anchors.centerIn: parent
                         spacing: rowSpacing
@@ -229,7 +226,6 @@ Control {
                     roleValue: "room"
 
                     RowLayout {
-                        id: del
 
                         anchors.centerIn: centerRowContent ? parent : undefined
                         spacing: rowSpacing
@@ -255,7 +251,6 @@ Control {
                     roleValue: "roomAliases"
 
                     RowLayout {
-                        id: del
 
                         anchors.centerIn: parent
                         spacing: rowSpacing
