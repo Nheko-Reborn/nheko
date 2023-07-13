@@ -13,8 +13,6 @@
 
 #include "Logging.h"
 #include "MatrixClient.h"
-#include "ReCaptcha.h"
-#include "dialogs/FallbackAuth.h"
 
 UIA *
 UIA::instance()
@@ -132,23 +130,18 @@ UIA::genericHandler(QString context)
                 }
             } else {
                 // use fallback
-                auto dialog = new dialogs::FallbackAuth(QString::fromStdString(current_stage),
-                                                        QString::fromStdString(u.session),
-                                                        nullptr);
-                dialog->setWindowTitle(context);
-
-                connect(dialog, &dialogs::FallbackAuth::confirmation, this, [h, u, dialog]() {
-                    dialog->close();
-                    dialog->deleteLater();
+                auto fallback = new FallbackAuth(QString::fromStdString(u.session),
+                                                 QString::fromStdString(current_stage),
+                                                 nullptr);
+                QQmlEngine::setObjectOwnership(fallback, QQmlEngine::JavaScriptOwnership);
+                connect(fallback, &FallbackAuth::confirmation, this, [h, u]() {
                     h.next(mtx::user_interactive::Auth{u.session,
                                                        mtx::user_interactive::auth::Fallback{}});
                 });
-
-                connect(dialog, &dialogs::FallbackAuth::cancel, this, [this]() {
+                connect(fallback, &FallbackAuth::cancelled, this, [this]() {
                     emit error(tr("Registration aborted"));
                 });
-
-                dialog->show();
+                emit fallbackAuth(fallback);
             }
         });
     });

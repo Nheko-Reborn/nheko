@@ -9,6 +9,7 @@
 
 #include <mtxclient/http/client.hpp>
 
+#include "FallbackAuth.h"
 #include "ReCaptcha.h"
 
 class UIA final : public QObject
@@ -62,6 +63,7 @@ signals:
     void email();
     void phoneNumber();
     void reCaptcha(ReCaptcha *recaptcha);
+    void fallbackAuth(FallbackAuth *fallback);
 
     void confirm3pidToken();
     void prompt3pidToken();

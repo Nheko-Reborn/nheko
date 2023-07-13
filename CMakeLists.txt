@@ -350,10 +350,6 @@ configure_file(cmake/nheko.h config/nheko.h)
 # Declare source and header files.
 #
 set(SRC_FILES
-	# Dialogs
-	src/dialogs/FallbackAuth.cpp
-	src/dialogs/FallbackAuth.h
-
 	# Emoji
 	src/emoji/Provider.cpp
 	src/emoji/Provider.h
@@ -463,6 +459,8 @@ set(SRC_FILES
 	src/Config.h
 	src/EventAccessors.cpp
 	src/EventAccessors.h
+        src/FallbackAuth.cpp
+        src/FallbackAuth.h
 	src/ImagePackListModel.cpp
 	src/ImagePackListModel.h
 	src/InviteesModel.cpp
@@ -764,8 +762,9 @@ set(QML_SOURCES
         resources/qml/dialogs/ConfirmJoinRoomDialog.qml
         resources/qml/dialogs/CreateDirect.qml
         resources/qml/dialogs/CreateRoom.qml
+        resources/qml/dialogs/FallbackAuthDialog.qml
         resources/qml/dialogs/HiddenEventsDialog.qml
-				resources/qml/dialogs/EventExpirationDialog.qml
+        resources/qml/dialogs/EventExpirationDialog.qml
         resources/qml/dialogs/ImageOverlay.qml
         resources/qml/dialogs/ImagePackEditorDialog.qml
         resources/qml/dialogs/ImagePackSettingsDialog.qml
