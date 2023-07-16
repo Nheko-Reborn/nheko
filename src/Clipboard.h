@@ -8,7 +8,7 @@
 #include <QQmlEngine>
 #include <QString>
 
-class Clipboard final : public QObject
+class Clipboard : public QObject
 {
     Q_OBJECT
     QML_ELEMENT

@@ -7,7 +7,7 @@
 #include <QObject>
 #include <QQmlEngine>
 
-class SelfVerificationStatus final : public QObject
+class SelfVerificationStatus : public QObject
 {
     Q_OBJECT
 

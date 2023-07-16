@@ -16,7 +16,7 @@
 #include "Theme.h"
 #include "UserProfile.h"
 
-class Nheko final : public QObject
+class Nheko : public QObject
 {
     Q_OBJECT
 
