@@ -63,6 +63,9 @@ using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
 class DeviceVerificationFlow final : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("")
+
     Q_PROPERTY(QString state READ state NOTIFY stateChanged)
     Q_PROPERTY(Error error READ error NOTIFY errorChanged)
     Q_PROPERTY(QString userId READ getUserId CONSTANT)

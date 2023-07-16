@@ -246,6 +246,8 @@ SelfVerificationStatus::verifyMasterKey()
     if (!devices.empty())
         ChatPage::instance()->timelineManager()->verificationManager()->verifyOneOfDevices(
           QString::fromStdString(this_user), std::move(devices));
+    else
+        nhlog::db()->info("No devices to verify");
 }
 
 void
