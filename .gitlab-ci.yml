@@ -173,7 +173,7 @@ codesign-macos:
   before_script:
     - pip3 install dmgbuild
   script:
-    - export PATH=/usr/local/opt/qt@5/bin/:${PATH}
+    - export PATH=/Users/jdonof/Qt/6.5.1/macos/bin:${PATH}
     - ./.ci/macos/notarize.sh
   after_script:
     - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}-${PLAT}.dmg

@@ -6,10 +6,10 @@ set -ue
 #TAG=$(git tag -l --points-at HEAD)
 
 # Add Qt binaries to path
-PATH="$(brew --prefix qt6)/bin/:${PATH}"
+PATH="/Users/jdonof/Qt/6.5.1/macos/bin/:${PATH}"
 export PATH
 
-CMAKE_PREFIX_PATH="$(brew --prefix qt6)"
+CMAKE_PREFIX_PATH="/Users/jdonof/Qt/6.5.1/macos/lib/cmake"
 export CMAKE_PREFIX_PATH
 
 cmake -GNinja -S. -Bbuild \
@@ -19,6 +19,7 @@ cmake -GNinja -S. -Bbuild \
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
       -DUSE_BUNDLED_OPENSSL=ON \
+      -DQt6_DIR=/Users/jdonof/Qt/6.5.1/macos/lib/cmake \
       -DCI_BUILD=ON
 cmake --build build
 cmake --install build
