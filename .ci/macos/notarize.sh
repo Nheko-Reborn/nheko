@@ -6,7 +6,7 @@ set -u
 # https://forum.qt.io/topic/96652/how-to-notarize-qt-application-on-macos/18
 
 # Add Qt binaries to path
-PATH="/Users/jdonof/Qt/6.5.1/macos/bin/:${PATH}"
+PATH="${HOME}/Qt/6.5.1/macos/bin/:${PATH}"
 export PATH
 
 security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain
