@@ -560,12 +560,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;消息类型&gt; [消息]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -711,12 +711,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条带有雨点的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条自定义消息类型的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1129,62 +1129,62 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/EventExpirationDialog.qml" line="+33"/>
         <source>Event expiration for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 的事件过期</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Event expiration</source>
-        <translation type="unfinished"></translation>
+        <translation>事件过期</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>You can configure when your messages will be deleted in %1. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>你可以在 %1 中配置何时删除你的消息。在 Matrix 服务器原生支持此功能之前，只有当 Nheko 打开并且有删除消息的权限时才会执行删除。一般来说，0 表示禁用。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You can configure when your messages will be deleted in all rooms unless configured otherwise. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>你可以在所有聊天室中配置何时删除你的消息，除非另有配置。在 Matrix 服务器原生支持此功能之前，只有当 Nheko 打开并且有删除消息的权限时才会执行删除。一般来说，0 表示禁用。</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Expire events after X days</source>
-        <translation type="unfinished"></translation>
+        <translation>事件在 X 天后过期</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Automatically redacts messages after X days, unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>在 X 天后自动删除消息，除非另有保护。设为 0 则禁用。</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Only keep latest X events</source>
-        <translation type="unfinished"></translation>
+        <translation>仅保留最新的 X 个事件</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Deletes your events in this room if there are more than X newer messages unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果有超过 X 条新消息，则删除你在此聊天室中的事件，除非另有保护。设为 0 则禁用。</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Always keep latest X events</source>
-        <translation type="unfinished"></translation>
+        <translation>始终保留最新的 X 个事件</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This prevents events to be deleted by the above 2 settings if they are the latest X messages from you in the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果事件是你在聊天室中的最新 X 条消息，则此设置可以防止其被上述 2 种设置删除。</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Include state events</source>
-        <translation type="unfinished"></translation>
+        <translation>包括状态事件</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>If this is turned on, old state events also get redacted. The latest state event of any type+key combination is excluded from redaction to not remove the room name and similar state by accident.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果启用此设置，旧的状态事件也会被删除。任何类型+键组合的最新状态事件都不包括在删除范围内，以免意外删除聊天室名称和类似状态。</translation>
     </message>
 </context>
 <context>
@@ -1193,7 +1193,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/ui/EventExpiry.cpp" line="+49"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished">未能设置隐藏事件：%1</translation>
+        <translation>未能设置隐藏事件：%1</translation>
     </message>
 </context>
 <context>
@@ -1252,7 +1252,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="+311"/>
         <source>Account Pack</source>
-        <translation type="unfinished"></translation>
+        <translation>和账户关联的表情包</translation>
     </message>
 </context>
 <context>
@@ -1384,7 +1384,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="-37"/>
         <source>Shortcode</source>
-        <translation>短代码</translation>
+        <translation>短码</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1626,7 +1626,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/pages/LoginPage.qml" line="+58"/>
         <source>Matrix ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Matrix ID</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1739,7 +1739,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+34"/>
         <source>%1 changed which servers are allowed in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 更改了允许在此聊天室使用的服务器。</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1911,7 +1911,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+11"/>
         <source>Go to message</source>
-        <translation type="unfinished"></translation>
+        <translation>转到消息</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1921,7 +1921,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+187"/>
         <source>%1&apos;s status message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 的状态消息</translation>
     </message>
     <message>
         <location line="+69"/>
@@ -1936,7 +1936,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+9"/>
         <source>Go to &amp;message</source>
-        <translation type="unfinished"></translation>
+        <translation>转到消息(&amp;m)</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2567,22 +2567,22 @@ Example: https://server.my:8787</source>
     <message>
         <location filename="../qml/dialogs/ReCaptchaDialog.qml" line="+40"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished">解决 reCAPTCHA 并按确认按钮</translation>
+        <translation>通过 reCAPTCHA 并按确认按钮</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished">打开 reCAPTCHA</translation>
+        <translation>打开 reCAPTCHA</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cancel</source>
-        <translation type="unfinished">取消</translation>
+        <translation>取消</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Confirm</source>
-        <translation type="unfinished">确认</translation>
+        <translation>确认</translation>
     </message>
 </context>
 <context>
@@ -3074,7 +3074,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+31"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished">通知</translation>
+        <translation>通知</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3099,7 +3099,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+10"/>
         <source>ENTRY PERMISSIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>条目权限</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3145,37 +3145,37 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+7"/>
         <source>MESSAGE VISIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>消息可见性</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Allow viewing history without joining</source>
-        <translation type="unfinished"></translation>
+        <translation>允许在不加入的情况下查看历史记录</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This is useful to see previews of the room or view it on public websites.</source>
-        <translation type="unfinished"></translation>
+        <translation>这对于查看聊天室预览或在公开网站上查看聊天室较为有用。</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Members can see messages since</source>
-        <translation type="unfinished"></translation>
+        <translation>成员可以查看消息自</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>How much of the history is visible to joined members. Changing this won&apos;t affect the visibility of already sent messages. It only applies to new messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>已加入的成员可以看到多少历史消息。更改此选项不会影响已发送消息的可见性。它只适用于新消息。</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Everything</source>
-        <translation type="unfinished"></translation>
+        <translation>所有</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>As long as the user joined, they can see all previous messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>只要用户加入，就可以看到以前的所有消息。</translation>
     </message>
     <message>
         <location line="+7"/>
