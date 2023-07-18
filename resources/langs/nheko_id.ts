@@ -240,7 +240,8 @@
         <source>%n unread message(s) in room %1
 </source>
         <translation>
-            <numerusform>%n pesan yang belum dibaca dalam ruangan %1</numerusform>
+            <numerusform>%n pesan yang belum dibaca dalam ruangan %1
+</numerusform>
         </translation>
     </message>
     <message>
@@ -1128,62 +1129,62 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location filename="../qml/dialogs/EventExpirationDialog.qml" line="+33"/>
         <source>Event expiration for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kedaluwarsa peristiwa untuk</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Event expiration</source>
-        <translation type="unfinished"></translation>
+        <translation>Kedaluwarsa peristiwa</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>You can configure when your messages will be deleted in %1. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamu dapat mengonfigurasi kapan pesan kamu akan dihapus di %1. Ini hanya terjadi ketika Nheko terbuka dan memiliki izin untuk menghapus pesan sampai server Matrix mendukung fitur ini secara native. Secara umum 0 berarti menonaktifkan.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You can configure when your messages will be deleted in all rooms unless configured otherwise. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamu dapat mengonfigurasi kapan pesan kamu akan dihapus di semua ruangan kecuali jika dikonfigurasi sebaliknya. Ini hanya terjadi ketika Nheko terbuka dan memiliki izin untuk menghapus pesan sampai server Matrix mendukung fitur ini secara native. Secara umum 0 berarti menonaktifkan.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Expire events after X days</source>
-        <translation type="unfinished"></translation>
+        <translation>Kedaluwarsa peristiwa setelah X hari</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Automatically redacts messages after X days, unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Secara otomatis menghapus pesan setelah X hari, kecuali jika dilindungi. Atur ke 0 untuk menonaktifkan.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Only keep latest X events</source>
-        <translation type="unfinished"></translation>
+        <translation>Hanya simpan X peristiwa terbaru</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Deletes your events in this room if there are more than X newer messages unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Menghapus peristiwa kamu di ruangan ini jika ada lebih dari X pesan baru kecuali jika dilindungi. Atur ke 0 untuk menonaktifkan.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Always keep latest X events</source>
-        <translation type="unfinished"></translation>
+        <translation>Selalu simpan X peristiwa terbaru</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This prevents events to be deleted by the above 2 settings if they are the latest X messages from you in the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hal ini mencegah peristiwa dihapus oleh 2 pengaturan di atas jika peristiwa tersebut adalah pesan X terbaru dari kamu di dalam ruangan.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Include state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Termasuk peristiwa keadaan</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>If this is turned on, old state events also get redacted. The latest state event of any type+key combination is excluded from redaction to not remove the room name and similar state by accident.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jika ini diaktifkan, peristiwa keadaan lama juga akan dihapus. Peristiwa keadaan terbaru dari jenis apa pun+kombinasi tombol dikecualikan dari penyuntingan agar tidak menghapus nama ruangan dan keadaan serupa secara tidak sengaja.</translation>
     </message>
 </context>
 <context>
@@ -1388,7 +1389,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+15"/>
         <source>Body</source>
-        <translation>Body</translation>
+        <translation>Bodi</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -1451,7 +1452,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+10"/>
         <source>Edit</source>
-        <translation>Edit</translation>
+        <translation>Sunting</translation>
     </message>
     <message>
         <location line="+60"/>
@@ -1738,7 +1739,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+34"/>
         <source>%1 changed which servers are allowed in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengubah server mana yang diizinkan di ruangan ini.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1885,7 +1886,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location filename="../qml/MessageView.qml" line="+346"/>
         <source>Edit</source>
-        <translation>Edit</translation>
+        <translation>Sunting</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1910,7 +1911,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+11"/>
         <source>Go to message</source>
-        <translation type="unfinished"></translation>
+        <translation>Pergi ke pesan</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1920,7 +1921,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+187"/>
         <source>%1&apos;s status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesan status</translation>
     </message>
     <message>
         <location line="+69"/>
@@ -1935,7 +1936,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+9"/>
         <source>Go to &amp;message</source>
-        <translation type="unfinished"></translation>
+        <translation>Pergi ke &amp;pesan</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1962,7 +1963,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+7"/>
         <source>&amp;Edit</source>
-        <translation>&amp;Edit</translation>
+        <translation>&amp;Sunting</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2566,22 +2567,22 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location filename="../qml/dialogs/ReCaptchaDialog.qml" line="+40"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished">Selesaikan reCAPTCHAnya dan tekan tombol konfirmasi</translation>
+        <translation>Selesaikan reCAPTCHAnya dan tekan tombol konfirmasi</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished">Buka reCAPTCHA</translation>
+        <translation>Buka reCAPTCHA</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cancel</source>
-        <translation type="unfinished">Batalkan</translation>
+        <translation>Batalkan</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Confirm</source>
-        <translation type="unfinished">Konfirmasi</translation>
+        <translation>Konfirmasi</translation>
     </message>
 </context>
 <context>
@@ -3073,7 +3074,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+31"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished">NOTIFIKASI</translation>
+        <translation>NOTIFIKASI</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3098,7 +3099,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+10"/>
         <source>ENTRY PERMISSIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>IZIN MASUK</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3144,67 +3145,67 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+7"/>
         <source>MESSAGE VISIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>KETERLIHATAN PESAN</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Allow viewing history without joining</source>
-        <translation type="unfinished"></translation>
+        <translation>Perbolehkan melihat riwayat tanpa bergabung</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This is useful to see previews of the room or view it on public websites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ini berguna untuk melihat pratinjau ruangan atau melihatnya di situs web publik.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Members can see messages since</source>
-        <translation type="unfinished"></translation>
+        <translation>Anggota dapat melihat pesan sejak</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>How much of the history is visible to joined members. Changing this won&apos;t affect the visibility of already sent messages. It only applies to new messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Seberapa banyak riwayat yang dapat dilihat oleh anggota yang bergabung. Mengubahnya tidak akan memengaruhi keterlihatan pesan yang sudah terkirim. Ini hanya berlaku untuk pesan baru.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Everything</source>
-        <translation type="unfinished"></translation>
+        <translation>Semuanya</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>As long as the user joined, they can see all previous messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selama pengguna bergabung, mereka dapat melihat semua pesan sebelumnya.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>They got invited</source>
-        <translation type="unfinished"></translation>
+        <translation>Mereka diundang</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Members can only see messages from when they got invited going forward.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anggota hanya dapat melihat pesan dari saat mereka diundang ke depan.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>They joined</source>
-        <translation type="unfinished"></translation>
+        <translation>Mereka bergabung</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Members can only see messages since after they joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anggota hanya dapat melihat pesan sejak mereka bergabung.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Apply visibility changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Terapkan perubahan keterlihatan</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Locally hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Peristiwa tersembunyi secara lokal</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -3222,17 +3223,17 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+6"/>
         <source>Automatic event deletion</source>
-        <translation type="unfinished"></translation>
+        <translation>Penghapusan peristiwa otomatis</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select if your events get automatically deleted in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pilih jika peristiwa kamu akan dihapus secara otomatis di ruangan ini.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>GENERAL SETTINGS</source>
-        <translation type="unfinished"></translation>
+        <translation>PENGATURAN UMUM</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3242,7 +3243,7 @@ Contoh: https://server.saya:8787</translation>
     <message>
         <location line="+22"/>
         <source>End-to-End Encryption</source>
-        <translation>Enkripsi Ujung-ke-Ujung</translation>
+        <translation>Enkripsi Ujung ke Ujung</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3373,7 +3374,7 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+11"/>
         <source>Method:</source>
-        <translation type="unfinished"></translation>
+        <translation>Metode:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3383,12 +3384,12 @@ Dicatat bahwa ini tidak dapat dinonaktifkan setelah ini.</translation>
     <message>
         <location line="+15"/>
         <source>Request screencast</source>
-        <translation type="unfinished"></translation>
+        <translation>Minta penyiaran layar</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Frame rate:</source>
-        <translation>Frame rate:</translation>
+        <translation>Laju bingkai:</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3622,7 +3623,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished">Ubah paket apa yang diaktifkan, hapus paket, atau buat yang baru</translation>
+        <translation>Ubah paket apa yang diaktifkan, hapus paket, atau buat yang baru</translation>
     </message>
 </context>
 <context>
@@ -4067,17 +4068,17 @@ Alasan: %4</translation>
     <message>
         <location line="+102"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished">Kamu akan memberi tahu seluruh ruangan</translation>
+        <translation>Kamu akan memberi tahu seluruh ruangan</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
-        <translation type="unfinished"></translation>
+        <translation>Perintah /%1 tidak dikenali dan akan dikirim sebagai bagian dari pesan kamu</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>/%1 looks like an incomplete command. To send it anyway, add a space to the end of your message.</source>
-        <translation type="unfinished"></translation>
+        <translation>/%1 terlihat seperti perintah yang tidak lengkap. Untuk tetap mengirimkannya, tambahkan spasi di akhir pesan kamu.</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -4104,7 +4105,7 @@ Alasan: %4</translation>
     <message>
         <location line="+19"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan ini mungkin tidak dapat diakses. Jika ruangan ini bersifat pribadi, kamu seharusnya menghapusnya dari komunitas ini.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4124,12 +4125,12 @@ Alasan: %4</translation>
     <message>
         <location line="+7"/>
         <source>leave</source>
-        <translation type="unfinished"></translation>
+        <translation>tinggalkan</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Invited by %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Diundang oleh</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -4343,7 +4344,7 @@ Alasan: %4</translation>
     <message>
         <location line="+23"/>
         <source>&lt;i&gt;&lt;b&gt;Status:&lt;/b&gt; %1&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;&lt;b&gt;Status:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -4389,12 +4390,12 @@ Alasan: %4</translation>
     <message>
         <location line="+15"/>
         <source>Devices</source>
-        <translation type="unfinished">Perangkat</translation>
+        <translation>Perangkat</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Shared Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Ruangan Terbagi</translation>
     </message>
     <message>
         <location line="+62"/>
