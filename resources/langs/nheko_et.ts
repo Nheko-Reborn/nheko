@@ -210,12 +210,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+877"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -240,9 +240,11 @@
         <location line="-631"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n lugemata sõnum jututoas %1
+</numerusform>
+            <numerusform>%n lugemata sõnumit jututoas %1
+</numerusform>
         </translation>
     </message>
     <message>
@@ -561,12 +563,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+16"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;sõnumi tüüp&gt; [sõnum]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -712,12 +714,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada vihmasaju muljega sõnum.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada kohandatud sõnumitüübiga sõnum.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1131,62 +1133,62 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/EventExpirationDialog.qml" line="+33"/>
         <source>Event expiration for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sündmuse aegumine</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Event expiration</source>
-        <translation type="unfinished"></translation>
+        <translation>Sündmuse aegumine</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>You can configure when your messages will be deleted in %1. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa võid seadistada aja, mille möödumisel sõnumid kustutatakse %1 jututoast. Selle jaoks peab Nheko olema töös ja sul peavad olema õigused sõnumite kustutamiseks. Tegemist on ajutise lahendusega seniks, kuni Matrixi servetesse kirjeldatud võimalus lisandub. Väärtus 0 üldjuhul tähendab, et kustutamine on välja lülitatud.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You can configure when your messages will be deleted in all rooms unless configured otherwise. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa võid seadistada aja, mille möödumisel sõnumid kustutatakse kõikidest jututubadest (kui just seadistused muud ei määra). Selle jaoks peab Nheko olema töös ja sul peavad olema õigused sõnumite kustutamiseks. Tegemist on ajutise lahendusega seniks, kuni Matrixi servetesse kirjeldatud võimalus lisandub. Väärtus 0 üldjuhul tähendab, et kustutamine on välja lülitatud.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Expire events after X days</source>
-        <translation type="unfinished"></translation>
+        <translation>Kustuta sõnumid x päeva möödudes</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Automatically redacts messages after X days, unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda kaitsmata sõnumid x päeva möödudes. Väljalülitamiseks kirjuta väärtuseks 0.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Only keep latest X events</source>
-        <translation type="unfinished"></translation>
+        <translation>Jäta alles ainult viimased x sündmust</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Deletes your events in this room if there are more than X newer messages unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kustutab sellest jututoast vanemad kui x viimast sõnumit. Väljalülitamiseks kirjuta väärtuseks 0.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Always keep latest X events</source>
-        <translation type="unfinished"></translation>
+        <translation>Alati jäta alles viimase x sündmust</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This prevents events to be deleted by the above 2 settings if they are the latest X messages from you in the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selle seadistusega välistad x sinu poolt tehtud sündmuste kustutamise sellest jututoast eelmise kahe reegli poolt.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Include state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Sealhulgas olekusündmused</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>If this is turned on, old state events also get redacted. The latest state event of any type+key combination is excluded from redaction to not remove the room name and similar state by accident.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kui see seadistus on kasutusel, siis ka vanad olekusündmused kuuluvad kustutamisele. Selleks et jututoa nimi või mõni muu sarnane oluline olek ei kustuks, siiski on mõned tüüp+võti laadsed olekusündmused välistatud.</translation>
     </message>
 </context>
 <context>
@@ -1195,7 +1197,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <location filename="../../src/ui/EventExpiry.cpp" line="+49"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished">Peidetud sündmuste loomine ei õnnestunud: %1</translation>
+        <translation>Peidetud sündmuste loomine ei õnnestunud: %1</translation>
     </message>
 </context>
 <context>
@@ -1254,7 +1256,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="+311"/>
         <source>Account Pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Kontopakk</translation>
     </message>
 </context>
 <context>
@@ -1741,7 +1743,7 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+34"/>
         <source>%1 changed which servers are allowed in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 muutis serverid, mis on selles jututoas lubatud.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -1913,7 +1915,7 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+11"/>
         <source>Go to message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava sõnum</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1923,7 +1925,7 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+187"/>
         <source>%1&apos;s status message</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja %1 olekusõnum</translation>
     </message>
     <message>
         <location line="+69"/>
@@ -1938,7 +1940,7 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+9"/>
         <source>Go to &amp;message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ava &amp;sõnum</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2569,22 +2571,22 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location filename="../qml/dialogs/ReCaptchaDialog.qml" line="+40"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished">Vasta reCAPTCHA küsimustele ja vajuta kinnita-nuppu</translation>
+        <translation>Vasta reCAPTCHA küsimustele ja vajuta kinnita-nuppu</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished">Ava reCAPTCHA</translation>
+        <translation>Ava reCAPTCHA</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cancel</source>
-        <translation type="unfinished">Katkesta</translation>
+        <translation>Katkesta</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Confirm</source>
-        <translation type="unfinished">Kinnita</translation>
+        <translation>Kinnita</translation>
     </message>
 </context>
 <context>
@@ -3078,7 +3080,7 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+31"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished">TEAVITUSED</translation>
+        <translation>TEAVITUSED</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3103,7 +3105,7 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+10"/>
         <source>ENTRY PERMISSIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>LIGIPÄÄSUÕIGUSED</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3149,67 +3151,67 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+7"/>
         <source>MESSAGE VISIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>SÕNUMITE LOETAVUS</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Allow viewing history without joining</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba lugeda sõnumite ajalugu ilma liitumiseta</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This is useful to see previews of the room or view it on public websites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selline funktsionaalsus sobib kasutamiseks näiteks jututoa liitumiseelse eelvaate kuvamisel ning jututoa näitamisel avalikus veebisaidis.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Members can see messages since</source>
-        <translation type="unfinished"></translation>
+        <translation>Liikmed võivad lugeda sõnumeid</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>How much of the history is visible to joined members. Changing this won&apos;t affect the visibility of already sent messages. It only applies to new messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa ajaloo nähtavus liitunud kasutajatele. Seadistuse muutmine ei mõjuta juba saadetud sõnumeid ning kehtib vaid uutele sõnumitele.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Everything</source>
-        <translation type="unfinished"></translation>
+        <translation>kogu ajaloost</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>As long as the user joined, they can see all previous messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kui kasutaja on jututoa liige, siis saab ta lugeda kogu ajalugu.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>They got invited</source>
-        <translation type="unfinished"></translation>
+        <translation>alates kutse saamisest</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Members can only see messages from when they got invited going forward.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa liikmed saavad lugeda ajalugu alates liitumiskutse saatmisest.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>They joined</source>
-        <translation type="unfinished"></translation>
+        <translation>alates liitumisest</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Members can only see messages since after they joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>Jututoa liikmed saavad lugeda ajalugu alates liitumisest.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Apply visibility changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda loetavuse reegleid</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Locally hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Kohalikud peidetud sündmused</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -3227,17 +3229,17 @@ Näiteks: https://minuserver.ee:8787</translation>
     <message>
         <location line="+6"/>
         <source>Automatic event deletion</source>
-        <translation type="unfinished"></translation>
+        <translation>Sündmuste automaatne kustutamine</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select if your events get automatically deleted in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vali, kas sinu sõnumid ja muud sündmused selles jututoas kuuluvad automaatsele kustutamisele.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>GENERAL SETTINGS</source>
-        <translation type="unfinished"></translation>
+        <translation>ÜLDISED SEADISTUSED</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3337,7 +3339,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+2"/>
         <source>This room is possibly inaccessible</source>
-        <translation type="unfinished"></translation>
+        <translation>See jututuba tõenäoliselt pole ligipääsetav</translation>
     </message>
 </context>
 <context>
@@ -3378,7 +3380,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+11"/>
         <source>Method:</source>
-        <translation type="unfinished"></translation>
+        <translation>Meetod:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3388,7 +3390,7 @@ Palun arvesta, et krüptimist ei saa hiljem enam välja lülitada.</translation>
     <message>
         <location line="+15"/>
         <source>Request screencast</source>
-        <translation type="unfinished"></translation>
+        <translation>Ekraanisalvestuse päring</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3627,7 +3629,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished">Muuda kasutatavaid lisapakke, eemalda neid või lisa uusi</translation>
+        <translation>Muuda kasutatavaid lisapakke, eemalda neid või lisa uusi</translation>
     </message>
 </context>
 <context>
@@ -4077,17 +4079,17 @@ Põhjus: %4</translation>
     <message>
         <location line="+102"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished">Sa oled saatmas teavitust kogu jututoale</translation>
+        <translation>Sa oled saatmas teavitust kogu jututoale</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
-        <translation type="unfinished"></translation>
+        <translation>/%1 käsku ei ole olemas ning seega kuulub sõnumi sisusse</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>/%1 looks like an incomplete command. To send it anyway, add a space to the end of your message.</source>
-        <translation type="unfinished"></translation>
+        <translation>/%1 tundub olema poolik käsk. Kui tahad seda ikkagi saata, siis lisa oma sõnumi lõppu tühik.</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -4115,7 +4117,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+19"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
-        <translation type="unfinished"></translation>
+        <translation>Tõenäoliselt puudub ligipääs sellele jututoale. Kui tegemist on privaatse jututoaga, siis palun eemalda ta kogukonnast.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4135,12 +4137,12 @@ Põhjus: %4</translation>
     <message>
         <location line="+7"/>
         <source>leave</source>
-        <translation type="unfinished"></translation>
+        <translation>lahku</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Invited by %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) saatis kutse</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -4355,7 +4357,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+23"/>
         <source>&lt;i&gt;&lt;b&gt;Status:&lt;/b&gt; %1&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;&lt;b&gt;Olek:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -4401,12 +4403,12 @@ Põhjus: %4</translation>
     <message>
         <location line="+15"/>
         <source>Devices</source>
-        <translation type="unfinished">Seadmed</translation>
+        <translation>Seadmed</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Shared Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Jagatud jututoad</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -4513,7 +4515,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Sort rooms alphabetically</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteeri jututoad tähestiku järjekorras</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4778,12 +4780,12 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Periodically update community routing information</source>
-        <translation type="unfinished"></translation>
+        <translation>Aeg-ajalt uuenda kogukonna ruutinguteavet</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Periodically delete expired events</source>
-        <translation type="unfinished"></translation>
+        <translation>Aeg-ajalt kustuta vanad sündmused</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -4942,14 +4944,18 @@ See tavaliselt tähendab, et rakenduse ikoon tegumiribal annab mingit sorti anim
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esmalt näita jututube, kus on uusi sõnumeid.
+Kui see eelistus pole kasutusel, siis sorteeritakse jututoad eelistatud sorteerimisviisi alusel.
+Kui see eelistus on kasutusel, siis sõnumitega jututoad (märgitud mummuga, kus sees on number) asuvad üleval ääres. Ning jututoad, mille oled summutanud, sorteeritakse jututoad eelistatud sorteerimisviisi alusel (sa ju oled need teiste jututubadega võrreldes märkinud vähetähtsateks).</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Sort rooms alphabetically.
 If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
 If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita jututube tähestiku järjekorras.
+Kui see eelistus pole kasutusel, siis jututoad sorteeritakse viimati jututuppa saabunud sõnumi ajatempli alusel.
+Kui see eelistus on kasutusel, siis jututoad sorteeritakse tähestiku järjekorras.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -5045,12 +5051,12 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="+6"/>
         <source>To allow new users to join a community, the community needs to expose some information about what servers participate in a room to community members. Since the room participants can change over time, this needs to be updated from time to time. This setting enables a background job to do that automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>Selleks, et uued liikmed saaksid kogukonnaga liituda, peab kogukond avaldama teavet selle kohta, mis serverid hetkel kogukonnas osalevad. Kuna kasutajate liikmelisus muutub ajas, siis ka see teave vajab aeg-ajalt uuendamist. Antud seadistusega lubad taustateenusel seda toimingut automaatselt teha.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Regularly redact expired events as specified in the event expiration configuration. Since this is currently not executed server side, you need to have one client running this regularly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba aeg-ajalt kustutada sündmusi vastavalt seadistustele. Kuna selline funktsionaalsus käivitatakse serveri asemel kliendi poolel, siis mõistlikuks toimimiseks peab valitud ajavahemiku jooksul klientrakendus olema kasutusel.</translation>
     </message>
     <message>
         <location line="+463"/>
@@ -5248,42 +5254,42 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="-290"/>
         <source>People</source>
-        <translation type="unfinished">Inimesed</translation>
+        <translation>Inimesed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished">Loodus</translation>
+        <translation>Loodus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished">Toit</translation>
+        <translation>Toit</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Tegevused</translation>
+        <translation>Tegevused</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished">Reisimine</translation>
+        <translation>Reisimine</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Esemed</translation>
+        <translation>Esemed</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Sümbolid</translation>
+        <translation>Sümbolid</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Lipud</translation>
+        <translation>Lipud</translation>
     </message>
 </context>
 <context>
@@ -5363,12 +5369,12 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="-11"/>
         <source>You sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa saatsid vestlusmulje</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis vestlusmulje</translation>
     </message>
     <message>
         <location line="+15"/>
