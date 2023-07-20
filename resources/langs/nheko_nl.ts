@@ -210,12 +210,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+877"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -240,9 +240,11 @@
         <location line="-631"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ongelezen bericht in kamer %1
+</numerusform>
+            <numerusform>%n ongelezen berichten in kamer %1
+</numerusform>
         </translation>
     </message>
     <message>
@@ -521,7 +523,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -561,17 +563,17 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [bericht]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;berichttype&gt; [bericht]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;berichtverwijzing&gt;</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -712,17 +714,17 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuur een bericht met regen.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuur een bericht met een gebruikergedefinieerd berichtentype.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Ga naar een specifiek bericht via een event id, index of matrix: link</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1095,7 +1097,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+41"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft eind-tot-eind versleuteling geactiveerd</translation>
     </message>
     <message>
         <location line="+8"/>
