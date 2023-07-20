@@ -3175,37 +3175,37 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+1"/>
         <source>As long as the user joined, they can see all previous messages.</source>
-        <translation>只要用户加入，就可以看到以前的所有消息。</translation>
+        <translation>用户只要加入，就能看到之前所有的消息。</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>They got invited</source>
-        <translation type="unfinished"></translation>
+        <translation>他们已被邀请</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Members can only see messages from when they got invited going forward.</source>
-        <translation type="unfinished"></translation>
+        <translation>成员只能看到从他们被邀请后的消息。</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>They joined</source>
-        <translation type="unfinished"></translation>
+        <translation>他们已加入</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Members can only see messages since after they joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>成员只能看到从他们加入后的信息。</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Apply visibility changes</source>
-        <translation type="unfinished"></translation>
+        <translation>应用可见性更改</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Locally hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>本地隐藏事件</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -3223,17 +3223,17 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+6"/>
         <source>Automatic event deletion</source>
-        <translation type="unfinished"></translation>
+        <translation>自动删除事件</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select if your events get automatically deleted in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>选择你的事件是否会在此聊天室自动删除。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>GENERAL SETTINGS</source>
-        <translation type="unfinished"></translation>
+        <translation>通用设置</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3333,7 +3333,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+2"/>
         <source>This room is possibly inaccessible</source>
-        <translation type="unfinished"></translation>
+        <translation>此聊天室可能无法访问</translation>
     </message>
 </context>
 <context>
@@ -3374,7 +3374,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+11"/>
         <source>Method:</source>
-        <translation type="unfinished"></translation>
+        <translation>方式：</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3384,7 +3384,7 @@ Example: https://server.my:8787</source>
     <message>
         <location line="+15"/>
         <source>Request screencast</source>
-        <translation type="unfinished"></translation>
+        <translation>请求屏幕共享</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3623,7 +3623,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished">更改已启用的表情包，删除表情包或创建新表情包</translation>
+        <translation>更改已启用的表情包，删除表情包或创建新表情包</translation>
     </message>
 </context>
 <context>
@@ -4068,17 +4068,17 @@ Reason: %4</source>
     <message>
         <location line="+102"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished">你即将通知整个聊天室</translation>
+        <translation>你即将通知整个聊天室</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
-        <translation type="unfinished"></translation>
+        <translation>命令 /%1 无效，将作为消息的一部分发送</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>/%1 looks like an incomplete command. To send it anyway, add a space to the end of your message.</source>
-        <translation type="unfinished"></translation>
+        <translation>命令 /%1 似乎不完整。如果仍然要发送，请在消息末尾添加空格。</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -4105,7 +4105,7 @@ Reason: %4</source>
     <message>
         <location line="+19"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
-        <translation type="unfinished"></translation>
+        <translation>此聊天室可能无法访问。如果此聊天室是私有的，你应该将它从此社区中移除。</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4125,12 +4125,12 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>leave</source>
-        <translation type="unfinished"></translation>
+        <translation>离开</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Invited by %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>邀请自 %1 (%2)</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -4344,7 +4344,7 @@ Reason: %4</source>
     <message>
         <location line="+23"/>
         <source>&lt;i&gt;&lt;b&gt;Status:&lt;/b&gt; %1&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;&lt;b&gt;状态：&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -4390,12 +4390,12 @@ Reason: %4</source>
     <message>
         <location line="+15"/>
         <source>Devices</source>
-        <translation type="unfinished">设备</translation>
+        <translation>设备</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Shared Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>共同加入的聊天室</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -4502,7 +4502,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Sort rooms alphabetically</source>
-        <translation type="unfinished"></translation>
+        <translation>按字母顺序排序聊天室</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4767,12 +4767,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Periodically update community routing information</source>
-        <translation type="unfinished"></translation>
+        <translation>定期更新社区路由信息</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Periodically delete expired events</source>
-        <translation type="unfinished"></translation>
+        <translation>定期删除过期的事件</translation>
     </message>
     <message>
         <location line="+109"/>
@@ -4931,14 +4931,18 @@ This usually causes the application icon in the task bar to animate in some fash
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>首先显示有新消息的聊天室。
+如果关闭，聊天室列表将仅按首选排序顺序排序。
+如果打开，有活跃通知的聊天室（带数字的小圆圈）将排序在前。你已经静音的聊天室仍将按照首选排序顺序排序，因为你似乎并不认为它们与其它聊天室一样重要。</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Sort rooms alphabetically.
 If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
 If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
-        <translation type="unfinished"></translation>
+        <translation>按字母顺序排序聊天室。
+如果关闭，聊天室列表将按照聊天室中最后一条消息的时间戳排序。
+如果开启，则按字母顺序排序聊天室。</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -5034,12 +5038,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+6"/>
         <source>To allow new users to join a community, the community needs to expose some information about what servers participate in a room to community members. Since the room participants can change over time, this needs to be updated from time to time. This setting enables a background job to do that automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>为了允许新用户加入社区，社区需要向社区成员公开一些关于哪些服务器参与了某个房间的信息。由于聊天室参与者会随时间而改变，因此需要不时更新。此设置可让后台任务自动完成该操作。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Regularly redact expired events as specified in the event expiration configuration. Since this is currently not executed server side, you need to have one client running this regularly.</source>
-        <translation type="unfinished"></translation>
+        <translation>定期删除事件过期配置中指定的过期事件。由于此操作目前不能在服务端执行，你需要有一个客户端定期运行此操作。</translation>
     </message>
     <message>
         <location line="+463"/>
@@ -5237,42 +5241,42 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="-290"/>
         <source>People</source>
-        <translation type="unfinished">人物</translation>
+        <translation>人物</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished">自然</translation>
+        <translation>自然</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished">食物</translation>
+        <translation>食物</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">活动</translation>
+        <translation>活动</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished">旅行</translation>
+        <translation>旅行</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">物体</translation>
+        <translation>物体</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">符号</translation>
+        <translation>符号</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">旗帜</translation>
+        <translation>旗帜</translation>
     </message>
 </context>
 <context>
@@ -5352,12 +5356,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="-11"/>
         <source>You sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>你发送了一个聊天特效</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 发送了一个聊天特效</translation>
     </message>
     <message>
         <location line="+15"/>
