@@ -76,13 +76,13 @@ LoginPage::onMatrixIdEntered()
     try {
         user = parse<User>(mxid_.toStdString());
     } catch (const std::exception &) {
-        mxidError_ = tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        mxidError_ = tr("You have entered an invalid Matrix ID e.g. @user:yourserver.example.com");
         emit mxidErrorChanged();
         return;
     }
 
     if (user.hostname().empty() || user.localpart().empty()) {
-        mxidError_ = tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        mxidError_ = tr("You have entered an invalid Matrix ID e.g. @user:yourserver.example.com");
         emit mxidErrorChanged();
         return;
     } else {
@@ -146,7 +146,7 @@ LoginPage::checkHomeserverVersion()
     try {
         User user = parse<User>(mxid_.toStdString());
     } catch (const std::exception &) {
-        mxidError_ = tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        mxidError_ = tr("You have entered an invalid Matrix ID e.g. @user:yourserver.example.com");
         emit mxidErrorChanged();
         return;
     }
@@ -273,7 +273,7 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
     try {
         user = parse<User>(userid.toStdString());
     } catch (const std::exception &) {
-        mxidError_ = tr("You have entered an invalid Matrix ID  e.g @joe:matrix.org");
+        mxidError_ = tr("You have entered an invalid Matrix ID e.g. @user:yourserver.example.com");
         emit mxidErrorChanged();
         return;
     }

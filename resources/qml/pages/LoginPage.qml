@@ -56,10 +56,10 @@ Item {
                 MatrixTextField {
                     id: matrixIdLabel
                     label: qsTr("Matrix ID")
-                    placeholderText: qsTr("e.g @joe:matrix.org")
+                    placeholderText: qsTr("e.g @user:yourserver.example.com")
                     onEditingFinished: login.mxid = text
 
-                    ToolTip.text: qsTr("Your login name. A mxid should start with @ followed by the user ID. After the user ID you need to include your server name after a :.\nYou can also put your homeserver address there if your server doesn't support .well-known lookup.\nExample: @user:server.my\nIf Nheko fails to discover your homeserver, it will show you a field to enter the server manually.")
+                    ToolTip.text: qsTr("Your login name. A mxid should start with @ followed by the user ID. After the user ID you need to include your server name after a :.\nYou can also put your homeserver address there if your server doesn't support .well-known lookup.\nExample: @user:yourserver.example.com\nIf Nheko fails to discover your homeserver, it will show you a field to enter the server manually.")
                     Keys.forwardTo: [pwBtn, ssoRepeater]
                 }
 
@@ -109,10 +109,10 @@ Item {
 
                 Layout.fillWidth: true
                 label: qsTr("Homeserver address")
-                placeholderText: qsTr("server.my:8787")
+                placeholderText: qsTr("yourserver.example.com:8787")
                 text: login.homeserver
                 onEditingFinished: login.homeserver = text
-                ToolTip.text: qsTr("The address that can be used to contact you homeserver's client API.\nExample: https://server.my:8787")
+                ToolTip.text: qsTr("The address that can be used to contact your homeserver's client API.\nExample: https://yourserver.example.com:8787")
                 Keys.forwardTo: [pwBtn, ssoRepeater]
             }
 

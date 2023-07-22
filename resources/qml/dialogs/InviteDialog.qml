@@ -100,7 +100,7 @@ ApplicationWindow {
                 property bool isValidMxid: text.match("@.+?:.{3,}")
 
                 backgroundColor: palette.window
-                placeholderText: qsTr("@joe:matrix.org", "Example user id. The name 'joe' can be localized however you want.")
+                placeholderText: qsTr("@user:yourserver.example.com", "Example user id. The name 'user' can be localized however you want.")
                 Layout.fillWidth: true
                 onAccepted: {
                     if (isValidMxid) {
