@@ -731,6 +731,7 @@ set(QML_SOURCES
         resources/qml/components/MainWindowDialog.qml
         resources/qml/components/NhekoTabButton.qml
         resources/qml/components/NotificationBubble.qml
+        resources/qml/components/PowerlevelIndicator.qml
         resources/qml/components/ReorderableListview.qml
         resources/qml/components/SpaceMenuLevel.qml
         resources/qml/components/TextButton.qml

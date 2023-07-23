@@ -535,6 +535,7 @@ TimelineModel::roleNames() const
       {IsSender, "isSender"},
       {UserId, "userId"},
       {UserName, "userName"},
+      {UserPowerlevel, "userPowerlevel"},
       {Day, "day"},
       {Timestamp, "timestamp"},
       {Url, "url"},
@@ -597,6 +598,14 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         return QVariant(QString::fromStdString(acc::sender(event)));
     case UserName:
         return QVariant(displayName(QString::fromStdString(acc::sender(event))));
+    case UserPowerlevel: {
+        return static_cast<qlonglong>(mtx::events::state::PowerLevels{
+          cache::client()
+            ->getStateEvent<mtx::events::state::PowerLevels>(room_id_.toStdString())
+            .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
+            .content}
+                                        .user_level(acc::sender(event)));
+    }
 
     case Day: {
         QDateTime prevDate = origin_server_ts(event);

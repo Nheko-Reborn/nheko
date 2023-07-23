@@ -241,6 +241,7 @@ public:
         IsSender,
         UserId,
         UserName,
+        UserPowerlevel,
         Day,
         Timestamp,
         Url,
