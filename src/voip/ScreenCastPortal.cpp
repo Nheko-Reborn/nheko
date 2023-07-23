@@ -420,16 +420,15 @@ ScreenCastPortal::start()
 
     QDBusPendingCall pendingCall     = QDBusConnection::sessionBus().asyncCall(msg);
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(pendingCall, this);
-    connect(
-      watcher, &QDBusPendingCallWatcher::finished, this, [this](QDBusPendingCallWatcher *self) {
-          self->deleteLater();
-          QDBusPendingReply<QDBusObjectPath> reply = *self;
+    connect(watcher, &QDBusPendingCallWatcher::finished, this, [](QDBusPendingCallWatcher *self) {
+        self->deleteLater();
+        QDBusPendingReply<QDBusObjectPath> reply = *self;
 
-          if (!reply.isValid()) {
-              nhlog::ui()->error("org.freedesktop.portal.ScreenCast (Start): {}",
-                                 reply.error().message().toStdString());
-          }
-      });
+        if (!reply.isValid()) {
+            nhlog::ui()->error("org.freedesktop.portal.ScreenCast (Start): {}",
+                               reply.error().message().toStdString());
+        }
+    });
 }
 
 struct PipeWireStream
@@ -502,7 +501,7 @@ ScreenCastPortal::openPipeWireRemote()
                                  reply.error().message().toStdString());
               close();
           } else {
-              stream.fd = std::move(reply.value());
+              stream.fd = reply.value();
               nhlog::ui()->error("org.freedesktop.portal.ScreenCast: fd = {}",
                                  stream.fd.fileDescriptor());
               state = State::Started;
