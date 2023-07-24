@@ -216,6 +216,24 @@ Rectangle {
                             }
                         }
                         DelegateChoice {
+                            roleValue: UserSettingsModel.ConfigureHiddenEvents
+                            Button {
+                                text: qsTr("CONFIGURE")
+                                onClicked: {
+                                    var dialog = hiddenEventsDialog.createObject();
+                                    dialog.show();
+                                    destroyOnClose(dialog);
+                                }
+
+                                Component {
+                                    id: hiddenEventsDialog
+
+                                    HiddenEventsDialog {}
+                                }
+                            }
+                        }
+
+                        DelegateChoice {
                             Text {
                                 text: model.value
                             }

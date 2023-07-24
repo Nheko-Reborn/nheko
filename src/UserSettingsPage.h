@@ -474,7 +474,6 @@ class UserSettingsModel : public QAbstractListModel
         ExposeDBusApi,
 #endif
         UpdateSpaceVias,
-        ExpireEvents,
 
         AccessibilitySection,
         ReducedMotion,
@@ -505,6 +504,10 @@ class UserSettingsModel : public QAbstractListModel
         TraySection,
         Tray,
         StartInTray,
+
+        MessageVisibilitySection,
+        ExpireEvents,
+        HiddenTimelineEvents,
 
         NotificationsSection,
         DesktopNotifications,
@@ -562,6 +565,7 @@ public:
         KeyStatus,
         SessionKeyImportExport,
         XSignKeysRequestDownload,
+        ConfigureHiddenEvents,
     };
     Q_ENUM(Types);
 

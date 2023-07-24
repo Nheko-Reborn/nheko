@@ -1041,6 +1041,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Limit width of timeline");
         case ReadReceipts:
             return tr("Read receipts");
+        case HiddenTimelineEvents:
+            return tr("Hidden events");
         case DesktopNotifications:
             return tr("Desktop notifications");
         case AlertOnNotification:
@@ -1119,6 +1121,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("SIDEBAR");
         case TraySection:
             return tr("TRAY");
+        case MessageVisibilitySection:
+            return tr("GLOBAL MESSAGE VISIBILITY");
         case NotificationsSection:
             return tr("NOTIFICATIONS");
         case VoipSection:
@@ -1371,6 +1375,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr(
               "Show if your message was read.\nStatus is displayed next to timestamps.\nWarning: "
               "If your homeserver does not support this, your rooms will never be marked as read!");
+        case HiddenTimelineEvents:
+            return tr("Configure whether to show or hide certain events like room joins.");
         case DesktopNotifications:
             return tr("Notify about received messages when the client is not currently focused.");
         case AlertOnNotification:
@@ -1438,6 +1444,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case TimelineSection:
         case SidebarSection:
         case TraySection:
+        case MessageVisibilitySection:
         case NotificationsSection:
         case VoipSection:
         case EncryptionSection:
@@ -1548,6 +1555,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case TimelineSection:
         case SidebarSection:
         case TraySection:
+        case MessageVisibilitySection:
         case NotificationsSection:
         case VoipSection:
         case EncryptionSection:
@@ -1562,6 +1570,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case UserSigningKey:
         case MasterKey:
             return KeyStatus;
+        case HiddenTimelineEvents:
+            return ConfigureHiddenEvents;
         }
     } else if (role == ValueLowerBound) {
         switch (index.row()) {
