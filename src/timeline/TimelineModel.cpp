@@ -1284,13 +1284,20 @@ TimelineModel::updateLastMessage()
 void
 TimelineModel::setCurrentIndex(int index)
 {
+    setCurrentIndex(index, false);
+}
+
+void
+TimelineModel::setCurrentIndex(int index, bool ignoreInactiveState)
+{
     auto oldIndex = idToIndex(currentId);
     currentId     = indexToId(index);
     if (index != oldIndex)
         emit currentIndexChanged(index);
 
-    if (!QGuiApplication::focusWindow() || !QGuiApplication::focusWindow()->isActive() ||
-        MainWindow::instance()->windowForRoom(roomId()) != QGuiApplication::focusWindow())
+    if (!ignoreInactiveState &&
+        (!QGuiApplication::focusWindow() || !QGuiApplication::focusWindow()->isActive() ||
+         MainWindow::instance()->windowForRoom(roomId()) != QGuiApplication::focusWindow()))
         return;
 
     if (!currentId.startsWith('m')) {
@@ -1559,6 +1566,12 @@ TimelineModel::markEventsAsRead(const std::vector<QString> &event_ids)
         }
         emit dataChanged(index(idx, 0), index(idx, 0));
     }
+}
+
+void
+TimelineModel::markRoomAsRead()
+{
+    setCurrentIndex(0, true);
 }
 
 void
