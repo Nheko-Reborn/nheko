@@ -450,15 +450,67 @@ InputBar::generateRelations() const
 void
 InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbowify)
 {
+    auto trimmed                = msg.trimmed();
     mtx::events::msg::Text text = {};
-    text.body                   = msg.trimmed().toStdString();
+    text.body                   = trimmed.toStdString();
+
+    // we don't want to have unexpected behavior if somebody was genuinely trying to edit a message
+    // to be a regex
+    if (UserSettings::instance()->sedEditing() && room->edit().isEmpty()) [[unlikely]] {
+        // The bulk of this logic was shamelessly stolen from Neochat. Thanks to Carl Schwan for
+        // letting us have this :)
+        static const QRegularExpression sed("^s/([^/]*)/([^/]*)(/g)?$");
+        auto match = sed.match(trimmed);
+
+        if (match.hasMatch()) {
+            const QString regex       = match.captured(1);
+            const QString replacement = match.captured(2).toHtmlEscaped();
+            const QString flags       = match.captured(3);
+
+            std::optional<mtx::events::collections::TimelineEvents> event;
+            if (!room->reply().isEmpty()) {
+                auto ev = room->eventById(room->reply());
+                if (ev && room->data(*ev, TimelineModel::IsEditable).toBool())
+                    event = ev;
+            } else {
+                for (int i = 0; i < room->rowCount(); ++i) {
+                    const auto idx = room->index(i);
+                    if (room->data(idx, TimelineModel::IsEditable).toBool()) {
+                        event = room->eventById(room->data(idx, TimelineModel::EventId).toString());
+                        break;
+                    }
+                }
+            }
+
+            if (event) {
+                auto other = room->data(*event, TimelineModel::FormattedBody).toString();
+                const auto original{other};
+                if (flags == "/g")
+                    other.replace(regex, replacement);
+                else
+                    other.replace(other.indexOf(regex), regex.size(), replacement);
+
+                // don't bother sending a pointless edit
+                if (original != other) {
+                    text.formatted_body = other.toStdString();
+                    text.format         = "org.matrix.custom.html";
+                    text.relations.relations.push_back(
+                      {.rel_type = mtx::common::RelationType::Replace,
+                       .event_id =
+                         room->data(*event, TimelineModel::EventId).toString().toStdString()});
+                    room->sendMessageEvent(text, mtx::events::EventType::RoomMessage);
+                    return;
+                }
+            }
+        }
+    }
 
     if ((ChatPage::instance()->userSettings()->markdown() &&
          useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
         useMarkdown == MarkdownOverride::ON) {
         text.formatted_body = utils::markdownToHtml(msg, rainbowify).toStdString();
         // Remove markdown links by completer
-        text.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
+        text.body = replaceMatrixToMarkdownLink(trimmed).toStdString();
 
         // Don't send formatted_body, when we don't need to
         // Specifically, if it includes no html tag and no newlines (which behave differently in
@@ -473,7 +525,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         // disable all markdown extensions
         text.formatted_body = utils::markdownToHtml(msg, rainbowify, true).toStdString();
         // keep everything as it was
-        text.body = msg.trimmed().toStdString();
+        text.body = trimmed.toStdString();
 
         // always send formatted
         text.format = "org.matrix.custom.html";
@@ -484,9 +536,9 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         auto related = room->relatedInfo(room->reply());
 
         // Skip reply fallbacks to users who would cause a room ping with the fallback.
-        // This should be fine, since in some cases the reply fallback can be omitted now and the
-        // alternative is worse! On Element Android this applies to any substring, but that is their
-        // bug to fix.
+        // This should be fine, since in some cases the reply fallback can be omitted now and
+        // the alternative is worse! On Element Android this applies to any substring, but that
+        // is their bug to fix.
         if (!related.quoted_user.startsWith("@room:")) {
             QString body;
             bool firstLine = true;
