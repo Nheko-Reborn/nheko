@@ -561,6 +561,7 @@ TimelineModel::roleNames() const
       {ReplyTo, "replyTo"},
       {ThreadId, "threadId"},
       {Reactions, "reactions"},
+      {Room, "room"},
       {RoomId, "roomId"},
       {RoomName, "roomName"},
       {RoomTopic, "roomTopic"},
@@ -899,6 +900,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         auto id = relations(event).replaces().value_or(event_id(event));
         return QVariant::fromValue(events.reactions(id));
     }
+    case Room:
+        return QVariant::fromValue(this);
     case RoomId:
         return QVariant(room_id_);
     case RoomName:

@@ -2,10 +2,10 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 Control {
     id: msgRoot
@@ -14,6 +14,7 @@ Control {
     property bool fitsMetadata: false //parent.width - redactedLayout.width > metadataWidth + 4
 
     required property string eventId
+    required property Room room
 
     contentItem: RowLayout {
         id: redactedLayout

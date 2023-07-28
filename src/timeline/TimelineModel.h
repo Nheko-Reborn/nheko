@@ -267,6 +267,7 @@ public:
         ReplyTo,
         ThreadId,
         Reactions,
+        Room,
         RoomId,
         RoomName,
         RoomTopic,

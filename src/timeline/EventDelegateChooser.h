@@ -55,9 +55,9 @@ public:
     Q_PROPERTY(QQmlListProperty<EventDelegateChoice> choices READ choices CONSTANT FINAL)
     Q_PROPERTY(QQuickItem *main READ main NOTIFY mainChanged FINAL)
     Q_PROPERTY(QQuickItem *reply READ reply NOTIFY replyChanged FINAL)
-    Q_PROPERTY(TimelineModel *room READ room WRITE setRoom NOTIFY roomChanged REQUIRED FINAL)
     Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged REQUIRED FINAL)
     Q_PROPERTY(QString replyTo READ replyTo WRITE setReplyTo NOTIFY replyToChanged REQUIRED FINAL)
+    Q_PROPERTY(TimelineModel *room READ room WRITE setRoom NOTIFY roomChanged REQUIRED FINAL)
 
     QQmlListProperty<EventDelegateChoice> choices();
 
@@ -74,9 +74,12 @@ public:
     {
         if (m != room_) {
             room_ = m;
-            eventIncubator.reset(eventId_);
-            replyIncubator.reset(replyId);
             emit roomChanged();
+
+            if (isComponentComplete()) {
+                eventIncubator.reset(eventId_);
+                replyIncubator.reset(replyId);
+            }
         }
     }
     [[nodiscard]] TimelineModel *room() { return room_; }
@@ -85,12 +88,18 @@ public:
     {
         eventId_ = idx;
         emit eventIdChanged();
+
+        if (isComponentComplete())
+            eventIncubator.reset(eventId_);
     }
     [[nodiscard]] QString eventId() const { return eventId_; }
     void setReplyTo(QString id)
     {
         replyId = id;
         emit replyToChanged();
+
+        if (isComponentComplete())
+            replyIncubator.reset(replyId);
     }
     [[nodiscard]] QString replyTo() const { return replyId; }
 

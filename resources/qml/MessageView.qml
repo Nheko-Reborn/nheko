@@ -65,7 +65,7 @@ Item {
             width: chat.delegateMaxWidth
             height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight, 10)
             anchors.horizontalCenter: ListView.view.contentItem.horizontalCenter
-            room: chatRoot.roommodel
+            //room: chatRoot.roommodel
 
             required property var day
             required property bool isSender
@@ -203,7 +203,7 @@ Item {
 
                     color: type == MtxEvent.NoticeMessage ? palette.buttonText : palette.text
                     font.italic: type == MtxEvent.NoticeMessage
-                    formatted: formattedBody
+                    formatted: formattedBody + "a"
 
                     Layout.fillWidth: true
                     //Layout.maximumWidth: implicitWidth

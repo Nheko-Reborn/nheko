@@ -84,7 +84,8 @@ void
 EventDelegateChooser::componentComplete()
 {
     QQuickItem::componentComplete();
-    // eventIncubator.reset(eventIndex);
+    eventIncubator.reset(eventId_);
+    replyIncubator.reset(replyId);
     // eventIncubator.forceCompletion();
 }
 
@@ -226,6 +227,9 @@ EventDelegateChooser::DelegateIncubator::reset(QString id)
     for (const auto choice : qAsConst(chooser.choices_)) {
         const auto &choiceValue = choice->roleValues();
         if (choiceValue.contains(role) || choiceValue.empty()) {
+            nhlog::ui()->debug(
+              "Instantiating type: {}, c {}", (int)role, choiceValue.contains(role));
+
             if (auto child = qobject_cast<QQuickItem *>(object())) {
                 child->setParentItem(nullptr);
             }
