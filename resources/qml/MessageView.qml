@@ -287,6 +287,19 @@ Item {
 
             EventDelegateChoice {
                 roleValues: [
+                    MtxEvent.Redacted
+                ]
+
+                Redacted {
+                    Layout.fillWidth: true
+
+                    required property string userId
+                    required property string userName
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
                 ]
                 MatrixText {
                     Layout.fillWidth: true
