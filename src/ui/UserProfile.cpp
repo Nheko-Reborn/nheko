@@ -224,6 +224,57 @@ UserProfile::refreshDevices()
     fetchDeviceList(this->userid_);
 }
 
+QVector<QString>
+UserProfile::getIgnoredUsers()
+{
+    QVector<QString> vec;
+    const std::optional<mtx::events::collections::RoomAccountDataEvents::variant> optEv =
+      cache::client()->getAccountData(mtx::events::EventType::IgnoredUsers);
+    if (optEv) {
+        const auto &ev =
+          std::get<mtx::events::EphemeralEvent<mtx::events::account_data::IgnoredUsers>>(*optEv)
+            .content;
+        for (const mtx::events::account_data::IgnoredUser &user : ev.users) {
+            vec.append(QString::fromStdString(user.id));
+        }
+    }
+
+    return vec;
+}
+
+void
+UserProfile::ignoredStatus(const QString &id, const bool ignore)
+{
+    auto old = this->getIgnoredUsers();
+    if (ignore) {
+        if (old.contains(id)) {
+            emit this->room()->ignoredUser(id, tr("Already ignored"));
+            return;
+        }
+        old.append(id);
+    } else {
+        old.removeOne(id);
+    }
+
+    std::vector<mtx::events::account_data::IgnoredUser> content;
+    for (const QString &item : old) {
+        const mtx::events::account_data::IgnoredUser data{.id = item.toStdString()};
+        content.push_back(data);
+    }
+
+    const mtx::events::account_data::IgnoredUsers payload{.users{content}};
+
+    http::client()->put_account_data(payload, [this, id, ignore](mtx::http::RequestErr e) {
+        if (ignore) {
+            emit this->room()->ignoredUser(
+              id, e ? std::optional(QString::fromStdString(e->matrix_error.error)) : std::nullopt);
+        } else {
+            emit this->unignoredUser(
+              id, e ? QVariant(QString::fromStdString(e->matrix_error.error)) : QVariant());
+        }
+    });
+}
+
 void
 UserProfile::fetchDeviceList(const QString &userID)
 {
@@ -344,10 +395,6 @@ UserProfile::banUser()
 {
     ChatPage::instance()->banUser(roomid_, this->userid_, QLatin1String(""));
 }
-
-// void ignoreUser(){
-
-// }
 
 void
 UserProfile::kickUser()

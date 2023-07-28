@@ -772,6 +772,7 @@ set(QML_SOURCES
     resources/qml/dialogs/AllowedRoomsSettingsDialog.qml
     resources/qml/dialogs/RoomSettings.qml
     resources/qml/dialogs/UserProfile.qml
+    resources/qml/dialogs/IgnoredUsers.qml
     resources/qml/emoji/StickerPicker.qml
     resources/qml/pages/LoginPage.qml
     resources/qml/pages/RegisterPage.qml

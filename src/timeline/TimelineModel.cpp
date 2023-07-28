@@ -521,6 +521,8 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         cache::client()->updateState(room_id_.toStdString(), events_, true);
         this->syncState({std::move(events_.events)});
     });
+
+    connect(this, &TimelineModel::ignoredUser, this, &TimelineModel::handleIgnoredUser);
 }
 
 QHash<int, QByteArray>
@@ -2105,6 +2107,17 @@ TimelineModel::scrollTimerEvent()
     } else {
         emit scrollToIndex(idToIndex(eventIdToShow));
         showEventTimerCounter++;
+    }
+}
+
+void
+TimelineModel::handleIgnoredUser(const QString &id, const std::optional<QString> &err)
+{
+    if (err) {
+        MainWindow::instance()->showNotification(
+          tr("Failed to ignore \"%1\": %2").arg(id).arg(*err));
+    } else {
+        this->clearTimeline();
     }
 }
 
