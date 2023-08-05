@@ -42,13 +42,11 @@ Window {
             Text {
                 Layout.fillWidth: true
                 Layout.maximumWidth: view.width
-                // Review request: Wrapping occurs with default width/font values, would it be better design to increase the window width?
                 wrapMode: Text.Wrap
                 color: palette.text
                 text: qsTr("Ignoring a user hides their messages (they can still see yours!).")
             }
 
-            // Review request: Is there a better way to do this?
             Item { Layout.preferredHeight: Nheko.paddingLarge }
         }
         delegate: RowLayout {
