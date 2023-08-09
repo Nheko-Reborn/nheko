@@ -153,7 +153,6 @@ Nheko::createRoom(bool space,
     if (space) {
         req.creation_content       = mtx::events::state::Create{};
         req.creation_content->type = mtx::events::state::room_type::space;
-        req.creation_content->creator.clear();
         req.creation_content->room_version.clear();
     }
 
