@@ -100,6 +100,7 @@ Item {
             required property string url
             required property string userId
             required property string userName
+            required property int userPowerlevel
 
             ListView.delayRemove: true
             anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
@@ -119,6 +120,7 @@ Item {
                 property date timestamp: wrapper.timestamp
                 property string userId: wrapper.userId
                 property string userName: wrapper.userName
+                property int userPowerlevel: wrapper.userPowerlevel
 
                 active: previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
                 //asynchronous: true
@@ -562,14 +564,25 @@ Item {
 
                         target: room
                     }
+
                     AbstractButton {
                         id: userNameButton
+
+                        PowerlevelIndicator {
+                            id: powerlevelIndicator
+                            anchors.left: parent.left
+                            //anchors.horizontalCenter: parent.horizontalCenter
+
+                            powerlevel: userPowerlevel
+                            permissions: room ? room.permissions : null
+                            visible: isAdmin || isModerator
+                        }
 
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
                         ToolTip.visible: hovered
+                        leftPadding: powerlevelIndicator.visible ? 16 : 0
                         leftInset: 0
-                        leftPadding: 0
                         rightInset: 0
                         rightPadding: 0
 
