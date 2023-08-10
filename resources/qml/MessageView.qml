@@ -564,14 +564,25 @@ Item {
 
                         target: room
                     }
+
                     AbstractButton {
                         id: userNameButton
+
+                        PowerlevelIndicator {
+                            id: powerlevelIndicator
+                            anchors.left: parent.left
+                            //anchors.horizontalCenter: parent.horizontalCenter
+
+                            powerlevel: userPowerlevel
+                            permissions: room ? room.permissions : null
+                            visible: isAdmin || isModerator
+                        }
 
                         ToolTip.delay: Nheko.tooltipDelay
                         ToolTip.text: userId
                         ToolTip.visible: hovered
+                        leftPadding: powerlevelIndicator.visible ? 16 : 0
                         leftInset: 0
-                        leftPadding: 0
                         rightInset: 0
                         rightPadding: 0
 
@@ -626,13 +637,6 @@ Item {
 
                             target: Presence
                         }
-                    }
-
-                    PowerlevelIndicator {
-                        Layout.alignment: Qt.AlignVCenter
-                        powerlevel: userPowerlevel
-                        permissions: room ? room.permissions : null
-                        visible: isAdmin || isModerator
                     }
                 }
             }
