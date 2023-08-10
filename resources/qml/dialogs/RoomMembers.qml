@@ -4,6 +4,7 @@
 
 import ".."
 import "../ui"
+import "../components"
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
@@ -159,39 +160,9 @@ ApplicationWindow {
 
                         }
 
-                        Image {
-                            property bool isAdmin: room.permissions.changeLevel(MtxEvent.PowerLevels) <= model.powerlevel
-                            property bool isModerator: room.permissions.redactLevel() <= model.powerlevel
-                            //property bool isDefault: room.permissions.defaultLevel() <= model.powerlevel
-
-                            property string sourceUrl: {
-                                if (isAdmin)
-                                return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?";
-                                else if (isModerator)
-                                return "image://colorimage/:/icons/icons/ui/ribbon.svg?";
-                                else
-                                return "image://colorimage/:/icons/icons/ui/person.svg?";
-                            }
-
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
-                            sourceSize.width: width
-                            sourceSize.height: height
-                            source: sourceUrl + (ma.hovered ? palette.highlight : palette.buttonText)
-                            ToolTip.visible: ma.hovered
-                            ToolTip.text: {
-                                if (isAdmin)
-                                return qsTr("Administrator: %1").arg(model.powerlevel);
-                                else if (isModerator)
-                                return qsTr("Moderator: %1").arg(model.powerlevel);
-                                else
-                                return qsTr("User: %1").arg(model.powerlevel);
-                            }
-
-                            HoverHandler {
-                                id: ma
-                            }
-
+                        PowerlevelIndicator {
+                            powerlevel: model.powerlevel
+                            permissions: room.permissions
                         }
 
                         EncryptionIndicator {
