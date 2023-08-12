@@ -14,7 +14,6 @@
 
 class DeviceVerificationFlow;
 class TimelineModel;
-class TimelineModel;
 class TimelineViewManager;
 class RoomlistModel;
 
