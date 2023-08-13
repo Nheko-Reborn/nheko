@@ -63,7 +63,7 @@ Item {
             id: wrapper
             ListView.delayRemove: true
             width: chat.delegateMaxWidth
-            height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight, 10)
+            height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight + reactionRow.implicitHeight + unreadRow.height, 10)
             anchors.horizontalCenter: ListView.view.contentItem.horizontalCenter
             //room: chatRoot.roommodel
 
@@ -81,6 +81,10 @@ Item {
             required property string userId
             required property string userName
             required property string threadId
+            required property int userPowerlevel
+            required property var reactions
+
+            property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) + (wrapper.threadId ? 6 : 0) // align bubble with section header
 
             data: [
             Loader {
@@ -96,6 +100,7 @@ Item {
                 property date timestamp: wrapper.timestamp
                 property string userId: wrapper.userId
                 property string userName: wrapper.userName
+                property string userPowerlevel: wrapper.userPowerlevel
 
                 active: previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
                 //asynchronous: true
@@ -112,7 +117,7 @@ Item {
                     ColumnLayout {
                         id: contentColumn
                         Layout.fillWidth: true
-                        Layout.leftMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) + (wrapper.threadId ? 6 : 0) // align bubble with section header
+                        Layout.leftMargin: wrapper.avatarMargin // align bubble with section header
 
                         AbstractButton {
                             id: replyRow
@@ -176,6 +181,37 @@ Item {
                         Layout.preferredWidth: 100
                         Layout.preferredHeight: 20
                         Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    }
+                },
+
+                Reactions {
+                    id: reactionRow
+
+                    eventId: wrapper.eventId
+                    layoutDirection: row.bubbleOnRight ? Qt.RightToLeft : Qt.LeftToRight
+                    reactions: wrapper.reactions
+                    width: wrapper.width - wrapper.avatarMargin
+                    x: wrapper.avatarMargin
+
+                    anchors {
+                        //left: row.bubbleOnRight ? undefined : row.left
+                        //right: row.bubbleOnRight ? row.right : undefined
+                        top: gridContainer.bottom
+                        topMargin: -4
+                    }
+                },
+                Rectangle {
+                    id: unreadRow
+
+                    color: palette.highlight
+                    height: visible ? 3 : 0
+                    visible: (wrapper.index > 0 && (room.fullyReadEventId == wrapper.eventId))
+
+                    anchors {
+                        left: parent.left
+                        right: parent.right
+                        top: reactionRow.bottom
+                        topMargin: 5
                     }
                 },
 
