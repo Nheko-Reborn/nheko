@@ -12,15 +12,6 @@
 
 #include <optional>
 
-class Toggle;
-class QLabel;
-class QFormLayout;
-class QComboBox;
-class QFontComboBox;
-class QSpinBox;
-class QHBoxLayout;
-class QVBoxLayout;
-
 class UserSettings final : public QObject
 {
     Q_OBJECT

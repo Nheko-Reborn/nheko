@@ -7,7 +7,6 @@
 #include <QHash>
 #include <QQuickItem>
 #include <QQuickTextDocument>
-#include <QWidget>
 
 #include <mtx/common.hpp>
 #include <mtx/responses/messages.hpp>
