@@ -3,27 +3,24 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
-import QtQuick 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
-Rectangle {
+Control {
     id: r
 
-    required property string username
+    required property string userName
 
-    radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
-    width: parent.width ? Math.min(parent.width, 700) : 0
-    height: contents.implicitHeight + Nheko.paddingMedium * 2
-    color: palette.alternateBase
-    border.color: Nheko.theme.green
-    border.width: 2
+    padding: Nheko.paddingMedium
+    //implicitHeight: contents.implicitHeight + padd * 2
+    Layout.maximumWidth: contents.Layout.maximumWidth + padding * 2
+    Layout.fillWidth: true
 
-    RowLayout {
+    contentItem: RowLayout {
         id: contents
 
-        anchors.fill: parent
-        anchors.margins: Nheko.paddingMedium
         spacing: Nheko.paddingMedium
 
         Image {
@@ -33,26 +30,36 @@ Rectangle {
             Layout.preferredHeight: 24
         }
 
-        Column {
+        ColumnLayout {
             spacing: Nheko.paddingSmall
             Layout.fillWidth: true
 
             MatrixText {
-                text: qsTr("%1 enabled end-to-end encryption").arg(r.username)
+                text: qsTr("%1 enabled end-to-end encryption").arg(r.userName)
                 font.bold: true
                 font.pointSize: 14
                 color: palette.text
-                width: parent.width
+                Layout.fillWidth: true
+                Layout.maximumWidth: implicitWidth + 1
             }
 
-            MatrixText {
+            Label {
                 text: qsTr("Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.")
-                color: palette.text
-                width: parent.width
+                textFormat: Text.PlainText
+                wrapMode: Label.WordWrap
+                Layout.fillWidth: true
+                Layout.maximumWidth: implicitWidth + 1
             }
 
         }
 
     }
 
+    background: Rectangle {
+        radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
+        height: contents.implicitHeight + Nheko.paddingMedium * 2
+        color: palette.alternateBase
+        border.color: Nheko.theme.green
+        border.width: 2
+    }
 }

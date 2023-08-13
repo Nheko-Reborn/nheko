@@ -203,7 +203,7 @@ Item {
 
                     color: type == MtxEvent.NoticeMessage ? palette.buttonText : palette.text
                     font.italic: type == MtxEvent.NoticeMessage
-                    formatted: formattedBody + "a"
+                    formatted: formattedBody
 
                     Layout.fillWidth: true
                     //Layout.maximumWidth: implicitWidth
@@ -262,6 +262,7 @@ Item {
                     text: formattedStateEvent
                     formatted: ''
                     body: ''
+                    horizontalAlignment: Text.AlignHCenter
 
                     color: palette.buttonText
                     font.italic: true
@@ -269,6 +270,79 @@ Item {
                     Layout.fillWidth: true
                     //Layout.maximumWidth: implicitWidth
 
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.CallInvite,
+                ]
+                TextMessage {
+                    keepFullText: true
+
+                    required property string userId
+                    required property string userName
+                    required property string callType
+
+                    isOnlyEmoji: false
+                    body: formatted
+                    formatted: {
+                        switch (callType) {
+                            case "voice":
+                            return qsTr("%1 placed a voice call.").arg(TimelineManager.escapeEmoji(userName));
+                            case "video":
+                            return qsTr("%1 placed a video call.").arg(TimelineManager.escapeEmoji(userName));
+                            default:
+                            return qsTr("%1 placed a call.").arg(TimelineManager.escapeEmoji(userName));
+                        }
+                    }
+
+                    color: palette.buttonText
+                    font.italic: true
+
+                    Layout.fillWidth: true
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.CallAnswer,
+                    MtxEvent.CallReject,
+                    MtxEvent.CallSelectAnswer,
+                    MtxEvent.CallHangUp,
+                    MtxEvent.CallCandidates,
+                    MtxEvent.CallNegotiate,
+                ]
+                TextMessage {
+                    keepFullText: true
+
+                    required property string userId
+                    required property string userName
+                    required property int type
+
+                    isOnlyEmoji: false
+                    body: formatted
+                    formatted: {
+                        switch (type) {
+                            case MtxEvent.CallAnswer:
+                            return qsTr("%1 answered the call.").arg(TimelineManager.escapeEmoji(userName));
+                            case MtxEvent.CallReject:
+                            return qsTr("%1 rejected the call.").arg(TimelineManager.escapeEmoji(userName));
+                            case MtxEvent.CallSelectAnswer:
+                            return qsTr("%1 selected answer.").arg(TimelineManager.escapeEmoji(userName));
+                            case MtxEvent.CallHangUp:
+                            return qsTr("%1 ended the call.").arg(TimelineManager.escapeEmoji(userName));
+                            case MtxEvent.CallCandidates:
+                            return qsTr("%1 is negotiating the call...").arg(TimelineManager.escapeEmoji(userName));
+                            case MtxEvent.CallNegotiate:
+                            return qsTr("%1 is negotiating the call...").arg(TimelineManager.escapeEmoji(userName));
+                        }
+                    }
+
+                    color: palette.buttonText
+                    font.italic: true
+
+                    Layout.fillWidth: true
                 }
             }
 
@@ -287,6 +361,44 @@ Item {
 
             EventDelegateChoice {
                 roleValues: [
+                    MtxEvent.FileMessage,
+                ]
+                FileMessage {
+                    Layout.fillWidth: true
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.VideoMessage,
+                    MtxEvent.AudioMessage,
+                ]
+                PlayableMediaMessage {
+                    Layout.fillWidth: true
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.Encrypted,
+                ]
+                Encrypted {
+                    Layout.fillWidth: true
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.Encryption,
+                ]
+                EncryptionEnabled {
+                    Layout.fillWidth: true
+                }
+            }
+
+
+            EventDelegateChoice {
+                roleValues: [
                     MtxEvent.Redacted
                 ]
 
@@ -295,6 +407,76 @@ Item {
 
                     required property string userId
                     required property string userName
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.Member
+                ]
+
+                ColumnLayout {
+                    id: member
+
+                    required property string userId
+                    required property string userName
+
+                    required property bool isReply
+                    required property Room room
+                    required property string formattedStateEvent
+
+                    NoticeMessage {
+                        body: formatted
+                        isOnlyEmoji: false
+                        isReply: tombstone.isReply
+                        keepFullText: true
+                        isStateEvent: true
+                        Layout.fillWidth: true
+                        formatted: member.formattedStateEvent
+                    }
+
+                    Button {
+                        visible: room.showAcceptKnockButton(eventId)
+                        Layout.alignment: Qt.AlignHCenter
+                        text: qsTr("Allow them in")
+                        onClicked: room.acceptKnock(member.eventId)
+                    }
+
+                }
+            }
+
+            EventDelegateChoice {
+                roleValues: [
+                    MtxEvent.Tombstone
+                ]
+
+                ColumnLayout {
+                    id: tombstone
+
+                    required property string userId
+                    required property string userName
+
+                    required property string body
+                    required property bool isReply
+                    required property Room room
+                    required property string eventId
+
+                    NoticeMessage {
+                        body: formatted
+                        isOnlyEmoji: false
+                        isReply: tombstone.isReply
+                        keepFullText: true
+                        isStateEvent: true
+                        Layout.fillWidth: true
+                        formatted: qsTr("This room was replaced for the following reason: %1").arg(tombstone.body)
+                    }
+
+                    Button {
+                        Layout.alignment: Qt.AlignHCenter
+                        text: qsTr("Go to replacement room")
+                        onClicked: tombstone.room.joinReplacementRoom(tombstone.eventId)
+                    }
+
                 }
             }
 

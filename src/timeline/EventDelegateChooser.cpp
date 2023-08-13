@@ -195,17 +195,22 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
 
     if (!forReply) {
         auto row = chooser.room_->idToIndex(currentId);
-        connect(chooser.room_,
-                &QAbstractItemModel::dataChanged,
-                obj,
-                [row, update](const QModelIndex &topLeft,
-                              const QModelIndex &bottomRight,
-                              const QList<int> &changedRoles) {
-                    if (row < topLeft.row() || row > bottomRight.row())
-                        return;
+        auto connection = connect(
+          chooser.room_,
+          &QAbstractItemModel::dataChanged,
+          obj,
+          [row, update](const QModelIndex &topLeft,
+                        const QModelIndex &bottomRight,
+                        const QList<int> &changedRoles) {
+              if (row < topLeft.row() || row > bottomRight.row())
+                  return;
 
-                    update(changedRoles);
-                });
+              update(changedRoles);
+          },
+          Qt::QueuedConnection);
+        connect(&this->chooser, &EventDelegateChooser::destroyed, obj, [connection]() {
+            QObject::disconnect(connection);
+        });
     }
 }
 

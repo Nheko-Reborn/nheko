@@ -36,7 +36,6 @@ Control {
             property var redactedPair: room.formatRedactedEvent(msgRoot.eventId)
             text: redactedPair["first"]
             wrapMode: Label.WordWrap
-            color: palette.text
 
             ToolTip.text: redactedPair["second"]
             ToolTip.visible: hh.hovered

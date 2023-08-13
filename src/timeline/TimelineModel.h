@@ -310,7 +310,8 @@ public:
     Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
     Q_INVOKABLE void acceptKnock(const QString &id);
     Q_INVOKABLE void joinReplacementRoom(const QString &id);
-    Q_INVOKABLE QString formatMemberEvent(const QString &id);
+    Q_INVOKABLE QString
+    formatMemberEvent(const mtx::events::StateEvent<mtx::events::state::Member> &event) const;
     Q_INVOKABLE QString formatJoinRuleEvent(const QString &id);
     QString formatHistoryVisibilityEvent(
       const mtx::events::StateEvent<mtx::events::state::HistoryVisibility> &event) const;
