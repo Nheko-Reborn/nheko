@@ -1221,10 +1221,18 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->mobileMode();
         case FontSize:
             return i->fontSize();
-        case Font:
-            return data(index, Values).toStringList().indexOf(i->font());
-        case EmojiFont:
-            return data(index, Values).toStringList().indexOf(i->emojiFont());
+        case Font: {
+            if (i->font().isEmpty())
+                return 0;
+            else
+                return data(index, Values).toStringList().indexOf(i->font());
+        }
+        case EmojiFont: {
+            if (i->emojiFont().isEmpty())
+                return 0;
+            else
+                return data(index, Values).toStringList().indexOf(i->emojiFont());
+        }
         case Ringtone: {
             auto v = i->ringtone();
             if (v == QStringView(u"Mute"))
@@ -1612,10 +1620,16 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return vecToList(CallDevices::instance().frameRates(
               i->camera().toStdString(), i->cameraResolution().toStdString()));
 
-        case Font:
-            return QFontDatabase::families();
-        case EmojiFont:
-            return QFontDatabase::families(QFontDatabase::WritingSystem::Symbol);
+        case Font: {
+            auto fonts = QFontDatabase::families();
+            fonts.prepend(tr("System font"));
+            return fonts;
+        }
+        case EmojiFont: {
+            auto fonts = QFontDatabase::families(QFontDatabase::WritingSystem::Symbol);
+            fonts.prepend(tr("System emoji font"));
+            return fonts;
+        }
         case Ringtone: {
             QStringList l{
               QStringLiteral("Mute"),
@@ -1908,15 +1922,20 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         }
         case Font: {
             if (value.userType() == QMetaType::Int) {
-                i->setFontFamily(QFontDatabase::families().at(value.toInt()));
+                // Special handling to grab our injected system font option
+                auto v = value.toInt();
+                i->setFontFamily(v == 0 ? QString{} : QFontDatabase::families().at(v - 1));
                 return true;
             } else
                 return false;
         }
         case EmojiFont: {
             if (value.userType() == QMetaType::Int) {
+                // More special handling for the default font option
+                auto v = value.toInt();
                 i->setEmojiFontFamily(
-                  QFontDatabase::families(QFontDatabase::WritingSystem::Symbol).at(value.toInt()));
+                  v == 0 ? QStringLiteral("emoji")
+                         : QFontDatabase::families(QFontDatabase::WritingSystem::Symbol).at(v - 1));
                 return true;
             } else
                 return false;
