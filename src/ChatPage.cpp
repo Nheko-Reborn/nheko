@@ -1269,7 +1269,7 @@ ChatPage::getBackupVersion()
                       nhlog::crypto()->info("Our backup key {} does not match the one "
                                             "used in the online backup {}",
                                             pubkey,
-                                            auth_data["public_key"]);
+                                            auth_data["public_key"].get<std::string>());
                       cache::client()->deleteBackupVersion();
                       return;
                   }
