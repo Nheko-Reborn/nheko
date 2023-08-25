@@ -32,7 +32,7 @@ Rectangle {
         eventId: room.reply ?? ""
         userColor: TimelineManager.userColor(modelData.userId, palette.window)
         visible: room && room.reply
-        width: parent.width
+        maxWidth: parent.width - anchors.leftMargin - anchors.rightMargin
     }
     ImageButton {
         id: closeReplyButton

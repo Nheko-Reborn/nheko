@@ -24,6 +24,7 @@ AbstractButton {
     property string userName: eventId ? room.dataById(eventId, Room.UserName, "") : ""
     implicitHeight: replyContainer.implicitHeight
     implicitWidth: replyContainer.implicitWidth
+    property int maxWidth
 
     NhekoCursorShape {
         anchors.fill: parent
@@ -48,14 +49,11 @@ AbstractButton {
         eventId: r.eventId
         replyTo: ""
 
-        width: parent.width
-        height: replyContainer.implicitHeight
-
         //height: replyContainer.implicitHeight
         data: GridLayout {
             id: replyContainer
 
-            width: parent.width
+            width: r.maxWidth
             columns: 2
             rows: 2
             columnSpacing: Nheko.paddingMedium

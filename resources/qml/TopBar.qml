@@ -285,7 +285,7 @@ Pane {
 
                             property var e: room ? room.getDump(modelData, "pins") : {}
 
-                            Layout.fillWidth: true
+                            maxWidth: pinnedMessages.width
                             //Layout.preferredHeight: height
                             eventId: e.eventId ?? ""
                             userColor: TimelineManager.userColor(e.userId, palette.window)
