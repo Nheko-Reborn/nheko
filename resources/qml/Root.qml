@@ -355,13 +355,24 @@ Pane {
 
         onAccepted: UIA.continue3pidReceived()
     }
-
     Connections {
         function onConfirm3pidToken() {
             uiaConfirmationLinkDialog.open();
         }
         function onEmail() {
             uiaEmailPrompt.show();
+        }
+        function onFallbackAuth(fallback) {
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/FallbackAuthDialog.qml");
+            if (component.status == Component.Ready) {
+                var dialog = component.createObject(timelineRoot, {
+                        "fallback": fallback
+                    });
+                dialog.show();
+                destroyOnClose(dialog);
+            } else {
+                console.error("Failed to create component: " + component.errorString());
+            }
         }
         function onPassword() {
             console.log("UIA: password needed");
@@ -378,18 +389,6 @@ Pane {
             if (component.status == Component.Ready) {
                 var dialog = component.createObject(timelineRoot, {
                         "recaptcha": recaptcha
-                    });
-                dialog.show();
-                destroyOnClose(dialog);
-            } else {
-                console.error("Failed to create component: " + component.errorString());
-            }
-        }
-        function onFallbackAuth(fallback) {
-            var component = Qt.createComponent("qrc:/resources/qml/dialogs/FallbackAuthDialog.qml");
-            if (component.status == Component.Ready) {
-                var dialog = component.createObject(timelineRoot, {
-                        "fallback": fallback
                     });
                 dialog.show();
                 destroyOnClose(dialog);

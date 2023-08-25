@@ -11,25 +11,24 @@ TextArea {
 
     property alias cursorShape: cs.cursorShape
 
-    leftInset: 0
-    bottomInset: 0
-    rightInset: 0
-    topInset: 0
-    leftPadding: 0
-    bottomPadding: 0
-    rightPadding: 0
-    topPadding: 0
-    background: null
-
     ToolTip.text: hoveredLink
     ToolTip.visible: hoveredLink || false
+    background: null
+    bottomInset: 0
+    bottomPadding: 0
     // this always has to be enabled, otherwise you can't click links anymore!
     //enabled: selectByMouse
     color: palette.text
     focus: false
+    leftInset: 0
+    leftPadding: 0
     readOnly: true
+    rightInset: 0
+    rightPadding: 0
     selectByMouse: !Settings.mobileMode
     textFormat: TextEdit.RichText
+    topInset: 0
+    topPadding: 0
     wrapMode: Text.Wrap
 
     // Setting a tooltip delay makes the hover text empty .-.
@@ -40,8 +39,8 @@ TextArea {
     onLinkActivated: Nheko.openLink(link)
 
     // propagate events up
-    onPressAndHold: (event) => event.accepted = false
-    onPressed: (event) => event.accepted = (event.button == Qt.LeftButton)
+    onPressAndHold: event => event.accepted = false
+    onPressed: event => event.accepted = (event.button == Qt.LeftButton)
 
     NhekoCursorShape {
         id: cs

@@ -713,6 +713,7 @@ set(QML_SOURCES
         resources/qml/UploadBox.qml
         resources/qml/MessageInput.qml
         resources/qml/MessageView.qml
+				resources/qml/TimelineEvent.qml
         resources/qml/PrivacyScreen.qml
         resources/qml/Reactions.qml
         resources/qml/ReplyPopup.qml

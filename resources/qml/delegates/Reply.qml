@@ -14,102 +14,96 @@ AbstractButton {
     id: r
 
     property color userColor: "red"
-    property double proportionalHeight
-    property int type
-    property string typeString
-    property int originalWidth
-    property string blurhash
-    property string body
-    property string formattedBody
-    property string eventId
-    property string filename
-    property string filesize
-    property string url
-    property bool isOnlyEmoji
-    property bool isStateEvent
-    property string userId
-    property string userName
-    property string thumbnailUrl
-    property string roomTopic
-    property string roomName
-    property string callType
-    property int duration
-    property int encryptionError
-    property int relatedEventCacheBuster
-    property int maxWidth
     property bool keepFullText: false
 
-    height: replyContainer.height
-    implicitHeight: replyContainer.height
-    implicitWidth: visible? colorLine.width+Math.max(replyContainer.implicitWidth,userName_.fullTextWidth) : 0 // visible? seems to be causing issues
+    required property string eventId
+
+    property var room_: room
+
+    property string userId: eventId ? room.dataById(eventId, Room.UserId, "") : ""
+    property string userName: eventId ? room.dataById(eventId, Room.UserName, "") : ""
+    implicitHeight: replyContainer.implicitHeight
+    implicitWidth: replyContainer.implicitWidth
 
     NhekoCursorShape {
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
     }
 
-    Rectangle {
-        id: colorLine
-
-        anchors.top: replyContainer.top
-        anchors.bottom: replyContainer.bottom
-        width: 4
-        color: TimelineManager.userColor(userId, palette.base)
-    }
-
     onClicked: {
-        let link = reply.child.linkAt != undefined && reply.child.linkAt(pressX-colorLine.width, pressY - userName_.implicitHeight);
+        let link = reply.child.linkAt != undefined && reply.child.linkAt(pressX-colorline.width, pressY - userName_.implicitHeight);
         if (link) {
             Nheko.openLink(link)
         } else {
             room.showEvent(r.eventId)
         }
     }
-    onPressAndHold: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(pressX-colorLine.width, pressY - userName_.implicitHeight), r.eventId)
+    onPressAndHold: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(pressX-colorline.width, pressY - userName_.implicitHeight), r.eventId)
 
-    ColumnLayout {
-        id: replyContainer
+    contentItem: TimelineEvent {
+        id: timelineEvent
 
-        anchors.left: colorLine.right
-        width: parent.width - 4
-        spacing: 0
+        isStateEvent: false
+        room: room_
+        eventId: r.eventId
+        replyTo: ""
 
-        TapHandler {
-            acceptedButtons: Qt.RightButton
-            onSingleTapped: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(eventPoint.position.x, eventPoint.position.y - userName_.implicitHeight), r.eventId)
-            gesturePolicy: TapHandler.ReleaseWithinBounds
-            acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
-        }
+        width: parent.width
+        height: replyContainer.implicitHeight
 
-        AbstractButton {
-            Layout.leftMargin: 4
-            Layout.fillWidth: true
-            contentItem: ElidedLabel {
-                id: userName_
-                fullText: userName
-                color: r.userColor
-                textFormat: Text.RichText
-                width: parent.width
-                elideWidth: width
+        //height: replyContainer.implicitHeight
+        data: GridLayout {
+            id: replyContainer
+
+            width: parent.width
+            columns: 2
+            rows: 2
+            columnSpacing: Nheko.paddingMedium
+            rowSpacing: Nheko.paddingSmall
+
+            Rectangle {
+                id: colorline
+
+                Layout.preferredWidth: 4
+                Layout.rowSpan: 2
+                Layout.fillHeight: true
+
+                Layout.row: 0
+                Layout.column: 0
+
+                color: TimelineManager.userColor(r.userId, palette.base)
             }
-            onClicked: room.openUserProfile(userId)
-        }
 
-        Rectangle {
-            Layout.leftMargin: 4
-            Layout.preferredHeight: 20
-            Layout.fillWidth: true
-            color: "green"
-        }
+            AbstractButton {
+                id: usernameBtn
+                Layout.fillWidth: true
 
+                Layout.row: 0
+                Layout.column: 1
+
+                contentItem: ElidedLabel {
+                    id: userName_
+                    fullText: r.userName
+                    color: r.userColor
+                    textFormat: Text.RichText
+                    width: parent.width
+                    elideWidth: width
+                }
+                onClicked: room.openUserProfile(r.userId)
+            }
+
+            data: [
+                colorline, usernameBtn, timelineEvent.main,
+            ]
+
+        }
     }
 
-    Rectangle {
+    background: Rectangle {
         id: backgroundItem
 
         z: -1
-        anchors.fill: replyContainer
-        property color userColor: TimelineManager.userColor(userId, palette.base)
+        property color userColor: TimelineManager.userColor(r.userId, palette.base)
         property color bgColor: palette.base
         color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.1))
     }

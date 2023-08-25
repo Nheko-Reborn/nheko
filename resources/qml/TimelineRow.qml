@@ -147,7 +147,8 @@ AbstractButton {
             columns: Settings.bubbles ? 1 : 2
             rowSpacing: 0
             rows: Settings.bubbles ? 3 : 2
-/*
+
+            /*
             anchors {
                 left: parent.left
                 leftMargin: 4

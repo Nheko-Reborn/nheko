@@ -74,10 +74,10 @@ Flow {
                     anchors.verticalCenter: divider.verticalCenter
                     fillMode: Image.PreserveAspectFit
                     height: textMetrics.height
+                    mipmap: true
                     source: modelData.key.startsWith("mxc://") ? (modelData.key.replace("mxc://", "image://MxcImage/") + "?scale") : ""
                     visible: modelData.key.startsWith("mxc://")
                     width: textMetrics.height
-                    mipmap: true
                 }
                 Rectangle {
                     id: divider
