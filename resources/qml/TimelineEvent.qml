@@ -137,6 +137,9 @@ EventDelegateChooser {
         roleValues: [MtxEvent.ImageMessage, MtxEvent.Sticker,]
 
         ImageMessage {
+            required property string userId
+            required property string userName
+
             Layout.fillWidth: true
             Layout.maximumWidth: tempWidth
             containerHeight: timelineView.height
@@ -146,6 +149,9 @@ EventDelegateChooser {
         roleValues: [MtxEvent.FileMessage,]
 
         FileMessage {
+            required property string userId
+            required property string userName
+
             Layout.fillWidth: true
         }
     }
@@ -153,6 +159,9 @@ EventDelegateChooser {
         roleValues: [MtxEvent.VideoMessage, MtxEvent.AudioMessage,]
 
         PlayableMediaMessage {
+            required property string userId
+            required property string userName
+
             Layout.fillWidth: true
         }
     }
@@ -160,6 +169,9 @@ EventDelegateChooser {
         roleValues: [MtxEvent.Encrypted,]
 
         Encrypted {
+            required property string userId
+            required property string userName
+
             Layout.fillWidth: true
         }
     }
@@ -167,6 +179,9 @@ EventDelegateChooser {
         roleValues: [MtxEvent.Encryption,]
 
         EncryptionEnabled {
+            required property string userId
+            required property string userName
+
             Layout.fillWidth: true
         }
     }
