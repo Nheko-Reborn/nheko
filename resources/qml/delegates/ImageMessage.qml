@@ -117,6 +117,7 @@ AbstractButton {
         source: url != "" ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
+        horizontalAlignment: Image.AlignLeft
         smooth: true
         mipmap: true
 
