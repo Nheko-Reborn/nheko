@@ -232,7 +232,7 @@ AbstractButton {
                 userName: r.userName
             }
             */
-            Row {
+            RowLayout {
                 id: metadata
 
                 property int iconSize: Math.floor(fontMetrics.ascent * scaling)
@@ -249,19 +249,17 @@ AbstractButton {
                 visible: !isStateEvent
 
                 StatusIndicator {
-                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    anchors.verticalCenter: ts.verticalCenter
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     eventId: r.eventId
                     height: parent.iconSize
                     status: r.status
                     width: parent.iconSize
                 }
                 Image {
-                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Edited")
                     ToolTip.visible: editHovered.hovered
-                    anchors.verticalCenter: ts.verticalCenter
                     height: parent.iconSize
                     source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((eventId == room.edit) ? palette.highlight : palette.buttonText)
                     sourceSize.height: parent.iconSize * Screen.devicePixelRatio
@@ -275,11 +273,10 @@ AbstractButton {
                     }
                 }
                 ImageButton {
-                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Part of a thread")
                     ToolTip.visible: hovered
-                    anchors.verticalCenter: ts.verticalCenter
                     buttonTextColor: TimelineManager.userColor(threadId, palette.base)
                     height: parent.iconSize
                     image: ":/icons/icons/ui/thread.svg"
@@ -289,8 +286,7 @@ AbstractButton {
                     onClicked: room.thread = threadId
                 }
                 EncryptionIndicator {
-                    Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                    anchors.verticalCenter: ts.verticalCenter
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                     encrypted: isEncrypted
                     height: parent.iconSize
                     sourceSize.height: parent.iconSize * Screen.devicePixelRatio

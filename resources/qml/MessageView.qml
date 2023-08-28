@@ -69,21 +69,23 @@ Item {
 
             required property var day
             required property bool isSender
-            //required property var previousMessageDay
-            //required property bool previousMessageIsStateEvent
-            //required property string previousMessageUserId
             required property int index
             property var previousMessageDay: (index + 1) >= chat.count ? 0 : chat.model.dataByIndex(index + 1, Room.Day)
             property bool previousMessageIsStateEvent: (index + 1) >= chat.count ? true : chat.model.dataByIndex(index + 1, Room.IsStateEvent)
             property string previousMessageUserId: (index + 1) >= chat.count ? "" : chat.model.dataByIndex(index + 1, Room.UserId)
+
             required property date timestamp
             required property string userId
             required property string userName
             required property string threadId
             required property int userPowerlevel
+            required property bool isEdited
+            required property bool isEncrypted
             required property var reactions
+            required property int status
+            required property int trustlevel
 
-            property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) + (wrapper.threadId ? 6 : 0) // align bubble with section header
+            property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
 
             data: [
             Loader {
@@ -107,16 +109,36 @@ Item {
                 visible: status == Loader.Ready
                 z: 4
             }, 
-                GridLayout {
+                RowLayout {
                     id: gridContainer
 
                     width: wrapper.width
                     y: section.visible && section.active ? section.y + section.height : 0
 
+                    Item {
+                        Layout.preferredWidth: wrapper.avatarMargin
+                    }
+
+                    AbstractButton {
+                        ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.text: qsTr("Part of a thread")
+                        ToolTip.visible: hovered
+                        Layout.fillHeight: true
+                        visible: wrapper.threadId
+                        Layout.preferredWidth: 4
+
+                        onClicked: room.thread = wrapper.threadId
+
+                        Rectangle {
+                            id: threadLine
+
+                            anchors.fill: parent
+                            color: TimelineManager.userColor(wrapper.threadId, palette.base)
+                        }
+                    }
                     ColumnLayout {
                         id: contentColumn
                         Layout.fillWidth: true
-                        Layout.leftMargin: wrapper.avatarMargin // align bubble with section header
 
                         AbstractButton {
                             id: replyRow
@@ -177,11 +199,81 @@ Item {
                         ]
                     }
 
-                    Rectangle {
-                        color: 'yellow'
-                        Layout.preferredWidth: 100
-                        Layout.preferredHeight: 20
-                        Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                    RowLayout {
+                        id: metadata
+
+                        property int iconSize: Math.floor(fontMetrics.ascent * scaling)
+                        property double scaling: Settings.bubbles ? 0.75 : 1
+
+                        Layout.alignment: Qt.AlignTop | Qt.AlignRight
+                        Layout.preferredWidth: implicitWidth
+                        spacing: 2
+                        visible: !isStateEvent
+
+                        StatusIndicator {
+                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                            eventId: wrapper.eventId
+                            height: parent.iconSize
+                            status: wrapper.status
+                            width: parent.iconSize
+                        }
+                        Image {
+                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                            ToolTip.delay: Nheko.tooltipDelay
+                            ToolTip.text: qsTr("Edited")
+                            ToolTip.visible: editHovered.hovered
+                            height: parent.iconSize
+                            source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((wrapper.eventId == room.edit) ? palette.highlight : palette.buttonText)
+                            sourceSize.height: parent.iconSize * Screen.devicePixelRatio
+                            sourceSize.width: parent.iconSize * Screen.devicePixelRatio
+                            visible: wrapper.isEdited || wrapper.eventId == room.edit
+                            width: parent.iconSize
+
+                            HoverHandler {
+                                id: editHovered
+
+                            }
+                        }
+                        ImageButton {
+                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                            ToolTip.delay: Nheko.tooltipDelay
+                            ToolTip.text: qsTr("Part of a thread")
+                            ToolTip.visible: hovered
+                            buttonTextColor: TimelineManager.userColor(wrapper.threadId, palette.base)
+                            height: parent.iconSize
+                            image: ":/icons/icons/ui/thread.svg"
+                            visible: wrapper.threadId
+                            width: parent.iconSize
+
+                            onClicked: room.thread = threadId
+                        }
+                        EncryptionIndicator {
+                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                            encrypted: wrapper.isEncrypted
+                            height: parent.iconSize
+                            sourceSize.height: parent.iconSize * Screen.devicePixelRatio
+                            sourceSize.width: parent.iconSize * Screen.devicePixelRatio
+                            trust: wrapper.trustlevel
+                            visible: room.isEncrypted
+                            width: parent.iconSize
+                        }
+                        Label {
+                            id: ts
+
+                            Layout.alignment: Qt.AlignRight | Qt.AlignTop
+                            Layout.preferredWidth: implicitWidth
+                            ToolTip.delay: Nheko.tooltipDelay
+                            ToolTip.text: Qt.formatDateTime(wrapper.timestamp, Qt.DefaultLocaleLongDate)
+                            ToolTip.visible: ma.hovered
+                            color: palette.inactive.text
+                            font.pointSize: fontMetrics.font.pointSize * parent.scaling
+                            text: wrapper.timestamp.toLocaleTimeString(Locale.ShortFormat)
+
+                            HoverHandler {
+                                id: ma
+
+                            }
+                        }
                     }
                 },
 
@@ -214,13 +306,6 @@ Item {
                         top: reactionRow.bottom
                         topMargin: 5
                     }
-                },
-
-                Rectangle {
-                    width: Math.min(contentColumn.implicitWidth, contentColumn.width)
-                    height: contentColumn.implicitHeight
-                    color: "blue"
-                    opacity: 0.2
                 }
             ]
         }
