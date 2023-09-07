@@ -322,7 +322,7 @@ ApplicationWindow {
                     onClicked: {
                         var component = Qt.createComponent("IgnoredUsers.qml")
                         if (component.status == Component.Ready) {
-                            var window = component.createObject(userProfileDialog, {users: profile.getIgnoredUsers(), profile: profile})
+                            var window = component.createObject(userProfileDialog, { profile: profile})
                             window.show()
                             timelineRoot.destroyOnClose(window)
                         } else {

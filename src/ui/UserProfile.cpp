@@ -224,28 +224,10 @@ UserProfile::refreshDevices()
     fetchDeviceList(this->userid_);
 }
 
-QVector<QString>
-UserProfile::getIgnoredUsers()
-{
-    QVector<QString> vec;
-    const std::optional<mtx::events::collections::RoomAccountDataEvents::variant> optEv =
-      cache::client()->getAccountData(mtx::events::EventType::IgnoredUsers);
-    if (optEv) {
-        const auto &ev =
-          std::get<mtx::events::EphemeralEvent<mtx::events::account_data::IgnoredUsers>>(*optEv)
-            .content;
-        for (const mtx::events::account_data::IgnoredUser &user : ev.users) {
-            vec.append(QString::fromStdString(user.id));
-        }
-    }
-
-    return vec;
-}
-
 void
 UserProfile::ignoredStatus(const QString &id, const bool ignore)
 {
-    auto old = this->getIgnoredUsers();
+    auto old = TimelineViewManager::instance()->getIgnoredUsers();
     if (ignore) {
         if (old.contains(id)) {
             emit this->room()->ignoredUser(id, tr("Already ignored"));
@@ -268,9 +250,8 @@ UserProfile::ignoredStatus(const QString &id, const bool ignore)
         if (ignore) {
             emit this->room()->ignoredUser(
               id, e ? std::optional(QString::fromStdString(e->matrix_error.error)) : std::nullopt);
-        } else {
-            emit this->unignoredUser(
-              id, e ? QVariant(QString::fromStdString(e->matrix_error.error)) : QVariant());
+        } else if (e) {
+            emit this->unignoredUserError(id, QString::fromStdString(e->matrix_error.error));
         }
     });
 }

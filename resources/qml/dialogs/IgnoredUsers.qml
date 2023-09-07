@@ -10,7 +10,6 @@ import im.nheko 1.0
 
 Window {
     id: ignoredUsers
-    required property list<string> users
     required property var profile
 
     title: qsTr("Ignored users")
@@ -22,13 +21,9 @@ Window {
 
     Connections {
         target: profile
-        function onUnignoredUser(id, err) {
-            if (err) {
-                const text = qsTr("Failed to unignore \"%1\": %2").arg(id).arg(err)
-                MainWindow.showNotification(text)
-            } else {
-                users = Array.from(users).filter(user => user !== id)
-            }
+        function onUnignoredUserError(id, err) {
+            const text = qsTr("Failed to unignore \"%1\": %2").arg(id).arg(err)
+            MainWindow.showNotification(text)
         }
     }
 
@@ -37,7 +32,7 @@ Window {
         anchors.fill: parent
         spacing: Nheko.paddingMedium
 
-        model: users
+        model: TimelineManager.ignoredUsers
         header: ColumnLayout {
             Text {
                 Layout.fillWidth: true
