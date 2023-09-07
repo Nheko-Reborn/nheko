@@ -84,8 +84,12 @@ Item {
             required property var reactions
             required property int status
             required property int trustlevel
+            required property int type
+            required property bool isEditable
 
             property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
+
+            property alias hovered: messageHover.hovered
 
             data: [
             Loader {
@@ -109,6 +113,19 @@ Item {
                 visible: status == Loader.Ready
                 z: 4
             }, 
+    Rectangle {
+        anchors.fill: gridContainer
+        color: (Settings.messageHoverHighlight && messageHover.hovered) ? palette.alternateBase : "transparent"
+
+        // this looks better without margins
+        TapHandler {
+            acceptedButtons: Qt.RightButton
+            acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
+            gesturePolicy: TapHandler.ReleaseWithinBounds
+
+            onSingleTapped: messageContextMenu.show(wrapper.eventId, wrapper.threadId, wrapper.type, wrapper.isSender, wrapper.isEncrypted, wrapper.isEditable, wrapper.main.hoveredLink, wrapper.main.copyText)
+        }
+    },
                 RowLayout {
                     id: gridContainer
 
@@ -276,7 +293,23 @@ Item {
                         }
                     }
                 },
-
+                Item {
+                    id: messageActionsAnchor
+                    anchors.fill: gridContainer
+                    property alias hovered: messageHover.hovered
+                    HoverHandler {
+                        id: messageHover
+                        onHoveredChanged: () => {
+                            if (!Settings.mobileMode && hovered) {
+                                if (!messageActions.hovered) {
+                                    messageActions.model = wrapper;
+                                    messageActions.attached = wrapper;
+                                    messageActions.anchors.bottomMargin = -gridContainer.y
+                                }
+                            }
+                        }
+                    }
+                },
                 Reactions {
                     id: reactionRow
 
@@ -346,15 +379,15 @@ Item {
 
             property Item attached: null
             // use comma to update on scroll
-            property var attachedPos: chat.contentY, attached ? chat.mapFromItem(attached, attached ? attached.width - width : 0, -height) : null
             property alias model: row.model
 
             hoverEnabled: true
             padding: Nheko.paddingSmall
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
-            x: attached ? attachedPos.x : 0
-            y: attached ? attachedPos.y + Nheko.paddingSmall : 0
             z: 10
+            parent: chat.contentItem
+            anchors.bottom: attached?.top
+            anchors.right: attached?.right
 
             background: Rectangle {
                 border.color: palette.buttonText
