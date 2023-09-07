@@ -2114,8 +2114,7 @@ void
 TimelineModel::handleIgnoredUser(const QString &id, const std::optional<QString> &err)
 {
     if (err) {
-        MainWindow::instance()->showNotification(
-          tr("Failed to ignore \"%1\": %2").arg(id, *err));
+        MainWindow::instance()->showNotification(tr("Failed to ignore \"%1\": %2").arg(id, *err));
     } else {
         this->clearTimeline();
     }
