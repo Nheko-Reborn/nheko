@@ -63,10 +63,7 @@ public:
         return instance_;
     }
 
-    static TimelineViewManager *instance()
-    {
-        return TimelineViewManager::instance_;
-    }
+    static TimelineViewManager *instance() { return TimelineViewManager::instance_; }
 
     QVector<QString> getIgnoredUsers();
 

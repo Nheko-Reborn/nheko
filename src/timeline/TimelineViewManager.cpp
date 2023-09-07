@@ -565,7 +565,9 @@ TimelineViewManager::fixImageRendering(QQuickTextDocument *t, QQuickItem *i)
 
 using IgnoredUsers = mtx::events::EphemeralEvent<mtx::events::account_data::IgnoredUsers>;
 
-static QVector<QString> convertIgnoredToQt(const IgnoredUsers &ev) {
+static QVector<QString>
+convertIgnoredToQt(const IgnoredUsers &ev)
+{
     QVector<QString> users;
     for (const mtx::events::account_data::IgnoredUser &user : ev.content.users) {
         users.push_back(QString::fromStdString(user.id));
@@ -586,14 +588,14 @@ TimelineViewManager::getIgnoredUsers()
 }
 
 void
-TimelineViewManager::processIgnoredUsers(const mtx::responses::AccountData &data) 
+TimelineViewManager::processIgnoredUsers(const mtx::responses::AccountData &data)
 {
     for (const mtx::events::collections::RoomAccountDataEvents::variant &ev : data.events) {
         if (!std::holds_alternative<IgnoredUsers>(ev)) {
             continue;
         }
         const auto &ignoredEv = std::get<IgnoredUsers>(ev);
-        
+
         emit this->ignoredUsersChanged(convertIgnoredToQt(ignoredEv));
         break;
     }
