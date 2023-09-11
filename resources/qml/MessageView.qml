@@ -689,6 +689,12 @@ Item {
                             //anchors.horizontalCenter: parent.horizontalCenter
 
                             powerlevel: userPowerlevel
+                            height: fontMetrics.lineSpacing
+                            width: fontMetrics.lineSpacing
+
+                            sourceSize.width: fontMetrics.lineSpacing
+                            sourceSize.height: fontMetrics.lineSpacing
+
                             permissions: room ? room.permissions : null
                             visible: isAdmin || isModerator
                         }
