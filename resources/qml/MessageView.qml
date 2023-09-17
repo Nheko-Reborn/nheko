@@ -216,6 +216,11 @@ Item {
                         ]
                     }
 
+                    Item {
+                        // spacer to fill width if needed
+                        Layout.fillWidth: true
+                    }
+
                     RowLayout {
                         id: metadata
 

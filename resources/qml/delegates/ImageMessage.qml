@@ -11,6 +11,7 @@ import im.nheko
 AbstractButton {
     required property int type
     required property int originalWidth
+    required property int originalHeight
     required property double proportionalHeight
     required property string url
     required property string blurhash
@@ -21,10 +22,10 @@ AbstractButton {
     required property int containerHeight
     property double divisor: isReply ? 5 : 3
 
-    property int tempWidth: originalWidth < 1? 400: originalWidth
-
-    Layout.preferredWidth: Math.round(tempWidth*Math.min((containerHeight/divisor)/(tempWidth*proportionalHeight), 1))
-    Layout.preferredHeight: width*proportionalHeight
+    //Layout.maximumWidth: originalWidth
+    Layout.maximumHeight: Math.min(originalHeight, containerHeight / divisor)
+    implicitWidth: height/proportionalHeight
+    implicitHeight: Math.min(Layout.maximumHeight, width*proportionalHeight)
     hoverEnabled: true
 
     state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"
