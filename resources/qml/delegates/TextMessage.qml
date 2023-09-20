@@ -44,7 +44,8 @@ MatrixText {
     Layout.maximumHeight: !keepFullText ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
     clip: !keepFullText
     selectByMouse: !Settings.mobileMode && !isReply
-    enabled: !Settings.mobileMode
+    enabled: !Settings.mobileMode && !isReply
+    hoverEnabled: !Settings.mobileMode
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
     NhekoCursorShape {

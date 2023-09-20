@@ -25,7 +25,7 @@ Item {
     // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
     Connections {
         function onHideMenu() {
-            messageContextMenu.close();
+            messageContextMenuC.close();
             replyContextMenu.close();
         }
 
@@ -59,293 +59,9 @@ Item {
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
 
-        delegate: TimelineEvent {
-            id: wrapper
-            ListView.delayRemove: true
-            width: chat.delegateMaxWidth
-            height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight + reactionRow.implicitHeight + unreadRow.height, 10)
-            anchors.horizontalCenter: ListView.view.contentItem.horizontalCenter
-            //room: chatRoot.roommodel
-
-            required property var day
-            required property bool isSender
-            required property int index
-            property var previousMessageDay: (index + 1) >= chat.count ? 0 : chat.model.dataByIndex(index + 1, Room.Day)
-            property bool previousMessageIsStateEvent: (index + 1) >= chat.count ? true : chat.model.dataByIndex(index + 1, Room.IsStateEvent)
-            property string previousMessageUserId: (index + 1) >= chat.count ? "" : chat.model.dataByIndex(index + 1, Room.UserId)
-
-            required property date timestamp
-            required property string userId
-            required property string userName
-            required property string threadId
-            required property int userPowerlevel
-            required property bool isEdited
-            required property bool isEncrypted
-            required property var reactions
-            required property int status
-            required property int trustlevel
-            required property int type
-            required property bool isEditable
-
-            property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
-
-            property alias hovered: messageHover.hovered
-
-            data: [
-            Loader {
-                id: section
-
-                property var day: wrapper.day
-                property bool isSender: wrapper.isSender
-                property bool isStateEvent: wrapper.isStateEvent
-                property int parentWidth: wrapper.width
-                property var previousMessageDay: wrapper.previousMessageDay
-                property bool previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
-                property string previousMessageUserId: wrapper.previousMessageUserId
-                property date timestamp: wrapper.timestamp
-                property string userId: wrapper.userId
-                property string userName: wrapper.userName
-                property string userPowerlevel: wrapper.userPowerlevel
-
-                active: previousMessageUserId !== userId || previousMessageDay !== day || previousMessageIsStateEvent !== isStateEvent
-                //asynchronous: true
-                sourceComponent: sectionHeader
-                visible: status == Loader.Ready
-                z: 4
-            }, 
-    Rectangle {
-        anchors.fill: gridContainer
-        color: (Settings.messageHoverHighlight && messageHover.hovered) ? palette.alternateBase : "transparent"
-
-        // this looks better without margins
-        TapHandler {
-            acceptedButtons: Qt.RightButton
-            acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
-            gesturePolicy: TapHandler.ReleaseWithinBounds
-
-            onSingleTapped: messageContextMenu.show(wrapper.eventId, wrapper.threadId, wrapper.type, wrapper.isSender, wrapper.isEncrypted, wrapper.isEditable, wrapper.main.hoveredLink, wrapper.main.copyText)
-        }
-    },
-                RowLayout {
-                    id: gridContainer
-
-                    width: wrapper.width
-                    y: section.visible && section.active ? section.y + section.height : 0
-
-                    Item {
-                        Layout.preferredWidth: wrapper.avatarMargin
-                    }
-
-                    AbstractButton {
-                        ToolTip.delay: Nheko.tooltipDelay
-                        ToolTip.text: qsTr("Part of a thread")
-                        ToolTip.visible: hovered
-                        Layout.fillHeight: true
-                        visible: wrapper.threadId
-                        Layout.preferredWidth: 4
-
-                        onClicked: room.thread = wrapper.threadId
-
-                        Rectangle {
-                            id: threadLine
-
-                            anchors.fill: parent
-                            color: TimelineManager.userColor(wrapper.threadId, palette.base)
-                        }
-                    }
-                    ColumnLayout {
-                        id: contentColumn
-                        Layout.fillWidth: true
-
-                        AbstractButton {
-                            id: replyRow
-                            visible: wrapper.reply
-                            Layout.fillWidth: true
-                            Layout.maximumHeight: timelineView.height / 8
-                            Layout.preferredWidth: replyRowLay.implicitWidth
-                            Layout.preferredHeight: replyRowLay.implicitHeight
-
-                            property color userColor: TimelineManager.userColor(wrapper.reply?.userId ?? '', palette.base)
-
-                            clip: true
-
-                            contentItem: RowLayout {
-                                id: replyRowLay
-
-                                anchors.fill: parent
-
-
-                                Rectangle {
-                                    id: replyLine
-                                    Layout.fillHeight: true
-                                    color: replyRow.userColor
-                                    Layout.preferredWidth: 4
-                                }
-
-                                ColumnLayout {
-                                    spacing: 0
-
-                                    AbstractButton {
-                                        id: replyUserButton
-                                        Layout.fillWidth: true
-                                        contentItem: ElidedLabel {
-                                            id: userName_
-                                            fullText: wrapper.reply?.userName ?? ''
-                                            color: replyRow.userColor
-                                            textFormat: Text.RichText
-                                            width: parent.width
-                                            elideWidth: width
-                                        }
-                                        onClicked: room.openUserProfile(wrapper.reply?.userId)
-                                    }
-                                    data: [
-                                        replyUserButton,
-                                        wrapper.reply,
-                                    ]
-                                }
-                            }
-
-                            background: Rectangle {
-                                width: replyRow.implicitContentWidth
-                                color: Qt.tint(palette.base, Qt.hsla(replyRow.userColor.hslHue, 0.5, replyRow.userColor.hslLightness, 0.1))
-                            }
-                        }
-
-                        data: [
-                            replyRow, wrapper.main,
-                        ]
-                    }
-
-                    Item {
-                        // spacer to fill width if needed
-                        Layout.fillWidth: true
-                    }
-
-                    RowLayout {
-                        id: metadata
-
-                        property int iconSize: Math.floor(fontMetrics.ascent * scaling)
-                        property double scaling: Settings.bubbles ? 0.75 : 1
-
-                        Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                        Layout.preferredWidth: implicitWidth
-                        spacing: 2
-                        visible: !isStateEvent
-
-                        StatusIndicator {
-                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                            eventId: wrapper.eventId
-                            height: parent.iconSize
-                            status: wrapper.status
-                            width: parent.iconSize
-                        }
-                        Image {
-                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                            ToolTip.delay: Nheko.tooltipDelay
-                            ToolTip.text: qsTr("Edited")
-                            ToolTip.visible: editHovered.hovered
-                            height: parent.iconSize
-                            source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((wrapper.eventId == room.edit) ? palette.highlight : palette.buttonText)
-                            sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-                            sourceSize.width: parent.iconSize * Screen.devicePixelRatio
-                            visible: wrapper.isEdited || wrapper.eventId == room.edit
-                            width: parent.iconSize
-
-                            HoverHandler {
-                                id: editHovered
-
-                            }
-                        }
-                        ImageButton {
-                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                            ToolTip.delay: Nheko.tooltipDelay
-                            ToolTip.text: qsTr("Part of a thread")
-                            ToolTip.visible: hovered
-                            buttonTextColor: TimelineManager.userColor(wrapper.threadId, palette.base)
-                            height: parent.iconSize
-                            image: ":/icons/icons/ui/thread.svg"
-                            visible: wrapper.threadId
-                            width: parent.iconSize
-
-                            onClicked: room.thread = threadId
-                        }
-                        EncryptionIndicator {
-                            Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                            encrypted: wrapper.isEncrypted
-                            height: parent.iconSize
-                            sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-                            sourceSize.width: parent.iconSize * Screen.devicePixelRatio
-                            trust: wrapper.trustlevel
-                            visible: room.isEncrypted
-                            width: parent.iconSize
-                        }
-                        Label {
-                            id: ts
-
-                            Layout.alignment: Qt.AlignRight | Qt.AlignTop
-                            Layout.preferredWidth: implicitWidth
-                            ToolTip.delay: Nheko.tooltipDelay
-                            ToolTip.text: Qt.formatDateTime(wrapper.timestamp, Qt.DefaultLocaleLongDate)
-                            ToolTip.visible: ma.hovered
-                            color: palette.inactive.text
-                            font.pointSize: fontMetrics.font.pointSize * parent.scaling
-                            text: wrapper.timestamp.toLocaleTimeString(Locale.ShortFormat)
-
-                            HoverHandler {
-                                id: ma
-
-                            }
-                        }
-                    }
-                },
-                Item {
-                    id: messageActionsAnchor
-                    anchors.fill: gridContainer
-                    property alias hovered: messageHover.hovered
-                    HoverHandler {
-                        id: messageHover
-                        onHoveredChanged: () => {
-                            if (!Settings.mobileMode && hovered) {
-                                if (!messageActions.hovered) {
-                                    messageActions.model = wrapper;
-                                    messageActions.attached = wrapper;
-                                    messageActions.anchors.bottomMargin = -gridContainer.y
-                                }
-                            }
-                        }
-                    }
-                },
-                Reactions {
-                    id: reactionRow
-
-                    eventId: wrapper.eventId
-                    layoutDirection: row.bubbleOnRight ? Qt.RightToLeft : Qt.LeftToRight
-                    reactions: wrapper.reactions
-                    width: wrapper.width - wrapper.avatarMargin
-                    x: wrapper.avatarMargin
-
-                    anchors {
-                        //left: row.bubbleOnRight ? undefined : row.left
-                        //right: row.bubbleOnRight ? row.right : undefined
-                        top: gridContainer.bottom
-                        topMargin: -4
-                    }
-                },
-                Rectangle {
-                    id: unreadRow
-
-                    color: palette.highlight
-                    height: visible ? 3 : 0
-                    visible: (wrapper.index > 0 && (room.fullyReadEventId == wrapper.eventId))
-
-                    anchors {
-                        left: parent.left
-                        right: parent.right
-                        top: reactionRow.bottom
-                        topMargin: 5
-                    }
-                }
-            ]
+        delegate: TimelineDefaultMessageStyle {
+            messageActions: messageActionsC
+            messageContextMenu: messageContextMenuC
         }
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -380,7 +96,7 @@ Item {
             source: room
         }
         Control {
-            id: messageActions
+            id: messageActionsC
 
             property Item attached: null
             // use comma to update on scroll
@@ -405,7 +121,7 @@ Item {
 
                 property var model
 
-                spacing: messageActions.padding
+                spacing: messageActionsC.padding
 
                 Repeater {
                     model: Settings.recentReactions
@@ -542,7 +258,7 @@ Item {
                     image: ":/icons/icons/ui/options.svg"
                     width: 16
 
-                    onClicked: messageContextMenu.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
+                    onClicked: messageContextMenuC.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
             }
         }
@@ -624,152 +340,9 @@ Item {
                     room.setCurrentIndex(room.currentIndex);
             }
         }
-        Component {
-            id: sectionHeader
-
-            Column {
-                bottomPadding: Settings.bubbles ? (isSender && previousMessageDay == day ? 0 : 2) : 3
-                spacing: 8
-                topPadding: userName_.visible ? 4 : 0
-                visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
-                width: parentWidth
-
-                Label {
-                    id: dateBubble
-
-                    anchors.horizontalCenter: parent ? parent.horizontalCenter : undefined
-                    color: palette.text
-                    height: Math.round(fontMetrics.height * 1.4)
-                    horizontalAlignment: Text.AlignHCenter
-                    text: room ? room.formatDateSeparator(timestamp) : ""
-                    verticalAlignment: Text.AlignVCenter
-                    visible: room && previousMessageDay !== day
-                    width: contentWidth * 1.2
-
-                    background: Rectangle {
-                        color: palette.window
-                        radius: parent.height / 2
-                    }
-                }
-                Row {
-                    id: userInfo
-
-                    property int remainingWidth: chat.delegateMaxWidth - spacing - messageUserAvatar.width
-
-                    height: userName_.height
-                    spacing: 8
-                    visible: !isStateEvent && (!isSender || !Settings.bubbles)
-
-                    Avatar {
-                        id: messageUserAvatar
-
-                        ToolTip.delay: Nheko.tooltipDelay
-                        ToolTip.text: userid
-                        ToolTip.visible: messageUserAvatar.hovered
-                        displayName: userName
-                        height: Nheko.avatarSize * (Settings.smallAvatars ? 0.5 : 1)
-                        url: !room ? "" : room.avatarUrl(userId).replace("mxc://", "image://MxcImage/")
-                        userid: userId
-                        width: Nheko.avatarSize * (Settings.smallAvatars ? 0.5 : 1)
-
-                        onClicked: room.openUserProfile(userId)
-                    }
-                    Connections {
-                        function onRoomAvatarUrlChanged() {
-                            messageUserAvatar.url = room.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
-                        }
-                        function onScrollToIndex(index) {
-                            chat.positionViewAtIndex(index, ListView.Center);
-                        }
-
-                        target: room
-                    }
-
-                    AbstractButton {
-                        id: userNameButton
-
-                        PowerlevelIndicator {
-                            id: powerlevelIndicator
-                            anchors.left: parent.left
-                            //anchors.horizontalCenter: parent.horizontalCenter
-
-                            powerlevel: userPowerlevel
-                            height: fontMetrics.lineSpacing
-                            width: fontMetrics.lineSpacing
-
-                            sourceSize.width: fontMetrics.lineSpacing
-                            sourceSize.height: fontMetrics.lineSpacing
-
-                            permissions: room ? room.permissions : null
-                            visible: isAdmin || isModerator
-                        }
-
-                        ToolTip.delay: Nheko.tooltipDelay
-                        ToolTip.text: userId
-                        ToolTip.visible: hovered
-                        leftPadding: powerlevelIndicator.visible ? 16 : 0
-                        leftInset: 0
-                        rightInset: 0
-                        rightPadding: 0
-
-                        contentItem: Label {
-                            id: userName_
-
-                            color: TimelineManager.userColor(userId, palette.base)
-                            text: TimelineManager.escapeEmoji(userNameTextMetrics.elidedText)
-                            textFormat: Text.RichText
-                        }
-
-                        onClicked: room.openUserProfile(userId)
-
-                        TextMetrics {
-                            id: userNameTextMetrics
-
-                            elide: Text.ElideRight
-                            elideWidth: userInfo.remainingWidth - Math.min(statusMsg.implicitWidth, userInfo.remainingWidth / 3)
-                            text: userName
-                        }
-                        NhekoCursorShape {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                    }
-                    Label {
-                        id: statusMsg
-
-                        property string userStatus: Presence.userStatus(userId)
-
-                        ToolTip.delay: Nheko.tooltipDelay
-                        ToolTip.text: qsTr("%1's status message").arg(userName)
-                        ToolTip.visible: statusMsgHoverHandler.hovered
-                        anchors.baseline: userNameButton.baseline
-                        color: palette.buttonText
-                        elide: Text.ElideRight
-                        font.italic: true
-                        font.pointSize: Math.floor(fontMetrics.font.pointSize * 0.8)
-                        text: userStatus.replace(/\n/g, " ")
-                        textFormat: Text.PlainText
-                        width: Math.min(implicitWidth, userInfo.remainingWidth - userName_.width - parent.spacing)
-
-                        HoverHandler {
-                            id: statusMsgHoverHandler
-
-                        }
-                        Connections {
-                            function onPresenceChanged(id) {
-                                if (id == userId)
-                                    statusMsg.userStatus = Presence.userStatus(userId);
-                            }
-
-                            target: Presence
-                        }
-                    }
-                }
-            }
-        }
     }
     Platform.Menu {
-        id: messageContextMenu
+        id: messageContextMenuC
 
         property string eventId
         property int eventType
@@ -824,22 +397,22 @@ Item {
 
             onTriggered: function () {
                 topBar.searchString = "";
-                room.showEvent(messageContextMenu.eventId);
+                room.showEvent(messageContextMenuC.eventId);
             }
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("&Copy")
-            visible: messageContextMenu.text
+            visible: messageContextMenuC.text
 
-            onTriggered: Clipboard.text = messageContextMenu.text
+            onTriggered: Clipboard.text = messageContextMenuC.text
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("Copy &link location")
-            visible: messageContextMenu.link
+            visible: messageContextMenuC.link
 
-            onTriggered: Clipboard.text = messageContextMenu.link
+            onTriggered: Clipboard.text = messageContextMenuC.link
         }
         Platform.MenuItem {
             id: reactionOption
@@ -848,7 +421,7 @@ Item {
             visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
 
             onTriggered: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(null, room.roomId, function (plaintext, markdown) {
-                    room.input.reaction(messageContextMenu.eventId, plaintext);
+                    room.input.reaction(messageContextMenuC.eventId, plaintext);
                     TimelineManager.focusMessageInput();
                 })
         }
@@ -856,41 +429,41 @@ Item {
             text: qsTr("Repl&y")
             visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
 
-            onTriggered: room.reply = (messageContextMenu.eventId)
+            onTriggered: room.reply = (messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("&Edit")
-            visible: messageContextMenu.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
+            visible: messageContextMenuC.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
 
-            onTriggered: room.edit = (messageContextMenu.eventId)
+            onTriggered: room.edit = (messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("&Thread")
             visible: (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
 
-            onTriggered: room.thread = (messageContextMenu.threadId || messageContextMenu.eventId)
+            onTriggered: room.thread = (messageContextMenuC.threadId || messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             enabled: visible
-            text: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
+            text: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
             visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
 
-            onTriggered: visible && room.pinnedMessages.includes(messageContextMenu.eventId) ? room.unpin(messageContextMenu.eventId) : room.pin(messageContextMenu.eventId)
+            onTriggered: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? room.unpin(messageContextMenuC.eventId) : room.pin(messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             text: qsTr("&Read receipts")
 
-            onTriggered: room.showReadReceipts(messageContextMenu.eventId)
+            onTriggered: room.showReadReceipts(messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             text: qsTr("&Forward")
-            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker || messageContextMenu.eventType == MtxEvent.TextMessage || messageContextMenu.eventType == MtxEvent.LocationMessage || messageContextMenu.eventType == MtxEvent.EmoteMessage || messageContextMenu.eventType == MtxEvent.NoticeMessage
+            visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker || messageContextMenuC.eventType == MtxEvent.TextMessage || messageContextMenuC.eventType == MtxEvent.LocationMessage || messageContextMenuC.eventType == MtxEvent.EmoteMessage || messageContextMenuC.eventType == MtxEvent.NoticeMessage
 
             onTriggered: {
                 var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
-                forwardMess.setMessageEventId(messageContextMenu.eventId);
+                forwardMess.setMessageEventId(messageContextMenuC.eventId);
                 forwardMess.open();
                 timelineRoot.destroyOnClose(forwardMess);
             }
@@ -901,23 +474,23 @@ Item {
         Platform.MenuItem {
             text: qsTr("View raw message")
 
-            onTriggered: room.viewRawMessage(messageContextMenu.eventId)
+            onTriggered: room.viewRawMessage(messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("View decrypted raw message")
             // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
-            visible: messageContextMenu.isEncrypted
+            visible: messageContextMenuC.isEncrypted
 
-            onTriggered: room.viewDecryptedRawMessage(messageContextMenu.eventId)
+            onTriggered: room.viewDecryptedRawMessage(messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             text: qsTr("Remo&ve message")
-            visible: (room ? room.permissions.canRedact() : false) || messageContextMenu.isSender
+            visible: (room ? room.permissions.canRedact() : false) || messageContextMenuC.isSender
 
             onTriggered: function () {
                 var dialog = removeReason.createObject(timelineRoot);
-                dialog.eventId = messageContextMenu.eventId;
+                dialog.eventId = messageContextMenuC.eventId;
                 dialog.show();
                 dialog.forceActiveFocus();
                 timelineRoot.destroyOnClose(dialog);
@@ -926,23 +499,23 @@ Item {
         Platform.MenuItem {
             enabled: visible
             text: qsTr("&Save as")
-            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+            visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
 
-            onTriggered: room.saveMedia(messageContextMenu.eventId)
+            onTriggered: room.saveMedia(messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("&Open in external program")
-            visible: messageContextMenu.eventType == MtxEvent.ImageMessage || messageContextMenu.eventType == MtxEvent.VideoMessage || messageContextMenu.eventType == MtxEvent.AudioMessage || messageContextMenu.eventType == MtxEvent.FileMessage || messageContextMenu.eventType == MtxEvent.Sticker
+            visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
 
-            onTriggered: room.openMedia(messageContextMenu.eventId)
+            onTriggered: room.openMedia(messageContextMenuC.eventId)
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("Copy link to eve&nt")
-            visible: messageContextMenu.eventId
+            visible: messageContextMenuC.eventId
 
-            onTriggered: room.copyLinkToEvent(messageContextMenu.eventId)
+            onTriggered: room.copyLinkToEvent(messageContextMenuC.eventId)
         }
     }
     Component {

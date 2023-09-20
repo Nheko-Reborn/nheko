@@ -701,6 +701,8 @@ set(QML_SOURCES
         resources/qml/ChatPage.qml
         resources/qml/CommunitiesList.qml
         resources/qml/RoomList.qml
+				resources/qml/TimelineSectionHeader.qml
+				resources/qml/TimelineDefaultMessageStyle.qml
         resources/qml/TimelineView.qml
         resources/qml/Avatar.qml
         resources/qml/Completer.qml

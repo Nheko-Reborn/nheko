@@ -130,21 +130,23 @@ AbstractButton {
         id: mxcimage
 
         visible: loaded
-        anchors.fill: parent
         roomm: room
         play: !Settings.animateImagesOnHover || parent.hovered
         eventId: parent.eventId
+        width: parent.implicitWidth
+        height: parent.implicitHeight
     }
 
     Image {
         id: blurhash_
 
-        anchors.fill: parent
         source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + palette.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
-        sourceSize.width: parent.width * Screen.devicePixelRatio
-        sourceSize.height: parent.height * Screen.devicePixelRatio
+        sourceSize.width: parent.implicitWidth * Screen.devicePixelRatio
+        sourceSize.height: parent.implicitHeight * Screen.devicePixelRatio
+        width: parent.implicitWidth
+        height: parent.implicitHeight
     }
 
     onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
@@ -152,7 +154,8 @@ AbstractButton {
     Item {
         id: overlay
 
-        anchors.fill: parent
+        width: parent.implicitWidth
+        height: parent.implicitHeight
         visible: parent.hovered
 
         Rectangle {
