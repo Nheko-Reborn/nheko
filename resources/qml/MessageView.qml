@@ -62,6 +62,7 @@ Item {
         delegate: TimelineDefaultMessageStyle {
             messageActions: messageActionsC
             messageContextMenu: messageContextMenuC
+            scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
         }
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter

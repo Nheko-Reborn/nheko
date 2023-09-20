@@ -39,6 +39,7 @@ TimelineEvent {
     required property var reactions
     required property int status
     required property int trustlevel
+    required property int notificationlevel
     required property int type
     required property bool isEditable
 
@@ -48,6 +49,7 @@ TimelineEvent {
     property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
 
     property alias hovered: messageHover.hovered
+    property bool scrolledToThis: false
 
     data: [
         Loader {
@@ -83,6 +85,59 @@ TimelineEvent {
 
                 onSingleTapped: messageContextMenu.show(wrapper.eventId, wrapper.threadId, wrapper.type, wrapper.isSender, wrapper.isEncrypted, wrapper.isEditable, wrapper.main.hoveredLink, wrapper.main.copyText)
             }
+        },
+        Rectangle {
+            id: scrollHighlight
+            anchors.fill: gridContainer
+
+            color: palette.highlight
+            enabled: false
+            opacity: 0
+            visible: true
+            z: 1
+
+            states: State {
+                name: "revealed"
+                when: wrapper.scrolledToThis
+            }
+            transitions: Transition {
+                from: ""
+                to: "revealed"
+
+                SequentialAnimation {
+                    PropertyAnimation {
+                        duration: 500
+                        easing.type: Easing.InOutQuad
+                        from: 0
+                        properties: "opacity"
+                        target: scrollHighlight
+                        to: 1
+                    }
+                    PropertyAnimation {
+                        duration: 500
+                        easing.type: Easing.InOutQuad
+                        from: 1
+                        properties: "opacity"
+                        target: scrollHighlight
+                        to: 0
+                    }
+                    ScriptAction {
+                        script: wrapper.room.eventShown()
+                    }
+                }
+            }
+        },
+        Rectangle {
+            anchors.top: gridContainer.top
+            anchors.left: gridContainer.left 
+            anchors.topMargin: -2
+            anchors.leftMargin: wrapper.avatarMargin + 2
+            color: "transparent"
+            border.color: Nheko.theme.red
+            border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
+            radius: 4
+            height: contentColumn.implicitHeight + 4
+            width: contentColumn.implicitWidth + 4
         },
         RowLayout {
             id: gridContainer
