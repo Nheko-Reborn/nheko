@@ -117,6 +117,7 @@ build-tw:
         "cmake(Qt6Svg)"
         "cmake(Qt6Widgets)"
         "cmake(Qt6Gui)"
+        "cmake(Qt6HttpServer)"
         "pkgconfig(libcurl)"
         "pkgconfig(libevent)"
         "pkgconfig(gstreamer-webrtc-1.0)"

@@ -2,9 +2,11 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#include "httplib.h"
+// #include "httplib.h"
 
+#include <QHttpServer>
 #include <QObject>
+
 #include <string>
 
 class SSOHandler final : public QObject
@@ -23,6 +25,6 @@ signals:
     void ssoFailed();
 
 private:
-    httplib::Server svr;
+    QHttpServer *server;
     int port = 0;
 };

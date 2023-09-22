@@ -4,50 +4,33 @@
 
 #include "SSOHandler.h"
 
+#include <QHttpServerResponse>
 #include <QTimer>
 
-#include <thread>
-
-#include "Logging.h"
-
 SSOHandler::SSOHandler(QObject *)
+  : server{new QHttpServer}
 {
     QTimer::singleShot(120000, this, &SSOHandler::ssoFailed);
 
-    using namespace httplib;
-
-    svr.set_logger([](const Request &req, const Response &res) {
-        nhlog::net()->info("req: {}, res: {}", req.path, res.status);
-    });
-
-    svr.Get("/sso", [this](const Request &req, Response &res) {
-        if (req.has_param("loginToken")) {
-            auto val = req.get_param_value("loginToken");
-            res.set_content("SSO success", "text/plain");
-            emit ssoSuccess(val);
+    server->route("/sso", [this](const QHttpServerRequest &req) {
+        if (req.query().hasQueryItem(QStringLiteral("loginToken"))) {
+            emit ssoSuccess(req.query().queryItemValue(QStringLiteral("loginToken")).toStdString());
+            return tr("SSO success");
         } else {
-            res.set_content("Missing loginToken for SSO login!", "text/plain");
             emit ssoFailed();
+            return tr("Missing loginToken for SSO login!");
         }
     });
-
-    std::thread t([this]() {
-        this->port = svr.bind_to_any_port("localhost");
-        svr.listen_after_bind();
-    });
-    t.detach();
-
-    while (!svr.is_running()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    }
+    server->listen();
+    if (server->serverPorts().size() > 0)
+        this->port = server->serverPorts().first();
 }
 
 SSOHandler::~SSOHandler()
 {
-    svr.stop();
-    while (svr.is_running()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    }
+    // work around capturing a member of a deleted object
+    auto s = server;
+    QTimer::singleShot(1000, [s] { s->deleteLater(); });
 }
 
 std::string
