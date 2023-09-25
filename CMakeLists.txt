@@ -396,7 +396,9 @@ set(SRC_FILES
 	src/ui/RoomSettings.cpp
 	src/ui/RoomSettings.h
 	src/ui/RoomSummary.cpp
-	src/ui/RoomSummary.h
+        src/ui/RoomSummary.h
+        src/ui/ShortcutRegistry.cpp
+        src/ui/ShortcutRegistry.h
 	src/ui/Theme.cpp
 	src/ui/Theme.h
 	src/ui/UIA.cpp
@@ -810,7 +812,7 @@ qt_add_qml_module(nheko
 	${QML_SOURCES}
 	SOURCES
 	src/UserDirectoryModel.cpp
-	src/UserDirectoryModel.h
+        src/UserDirectoryModel.h
 	)
 	#qt_target_qml_sources(nheko
 	#	#PREFIX "/"

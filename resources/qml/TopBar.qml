@@ -395,6 +395,7 @@ Pane {
 
         onActivated: searchButton.searchActive = !searchButton.searchActive
     }
+
     TapHandler {
         gesturePolicy: TapHandler.ReleaseWithinBounds
 

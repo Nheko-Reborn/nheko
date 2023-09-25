@@ -111,8 +111,16 @@ Pane {
 
         onActivated: Qt.quit()
     }
+
+    EditableShortcut {
+        id: quickSwitcherShortcut
+
+        name: qsTr("Room search")
+        description: qsTr("Opens a search bar for quick switching between rooms")
+        shortcut: "Ctrl+K"
+    }
     Shortcut {
-        sequence: "Ctrl+K"
+        sequence: quickSwitcherShortcut.shortcut
 
         onActivated: {
             var component = Qt.createComponent("qrc:/resources/qml/QuickSwitcher.qml");
@@ -125,19 +133,43 @@ Pane {
             }
         }
     }
-    Shortcut {
+
+    EditableShortcut {
+        id: nextRoomWithActivityShortcut
+
+        name: qsTr("Next room with activity")
+        description: qsTr("Switches to the next unread room in the roomlist")
         // Add alternative shortcut, because sometimes Alt+A is stolen by the TextEdit
-        sequences: ["Alt+A", "Ctrl+Shift+A"]
+        shortcuts: ["Alt+A", "Ctrl+Shift+A"]
+    }
+    Shortcut {
+        sequences: nextRoomWithActivityShortcut.shortcuts
 
         onActivated: Rooms.nextRoomWithActivity()
     }
+
+    EditableShortcut {
+        id: nextRoomShortcut
+
+        name: qsTr("Next room")
+        description: qsTr("Switches to the room below the room that is currently open")
+        shortcut: "Ctrl+Down"
+    }
     Shortcut {
-        sequence: "Ctrl+Down"
+        sequence: nextRoomShortcut.shortcut
 
         onActivated: Rooms.nextRoom()
     }
+
+    EditableShortcut {
+        id: previousRoomShortcut
+
+        name: qsTr("Previous room")
+        description: qsTr("Switches to the room above the room that is currently open")
+        shortcut: "Ctrl+Up"
+    }
     Shortcut {
-        sequence: "Ctrl+Up"
+        sequence: previousRoomShortcut.shortcut
 
         onActivated: Rooms.previousRoom()
     }
