@@ -1145,6 +1145,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Periodically update community routing information");
         case ExpireEvents:
             return tr("Periodically delete expired events");
+        case KeyboardShortcuts:
+            return tr("Configure keyboard shortcuts");
         }
     } else if (role == Value) {
         switch (index.row()) {
@@ -1444,6 +1446,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case LoginInfoSection:
         case SessionKeys:
         case CrossSigningSecrets:
+        case KeyboardShortcuts:
             return {};
         case OnlineBackupKey:
             return tr(
@@ -1562,6 +1565,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case UserSigningKey:
         case MasterKey:
             return KeyStatus;
+        case KeyboardShortcuts:
+            return ConfigureKeyboardShortcuts;
         }
     } else if (role == ValueLowerBound) {
         switch (index.row()) {

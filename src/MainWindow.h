@@ -11,6 +11,7 @@
 #include <QSharedPointer>
 #include <QSystemTrayIcon>
 
+#include "ShortcutRegistry.h"
 #include "UserSettingsPage.h"
 #include "dock/Dock.h"
 
@@ -140,6 +141,7 @@ private:
     //! Tray icon that shows the unread message count.
     TrayIcon *trayIcon_;
     Dock *dock_;
+    ShortcutRegistry *shortcuts_;
 
     MxcImageProvider *imgProvider = nullptr;
 

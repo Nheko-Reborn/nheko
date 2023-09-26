@@ -1,7 +1,11 @@
+// SPDX-FileCopyrightText: Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #pragma once
 
 #include <QAbstractListModel>
-#include <QAction>
+#include <QKeySequence>
 #include <QQmlEngine>
 
 class EditableShortcut : public QObject
@@ -10,15 +14,15 @@ class EditableShortcut : public QObject
     QML_ELEMENT
 
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged FINAL)
-    Q_PROPERTY(QString description READ description WRITE setDescription NOTIFY descriptionChanged FINAL)
+    Q_PROPERTY(
+      QString description READ description WRITE setDescription NOTIFY descriptionChanged FINAL)
     Q_PROPERTY(QString shortcut READ shortcut WRITE setShortcut NOTIFY shortcutsChanged FINAL)
-    Q_PROPERTY(QStringList shortcuts READ shortcuts WRITE setShortcuts NOTIFY shortcutsChanged FINAL)
+    Q_PROPERTY(
+      QStringList shortcuts READ shortcuts WRITE setShortcuts NOTIFY shortcutsChanged FINAL)
 
 public:
     EditableShortcut(QObject *parent = nullptr);
     EditableShortcut(const QString &name, const QString &description, QObject *parent = nullptr);
-    EditableShortcut(const QString &name, const QString &description, const QString &text, QObject *parent = nullptr);
-    EditableShortcut(const QString &name, const QString &description, const QIcon &icon, const QString &text, QObject *parent = nullptr);
 
     const QString &name() const { return m_name; }
     const QString &description() const { return m_description; }
@@ -58,20 +62,19 @@ public:
         Shortcut,
     };
 
+    explicit ShortcutRegistry(QObject *parent = nullptr);
+
     static ShortcutRegistry *instance();
     static ShortcutRegistry *create(QQmlEngine *qmlEngine, QJSEngine *);
 
     QHash<int, QByteArray> roleNames() const override;
-    int rowCount(const QModelIndex & = QModelIndex()) const override
-    {
-        return m_shortcuts.size();
-    }
+    int rowCount(const QModelIndex & = QModelIndex()) const override { return m_shortcuts.size(); }
     QVariant data(const QModelIndex &index, int role) const override;
-    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+
+    Q_INVOKABLE void changeShortcut(const QString &name, const QString &newShortcut);
+    Q_INVOKABLE QString keycodeToChar(int keycode) const;
 
 private:
-    explicit ShortcutRegistry(QObject *parent = nullptr);
-
     void registerShortcut(EditableShortcut *action);
 
     static ShortcutRegistry *s_instance;

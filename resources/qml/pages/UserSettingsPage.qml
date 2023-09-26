@@ -5,6 +5,7 @@
 pragma ComponentBehavior: Bound
 import ".."
 import "../ui"
+import "../dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.15
@@ -212,6 +213,23 @@ Rectangle {
                                 Button {
                                     text: qsTr("REQUEST")
                                     onClicked: UserSettingsModel.requestCrossSigningSecrets()
+                                }
+                            }
+                        }
+                        DelegateChoice {
+                            roleValue: UserSettingsModel.ConfigureKeyboardShortcuts
+                            Button {
+                                text: qsTr("CONFIGURE")
+                                onClicked: {
+                                    var dialog = keyboardShortcutsDialog.createObject();
+                                    dialog.show();
+                                    destroyOnClose(dialog);
+                                }
+
+                                Component {
+                                    id: keyboardShortcutsDialog
+
+                                    ShortcutEditor {}
                                 }
                             }
                         }

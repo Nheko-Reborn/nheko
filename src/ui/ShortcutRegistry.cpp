@@ -1,13 +1,27 @@
+// SPDX-FileCopyrightText: Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 #include "ShortcutRegistry.h"
 
 ShortcutRegistry *ShortcutRegistry::s_instance = nullptr;
 
 EditableShortcut::EditableShortcut(QObject *parent)
-    : QObject{parent}
+  : QObject{parent}
 {
+    ShortcutRegistry::instance()->registerShortcut(this);
 }
 
-const QStringList EditableShortcut::shortcuts() const
+EditableShortcut::EditableShortcut(const QString &name, const QString &description, QObject *parent)
+  : QObject{parent}
+  , m_name{name}
+  , m_description{description}
+{
+    ShortcutRegistry::instance()->registerShortcut(this);
+}
+
+const QStringList
+EditableShortcut::shortcuts() const
 {
     QStringList dest;
     dest.resize(m_shortcuts.size());
@@ -17,7 +31,8 @@ const QStringList EditableShortcut::shortcuts() const
     return dest;
 }
 
-void EditableShortcut::setName(const QString &name)
+void
+EditableShortcut::setName(const QString &name)
 {
     if (name == m_name)
         return;
@@ -25,7 +40,8 @@ void EditableShortcut::setName(const QString &name)
     emit nameChanged();
 }
 
-void EditableShortcut::setDescription(const QString &description)
+void
+EditableShortcut::setDescription(const QString &description)
 {
     if (description == m_description)
         return;
@@ -33,12 +49,14 @@ void EditableShortcut::setDescription(const QString &description)
     emit descriptionChanged();
 }
 
-void EditableShortcut::setShortcut(const QString &shortcut)
+void
+EditableShortcut::setShortcut(const QString &shortcut)
 {
     setShortcuts({shortcut});
 }
 
-void EditableShortcut::setShortcuts(const QStringList &shortcuts)
+void
+EditableShortcut::setShortcuts(const QStringList &shortcuts)
 {
     QList<QKeySequence> temp;
     temp.resize(shortcuts.size());
@@ -52,12 +70,13 @@ void EditableShortcut::setShortcuts(const QStringList &shortcuts)
     emit shortcutsChanged();
 }
 
-EditableShortcut::EditableShortcut(const QString &name, const QString &description, QObject *parent)
-  : QObject{parent}
-  , m_name{name}
-  , m_description{description}
+ShortcutRegistry::ShortcutRegistry(QObject *parent)
+  : QAbstractListModel{parent}
 {
-    ShortcutRegistry::instance()->registerShortcut(this);
+    if (s_instance)
+        m_shortcuts = s_instance->m_shortcuts;
+
+    s_instance = this;
 }
 
 ShortcutRegistry *
@@ -66,7 +85,8 @@ ShortcutRegistry::instance()
     return s_instance;
 }
 
-ShortcutRegistry *ShortcutRegistry::create(QQmlEngine *qmlEngine, QJSEngine *)
+ShortcutRegistry *
+ShortcutRegistry::create(QQmlEngine *qmlEngine, QJSEngine *)
 {
     // The instance has to exist before it is used. We cannot replace it.
     Q_ASSERT(s_instance);
@@ -85,20 +105,20 @@ ShortcutRegistry *ShortcutRegistry::create(QQmlEngine *qmlEngine, QJSEngine *)
     return s_instance;
 }
 
-QHash<int, QByteArray> ShortcutRegistry::roleNames() const
+QHash<int, QByteArray>
+ShortcutRegistry::roleNames() const
 {
-    return {{Roles::Name, "name"},
-            {Roles::Description, "description"},
-            {Roles::Shortcut, "shortcut"}};
+    return {
+      {Roles::Name, "name"}, {Roles::Description, "description"}, {Roles::Shortcut, "shortcut"}};
 }
 
-QVariant ShortcutRegistry::data(const QModelIndex &index, int role) const
+QVariant
+ShortcutRegistry::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid() || index.row() >= m_shortcuts.size() || index.row() < 0)
         return {};
 
-    switch (role)
-    {
+    switch (role) {
     case Roles::Name:
         return m_shortcuts[index.row()]->name();
     case Roles::Description:
@@ -110,31 +130,29 @@ QVariant ShortcutRegistry::data(const QModelIndex &index, int role) const
     }
 }
 
-bool ShortcutRegistry::setData(const QModelIndex &index, const QVariant &value, int role)
+void
+ShortcutRegistry::changeShortcut(const QString &name, const QString &newShortcut)
 {
-    if (!index.isValid() || index.row() >= m_shortcuts.size() || index.row() < 0)
-        return false;
-
-    switch (role)
-    {
-    case Roles::Shortcut:
-        if (auto shortcut = QKeySequence(value.toString()); !shortcut.isEmpty()) {
-            m_shortcuts[index.row()]->setShortcut(shortcut.toString());
-            return true;
-        } else
-            return false;
-    default:
-        return false;
+    for (int i = 0; i < m_shortcuts.size(); ++i) {
+        if (m_shortcuts[i]->name() == name) {
+            qDebug() << "new:" << newShortcut;
+            m_shortcuts[i]->setShortcut(newShortcut);
+            emit dataChanged(index(i), index(i), {Roles::Shortcut});
+            return;
+        }
     }
 }
 
-ShortcutRegistry::ShortcutRegistry(QObject *parent)
-  : QAbstractListModel{parent}
+QString
+ShortcutRegistry::keycodeToChar(int keycode) const
 {
-    s_instance = this;
+    return QString((char)keycode);
 }
 
-void ShortcutRegistry::registerShortcut(EditableShortcut *action)
+void
+ShortcutRegistry::registerShortcut(EditableShortcut *action)
 {
+    beginInsertRows({}, m_shortcuts.size(), m_shortcuts.size());
     m_shortcuts.push_back(action);
+    endInsertRows();
 }
