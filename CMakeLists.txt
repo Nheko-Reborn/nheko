@@ -397,8 +397,8 @@ set(SRC_FILES
 	src/ui/RoomSettings.h
 	src/ui/RoomSummary.cpp
         src/ui/RoomSummary.h
-        src/ui/ShortcutRegistry.cpp
-        src/ui/ShortcutRegistry.h
+        src/ui/KeySequenceRegistry.cpp
+        src/ui/KeySequenceRegistry.h
 	src/ui/Theme.cpp
 	src/ui/Theme.h
 	src/ui/UIA.cpp

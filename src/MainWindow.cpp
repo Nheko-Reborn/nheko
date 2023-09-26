@@ -57,7 +57,6 @@ MainWindow *MainWindow::instance_ = nullptr;
 MainWindow::MainWindow(QWindow *parent)
   : QQuickView(parent)
   , userSettings_{UserSettings::instance()}
-  , shortcuts_{new ShortcutRegistry}
 {
     instance_ = this;
 

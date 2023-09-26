@@ -112,15 +112,14 @@ Pane {
         onActivated: Qt.quit()
     }
 
-    EditableShortcut {
+    EditableKeySequence {
         id: quickSwitcherShortcut
 
         name: qsTr("Room search")
-        description: qsTr("Opens a search bar for quick switching between rooms")
-        shortcut: "Ctrl+K"
+        defaultKeySequence: "Ctrl+K"
     }
     Shortcut {
-        sequence: quickSwitcherShortcut.shortcut
+        sequence: quickSwitcherShortcut.keySequence
 
         onActivated: {
             var component = Qt.createComponent("qrc:/resources/qml/QuickSwitcher.qml");
@@ -134,45 +133,98 @@ Pane {
         }
     }
 
-    EditableShortcut {
+    EditableKeySequence {
         id: nextRoomWithActivityShortcut
 
         name: qsTr("Next room with activity")
-        description: qsTr("Switches to the next unread room in the roomlist")
         // Add alternative shortcut, because sometimes Alt+A is stolen by the TextEdit
-        shortcuts: ["Alt+A", "Ctrl+Shift+A"]
+        defaultKeySequences: ["Alt+A", "Ctrl+Shift+A"]
     }
     Shortcut {
-        sequences: nextRoomWithActivityShortcut.shortcuts
+        sequences: nextRoomWithActivityShortcut.keySequence
 
         onActivated: Rooms.nextRoomWithActivity()
     }
 
-    EditableShortcut {
+    EditableKeySequence {
         id: nextRoomShortcut
 
         name: qsTr("Next room")
-        description: qsTr("Switches to the room below the room that is currently open")
-        shortcut: "Ctrl+Down"
+        defaultKeySequence: "Ctrl+Down"
     }
     Shortcut {
-        sequence: nextRoomShortcut.shortcut
+        sequence: nextRoomShortcut.keySequence
 
         onActivated: Rooms.nextRoom()
     }
 
-    EditableShortcut {
+    EditableKeySequence {
         id: previousRoomShortcut
 
         name: qsTr("Previous room")
-        description: qsTr("Switches to the room above the room that is currently open")
-        shortcut: "Ctrl+Up"
+        defaultKeySequence: "Ctrl+Up"
     }
     Shortcut {
-        sequence: previousRoomShortcut.shortcut
+        sequence: previousRoomShortcut.keySequence
 
         onActivated: Rooms.previousRoom()
     }
+
+    EditableKeySequence {
+        id: nextSpaceShortcut
+
+        name: qsTr("Next space")
+    }
+    Shortcut {
+        sequence: nextSpaceShortcut.keySequence
+
+//        onActivated: Communities.setCurrentTagId(model.id)
+    }
+
+    EditableKeySequence {
+        id: previousSpaceShortcut
+
+        name: qsTr("Previous space")
+    }
+    Shortcut {
+        sequence: previousSpaceShortcut.keySequence
+
+//        onActivated: Communities.setCurrentTagId(model.id)
+    }
+
+    EditableKeySequence {
+        id: allRoomsSpaceShortcut
+
+        name: qsTr("Show all rooms")
+    }
+    Shortcut {
+        sequence: allRoomsSpaceShortcut.keySequence
+
+        onActivated: Communities.setCurrentTagId("global")
+    }
+
+    EditableKeySequence {
+        id: favoriteRoomsShortcut
+
+        name: qsTr("Show favorite rooms")
+    }
+    Shortcut {
+        sequence: favoriteRoomsShortcut.keySequence
+
+        onActivated: Communities.setCurrentTagId("m.favourite")
+    }
+
+    EditableKeySequence {
+        id: directChatsShortcut
+
+        name: qsTr("Show direct chats")
+    }
+    Shortcut {
+        sequence: directChatsShortcut.keySequence
+
+        onActivated: Communities.setCurrentTagId("dm")
+    }
+
     Connections {
         function onOpenJoinRoomDialog() {
             var component = Qt.createComponent("qrc:/resources/qml/dialogs/JoinRoomDialog.qml");

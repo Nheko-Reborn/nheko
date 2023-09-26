@@ -28,42 +28,31 @@ ApplicationWindow {
         anchors.fill: parent
 
         ListView {
-            model: ShortcutRegistry
+            model: KeySequenceRegistry
 
             delegate: RowLayout {
                 id: del
 
                 required property string name
-                required property string description
-                required property string shortcut
+                required property string keySequence
 
                 spacing: Nheko.paddingMedium
                 width: ListView.view.width
                 height: implicitHeight + Nheko.paddingSmall * 2
 
-                ColumnLayout {
-                    spacing: Nheko.paddingSmall
-
-                    Label {
-                        text: del.name
-                        font.bold: true
-                        font.pointSize: fontMetrics.font.pointSize * 1.1
-                    }
-
-                    Label {
-                        text: del.description
-                    }
+                Label {
+                    text: del.name
                 }
 
                 Item { Layout.fillWidth: true }
 
                 Button {
-                    property bool selectingNewShortcut: false
+                    property bool selectingNewKeySequence: false
 
-                    text: selectingNewShortcut ? qsTr("Input..") : del.shortcut
-                    onClicked: selectingNewShortcut = !selectingNewShortcut
+                    text: selectingNewKeySequence ? qsTr("Input..") : (del.keySequence === "" ? "None" : del.keySequence)
+                    onClicked: selectingNewKeySequence = !selectingNewKeySequence
                     Keys.onPressed: event => {
-                        if (!selectingNewShortcut)
+                        if (!selectingNewKeySequence)
                             return;
                         event.accepted = true;
 
@@ -77,12 +66,14 @@ ApplicationWindow {
                         if (event.modifiers & Qt.ShiftModifier)
                             keySequence += "Shift+";
 
-                        if (event.key === 0 || event.key === Qt.Key_unknown || event.key === Qt.Key_Control || event.key === Qt.Key_Alt || event.key === Qt.Key_AltGr || event.key === Qt.Key_Meta || event.key === Qt.Key_Shift)
+                        if (event.key === 0 || event.key === Qt.Key_unknown || event.key === Qt.Key_Control || event.key === Qt.Key_Alt ||
+                            event.key === Qt.Key_AltGr || event.key === Qt.Key_Meta || event.key === Qt.Key_Super_L || event.key === Qt.Key_Super_R ||
+                            event.key === Qt.Key_Shift)
                             keySequence += "...";
                         else {
-                            keySequence += ShortcutRegistry.keycodeToChar(event.key);
-                            ShortcutRegistry.changeShortcut(del.name, keySequence);
-                            selectingNewShortcut = false;
+                            keySequence += KeySequenceRegistry.keycodeToChar(event.key);
+                            KeySequenceRegistry.changeKeySequence(del.name, keySequence);
+                            selectingNewKeySequence = false;
                         }
                     }
                 }
