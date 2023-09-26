@@ -396,7 +396,9 @@ set(SRC_FILES
 	src/ui/RoomSettings.cpp
 	src/ui/RoomSettings.h
 	src/ui/RoomSummary.cpp
-	src/ui/RoomSummary.h
+        src/ui/RoomSummary.h
+        src/ui/KeySequenceRegistry.cpp
+        src/ui/KeySequenceRegistry.h
 	src/ui/Theme.cpp
 	src/ui/Theme.h
 	src/ui/UIA.cpp
@@ -777,6 +779,7 @@ set(QML_SOURCES
         resources/qml/dialogs/RoomMembers.qml
         resources/qml/dialogs/AllowedRoomsSettingsDialog.qml
         resources/qml/dialogs/RoomSettings.qml
+        resources/qml/dialogs/ShortcutEditor.qml
         resources/qml/dialogs/UserProfile.qml
         resources/qml/emoji/StickerPicker.qml
         resources/qml/pages/LoginPage.qml
@@ -810,7 +813,7 @@ qt_add_qml_module(nheko
 	${QML_SOURCES}
 	SOURCES
 	src/UserDirectoryModel.cpp
-	src/UserDirectoryModel.h
+        src/UserDirectoryModel.h
 	)
 	#qt_target_qml_sources(nheko
 	#	#PREFIX "/"

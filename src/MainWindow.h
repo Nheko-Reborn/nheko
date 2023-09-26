@@ -11,6 +11,7 @@
 #include <QSharedPointer>
 #include <QSystemTrayIcon>
 
+#include "KeySequenceRegistry.h"
 #include "UserSettingsPage.h"
 #include "dock/Dock.h"
 

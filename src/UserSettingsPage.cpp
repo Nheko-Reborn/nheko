@@ -30,8 +30,10 @@ QSharedPointer<UserSettings> UserSettings::instance_;
 
 UserSettings::UserSettings()
 {
-    connect(
-      QCoreApplication::instance(), &QCoreApplication::aboutToQuit, []() { instance_.clear(); });
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, []() {
+        instance_->save();
+        instance_.clear();
+    });
 }
 
 QSharedPointer<UserSettings>
@@ -163,6 +165,16 @@ UserSettings::load(std::optional<QString> profile)
 
     disableCertificateValidation_ =
       settings.value(QStringLiteral("disable_certificate_validation"), false).toBool();
+
+    settings.beginGroup(QStringLiteral("user"));
+    settings.beginGroup(QStringLiteral("shortcuts"));
+    QMap<QString, QStringList> bindings;
+    for (const auto &key : settings.childKeys())
+        bindings[key] = settings.value(key).toStringList();
+    qDebug() << "restoring with size:" << bindings.size();
+    KeySequenceRegistry::instance()->restoreBindings(bindings);
+    settings.endGroup(); // user/shortcuts
+    settings.endGroup(); // user/shortcuts
 
     applyTheme();
 }
@@ -882,7 +894,7 @@ UserSettings::save()
     settings.beginGroup(QStringLiteral("sidebar"));
     settings.setValue(QStringLiteral("community_list_width"), communityListWidth_);
     settings.setValue(QStringLiteral("room_list_width"), roomListWidth_);
-    settings.endGroup(); // window
+    settings.endGroup(); // sidebar
 
     settings.beginGroup(QStringLiteral("timeline"));
     settings.setValue(QStringLiteral("buttons"), buttonsInTimeline_);
@@ -938,6 +950,13 @@ UserSettings::save()
     settings.setValue(QStringLiteral("expose_dbus_api"), exposeDBusApi_);
     settings.setValue(QStringLiteral("space_background_maintenance"), updateSpaceVias_);
     settings.setValue(QStringLiteral("expired_events_background_maintenance"), expireEvents_);
+
+    settings.beginGroup(QStringLiteral("shortcuts"));
+    auto bindings = KeySequenceRegistry::instance()->dumpBindings();
+    for (const auto &[name, sequences] : bindings.asKeyValueRange())
+        settings.setValue(name, sequences);
+    qDebug() << "saved with size:" << bindings.size();
+    settings.endGroup(); // shortcuts
 
     settings.endGroup(); // user
 
@@ -1145,6 +1164,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Periodically update community routing information");
         case ExpireEvents:
             return tr("Periodically delete expired events");
+        case KeyboardShortcuts:
+            return tr("Configure keyboard shortcuts");
         }
     } else if (role == Value) {
         switch (index.row()) {
@@ -1444,6 +1465,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case LoginInfoSection:
         case SessionKeys:
         case CrossSigningSecrets:
+        case KeyboardShortcuts:
             return {};
         case OnlineBackupKey:
             return tr(
@@ -1562,6 +1584,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case UserSigningKey:
         case MasterKey:
             return KeyStatus;
+        case KeyboardShortcuts:
+            return ConfigureKeyboardShortcuts;
         }
     } else if (role == ValueLowerBound) {
         switch (index.row()) {

@@ -475,6 +475,7 @@ class UserSettingsModel : public QAbstractListModel
 #endif
         UpdateSpaceVias,
         ExpireEvents,
+        KeyboardShortcuts,
 
         AccessibilitySection,
         ReducedMotion,
@@ -562,6 +563,7 @@ public:
         KeyStatus,
         SessionKeyImportExport,
         XSignKeysRequestDownload,
+        ConfigureKeyboardShortcuts,
     };
     Q_ENUM(Types);
 
