@@ -208,7 +208,6 @@ ApplicationWindow {
                         : (roomSettings.plainRoomTopic === "" ? ("<i>" + qsTr("No topic set") + "</i>") : roomSettings.roomTopic)
                 wrapMode: TextEdit.WordWrap
                 background: null
-                selectByMouse: !Settings.mobileMode
                 color: palette.text
                 horizontalAlignment: TextEdit.AlignHCenter
                 onLinkActivated: Nheko.openLink(link)

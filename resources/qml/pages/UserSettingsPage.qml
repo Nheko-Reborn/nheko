@@ -5,12 +5,12 @@
 pragma ComponentBehavior: Bound
 import ".."
 import "../ui"
-import Qt.labs.platform 1.1 as Platform
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.15
-import im.nheko 1.0
+import Qt.labs.platform as Platform
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import QtQuick.Window
+import im.nheko
 
 Rectangle {
     id: userSettingsDialog
@@ -163,7 +163,6 @@ Rectangle {
                                 color: palette.text
                                 text: model.value
                                 readOnly: true
-                                selectByMouse: !Settings.mobileMode
                                 textFormat: Text.PlainText
                             }
                         }
