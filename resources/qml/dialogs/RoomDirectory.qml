@@ -112,9 +112,17 @@ ApplicationWindow {
                         Layout.row: 1
                         Layout.column: 1
                         id: joinRoomButton
-                        enabled: model.canJoin
-                        text: "Join"
-                        onClicked: publicRooms.joinRoom(model.index)
+                        enabled: model.roomid !== ""
+                        text: model.canJoin ? qsTr("Join") : qsTr("Open")
+                        onClicked: {
+                            if (model.canJoin)
+                                publicRooms.joinRoom(model.index);
+                            else
+                            {
+                                Rooms.setCurrentRoom(model.roomid);
+                                roomDirectoryWindow.close();
+                            }
+                        }
                     }
 
                 }
@@ -182,6 +190,18 @@ ApplicationWindow {
             onTriggered: roomDirView.model.setSearchTerm(roomSearch.text)
         }
 
+    }
+
+    footer: RowLayout {
+        spacing: Nheko.paddingMedium
+        width: parent.width
+
+        Button {
+            text: qsTr("Close")
+            onClicked: roomDirectoryWindow.close()
+            Layout.alignment: Qt.AlignRight
+            Layout.margins: Nheko.paddingMedium
+        }
     }
 
 }
