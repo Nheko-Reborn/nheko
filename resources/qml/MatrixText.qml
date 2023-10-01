@@ -2,9 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.5
-import QtQuick.Controls 2.3
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Controls
+import im.nheko
 
 TextEdit {
     id: r
@@ -28,7 +28,6 @@ TextEdit {
     color: palette.text
     focus: false
     readOnly: true
-    selectByMouse: !Settings.mobileMode
     textFormat: TextEdit.RichText
     wrapMode: Text.Wrap
 

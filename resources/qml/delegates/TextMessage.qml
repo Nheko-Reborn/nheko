@@ -3,8 +3,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
-import QtQuick.Controls 2.3
-import im.nheko 1.0
+import QtQuick.Controls
+import im.nheko
 
 MatrixText {
     required property string body
@@ -42,8 +42,8 @@ MatrixText {
     width: parent?.width ?? 0
     height: !keepFullText ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
     clip: !keepFullText
-    selectByMouse: !Settings.mobileMode && !isReply
-    enabled: !Settings.mobileMode
+    selectByMouse: !isReply
+//    enabled: !Settings.mobileMode
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
     NhekoCursorShape {
