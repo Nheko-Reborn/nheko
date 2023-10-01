@@ -5,6 +5,7 @@
 pragma ComponentBehavior: Bound
 import ".."
 import "../ui"
+import "../dialogs"
 import Qt.labs.platform as Platform
 import QtQuick
 import QtQuick.Controls
