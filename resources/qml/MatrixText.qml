@@ -2,7 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick
+// TODO: using any Qt 6 API version will screw up the reply text color. We need to
+//       figure out a more permanent fix than just importing the old version.
+import QtQuick 2.15
 import QtQuick.Controls
 import im.nheko
 
