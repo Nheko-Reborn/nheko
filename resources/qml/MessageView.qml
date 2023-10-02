@@ -570,9 +570,11 @@ Item {
 
                         PowerlevelIndicator {
                             id: powerlevelIndicator
-                            anchors.left: parent.left
-                            //anchors.horizontalCenter: parent.horizontalCenter
 
+                            anchors.left: parent.left
+                            anchors.verticalCenter: parent.verticalCenter
+                            height: fontMetrics.ascent
+                            width: height
                             powerlevel: userPowerlevel
                             permissions: room ? room.permissions : null
                             visible: isAdmin || isModerator

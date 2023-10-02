@@ -23,8 +23,6 @@ Image {
             return "image://colorimage/:/icons/icons/ui/person.svg?";
     }
 
-    sourceSize.width: 16
-    sourceSize.height: 16
     source: sourceUrl + (ma.hovered ? palette.highlight : palette.buttonText)
     ToolTip.visible: ma.hovered
     ToolTip.text: {
