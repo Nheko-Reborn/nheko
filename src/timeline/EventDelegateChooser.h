@@ -2,9 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-// A DelegateChooser like the one, that was added to Qt5.12 (in labs), but compatible with older Qt
-// versions see KDE/kquickitemviews see qtdeclarative/qqmldelagatecomponent
-
 #pragma once
 
 #include <QAbstractItemModel>
@@ -16,6 +13,32 @@
 #include <QtCore/QVariant>
 
 #include "TimelineModel.h"
+
+class EventDelegateChooserAttachedType : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY(bool fillWidth READ fillWidth WRITE setFillWidth NOTIFY fillWidthChanged)
+    QML_ANONYMOUS
+public:
+    EventDelegateChooserAttachedType(QObject *parent)
+      : QObject(parent)
+    {
+    }
+    bool fillWidth() const { return fillWidth_; }
+    void setFillWidth(bool fill)
+    {
+        fillWidth_ = fill;
+        emit fillWidthChanged();
+    }
+signals:
+    void fillWidthChanged();
+
+private:
+    bool fillWidth_ = false, keepAspectRatio = false;
+    double aspectRatio = 1.;
+    int maxWidth       = -1;
+    int maxHeight      = -1;
+};
 
 class EventDelegateChoice : public QObject
 {
@@ -51,14 +74,18 @@ class EventDelegateChooser : public QQuickItem
     QML_ELEMENT
     Q_CLASSINFO("DefaultProperty", "choices")
 
-public:
+    QML_ATTACHED(EventDelegateChooserAttachedType)
+
     Q_PROPERTY(QQmlListProperty<EventDelegateChoice> choices READ choices CONSTANT FINAL)
     Q_PROPERTY(QQuickItem *main READ main NOTIFY mainChanged FINAL)
     Q_PROPERTY(QQuickItem *reply READ reply NOTIFY replyChanged FINAL)
     Q_PROPERTY(QString eventId READ eventId WRITE setEventId NOTIFY eventIdChanged REQUIRED FINAL)
     Q_PROPERTY(QString replyTo READ replyTo WRITE setReplyTo NOTIFY replyToChanged REQUIRED FINAL)
     Q_PROPERTY(TimelineModel *room READ room WRITE setRoom NOTIFY roomChanged REQUIRED FINAL)
+    Q_PROPERTY(bool sameWidth READ sameWidth WRITE setSameWidth NOTIFY sameWidthChanged)
+    Q_PROPERTY(int maxWidth READ maxWidth WRITE setMaxWidth NOTIFY maxWidthChanged)
 
+public:
     QQmlListProperty<EventDelegateChoice> choices();
 
     [[nodiscard]] QQuickItem *main() const
@@ -68,6 +95,20 @@ public:
     [[nodiscard]] QQuickItem *reply() const
     {
         return qobject_cast<QQuickItem *>(replyIncubator.object());
+    }
+
+    bool sameWidth() const { return sameWidth_; }
+    void setSameWidth(bool width)
+    {
+        sameWidth_ = width;
+        emit sameWidthChanged();
+    }
+    bool maxWidth() const { return maxWidth_; }
+    void setMaxWidth(int width)
+    {
+        maxWidth_ = width;
+        emit maxWidthChanged();
+        polish();
     }
 
     void setRoom(TimelineModel *m)
@@ -105,12 +146,21 @@ public:
 
     void componentComplete() override;
 
+    static EventDelegateChooserAttachedType *qmlAttachedProperties(QObject *object)
+    {
+        return new EventDelegateChooserAttachedType(object);
+    }
+
+    void updatePolish() override;
+
 signals:
     void mainChanged();
     void replyChanged();
     void roomChanged();
     void eventIdChanged();
     void replyToChanged();
+    void sameWidthChanged();
+    void maxWidthChanged();
 
 private:
     struct DelegateIncubator final : public QQmlIncubator
@@ -142,6 +192,8 @@ private:
     TimelineModel *room_{nullptr};
     QString eventId_;
     QString replyId;
+    bool sameWidth_ = false;
+    int maxWidth_   = 400;
 
     static void appendChoice(QQmlListProperty<EventDelegateChoice> *, EventDelegateChoice *);
     static qsizetype choiceCount(QQmlListProperty<EventDelegateChoice> *);

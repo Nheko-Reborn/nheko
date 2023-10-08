@@ -18,7 +18,7 @@ TimelineEvent {
     id: wrapper
     ListView.delayRemove: true
     width: chat.delegateMaxWidth
-    height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight + reactionRow.implicitHeight + unreadRow.height, 10)
+    height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight + reactionRow.implicitHeight + unreadRow.height, 20)
     anchors.horizontalCenter: ListView.view.contentItem.horizontalCenter
     //room: chatRoot.roommodel
 
@@ -50,6 +50,8 @@ TimelineEvent {
 
     property alias hovered: messageHover.hovered
     property bool scrolledToThis: false
+
+    maxWidth: chat.delegateMaxWidth - avatarMargin - metadata.width
 
     data: [
         Loader {
@@ -131,7 +133,7 @@ TimelineEvent {
             anchors.top: gridContainer.top
             anchors.left: gridContainer.left 
             anchors.topMargin: -2
-            anchors.leftMargin: wrapper.avatarMargin + 2
+            anchors.leftMargin: -2
             color: "transparent"
             border.color: Nheko.theme.red
             border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
@@ -139,11 +141,13 @@ TimelineEvent {
             height: contentColumn.implicitHeight + 4
             width: contentColumn.implicitWidth + 4
         },
-        RowLayout {
+        Row {
             id: gridContainer
 
-            width: wrapper.width
+            width: wrapper.width - wrapper.avatarMargin
+            x: wrapper.avatarMargin
             y: section.visible && section.active ? section.y + section.height : 0
+            spacing: Nheko.paddingSmall
 
             HoverHandler {
                 id: messageHover
@@ -154,23 +158,20 @@ TimelineEvent {
                             messageActions.model = wrapper;
                             messageActions.attached = wrapper;
                             messageActions.anchors.bottomMargin = -gridContainer.y
+                            messageActions.anchors.rightMargin = metadata.width
                         }
                     }
                 }
 
             }
 
-            Item {
-                Layout.preferredWidth: wrapper.avatarMargin
-            }
-
             AbstractButton {
                 ToolTip.delay: Nheko.tooltipDelay
                 ToolTip.text: qsTr("Part of a thread")
                 ToolTip.visible: hovered
-                Layout.fillHeight: true
+                height: contentColumn.height
                 visible: wrapper.threadId
-                Layout.preferredWidth: 4
+                width: 4
 
                 onClicked: wrapper.room.thread = wrapper.threadId
 
@@ -181,17 +182,16 @@ TimelineEvent {
                     color: TimelineManager.userColor(wrapper.threadId, palette.base)
                 }
             }
-            ColumnLayout {
+            Column {
                 id: contentColumn
-                Layout.fillWidth: true
 
                 AbstractButton {
                     id: replyRow
                     visible: wrapper.reply
-                    Layout.fillWidth: true
-                    Layout.maximumHeight: timelineView.height / 8
-                    Layout.preferredWidth: replyRowLay.implicitWidth
-                    Layout.preferredHeight: replyRowLay.implicitHeight
+                    //Layout.fillWidth: true
+                    //Layout.maximumHeight: timelineView.height / 8
+                    //Layout.preferredWidth: replyRowLay.implicitWidth
+                    //Layout.preferredHeight: replyRowLay.implicitHeight
 
                     property color userColor: TimelineManager.userColor(wrapper.reply?.userId ?? '', palette.base)
 
@@ -202,32 +202,33 @@ TimelineEvent {
                         cursorShape: Qt.PointingHandCursor
                     }
 
-                    contentItem: RowLayout {
+                    contentItem: Row {
                         id: replyRowLay
 
-                        anchors.fill: parent
-
+                        spacing: Nheko.paddingSmall
 
                         Rectangle {
                             id: replyLine
-                            Layout.fillHeight: true
+                            height: replyCol.height
                             color: replyRow.userColor
-                            Layout.preferredWidth: 4
+                            width: 4
                         }
 
-                        ColumnLayout {
+                        Column {
                             spacing: 0
+
+                            id: replyCol
 
                             AbstractButton {
                                 id: replyUserButton
-                                Layout.fillWidth: true
-                                contentItem: ElidedLabel {
+
+                                contentItem: Label {
                                     id: userName_
-                                    fullText: wrapper.reply?.userName ?? ''
+                                    text: wrapper.reply?.userName ?? ''
                                     color: replyRow.userColor
                                     textFormat: Text.RichText
-                                    width: parent.width
-                                    elideWidth: width
+                                    width: wrapper.maxWidth
+                                    //elideWidth: wrapper.maxWidth
                                 }
                                 onClicked: wrapper.room.openUserProfile(wrapper.reply?.userId)
                             }
@@ -239,7 +240,7 @@ TimelineEvent {
                     }
 
                     background: Rectangle {
-                        width: replyRow.implicitContentWidth
+                        //width: replyRow.implicitContentWidth
                         color: Qt.tint(palette.base, Qt.hsla(replyRow.userColor.hslHue, 0.5, replyRow.userColor.hslLightness, 0.1))
                     }
 
@@ -259,19 +260,16 @@ TimelineEvent {
                 ]
             }
 
-            Item {
-                // spacer to fill width if needed
-                Layout.fillWidth: true
-            }
-
+        },
             RowLayout {
                 id: metadata
 
                 property int iconSize: Math.floor(fontMetrics.ascent * scaling)
                 property double scaling: Settings.bubbles ? 0.75 : 1
 
-                Layout.alignment: Qt.AlignTop | Qt.AlignRight
-                Layout.preferredWidth: implicitWidth
+                anchors.right: parent.right
+                y: section.visible && section.active ? section.y + section.height : 0
+
                 spacing: 2
                 visible: !isStateEvent
 
@@ -339,8 +337,7 @@ TimelineEvent {
 
                     }
                 }
-            }
-        },
+            },
         Reactions {
             id: reactionRow
 

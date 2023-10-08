@@ -131,7 +131,7 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
             roleToPropIdx.insert(*role, i);
             roles.emplace_back(*role);
 
-            nhlog::ui()->critical("Found prop {}, idx {}, role {}", prop.name(), i, *role);
+            // nhlog::ui()->critical("Found prop {}, idx {}, role {}", prop.name(), i, *role);
         } else {
             nhlog::ui()->critical("Required property {} not found in model!", prop.name());
         }
@@ -140,14 +140,15 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
     nhlog::ui()->debug("Querying data for id {}", currentId.toStdString());
     chooser.room_->multiData(currentId, forReply ? chooser.eventId_ : QString(), roles);
 
+    Qt::beginPropertyUpdateGroup();
     for (const auto &role : roles) {
         const auto &roleName = roleNames[role.role()];
-        nhlog::ui()->critical("Setting role {}, {} to {}",
-                              role.role(),
-                              roleName.toStdString(),
-                              role.data().toString().toStdString());
+        // nhlog::ui()->critical("Setting role {}, {} to {}",
+        //                       role.role(),
+        //                       roleName.toStdString(),
+        //                       role.data().toString().toStdString());
 
-        nhlog::ui()->critical("Setting {}", mo->property(roleToPropIdx[role.role()]).name());
+        // nhlog::ui()->critical("Setting {}", mo->property(roleToPropIdx[role.role()]).name());
         mo->property(roleToPropIdx[role.role()]).write(obj, role.data());
 
         if (const auto &req = requiredProperties.find(roleName); req != requiredProperties.end())
@@ -156,14 +157,15 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
 
     if (isReplyNeeded) {
         const auto roleName = QByteArray("isReply");
-        nhlog::ui()->critical("Setting role {} to {}", roleName.toStdString(), forReply);
+        // nhlog::ui()->critical("Setting role {} to {}", roleName.toStdString(), forReply);
 
-        nhlog::ui()->critical("Setting {}", mo->property(roleToPropIdx[-1]).name());
+        // nhlog::ui()->critical("Setting {}", mo->property(roleToPropIdx[-1]).name());
         mo->property(roleToPropIdx[-1]).write(obj, forReply);
 
         if (const auto &req = requiredProperties.find(roleName); req != requiredProperties.end())
             QQmlIncubatorPrivate::get(this)->requiredProperties()->remove(*req);
     }
+    Qt::endPropertyUpdateGroup();
 
     // setInitialProperties(rolesToSet);
 
@@ -188,9 +190,12 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
           auto mo = obj->metaObject();
           chooser.room_->multiData(
             currentId, forReply ? chooser.eventId_ : QString(), rolesToRequest);
+
+          Qt::beginPropertyUpdateGroup();
           for (const auto &role : rolesToRequest) {
               mo->property(roleToPropIdx[role.role()]).write(obj, role.data());
           }
+          Qt::endPropertyUpdateGroup();
       };
 
     if (!forReply) {
@@ -257,11 +262,22 @@ EventDelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status sta
 
         child->setParentItem(&chooser);
         QQmlEngine::setObjectOwnership(child, QQmlEngine::ObjectOwnership::JavaScriptOwnership);
+
+        // connect(child, &QQuickItem::parentChanged, child, [child](QQuickItem *) {
+        //     // QTBUG-115687
+        //     if (child->flags().testFlag(QQuickItem::ItemObservesViewport)) {
+        //         nhlog::ui()->critical("SETTING OBSERVES VIEWPORT");
+        //         // Re-trigger the parent traversal to get subtreeTransformChangedEnabled turned
+        //         on child->setFlag(QQuickItem::ItemObservesViewport);
+        //     }
+        // });
+
         if (forReply)
             emit chooser.replyChanged();
         else
             emit chooser.mainChanged();
 
+        chooser.polish();
     } else if (status == QQmlIncubator::Error) {
         auto errors_ = errors();
         for (const auto &e : qAsConst(errors_))
@@ -269,3 +285,49 @@ EventDelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status sta
     }
 }
 
+void
+EventDelegateChooser::updatePolish()
+{
+    auto mainChild = qobject_cast<QQuickItem *>(eventIncubator.object());
+    auto replyChild = qobject_cast<QQuickItem *>(replyIncubator.object());
+
+    nhlog::ui()->critical("POLISHING {}", (void *)this);
+
+    if (mainChild) {
+        auto attached = qobject_cast<EventDelegateChooserAttachedType *>(
+          qmlAttachedPropertiesObject<EventDelegateChooser>(mainChild));
+        Q_ASSERT(attached != nullptr);
+
+        // in theory we could also reset the width, but that doesn't seem to work nicely for text
+        // areas because of how they cache it.
+        mainChild->setWidth(maxWidth_);
+        mainChild->ensurePolished();
+        auto width = mainChild->implicitWidth();
+
+        if (width > maxWidth_ || attached->fillWidth())
+            width = maxWidth_;
+
+        nhlog::ui()->debug(
+          "Made event delegate width: {}, {}", width, mainChild->metaObject()->className());
+        mainChild->setWidth(width);
+        mainChild->ensurePolished();
+    }
+
+    if (replyChild) {
+        auto attached = qobject_cast<EventDelegateChooserAttachedType *>(
+          qmlAttachedPropertiesObject<EventDelegateChooser>(replyChild));
+        Q_ASSERT(attached != nullptr);
+
+        // in theory we could also reset the width, but that doesn't seem to work nicely for text
+        // areas because of how they cache it.
+        replyChild->setWidth(maxWidth_);
+        replyChild->ensurePolished();
+        auto width = replyChild->implicitWidth();
+
+        if (width > maxWidth_ || attached->fillWidth())
+            width = maxWidth_;
+
+        replyChild->setWidth(width);
+        replyChild->ensurePolished();
+    }
+}

@@ -4,7 +4,7 @@
 
 import ".."
 import QtQuick.Controls
-import QtQuick.Layouts
+//import QtQuick.Layouts
 import im.nheko
 
 MatrixText {
@@ -41,7 +41,10 @@ MatrixText {
     }" : "") +  // TODO(Nico): Figure out how to support mobile
     "</style>
     " + formatted.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
-    Layout.maximumHeight: !keepFullText ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
+    //Layout.maximumHeight: !keepFullText ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
+
+    //EventDelegateChooser.fillWidth: true
+
     clip: !keepFullText
     selectByMouse: !Settings.mobileMode && !isReply
     enabled: !Settings.mobileMode && !isReply

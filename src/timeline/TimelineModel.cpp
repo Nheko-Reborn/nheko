@@ -601,12 +601,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case UserName:
         return QVariant(displayName(QString::fromStdString(acc::sender(event))));
     case UserPowerlevel: {
-        return static_cast<qlonglong>(mtx::events::state::PowerLevels{
-          cache::client()
-            ->getStateEvent<mtx::events::state::PowerLevels>(room_id_.toStdString())
-            .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
-            .content}
-                                        .user_level(acc::sender(event)));
+        return static_cast<qlonglong>(
+          permissions_.powerlevelEvent().user_level(acc::sender(event)));
     }
 
     case Day: {
