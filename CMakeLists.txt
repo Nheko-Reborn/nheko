@@ -742,7 +742,6 @@ set(QML_SOURCES
         resources/qml/delegates/Encrypted.qml
         resources/qml/delegates/FileMessage.qml
         resources/qml/delegates/ImageMessage.qml
-        resources/qml/delegates/MessageDelegate.qml
         resources/qml/delegates/NoticeMessage.qml
         resources/qml/delegates/Pill.qml
         resources/qml/delegates/Placeholder.qml

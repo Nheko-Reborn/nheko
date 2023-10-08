@@ -10,7 +10,7 @@ import im.nheko
 MatrixText {
     required property string body
     required property bool isOnlyEmoji
-    required property bool isReply
+    property bool isReply: EventDelegateChooser.isReply
     required property bool keepFullText
     required property string formatted
 
@@ -45,7 +45,6 @@ MatrixText {
 
     //EventDelegateChooser.fillWidth: true
 
-    clip: !keepFullText
     selectByMouse: !Settings.mobileMode && !isReply
     enabled: !Settings.mobileMode && !isReply
     hoverEnabled: !Settings.mobileMode

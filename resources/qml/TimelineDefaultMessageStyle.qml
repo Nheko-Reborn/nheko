@@ -18,7 +18,7 @@ TimelineEvent {
     id: wrapper
     ListView.delayRemove: true
     width: chat.delegateMaxWidth
-    height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight + reactionRow.implicitHeight + unreadRow.height, 20)
+    height: Math.max((section.item?.height ?? 0) + gridContainer.implicitHeight + reactionRow.implicitHeight + unreadRow.height, 10)
     anchors.horizontalCenter: ListView.view.contentItem.horizontalCenter
     //room: chatRoot.roommodel
 
@@ -50,6 +50,9 @@ TimelineEvent {
 
     property alias hovered: messageHover.hovered
     property bool scrolledToThis: false
+
+    mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0) + 4
+    replyInset: mainInset + 4 + Nheko.paddingSmall
 
     maxWidth: chat.delegateMaxWidth - avatarMargin - metadata.width
 
@@ -182,16 +185,21 @@ TimelineEvent {
                     color: TimelineManager.userColor(wrapper.threadId, palette.base)
                 }
             }
+
+            Item {
+                visible: wrapper.isStateEvent
+                width: (wrapper.maxWidth - (wrapper.main?.width ?? 0)) / 2
+                height: 1
+            }
+
             Column {
                 id: contentColumn
 
                 AbstractButton {
                     id: replyRow
                     visible: wrapper.reply
-                    //Layout.fillWidth: true
-                    //Layout.maximumHeight: timelineView.height / 8
-                    //Layout.preferredWidth: replyRowLay.implicitWidth
-                    //Layout.preferredHeight: replyRowLay.implicitHeight
+
+                    height: replyLine.height
 
                     property color userColor: TimelineManager.userColor(wrapper.reply?.userId ?? '', palette.base)
 
@@ -209,7 +217,7 @@ TimelineEvent {
 
                         Rectangle {
                             id: replyLine
-                            height: replyCol.height
+                            height: Math.min( wrapper.reply?.height, timelineView.height / 5) + Nheko.paddingSmall + replyUserButton.height
                             color: replyRow.userColor
                             width: 4
                         }

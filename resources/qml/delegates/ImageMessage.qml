@@ -5,7 +5,6 @@
 import QtQuick
 import QtQuick.Window
 import QtQuick.Controls
-import QtQuick.Layouts
 import im.nheko
 
 AbstractButton {
@@ -17,16 +16,17 @@ AbstractButton {
     required property string blurhash
     required property string body
     required property string filename
-    required property bool isReply
     required property string eventId
     required property int containerHeight
-    property double divisor: isReply ? 5 : 3
+    property double divisor: EventDelegateChooser.isReply ? 5 : 3
 
-    //Layout.maximumWidth: originalWidth
-    Layout.maximumHeight: Math.min(originalHeight, containerHeight / divisor)
-    implicitWidth: height/proportionalHeight
-    implicitHeight: Math.min(Layout.maximumHeight, width*proportionalHeight)
+    EventDelegateChooser.keepAspectRatio: true
+    EventDelegateChooser.maxWidth: originalWidth
+    EventDelegateChooser.maxHeight: containerHeight / divisor
+    EventDelegateChooser.aspectRatio: proportionalHeight
+
     hoverEnabled: true
+    enabled: !EventDelegateChooser.isReply
 
     state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"
     states: [
@@ -133,8 +133,8 @@ AbstractButton {
         roomm: room
         play: !Settings.animateImagesOnHover || parent.hovered
         eventId: parent.eventId
-        width: parent.implicitWidth
-        height: parent.implicitHeight
+
+        anchors.fill: parent
     }
 
     Image {
@@ -143,10 +143,10 @@ AbstractButton {
         source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + palette.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
-        sourceSize.width: parent.implicitWidth * Screen.devicePixelRatio
-        sourceSize.height: parent.implicitHeight * Screen.devicePixelRatio
-        width: parent.implicitWidth
-        height: parent.implicitHeight
+        sourceSize.width: parent.width * Screen.devicePixelRatio
+        sourceSize.height: parent.height * Screen.devicePixelRatio
+
+        anchors.fill: parent
     }
 
     onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
@@ -154,8 +154,8 @@ AbstractButton {
     Item {
         id: overlay
 
-        width: parent.implicitWidth
-        height: parent.implicitHeight
+        anchors.fill: parent
+
         visible: parent.hovered
 
         Rectangle {

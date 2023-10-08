@@ -17,27 +17,78 @@
 class EventDelegateChooserAttachedType : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool fillWidth READ fillWidth WRITE setFillWidth NOTIFY fillWidthChanged)
+    Q_PROPERTY(bool keepAspectRatio READ keepAspectRatio WRITE setKeepAspectRatio NOTIFY
+                 keepAspectRatioChanged)
+    Q_PROPERTY(double aspectRatio READ aspectRatio WRITE setAspectRatio NOTIFY aspectRatioChanged)
+    Q_PROPERTY(int maxWidth READ maxWidth WRITE setMaxWidth NOTIFY maxWidthChanged)
+    Q_PROPERTY(int maxHeight READ maxHeight WRITE setMaxHeight NOTIFY maxHeightChanged)
+    Q_PROPERTY(bool isReply READ isReply WRITE setIsReply NOTIFY isReplyChanged)
+
     QML_ANONYMOUS
 public:
     EventDelegateChooserAttachedType(QObject *parent)
       : QObject(parent)
     {
     }
-    bool fillWidth() const { return fillWidth_; }
-    void setFillWidth(bool fill)
+
+    bool keepAspectRatio() const { return keepAspectRatio_; }
+    void setKeepAspectRatio(bool fill)
     {
-        fillWidth_ = fill;
-        emit fillWidthChanged();
+        if (fill != keepAspectRatio_) {
+            keepAspectRatio_ = fill;
+            emit keepAspectRatioChanged();
+            polishChooser();
+        }
     }
+
+    double aspectRatio() const { return aspectRatio_; }
+    void setAspectRatio(double fill)
+    {
+        aspectRatio_ = fill;
+        emit aspectRatioChanged();
+        polishChooser();
+    }
+
+    int maxWidth() const { return maxWidth_; }
+    void setMaxWidth(int fill)
+    {
+        maxWidth_ = fill;
+        emit maxWidthChanged();
+        polishChooser();
+    }
+
+    int maxHeight() const { return maxHeight_; }
+    void setMaxHeight(int fill)
+    {
+        maxHeight_ = fill;
+        emit maxHeightChanged();
+    }
+
+    bool isReply() const { return isReply_; }
+    void setIsReply(bool fill)
+    {
+        if (fill != isReply_) {
+            isReply_ = fill;
+            emit isReplyChanged();
+            polishChooser();
+        }
+    }
+
 signals:
-    void fillWidthChanged();
+    void keepAspectRatioChanged();
+    void aspectRatioChanged();
+    void maxWidthChanged();
+    void maxHeightChanged();
+    void isReplyChanged();
 
 private:
-    bool fillWidth_ = false, keepAspectRatio = false;
-    double aspectRatio = 1.;
-    int maxWidth       = -1;
-    int maxHeight      = -1;
+    void polishChooser();
+
+    double aspectRatio_ = 1.;
+    int maxWidth_       = -1;
+    int maxHeight_        = -1;
+    bool keepAspectRatio_ = false;
+    bool isReply_         = false;
 };
 
 class EventDelegateChoice : public QObject
@@ -84,6 +135,8 @@ class EventDelegateChooser : public QQuickItem
     Q_PROPERTY(TimelineModel *room READ room WRITE setRoom NOTIFY roomChanged REQUIRED FINAL)
     Q_PROPERTY(bool sameWidth READ sameWidth WRITE setSameWidth NOTIFY sameWidthChanged)
     Q_PROPERTY(int maxWidth READ maxWidth WRITE setMaxWidth NOTIFY maxWidthChanged)
+    Q_PROPERTY(int replyInset READ replyInset WRITE setReplyInset NOTIFY replyInsetChanged)
+    Q_PROPERTY(int mainInset READ mainInset WRITE setMainInset NOTIFY mainInsetChanged)
 
 public:
     QQmlListProperty<EventDelegateChoice> choices();
@@ -103,11 +156,27 @@ public:
         sameWidth_ = width;
         emit sameWidthChanged();
     }
-    bool maxWidth() const { return maxWidth_; }
+    int maxWidth() const { return maxWidth_; }
     void setMaxWidth(int width)
     {
         maxWidth_ = width;
         emit maxWidthChanged();
+        polish();
+    }
+
+    int replyInset() const { return replyInset_; }
+    void setReplyInset(int width)
+    {
+        replyInset_ = width;
+        emit replyInsetChanged();
+        polish();
+    }
+
+    int mainInset() const { return mainInset_; }
+    void setMainInset(int width)
+    {
+        mainInset_ = width;
+        emit mainInsetChanged();
         polish();
     }
 
@@ -161,6 +230,8 @@ signals:
     void replyToChanged();
     void sameWidthChanged();
     void maxWidthChanged();
+    void replyInsetChanged();
+    void mainInsetChanged();
 
 private:
     struct DelegateIncubator final : public QQmlIncubator
@@ -183,6 +254,7 @@ private:
         QString instantiatedId;
         int instantiatedRole = -1;
         QAbstractItemModel *instantiatedModel = nullptr;
+        int oldType                           = -1;
     };
 
     QVariant roleValue_;
@@ -194,6 +266,8 @@ private:
     QString replyId;
     bool sameWidth_ = false;
     int maxWidth_   = 400;
+    int replyInset_ = 0;
+    int mainInset_  = 0;
 
     static void appendChoice(QQmlListProperty<EventDelegateChoice> *, EventDelegateChoice *);
     static qsizetype choiceCount(QQmlListProperty<EventDelegateChoice> *);

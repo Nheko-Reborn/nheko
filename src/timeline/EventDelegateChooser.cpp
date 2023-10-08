@@ -97,6 +97,7 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
         return;
 
     item->setParentItem(&chooser);
+    item->setParent(&chooser);
 
     auto roleNames = chooser.room_->roleNames();
     QHash<QByteArray, int> nameToRole;
@@ -106,8 +107,6 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
 
     QHash<int, int> roleToPropIdx;
     std::vector<QModelRoleData> roles;
-    bool isReplyNeeded = false;
-
     // Workaround for https://bugreports.qt.io/browse/QTBUG-98846
     QHash<QString, RequiredPropertyKey> requiredProperties;
     for (const auto &[propKey, prop] :
@@ -124,10 +123,7 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
         if (!prop.isRequired() && !requiredProperties.contains(prop.name()))
             continue;
 
-        if (prop.name() == std::string_view("isReply")) {
-            isReplyNeeded = true;
-            roleToPropIdx.insert(-1, i);
-        } else if (auto role = nameToRole.find(prop.name()); role != nameToRole.end()) {
+        if (auto role = nameToRole.find(prop.name()); role != nameToRole.end()) {
             roleToPropIdx.insert(*role, i);
             roles.emplace_back(*role);
 
@@ -141,6 +137,11 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
     chooser.room_->multiData(currentId, forReply ? chooser.eventId_ : QString(), roles);
 
     Qt::beginPropertyUpdateGroup();
+    auto attached = qobject_cast<EventDelegateChooserAttachedType *>(
+      qmlAttachedPropertiesObject<EventDelegateChooser>(obj));
+    Q_ASSERT(attached != nullptr);
+    attached->setIsReply(this->forReply);
+
     for (const auto &role : roles) {
         const auto &roleName = roleNames[role.role()];
         // nhlog::ui()->critical("Setting role {}, {} to {}",
@@ -155,22 +156,25 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
             QQmlIncubatorPrivate::get(this)->requiredProperties()->remove(*req);
     }
 
-    if (isReplyNeeded) {
-        const auto roleName = QByteArray("isReply");
-        // nhlog::ui()->critical("Setting role {} to {}", roleName.toStdString(), forReply);
-
-        // nhlog::ui()->critical("Setting {}", mo->property(roleToPropIdx[-1]).name());
-        mo->property(roleToPropIdx[-1]).write(obj, forReply);
-
-        if (const auto &req = requiredProperties.find(roleName); req != requiredProperties.end())
-            QQmlIncubatorPrivate::get(this)->requiredProperties()->remove(*req);
-    }
     Qt::endPropertyUpdateGroup();
 
     // setInitialProperties(rolesToSet);
 
     auto update =
       [this, obj, roleToPropIdx = std::move(roleToPropIdx)](const QList<int> &changedRoles) {
+          if (changedRoles.empty() || changedRoles.contains(TimelineModel::Roles::Type)) {
+              int type = chooser.room_
+                           ->dataById(currentId,
+                                      TimelineModel::Roles::Type,
+                                      forReply ? chooser.eventId_ : QString())
+                           .toInt();
+              if (type != oldType) {
+                  nhlog::ui()->debug("Type changed!");
+                  reset(currentId);
+                  return;
+              }
+          }
+
           std::vector<QModelRoleData> rolesToRequest;
 
           if (changedRoles.empty()) {
@@ -233,6 +237,7 @@ EventDelegateChooser::DelegateIncubator::reset(QString id)
       chooser.room_
         ->dataById(id, TimelineModel::Roles::Type, forReply ? chooser.eventId_ : QString())
         .toInt();
+    this->oldType = role;
 
     for (const auto choice : qAsConst(chooser.choices_)) {
         const auto &choiceValue = choice->roleValues();
@@ -293,41 +298,58 @@ EventDelegateChooser::updatePolish()
 
     nhlog::ui()->critical("POLISHING {}", (void *)this);
 
-    if (mainChild) {
-        auto attached = qobject_cast<EventDelegateChooserAttachedType *>(
-          qmlAttachedPropertiesObject<EventDelegateChooser>(mainChild));
-        Q_ASSERT(attached != nullptr);
+    auto layoutItem = [this](QQuickItem *item, int inset) {
+        if (item) {
+            auto attached = qobject_cast<EventDelegateChooserAttachedType *>(
+              qmlAttachedPropertiesObject<EventDelegateChooser>(item));
+            Q_ASSERT(attached != nullptr);
 
-        // in theory we could also reset the width, but that doesn't seem to work nicely for text
-        // areas because of how they cache it.
-        mainChild->setWidth(maxWidth_);
-        mainChild->ensurePolished();
-        auto width = mainChild->implicitWidth();
+            int maxWidth = maxWidth_ - inset;
 
-        if (width > maxWidth_ || attached->fillWidth())
-            width = maxWidth_;
+            // in theory we could also reset the width, but that doesn't seem to work nicely for
+            // text areas because of how they cache it.
+            if (attached->maxWidth() > 0)
+                item->setWidth(attached->maxWidth());
+            else
+                item->setWidth(maxWidth);
+            item->ensurePolished();
+            auto width = item->implicitWidth();
 
-        nhlog::ui()->debug(
-          "Made event delegate width: {}, {}", width, mainChild->metaObject()->className());
-        mainChild->setWidth(width);
-        mainChild->ensurePolished();
-    }
+            if (width < 1 || width > maxWidth)
+                width = maxWidth;
 
-    if (replyChild) {
-        auto attached = qobject_cast<EventDelegateChooserAttachedType *>(
-          qmlAttachedPropertiesObject<EventDelegateChooser>(replyChild));
-        Q_ASSERT(attached != nullptr);
+            if (attached->maxWidth() > 0 && width > attached->maxWidth())
+                width = attached->maxWidth();
 
-        // in theory we could also reset the width, but that doesn't seem to work nicely for text
-        // areas because of how they cache it.
-        replyChild->setWidth(maxWidth_);
-        replyChild->ensurePolished();
-        auto width = replyChild->implicitWidth();
+            if (attached->keepAspectRatio()) {
+                auto height = width * attached->aspectRatio();
+                if (attached->maxHeight() && height > attached->maxHeight()) {
+                    height = attached->maxHeight();
+                    width  = height / attached->aspectRatio();
+                }
 
-        if (width > maxWidth_ || attached->fillWidth())
-            width = maxWidth_;
+                item->setHeight(height);
+            }
 
-        replyChild->setWidth(width);
-        replyChild->ensurePolished();
+            nhlog::ui()->debug(
+              "Made event delegate width: {}, {}", width, item->metaObject()->className());
+            item->setWidth(width);
+            item->ensurePolished();
+        }
+    };
+
+    layoutItem(mainChild, mainInset_);
+    layoutItem(replyChild, replyInset_);
+}
+
+void
+EventDelegateChooserAttachedType::polishChooser()
+{
+    auto p = parent();
+    if (p) {
+        auto chooser = qobject_cast<EventDelegateChooser *>(p->parent());
+        if (chooser) {
+            chooser->polish();
+        }
     }
 }

@@ -62,12 +62,10 @@ EventDelegateChooser {
             required property string userId
             required property string userName
 
-            Layout.fillWidth: true
-            //Layout.maximumWidth: implicitWidth
-
             body: ''
             color: palette.buttonText
             font.italic: true
+            font.pointSize: Settings.fontSize * 0.8
             formatted: ''
             horizontalAlignment: Text.AlignHCenter
             isOnlyEmoji: false
@@ -202,7 +200,6 @@ EventDelegateChooser {
             id: member
 
             required property string formattedStateEvent
-            required property bool isReply
             required property Room room
             required property string userId
             required property string userName
@@ -212,7 +209,7 @@ EventDelegateChooser {
                 body: formatted
                 formatted: member.formattedStateEvent
                 isOnlyEmoji: false
-                isReply: member.isReply
+                isReply: EventDelegateChooser.isReply
                 isStateEvent: true
                 keepFullText: true
             }
@@ -233,7 +230,6 @@ EventDelegateChooser {
 
             required property string body
             required property string eventId
-            required property bool isReply
             required property Room room
             required property string userId
             required property string userName
@@ -243,7 +239,7 @@ EventDelegateChooser {
                 body: formatted
                 formatted: qsTr("This room was replaced for the following reason: %1").arg(tombstone.body)
                 isOnlyEmoji: false
-                isReply: tombstone.isReply
+                isReply: EventDelegateChooser.isReply
                 isStateEvent: true
                 keepFullText: true
             }

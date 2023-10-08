@@ -48,51 +48,43 @@ AbstractButton {
         room: room_
         eventId: r.eventId
         replyTo: ""
+        mainInset: 4 + Nheko.paddingMedium
+        maxWidth: r.maxWidth
 
         //height: replyContainer.implicitHeight
-        data: GridLayout {
+        data: Row {
             id: replyContainer
 
-            width: r.maxWidth
-            columns: 2
-            rows: 2
-            columnSpacing: Nheko.paddingMedium
-            rowSpacing: Nheko.paddingSmall
+            spacing: Nheko.paddingSmall
 
             Rectangle {
                 id: colorline
 
-                Layout.preferredWidth: 4
-                Layout.rowSpan: 2
-                Layout.fillHeight: true
-
-                Layout.row: 0
-                Layout.column: 0
+                width: 4
 
                 color: TimelineManager.userColor(r.userId, palette.base)
             }
 
-            AbstractButton {
-                id: usernameBtn
-                Layout.fillWidth: true
+            Column {
+                spacing: 0
 
-                Layout.row: 0
-                Layout.column: 1
+                AbstractButton {
+                    id: usernameBtn
 
-                contentItem: ElidedLabel {
-                    id: userName_
-                    fullText: r.userName
-                    color: r.userColor
-                    textFormat: Text.RichText
-                    width: parent.width
-                    elideWidth: width
+                    contentItem: Label {
+                        id: userName_
+                        text: r.userName
+                        color: r.userColor
+                        textFormat: Text.RichText
+                        width: timelineEvent.main?.width
+                    }
+                    onClicked: room.openUserProfile(r.userId)
                 }
-                onClicked: room.openUserProfile(r.userId)
-            }
 
-            data: [
-                colorline, usernameBtn, timelineEvent.main,
-            ]
+                data: [
+                    usernameBtn, timelineEvent.main,
+                ]
+            }
 
         }
     }
