@@ -203,7 +203,7 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
       };
 
     if (!forReply) {
-        auto row = chooser.room_->idToIndex(currentId);
+        auto row        = chooser.room_->idToIndex(currentId);
         auto connection = connect(
           chooser.room_,
           &QAbstractItemModel::dataChanged,
@@ -293,7 +293,7 @@ EventDelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status sta
 void
 EventDelegateChooser::updatePolish()
 {
-    auto mainChild = qobject_cast<QQuickItem *>(eventIncubator.object());
+    auto mainChild  = qobject_cast<QQuickItem *>(eventIncubator.object());
     auto replyChild = qobject_cast<QQuickItem *>(replyIncubator.object());
 
     nhlog::ui()->critical("POLISHING {}", (void *)this);

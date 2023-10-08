@@ -2288,8 +2288,9 @@ TimelineModel::markSpecialEffectsDone()
 }
 
 QString
-TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor &bg)
+TimelineModel::formatTypingUsers(const QStringList &users, const QColor &bg)
 {
+    nhlog::db()->critical("TYPING USERS!");
     QString temp =
       tr("%1 and %2 are typing.",
          "Multiple users are typing. First argument is a comma separated list of potentially "
@@ -2335,7 +2336,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
     };
 
     uidWithoutLast.reserve(static_cast<int>(users.size()));
-    for (size_t i = 0; i + 1 < users.size(); i++) {
+    for (qsizetype i = 0; i + 1 < users.size(); i++) {
         uidWithoutLast.append(formatUser(users[i]));
     }
 

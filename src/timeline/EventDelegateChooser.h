@@ -84,8 +84,8 @@ signals:
 private:
     void polishChooser();
 
-    double aspectRatio_ = 1.;
-    int maxWidth_       = -1;
+    double aspectRatio_   = 1.;
+    int maxWidth_         = -1;
     int maxHeight_        = -1;
     bool keepAspectRatio_ = false;
     bool isReply_         = false;
@@ -252,7 +252,7 @@ private:
         QString currentId;
 
         QString instantiatedId;
-        int instantiatedRole = -1;
+        int instantiatedRole                  = -1;
         QAbstractItemModel *instantiatedModel = nullptr;
         int oldType                           = -1;
     };
