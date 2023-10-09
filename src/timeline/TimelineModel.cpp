@@ -2290,7 +2290,6 @@ TimelineModel::markSpecialEffectsDone()
 QString
 TimelineModel::formatTypingUsers(const QStringList &users, const QColor &bg)
 {
-    nhlog::db()->critical("TYPING USERS!");
     QString temp =
       tr("%1 and %2 are typing.",
          "Multiple users are typing. First argument is a comma separated list of potentially "

@@ -279,7 +279,7 @@ TimelineEvent {
                     }
                 }
 
-                padding: 4
+                padding: wrapper.isStateEvent ? 0 : 4
                 background: Rectangle {
                     color: !wrapper.isStateEvent ? Qt.tint(palette.base, Qt.hsla(messageBubble.userColor.hslHue, 0.5, messageBubble.userColor.hslLightness, 0.2)) : "transparent"
                     radius: 4

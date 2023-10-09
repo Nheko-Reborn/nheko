@@ -10,6 +10,8 @@
 #include <QQmlEngine>
 #include <QtGlobal>
 
+#include <ranges>
+
 // privat qt headers to access required properties
 #include <QtQml/private/qqmlincubator_p.h>
 #include <QtQml/private/qqmlobjectcreator_p.h>
@@ -133,7 +135,7 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
         }
     }
 
-    nhlog::ui()->debug("Querying data for id {}", currentId.toStdString());
+    // nhlog::ui()->debug("Querying data for id {}", currentId.toStdString());
     chooser.room_->multiData(currentId, forReply ? chooser.eventId_ : QString(), roles);
 
     Qt::beginPropertyUpdateGroup();
@@ -169,7 +171,7 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
                                       forReply ? chooser.eventId_ : QString())
                            .toInt();
               if (type != oldType) {
-                  nhlog::ui()->debug("Type changed!");
+                  // nhlog::ui()->debug("Type changed!");
                   reset(currentId);
                   return;
               }
@@ -178,7 +180,8 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
           std::vector<QModelRoleData> rolesToRequest;
 
           if (changedRoles.empty()) {
-              for (auto role : roleToPropIdx.keys())
+              for (const auto role :
+                   std::ranges::subrange(roleToPropIdx.keyBegin(), roleToPropIdx.keyEnd()))
                   rolesToRequest.emplace_back(role);
           } else {
               for (auto role : changedRoles) {
@@ -229,7 +232,7 @@ EventDelegateChooser::DelegateIncubator::reset(QString id)
     if (!chooser.room_ || id.isEmpty())
         return;
 
-    nhlog::ui()->debug("Reset with id {}, reply {}", id.toStdString(), forReply);
+    // nhlog::ui()->debug("Reset with id {}, reply {}", id.toStdString(), forReply);
 
     this->currentId = id;
 
@@ -242,8 +245,8 @@ EventDelegateChooser::DelegateIncubator::reset(QString id)
     for (const auto choice : qAsConst(chooser.choices_)) {
         const auto &choiceValue = choice->roleValues();
         if (choiceValue.contains(role) || choiceValue.empty()) {
-            nhlog::ui()->debug(
-              "Instantiating type: {}, c {}", (int)role, choiceValue.contains(role));
+            // nhlog::ui()->debug(
+            //   "Instantiating type: {}, c {}", (int)role, choiceValue.contains(role));
 
             if (auto child = qobject_cast<QQuickItem *>(object())) {
                 child->setParentItem(nullptr);
@@ -296,7 +299,7 @@ EventDelegateChooser::updatePolish()
     auto mainChild  = qobject_cast<QQuickItem *>(eventIncubator.object());
     auto replyChild = qobject_cast<QQuickItem *>(replyIncubator.object());
 
-    nhlog::ui()->critical("POLISHING {}", (void *)this);
+    // nhlog::ui()->trace("POLISHING {}", (void *)this);
 
     auto layoutItem = [this](QQuickItem *item, int inset) {
         if (item) {
@@ -331,8 +334,6 @@ EventDelegateChooser::updatePolish()
                 item->setHeight(height);
             }
 
-            nhlog::ui()->debug(
-              "Made event delegate width: {}, {}", width, item->metaObject()->className());
             item->setWidth(width);
             item->ensurePolished();
         }
