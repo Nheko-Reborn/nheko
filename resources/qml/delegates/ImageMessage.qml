@@ -18,7 +18,7 @@ AbstractButton {
     required property string filename
     required property string eventId
     required property int containerHeight
-    property double divisor: EventDelegateChooser.isReply ? 5 : 3
+    property double divisor: EventDelegateChooser.isReply ? 10 : 4
 
     EventDelegateChooser.keepAspectRatio: true
     EventDelegateChooser.maxWidth: originalWidth

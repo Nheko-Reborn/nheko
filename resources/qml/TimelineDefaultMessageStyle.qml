@@ -217,7 +217,7 @@ TimelineEvent {
 
                         Rectangle {
                             id: replyLine
-                            height: Math.min( wrapper.reply?.height, timelineView.height / 5) + Nheko.paddingSmall + replyUserButton.height
+                            height: Math.min( wrapper.reply?.height, timelineView.height / 10) + Nheko.paddingSmall + replyUserButton.height
                             color: replyRow.userColor
                             width: 4
                         }
