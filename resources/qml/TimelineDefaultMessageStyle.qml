@@ -44,6 +44,7 @@ TimelineEvent {
     required property bool isEditable
 
     required property QtObject messageContextMenu
+    required property QtObject replyContextMenu
     required property Item messageActions
 
     property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
@@ -261,6 +262,13 @@ TimelineEvent {
                             wrapper.room.showEvent(wrapper.replyTo)
                         }
                     }
+                    onPressAndHold: wrapper.replyContextMenu.show(wrapper.reply.copyText ?? "", wrapper.reply.linkAt ? wrapper.reply.linkAt(pressX-replyLine.width - Nheko.paddingSmall, pressY - replyUserButton.implicitHeight) : "", wrapper.replyTo)
+                    TapHandler {
+                        acceptedButtons: Qt.RightButton
+                        onSingleTapped: (eventPoint) => wrapper.replyContextMenu.show(wrapper.reply.copyText ?? "", wrapper.reply.linkAt ? wrapper.reply.linkAt(eventPoint.position.x-replyLine.width - Nheko.paddingSmall, eventPoint.position.y - replyUserButton.implicitHeight) : "", wrapper.replyTo)
+                        gesturePolicy: TapHandler.ReleaseWithinBounds
+                        acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
+                    }
                 }
 
                 data: [
@@ -292,14 +300,11 @@ TimelineEvent {
             id: reactionRow
 
             eventId: wrapper.eventId
-            layoutDirection: row.bubbleOnRight ? Qt.RightToLeft : Qt.LeftToRight
             reactions: wrapper.reactions
             width: wrapper.width - wrapper.avatarMargin
             x: wrapper.avatarMargin
 
             anchors {
-                //left: row.bubbleOnRight ? undefined : row.left
-                //right: row.bubbleOnRight ? row.right : undefined
                 top: gridContainer.bottom
                 topMargin: -4
             }

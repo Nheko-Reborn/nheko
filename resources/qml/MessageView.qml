@@ -26,7 +26,7 @@ Item {
     Connections {
         function onHideMenu() {
             messageContextMenuC.close();
-            replyContextMenu.close();
+            replyContextMenuC.close();
         }
 
         target: MainWindow
@@ -65,6 +65,7 @@ Item {
             TimelineDefaultMessageStyle {
                 messageActions: messageActionsC
                 messageContextMenu: messageContextMenuC
+                replyContextMenu: replyContextMenuC
                 scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
             }
         }
@@ -74,6 +75,7 @@ Item {
             TimelineBubbleMessageStyle {
                 messageActions: messageActionsC
                 messageContextMenu: messageContextMenuC
+                replyContextMenu: replyContextMenuC
                 scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
             }
         }
@@ -541,7 +543,7 @@ Item {
         }
     }
     Platform.Menu {
-        id: replyContextMenu
+        id: replyContextMenuC
 
         property string eventId
         property string link
@@ -557,23 +559,23 @@ Item {
         Platform.MenuItem {
             enabled: visible
             text: qsTr("&Copy")
-            visible: replyContextMenu.text
+            visible: replyContextMenuC.text
 
-            onTriggered: Clipboard.text = replyContextMenu.text
+            onTriggered: Clipboard.text = replyContextMenuC.text
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("Copy &link location")
-            visible: replyContextMenu.link
+            visible: replyContextMenuC.link
 
-            onTriggered: Clipboard.text = replyContextMenu.link
+            onTriggered: Clipboard.text = replyContextMenuC.link
         }
         Platform.MenuItem {
             enabled: visible
             text: qsTr("&Go to quoted message")
             visible: true
 
-            onTriggered: room.showEvent(replyContextMenu.eventId)
+            onTriggered: room.showEvent(replyContextMenuC.eventId)
         }
     }
     RoundButton {

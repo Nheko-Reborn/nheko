@@ -44,6 +44,7 @@ TimelineEvent {
     required property bool isEditable
 
     required property QtObject messageContextMenu
+    required property QtObject replyContextMenu
     required property Item messageActions
 
     property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
@@ -173,13 +174,14 @@ TimelineEvent {
                 contentItem: Item {
                     id: contentPlacementContainer
 
-                    property int metadataWidth: 100
-                    property int metadataHeight: 20
-
                     property bool fitsMetadata: ((wrapper.main?.width ?? 0) + wrapper.mainInset + metadata.width) < wrapper.maxWidth
 
-                    implicitWidth: Math.max((wrapper.reply?.width ?? 0) + wrapper.replyInset, (wrapper.main?.width ?? 0) + wrapper.mainInset + (fitsMetadata ? metadata.width : 0))
-                    implicitHeight: contentColumn.implicitHeight + (fitsMetadata ? 0 : metadata.height)
+                    // This doesnt work because of tables. They might have content in the top of the cell, while the background reaches to the bottom. Maybe using the textDocument we could do more?
+                    // property bool fitsMetadataInside: wrapper.main?.positionAt ? (wrapper.main.positionAt(wrapper.main.width, wrapper.main.height - 4) == wrapper.main.positionAt(wrapper.main.width - metadata.width, wrapper.main.height - 4)) : false
+                    property bool fitsMetadataInside: false
+
+                    implicitWidth: Math.max((wrapper.reply?.width ?? 0) + wrapper.replyInset, (wrapper.main?.width ?? 0) + wrapper.mainInset + ((fitsMetadata && !fitsMetadataInside) ? metadata.width : 0))
+                    implicitHeight: contentColumn.implicitHeight + ((fitsMetadata || fitsMetadataInside) ? 0 : metadata.height)
 
                     TimelineMetadata {
                         id: metadata
@@ -274,6 +276,13 @@ TimelineEvent {
                                     console.log("Scrolling to "+wrapper.replyTo);
                                     wrapper.room.showEvent(wrapper.replyTo)
                                 }
+                            }
+                            onPressAndHold: wrapper.replyContextMenu.show(wrapper.reply.copyText ?? "", wrapper.reply.linkAt ? wrapper.reply.linkAt(pressX-replyLine.width - Nheko.paddingSmall, pressY - replyUserButton.implicitHeight) : "", wrapper.replyTo)
+                            TapHandler {
+                                acceptedButtons: Qt.RightButton
+                                onSingleTapped: (eventPoint) => wrapper.replyContextMenu.show(wrapper.reply.copyText ?? "", wrapper.reply.linkAt ? wrapper.reply.linkAt(eventPoint.position.x-replyLine.width - Nheko.paddingSmall, eventPoint.position.y - replyUserButton.implicitHeight) : "", wrapper.replyTo)
+                                gesturePolicy: TapHandler.ReleaseWithinBounds
+                                acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                             }
                         }
 
