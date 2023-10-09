@@ -703,6 +703,8 @@ set(QML_SOURCES
         resources/qml/RoomList.qml
 				resources/qml/TimelineSectionHeader.qml
 				resources/qml/TimelineDefaultMessageStyle.qml
+				resources/qml/TimelineBubbleMessageStyle.qml
+				resources/qml/TimelineMetadata.qml
         resources/qml/TimelineView.qml
         resources/qml/Avatar.qml
         resources/qml/Completer.qml

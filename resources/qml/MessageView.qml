@@ -68,8 +68,17 @@ Item {
                 scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
             }
         }
+        Component {
+            id: bubbleMessageStyle
 
-        delegate: defaultMessageStyle
+            TimelineBubbleMessageStyle {
+                messageActions: messageActionsC
+                messageContextMenu: messageContextMenuC
+                scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+            }
+        }
+
+        delegate: Settings.bubbles ? bubbleMessageStyle : defaultMessageStyle
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: Nheko.paddingLarge

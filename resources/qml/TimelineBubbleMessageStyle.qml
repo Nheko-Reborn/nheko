@@ -51,10 +51,12 @@ TimelineEvent {
     property alias hovered: messageHover.hovered
     property bool scrolledToThis: false
 
-    mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0)
+    mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0) + 4
     replyInset: mainInset + 4 + Nheko.paddingSmall
 
-    maxWidth: chat.delegateMaxWidth - avatarMargin - metadata.width
+    property int bubbleMargin: 40
+
+    maxWidth: chat.delegateMaxWidth - avatarMargin - bubbleMargin
 
     data: [
         Loader {
@@ -132,25 +134,13 @@ TimelineEvent {
                 }
             }
         },
-        Rectangle {
-            anchors.top: gridContainer.top
-            anchors.left: gridContainer.left 
-            anchors.topMargin: -2
-            anchors.leftMargin: -2
-            color: "transparent"
-            border.color: Nheko.theme.red
-            border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
-            radius: 4
-            height: contentColumn.implicitHeight + 4
-            width: contentColumn.implicitWidth + 4
-        },
-        Row {
+        Item {
             id: gridContainer
 
             width: wrapper.width - wrapper.avatarMargin
+            implicitHeight: messageBubble.implicitHeight
             x: wrapper.avatarMargin
             y: section.visible && section.active ? section.y + section.height : 0
-            spacing: Nheko.paddingSmall
 
             HoverHandler {
                 id: messageHover
@@ -161,133 +151,143 @@ TimelineEvent {
                             messageActions.model = wrapper;
                             messageActions.attached = wrapper;
                             messageActions.anchors.bottomMargin = -gridContainer.y
-                            messageActions.anchors.rightMargin = metadata.width
+                            //messageActions.anchors.rightMargin = metadata.width
                         }
                     }
                 }
 
             }
+
 
             AbstractButton {
-                ToolTip.delay: Nheko.tooltipDelay
-                ToolTip.text: qsTr("Part of a thread")
-                ToolTip.visible: hovered
-                height: contentColumn.height
-                visible: wrapper.threadId
-                width: 4
+                id: messageBubble
 
-                onClicked: wrapper.room.thread = wrapper.threadId
+                anchors.left: (wrapper.isStateEvent || wrapper.isSender) ? undefined : parent.left
+                anchors.right: (wrapper.isStateEvent || !wrapper.isSender) ? undefined : parent.right
+                anchors.horizontalCenter: wrapper.isStateEvent ? parent.horizontalCenter : undefined
 
-                Rectangle {
-                    id: threadLine
+                property color userColor: TimelineManager.userColor(wrapper.main?.userId ?? '', palette.base)
 
-                    anchors.fill: parent
-                    color: TimelineManager.userColor(wrapper.threadId, palette.base)
-                }
-            }
+                contentItem: Item {
+                    id: contentPlacementContainer
 
-            Item {
-                visible: wrapper.isStateEvent
-                width: (wrapper.maxWidth - (wrapper.main?.width ?? 0)) / 2
-                height: 1
-            }
+                    property int metadataWidth: 100
+                    property int metadataHeight: 20
 
-            Column {
-                id: contentColumn
+                    property bool fitsMetadata: ((wrapper.main?.width ?? 0) + wrapper.mainInset + metadata.width) < wrapper.maxWidth
 
-                AbstractButton {
-                    id: replyRow
-                    visible: wrapper.reply
+                    implicitWidth: Math.max((wrapper.reply?.width ?? 0) + wrapper.replyInset, (wrapper.main?.width ?? 0) + wrapper.mainInset + (fitsMetadata ? metadata.width : 0))
+                    implicitHeight: contentColumn.implicitHeight + (fitsMetadata ? 0 : metadata.height)
 
-                    height: replyLine.height
+                    TimelineMetadata {
+                        id: metadata
 
-                    property color userColor: TimelineManager.userColor(wrapper.reply?.userId ?? '', palette.base)
+                        scaling: 0.75
 
-                    clip: true
+                        anchors.right: parent.right
+                        anchors.bottom: parent.bottom
 
-                    NhekoCursorShape {
-                        anchors.fill: parent
-                        cursorShape: Qt.PointingHandCursor
+                        visible: !wrapper.isStateEvent
+
+                        eventId: wrapper.eventId
+                        status: wrapper.status
+                        trustlevel: wrapper.trustlevel
+                        isEdited: wrapper.isEdited
+                        isEncrypted: wrapper.isEncrypted
+                        threadId: wrapper.threadId
+                        timestamp: wrapper.timestamp
+                        room: wrapper.room
                     }
 
-                    contentItem: Row {
-                        id: replyRowLay
+                    Column {
+                        id: contentColumn
 
-                        spacing: Nheko.paddingSmall
+                        anchors.left: parent.left
+                        anchors.right: parent.right
 
-                        Rectangle {
-                            id: replyLine
-                            height: Math.min( wrapper.reply?.height, timelineView.height / 5) + Nheko.paddingSmall + replyUserButton.height
-                            color: replyRow.userColor
-                            width: 4
-                        }
+                        AbstractButton {
+                            id: replyRow
+                            visible: wrapper.reply
 
-                        Column {
-                            spacing: 0
+                            height: replyLine.height
+                            anchors.left: parent.left
+                            anchors.right: parent.right
 
-                            id: replyCol
+                            property color userColor: TimelineManager.userColor(wrapper.reply?.userId ?? '', palette.base)
 
-                            AbstractButton {
-                                id: replyUserButton
+                            clip: true
 
-                                contentItem: Label {
-                                    id: userName_
-                                    text: wrapper.reply?.userName ?? ''
-                                    color: replyRow.userColor
-                                    textFormat: Text.RichText
-                                    width: wrapper.maxWidth
-                                    //elideWidth: wrapper.maxWidth
-                                }
-                                onClicked: wrapper.room.openUserProfile(wrapper.reply?.userId)
+                            NhekoCursorShape {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
                             }
-                            data: [
-                                replyUserButton,
-                                wrapper.reply,
-                            ]
-                        }
-                    }
 
-                    background: Rectangle {
-                        //width: replyRow.implicitContentWidth
-                        color: Qt.tint(palette.base, Qt.hsla(replyRow.userColor.hslHue, 0.5, replyRow.userColor.hslLightness, 0.1))
-                    }
+                            contentItem: Row {
+                                id: replyRowLay
 
-                    onClicked: {
-                        let link = wrapper.reply.hoveredLink
-                        if (link) {
-                            Nheko.openLink(link)
-                        } else {
-                            console.log("Scrolling to "+wrapper.replyTo);
-                            wrapper.room.showEvent(wrapper.replyTo)
+                                spacing: Nheko.paddingSmall
+
+                                Rectangle {
+                                    id: replyLine
+                                    height: Math.min( wrapper.reply?.height, timelineView.height / 5) + Nheko.paddingSmall + replyUserButton.height
+                                    color: replyRow.userColor
+                                    width: 4
+                                }
+
+                                Column {
+                                    spacing: 0
+
+                                    id: replyCol
+
+                                    AbstractButton {
+                                        id: replyUserButton
+
+                                        contentItem: Label {
+                                            id: userName_
+                                            text: wrapper.reply?.userName ?? ''
+                                            color: replyRow.userColor
+                                            textFormat: Text.RichText
+                                            width: wrapper.maxWidth
+                                            //elideWidth: wrapper.maxWidth
+                                        }
+                                        onClicked: wrapper.room.openUserProfile(wrapper.reply?.userId)
+                                    }
+                                    data: [
+                                        replyUserButton,
+                                        wrapper.reply,
+                                    ]
+                                }
+                            }
+
+                            background: Rectangle {
+                                //width: replyRow.implicitContentWidth
+                                color: Qt.tint(palette.base, Qt.hsla(replyRow.userColor.hslHue, 0.5, replyRow.userColor.hslLightness, 0.1))
+                            }
+
+                            onClicked: {
+                                let link = wrapper.reply.hoveredLink
+                                if (link) {
+                                    Nheko.openLink(link)
+                                } else {
+                                    console.log("Scrolling to "+wrapper.replyTo);
+                                    wrapper.room.showEvent(wrapper.replyTo)
+                                }
+                            }
                         }
+
+                        data: [replyRow, wrapper.main]
                     }
                 }
 
-                data: [
-                    replyRow, wrapper.main,
-                ]
+                padding: 4
+                background: Rectangle {
+                    color: !wrapper.isStateEvent ? Qt.tint(palette.base, Qt.hsla(messageBubble.userColor.hslHue, 0.5, messageBubble.userColor.hslLightness, 0.2)) : "transparent"
+                    radius: 4
+                    border.color: Nheko.theme.red
+                    border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
+                }
             }
-
         },
-            TimelineMetadata {
-                id: metadata
-
-                scaling: 1
-
-                anchors.right: parent.right
-                y: section.visible && section.active ? section.y + section.height : 0
-
-                visible: !wrapper.isStateEvent
-
-                eventId: wrapper.eventId
-                status: wrapper.status
-                trustlevel: wrapper.trustlevel
-                isEdited: wrapper.isEdited
-                isEncrypted: wrapper.isEncrypted
-                threadId: wrapper.threadId
-                timestamp: wrapper.timestamp
-                room: wrapper.room
-            },
         Reactions {
             id: reactionRow
 
@@ -320,3 +320,4 @@ TimelineEvent {
         }
     ]
 }
+
