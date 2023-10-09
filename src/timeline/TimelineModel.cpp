@@ -532,6 +532,7 @@ TimelineModel::roleNames() const
       {IsOnlyEmoji, "isOnlyEmoji"},
       {Body, "body"},
       {FormattedBody, "formattedBody"},
+      {FormattedStateEvent, "formattedStateEvent"},
       {IsSender, "isSender"},
       {UserId, "userId"},
       {UserName, "userName"},
@@ -560,6 +561,7 @@ TimelineModel::roleNames() const
       {ReplyTo, "replyTo"},
       {ThreadId, "threadId"},
       {Reactions, "reactions"},
+      {Room, "room"},
       {RoomId, "roomId"},
       {RoomName, "roomName"},
       {RoomTopic, "roomTopic"},
@@ -599,12 +601,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
     case UserName:
         return QVariant(displayName(QString::fromStdString(acc::sender(event))));
     case UserPowerlevel: {
-        return static_cast<qlonglong>(mtx::events::state::PowerLevels{
-          cache::client()
-            ->getStateEvent<mtx::events::state::PowerLevels>(room_id_.toStdString())
-            .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
-            .content}
-                                        .user_level(acc::sender(event)));
+        return static_cast<qlonglong>(
+          permissions_.powerlevelEvent().user_level(acc::sender(event)));
     }
 
     case Day: {
@@ -692,7 +690,89 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             formattedBody_.replace(curImg, imgReplacement);
         }
 
+        if (auto effectMessage =
+              std::get_if<mtx::events::RoomEvent<mtx::events::msg::ElementEffect>>(&event)) {
+            if (effectMessage->content.msgtype == std::string_view("nic.custom.confetti")) {
+                formattedBody_.append(QUtf8StringView(u8"🎊"));
+            } else if (effectMessage->content.msgtype ==
+                       std::string_view("io.element.effect.rainfall")) {
+                formattedBody_.append(QUtf8StringView(u8"🌧️"));
+            }
+        }
+
         return QVariant(utils::replaceEmoji(utils::linkifyMessage(formattedBody_)));
+    }
+    case FormattedStateEvent: {
+        if (mtx::accessors::is_state_event(event)) {
+            return std::visit(
+              [this](const auto &e) {
+                  constexpr auto t = mtx::events::state_content_to_type<decltype(e.content)>;
+                  if constexpr (t == mtx::events::EventType::RoomServerAcl)
+                      return tr("%1 changed which servers are allowed in this room.")
+                        .arg(displayName(QString::fromStdString(e.sender)));
+                  else if constexpr (t == mtx::events::EventType::RoomName) {
+                      if (e.content.name.empty())
+                          return tr("%1 removed the room name.")
+                            .arg(displayName(QString::fromStdString(e.sender)));
+                      else
+                          return tr("%1 changed the room name to: %2")
+                            .arg(displayName(QString::fromStdString(e.sender)))
+                            .arg(QString::fromStdString(e.content.name).toHtmlEscaped());
+                  } else if constexpr (t == mtx::events::EventType::RoomTopic) {
+                      if (e.content.topic.empty())
+                          return tr("%1 removed the topic.")
+                            .arg(displayName(QString::fromStdString(e.sender)));
+                      else
+                          return tr("%1 changed the topic to: %2")
+                            .arg(displayName(QString::fromStdString(e.sender)))
+                            .arg(QString::fromStdString(e.content.topic).toHtmlEscaped());
+                  } else if constexpr (t == mtx::events::EventType::RoomAvatar) {
+                      if (e.content.url.starts_with("mxc://"))
+                          return tr("%1 changed the room avatar to: %2")
+                            .arg(displayName(QString::fromStdString(e.sender)))
+                            .arg(QStringLiteral("<img height=\"32\" src=\"%1\">")
+                                   .arg(QUrl::toPercentEncoding(
+                                     QString::fromStdString(e.content.url))));
+                      else
+                          return tr("%1 removed the room avatar.")
+                            .arg(displayName(QString::fromStdString(e.sender)));
+                  } else if constexpr (t == mtx::events::EventType::RoomPinnedEvents)
+                      return tr("%1 changed the pinned messages.")
+                        .arg(displayName(QString::fromStdString(e.sender)));
+                  else if constexpr (t == mtx::events::EventType::ImagePackInRoom)
+                      formatImagePackEvent(e);
+                  else if constexpr (t == mtx::events::EventType::RoomCanonicalAlias)
+                      return tr("%1 changed the addresses for this room.")
+                        .arg(displayName(QString::fromStdString(e.sender)));
+                  else if constexpr (t == mtx::events::EventType::SpaceParent)
+                      return tr("%1 changed the parent communities for this room.")
+                        .arg(displayName(QString::fromStdString(e.sender)));
+                  else if constexpr (t == mtx::events::EventType::RoomCreate)
+                      return tr("%1 created and configured room: %2")
+                        .arg(displayName(QString::fromStdString(e.sender)))
+                        .arg(room_id_);
+                  else if constexpr (t == mtx::events::EventType::RoomPowerLevels)
+                      return formatPowerLevelEvent(e);
+                  else if constexpr (t == mtx::events::EventType::PolicyRuleRoom)
+                      return formatPolicyRule(QString::fromStdString(e.event_id));
+                  else if constexpr (t == mtx::events::EventType::PolicyRuleUser)
+                      return formatPolicyRule(QString::fromStdString(e.event_id));
+                  else if constexpr (t == mtx::events::EventType::PolicyRuleServer)
+                      return formatPolicyRule(QString::fromStdString(e.event_id));
+                  else if constexpr (t == mtx::events::EventType::RoomHistoryVisibility)
+                      return formatHistoryVisibilityEvent(e);
+                  else if constexpr (t == mtx::events::EventType::RoomGuestAccess)
+                      return formatGuestAccessEvent(e);
+                  else if constexpr (t == mtx::events::EventType::RoomMember)
+                      return formatMemberEvent(e);
+
+                  return tr("%1 changed unknown state event %2.")
+                    .arg(displayName(QString::fromStdString(e.sender)))
+                    .arg(QString::fromStdString(to_string(e.type)));
+              },
+              event);
+        }
+        return QString();
     }
     case Url:
         return QVariant(QString::fromStdString(url(event)));
@@ -828,6 +908,8 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
         auto id = relations(event).replaces().value_or(event_id(event));
         return QVariant::fromValue(events.reactions(id));
     }
+    case Room:
+        return QVariant::fromValue(this);
     case RoomId:
         return QVariant(room_id_);
     case RoomName:
@@ -915,6 +997,26 @@ TimelineModel::multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSp
         const_cast<TimelineModel *>(this)->fetchMore(index);
 
     auto event = events.get(rowCount() - index.row() - 1);
+
+    if (!event)
+        return;
+
+    for (QModelRoleData &roleData : roleDataSpan) {
+        int role = roleData.role();
+
+        roleData.setData(data(*event, role));
+    }
+}
+
+void
+TimelineModel::multiData(const QString &id,
+                         const QString &relatedTo,
+                         QModelRoleDataSpan roleDataSpan) const
+{
+    if (id.isEmpty())
+        return;
+
+    auto event = events.get(id.toStdString(), relatedTo.toStdString());
 
     if (!event)
         return;
@@ -2196,7 +2298,7 @@ TimelineModel::markSpecialEffectsDone()
 }
 
 QString
-TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor &bg)
+TimelineModel::formatTypingUsers(const QStringList &users, const QColor &bg)
 {
     QString temp =
       tr("%1 and %2 are typing.",
@@ -2243,7 +2345,7 @@ TimelineModel::formatTypingUsers(const std::vector<QString> &users, const QColor
     };
 
     uidWithoutLast.reserve(static_cast<int>(users.size()));
-    for (size_t i = 0; i + 1 < users.size(); i++) {
+    for (qsizetype i = 0; i + 1 < users.size(); i++) {
         uidWithoutLast.append(formatUser(users[i]));
     }
 
@@ -2288,20 +2390,13 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
 }
 
 QString
-TimelineModel::formatGuestAccessEvent(const QString &id)
+TimelineModel::formatGuestAccessEvent(
+  const mtx::events::StateEvent<mtx::events::state::GuestAccess> &event) const
 {
-    auto e = events.get(id.toStdString(), "");
-    if (!e)
-        return {};
-
-    auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::GuestAccess>>(e);
-    if (!event)
-        return {};
-
-    QString user = QString::fromStdString(event->sender);
+    QString user = QString::fromStdString(event.sender);
     QString name = utils::replaceEmoji(displayName(user));
 
-    switch (event->content.guest_access) {
+    switch (event.content.guest_access) {
     case mtx::events::state::AccessState::CanJoin:
         return tr("%1 made the room open to guests.").arg(name);
     case mtx::events::state::AccessState::Forbidden:
@@ -2312,21 +2407,13 @@ TimelineModel::formatGuestAccessEvent(const QString &id)
 }
 
 QString
-TimelineModel::formatHistoryVisibilityEvent(const QString &id)
+TimelineModel::formatHistoryVisibilityEvent(
+  const mtx::events::StateEvent<mtx::events::state::HistoryVisibility> &event) const
 {
-    auto e = events.get(id.toStdString(), "");
-    if (!e)
-        return {};
-
-    auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::HistoryVisibility>>(e);
-
-    if (!event)
-        return {};
-
-    QString user = QString::fromStdString(event->sender);
+    QString user = QString::fromStdString(event.sender);
     QString name = utils::replaceEmoji(displayName(user));
 
-    switch (event->content.history_visibility) {
+    switch (event.content.history_visibility) {
     case mtx::events::state::Visibility::WorldReadable:
         return tr("%1 made the room history world readable. Events may be now read by "
                   "non-joined people.")
@@ -2344,32 +2431,25 @@ TimelineModel::formatHistoryVisibilityEvent(const QString &id)
 }
 
 QString
-TimelineModel::formatPowerLevelEvent(const QString &id)
+TimelineModel::formatPowerLevelEvent(
+  const mtx::events::StateEvent<mtx::events::state::PowerLevels> &event) const
 {
-    auto e = events.get(id.toStdString(), "");
-    if (!e)
-        return {};
-
-    auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::PowerLevels>>(e);
-    if (!event)
-        return QString();
-
     mtx::events::StateEvent<mtx::events::state::PowerLevels> const *prevEvent = nullptr;
-    if (!event->unsigned_data.replaces_state.empty()) {
-        auto tempPrevEvent = events.get(event->unsigned_data.replaces_state, event->event_id);
+    if (!event.unsigned_data.replaces_state.empty()) {
+        auto tempPrevEvent = events.get(event.unsigned_data.replaces_state, event.event_id);
         if (tempPrevEvent) {
             prevEvent =
               std::get_if<mtx::events::StateEvent<mtx::events::state::PowerLevels>>(tempPrevEvent);
         }
     }
 
-    QString user        = QString::fromStdString(event->sender);
+    QString user        = QString::fromStdString(event.sender);
     QString sender_name = utils::replaceEmoji(displayName(user));
     // Get the rooms levels for redactions and powerlevel changes to determine "Administrator" and
     // "Moderator" powerlevels.
-    auto administrator_power_level = event->content.state_level("m.room.power_levels");
-    auto moderator_power_level     = event->content.redact;
-    auto default_powerlevel        = event->content.users_default;
+    auto administrator_power_level = event.content.state_level("m.room.power_levels");
+    auto moderator_power_level     = event.content.redact;
+    auto default_powerlevel        = event.content.users_default;
     if (!prevEvent)
         return tr("%1 has changed the room's permissions.").arg(sender_name);
 
@@ -2379,7 +2459,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         auto numberOfAffected = 0;
         // We do only compare to people with explicit PL. Usually others are not going to be
         // affected either way and this is cheaper to iterate over.
-        for (auto const &[mxid, currentPowerlevel] : event->content.users) {
+        for (auto const &[mxid, currentPowerlevel] : event.content.users) {
             if (currentPowerlevel == newPowerlevelSetting &&
                 prevEvent->content.user_level(mxid) < newPowerlevelSetting) {
                 numberOfAffected++;
@@ -2393,16 +2473,16 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 
     QStringList resultingMessage{};
     // These affect only a few people. Therefor we can print who is affected.
-    if (event->content.kick != prevEvent->content.kick) {
+    if (event.content.kick != prevEvent->content.kick) {
         auto default_message = tr("%1 has changed the room's kick powerlevel from %2 to %3.")
                                  .arg(sender_name)
                                  .arg(prevEvent->content.kick)
-                                 .arg(event->content.kick);
+                                 .arg(event.content.kick);
 
         // We only calculate affected users if we change to a level above the default users PL
         // to not accidentally have a DoS vector
-        if (event->content.kick > default_powerlevel) {
-            auto [affected, number_of_affected] = calc_affected(event->content.kick);
+        if (event.content.kick > default_powerlevel) {
+            auto [affected, number_of_affected] = calc_affected(event.content.kick);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
@@ -2424,16 +2504,16 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         }
     }
 
-    if (event->content.redact != prevEvent->content.redact) {
+    if (event.content.redact != prevEvent->content.redact) {
         auto default_message = tr("%1 has changed the room's redact powerlevel from %2 to %3.")
                                  .arg(sender_name)
                                  .arg(prevEvent->content.redact)
-                                 .arg(event->content.redact);
+                                 .arg(event.content.redact);
 
         // We only calculate affected users if we change to a level above the default users PL
         // to not accidentally have a DoS vector
-        if (event->content.redact > default_powerlevel) {
-            auto [affected, number_of_affected] = calc_affected(event->content.redact);
+        if (event.content.redact > default_powerlevel) {
+            auto [affected, number_of_affected] = calc_affected(event.content.redact);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
@@ -2456,16 +2536,16 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         }
     }
 
-    if (event->content.ban != prevEvent->content.ban) {
+    if (event.content.ban != prevEvent->content.ban) {
         auto default_message = tr("%1 has changed the room's ban powerlevel from %2 to %3.")
                                  .arg(sender_name)
                                  .arg(prevEvent->content.ban)
-                                 .arg(event->content.ban);
+                                 .arg(event.content.ban);
 
         // We only calculate affected users if we change to a level above the default users PL
         // to not accidentally have a DoS vector
-        if (event->content.ban > default_powerlevel) {
-            auto [affected, number_of_affected] = calc_affected(event->content.ban);
+        if (event.content.ban > default_powerlevel) {
+            auto [affected, number_of_affected] = calc_affected(event.content.ban);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
@@ -2487,17 +2567,17 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
         }
     }
 
-    if (event->content.state_default != prevEvent->content.state_default) {
+    if (event.content.state_default != prevEvent->content.state_default) {
         auto default_message =
           tr("%1 has changed the room's state_default powerlevel from %2 to %3.")
             .arg(sender_name)
             .arg(prevEvent->content.state_default)
-            .arg(event->content.state_default);
+            .arg(event.content.state_default);
 
         // We only calculate affected users if we change to a level above the default users PL
         // to not accidentally have a DoS vector
-        if (event->content.state_default > default_powerlevel) {
-            auto [affected, number_of_affected] = calc_affected(event->content.kick);
+        if (event.content.state_default > default_powerlevel) {
+            auto [affected, number_of_affected] = calc_affected(event.content.kick);
 
             if (number_of_affected != 0) {
                 auto true_affected_rest = number_of_affected - affected.size();
@@ -2521,42 +2601,42 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 
     // These affect potentially the whole room. We there for do not calculate who gets affected
     // by this to prevent huge lists of people.
-    if (event->content.invite != prevEvent->content.invite) {
+    if (event.content.invite != prevEvent->content.invite) {
         resultingMessage.append(tr("%1 has changed the room's invite powerlevel from %2 to %3.")
                                   .arg(sender_name,
                                        QString::number(prevEvent->content.invite),
-                                       QString::number(event->content.invite)));
+                                       QString::number(event.content.invite)));
     }
 
-    if (event->content.events_default != prevEvent->content.events_default) {
-        if ((event->content.events_default > default_powerlevel) &&
+    if (event.content.events_default != prevEvent->content.events_default) {
+        if ((event.content.events_default > default_powerlevel) &&
             prevEvent->content.events_default <= default_powerlevel) {
             resultingMessage.append(
               tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
                  "users can now not send any events.")
                 .arg(sender_name,
                      QString::number(prevEvent->content.events_default),
-                     QString::number(event->content.events_default)));
-        } else if ((event->content.events_default < prevEvent->content.events_default) &&
-                   (event->content.events_default < default_powerlevel) &&
+                     QString::number(event.content.events_default)));
+        } else if ((event.content.events_default < prevEvent->content.events_default) &&
+                   (event.content.events_default < default_powerlevel) &&
                    (prevEvent->content.events_default > default_powerlevel)) {
             resultingMessage.append(
               tr("%1 has changed the room's events_default powerlevel from %2 to %3. New "
                  "users can now send events that are not otherwise restricted.")
                 .arg(sender_name,
                      QString::number(prevEvent->content.events_default),
-                     QString::number(event->content.events_default)));
+                     QString::number(event.content.events_default)));
         } else {
             resultingMessage.append(
               tr("%1 has changed the room's events_default powerlevel from %2 to %3.")
                 .arg(sender_name,
                      QString::number(prevEvent->content.events_default),
-                     QString::number(event->content.events_default)));
+                     QString::number(event.content.events_default)));
         }
     }
 
     // Compare if a Powerlevel of a user changed
-    for (auto const &[mxid, powerlevel] : event->content.users) {
+    for (auto const &[mxid, powerlevel] : event.content.users) {
         auto nameOfChangedUser = utils::replaceEmoji(displayName(QString::fromStdString(mxid)));
         if (prevEvent->content.user_level(mxid) != powerlevel) {
             if (powerlevel >= administrator_power_level) {
@@ -2581,7 +2661,7 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
     }
 
     // Handle added/removed/changed event type
-    for (auto const &[event_type, powerlevel] : event->content.events) {
+    for (auto const &[event_type, powerlevel] : event.content.events) {
         auto prev_not_present =
           prevEvent->content.events.find(event_type) == prevEvent->content.events.end();
 
@@ -2620,26 +2700,19 @@ TimelineModel::formatPowerLevelEvent(const QString &id)
 }
 
 QString
-TimelineModel::formatImagePackEvent(const QString &id)
+TimelineModel::formatImagePackEvent(
+  const mtx::events::StateEvent<mtx::events::msc2545::ImagePack> &event) const
 {
-    auto e = events.get(id.toStdString(), "");
-    if (!e)
-        return {};
-
-    auto event = std::get_if<mtx::events::StateEvent<mtx::events::msc2545::ImagePack>>(e);
-    if (!event)
-        return {};
-
     mtx::events::StateEvent<mtx::events::msc2545::ImagePack> const *prevEvent = nullptr;
-    if (!event->unsigned_data.replaces_state.empty()) {
-        auto tempPrevEvent = events.get(event->unsigned_data.replaces_state, event->event_id);
+    if (!event.unsigned_data.replaces_state.empty()) {
+        auto tempPrevEvent = events.get(event.unsigned_data.replaces_state, event.event_id);
         if (tempPrevEvent) {
             prevEvent =
               std::get_if<mtx::events::StateEvent<mtx::events::msc2545::ImagePack>>(tempPrevEvent);
         }
     }
 
-    const auto &newImages = event->content.images;
+    const auto &newImages = event.content.images;
     const auto oldImages  = prevEvent ? prevEvent->content.images : decltype(newImages){};
 
     auto ascent = QFontMetrics(UserSettings::instance()->font()).ascent();
@@ -2662,12 +2735,12 @@ TimelineModel::formatImagePackEvent(const QString &id)
     auto added   = calcChange(newImages, oldImages);
     auto removed = calcChange(oldImages, newImages);
 
-    auto sender       = utils::replaceEmoji(displayName(QString::fromStdString(event->sender)));
+    auto sender       = utils::replaceEmoji(displayName(QString::fromStdString(event.sender)));
     const auto packId = [&event]() -> QString {
-        if (event->content.pack && !event->content.pack->display_name.empty()) {
-            return event->content.pack->display_name.c_str();
-        } else if (!event->state_key.empty()) {
-            return event->state_key.c_str();
+        if (event.content.pack && !event.content.pack->display_name.empty()) {
+            return event.content.pack->display_name.c_str();
+        } else if (!event.state_key.empty()) {
+            return event.state_key.c_str();
         }
         return tr("(empty)");
     }();
@@ -2692,7 +2765,7 @@ TimelineModel::formatImagePackEvent(const QString &id)
 }
 
 QString
-TimelineModel::formatPolicyRule(const QString &id)
+TimelineModel::formatPolicyRule(const QString &id) const
 {
     auto idStr = id.toStdString();
     auto e     = events.get(idStr, "");
@@ -2893,34 +2966,27 @@ TimelineModel::joinReplacementRoom(const QString &id)
 }
 
 QString
-TimelineModel::formatMemberEvent(const QString &id)
+TimelineModel::formatMemberEvent(
+  const mtx::events::StateEvent<mtx::events::state::Member> &event) const
 {
-    auto e = events.get(id.toStdString(), "");
-    if (!e)
-        return {};
-
-    auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(e);
-    if (!event)
-        return {};
-
     mtx::events::StateEvent<mtx::events::state::Member> const *prevEvent = nullptr;
-    if (!event->unsigned_data.replaces_state.empty()) {
-        auto tempPrevEvent = events.get(event->unsigned_data.replaces_state, event->event_id);
+    if (!event.unsigned_data.replaces_state.empty()) {
+        auto tempPrevEvent = events.get(event.unsigned_data.replaces_state, event.event_id);
         if (tempPrevEvent) {
             prevEvent =
               std::get_if<mtx::events::StateEvent<mtx::events::state::Member>>(tempPrevEvent);
         }
     }
 
-    QString user = QString::fromStdString(event->state_key);
+    QString user = QString::fromStdString(event.state_key);
     QString name = utils::replaceEmoji(displayName(user));
     QString rendered;
-    QString sender     = QString::fromStdString(event->sender);
+    QString sender     = QString::fromStdString(event.sender);
     QString senderName = utils::replaceEmoji(displayName(sender));
 
     // see table https://matrix.org/docs/spec/client_server/latest#m-room-member
     using namespace mtx::events::state;
-    switch (event->content.membership) {
+    switch (event.content.membership) {
     case Membership::Invite:
         rendered = tr("%1 invited %2.").arg(senderName, name);
         break;
@@ -2929,9 +2995,8 @@ TimelineModel::formatMemberEvent(const QString &id)
             QString oldName = utils::replaceEmoji(
               QString::fromStdString(prevEvent->content.display_name).toHtmlEscaped());
 
-            bool displayNameChanged =
-              prevEvent->content.display_name != event->content.display_name;
-            bool avatarChanged = prevEvent->content.avatar_url != event->content.avatar_url;
+            bool displayNameChanged = prevEvent->content.display_name != event.content.display_name;
+            bool avatarChanged      = prevEvent->content.avatar_url != event.content.avatar_url;
 
             if (displayNameChanged && avatarChanged)
                 rendered = tr("%1 has changed their avatar and changed their "
@@ -2946,30 +3011,30 @@ TimelineModel::formatMemberEvent(const QString &id)
             // the case of nothing changed but join follows join shouldn't happen, so
             // just show it as join
         } else {
-            if (event->content.join_authorised_via_users_server.empty())
+            if (event.content.join_authorised_via_users_server.empty())
                 rendered = tr("%1 joined.").arg(name);
             else
                 rendered =
                   tr("%1 joined via authorisation from %2's server.")
                     .arg(name,
-                         QString::fromStdString(event->content.join_authorised_via_users_server));
+                         QString::fromStdString(event.content.join_authorised_via_users_server));
         }
         break;
     case Membership::Leave:
         if (!prevEvent || prevEvent->content.membership == Membership::Join) {
-            if (event->state_key == event->sender)
+            if (event.state_key == event.sender)
                 rendered = tr("%1 left the room.").arg(name);
             else
                 rendered = tr("%2 kicked %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Invite) {
-            if (event->state_key == event->sender)
+            if (event.state_key == event.sender)
                 rendered = tr("%1 rejected their invite.").arg(name);
             else
                 rendered = tr("%2 revoked the invite to %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Ban) {
             rendered = tr("%2 unbanned %1.").arg(name, senderName);
         } else if (prevEvent->content.membership == Membership::Knock) {
-            if (event->state_key == event->sender)
+            if (event.state_key == event.sender)
                 rendered = tr("%1 redacted their knock.").arg(name);
             else
                 rendered = tr("%2 rejected the knock from %1.").arg(name, senderName);
@@ -2988,8 +3053,8 @@ TimelineModel::formatMemberEvent(const QString &id)
         break;
     }
 
-    if (event->content.reason != "") {
-        rendered += " " + tr("Reason: %1").arg(QString::fromStdString(event->content.reason));
+    if (event.content.reason != "") {
+        rendered += " " + tr("Reason: %1").arg(QString::fromStdString(event.content.reason));
     }
 
     return rendered;

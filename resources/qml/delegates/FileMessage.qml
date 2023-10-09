@@ -2,26 +2,30 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.12
-import QtQuick.Layouts 1.2
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Layouts
+import QtQuick.Controls
+import im.nheko
 
-Item {
+Control {
+    id: evRoot
+
     required property string eventId
     required property string filename
     required property string filesize
 
-    height: rowa.height + (Settings.bubbles? 16: 24)
-    implicitWidth: rowa.implicitWidth + metadataWidth
-    property int metadataWidth
-    property bool fitsMetadata: true
+    padding: Settings.bubbles? 8 : 12
+    //Layout.preferredHeight: rowa.implicitHeight + padding
+    //Layout.maximumWidth: rowa.Layout.maximumWidth + metadataWidth + padding
+    property int metadataWidth: 0
+    property bool fitsMetadata: false
 
-    RowLayout {
+    Layout.maximumWidth: rowa.Layout.maximumWidth + padding * 2
+
+    contentItem: RowLayout {
         id: rowa
 
-        anchors.centerIn: parent
-        width: parent.width - (Settings.bubbles? 16 : 24)
-        spacing: 15
+        spacing: 16
 
         Rectangle {
             id: button
@@ -63,6 +67,7 @@ Item {
                 id: filename_
 
                 Layout.fillWidth: true
+                Layout.maximumWidth: implicitWidth + 1
                 text: filename
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
@@ -73,6 +78,7 @@ Item {
                 id: filesize_
 
                 Layout.fillWidth: true
+                Layout.maximumWidth: implicitWidth + 1
                 text: filesize
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
@@ -83,11 +89,9 @@ Item {
 
     }
 
-    Rectangle {
+    background: Rectangle {
         color: palette.alternateBase
-        z: -1
-        radius: 10
-        anchors.fill: parent
+        radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
         visible: !Settings.bubbles // the bubble in a bubble looks odd
     }
 

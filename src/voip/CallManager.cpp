@@ -92,7 +92,8 @@ CallManager::CallManager(QObject *parent)
         if (QGuiApplication::platformName() != QStringLiteral("wayland")) {
             // Selected by default
             screenShareType_ = ScreenShareType::X11;
-            std::swap(screenShareTypes_[0], screenShareTypes_[1]);
+            if (screenShareTypes_.size() >= 2)
+                std::swap(screenShareTypes_[0], screenShareTypes_[1]);
         }
     }
 #endif

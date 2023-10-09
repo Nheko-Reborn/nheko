@@ -29,24 +29,10 @@ Rectangle {
         anchors.rightMargin: replyPopup.width < 450 ? 2 * (22 + 16) : 3 * (22 + 16)
         anchors.top: parent.top
         anchors.topMargin: Nheko.paddingSmall
-        blurhash: modelData.blurhash ?? ""
-        body: modelData.body ?? ""
-        encryptionError: modelData.encryptionError ?? 0
-        eventId: modelData.eventId ?? ""
-        filename: modelData.filename ?? ""
-        filesize: modelData.filesize ?? ""
-        formattedBody: modelData.formattedBody ?? ""
-        isOnlyEmoji: modelData.isOnlyEmoji ?? false
-        originalWidth: modelData.originalWidth ?? 0
-        proportionalHeight: modelData.proportionalHeight ?? 1
-        type: modelData.type ?? MtxEvent.UnknownMessage
-        typeString: modelData.typeString ?? ""
-        url: modelData.url ?? ""
+        eventId: room.reply ?? ""
         userColor: TimelineManager.userColor(modelData.userId, palette.window)
-        userId: modelData.userId ?? ""
-        userName: modelData.userName ?? ""
         visible: room && room.reply
-        width: parent.width
+        maxWidth: parent.width - anchors.leftMargin - anchors.rightMargin
     }
     ImageButton {
         id: closeReplyButton

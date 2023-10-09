@@ -22,7 +22,7 @@ Item {
     required property string url
     required property string body
     required property string filesize
-    property double divisor: isReply ? 4 : 2
+    property double divisor: EventDelegateChooser.isReply ? 10 : 4
     property int tempWidth: originalWidth < 1? 400: originalWidth
     implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
     width: Math.min(parent?.width ?? implicitWidth, implicitWidth)

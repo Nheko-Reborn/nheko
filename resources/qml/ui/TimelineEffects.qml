@@ -9,6 +9,7 @@ Item {
     id: effectRoot
     readonly property int maxLifespan: Math.max(confettiEmitter.lifeSpan, rainfallEmitter.lifeSpan)
     required property bool shouldEffectsRun
+    visible: effectRoot.shouldEffectsRun
 
     function pulseConfetti()
     {
@@ -23,8 +24,9 @@ Item {
     ParticleSystem {
         id: particleSystem
 
-        Component.onCompleted: pause();
+        Component.onCompleted: stop();
         paused: !effectRoot.shouldEffectsRun
+        running: effectRoot.shouldEffectsRun
     }
 
     Emitter {
@@ -89,26 +91,47 @@ Item {
         enabled: false
         anchors.horizontalCenter: effectRoot.horizontalCenter
         y: -60
-        emitRate: effectRoot.width / 50
+        emitRate: effectRoot.width / 30
         lifeSpan: 10000
         system: particleSystem
         velocity: PointDirection {
             x: 0
-            y: 300
+            y: 400
             xVariation: 0
             yVariation: 75
         }
 
-        ItemParticle {
-            system: particleSystem
-            groups: ["rain"]
-            fade: false
-            delegate: Rectangle {
-                width: 2
-                height: 30 + 30 * Math.random()
-                radius: 2
+        // causes high CPU load, see: https://bugreports.qt.io/browse/QTBUG-117923
+        //ItemParticle {
+            //    system: particleSystem
+            //    groups: ["rain"]
+            //    fade: false
+            //    visible: effectRoot.shouldEffectsRun
+            //    delegate: Rectangle {
+            //        width: 2
+            //        height: 30 + 30 * Math.random()
+            //        radius: 2
+            //        color: "#0099ff"
+            //    }
+            //}
+
+            ImageParticle {
+                system: particleSystem
+                groups: ["rain"]
+                source: "qrc:/confettiparticle.svg"
+                rotationVelocity: 0
+                rotationVelocityVariation: 0
+                colorVariation: 0
                 color: "#0099ff"
+                entryEffect: ImageParticle.None
+                xVector: PointDirection {
+                    x: 0.01
+                    y: 0
+                }
+                yVector: PointDirection {
+                    x: 0
+                    y: 5
+                }
             }
         }
     }
-}

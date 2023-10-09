@@ -2,29 +2,31 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.3
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import im.nheko
 
 AbstractButton {
     required property int type
     required property int originalWidth
+    required property int originalHeight
     required property double proportionalHeight
     required property string url
     required property string blurhash
     required property string body
     required property string filename
-    required property bool isReply
     required property string eventId
-    property double divisor: isReply ? 5 : 3
+    required property int containerHeight
+    property double divisor: EventDelegateChooser.isReply ? 10 : 4
 
-    property int tempWidth: originalWidth < 1? 400: originalWidth
+    EventDelegateChooser.keepAspectRatio: true
+    EventDelegateChooser.maxWidth: originalWidth
+    EventDelegateChooser.maxHeight: containerHeight / divisor
+    EventDelegateChooser.aspectRatio: proportionalHeight
 
-    implicitWidth: Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1))
-    width: Math.min(parent?.width ?? 2000,implicitWidth)
-    height: width*proportionalHeight
     hoverEnabled: true
+    enabled: !EventDelegateChooser.isReply
 
     state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"
     states: [
@@ -116,6 +118,7 @@ AbstractButton {
         source: url != "" ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
+        horizontalAlignment: Image.AlignLeft
         smooth: true
         mipmap: true
 
@@ -127,21 +130,23 @@ AbstractButton {
         id: mxcimage
 
         visible: loaded
-        anchors.fill: parent
         roomm: room
         play: !Settings.animateImagesOnHover || parent.hovered
         eventId: parent.eventId
+
+        anchors.fill: parent
     }
 
     Image {
         id: blurhash_
 
-        anchors.fill: parent
         source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + palette.buttonText)
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         sourceSize.width: parent.width * Screen.devicePixelRatio
         sourceSize.height: parent.height * Screen.devicePixelRatio
+
+        anchors.fill: parent
     }
 
     onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
@@ -150,6 +155,7 @@ AbstractButton {
         id: overlay
 
         anchors.fill: parent
+
         visible: parent.hovered
 
         Rectangle {

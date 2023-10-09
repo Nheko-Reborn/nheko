@@ -199,8 +199,8 @@ class TimelineModel final : public QAbstractListModel
     QML_UNCREATABLE("")
 
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentIndexChanged)
-    Q_PROPERTY(std::vector<QString> typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY
-                 typingUsersChanged)
+    Q_PROPERTY(
+      QStringList typingUsers READ typingUsers WRITE updateTypingUsers NOTIFY typingUsersChanged)
     Q_PROPERTY(QString scrollTarget READ scrollTarget NOTIFY scrollTargetChanged)
     Q_PROPERTY(QString reply READ reply WRITE setReply NOTIFY replyChanged RESET resetReply)
     Q_PROPERTY(QString edit READ edit WRITE setEdit NOTIFY editChanged RESET resetEdit)
@@ -238,6 +238,7 @@ public:
         IsOnlyEmoji,
         Body,
         FormattedBody,
+        FormattedStateEvent,
         IsSender,
         UserId,
         UserName,
@@ -266,6 +267,7 @@ public:
         ReplyTo,
         ThreadId,
         Reactions,
+        Room,
         RoomId,
         RoomName,
         RoomTopic,
@@ -286,6 +288,8 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
     void multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSpan) const override;
+    void
+    multiData(const QString &id, const QString &relatedTo, QModelRoleDataSpan roleDataSpan) const;
     QVariant data(const mtx::events::collections::TimelineEvents &event, int role) const;
     Q_INVOKABLE QVariant dataById(const QString &id, int role, const QString &relatedTo);
     Q_INVOKABLE QVariant dataByIndex(int i, int role = Qt::DisplayRole) const
@@ -302,17 +306,22 @@ public:
     Q_INVOKABLE QString displayName(const QString &id) const;
     Q_INVOKABLE QString avatarUrl(const QString &id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;
-    Q_INVOKABLE QString formatTypingUsers(const std::vector<QString> &users, const QColor &bg);
+    Q_INVOKABLE QString formatTypingUsers(const QStringList &users, const QColor &bg);
     Q_INVOKABLE bool showAcceptKnockButton(const QString &id);
     Q_INVOKABLE void acceptKnock(const QString &id);
     Q_INVOKABLE void joinReplacementRoom(const QString &id);
-    Q_INVOKABLE QString formatMemberEvent(const QString &id);
+    Q_INVOKABLE QString
+    formatMemberEvent(const mtx::events::StateEvent<mtx::events::state::Member> &event) const;
     Q_INVOKABLE QString formatJoinRuleEvent(const QString &id);
-    Q_INVOKABLE QString formatHistoryVisibilityEvent(const QString &id);
-    Q_INVOKABLE QString formatGuestAccessEvent(const QString &id);
-    Q_INVOKABLE QString formatPowerLevelEvent(const QString &id);
-    Q_INVOKABLE QString formatImagePackEvent(const QString &id);
-    Q_INVOKABLE QString formatPolicyRule(const QString &id);
+    QString formatHistoryVisibilityEvent(
+      const mtx::events::StateEvent<mtx::events::state::HistoryVisibility> &event) const;
+    QString
+    formatGuestAccessEvent(const mtx::events::StateEvent<mtx::events::state::GuestAccess> &) const;
+    QString formatPowerLevelEvent(
+      const mtx::events::StateEvent<mtx::events::state::PowerLevels> &event) const;
+    QString formatImagePackEvent(
+      const mtx::events::StateEvent<mtx::events::msc2545::ImagePack> &event) const;
+    Q_INVOKABLE QString formatPolicyRule(const QString &id) const;
     Q_INVOKABLE QVariantMap formatRedactedEvent(const QString &id);
 
     Q_INVOKABLE void viewRawMessage(const QString &id);
@@ -396,14 +405,14 @@ public slots:
     void lastReadIdOnWindowFocus();
     void checkAfterFetch();
     QVariantMap getDump(const QString &eventId, const QString &relatedTo) const;
-    void updateTypingUsers(const std::vector<QString> &users)
+    void updateTypingUsers(const QStringList &users)
     {
         if (this->typingUsers_ != users) {
             this->typingUsers_ = users;
             emit typingUsersChanged(typingUsers_);
         }
     }
-    std::vector<QString> typingUsers() const { return typingUsers_; }
+    QStringList typingUsers() const { return typingUsers_; }
     bool paginationInProgress() const { return m_paginationInProgress; }
     QString reply() const { return reply_; }
     void setReply(const QString &newReply);
@@ -461,7 +470,7 @@ signals:
     void redactionFailed(QString id);
     void mediaCached(QString mxcUrl, QString cacheUrl);
     void newEncryptedImage(mtx::crypto::EncryptedFile encryptionInfo);
-    void typingUsersChanged(std::vector<QString> users);
+    void typingUsersChanged(QStringList users);
     void replyChanged(QString reply);
     void editChanged(QString reply);
     void threadChanged(QString id);
@@ -519,7 +528,7 @@ private:
     QString currentId, currentReadId;
     QString reply_, edit_, thread_;
     QString textBeforeEdit, replyBeforeEdit;
-    std::vector<QString> typingUsers_;
+    QStringList typingUsers_;
 
     TimelineViewManager *manager_;
 

@@ -728,9 +728,9 @@ Page {
             }
             Platform.MenuItem {
                 text: qsTr("Mark as read")
+
                 onTriggered: Rooms.getRoomById(roomContextMenu.roomid).markRoomAsRead()
             }
-
             Platform.MenuItem {
                 text: qsTr("Room settings")
 

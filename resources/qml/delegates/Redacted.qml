@@ -2,25 +2,22 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
-Rectangle{
+Control {
+    id: msgRoot
 
-    height: redactedLayout.implicitHeight + Nheko.paddingSmall
-    implicitWidth: redactedLayout.implicitWidth + 2 * Nheko.paddingMedium
-    width: Math.min(parent.width,implicitWidth+1)
-    radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
-    color: palette.alternateBase
-    property int metadataWidth
-    property bool fitsMetadata: parent.width - redactedLayout.width > metadataWidth + 4
+    property int metadataWidth: 0
+    property bool fitsMetadata: false //parent.width - redactedLayout.width > metadataWidth + 4
 
-    RowLayout {
+    required property string eventId
+    required property Room room
+
+    contentItem: RowLayout {
         id: redactedLayout
-        anchors.centerIn: parent
-        width: parent.width - 2 * Nheko.paddingMedium
         spacing: Nheko.paddingSmall
 
         Image {
@@ -34,12 +31,11 @@ Rectangle{
             id: redactedLabel
             Layout.margins: 0
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
-            Layout.preferredWidth: implicitWidth
+            Layout.maximumWidth: implicitWidth + 1
             Layout.fillWidth: true
-            property var redactedPair: room.formatRedactedEvent(eventId)
+            property var redactedPair: room.formatRedactedEvent(msgRoot.eventId)
             text: redactedPair["first"]
             wrapMode: Label.WordWrap
-            color: palette.text
 
             ToolTip.text: redactedPair["second"]
             ToolTip.visible: hh.hovered
@@ -47,5 +43,14 @@ Rectangle{
                 id: hh
             }
         }
+    }
+
+    padding: Nheko.paddingSmall
+
+    Layout.maximumWidth: redactedLayout.Layout.maximumWidth + padding * 2
+
+    background: Rectangle {
+        color: palette.alternateBase
+        radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
     }
 }

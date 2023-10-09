@@ -843,8 +843,8 @@ EventStore::get(const std::string &id,
                                               nhlog::net()->error(
                                                 "Failed to retrieve event with id {}, which was "
                                                 "requested to show the replyTo for event {}",
-                                                relatedTo,
-                                                id);
+                                                id,
+                                                relatedTo);
                                               return;
                                           }
                                           emit eventFetched(id, relatedTo, timeline);

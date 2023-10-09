@@ -285,25 +285,10 @@ Pane {
 
                             property var e: room ? room.getDump(modelData, "pins") : {}
 
-                            Layout.fillWidth: true
-                            Layout.preferredHeight: height
-                            blurhash: e.blurhash ?? ""
-                            body: e.body ?? ""
-                            encryptionError: e.encryptionError ?? 0
+                            maxWidth: pinnedMessages.width
+                            //Layout.preferredHeight: height
                             eventId: e.eventId ?? ""
-                            filename: e.filename ?? ""
-                            filesize: e.filesize ?? ""
-                            formattedBody: e.formattedBody ?? ""
-                            isOnlyEmoji: e.isOnlyEmoji ?? false
-                            keepFullText: true
-                            originalWidth: e.originalWidth ?? 0
-                            proportionalHeight: e.proportionalHeight ?? 1
-                            type: e.type ?? MtxEvent.UnknownMessage
-                            typeString: e.typeString ?? ""
-                            url: e.url ?? ""
                             userColor: TimelineManager.userColor(e.userId, palette.window)
-                            userId: e.userId ?? ""
-                            userName: e.userName ?? ""
 
                             Connections {
                                 function onPinnedMessagesChanged() {

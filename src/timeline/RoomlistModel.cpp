@@ -541,7 +541,7 @@ RoomlistModel::sync(const mtx::responses::Sync &sync_)
                 if (auto t =
                       std::get_if<mtx::events::EphemeralEvent<mtx::events::ephemeral::Typing>>(
                         &ev)) {
-                    std::vector<QString> typing;
+                    QStringList typing;
                     typing.reserve(t->content.user_ids.size());
                     for (const auto &user : t->content.user_ids) {
                         if (user != http::client()->user_id().to_string())

@@ -8,37 +8,34 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import im.nheko 1.0
 
-Rectangle {
+Control {
     id: r
 
     required property int encryptionError
     required property string eventId
 
-    radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
-    width: parent.width? parent.width : 0
-    implicitWidth: encryptedText.implicitWidth+24+Nheko.paddingMedium*3 // Column doesn't provide a useful implicitWidth, should be replaced by ColumnLayout
-    height: contents.implicitHeight + Nheko.paddingMedium * 2
-    color: palette.alternateBase
+    padding: Nheko.paddingMedium
+    implicitHeight: contents.implicitHeight + Nheko.paddingMedium * 2
+    Layout.maximumWidth: contents.Layout.maximumWidth + padding * 2
+    Layout.fillWidth: true
 
-    RowLayout {
+    contentItem: RowLayout {
         id: contents
 
-        anchors.fill: parent
-        anchors.margins: Nheko.paddingMedium
         spacing: Nheko.paddingMedium
 
         Image {
             source: "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?" + Nheko.theme.error
             Layout.alignment: Qt.AlignVCenter
-            width: 24
-            height: width
+            Layout.preferredWidth: 24
+            Layout.preferredHeight: 24
         }
 
-        Column {
+        ColumnLayout {
             spacing: Nheko.paddingSmall
             Layout.fillWidth: true
 
-            MatrixText {
+            Label {
                 id: encryptedText
                 text: {
                     switch (encryptionError) {
@@ -58,8 +55,11 @@ Rectangle {
                         return qsTr("Unknown decryption error");
                     }
                 }
+                textFormat: Text.PlainText
+                wrapMode: Label.WordWrap
                 color: palette.text
-                width: parent.width
+                Layout.fillWidth: true
+                Layout.maximumWidth: implicitWidth + 1
             }
 
             Button {
@@ -72,4 +72,9 @@ Rectangle {
 
     }
 
+    background: Rectangle {
+        color: palette.alternateBase
+        radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingMedium
+        visible: !Settings.bubbles // the bubble in a bubble looks odd
+    }
 }

@@ -9,11 +9,12 @@ import im.nheko
 MatrixText {
     required property string body
     required property bool isOnlyEmoji
-    required property bool isReply
+    property bool isReply: EventDelegateChooser.isReply
     required property bool keepFullText
     required property string formatted
+
     property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
-    property int metadataWidth
+    property int metadataWidth: 100
     property bool fitsMetadata: false //positionAt(width,height-4) == positionAt(width-metadataWidth-10, height-4)
 
     // table border-collapse doesn't seem to work
@@ -39,11 +40,8 @@ MatrixText {
     }" : "") +  // TODO(Nico): Figure out how to support mobile
     "</style>
     " + formatted.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
-    width: parent?.width ?? 0
-    height: !keepFullText ? Math.round(Math.min(timelineView.height / 8, implicitHeight)) : implicitHeight
-    clip: !keepFullText
+
     selectByMouse: !isReply
-//    enabled: !Settings.mobileMode
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
     NhekoCursorShape {

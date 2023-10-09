@@ -357,6 +357,8 @@ set(SRC_FILES
     src/timeline/DelegateChooser.h
     src/timeline/EventStore.cpp
     src/timeline/EventStore.h
+    src/timeline/EventDelegateChooser.cpp
+    src/timeline/EventDelegateChooser.h
     src/timeline/InputBar.cpp
     src/timeline/InputBar.h
     src/timeline/Permissions.cpp
@@ -693,7 +695,6 @@ set(QML_SOURCES
     resources/qml/ChatPage.qml
     resources/qml/CommunitiesList.qml
     resources/qml/RoomList.qml
-    resources/qml/TimelineView.qml
     resources/qml/Avatar.qml
     resources/qml/Completer.qml
     resources/qml/EncryptionIndicator.qml
@@ -709,7 +710,12 @@ set(QML_SOURCES
     resources/qml/Reactions.qml
     resources/qml/ReplyPopup.qml
     resources/qml/StatusIndicator.qml
-    resources/qml/TimelineRow.qml
+    resources/qml/TimelineEvent.qml
+    resources/qml/TimelineSectionHeader.qml
+    resources/qml/TimelineDefaultMessageStyle.qml
+    resources/qml/TimelineBubbleMessageStyle.qml
+    resources/qml/TimelineMetadata.qml
+    resources/qml/TimelineView.qml
     resources/qml/TopBar.qml
     resources/qml/QuickSwitcher.qml
     resources/qml/ForwardCompleter.qml
@@ -731,7 +737,6 @@ set(QML_SOURCES
     resources/qml/delegates/Encrypted.qml
     resources/qml/delegates/FileMessage.qml
     resources/qml/delegates/ImageMessage.qml
-    resources/qml/delegates/MessageDelegate.qml
     resources/qml/delegates/NoticeMessage.qml
     resources/qml/delegates/Pill.qml
     resources/qml/delegates/Placeholder.qml
@@ -874,6 +879,7 @@ target_link_libraries(nheko PRIVATE
     Qt::Gui
     Qt::Multimedia
     Qt::Qml
+    Qt::QmlPrivate
     Qt::QuickControls2
     qt6keychain
     nlohmann_json::nlohmann_json
@@ -966,3 +972,4 @@ if(UNIX AND NOT APPLE)
             COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
     endif()
 endif()
+# vim: tabstop=4 shiftwidth=4 expandtab
