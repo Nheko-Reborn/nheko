@@ -690,6 +690,16 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
             formattedBody_.replace(curImg, imgReplacement);
         }
 
+        if (auto effectMessage =
+              std::get_if<mtx::events::RoomEvent<mtx::events::msg::ElementEffect>>(&event)) {
+            if (effectMessage->content.msgtype == std::string_view("nic.custom.confetti")) {
+                formattedBody_.append(QUtf8StringView(u8"🎊"));
+            } else if (effectMessage->content.msgtype ==
+                       std::string_view("io.element.effect.rainfall")) {
+                formattedBody_.append(QUtf8StringView(u8"🌧️"));
+            }
+        }
+
         return QVariant(utils::replaceEmoji(utils::linkifyMessage(formattedBody_)));
     }
     case FormattedStateEvent: {

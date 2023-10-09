@@ -24,7 +24,7 @@ Item {
     ParticleSystem {
         id: particleSystem
 
-        Component.onCompleted: pause();
+        Component.onCompleted: stop();
         paused: !effectRoot.shouldEffectsRun
         running: effectRoot.shouldEffectsRun
     }
@@ -32,7 +32,6 @@ Item {
     Emitter {
         id: confettiEmitter
 
-        Component.onCompleted: stop();
         group: "confetti"
         width: effectRoot.width * 3/4
         enabled: false
