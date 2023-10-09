@@ -722,7 +722,6 @@ set(QML_SOURCES
         resources/qml/Reactions.qml
         resources/qml/ReplyPopup.qml
         resources/qml/StatusIndicator.qml
-        resources/qml/TimelineRow.qml
         resources/qml/TopBar.qml
         resources/qml/QuickSwitcher.qml
         resources/qml/ForwardCompleter.qml
