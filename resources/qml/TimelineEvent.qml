@@ -31,7 +31,7 @@ EventDelegateChooser {
             Layout.fillWidth: true
             //Layout.maximumWidth: implicitWidth
 
-            color: type == MtxEvent.NoticeMessage ? palette.buttonText : palette.text
+            color: type == MtxEvent.NoticeMessage ? palette.active.buttonText : palette.active.text
             font.italic: type == MtxEvent.NoticeMessage
             formatted: formattedBody
             keepFullText: true
@@ -48,7 +48,7 @@ EventDelegateChooser {
             Layout.fillWidth: true
             //Layout.maximumWidth: implicitWidth
 
-            color: TimelineManager.userColor(userId, palette.base)
+            color: TimelineManager.userColor(userId, palette.active.base)
             font.italic: true
             formatted: TimelineManager.escapeEmoji(userName) + " " + formattedBody
             keepFullText: true
@@ -63,7 +63,7 @@ EventDelegateChooser {
             required property string userName
 
             body: ''
-            color: palette.buttonText
+            color: palette.active.buttonText
             font.italic: true
             font.pointSize: Settings.fontSize * 0.8
             formatted: ''
@@ -83,7 +83,7 @@ EventDelegateChooser {
 
             Layout.fillWidth: true
             body: formatted
-            color: palette.buttonText
+            color: palette.active.buttonText
             font.italic: true
             formatted: {
                 switch (callType) {
@@ -109,7 +109,7 @@ EventDelegateChooser {
 
             Layout.fillWidth: true
             body: formatted
-            color: palette.buttonText
+            color: palette.active.buttonText
             font.italic: true
             formatted: {
                 switch (type) {
