@@ -82,7 +82,9 @@ TimelineEvent {
         }, 
         Rectangle {
             anchors.fill: gridContainer
-            color: (Settings.messageHoverHighlight && messageHover.hovered) ? palette.alternateBase : "transparent"
+            property color threadColor: TimelineManager.userColor(wrapper.threadId, palette.base)
+            property color threadBackgroundColor: wrapper.threadId ? Qt.tint(palette.base, Qt.hsla(threadColor.hslHue, 0.7, threadColor.hslLightness, 0.1)) : "transparent"
+            color: (Settings.messageHoverHighlight && messageHover.hovered) ? palette.alternateBase : threadBackgroundColor
 
             // this looks better without margins
             TapHandler {
@@ -281,7 +283,7 @@ TimelineEvent {
 
                 padding: wrapper.isStateEvent ? 0 : 4
                 background: Rectangle {
-                    color: !wrapper.isStateEvent ? Qt.tint(palette.base, Qt.hsla(messageBubble.userColor.hslHue, 0.5, messageBubble.userColor.hslLightness, 0.2)) : "transparent"
+                    color: !wrapper.isStateEvent ? Qt.tint(palette.base, Qt.hsla(messageBubble.userColor.hslHue, wrapper.hovered ? 0.8 : 0.5, messageBubble.userColor.hslLightness, 0.2)) : "transparent"
                     radius: 4
                     border.color: Nheko.theme.red
                     border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
