@@ -102,10 +102,12 @@ MxcAnimatedImage::startDownload()
             if (buffer.bytesAvailable() <
                 4LL * 1024 * 1024 * 1024) // cache images smaller than 4MB in RAM
                 movie.setCacheMode(QMovie::CacheAll);
-            if (play_)
+            if (play_ && movie.frameCount() > 1)
                 movie.start();
-            else
+            else {
                 movie.jumpToFrame(0);
+                movie.setPaused(true);
+            }
             emit loadedChanged();
             update();
         });
@@ -171,6 +173,9 @@ QSGNode *
 MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeData *)
 {
     if (!imageDirty)
+        return oldNode;
+
+    if (clipRect().isEmpty())
         return oldNode;
 
     imageDirty      = false;

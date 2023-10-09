@@ -29,6 +29,7 @@ public:
         connect(this, &MxcAnimatedImage::roomChanged, &MxcAnimatedImage::startDownload);
         connect(&movie, &QMovie::frameChanged, this, &MxcAnimatedImage::newFrame);
         setFlag(QQuickItem::ItemHasContents);
+        setFlag(QQuickItem::ItemObservesViewport);
         // setAcceptHoverEvents(true);
     }
 
@@ -55,7 +56,12 @@ public:
     {
         if (play_ != newPlay) {
             play_ = newPlay;
-            movie.setPaused(!play_);
+            if (movie.frameCount() > 1)
+                movie.setPaused(!play_);
+            else {
+                movie.jumpToFrame(0);
+                movie.setPaused(true);
+            }
             emit playChanged();
         }
     }
@@ -77,7 +83,8 @@ private slots:
     {
         currentFrame = frame;
         imageDirty   = true;
-        update();
+        if (!clipRect().isEmpty())
+            update();
     }
 
 private:
