@@ -294,7 +294,7 @@ TimelineEvent {
             id: reactionRow
 
             eventId: wrapper.eventId
-            layoutDirection: row.bubbleOnRight ? Qt.RightToLeft : Qt.LeftToRight
+            layoutDirection: (!wrapper.isStateEvent && wrapper.isSender) ? Qt.RightToLeft : Qt.LeftToRight
             reactions: wrapper.reactions
             width: wrapper.width - wrapper.avatarMargin
             x: wrapper.avatarMargin
