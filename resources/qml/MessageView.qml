@@ -59,11 +59,17 @@ Item {
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
 
-        delegate: TimelineDefaultMessageStyle {
-            messageActions: messageActionsC
-            messageContextMenu: messageContextMenuC
-            scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+        Component {
+            id: defaultMessageStyle
+
+            TimelineDefaultMessageStyle {
+                messageActions: messageActionsC
+                messageContextMenu: messageContextMenuC
+                scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+            }
         }
+
+        delegate: defaultMessageStyle
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: Nheko.paddingLarge

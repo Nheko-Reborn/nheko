@@ -24,7 +24,7 @@ AbstractButton {
     property string userName: eventId ? room.dataById(eventId, Room.UserName, "") : ""
     implicitHeight: replyContainer.implicitHeight
     implicitWidth: replyContainer.implicitWidth
-    property int maxWidth
+    required property int maxWidth
 
     NhekoCursorShape {
         anchors.fill: parent
@@ -61,11 +61,13 @@ AbstractButton {
                 id: colorline
 
                 width: 4
+                height: content.height
 
                 color: TimelineManager.userColor(r.userId, palette.base)
             }
 
             Column {
+                id: content
                 spacing: 0
 
                 AbstractButton {
