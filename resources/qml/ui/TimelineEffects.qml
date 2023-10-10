@@ -21,6 +21,11 @@ Item {
         rainfallEmitter.pulse(effectRoot.height * 3.3)
     }
 
+    function removeParticles()
+    {
+        particleSystem.reset()
+    }
+
     ParticleSystem {
         id: particleSystem
 

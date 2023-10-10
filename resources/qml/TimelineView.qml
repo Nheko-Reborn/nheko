@@ -381,7 +381,10 @@ Item {
         repeat: false
         running: false
 
-        onTriggered: shouldEffectsRun = false
+        onTriggered: {
+            timelineEffects.removeParticles()
+            shouldEffectsRun = false
+        }
     }
     Connections {
         function onConfetti() {
