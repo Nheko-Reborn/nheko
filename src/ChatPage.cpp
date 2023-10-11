@@ -588,6 +588,10 @@ ChatPage::loadStateFromCache()
     try {
         olm::client()->load(cache::restoreOlmAccount(), cache::client()->pickleSecret());
 
+        nhlog::db()->info("Removing old cached messages");
+        cache::deleteOldData();
+        nhlog::db()->info("Message removal done");
+
         emit initializeEmptyViews();
 
         cache::calculateRoomReadStatus();
@@ -769,14 +773,6 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
         auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
 
         emit syncUI(std::move(res));
-
-        // if we process a lot of syncs (1 every 200ms), this means we clean the
-        // db every 100s
-        static int syncCounter = 0;
-        if (syncCounter++ >= 500) {
-            cache::deleteOldData();
-            syncCounter = 0;
-        }
     } catch (const lmdb::map_full_error &e) {
         nhlog::db()->error("lmdb is full: {}", e.what());
         cache::deleteOldData();
