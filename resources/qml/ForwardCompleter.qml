@@ -10,7 +10,7 @@ import im.nheko 1.0
 Popup {
     id: forwardMessagePopup
 
-    property var mid
+    property string mid: ""
 
     function setMessageEventId(mid_in) {
         mid = mid_in;
@@ -55,7 +55,7 @@ Popup {
             id: replyPreview
 
             eventId: mid
-            userColor: TimelineManager.userColor(modelData.userId, palette.window)
+            userColor: TimelineManager.userColor(replyPreview.userId, palette.window)
             maxWidth: parent.width
         }
         MatrixTextField {
@@ -64,7 +64,7 @@ Popup {
             color: palette.text
             width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
 
-            Keys.onPressed: {
+            Keys.onPressed: (event) => {
                 if (event.key == Qt.Key_Up || event.key == Qt.Key_Backtab) {
                     event.accepted = true;
                     completerPopup.up();
@@ -97,7 +97,7 @@ Popup {
     }
     Connections {
         function onCompletionSelected(id) {
-            room.forwardMessage(messageContextMenu.eventId, id);
+            room.forwardMessage(forwardMessagePopup.mid, id);
             forwardMessagePopup.close();
         }
         function onCountChanged() {
