@@ -242,7 +242,7 @@ EventDelegateChooser::DelegateIncubator::reset(QString id)
         .toInt();
     this->oldType = role;
 
-    for (const auto choice : qAsConst(chooser.choices_)) {
+    for (const auto choice : std::as_const(chooser.choices_)) {
         const auto &choiceValue = choice->roleValues();
         if (choiceValue.contains(role) || choiceValue.empty()) {
             // nhlog::ui()->debug(
@@ -288,7 +288,7 @@ EventDelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status sta
         chooser.polish();
     } else if (status == QQmlIncubator::Error) {
         auto errors_ = errors();
-        for (const auto &e : qAsConst(errors_))
+        for (const auto &e : std::as_const(errors_))
             nhlog::ui()->error("Error instantiating delegate: {}", e.toString().toStdString());
     }
 }

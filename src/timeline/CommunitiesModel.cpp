@@ -581,7 +581,7 @@ CommunitiesModel::setCurrentTagId(const QString &tagId)
 
     if (tagId.startsWith(QLatin1String("tag:"))) {
         auto tag = tagId.mid(4);
-        for (const auto &t : qAsConst(tags_)) {
+        for (const auto &t : std::as_const(tags_)) {
             if (t == tag) {
                 this->currentTagId_ = tagId;
                 UserSettings::instance()->setCurrentTagId(tagId);

@@ -302,7 +302,7 @@ Cache::setup()
         QDir stateDir(cacheDirectory_);
 
         auto eList = stateDir.entryList(QDir::NoDotAndDotDot);
-        for (const auto &file : qAsConst(eList)) {
+        for (const auto &file : std::as_const(eList)) {
             if (!stateDir.remove(file))
                 throw std::runtime_error(("Unable to delete file " + file).toStdString().c_str());
         }

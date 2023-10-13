@@ -36,14 +36,14 @@ NotificationsManager::NotificationsManager(QObject *parent)
          this)
   , hasMarkup_{std::invoke([this]() -> bool {
       auto caps = dbus.call("GetCapabilities").arguments();
-      for (const auto &x : qAsConst(caps))
+      for (const auto &x : std::as_const(caps))
           if (x.toStringList().contains("body-markup"))
               return true;
       return false;
   })}
   , hasImages_{std::invoke([this]() -> bool {
       auto caps = dbus.call("GetCapabilities").arguments();
-      for (const auto &x : qAsConst(caps))
+      for (const auto &x : std::as_const(caps))
           if (x.toStringList().contains("body-images"))
               return true;
       return false;

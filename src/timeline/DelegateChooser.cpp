@@ -96,7 +96,7 @@ DelegateChooser::clearChoices(QQmlListProperty<DelegateChoice> *p)
 void
 DelegateChooser::recalcChild()
 {
-    for (const auto choice : qAsConst(choices_)) {
+    for (const auto choice : std::as_const(choices_)) {
         const auto &choiceValue = choice->roleValueRef();
         if (choiceValue == roleValue_ || (!choiceValue.isValid() && !roleValue_.isValid())) {
             if (child_) {
@@ -134,7 +134,7 @@ DelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status status)
 
     } else if (status == QQmlIncubator::Error) {
         auto errors_ = errors();
-        for (const auto &e : qAsConst(errors_))
+        for (const auto &e : std::as_const(errors_))
             nhlog::ui()->error("Error instantiating delegate: {}", e.toString().toStdString());
     }
 }

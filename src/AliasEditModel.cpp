@@ -42,7 +42,7 @@ AliasEditingModel::AliasEditingModel(const std::string &rid, QObject *parent)
         }
     }
 
-    for (const auto &alias : qAsConst(aliases)) {
+    for (const auto &alias : std::as_const(aliases)) {
         fetchAliasesStatus(alias.alias);
     }
     fetchPublishedAliases();
@@ -148,7 +148,7 @@ void
 AliasEditingModel::addAlias(QString newAlias)
 {
     const auto aliasStr = newAlias.toStdString();
-    for (const auto &e : qAsConst(aliases)) {
+    for (const auto &e : std::as_const(aliases)) {
         if (e.alias == aliasStr) {
             return;
         }

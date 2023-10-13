@@ -38,7 +38,7 @@ MxcImageProvider::MxcImageProvider()
                      QDir::Filter::Writable | QDir::Filter::NoDotAndDotDot | QDir::Filter::Files);
 
             auto files = dir.entryInfoList();
-            for (const auto &fileInfo : qAsConst(files)) {
+            for (const auto &fileInfo : std::as_const(files)) {
                 if (fileInfo.fileTime(QFile::FileTime::FileAccessTime)
                       .daysTo(QDateTime::currentDateTime()) > 30) {
                     if (QFile::remove(fileInfo.absoluteFilePath()))

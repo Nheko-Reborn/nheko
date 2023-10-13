@@ -340,7 +340,7 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
 
             int total_unread_msgs = 0;
 
-            for (const auto &room : qAsConst(models)) {
+            for (const auto &room : std::as_const(models)) {
                 if (!room.isNull() && !room->isSpace())
                     total_unread_msgs += room->notificationCount();
             }
@@ -948,7 +948,7 @@ FilteredRoomlistModel::updateHiddenTagsAndSpaces()
     hideDMs = false;
 
     auto hidden = UserSettings::instance()->hiddenTags();
-    for (const auto &t : qAsConst(hidden)) {
+    for (const auto &t : std::as_const(hidden)) {
         if (t.startsWith(u"tag:"))
             hiddenTags.push_back(t.mid(4));
         else if (t.startsWith(u"space:"))

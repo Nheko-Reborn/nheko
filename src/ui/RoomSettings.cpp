@@ -728,7 +728,7 @@ RoomSettingsAllowedRoomsModel::RoomSettingsAllowedRoomsModel(RoomSettings *paren
 
     this->listedRoomIds = QStringList(parentSpaces.begin(), parentSpaces.end());
 
-    for (const auto &e : qAsConst(this->allowedRoomIds)) {
+    for (const auto &e : std::as_const(this->allowedRoomIds)) {
         if (!this->parentSpaces.count(e))
             this->listedRoomIds.push_back(e);
     }

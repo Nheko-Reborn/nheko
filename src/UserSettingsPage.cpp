@@ -152,7 +152,7 @@ UserSettings::load(std::optional<QString> profile)
 
     collapsedSpaces_.clear();
     auto tempSpaces = settings.value(prefix + "user/collapsed_spaces", QList<QVariant>{}).toList();
-    for (const auto &e : qAsConst(tempSpaces))
+    for (const auto &e : std::as_const(tempSpaces))
         collapsedSpaces_.push_back(e.toStringList());
 
     shareKeysWithTrustedUsers_ =
@@ -962,7 +962,7 @@ UserSettings::save()
 
     QVariantList v;
     v.reserve(collapsedSpaces_.size());
-    for (const auto &e : qAsConst(collapsedSpaces_))
+    for (const auto &e : std::as_const(collapsedSpaces_))
         v.push_back(e);
     settings.setValue(prefix + "user/collapsed_spaces", v);
 

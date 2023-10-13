@@ -491,7 +491,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
             QString body;
             bool firstLine = true;
             auto lines     = QStringView(related.quoted_body).split(u'\n');
-            for (auto line : qAsConst(lines)) {
+            for (auto line : std::as_const(lines)) {
                 if (firstLine) {
                     firstLine = false;
                     body      = QStringLiteral("> <%1> %2\n").arg(related.quoted_user, line);

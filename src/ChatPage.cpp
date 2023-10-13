@@ -1573,7 +1573,7 @@ ChatPage::handleMatrixUri(QString uri)
 
     auto items =
       uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&', Qt::SkipEmptyParts);
-    for (QString item : qAsConst(items)) {
+    for (QString item : std::as_const(items)) {
         nhlog::ui()->info("item: {}", item.toStdString());
 
         if (item.startsWith(QLatin1String("action="))) {

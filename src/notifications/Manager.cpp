@@ -45,7 +45,7 @@ NotificationsManager::removeNotifications(const QString &roomId_,
         markerPos = std::max(markerPos, cache::getEventIndex(room_id, e.toStdString()).value_or(0));
     }
 
-    for (const auto &[roomId, eventId] : qAsConst(this->notificationIds)) {
+    for (const auto &[roomId, eventId] : std::as_const(this->notificationIds)) {
         if (roomId != roomId_)
             continue;
         auto idx = cache::getEventIndex(room_id, eventId.toStdString());

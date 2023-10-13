@@ -18,7 +18,7 @@ InviteesModel::InviteesModel(TimelineModel *room, QObject *parent)
 void
 InviteesModel::addUser(QString mxid, QString displayName, QString avatarUrl)
 {
-    for (const auto &invitee : qAsConst(invitees_))
+    for (const auto &invitee : std::as_const(invitees_))
         if (invitee->mxid_ == mxid)
             return;
 
@@ -79,7 +79,7 @@ InviteesModel::mxids()
 {
     QStringList mxidList;
     mxidList.reserve(invitees_.size());
-    for (auto &invitee : qAsConst(invitees_))
+    for (auto &invitee : std::as_const(invitees_))
         mxidList.push_back(invitee->mxid_);
     return mxidList;
 }

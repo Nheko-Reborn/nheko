@@ -800,7 +800,7 @@ EventStore::enableKeyRequests(bool suppressKeyRequests_)
 {
     if (!suppressKeyRequests_) {
         auto keys = decryptedEvents_.keys();
-        for (const auto &key : qAsConst(keys))
+        for (const auto &key : std::as_const(keys))
             if (key.room == this->room_id_)
                 decryptedEvents_.remove(key);
         suppressKeyRequests = false;
