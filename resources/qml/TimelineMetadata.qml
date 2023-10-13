@@ -49,7 +49,8 @@ RowLayout {
         sourceSize.width: parent.iconSize * Screen.devicePixelRatio
         visible: metadata.isEdited || metadata.eventId == metadata.room.edit
         width: parent.iconSize
-
+        Layout.preferredWidth: parent.iconSize
+        Layout.preferredHeight: parent.iconSize
         HoverHandler {
             id: editHovered
 
@@ -77,6 +78,8 @@ RowLayout {
         trust: metadata.trustlevel
         visible: metadata.room.isEncrypted
         width: parent.iconSize
+        Layout.preferredWidth: parent.iconSize
+        Layout.preferredHeight: parent.iconSize
     }
     Label {
         id: ts

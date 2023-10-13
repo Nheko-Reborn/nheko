@@ -59,8 +59,6 @@ Image {
             return sourceUrl + (stateImg.hovered ? unencryptedHoverColor : unencryptedColor);
         }
     }
-    sourceSize.height: height
-    sourceSize.width: width
     width: 16
 
     HoverHandler {
