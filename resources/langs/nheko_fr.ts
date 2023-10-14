@@ -1089,7 +1089,7 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+9"/>
         <source>Request key</source>
-        <translation>Demander la clef</translation>
+        <translation>Demander la clé</translation>
     </message>
 </context>
 <context>
