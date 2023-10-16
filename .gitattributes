@@ -1,0 +1,3 @@
+# Explicitly disable EOL normalization
+* -text diff
+third_party/** linguist-vendored
