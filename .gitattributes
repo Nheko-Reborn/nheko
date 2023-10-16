@@ -1,0 +1,6 @@
+# Normalize line-endings
+* text=auto
+# PowerShell scripts are text and use Windows line-endings
+*.ps1 text eol=crlf
+# Exclude from GitHub language analytics
+third-party/** linguist-vendored
