@@ -143,11 +143,11 @@ Page {
                     enabled: false
                     height: avatarSize
                     roomid: model.id
-                    textColor: model.avatarUrl.startsWith(":/") ? communityItem.unimportantText : communityItem.importantText
+                    textColor: model.avatarUrl?.startsWith(":/") == true ? communityItem.unimportantText : communityItem.importantText
                     url: {
-                        if (model.avatarUrl.startsWith("mxc://"))
+                        if (model.avatarUrl?.startsWith("mxc://") == true)
                             return model.avatarUrl.replace("mxc://", "image://MxcImage/");
-                        else if (model.avatarUrl.length > 0)
+                        else if ((model.avatarUrl?.length ?? 0) > 0)
                             return model.avatarUrl;
                         else
                             return "";

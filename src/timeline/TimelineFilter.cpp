@@ -163,14 +163,20 @@ TimelineFilter::setSource(TimelineModel *s)
 
         this->setSourceModel(s);
 
-        connect(s, &TimelineModel::currentIndexChanged, this, &TimelineFilter::currentIndexChanged);
-        connect(
-          s, &TimelineModel::fetchedMore, this, &TimelineFilter::fetchAgain, Qt::QueuedConnection);
-        connect(s,
-                &TimelineModel::dataChanged,
-                this,
-                &TimelineFilter::sourceDataChanged,
-                Qt::QueuedConnection);
+        if (s) {
+            connect(
+              s, &TimelineModel::currentIndexChanged, this, &TimelineFilter::currentIndexChanged);
+            connect(s,
+                    &TimelineModel::fetchedMore,
+                    this,
+                    &TimelineFilter::fetchAgain,
+                    Qt::QueuedConnection);
+            connect(s,
+                    &TimelineModel::dataChanged,
+                    this,
+                    &TimelineFilter::sourceDataChanged,
+                    Qt::QueuedConnection);
+        }
 
         // reset the search index a second time just to be safe.
         incrementalSearchIndex = 0;
