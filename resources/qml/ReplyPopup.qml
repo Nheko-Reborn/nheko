@@ -29,7 +29,7 @@ Rectangle {
         anchors.rightMargin: replyPopup.width < 450 ? 2 * (22 + 16) : 3 * (22 + 16)
         anchors.top: parent.top
         anchors.topMargin: Nheko.paddingSmall
-        eventId: room.reply ?? ""
+        eventId: room?.reply ?? ""
         userColor: TimelineManager.userColor(modelData.userId, palette.window)
         visible: room && room.reply
         maxWidth: parent.width - anchors.leftMargin - anchors.rightMargin
