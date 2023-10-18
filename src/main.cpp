@@ -21,7 +21,6 @@
 #include <QTranslator>
 
 #include "ChatPage.h"
-#include "Config.h"
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
