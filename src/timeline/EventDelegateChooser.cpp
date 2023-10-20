@@ -269,7 +269,7 @@ EventDelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status sta
         }
 
         child->setParentItem(&chooser);
-        QQmlEngine::setObjectOwnership(child, QQmlEngine::ObjectOwnership::JavaScriptOwnership);
+        QQmlEngine::setObjectOwnership(child, QQmlEngine::ObjectOwnership::CppOwnership);
 
         // connect(child, &QQuickItem::parentChanged, child, [child](QQuickItem *) {
         //     // QTBUG-115687

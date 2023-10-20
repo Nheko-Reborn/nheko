@@ -989,8 +989,11 @@ TimelineModel::data(const QModelIndex &index, int role) const
 void
 TimelineModel::multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSpan) const
 {
-    if (index.row() < 0 && index.row() >= rowCount())
+    if (index.row() < 0 && index.row() >= rowCount()) {
+        for (QModelRoleData &roleData : roleDataSpan)
+            roleData.clearData();
         return;
+    }
 
     // HACK(Nico): fetchMore likes to break with dynamically sized delegates and reuseItems
     if (index.row() + 1 == rowCount() && !m_paginationInProgress)
@@ -998,13 +1001,14 @@ TimelineModel::multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSp
 
     auto event = events.get(rowCount() - index.row() - 1);
 
-    if (!event)
+    if (!event) {
+        for (QModelRoleData &roleData : roleDataSpan)
+            roleData.clearData();
         return;
+    }
 
     for (QModelRoleData &roleData : roleDataSpan) {
-        int role = roleData.role();
-
-        roleData.setData(data(*event, role));
+        roleData.setData(data(*event, roleData.role()));
     }
 }
 
@@ -1013,13 +1017,19 @@ TimelineModel::multiData(const QString &id,
                          const QString &relatedTo,
                          QModelRoleDataSpan roleDataSpan) const
 {
-    if (id.isEmpty())
+    if (id.isEmpty()) {
+        for (QModelRoleData &roleData : roleDataSpan)
+            roleData.clearData();
         return;
+    }
 
     auto event = events.get(id.toStdString(), relatedTo.toStdString());
 
-    if (!event)
+    if (!event) {
+        for (QModelRoleData &roleData : roleDataSpan)
+            roleData.clearData();
         return;
+    }
 
     for (QModelRoleData &roleData : roleDataSpan) {
         int role = roleData.role();
