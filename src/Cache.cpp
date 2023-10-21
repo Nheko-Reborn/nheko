@@ -92,6 +92,9 @@ static constexpr auto OUTBOUND_MEGOLM_SESSIONS_DB("outbound_megolm_sessions");
 //! MegolmSessionIndex -> session data about which devices have access to this
 static constexpr auto MEGOLM_SESSIONS_DATA_DB("megolm_sessions_data_db");
 
+//! flag to be set, when the db should be compacted on startup
+bool needsCompact = false;
+
 using CachedReceipts = std::multimap<uint64_t, std::string, std::greater<uint64_t>>;
 using Receipts       = std::map<std::string, std::map<std::string, uint64_t>>;
 
@@ -130,6 +133,49 @@ ro_txn(lmdb::env &env)
     reuse_counter++;
 
     return RO_txn{txn};
+}
+
+static void
+compactDatabase(lmdb::env &from, lmdb::env &to)
+{
+    auto fromTxn = lmdb::txn::begin(from, nullptr, MDB_RDONLY);
+    auto toTxn   = lmdb::txn::begin(to);
+
+    auto rootDb  = lmdb::dbi::open(fromTxn);
+    auto dbNames = lmdb::cursor::open(fromTxn, rootDb);
+
+    std::string_view dbName;
+    while (dbNames.get(dbName, MDB_cursor_op::MDB_NEXT_NODUP)) {
+        nhlog::db()->info("Compacting db: {}", dbName);
+
+        auto flags = MDB_CREATE;
+
+        if (dbName.ends_with("/event_order") || dbName.ends_with("/order2msg") ||
+            dbName.ends_with("/pending"))
+            flags |= MDB_INTEGERKEY;
+        if (dbName.ends_with("/related") || dbName.ends_with("/states_key") ||
+            dbName == SPACES_CHILDREN_DB || dbName == SPACES_PARENTS_DB)
+            flags |= MDB_DUPSORT;
+
+        auto dbNameStr = std::string(dbName);
+        auto fromDb    = lmdb::dbi::open(fromTxn, dbNameStr.c_str(), flags);
+        auto toDb      = lmdb::dbi::open(toTxn, dbNameStr.c_str(), flags);
+
+        if (dbName.ends_with("/states_key")) {
+            lmdb::dbi_set_dupsort(fromTxn, fromDb, Cache::compare_state_key);
+            lmdb::dbi_set_dupsort(toTxn, toDb, Cache::compare_state_key);
+        }
+
+        auto fromCursor = lmdb::cursor::open(fromTxn, fromDb);
+        auto toCursor   = lmdb::cursor::open(toTxn, toDb);
+
+        std::string_view key, val;
+        while (fromCursor.get(key, val, MDB_cursor_op::MDB_NEXT)) {
+            toCursor.put(key, val, MDB_APPENDDUP);
+        }
+    }
+
+    toTxn.commit();
 }
 
 template<class T>
@@ -266,9 +312,13 @@ Cache::setup()
         nhlog::db()->info("completed state migration");
     }
 
-    env_ = lmdb::env::create();
-    env_.set_mapsize(DB_SIZE);
-    env_.set_max_dbs(MAX_DBS);
+    auto openEnv = [](const QString &name) {
+        auto e = lmdb::env::create();
+        e.set_mapsize(DB_SIZE);
+        e.set_max_dbs(MAX_DBS);
+        e.open(name.toStdString().c_str(), MDB_NOMETASYNC | MDB_NOSYNC);
+        return e;
+    };
 
     if (isInitial) {
         nhlog::db()->info("initializing LMDB");
@@ -291,7 +341,41 @@ Cache::setup()
         // corruption is an lmdb or filesystem bug. See
         // https://github.com/Nheko-Reborn/nheko/issues/1355
         // https://github.com/Nheko-Reborn/nheko/issues/1303
-        env_.open(cacheDirectory_.toStdString().c_str(), MDB_NOMETASYNC | MDB_NOSYNC);
+        env_ = openEnv(cacheDirectory_);
+
+        if (needsCompact) {
+            auto compactDir  = QStringLiteral("%1-compacting").arg(cacheDirectory_);
+            auto toDeleteDir = QStringLiteral("%1-olddb").arg(cacheDirectory_);
+            if (QFile::exists(cacheDirectory_))
+                QDir(compactDir).removeRecursively();
+            if (QFile::exists(toDeleteDir))
+                QDir(toDeleteDir).removeRecursively();
+            if (!QDir().mkpath(compactDir)) {
+                nhlog::db()->warn(
+                  "Failed to create directory '{}' for database compaction, skipping compaction!",
+                  compactDir.toStdString());
+            } else {
+                // lmdb::env_copy(env_, compactDir.toStdString().c_str(), MDB_CP_COMPACT);
+
+                // create a temporary db
+                auto temp = openEnv(compactDir);
+
+                // copy data
+                compactDatabase(env_, temp);
+
+                // close envs
+                temp.close();
+                env_.close();
+
+                // swap the databases and delete old one
+                QDir().rename(cacheDirectory_, toDeleteDir);
+                QDir().rename(compactDir, cacheDirectory_);
+                QDir(toDeleteDir).removeRecursively();
+
+                // reopen env
+                env_ = openEnv(cacheDirectory_);
+            }
+        }
     } catch (const lmdb::error &e) {
         if (e.code() != MDB_VERSION_MISMATCH && e.code() != MDB_INVALID) {
             throw std::runtime_error("LMDB initialization failed" + std::string(e.what()));
@@ -306,7 +390,7 @@ Cache::setup()
             if (!stateDir.remove(file))
                 throw std::runtime_error(("Unable to delete file " + file).toStdString().c_str());
         }
-        env_.open(cacheDirectory_.toStdString().c_str());
+        env_ = openEnv(cacheDirectory_);
     }
 
     auto txn          = lmdb::txn::begin(env_);
@@ -5365,6 +5449,12 @@ from_json(const nlohmann::json &obj, StoredOlmSession &msg)
 }
 
 namespace cache {
+void
+setNeedsCompactFlag()
+{
+    needsCompact = true;
+}
+
 void
 init(const QString &user_id)
 {

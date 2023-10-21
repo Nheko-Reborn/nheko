@@ -594,11 +594,6 @@ private:
                       const std::set<std::string> &spaces_with_updates,
                       std::set<std::string> rooms_with_updates);
 
-    lmdb::dbi getPendingReceiptsDb(lmdb::txn &txn)
-    {
-        return lmdb::dbi::open(txn, "pending_receipts", MDB_CREATE);
-    }
-
     lmdb::dbi getEventsDb(lmdb::txn &txn, const std::string &room_id)
     {
         return lmdb::dbi::open(txn, std::string(room_id + "/events").c_str(), MDB_CREATE);

@@ -58,6 +58,10 @@ Creates a unique profile, which allows you to log into several accounts at the
 same time and start multiple instances of nheko. Use _default_ to start with the
 default profile.
 
+*-C*, *--compact*::
+Allows shrinking the database, since LMDB databases don't automatically shrink
+when data is deleted. Possibly allows some recovery on database corruption.
+
 == FAQ
 
 === How do I add stickers and custom emojis?

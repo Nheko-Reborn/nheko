@@ -27,6 +27,9 @@ struct Notifications;
 
 namespace cache {
 void
+setNeedsCompactFlag();
+
+void
 init(const QString &user_id);
 
 std::string
