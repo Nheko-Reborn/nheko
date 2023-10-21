@@ -428,7 +428,7 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
       "blockquote", "/blockquote", "p",       "/p",      "a",     "/a",     "ul",     "/ul",
       "ol",         "/ol",         "sup",     "/sup",    "sub",   "/sub",   "li",     "/li",
       "b",          "/b",          "i",       "/i",      "u",     "/u",     "strong", "/strong",
-      "em",         "/em",         "strike",  "/strike", "code",  "/code",  "hr",     "/hr",
+      "em",         "/em",         "strike",  "/strike", "code",  "/code",  "hr",     "hr/",
       "br",         "br/",         "div",     "/div",    "table", "/table", "thead",  "/thead",
       "tbody",      "/tbody",      "tr",      "/tr",     "th",    "/th",    "td",     "/td",
       "caption",    "/caption",    "pre",     "/pre",    "span",  "/span",  "img",    "/img",
