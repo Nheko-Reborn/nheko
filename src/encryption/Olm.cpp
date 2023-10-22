@@ -719,7 +719,7 @@ try_olm_decryption(const std::string &sender_key, const mtx::events::msg::OlmCip
             nhlog::crypto()->debug("Updated olm session: {}",
                                    mtx::crypto::session_id(session->get()));
             cache::saveOlmSession(
-              id, std::move(session.value()), QDateTime::currentMSecsSinceEpoch());
+              sender_key, std::move(session.value()), QDateTime::currentMSecsSinceEpoch());
         } catch (const mtx::crypto::olm_exception &e) {
             nhlog::crypto()->debug("failed to decrypt olm message ({}, {}) with {}: {}",
                                    msg.type,

@@ -674,16 +674,6 @@ private:
         return lmdb::dbi::open(txn, "verified", MDB_CREATE);
     }
 
-    //! Retrieves or creates the database that stores the open OLM sessions between our device
-    //! and the given curve25519 key which represents another device.
-    //!
-    //! Each entry is a map from the session_id to the pickled representation of the session.
-    lmdb::dbi getOlmSessionsDb(lmdb::txn &txn, const std::string &curve25519_key)
-    {
-        return lmdb::dbi::open(
-          txn, std::string("olm_sessions.v2/" + curve25519_key).c_str(), MDB_CREATE);
-    }
-
     QString getDisplayName(const mtx::events::StateEvent<mtx::events::state::Member> &event)
     {
         if (!event.content.display_name.empty())
@@ -713,6 +703,7 @@ private:
     lmdb::dbi inboundMegolmSessionDb_;
     lmdb::dbi outboundMegolmSessionDb_;
     lmdb::dbi megolmSessionDataDb_;
+    lmdb::dbi olmSessionDb_;
 
     lmdb::dbi encryptedRooms_;
 
