@@ -59,6 +59,13 @@ Item {
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
 
+        property int lastScrollPos: 0
+
+        // Fixup the scroll position when the height changes. Without this, the view is kept around the center of the currently visible content, while we usually want to stick to the bottom.
+        onMovementEnded: lastScrollPos = (contentY+height)
+        onModelChanged: lastScrollPos = (contentY+height)
+        onHeightChanged: contentY = (lastScrollPos-height)
+
         Component {
             id: defaultMessageStyle
 
