@@ -11,11 +11,11 @@
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
+#include "MainWindow.h"
+#include "MatrixClient.h"
 #include "UserProfile.h"
 #include "Utils.h"
-#include "encryption/DeviceVerificationFlow.h"
 #include "encryption/VerificationManager.h"
-#include "mtx/responses/crypto.hpp"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 #include "ui/UIA.h"
@@ -64,6 +64,19 @@ UserProfile::UserProfile(const QString &roomid,
           new RoomInfoModel(cache::client()->getCommonRooms(userid.toStdString()), this);
     else
         sharedRooms_ = new RoomInfoModel({}, this);
+
+    connect(ChatPage::instance(), &ChatPage::syncUI, this, [this](const mtx::responses::Sync &res) {
+        if (auto ignoreEv = std::ranges::find_if(
+              res.account_data.events,
+              [](const mtx::events::collections::RoomAccountDataEvents &e) {
+                  return std::holds_alternative<
+                    mtx::events::AccountDataEvent<mtx::events::account_data::IgnoredUsers>>(e);
+              });
+            ignoreEv != res.account_data.events.end()) {
+            // doesn't matter much if it was actually us
+            emit ignoredChanged();
+        }
+    });
 }
 
 QHash<int, QByteArray>
@@ -224,34 +237,45 @@ UserProfile::refreshDevices()
     fetchDeviceList(this->userid_);
 }
 
+bool
+UserProfile::ignored() const
+{
+    auto old = TimelineViewManager::instance()->getIgnoredUsers();
+    return old.contains(userid_);
+}
+
 void
-UserProfile::ignoredStatus(const QString &id, const bool ignore)
+UserProfile::setIgnored(bool ignore)
 {
     auto old = TimelineViewManager::instance()->getIgnoredUsers();
     if (ignore) {
-        if (old.contains(id)) {
-            emit this->room()->ignoredUser(id, tr("Already ignored"));
+        if (old.contains(userid_)) {
+            emit ignoredChanged();
             return;
         }
-        old.append(id);
+        old.append(userid_);
     } else {
-        old.removeOne(id);
+        if (!old.contains(userid_)) {
+            emit ignoredChanged();
+            return;
+        }
+        old.removeAll(userid_);
     }
 
     std::vector<mtx::events::account_data::IgnoredUser> content;
-    for (const QString &item : old) {
-        const mtx::events::account_data::IgnoredUser data{.id = item.toStdString()};
-        content.push_back(data);
+    for (const QString &item : std::as_const(old)) {
+        content.emplace_back(item.toStdString());
     }
 
-    const mtx::events::account_data::IgnoredUsers payload{.users{content}};
+    mtx::events::account_data::IgnoredUsers payload{.users{content}};
 
-    http::client()->put_account_data(payload, [this, id, ignore](mtx::http::RequestErr e) {
-        if (ignore) {
-            emit this->room()->ignoredUser(
-              id, e ? std::optional(QString::fromStdString(e->matrix_error.error)) : std::nullopt);
-        } else if (e) {
-            emit this->unignoredUserError(id, QString::fromStdString(e->matrix_error.error));
+    auto userid = userid_;
+
+    http::client()->put_account_data(payload, [userid](mtx::http::RequestErr e) {
+        if (e) {
+            MainWindow::instance()->showNotification(
+              tr("Failed to ignore \"%1\": %2")
+                .arg(userid, QString::fromStdString(e->matrix_error.error)));
         }
     });
 }

@@ -18,8 +18,6 @@
 #include "CacheStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
-#include "InviteesModel.h"
-#include "MemberList.h"
 #include "Permissions.h"
 #include "ReadReceiptsModel.h"
 #include "ui/RoomSummary.h"
@@ -463,7 +461,6 @@ public slots:
 private slots:
     void addPendingMessage(mtx::events::collections::TimelineEvents event);
     void scrollTimerEvent();
-    void handleIgnoredUser(const QString &id, const std::optional<QString> &err);
 
 signals:
     void dataAtIdChanged(QString id);
@@ -512,9 +509,6 @@ signals:
     void scrollTargetChanged();
 
     void fetchedMore();
-
-    // The user may close the profile window before we receive a response, so handle it here
-    void ignoredUser(const QString &id, const std::optional<QString> &err);
 
 private:
     template<typename T>

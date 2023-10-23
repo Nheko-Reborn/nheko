@@ -295,11 +295,10 @@ ApplicationWindow {
                     image: ":/icons/icons/ui/volume-off-indicator.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Ignore the user.")
-                    onClicked: {
-                        profile.ignoredStatus(profile.userid, true)
-                    }
-                    visible: !profile.isSelf && !profile.isGlobalUserProfile
+                    ToolTip.text: profile.ignored ? qsTr("Unignore the user.") : qsTr("Ignore the user.")
+                    buttonTextColor: profile.ignored ? Nheko.theme.red : palette.buttonText
+                    onClicked: profile.ignored = !profile.ignored
+                    visible: !profile.isSelf
                 }
 
                 ImageButton {

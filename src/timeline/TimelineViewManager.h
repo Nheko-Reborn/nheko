@@ -11,7 +11,8 @@
 #include <mtx/common.hpp>
 #include <mtx/responses/messages.hpp>
 
-#include "ReadReceiptsModel.h"
+#include "InviteesModel.h"
+#include "MemberList.h"
 #include "timeline/CommunitiesModel.h"
 #include "timeline/PresenceEmitter.h"
 #include "timeline/RoomlistModel.h"
