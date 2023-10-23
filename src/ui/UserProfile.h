@@ -184,7 +184,7 @@ public:
     Q_INVOKABLE void refreshDevices();
     Q_INVOKABLE void banUser();
     Q_INVOKABLE void signOutDevice(const QString &deviceID);
-    // Q_INVOKABLE void ignoreUser();
+    Q_INVOKABLE void ignoredStatus(const QString &id, const bool ignore);
     Q_INVOKABLE void kickUser();
     Q_INVOKABLE void startChat();
     Q_INVOKABLE void startChat(bool encryptionEnabled);
@@ -201,6 +201,7 @@ signals:
     void displayError(const QString &errorMessage);
     void globalUsernameRetrieved(const QString &globalUser);
     void devicesChanged();
+    void unignoredUserError(const QString &id, const QVariant &err);
 
     // internal
     void verificationStatiChanged();

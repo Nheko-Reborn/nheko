@@ -225,6 +225,38 @@ UserProfile::refreshDevices()
 }
 
 void
+UserProfile::ignoredStatus(const QString &id, const bool ignore)
+{
+    auto old = TimelineViewManager::instance()->getIgnoredUsers();
+    if (ignore) {
+        if (old.contains(id)) {
+            emit this->room()->ignoredUser(id, tr("Already ignored"));
+            return;
+        }
+        old.append(id);
+    } else {
+        old.removeOne(id);
+    }
+
+    std::vector<mtx::events::account_data::IgnoredUser> content;
+    for (const QString &item : old) {
+        const mtx::events::account_data::IgnoredUser data{.id = item.toStdString()};
+        content.push_back(data);
+    }
+
+    const mtx::events::account_data::IgnoredUsers payload{.users{content}};
+
+    http::client()->put_account_data(payload, [this, id, ignore](mtx::http::RequestErr e) {
+        if (ignore) {
+            emit this->room()->ignoredUser(
+              id, e ? std::optional(QString::fromStdString(e->matrix_error.error)) : std::nullopt);
+        } else if (e) {
+            emit this->unignoredUserError(id, QString::fromStdString(e->matrix_error.error));
+        }
+    });
+}
+
+void
 UserProfile::fetchDeviceList(const QString &userID)
 {
     if (!cache::client() || !cache::client()->isDatabaseReady())
@@ -344,10 +376,6 @@ UserProfile::banUser()
 {
     ChatPage::instance()->banUser(roomid_, this->userid_, QLatin1String(""));
 }
-
-// void ignoreUser(){
-
-// }
 
 void
 UserProfile::kickUser()
