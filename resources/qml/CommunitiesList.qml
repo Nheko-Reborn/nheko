@@ -5,11 +5,11 @@
 import "./components"
 import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
-import QtQml 2.12
-import QtQuick 2.12
-import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.3
-import im.nheko 1.0
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 Page {
     id: communitySidebar
@@ -38,6 +38,7 @@ Page {
         anchors.right: parent.right
         height: parent.height
         model: Communities.filtered()
+        boundsBehavior: Flickable.StopAtBounds
 
         ScrollBar.vertical: ScrollBar {
             id: scrollbar

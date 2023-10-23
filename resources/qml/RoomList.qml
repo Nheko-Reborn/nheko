@@ -6,11 +6,11 @@ import "./components"
 import "./dialogs"
 import "./ui"
 import Qt.labs.platform 1.1 as Platform
-import QtQml 2.12
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.3
-import im.nheko 1.0
+import QtQml
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import im.nheko
 
 Page {
     //leftPadding: Nheko.paddingSmall
@@ -405,6 +405,7 @@ Page {
         anchors.right: parent.right
         height: parent.height
         model: Rooms
+        boundsBehavior: Flickable.StopAtBounds
 
         //reuseItems: true
         ScrollBar.vertical: ScrollBar {
