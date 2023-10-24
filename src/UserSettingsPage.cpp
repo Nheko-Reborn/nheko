@@ -72,6 +72,7 @@ UserSettings::load(std::optional<QString> profile)
       settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
     markdown_       = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
     invertEnterKey_ = settings.value(QStringLiteral("user/invert_enter_key"), false).toBool();
+    sedEditing_     = settings.value(QStringLiteral("user/sed_editing"), false).toBool();
     bubbles_        = settings.value(QStringLiteral("user/bubbles_enabled"), false).toBool();
     smallAvatars_   = settings.value(QStringLiteral("user/small_avatars_enabled"), false).toBool();
     animateImagesOnHover_ =
@@ -339,6 +340,17 @@ UserSettings::setInvertEnterKey(bool state)
 
     invertEnterKey_ = state;
     emit invertEnterKeyChanged(state);
+    save();
+}
+
+void
+UserSettings::setSedEditing(bool state)
+{
+    if (state == sedEditing_)
+        return;
+
+    sedEditing_ = state;
+    emit sedEditingChanged(state);
     save();
 }
 
@@ -910,6 +922,7 @@ UserSettings::save()
     settings.setValue(QStringLiteral("scrollbars_in_roomlist"), scrollbarsInRoomlist_);
     settings.setValue(QStringLiteral("markdown_enabled"), markdown_);
     settings.setValue(QStringLiteral("invert_enter_key"), invertEnterKey_);
+    settings.setValue(QStringLiteral("sed_editing"), sedEditing_);
     settings.setValue(QStringLiteral("bubbles_enabled"), bubbles_);
     settings.setValue(QStringLiteral("small_avatars_enabled"), smallAvatars_);
     settings.setValue(QStringLiteral("animate_images_on_hover"), animateImagesOnHover_);
@@ -1023,6 +1036,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Send messages as Markdown");
         case InvertEnterKey:
             return tr("Use shift+enter to send and enter to start a new line");
+        case SedEditing:
+            return tr("Allow editing your last message with sed expressions");
         case Bubbles:
             return tr("Enable message bubbles");
         case SmallAvatars:
@@ -1177,6 +1192,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->markdown();
         case InvertEnterKey:
             return i->invertEnterKey();
+        case SedEditing:
+            return i->sedEditing();
         case Bubbles:
             return i->bubbles();
         case SmallAvatars:
@@ -1341,6 +1358,11 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr(
               "Invert the behavior of the enter key in the text input, making it send the message "
               "when shift+enter is pressed and starting a new line when enter is pressed.");
+        case SedEditing:
+            return tr("If you send a message that is a valid sed expression (e.g. s/foo/bar), try "
+                      "to apply it to your last sent message as an edit instead of sending it as a "
+                      "regular message. If the sed expression cannot be applied to your last "
+                      "message, it will be sent as a normal message.");
         case Bubbles:
             return tr(
               "Messages get a bubble background. This also triggers some layout changes (WIP).");
@@ -1512,6 +1534,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case ScrollbarsInRoomlist:
         case Markdown:
         case InvertEnterKey:
+        case SedEditing:
         case Bubbles:
         case SmallAvatars:
         case AnimateImagesOnHover:
@@ -1758,6 +1781,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case InvertEnterKey: {
             if (value.userType() == QMetaType::Bool) {
                 i->setInvertEnterKey(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case SedEditing: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setSedEditing(value.toBool());
                 return true;
             } else
                 return false;
@@ -2220,6 +2250,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::invertEnterKeyChanged, this, [this]() {
         emit dataChanged(index(InvertEnterKey), index(InvertEnterKey), {Value});
+    });
+    connect(s.get(), &UserSettings::sedEditingChanged, this, [this]() {
+        emit dataChanged(index(SedEditing), index(SedEditing), {Value});
     });
     connect(s.get(), &UserSettings::bubblesChanged, this, [this]() {
         emit dataChanged(index(Bubbles), index(Bubbles), {Value});

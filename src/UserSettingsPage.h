@@ -31,6 +31,7 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool markdown READ markdown WRITE setMarkdown NOTIFY markdownChanged)
     Q_PROPERTY(
       bool invertEnterKey READ invertEnterKey WRITE setInvertEnterKey NOTIFY invertEnterKeyChanged)
+    Q_PROPERTY(bool sedEditing READ sedEditing WRITE setSedEditing NOTIFY sedEditingChanged)
     Q_PROPERTY(bool bubbles READ bubbles WRITE setBubbles NOTIFY bubblesChanged)
     Q_PROPERTY(bool smallAvatars READ smallAvatars WRITE setSmallAvatars NOTIFY smallAvatarsChanged)
     Q_PROPERTY(bool animateImagesOnHover READ animateImagesOnHover WRITE setAnimateImagesOnHover
@@ -172,6 +173,7 @@ public:
     void setScrollbarsInRoomlist(bool state);
     void setMarkdown(bool state);
     void setInvertEnterKey(bool state);
+    void setSedEditing(bool state);
     void setBubbles(bool state);
     void setSmallAvatars(bool state);
     void setAnimateImagesOnHover(bool state);
@@ -244,6 +246,7 @@ public:
     int privacyScreenTimeout() const { return privacyScreenTimeout_; }
     bool markdown() const { return markdown_; }
     bool invertEnterKey() const { return invertEnterKey_; }
+    bool sedEditing() const { return sedEditing_; }
     bool bubbles() const { return bubbles_; }
     bool smallAvatars() const { return smallAvatars_; }
     bool animateImagesOnHover() const { return animateImagesOnHover_; }
@@ -315,6 +318,7 @@ signals:
     void startInTrayChanged(bool state);
     void markdownChanged(bool state);
     void invertEnterKeyChanged(bool state);
+    void sedEditingChanged(bool state);
     void bubblesChanged(bool state);
     void smallAvatarsChanged(bool state);
     void animateImagesOnHoverChanged(bool state);
@@ -384,6 +388,7 @@ private:
     bool scrollbarsInRoomlist_;
     bool markdown_;
     bool invertEnterKey_;
+    bool sedEditing_;
     bool bubbles_;
     bool smallAvatars_;
     bool animateImagesOnHover_;
@@ -491,6 +496,7 @@ class UserSettingsModel : public QAbstractListModel
         ReadReceipts,
         Markdown,
         InvertEnterKey,
+        SedEditing,
         Bubbles,
         SmallAvatars,
 
