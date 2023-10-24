@@ -310,26 +310,6 @@ ApplicationWindow {
                     ToolTip.text: qsTr("Refresh device list.")
                     onClicked: profile.refreshDevices()
                 }
-
-                ImageButton {
-                    Layout.preferredHeight: 24
-                    Layout.preferredWidth: 24
-                    image: ":/icons/icons/ui/volume-off-indicator.svg"
-                    hoverEnabled: true
-                    ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Ignored users.")
-                    onClicked: {
-                        var component = Qt.createComponent("IgnoredUsers.qml")
-                        if (component.status == Component.Ready) {
-                            var window = component.createObject(userProfileDialog, { profile: profile})
-                            window.show()
-                            timelineRoot.destroyOnClose(window)
-                        } else {
-                            console.error("Failed to create component: " + component.errorString());
-                        }
-                    }
-                    visible: profile.isSelf && profile.isGlobalUserProfile
-                }
             }
 
             TabBar {

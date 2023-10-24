@@ -1043,6 +1043,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Read receipts");
         case HiddenTimelineEvents:
             return tr("Hidden events");
+        case IgnoredUsers:
+            return tr("Ignored users");
         case DesktopNotifications:
             return tr("Desktop notifications");
         case AlertOnNotification:
@@ -1486,6 +1488,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Regularly redact expired events as specified in the event expiration "
                       "configuration. Since this is currently not executed server side, you need "
                       "to have one client running this regularly.");
+        case IgnoredUsers:
+            return tr("Manage your ignored users.");
         }
     } else if (role == Type) {
         switch (index.row()) {
@@ -1572,6 +1576,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return KeyStatus;
         case HiddenTimelineEvents:
             return ConfigureHiddenEvents;
+        case IgnoredUsers:
+            return ManageIgnoredUsers;
         }
     } else if (role == ValueLowerBound) {
         switch (index.row()) {
