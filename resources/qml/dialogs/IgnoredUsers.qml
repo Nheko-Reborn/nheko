@@ -23,6 +23,7 @@ Window {
         id: view
         anchors.fill: parent
         spacing: Nheko.paddingMedium
+        footerPositioning: ListView.OverlayFooter
 
         model: TimelineManager.ignoredUsers
         header: ColumnLayout {
@@ -59,11 +60,23 @@ Window {
             ImageButton {
                 Layout.preferredHeight: 24
                 Layout.preferredWidth: 24
-                image: ":/icons/icons/ui/delete.svg"
+                image: ":/icons/icons/ui/dismiss.svg"
                 hoverEnabled: true
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Stop Ignoring.")
                 onClicked: profile.ignored = false
+            }
+        }
+        footer: DialogButtonBox {
+            z: 2
+            width: view.width
+            alignment: Qt.AlignRight
+            standardButtons: DialogButtonBox.Ok
+            onAccepted: ignoredUsers.close()
+
+            background: Rectangle {
+                anchors.fill: parent
+                color: palette.window
             }
         }
     }
