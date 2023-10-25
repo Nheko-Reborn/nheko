@@ -21,15 +21,12 @@
 #include "encryption/DeviceVerificationFlow.h"
 #include "encryption/Olm.h"
 #include "ui/RoomSummary.h"
-#include "ui/Theme.h"
 #include "ui/UserProfile.h"
 #include "voip/CallManager.h"
 
 #include "notifications/Manager.h"
 
 #include "timeline/TimelineViewManager.h"
-
-#include "blurhash.hpp"
 
 ChatPage *ChatPage::instance_                    = nullptr;
 static constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
@@ -403,6 +400,19 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
       this,
       [](std::function<void()> f) { f(); },
       Qt::QueuedConnection);
+
+    connect(qobject_cast<QGuiApplication *>(QGuiApplication::instance()),
+            &QGuiApplication::focusWindowChanged,
+            this,
+            [this](QWindow *activeWindow) {
+                if (activeWindow) {
+                    nhlog::ui()->debug("Stopping inactive timer.");
+                    lastWindowActive = QDateTime();
+                } else {
+                    nhlog::ui()->debug("Starting inactive timer.");
+                    lastWindowActive = QDateTime::currentDateTime();
+                }
+            });
 
     connectCallMessage<mtx::events::voip::CallInvite>();
     connectCallMessage<mtx::events::voip::CallCandidates>();
@@ -1107,6 +1117,13 @@ ChatPage::currentPresence() const
         return mtx::presence::unavailable;
     case UserSettings::Presence::Offline:
         return mtx::presence::offline;
+    case UserSettings::Presence::AutomaticPresence:
+        if (lastWindowActive.isValid() &&
+            lastWindowActive.addSecs(60 * 5) < QDateTime::currentDateTime())
+            return mtx::presence::unavailable;
+        else
+            return mtx::presence::online;
+
     default:
         return mtx::presence::online;
     }

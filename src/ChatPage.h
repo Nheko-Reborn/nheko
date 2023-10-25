@@ -21,8 +21,6 @@
 #include <QSharedPointer>
 #include <QTimer>
 
-#include "CacheCryptoStructs.h"
-#include "CacheStructs.h"
 #include "ui/RoomSummary.h"
 
 class TimelineViewManager;
@@ -225,6 +223,9 @@ private:
     std::unique_ptr<mtx::pushrules::PushRuleEvaluator> pushrules;
 
     QDateTime lastSpacesUpdate = QDateTime::currentDateTime();
+
+    // Stores when our windows lost focus. Invalid when our windows have focus.
+    QDateTime lastWindowActive;
 };
 
 template<class Collection>

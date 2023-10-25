@@ -267,6 +267,40 @@ Page {
 
                     onTriggered: statusDialog.show()
                 }
+                Platform.MenuSeparator {
+                }
+
+                Platform.MenuItemGroup {
+                    id: onlineStateGroup
+                }
+                Platform.MenuItem {
+                    text: qsTr("Automatic online status")
+                    group: onlineStateGroup
+                    checkable: true
+                    checked: Settings.presence == Settings.AutomaticPresence
+                    onTriggered: if (checked) Settings.presence = Settings.AutomaticPresence
+                }
+                Platform.MenuItem {
+                    text: qsTr("Online")
+                    group: onlineStateGroup
+                    checkable: true
+                    checked: Settings.presence == Settings.Online
+                    onTriggered: if (checked) Settings.presence = Settings.Online
+                }
+                Platform.MenuItem {
+                    text: qsTr("Unavailable")
+                    group: onlineStateGroup
+                    checkable: true
+                    checked: Settings.presence == Settings.Unavailable
+                    onTriggered: if (checked) Settings.presence = Settings.Unavailable
+                }
+                Platform.MenuItem {
+                    text: qsTr("Offline")
+                    group: onlineStateGroup
+                    checkable: true
+                    checked: Settings.presence == Settings.Offline
+                    onTriggered: if (checked) Settings.presence = Settings.Offline
+                }
             }
             TapHandler {
                 acceptedButtons: Qt.LeftButton

@@ -14,7 +14,6 @@
 #include <mtx/secret_storage.hpp>
 
 #include "Cache.h"
-#include "Config.h"
 #include "JdenticonProvider.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
