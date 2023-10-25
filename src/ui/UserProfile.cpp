@@ -264,7 +264,7 @@ UserProfile::setIgnored(bool ignore)
 
     std::vector<mtx::events::account_data::IgnoredUser> content;
     for (const QString &item : std::as_const(old)) {
-        content.emplace_back(item.toStdString());
+        content.push_back({item.toStdString()});
     }
 
     mtx::events::account_data::IgnoredUsers payload{.users{content}};
