@@ -198,13 +198,11 @@ Rectangle {
                     when: Settings.mobileMode || volumeButton.hovered || volumeSlider.hovered || volumeSlider.pressed
 
                     PropertyChanges {
-                        target: volumeSlider
-                        Layout.preferredWidth: 100
+                        volumeSlider.implicitWidth: 100
                     }
 
                     PropertyChanges {
-                        target: volumeSlider
-                        opacity: 1
+                        volumeSlider.opacity: 1
                     }
 
                 }

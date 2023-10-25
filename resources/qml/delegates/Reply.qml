@@ -2,12 +2,10 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import Qt.labs.platform 1.1 as Platform
-import QtQuick 2.12
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.2
-import QtQuick.Window 2.13
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Window
+import im.nheko
 import "../"
 
 AbstractButton {
@@ -45,7 +43,7 @@ AbstractButton {
         id: timelineEvent
 
         isStateEvent: false
-        room: room_
+        room: r.room_
         eventId: r.eventId
         replyTo: ""
         mainInset: 4 + Nheko.paddingMedium

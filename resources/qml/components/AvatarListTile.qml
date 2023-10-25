@@ -3,10 +3,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
-import QtQuick 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Layouts
+import im.nheko
 
 Rectangle {
     id: tile
@@ -36,12 +35,13 @@ Rectangle {
             when: hovered.hovered && !(index == selectedIndex)
 
             PropertyChanges {
-                target: tile
-                background: palette.dark
-                importantText: palette.brightText
-                unimportantText: palette.brightText
-                bubbleBackground: palette.highlight
-                bubbleText: palette.highlightedText
+                tile {
+                    background: palette.dark
+                    importantText: palette.brightText
+                    unimportantText: palette.brightText
+                    bubbleBackground: palette.highlight
+                    bubbleText: palette.highlightedText
+                }
             }
 
         },
@@ -50,12 +50,13 @@ Rectangle {
             when: index == selectedIndex
 
             PropertyChanges {
-                target: tile
-                background: palette.highlight
-                importantText: palette.highlightedText
-                unimportantText: palette.highlightedText
-                bubbleBackground: palette.highlightedText
-                bubbleText: palette.highlight
+                tile {
+                    background: palette.highlight
+                    importantText: palette.highlightedText
+                    unimportantText: palette.highlightedText
+                    bubbleBackground: palette.highlightedText
+                    bubbleText: palette.highlight
+                }
             }
 
         }
@@ -75,8 +76,8 @@ Rectangle {
 
             enabled: false
             Layout.alignment: Qt.AlignVCenter
-            height: avatarSize
-            width: avatarSize
+            implicitHeight: avatarSize
+            implicitWidth: avatarSize
             url: tile.avatarUrl.replace("mxc://", "image://MxcImage/")
             displayName: title
             crop: tile.crop
@@ -88,7 +89,6 @@ Rectangle {
             Layout.alignment: Qt.AlignLeft
             Layout.fillWidth: true
             Layout.minimumWidth: 100
-            width: parent.width - avatar.width
             Layout.preferredWidth: parent.width - avatar.width
             spacing: Nheko.paddingSmall
 

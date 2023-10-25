@@ -32,8 +32,8 @@ Control {
 
             color: palette.light
             radius: 22
-            height: 44
-            width: 44
+            Layout.preferredHeight: 44
+            Layout.preferredWidth: 44
 
             Image {
                 id: img
@@ -68,7 +68,7 @@ Control {
 
                 Layout.fillWidth: true
                 Layout.maximumWidth: implicitWidth + 1
-                text: filename
+                text: evRoot.filename
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 color: palette.text
@@ -79,7 +79,7 @@ Control {
 
                 Layout.fillWidth: true
                 Layout.maximumWidth: implicitWidth + 1
-                text: filesize
+                text: evRoot.filesize
                 textFormat: Text.PlainText
                 elide: Text.ElideRight
                 color: palette.text

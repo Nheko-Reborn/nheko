@@ -34,38 +34,36 @@ AbstractButton {
             name: "BlurhashVisible"
 
             PropertyChanges {
-                target: blurhash_
-                opacity: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash) ? 1 : 0
-                visible: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash)
+                blurhash_ {
+                    opacity: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash) ? 1 : 0
+                    visible: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash)
+                }
             }
 
             PropertyChanges {
-                target: img
-                opacity: 0
+                img.opacity: 0
             }
 
             PropertyChanges {
-                target: mxcimage
-                opacity: 0
+                mxcimage.opacity: 0
             }
         },
         State {
             name: "ImageVisible"
 
             PropertyChanges {
-                target: blurhash_
-                opacity: 0
-                visible: false
+                blurhash_ {
+                    opacity: 0
+                    visible: false
+                }
             }
 
             PropertyChanges {
-                target: img
-                opacity: 1
+                img.opacity: 1
             }
 
             PropertyChanges {
-                target: mxcimage
-                opacity: 1
+                mxcimage.opacity: 1
             }
         }
     ]

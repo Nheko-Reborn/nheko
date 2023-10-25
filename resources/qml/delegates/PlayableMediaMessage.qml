@@ -2,12 +2,10 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import "../"
 import "../ui/media"
 import QtMultimedia
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
 import im.nheko
 
 Item {
@@ -47,7 +45,7 @@ Item {
     Rectangle {
         id: videoContainer
 
-        color: type == MtxEvent.VideoMessage ? palette.window : "transparent"
+        color: content.type == MtxEvent.VideoMessage ? palette.window : "transparent"
         width: parent.width
         height: parent.height - fileInfoLabel.height
 
@@ -57,14 +55,14 @@ Item {
 
         Image {
             anchors.fill: parent
-            source: thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : "image://colorimage/:/icons/icons/ui/video-file.svg?" + palette.windowText
+            source: content.thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : "image://colorimage/:/icons/icons/ui/video-file.svg?" + palette.windowText
             asynchronous: true
             fillMode: Image.PreserveAspectFit
 
             VideoOutput {
                 id: videoOutput
 
-                visible: type == MtxEvent.VideoMessage
+                visible: content.type == MtxEvent.VideoMessage
                 clip: true
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectFit
@@ -79,7 +77,7 @@ Item {
             anchors.left: videoContainer.left
             anchors.right: videoContainer.right
             anchors.bottom: videoContainer.bottom
-            playingVideo: type == MtxEvent.VideoMessage
+            playingVideo: content.type == MtxEvent.VideoMessage
             positionValue: mxcmedia.position
             duration: mediaLoaded ? mxcmedia.duration : content.duration
             mediaLoaded: mxcmedia.loaded
@@ -95,7 +93,7 @@ Item {
         id: fileInfoLabel
 
         anchors.top: videoContainer.bottom
-        text: body + " [" + filesize + "]"
+        text: content.body + " [" + filesize + "]"
         textFormat: Text.RichText
         elide: Text.ElideRight
         color: palette.text

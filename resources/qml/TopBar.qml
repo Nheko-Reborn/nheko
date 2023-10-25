@@ -56,11 +56,11 @@ Pane {
                 Layout.row: 0
                 displayName: communityName
                 enabled: false
-                height: fontMetrics.lineSpacing
+                implicitHeight: fontMetrics.lineSpacing
+                implicitWidth: fontMetrics.lineSpacing
                 roomid: communityId
                 url: avatarUrl.replace("mxc://", "image://MxcImage/")
                 visible: roomid && room.parentSpace.isLoaded && ("space:" + room.parentSpace.roomid != Communities.currentTagId)
-                width: fontMetrics.lineSpacing
             }
             Label {
                 id: communityLabel
@@ -98,11 +98,11 @@ Pane {
                 Layout.rowSpan: 2
                 displayName: roomName
                 enabled: false
-                height: Nheko.avatarSize
+                implicitHeight: Nheko.avatarSize
+                implicitWidth: Nheko.avatarSize
                 roomid: roomId
                 url: avatarUrl.replace("mxc://", "image://MxcImage/")
                 userid: isDirect ? directChatOtherUserId : ""
-                width: Nheko.avatarSize
             }
             Label {
                 Layout.column: 2

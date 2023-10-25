@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import ".."
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
@@ -38,7 +37,7 @@ Control {
             Label {
                 id: encryptedText
                 text: {
-                    switch (encryptionError) {
+                    switch (r.encryptionError) {
                     case Olm.MissingSession:
                         return qsTr("There is no key to unlock this message. We requested the key automatically, but you can try requesting it again if you are impatient.");
                     case Olm.MissingSessionIndex:
@@ -63,7 +62,7 @@ Control {
             }
 
             Button {
-                visible: encryptionError == Olm.MissingSession || encryptionError == Olm.MissingSessionIndex
+                visible: r.encryptionError == Olm.MissingSession || encryptionError == Olm.MissingSessionIndex
                 text: qsTr("Request key")
                 onClicked: room.requestKeyForEvent(eventId)
             }
