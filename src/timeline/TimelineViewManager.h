@@ -11,7 +11,8 @@
 #include <mtx/common.hpp>
 #include <mtx/responses/messages.hpp>
 
-#include "ReadReceiptsModel.h"
+#include "InviteesModel.h"
+#include "MemberList.h"
 #include "timeline/CommunitiesModel.h"
 #include "timeline/PresenceEmitter.h"
 #include "timeline/RoomlistModel.h"
@@ -39,6 +40,7 @@ class TimelineViewManager final : public QObject
     Q_PROPERTY(
       bool isInitialSync MEMBER isInitialSync_ READ isInitialSync NOTIFY initialSyncChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY isConnectedChanged)
+    Q_PROPERTY(QVector<QString> ignoredUsers READ getIgnoredUsers NOTIFY ignoredUsersChanged)
 
 public:
     TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
@@ -61,6 +63,10 @@ public:
         QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
         return instance_;
     }
+
+    static TimelineViewManager *instance() { return TimelineViewManager::instance_; }
+
+    QVector<QString> getIgnoredUsers();
 
     void sync(const mtx::responses::Sync &sync_);
 
@@ -113,6 +119,7 @@ signals:
                           QString url,
                           double originalWidth,
                           double proportionalHeight);
+    void ignoredUsersChanged(const QVector<QString> &ignoredUsers);
 
 public slots:
     void updateReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
@@ -154,4 +161,6 @@ private:
     QHash<QPair<QString, quint64>, QColor> userColors;
 
     inline static TimelineViewManager *instance_ = nullptr;
+
+    void processIgnoredUsers(const mtx::responses::AccountData &data);
 };

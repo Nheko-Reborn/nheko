@@ -292,13 +292,24 @@ ApplicationWindow {
                 ImageButton {
                     Layout.preferredHeight: 24
                     Layout.preferredWidth: 24
+                    image: ":/icons/icons/ui/volume-off-indicator.svg"
+                    hoverEnabled: true
+                    ToolTip.visible: hovered
+                    ToolTip.text: profile.ignored ? qsTr("Unignore the user.") : qsTr("Ignore the user.")
+                    buttonTextColor: profile.ignored ? Nheko.theme.red : palette.buttonText
+                    onClicked: profile.ignored = !profile.ignored
+                    visible: !profile.isSelf
+                }
+
+                ImageButton {
+                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 24
                     image: ":/icons/icons/ui/refresh.svg"
                     hoverEnabled: true
                     ToolTip.visible: hovered
                     ToolTip.text: qsTr("Refresh device list.")
                     onClicked: profile.refreshDevices()
                 }
-
             }
 
             TabBar {

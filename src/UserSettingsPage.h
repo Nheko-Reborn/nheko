@@ -508,6 +508,7 @@ class UserSettingsModel : public QAbstractListModel
         MessageVisibilitySection,
         ExpireEvents,
         HiddenTimelineEvents,
+        IgnoredUsers,
 
         NotificationsSection,
         DesktopNotifications,
@@ -566,6 +567,7 @@ public:
         SessionKeyImportExport,
         XSignKeysRequestDownload,
         ConfigureHiddenEvents,
+        ManageIgnoredUsers,
     };
     Q_ENUM(Types);
 
