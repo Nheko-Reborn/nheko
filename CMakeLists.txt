@@ -775,7 +775,7 @@ set(QML_SOURCES
     resources/qml/dialogs/RoomDirectory.qml
     resources/qml/dialogs/RoomMembers.qml
     resources/qml/dialogs/AllowedRoomsSettingsDialog.qml
-    resources/qml/dialogs/RoomSettings.qml
+    resources/qml/dialogs/RoomSettingsDialog.qml
     resources/qml/dialogs/UserProfile.qml
     resources/qml/dialogs/IgnoredUsers.qml
     resources/qml/emoji/StickerPicker.qml
@@ -805,7 +805,7 @@ qt_add_qml_module(nheko
     NO_RESOURCE_TARGET_PATH
     RESOURCE_PREFIX "/"
     VERSION 1.1
-    DEPENDENCIES QtQml QtQuick # https://bugreports.qt.io/browse/QTBUG-102554
+    DEPENDENCIES QtQuick QtQml.Models
     QML_FILES
     ${QML_SOURCES}
     SOURCES
@@ -815,6 +815,10 @@ qt_add_qml_module(nheko
     #qt_target_qml_sources(nheko
     #   #PREFIX "/"
     #)
+
+set_target_properties(nheko PROPERTIES
+    QT_QMLCACHEGEN_ARGUMENTS "--verbose"
+)
 
 #
 # Bundle translations

@@ -245,7 +245,7 @@ Pane {
             }
         }
         function onOpenRoomSettingsDialog(settings) {
-            var component = Qt.createComponent("qrc:/resources/qml/dialogs/RoomSettings.qml");
+            var component = Qt.createComponent("qrc:/resources/qml/dialogs/RoomSettingsDialog.qml");
             if (component.status == Component.Ready) {
                 var roomSettings = component.createObject(timelineRoot, {
                         "roomSettings": settings

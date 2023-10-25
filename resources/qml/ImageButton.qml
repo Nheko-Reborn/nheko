@@ -4,9 +4,9 @@
 
 pragma ComponentBehavior: Bound
 import "./ui"
-import QtQuick 2.3
-import QtQuick.Controls 2.3
-import im.nheko 1.0 // for cursor shape
+import QtQuick
+import QtQuick.Controls
+import im.nheko // for cursor shape
 
 AbstractButton {
     id: button

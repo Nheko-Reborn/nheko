@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
-import QtQuick.Controls
 import im.nheko
 
 MatrixText {
@@ -18,28 +17,28 @@ MatrixText {
     property bool fitsMetadata: false //positionAt(width,height-4) == positionAt(width-metadataWidth-10, height-4)
 
     // table border-collapse doesn't seem to work
-    text: "
-    <style type=\"text/css\">
-    code { background-color: " + palette.alternateBase + "; white-space: pre-wrap; }
-    pre { background-color: " + palette.alternateBase + "; white-space: pre-wrap; }
+    text: `
+    <style type="text/css">
+    code { background-color: ` + palette.alternateBase + `; white-space: pre-wrap; }
+    pre { background-color: ` + palette.alternateBase + `; white-space: pre-wrap; }
     table {
         border-width: 1px;
         border-collapse: collapse;
         border-style: solid;
-        border-color: " + palette.text + ";
-        background-color: " + palette.alternateBase + ";
+        border-color: ` + palette.text + `;
+        background-color: ` + palette.alternateBase + `;
     }
     table th,
     table td {
-        padding: " + Math.ceil(fontMetrics.lineSpacing/2) + "px;
+        padding: ` + Math.ceil(fontMetrics.lineSpacing/2) + `px;
     }
     blockquote { margin-left: 1em; }
-    " + (!Settings.mobileMode ? "span[data-mx-spoiler] {
+    ` + (!Settings.mobileMode ? `span[data-mx-spoiler] {
         color: transparent;
-        background-color: " + palette.text + ";
-    }" : "") +  // TODO(Nico): Figure out how to support mobile
-    "</style>
-    " + formatted.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
+        background-color: ` + palette.text + `;
+    }` : "") +  // TODO(Nico): Figure out how to support mobile
+    `</style>
+    ` + formatted.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
 
     enabled: !isReply
     font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize

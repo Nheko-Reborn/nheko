@@ -33,7 +33,7 @@ Control {
             Layout.alignment: Qt.AlignVCenter | Qt.AlignRight
             Layout.maximumWidth: implicitWidth + 1
             Layout.fillWidth: true
-            property var redactedPair: room.formatRedactedEvent(msgRoot.eventId)
+            property var redactedPair: msgRoot.room.formatRedactedEvent(msgRoot.eventId)
             text: redactedPair["first"]
             wrapMode: Label.WordWrap
 
