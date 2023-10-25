@@ -1748,9 +1748,11 @@ Cache::runMigrations()
                          combineOlmSessionKeyFromCurveAndSessionId(curveKey, session_id),
                          json);
                    }
+                   olmCursor.close();
 
                    oldDb.drop(txn, true);
                }
+               dbNames.close();
 
                if (doCommit) txn.commit();
            } catch (const lmdb::error &e) {
