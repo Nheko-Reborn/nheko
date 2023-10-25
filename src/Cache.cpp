@@ -1724,9 +1724,9 @@ Cache::runMigrations()
        [this]() {
            // migrate olm sessions to a single db
            try {
-               auto txn     = lmdb::txn::begin(env_, nullptr);
-               auto mainDb  = lmdb::dbi::open(txn);
-               auto dbNames = lmdb::cursor::open(txn, mainDb);
+               auto txn      = lmdb::txn::begin(env_, nullptr);
+               auto mainDb   = lmdb::dbi::open(txn);
+               auto dbNames  = lmdb::cursor::open(txn, mainDb);
                bool doCommit = false;
 
                std::string_view dbName;
@@ -1734,7 +1734,7 @@ Cache::runMigrations()
                    if (!dbName.starts_with("olm_sessions.v2/"))
                        continue;
 
-                   doCommit = true;
+                   doCommit      = true;
                    auto curveKey = dbName;
                    curveKey.remove_prefix(std::string_view("olm_sessions.v2/").size());
 
@@ -1754,7 +1754,8 @@ Cache::runMigrations()
                }
                dbNames.close();
 
-               if (doCommit) txn.commit();
+               if (doCommit)
+                   txn.commit();
            } catch (const lmdb::error &e) {
                nhlog::db()->critical("Failed to convert olm sessions database in migration! {}",
                                      e.what());
