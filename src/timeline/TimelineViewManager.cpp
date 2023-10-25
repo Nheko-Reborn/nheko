@@ -12,6 +12,7 @@
 #include <QString>
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "ChatPage.h"
 #include "CombinedImagePackModel.h"
 #include "CommandCompleter.h"
@@ -210,6 +211,7 @@ TimelineViewManager::sync(const mtx::responses::Sync &sync_)
     this->rooms_->sync(sync_);
     this->communities_->sync(sync_);
     this->presenceEmitter->sync(sync_.presence);
+    this->processIgnoredUsers(sync_.account_data);
 
     if (isInitialSync_) {
         this->isInitialSync_ = false;
@@ -558,5 +560,43 @@ TimelineViewManager::fixImageRendering(QQuickTextDocument *t, QQuickItem *i)
 {
     if (t) {
         QObject::connect(t->textDocument(), SIGNAL(imagesLoaded()), i, SLOT(updateWholeDocument()));
+    }
+}
+
+using IgnoredUsers = mtx::events::EphemeralEvent<mtx::events::account_data::IgnoredUsers>;
+
+static QVector<QString>
+convertIgnoredToQt(const IgnoredUsers &ev)
+{
+    QVector<QString> users;
+    for (const mtx::events::account_data::IgnoredUser &user : ev.content.users) {
+        users.push_back(QString::fromStdString(user.id));
+    }
+
+    return users;
+}
+
+QVector<QString>
+TimelineViewManager::getIgnoredUsers()
+{
+    const auto cache = cache::client()->getAccountData(mtx::events::EventType::IgnoredUsers);
+    if (!cache) {
+        return {};
+    }
+
+    return convertIgnoredToQt(std::get<IgnoredUsers>(*cache));
+}
+
+void
+TimelineViewManager::processIgnoredUsers(const mtx::responses::AccountData &data)
+{
+    for (const mtx::events::collections::RoomAccountDataEvents::variant &ev : data.events) {
+        if (!std::holds_alternative<IgnoredUsers>(ev)) {
+            continue;
+        }
+        const auto &ignoredEv = std::get<IgnoredUsers>(ev);
+
+        emit this->ignoredUsersChanged(convertIgnoredToQt(ignoredEv));
+        break;
     }
 }

@@ -157,6 +157,7 @@ class UserProfile final : public QObject
     Q_PROPERTY(int userVerified READ getUserStatus NOTIFY userStatusChanged)
     Q_PROPERTY(bool isLoading READ isLoading NOTIFY loadingChanged)
     Q_PROPERTY(bool userVerificationEnabled READ userVerificationEnabled NOTIFY userStatusChanged)
+    Q_PROPERTY(bool ignored READ ignored WRITE setIgnored NOTIFY ignoredChanged)
     Q_PROPERTY(bool isSelf READ isSelf CONSTANT)
     Q_PROPERTY(TimelineModel *room READ room CONSTANT)
 public:
@@ -184,7 +185,6 @@ public:
     Q_INVOKABLE void refreshDevices();
     Q_INVOKABLE void banUser();
     Q_INVOKABLE void signOutDevice(const QString &deviceID);
-    // Q_INVOKABLE void ignoreUser();
     Q_INVOKABLE void kickUser();
     Q_INVOKABLE void startChat();
     Q_INVOKABLE void startChat(bool encryptionEnabled);
@@ -192,6 +192,9 @@ public:
     Q_INVOKABLE void changeDeviceName(const QString &deviceID, const QString &deviceName);
     Q_INVOKABLE void changeAvatar();
     Q_INVOKABLE void openGlobalProfile();
+
+    void setIgnored(bool ignored);
+    bool ignored() const;
 
 signals:
     void userStatusChanged();
@@ -201,6 +204,7 @@ signals:
     void displayError(const QString &errorMessage);
     void globalUsernameRetrieved(const QString &globalUser);
     void devicesChanged();
+    void ignoredChanged();
 
     // internal
     void verificationStatiChanged();

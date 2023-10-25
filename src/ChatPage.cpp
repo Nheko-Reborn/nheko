@@ -6,6 +6,9 @@
 #include <QInputDialog>
 #include <QMessageBox>
 
+#include <algorithm>
+#include <unordered_set>
+
 #include <mtx/responses.hpp>
 
 #include "AvatarProvider.h"
@@ -775,6 +778,23 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
     // Ensure that we have enough one-time keys available.
     ensureOneTimeKeyCount(res.device_one_time_keys_count, res.device_unused_fallback_key_types);
 
+    std::optional<mtx::events::account_data::IgnoredUsers> oldIgnoredUsers;
+    if (auto ignoreEv = std::ranges::find_if(
+          res.account_data.events,
+          [](const mtx::events::collections::RoomAccountDataEvents &e) {
+              return std::holds_alternative<
+                mtx::events::AccountDataEvent<mtx::events::account_data::IgnoredUsers>>(e);
+          });
+        ignoreEv != res.account_data.events.end()) {
+        if (auto oldEv = cache::client()->getAccountData(mtx::events::EventType::IgnoredUsers))
+            oldIgnoredUsers =
+              std::get<mtx::events::AccountDataEvent<mtx::events::account_data::IgnoredUsers>>(
+                *oldEv)
+                .content;
+        else
+            oldIgnoredUsers = mtx::events::account_data::IgnoredUsers{};
+    }
+
     // TODO: fine grained error handling
     try {
         cache::client()->saveState(res);
@@ -783,6 +803,36 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
         auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
 
         emit syncUI(std::move(res));
+
+        // if the ignored users changed, clear timeline of all affected rooms.
+        if (oldIgnoredUsers) {
+            if (auto newEv =
+                  cache::client()->getAccountData(mtx::events::EventType::IgnoredUsers)) {
+                std::vector<mtx::events::account_data::IgnoredUser> changedUsers{};
+                std::ranges::set_symmetric_difference(
+                  oldIgnoredUsers->users,
+                  std::get<mtx::events::AccountDataEvent<mtx::events::account_data::IgnoredUsers>>(
+                    *newEv)
+                    .content.users,
+                  std::back_inserter(changedUsers),
+                  {},
+                  &mtx::events::account_data::IgnoredUser::id,
+                  &mtx::events::account_data::IgnoredUser::id);
+
+                std::unordered_set<std::string> roomsToReload;
+                for (const auto &user : changedUsers) {
+                    auto commonRooms = cache::client()->getCommonRooms(user.id);
+                    for (const auto &room : commonRooms)
+                        roomsToReload.insert(room.first);
+                }
+
+                for (const auto &room : roomsToReload) {
+                    if (auto model =
+                          view_manager_->rooms()->getRoomById(QString::fromStdString(room)))
+                        model->clearTimeline();
+                }
+            }
+        }
     } catch (const lmdb::map_full_error &e) {
         nhlog::db()->error("lmdb is full: {}", e.what());
         cache::deleteOldData();

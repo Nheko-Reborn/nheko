@@ -18,8 +18,6 @@
 #include "CacheStructs.h"
 #include "EventStore.h"
 #include "InputBar.h"
-#include "InviteesModel.h"
-#include "MemberList.h"
 #include "Permissions.h"
 #include "ReadReceiptsModel.h"
 #include "ui/RoomSummary.h"

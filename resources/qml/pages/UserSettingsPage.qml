@@ -234,6 +234,24 @@ Rectangle {
                         }
 
                         DelegateChoice {
+                            roleValue: UserSettingsModel.ManageIgnoredUsers
+                            Button {
+                                text: qsTr("MANAGE")
+                                onClicked: {
+                                    var dialog = ignoredUsersDialog.createObject();
+                                    dialog.show();
+                                    destroyOnClose(dialog);
+                                }
+
+                                Component {
+                                    id: ignoredUsersDialog
+
+                                    IgnoredUsers {}
+                                }
+                            }
+                        }
+
+                        DelegateChoice {
                             Text {
                                 text: model.value
                             }
