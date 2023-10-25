@@ -16,6 +16,7 @@
 #include <mtx/events/presence.hpp>
 #include <mtx/secret_storage.hpp>
 
+#include <QDateTime>
 #include <QMap>
 #include <QPoint>
 #include <QSharedPointer>
