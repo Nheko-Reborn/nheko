@@ -27,7 +27,7 @@ Page {
         Rectangle {
             Layout.fillWidth: true
             color: Nheko.theme.separator
-            height: 1
+            Layout.preferredHeight: 1
         }
         Pane {
             Layout.alignment: Qt.AlignBottom
@@ -48,10 +48,10 @@ Page {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Start a new chat")
                     ToolTip.visible: hovered
-                    height: 22
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: 22
                     hoverEnabled: true
                     image: ":/icons/icons/ui/add-square-button.svg"
-                    width: 22
 
                     onClicked: roomJoinCreateMenu.open(parent)
 
@@ -100,11 +100,11 @@ Page {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Room directory")
                     ToolTip.visible: hovered
-                    height: 22
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: 22
                     hoverEnabled: true
                     image: ":/icons/icons/ui/room-directory.svg"
                     visible: !collapsed
-                    width: 22
 
                     onClicked: {
                         var win = roomDirectoryComponent.createObject(timelineRoot);
@@ -118,12 +118,12 @@ Page {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Search rooms (Ctrl+K)")
                     ToolTip.visible: hovered
-                    height: 22
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: 22
                     hoverEnabled: true
                     image: ":/icons/icons/ui/search.svg"
                     ripple: false
                     visible: !collapsed
-                    width: 22
 
                     onClicked: {
                         var component = Qt.createComponent("qrc:/resources/qml/QuickSwitcher.qml");
@@ -142,12 +142,12 @@ Page {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("User settings")
                     ToolTip.visible: hovered
-                    height: 22
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: 22
                     hoverEnabled: true
                     image: ":/icons/icons/ui/settings.svg"
                     ripple: false
                     visible: !collapsed
-                    width: 22
 
                     onClicked: mainWindow.push(userSettingsPage)
                 }
@@ -191,7 +191,7 @@ Page {
                 spacing: Nheko.paddingMedium
 
                 Avatar {
-                    id: avatar
+                    id: headerAvatar
 
                     Layout.alignment: Qt.AlignVCenter
                     Layout.preferredHeight: fontMetrics.lineSpacing * 2
@@ -206,10 +206,9 @@ Page {
 
                     Layout.alignment: Qt.AlignLeft
                     Layout.fillWidth: true
-                    Layout.preferredWidth: parent.width - avatar.width - logoutButton.width - Nheko.paddingMedium * 2
+                    Layout.preferredWidth: parent.width - headerAvatar.width - logoutButton.width - Nheko.paddingMedium * 2
                     spacing: 0
                     visible: !collapsed
-                    width: parent.width - avatar.width - logoutButton.width - Nheko.paddingMedium * 2
 
                     ElidedLabel {
                         Layout.alignment: Qt.AlignBottom
@@ -321,7 +320,7 @@ Page {
         Rectangle {
             Layout.fillWidth: true
             color: Nheko.theme.separator
-            height: 2
+            Layout.preferredHeight: 2
         }
         Rectangle {
             id: unverifiedStuffBubble
@@ -371,10 +370,10 @@ Page {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Close")
                     ToolTip.visible: closeUnverifiedBubble.hovered
-                    height: fontMetrics.font.pixelSize
+                    Layout.preferredHeight: fontMetrics.font.pixelSize
                     hoverEnabled: true
                     image: ":/icons/icons/ui/dismiss.svg"
-                    width: fontMetrics.font.pixelSize
+                    Layout.preferredWidth: fontMetrics.font.pixelSize
 
                     onClicked: unverifiedStuffBubble.visible = false
                 }
@@ -400,7 +399,7 @@ Page {
         Rectangle {
             Layout.fillWidth: true
             color: Nheko.theme.separator
-            height: 1
+            Layout.preferredHeight: 1
             visible: unverifiedStuffBubble.visible
         }
     }
@@ -485,12 +484,13 @@ Page {
                     when: roomItem.hovered && !((Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId)
 
                     PropertyChanges {
-                        backgroundColor: palette.dark
-                        bubbleBackground: palette.highlight
-                        bubbleText: palette.highlightedText
-                        importantText: palette.brightText
-                        target: roomItem
-                        unimportantText: palette.brightText
+                        roomItem {
+                            backgroundColor: palette.dark
+                            bubbleBackground: palette.highlight
+                            bubbleText: palette.highlightedText
+                            importantText: palette.brightText
+                            unimportantText: palette.brightText
+                        }
                     }
                 },
                 State {
@@ -498,12 +498,13 @@ Page {
                     when: (Rooms.currentRoom && roomId == Rooms.currentRoom.roomId) || Rooms.currentRoomPreview.roomid == roomId
 
                     PropertyChanges {
-                        backgroundColor: palette.highlight
-                        bubbleBackground: palette.highlightedText
-                        bubbleText: palette.highlight
-                        importantText: palette.highlightedText
-                        target: roomItem
-                        unimportantText: palette.highlightedText
+                        roomItem {
+                            backgroundColor: palette.highlight
+                            bubbleBackground: palette.highlightedText
+                            bubbleText: palette.highlight
+                            importantText: palette.highlightedText
+                            unimportantText: palette.highlightedText
+                        }
                     }
                 }
             ]
@@ -551,11 +552,11 @@ Page {
                     Layout.alignment: Qt.AlignVCenter
                     displayName: roomName
                     enabled: false
-                    height: avatarSize
                     roomid: roomId
                     url: avatarUrl.replace("mxc://", "image://MxcImage/")
                     userid: isDirect ? directChatOtherUserId : ""
-                    width: avatarSize
+                    Layout.preferredWidth: avatarSize
+                    Layout.preferredHeight: avatarSize
 
                     NotificationBubble {
                         id: collapsedNotificationBubble
@@ -575,11 +576,10 @@ Page {
 
                     Layout.alignment: Qt.AlignLeft
                     Layout.minimumWidth: 100
-                    Layout.preferredWidth: parent.width - avatar.width
-                    height: avatar.height
+                    Layout.preferredWidth: roomItem.width - avatar.width
+                    Layout.preferredHeight: avatar.height
                     spacing: Nheko.paddingSmall
                     visible: !collapsed
-                    width: roomItem.width - avatar.width
 
                     Item {
                         id: titleRow

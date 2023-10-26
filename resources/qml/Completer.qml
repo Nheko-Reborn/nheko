@@ -151,10 +151,10 @@ Control {
                         Avatar {
                             displayName: model.displayName
                             enabled: false
-                            height: popup.avatarHeight
+                            Layout.preferredHeight: popup.avatarHeight
+                            Layout.preferredWidth: popup.avatarWidth
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             userid: model.userid
-                            width: popup.avatarWidth
                         }
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
@@ -183,11 +183,11 @@ Control {
                             crop: false
                             displayName: model.shortcode
                             enabled: false
-                            height: popup.avatarHeight
+                            Layout.preferredHeight: popup.avatarHeight
                             //userid: model.shortcode
                             url: (model.url ? model.url : "").replace("mxc://", "image://MxcImage/")
                             visible: !model.unicode
-                            width: popup.avatarWidth
+                            Layout.preferredWidth: popup.avatarWidth
                         }
                         Label {
                             Layout.leftMargin: Nheko.paddingSmall
@@ -229,10 +229,10 @@ Control {
                         Avatar {
                             displayName: model.roomName
                             enabled: false
-                            height: popup.avatarHeight
+                            Layout.preferredHeight: popup.avatarHeight
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            width: popup.avatarWidth
+                            Layout.preferredWidth: popup.avatarWidth
                         }
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
@@ -253,10 +253,10 @@ Control {
                         Avatar {
                             displayName: model.roomName
                             enabled: false
-                            height: popup.avatarHeight
+                            Layout.preferredHeight: popup.avatarHeight
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            width: popup.avatarWidth
+                            Layout.preferredWidth: popup.avatarWidth
                         }
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text

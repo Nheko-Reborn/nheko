@@ -50,8 +50,8 @@ ApplicationWindow {
                 url: roomSettings.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
                 roomid: roomSettings.roomId
                 displayName: roomSettings.roomName
-                height: 130
-                width: 130
+                Layout.preferredHeight: 130
+                Layout.preferredWidth: 130
                 Layout.alignment: Qt.AlignHCenter
                 onClicked: TimelineManager.openImageOverlay(null, roomSettings.roomAvatarUrl, "", 0, 0)
 

@@ -18,8 +18,8 @@ ColumnLayout {
     Image {
         Layout.alignment: Qt.AlignHCenter
         source: "qrc:/logos/splash.png"
-        height: 256
-        width: 256
+        Layout.preferredHeight: 256
+        Layout.preferredWidth: 256
     }
 
     Label {

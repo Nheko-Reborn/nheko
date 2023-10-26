@@ -47,7 +47,7 @@ ApplicationWindow {
 
         TabBar {
             id: bar
-            width: parent.width
+            Layout.preferredWidth: parent.width
 
             NhekoTabButton {
                 text: qsTr("Roles")

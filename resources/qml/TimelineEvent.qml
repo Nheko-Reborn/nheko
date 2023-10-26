@@ -2,12 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import "./components"
 import "./delegates"
-import "./emoji"
-import "./ui"
-import "./dialogs"
-import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2

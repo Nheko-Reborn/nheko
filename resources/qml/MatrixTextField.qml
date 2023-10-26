@@ -69,12 +69,10 @@ ColumnLayout {
                 name: "focused"
 
                 PropertyChanges {
-                    target: labelC
-                    y: 0
+                    labelC.y: 0
                 }
                 PropertyChanges {
-                    opacity: 1
-                    target: input
+                    input.opacity: 1
                 }
             }
             transitions: Transition {
@@ -143,7 +141,7 @@ ColumnLayout {
 
         Layout.fillWidth: true
         color: palette.highlight
-        height: 1
+        Layout.preferredHeight: 1
 
         Rectangle {
             id: blackBar
@@ -159,8 +157,7 @@ ColumnLayout {
                 when: input.activeFocus == true
 
                 PropertyChanges {
-                    target: blackBar
-                    width: blueBar.width
+                    blackBar.width: blueBar.width
                 }
             }
             transitions: Transition {

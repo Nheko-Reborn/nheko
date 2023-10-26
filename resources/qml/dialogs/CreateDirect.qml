@@ -3,12 +3,11 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import ".."
-import QtQuick 2.15
-import QtQuick.Window 2.13
-import QtQuick.Layouts 1.3
-import QtQuick.Controls 2.3
-import QtQml.Models 2.15
-import im.nheko 1.0
+import QtQuick
+import QtQuick.Window
+import QtQuick.Layouts
+import QtQuick.Controls
+import im.nheko
 
 ApplicationWindow {
     id: createDirectRoot

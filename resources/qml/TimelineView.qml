@@ -3,16 +3,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./components"
-import "./delegates"
-import "./device-verification"
 import "./emoji"
 import "./ui"
 import "./voip"
-import Qt.labs.platform as Platform
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Particles
 import QtQuick.Window
 import im.nheko
 
@@ -90,7 +86,7 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             color: Nheko.theme.separator
-            height: 1
+            implicitHeight: 1
             z: 3
         }
         Rectangle {
@@ -146,7 +142,7 @@ Item {
         Rectangle {
             Layout.fillWidth: true
             color: Nheko.theme.separator
-            height: 1
+            implicitHeight: 1
             z: 3
         }
         UploadBox {
@@ -191,10 +187,10 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             displayName: parent.roomName
             enabled: false
-            height: 130
+            implicitHeight: 130
             roomid: parent.roomId
             url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
-            width: 130
+            implicitWidth: 130
         }
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
@@ -296,11 +292,11 @@ Item {
                 Layout.alignment: Qt.AlignHCenter
                 displayName: roomPreview?.inviterDisplayName ?? ""
                 enabled: true
-                height: 48
+                implicitHeight: 48
                 roomid: preview.roomId
                 url: (roomPreview?.inviterAvatarUrl ?? "").replace("mxc://", "image://MxcImage/")
                 userid: roomPreview?.inviterUserId ?? ""
-                width: 48
+                implicitWidth: 48
 
                 onClicked: TimelineManager.openGlobalUserProfile(roomPreview.inviterUserId)
             }

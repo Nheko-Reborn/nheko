@@ -46,12 +46,12 @@ Rectangle {
             Layout.margins: 8
             ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : (CallManager.isOnCallOnOtherDevice ? qsTr("Already on a call") : qsTr("Place a call"))
             ToolTip.visible: hovered
-            height: 22
+            Layout.preferredHeight: 22
             hoverEnabled: true
             image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.svg" : ":/icons/icons/ui/place-call.svg"
             opacity: (CallManager.haveCallInvite || CallManager.isOnCallOnOtherDevice) ? 0.3 : 1
             visible: CallManager.callsSupported && showAllButtons
-            width: 22
+            Layout.preferredWidth: 22
 
             onClicked: {
                 if (room) {
@@ -74,11 +74,11 @@ Rectangle {
             Layout.margins: 8
             ToolTip.text: qsTr("Send a file")
             ToolTip.visible: hovered
-            height: 22
+            Layout.preferredHeight: 22
             hoverEnabled: true
             image: ":/icons/icons/ui/attach.svg"
             visible: showAllButtons
-            width: 22
+            Layout.preferredWidth: 22
 
             onClicked: room.input.openFileSelection()
 
@@ -395,11 +395,11 @@ Rectangle {
             Layout.margins: 8
             ToolTip.text: qsTr("Stickers")
             ToolTip.visible: hovered
-            height: 22
+            Layout.preferredHeight: 22
             hoverEnabled: true
             image: ":/icons/icons/ui/sticky-note-solid.svg"
             visible: showAllButtons
-            width: 22
+            Layout.preferredWidth: 22
 
             onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId, function (row) {
                     room.input.sticker(row);
@@ -419,10 +419,10 @@ Rectangle {
             Layout.margins: 8
             ToolTip.text: qsTr("Emoji")
             ToolTip.visible: hovered
-            height: 22
+            Layout.preferredHeight: 22
             hoverEnabled: true
             image: ":/icons/icons/ui/smile.svg"
-            width: 22
+            Layout.preferredWidth: 22
 
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, room.roomId, function (plaintext, markdown) {
                     messageInput.insert(messageInput.cursorPosition, markdown);
@@ -441,10 +441,10 @@ Rectangle {
             Layout.rightMargin: 8
             ToolTip.text: qsTr("Send")
             ToolTip.visible: hovered
-            height: 22
+            Layout.preferredHeight: 22
             hoverEnabled: true
             image: ":/icons/icons/ui/send.svg"
-            width: 22
+            Layout.preferredWidth: 22
 
             onClicked: {
                 room.input.send();

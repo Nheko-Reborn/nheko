@@ -37,8 +37,9 @@ ApplicationWindow {
         Avatar {
             id: roomAvatar
 
-            width: 130
-            height: width
+            Layout.preferredHeight: 130
+            Layout.preferredWidth: 130
+
             roomid: members.roomId
             displayName: members.roomName
             Layout.alignment: Qt.AlignHCenter
@@ -130,8 +131,8 @@ ApplicationWindow {
                         Avatar {
                             id: avatar
 
-                            width: Nheko.avatarSize
-                            height: Nheko.avatarSize
+                            Layout.preferredWidth: Nheko.avatarSize
+                            Layout.preferredHeight: Nheko.avatarSize
                             userid: model.mxid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             displayName: model.displayName

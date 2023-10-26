@@ -45,8 +45,8 @@ Item {
             Image {
                 Layout.alignment: Qt.AlignHCenter
                 source: "qrc:/logos/login.png"
-                height: 128
-                width: 128
+                Layout.preferredHeight: 128
+                Layout.preferredWidth: 128
             }
 
             RowLayout {
@@ -65,7 +65,7 @@ Item {
 
 
                 Spinner {
-                    height: matrixIdLabel.height/2
+                    Layout.preferredHeight: matrixIdLabel.height/2
                     Layout.alignment: Qt.AlignBottom
 
                     visible: running
@@ -117,7 +117,7 @@ Item {
             }
 
             Item {
-                height: Nheko.avatarSize
+                Layout.preferredHeight: Nheko.avatarSize
                 Layout.fillWidth: true
 
                 Spinner {

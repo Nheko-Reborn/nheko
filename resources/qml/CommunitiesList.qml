@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./components"
-import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
 import QtQml
 import QtQuick
@@ -71,12 +70,13 @@ Page {
                     when: (communityItem.hovered || model.hidden) && !(Communities.currentTagId === model.id)
 
                     PropertyChanges {
-                        backgroundColor: palette.dark
-                        bubbleBackground: palette.highlight
-                        bubbleText: palette.highlightedText
-                        importantText: palette.brightText
-                        target: communityItem
-                        unimportantText: palette.brightText
+                        communityItem {
+                            backgroundColor: palette.dark
+                            bubbleBackground: palette.highlight
+                            bubbleText: palette.highlightedText
+                            importantText: palette.brightText
+                            unimportantText: palette.brightText
+                        }
                     }
                 },
                 State {
@@ -84,12 +84,13 @@ Page {
                     when: Communities.currentTagId == model.id
 
                     PropertyChanges {
-                        backgroundColor: palette.highlight
-                        bubbleBackground: palette.highlightedText
-                        bubbleText: palette.highlight
-                        importantText: palette.highlightedText
-                        target: communityItem
-                        unimportantText: palette.highlightedText
+                        communityItem {
+                            backgroundColor: palette.highlight
+                            bubbleBackground: palette.highlightedText
+                            bubbleText: palette.highlight
+                            importantText: palette.highlightedText
+                            unimportantText: palette.highlightedText
+                        }
                     }
                 }
             ]
@@ -123,11 +124,9 @@ Page {
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: model.collapsed ? qsTr("Expand") : qsTr("Collapse")
                     ToolTip.visible: hovered
-                    height: fontMetrics.lineSpacing
                     hoverEnabled: true
                     image: model.collapsed ? ":/icons/icons/ui/collapsed.svg" : ":/icons/icons/ui/expanded.svg"
                     visible: !communitySidebar.collapsed && model.collapsible
-                    width: fontMetrics.lineSpacing
 
                     onClicked: model.collapsed = !model.collapsed
                 }
@@ -142,7 +141,7 @@ Page {
                     color: communityItem.backgroundColor
                     displayName: model.displayName
                     enabled: false
-                    height: avatarSize
+                    Layout.preferredHeight: avatarSize
                     roomid: model.id
                     textColor: model.avatarUrl?.startsWith(":/") == true ? communityItem.unimportantText : communityItem.importantText
                     url: {
@@ -153,7 +152,7 @@ Page {
                         else
                             return "";
                     }
-                    width: avatarSize
+                    Layout.preferredWidth: avatarSize
 
                     NotificationBubble {
                         anchors.bottom: avatar.bottom

@@ -57,8 +57,9 @@ ApplicationWindow {
 
                     Layout.alignment: Qt.AlignVCenter
                     Layout.rightMargin: Nheko.paddingMedium
-                    width: avatarSize
-                    height: avatarSize
+                    Layout.preferredWidth: roomDirDelegate.avatarSize
+                    Layout.preferredHeight: roomDirDelegate.avatarSize
+
                     url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                     roomid: model.roomid
                     displayName: model.name
@@ -70,8 +71,7 @@ ApplicationWindow {
                     columns: 2
 
                     Layout.alignment: Qt.AlignLeft
-                    width: parent.width - avatar.width
-                    Layout.preferredWidth: parent.width - avatar.width
+                    Layout.preferredWidth: parent.width - roomAvatar.width
 
                     ElidedLabel {
                         Layout.row: 0

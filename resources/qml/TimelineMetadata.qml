@@ -2,12 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import "./components"
-import "./delegates"
-import "./emoji"
-import "./ui"
-import "./dialogs"
-import Qt.labs.platform 1.1 as Platform
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -33,24 +27,22 @@ RowLayout {
 
     StatusIndicator {
         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+        Layout.preferredHeight: parent.iconSize
+        Layout.preferredWidth: parent.iconSize
         eventId: metadata.eventId
-        height: parent.iconSize
         status: metadata.status
-        width: parent.iconSize
     }
     Image {
         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+        Layout.preferredHeight: parent.iconSize
+        Layout.preferredWidth: parent.iconSize
         ToolTip.delay: Nheko.tooltipDelay
         ToolTip.text: qsTr("Edited")
         ToolTip.visible: editHovered.hovered
-        height: parent.iconSize
         source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((metadata.eventId == metadata.room.edit) ? palette.highlight : palette.buttonText)
         sourceSize.height: parent.iconSize * Screen.devicePixelRatio
         sourceSize.width: parent.iconSize * Screen.devicePixelRatio
         visible: metadata.isEdited || metadata.eventId == metadata.room.edit
-        width: parent.iconSize
-        Layout.preferredWidth: parent.iconSize
-        Layout.preferredHeight: parent.iconSize
         HoverHandler {
             id: editHovered
 
@@ -58,28 +50,26 @@ RowLayout {
     }
     ImageButton {
         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+        Layout.preferredHeight: parent.iconSize
+        Layout.preferredWidth: parent.iconSize
         ToolTip.delay: Nheko.tooltipDelay
         ToolTip.text: qsTr("Part of a thread")
         ToolTip.visible: hovered
         buttonTextColor: TimelineManager.userColor(metadata.threadId, palette.base)
-        height: parent.iconSize
         image: ":/icons/icons/ui/thread.svg"
         visible: metadata.threadId
-        width: parent.iconSize
 
         onClicked: metadata.room.thread = threadId
     }
     EncryptionIndicator {
         Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+        Layout.preferredHeight: parent.iconSize
+        Layout.preferredWidth: parent.iconSize
         encrypted: metadata.isEncrypted
-        height: parent.iconSize
         sourceSize.height: parent.iconSize * Screen.devicePixelRatio
         sourceSize.width: parent.iconSize * Screen.devicePixelRatio
         trust: metadata.trustlevel
         visible: metadata.room.isEncrypted
-        width: parent.iconSize
-        Layout.preferredWidth: parent.iconSize
-        Layout.preferredHeight: parent.iconSize
     }
     Label {
         id: ts

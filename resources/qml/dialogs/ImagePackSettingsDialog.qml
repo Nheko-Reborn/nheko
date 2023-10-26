@@ -66,7 +66,7 @@ ApplicationWindow {
                             dialog.show();
                             timelineRoot.destroyOnClose(dialog);
                         }
-                        width: packlistC.width
+                        Layout.preferredWidth: packlistC.width
                         visible: !packlist.containsAccountPack
                         text: qsTr("Create account pack")
                     }
@@ -79,7 +79,7 @@ ApplicationWindow {
                             dialog.show();
                             timelineRoot.destroyOnClose(dialog);
                         }
-                        width: packlistC.width
+                        Layout.preferredWidth: packlistC.width
                         visible: room.permissions.canChange(MtxEvent.ImagePackInRoom)
                         text: qsTr("New room pack")
                     }
@@ -146,8 +146,8 @@ ApplicationWindow {
                         url: packinfo.avatarUrl.replace("mxc://", "image://MxcImage/")
                         displayName: packinfo.packName
                         roomid: packinfo.statekey
-                        height: 100
-                        width: 100
+                        Layout.preferredHeight: 100
+                        Layout.preferredWidth: 100
                         Layout.alignment: Qt.AlignHCenter
                         enabled: false
                     }

@@ -50,24 +50,16 @@ Item {
                 name: "Visible"
 
                 PropertyChanges {
-                    target: screenSaver
-                    visible: true
-                }
-                PropertyChanges {
-                    opacity: 1
-                    target: screenSaver
+                    screenSaver.visible: true
+                    screenSaver.opacity: 1
                 }
             },
             State {
                 name: "Invisible"
 
                 PropertyChanges {
-                    opacity: 0
-                    target: screenSaver
-                }
-                PropertyChanges {
-                    target: screenSaver
-                    visible: false
+                    screenSaver.opacity: 0
+                    screenSaver.visible: false
                 }
             }
         ]

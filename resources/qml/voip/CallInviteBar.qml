@@ -38,8 +38,8 @@ Rectangle {
         anchors.leftMargin: 8
 
         Avatar {
-            width: Nheko.avatarSize
-            height: Nheko.avatarSize
+            implicitWidth: Nheko.avatarSize
+            implicitHeight: Nheko.avatarSize
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             userid: CallManager.callParty
             displayName: CallManager.callPartyDisplayName
@@ -72,8 +72,8 @@ Rectangle {
 
         ImageButton {
             Layout.rightMargin: 16
-            width: 20
-            height: 20
+            Layout.preferredWidth: 20
+            Layout.preferredHeight: 20
             buttonTextColor: "#000000"
             image: ":/icons/icons/ui/settings.svg"
             hoverEnabled: true
@@ -82,7 +82,7 @@ Rectangle {
             onClicked: {
                 var dialog = devicesDialog.createObject(timelineRoot);
                 dialog.open();
-            timelineRoot.destroyOnClose(dialog);
+                timelineRoot.destroyOnClose(dialog);
             }
         }
 

@@ -31,8 +31,8 @@ Rectangle {
         anchors.leftMargin: 8
 
         Avatar {
-            width: Nheko.avatarSize
-            height: Nheko.avatarSize
+            implicitWidth: Nheko.avatarSize
+            implicitHeight: Nheko.avatarSize
             url: CallManager.callPartyAvatarUrl.replace("mxc://", "image://MxcImage/")
             userid: CallManager.callParty
             displayName: CallManager.callPartyDisplayName
@@ -61,8 +61,7 @@ Rectangle {
                     when: CallManager.callType == Voip.VOICE
 
                     PropertyChanges {
-                        target: callTypeIcon
-                        source: "qrc:/icons/icons/ui/place-call.svg"
+                        callTypeIcon.source: "qrc:/icons/icons/ui/place-call.svg"
                     }
 
                 },
@@ -71,8 +70,7 @@ Rectangle {
                     when: CallManager.callType == Voip.VIDEO
 
                     PropertyChanges {
-                        target: callTypeIcon
-                        source: "qrc:/icons/icons/ui/video.svg"
+                        callTypeIcon.source: "qrc:/icons/icons/ui/video.svg"
                     }
 
                 },
@@ -81,8 +79,7 @@ Rectangle {
                     when: CallManager.callType == Voip.SCREEN
 
                     PropertyChanges {
-                        target: callTypeIcon
-                        source: "qrc:/icons/icons/ui/screen-share.svg"
+                        callTypeIcon.source: "qrc:/icons/icons/ui/screen-share.svg"
                     }
 
                 }
@@ -103,8 +100,7 @@ Rectangle {
                     when: CallManager.callState == Voip.OFFERSENT
 
                     PropertyChanges {
-                        target: callStateLabel
-                        text: qsTr("Calling...")
+                        callStateLabel.text: qsTr("Calling...")
                     }
 
                 },
@@ -113,8 +109,7 @@ Rectangle {
                     when: CallManager.callState == Voip.CONNECTING
 
                     PropertyChanges {
-                        target: callStateLabel
-                        text: qsTr("Connecting...")
+                        callStateLabel.text: qsTr("Connecting...")
                     }
 
                 },
@@ -123,8 +118,7 @@ Rectangle {
                     when: CallManager.callState == Voip.ANSWERSENT
 
                     PropertyChanges {
-                        target: callStateLabel
-                        text: qsTr("Connecting...")
+                        callStateLabel.text: qsTr("Connecting...")
                     }
 
                 },
@@ -133,18 +127,15 @@ Rectangle {
                     when: CallManager.callState == Voip.CONNECTED
 
                     PropertyChanges {
-                        target: callStateLabel
-                        text: "00:00"
+                        callStateLabel.text: "00:00"
                     }
 
                     PropertyChanges {
-                        target: callTimer
-                        startTime: Math.floor((new Date()).getTime() / 1000)
+                        callTimer.startTime: Math.floor((new Date()).getTime() / 1000)
                     }
 
                     PropertyChanges {
-                        target: stackLayout
-                        currentIndex: CallManager.callType != Voip.VOICE ? 1 : 0
+                        stackLayout.currentIndex: CallManager.callType != Voip.VOICE ? 1 : 0
                     }
 
                 },
@@ -153,13 +144,16 @@ Rectangle {
                     when: CallManager.callState == Voip.DISCONNECTED
 
                     PropertyChanges {
-                        target: callStateLabel
-                        text: ""
+                        callStateLabel.text: ""
                     }
 
+                    // HACK(Nico): Somehow this causes a crash when not using the custom parser for that property change...
+                    //PropertyChanges {
+                    //    stackLayout.currentIndex: 0
+                    //}
                     PropertyChanges {
                         target: stackLayout
-                        currentIndex: 0
+                        currentIndex: 0 // qmllint disable Quick.property-changes-parsed
                     }
 
                 }
@@ -202,8 +196,8 @@ Rectangle {
 
         ImageButton {
             visible: CallManager.haveLocalPiP
-            width: 24
-            height: 24
+            Layout.preferredWidth: 24
+            Layout.preferredHeight: 24
             buttonTextColor: "#000000"
             image: ":/icons/icons/ui/picture-in-picture.svg"
             hoverEnabled: true
@@ -215,8 +209,8 @@ Rectangle {
         ImageButton {
             Layout.leftMargin: 8
             Layout.rightMargin: 16
-            width: 24
-            height: 24
+            Layout.preferredWidth: 24
+            Layout.preferredHeight: 24
             buttonTextColor: "#000000"
             image: CallManager.isMicMuted ? ":/icons/icons/ui/microphone-unmute.svg" : ":/icons/icons/ui/microphone-mute.svg"
             hoverEnabled: true

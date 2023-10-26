@@ -137,8 +137,8 @@ ApplicationWindow {
                         url: imagePack.avatarUrl.replace("mxc://", "image://MxcImage/")
                         displayName: imagePack.packname
                         roomid: imagePack.statekey
-                        height: 130
-                        width: 130
+                        Layout.preferredHeight: 130
+                        Layout.preferredWidth: 130
                         crop: false
                         Layout.alignment: Qt.AlignHCenter
 
@@ -238,8 +238,8 @@ ApplicationWindow {
                         url: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.Url).replace("mxc://", "image://MxcImage/") + "?scale"
                         displayName: imagePack.data(imagePack.index(currentImageIndex, 0), SingleImagePackModel.ShortCode)
                         roomid: displayName
-                        height: 130
-                        width: 130
+                        Layout.preferredHeight: 130
+                        Layout.preferredWidth: 130
                         crop: false
                         Layout.alignment: Qt.AlignHCenter
                     }

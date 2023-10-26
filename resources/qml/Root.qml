@@ -2,17 +2,12 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import "./delegates"
-import "./device-verification"
 import "./dialogs"
-import "./emoji"
 import "./pages"
-import "./voip"
 import "./ui"
 import Qt.labs.platform 1.1 as Platform
 import QtQuick
 import QtQuick.Controls
-import QtQuick.Layouts
 import QtQuick.Window
 import im.nheko
 

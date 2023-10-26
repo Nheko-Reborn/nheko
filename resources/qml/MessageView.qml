@@ -2,9 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import "./components"
-import "./delegates"
-import "./emoji"
 import "./ui"
 import "./dialogs"
 import Qt.labs.platform 1.1 as Platform
@@ -186,8 +183,6 @@ Item {
                             visible: !button.showImage
                         }
                         Image {
-                            id: buttonImg
-
                             // Workaround, can't get icon.source working for now...
                             anchors.fill: parent
                             fillMode: Image.PreserveAspectFit
@@ -212,7 +207,7 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
                     visible: !!row.model && row.model.isEditable
-                    width: 16
+                    Layout.preferredWidth: 16
 
                     onClicked: {
                         if (row.model.isEditable)
@@ -228,7 +223,7 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/smile-add.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
-                    width: 16
+                    Layout.preferredWidth: 16
 
                     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, room.roomId, function (plaintext, markdown) {
                             var event_id = row.model ? row.model.eventId : "";
@@ -243,7 +238,7 @@ Item {
                     hoverEnabled: true
                     image: (row.model && row.model.threadId) ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    width: 16
+                    Layout.preferredWidth: 16
 
                     onClicked: room.thread = (row.model.threadId || row.model.eventId)
                 }
@@ -254,7 +249,7 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/reply.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    width: 16
+                    Layout.preferredWidth: 16
 
                     onClicked: room.reply = row.model.eventId
                 }
@@ -266,7 +261,7 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/go-to.svg"
                     visible: !!row.model && filteredTimeline.filterByContent
-                    width: 16
+                    Layout.preferredWidth: 16
 
                     onClicked: {
                         topBar.searchString = "";
@@ -281,7 +276,7 @@ Item {
                     ToolTip.visible: hovered
                     hoverEnabled: true
                     image: ":/icons/icons/ui/options.svg"
-                    width: 16
+                    Layout.preferredWidth: 16
 
                     onClicked: messageContextMenuC.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
@@ -624,8 +619,7 @@ Item {
                 name: ""
 
                 PropertyChanges {
-                    target: toEndButton
-                    width: 0
+                    toEndButton.width: 0
                 }
             },
             State {
@@ -633,8 +627,7 @@ Item {
                 when: !chat.atYEnd
 
                 PropertyChanges {
-                    target: toEndButton
-                    width: toEndButton.fullWidth
+                    toEndButton.width: toEndButton.fullWidth
                 }
             }
         ]
@@ -668,8 +661,6 @@ Item {
             rightMargin: Nheko.paddingMedium + (fullWidth - width) / 2
         }
         Image {
-            id: buttonImg
-
             anchors.fill: parent
             anchors.margins: Nheko.paddingMedium
             fillMode: Image.PreserveAspectFit

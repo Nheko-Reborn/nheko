@@ -4,7 +4,6 @@
 
 import ".."
 import "../ui"
-import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
@@ -39,8 +38,8 @@ ApplicationWindow {
             url: summary.roomAvatarUrl.replace("mxc://", "image://MxcImage/")
             roomid: summary.roomid
             displayName: summary.roomName
-            height: 130
-            width: 130
+            Layout.preferredHeight: 130
+            Layout.preferredWidth: 130
             Layout.alignment: Qt.AlignHCenter
         }
 

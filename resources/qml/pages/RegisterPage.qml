@@ -45,8 +45,8 @@ Item {
             Image {
                 Layout.alignment: Qt.AlignHCenter
                 source: "qrc:/logos/login.png"
-                height: 128
-                width: 128
+                Layout.preferredHeight: 128
+                Layout.preferredWidth: 128
             }
 
             RowLayout {
@@ -64,7 +64,7 @@ Item {
 
 
                 Spinner {
-                    height: hsLabel.height/2
+                    Layout.preferredHeight: hsLabel.height/2
                     Layout.alignment: Qt.AlignBottom
 
                     visible: running
@@ -96,7 +96,7 @@ Item {
                     onEditingFinished: regis.checkUsername(text)
                 }
                 Spinner {
-                    height: usernameLabel.height/2
+                    Layout.preferredHeight: usernameLabel.height/2
                     Layout.alignment: Qt.AlignBottom
 
                     visible: running
@@ -105,8 +105,6 @@ Item {
                 }
 
                 Image {
-                    width: usernameLabel.height/2
-                    height: width
                     Layout.preferredHeight: usernameLabel.height/2
                     Layout.preferredWidth: usernameLabel.height/2
                     Layout.alignment: Qt.AlignBottom
@@ -168,7 +166,7 @@ Item {
             }
 
             Item {
-                height: Nheko.avatarSize
+                Layout.preferredHeight: Nheko.avatarSize
                 Layout.fillWidth: true
 
                 Spinner {

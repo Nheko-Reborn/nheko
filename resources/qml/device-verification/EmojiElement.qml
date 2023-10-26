@@ -2,9 +2,9 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import QtQuick 2.3
-import QtQuick.Controls 2.3
-import QtQuick.Layouts 1.10
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Rectangle {
     color: "red"
@@ -21,7 +21,7 @@ Rectangle {
         anchors.bottom: parent.bottom
 
         Label {
-            height: font.pixelSize * 2
+            Layout.preferredHeight: font.pixelSize * 2
             Layout.alignment: Qt.AlignHCenter
             text: col.emoji.emoji
             font.pixelSize: Qt.application.font.pixelSize * 2
