@@ -45,14 +45,14 @@ Item {
             Label {
                 Layout.fillWidth: true
                 Layout.margins: Nheko.paddingMedium
-                Layout.maximumWidth: (Overlay.overlay ? Overlay.overlay.width : 400) - Nheko.paddingMedium * 4
+                Layout.maximumWidth: (showRecoverKeyDialog.Overlay.overlay ? showRecoverKeyDialog.Overlay.overlay.width : 400) - Nheko.paddingMedium * 4
                 color: palette.text
                 text: qsTr("This is your recovery key. You will need it to restore access to your encrypted messages and verification keys. Keep this safe. Don't share it with anyone and don't lose it! Do not pass go! Do not collect $200!")
                 wrapMode: Text.Wrap
             }
             TextEdit {
                 Layout.alignment: Qt.AlignHCenter
-                Layout.maximumWidth: (Overlay.overlay ? Overlay.overlay.width : 400) - Nheko.paddingMedium * 4
+                Layout.maximumWidth: (showRecoverKeyDialog.Overlay.overlay ? showRecoverKeyDialog.Overlay.overlay.width : 400) - Nheko.paddingMedium * 4
                 color: palette.text
                 font.bold: true
                 horizontalAlignment: TextEdit.AlignHCenter

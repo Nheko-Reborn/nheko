@@ -14,6 +14,7 @@ EventDelegateChooser {
 
     required property bool isStateEvent
 
+    // qmllint disable required
     EventDelegateChoice {
         roleValues: [MtxEvent.TextMessage, MtxEvent.NoticeMessage, MtxEvent.ElementEffectMessage, MtxEvent.UnknownMessage,]
 
@@ -258,4 +259,5 @@ EventDelegateChooser {
             text: "Unsupported: " + typeString
         }
     }
+    // qmllint enable required
 }

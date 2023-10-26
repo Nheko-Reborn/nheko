@@ -13,7 +13,7 @@ ApplicationWindow {
 
     property alias prompt: promptLabel.text
     property alias echoMode: statusInput.echoMode
-    property var onAccepted: undefined
+    signal accepted(text: string)
 
     modality: Qt.NonModal
     flags: Qt.Dialog
@@ -55,8 +55,7 @@ ApplicationWindow {
 
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         onAccepted: {
-            if (inputDialog.onAccepted)
-                inputDialog.onAccepted(statusInput.text);
+            inputDialog.accepted(statusInput.text);
 
             inputDialog.close();
         }

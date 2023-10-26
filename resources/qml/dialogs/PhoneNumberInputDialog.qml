@@ -13,7 +13,7 @@ ApplicationWindow {
 
     property alias prompt: promptLabel.text
     property alias echoMode: statusInput.echoMode
-    property var onAccepted: undefined
+    signal accepted(countryCode: string, text: string)
 
     modality: Qt.NonModal
     flags: Qt.Dialog
@@ -1729,8 +1729,7 @@ ApplicationWindow {
     footer: DialogButtonBox {
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
         onAccepted: {
-            if (inputDialog.onAccepted)
-                inputDialog.onAccepted(numberPrefix.model.get(numberPrefix.currentIndex).i, statusInput.text);
+            inputDialog.accepted(numberPrefix.model.get(numberPrefix.currentIndex).i, statusInput.text);
 
             inputDialog.close();
         }

@@ -49,7 +49,7 @@ Popup {
 
     contentItem: Label {
         color: palette.light
-        width: Math.max(Overlay.overlay? Overlay.overlay.width/2 : 0, 400)
+        width: Math.max(snackbar.Overlay.overlay? snackbar.Overlay.overlay.width/2 : 0, 400)
         text: snackbar.currentMessage
         font.bold: true
     }

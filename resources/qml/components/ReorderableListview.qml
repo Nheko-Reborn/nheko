@@ -4,7 +4,6 @@
 
 import QtQuick
 import QtQml.Models
-import im.nheko
 
 Item {
     id: root
