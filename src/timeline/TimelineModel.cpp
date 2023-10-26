@@ -1607,6 +1607,14 @@ TimelineModel::redactAllFromUser(const QString &userid, const QString &reason)
         std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
+
+void
+TimelineModel::reportEvent(const QString &eventId, const QString &reason, const int score)
+{
+    http::client()->report_event(
+      room_id_.toStdString(), eventId.toStdString(), reason.toStdString(), score);
+}
+
 void
 TimelineModel::redactEvent(const QString &id, const QString &reason)
 {
