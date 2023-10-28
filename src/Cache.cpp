@@ -3123,11 +3123,26 @@ Cache::getRoomName(lmdb::txn &txn, lmdb::dbi &statesdb, lmdb::dbi &membersdb)
 
         return localUserId_;
     }();
+    auto second_member = [&members, this]() {
+        bool first = true;
+        for (const auto &m : members) {
+            if (m.first != localUserId_.toStdString()) {
+                if (first)
+                    first = false;
+                else
+                    return QString::fromStdString(m.second.name);
+            }
+        }
+
+        return localUserId_;
+    }();
 
     if (total == 2)
         return first_member;
-    else if (total > 2)
-        return tr("%1 and %n other(s)", "", (int)total - 1).arg(first_member);
+    else if (total == 3)
+        return tr("%1 and %2", "RoomName").arg(first_member, second_member);
+    else if (total > 3)
+        return tr("%1 and %n other(s)", "", (int)total - 2).arg(first_member);
 
     return tr("Empty Room");
 }
