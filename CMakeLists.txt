@@ -26,8 +26,8 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "macos deployment target")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.24.8.tar.gz"
-    SHA1 "ca7838dded9a1811b04ffd56175f629e0af82d3d"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.25.2.tar.gz"
+    SHA1 "560c000d5b6c972d41c2caf44f24189c868cc404"
     LOCAL
 )
 
