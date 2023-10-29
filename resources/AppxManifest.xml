@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities">
+  <Identity Name="im.nheko.Nheko" Version="0.11.3.4" Publisher="CN=NhekoReborn, O=NhekoReborn, L=Munich, S=Bavaria, C=Germany" ProcessorArchitecture="x64"/>
+  <Properties>
+    <DisplayName>Nheko</DisplayName>
+    <PublisherDisplayName>Nheko-Reborn</PublisherDisplayName>
+    <Description>Matrix client written in Qt</Description>
+    <Logo>nheko.png</Logo>
+  </Properties>
+  <Resources>
+    <Resource Language="en-us" />
+    <Resource Language="de-de" />
+  </Resources>
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop"  MinVersion="10.0.14316.0" MaxVersionTested="10.0.15063.0"  />
+  </Dependencies>
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust"/>
+  </Capabilities>
+  <Applications>
+    <Application Id="im.nheko.nheko" Executable="nheko.exe" EntryPoint="Windows.FullTrustApplication"
+      uap10:RuntimeBehavior="packagedClassicApp"
+      uap10:TrustLevel="mediumIL">
+				<uap:VisualElements DisplayName="Nheko" Description="Matrix client written in Qt"	Square150x150Logo="nheko.png"
+					Square44x44Logo="nheko.png" BackgroundColor="#ffffff" />
+				<Extensions>
+					<uap:Extension Category="windows.protocol">
+						<uap:Protocol Name="matrix">
+							<uap:DisplayName>Matrix Link</uap:DisplayName>
+						</uap:Protocol>
+					</uap:Extension>
+				</Extensions>
+    </Application>
+  </Applications>
+</Package>
+

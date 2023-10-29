@@ -98,12 +98,19 @@ after_build:
     - sed -i "s/__DATE__/%DATE%/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
     # Copy nheko data
     - xcopy NhekoData\*.* installer\packages\io.github.nhekoreborn.nheko\data\*.* /s /e /c /y
-    - move NhekoRelease\nheko.exe installer\packages\io.github.nhekoreborn.nheko\data
+    - copy NhekoRelease\nheko.exe installer\packages\io.github.nhekoreborn.nheko\data
     - mkdir tools
     - curl -L -O https://download.qt.io/official_releases/qt-installer-framework/4.3.0/QtInstallerFramework-windows-x86-4.3.0.exe
     - 7z x QtInstallerFramework-windows-x86-4.3.0.exe -otools -aoa
     - set PATH=%BUILD%\tools\bin;%PATH%
     - binarycreator.exe -f -c installer\config\config.xml -p installer\packages nheko-installer.exe
+
+    # build an msix
+    - mkdir msix
+    - xcopy .\NhekoRelease\*.* msix\*.* /s /e /c /y
+    - copy %BUILD%\resources\nheko.png msix
+    - copy %BUILD%\resources\AppxManifest.xml msix
+    - '"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe" pack -d msix -p nheko.msix'
 
     - copy nheko-installer.exe nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe
     - copy nheko-installer.exe nheko-%APPVEYOR_PULL_REQUEST_HEAD_COMMIT%-installer.exe
@@ -122,5 +129,6 @@ deploy:
 
 artifacts:
     - path: nheko_win_64.zip
+    - path: nheko.msix
     - path: nheko-$(APPVEYOR_REPO_TAG_NAME)-installer.exe
     - path: nheko-$(APPVEYOR_PULL_REQUEST_HEAD_COMMIT)-installer.exe
