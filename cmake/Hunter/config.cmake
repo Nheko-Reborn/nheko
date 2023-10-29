@@ -7,7 +7,7 @@ hunter_config(
 if (WIN32)
     hunter_config(
         CURL
-        VERSION 8.4.0
+        VERSION 8.4.0-p0
         CMAKE_ARGS
             CMAKE_USE_SCHANNEL=ON
             BUILD_CURL_TESTS=OFF
@@ -19,7 +19,7 @@ if (WIN32)
 else()
     hunter_config(
         CURL
-        VERSION 8.4.0
+        VERSION 8.4.0-p0
         CMAKE_ARGS
             CMAKE_USE_SCHANNEL=OFF
             BUILD_CURL_TESTS=OFF
