@@ -93,8 +93,8 @@ after_build:
     - copy %BUILD%\deploy\installer\gui\package.xml installer\packages\io.github.nhekoreborn.nheko\meta
     - copy %BUILD%\deploy\installer\gui\installscript.qs installer\packages\io.github.nhekoreborn.nheko\meta
     # Amend version and date
-    - sed -i "s/__VERSION__/0.11.3/" installer\config\config.xml
-    - sed -i "s/__VERSION__/0.11.3/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
+    - sed -i "s/__VERSION__/%VERSION%/" installer\config\config.xml
+    - sed -i "s/__VERSION__/%VERSION%/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
     - sed -i "s/__DATE__/%DATE%/" installer\packages\io.github.nhekoreborn.nheko\meta\package.xml
     # Copy nheko data
     - xcopy NhekoData\*.* installer\packages\io.github.nhekoreborn.nheko\data\*.* /s /e /c /y
@@ -110,6 +110,8 @@ after_build:
     - xcopy .\NhekoRelease\*.* msix\*.* /s /e /c /y
     - copy %BUILD%\resources\nheko.png msix
     - copy %BUILD%\resources\AppxManifest.xml msix
+    - del msix\vc_redist*
+    - 'sed -i "s/ Version=[^ ]*/ Version=\"%WINVERSION%\"/" msix\AppxManifest.xml'
     - '"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe" pack -d msix -p nheko.msix'
 
     - copy nheko-installer.exe nheko-%APPVEYOR_REPO_TAG_NAME%-installer.exe
