@@ -19,6 +19,7 @@
 #include "EventStore.h"
 #include "InputBar.h"
 #include "Permissions.h"
+#include "Reaction.h"
 #include "ReadReceiptsModel.h"
 #include "ui/RoomSummary.h"
 

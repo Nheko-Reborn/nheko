@@ -632,7 +632,8 @@ rainbowify(cmark_node *node)
             // get correct color for char index
             // Use colors as described here:
             // https://shark.comfsm.fm/~dleeling/cis/hsl_rainbow.html
-            auto color = QColor::fromHslF((charIdx - 1.0) / textLen * (5. / 6.), 0.9, 0.5);
+            auto color = QColor::fromHslF(
+              static_cast<float>((charIdx - 1.0) / textLen * (5. / 6.)), 0.9f, 0.5f);
             // format color for HTML
             auto colorString = color.name(QColor::NameFormat::HexRgb);
             // create HTML element for current char

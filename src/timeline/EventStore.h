@@ -16,7 +16,6 @@
 #include <mtx/responses/messages.hpp>
 #include <mtx/responses/sync.hpp>
 
-#include "Reaction.h"
 #include "encryption/Olm.h"
 
 class EventStore final : public QObject
@@ -29,7 +28,7 @@ public:
     void refetchOnlineKeyBackupKeys();
 
     // taken from QtPrivate::QHashCombine
-    static uint hashCombine(uint hash, uint seed)
+    static size_t hashCombine(uint hash, uint seed)
     {
         return seed ^ (hash + 0x9e3779b9 + (seed << 6) + (seed >> 2));
     };
@@ -38,9 +37,9 @@ public:
         std::string room;
         uint64_t idx;
 
-        friend uint qHash(const Index &i, uint seed = 0) noexcept
+        friend size_t qHash(const Index &i, size_t seed = 0) noexcept
         {
-            seed = hashCombine(qHashBits(i.room.data(), (int)i.room.size(), seed), seed);
+            seed = hashCombine(qHashBits(i.room.data(), i.room.size(), seed), seed);
             seed = hashCombine(qHash(i.idx, seed), seed);
             return seed;
         }
@@ -54,10 +53,10 @@ public:
     {
         std::string room, id;
 
-        friend uint qHash(const IdIndex &i, uint seed = 0) noexcept
+        friend size_t qHash(const IdIndex &i, size_t seed = 0) noexcept
         {
-            seed = hashCombine(qHashBits(i.room.data(), (int)i.room.size(), seed), seed);
-            seed = hashCombine(qHashBits(i.id.data(), (int)i.id.size(), seed), seed);
+            seed = hashCombine(qHashBits(i.room.data(), i.room.size(), seed), seed);
+            seed = hashCombine(qHashBits(i.id.data(), i.id.size(), seed), seed);
             return seed;
         }
 

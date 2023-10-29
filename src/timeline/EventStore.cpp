@@ -15,6 +15,7 @@
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"
+#include "Reaction.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
