@@ -7,6 +7,8 @@
 #include <QThread>
 #include <QTimer>
 
+#include <nlohmann/json.hpp>
+
 #include <mtx/responses/common.hpp>
 
 #include "Cache.h"

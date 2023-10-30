@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <variant>
-
 #include <CacheStructs.h>
 #include <QCoreApplication>
 #include <QDateTime>

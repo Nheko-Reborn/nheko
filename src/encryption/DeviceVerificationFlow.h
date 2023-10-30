@@ -11,7 +11,6 @@
 #include "CacheCryptoStructs.h"
 #include "Logging.h"
 #include "MatrixClient.h"
-#include "Olm.h"
 #include "timeline/TimelineModel.h"
 
 class QTimer;

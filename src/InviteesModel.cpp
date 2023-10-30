@@ -4,7 +4,6 @@
 
 #include "InviteesModel.h"
 
-#include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "mtx/responses/profile.hpp"

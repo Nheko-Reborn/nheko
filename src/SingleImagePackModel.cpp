@@ -8,6 +8,8 @@
 #include <QFileInfo>
 #include <QMimeDatabase>
 
+#include <nlohmann/json.hpp>
+
 #include <unordered_set>
 
 #include <mtx/responses/media.hpp>

@@ -13,8 +13,6 @@
 #include <QUrl>
 #include <QVideoSink>
 
-#include "Logging.h"
-
 class TimelineModel;
 
 // I failed to get my own buffer into the MediaPlayer in qml, so just make our own. For that we just

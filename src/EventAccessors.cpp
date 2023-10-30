@@ -8,7 +8,6 @@
 
 #include <algorithm>
 #include <cctype>
-#include <concepts>
 #include <type_traits>
 
 namespace {

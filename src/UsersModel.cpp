@@ -9,6 +9,7 @@
 #include "Cache.h"
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
+#include "Logging.h"
 #include "UserSettingsPage.h"
 
 UsersModel::UsersModel(const std::string &roomId, QObject *parent)

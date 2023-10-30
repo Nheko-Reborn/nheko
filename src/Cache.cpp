@@ -24,6 +24,8 @@
 #include <qt6keychain/keychain.h>
 #endif
 
+#include <nlohmann/json.hpp>
+
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/messages.hpp>
 
@@ -532,8 +534,8 @@ Cache::loadSecretsFromStore(
              name,
              toLoad,
              job,
-             name_    = name_,
-             internal = internal,
+             name__    = name_,
+             internal_ = internal,
              callback,
              databaseReadyOnFinished](QKeychain::Job *) mutable {
                 nhlog::db()->debug("Finished reading '{}'", toLoad.begin()->first);
@@ -549,7 +551,7 @@ Cache::loadSecretsFromStore(
                 if (secret.isEmpty()) {
                     nhlog::db()->debug("Restored empty secret '{}'.", name.toStdString());
                 } else {
-                    callback(name_, internal, secret.toStdString());
+                    callback(name__, internal_, secret.toStdString());
                 }
 
                 // load next secret
@@ -2040,6 +2042,213 @@ isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
 // {
 //     return true;
 // }
+}
+
+template<typename T>
+std::optional<mtx::events::StateEvent<T>>
+Cache::getStateEvent(lmdb::txn &txn, const std::string &room_id, std::string_view state_key)
+{
+    try {
+        constexpr auto type = mtx::events::state_content_to_type<T>;
+        static_assert(type != mtx::events::EventType::Unsupported,
+                      "Not a supported type in state events.");
+
+        if (room_id.empty())
+            return std::nullopt;
+        const auto typeStr = to_string(type);
+
+        std::string_view value;
+        if (state_key.empty()) {
+            auto db = getStatesDb(txn, room_id);
+            if (!db.get(txn, typeStr, value)) {
+                return std::nullopt;
+            }
+        } else {
+            auto db = getStatesKeyDb(txn, room_id);
+            // we can search using state key, since the compare functions defaults to the whole
+            // string, when there is no nullbyte
+            std::string_view data     = state_key;
+            std::string_view typeStrV = typeStr;
+
+            auto cursor = lmdb::cursor::open(txn, db);
+            if (!cursor.get(typeStrV, data, MDB_GET_BOTH))
+                return std::nullopt;
+
+            try {
+                auto eventsDb = getEventsDb(txn, room_id);
+                auto eventid  = data;
+                if (auto sep = data.rfind('\0'); sep != std::string_view::npos) {
+                    if (!eventsDb.get(txn, eventid.substr(sep + 1), value))
+                        return std::nullopt;
+                } else {
+                    return std::nullopt;
+                }
+
+            } catch (std::exception &) {
+                return std::nullopt;
+            }
+        }
+
+        return nlohmann::json::parse(value).get<mtx::events::StateEvent<T>>();
+    } catch (std::exception &) {
+        return std::nullopt;
+    }
+}
+
+template<typename T>
+std::vector<mtx::events::StateEvent<T>>
+Cache::getStateEventsWithType(lmdb::txn &txn,
+                              const std::string &room_id,
+                              mtx::events::EventType type)
+
+{
+    if (room_id.empty())
+        return {};
+
+    std::vector<mtx::events::StateEvent<T>> events;
+
+    {
+        auto db                   = getStatesKeyDb(txn, room_id);
+        auto eventsDb             = getEventsDb(txn, room_id);
+        const auto typeStr        = to_string(type);
+        std::string_view typeStrV = typeStr;
+        std::string_view data;
+        std::string_view value;
+
+        auto cursor = lmdb::cursor::open(txn, db);
+        bool first  = true;
+        if (cursor.get(typeStrV, data, MDB_SET)) {
+            while (cursor.get(typeStrV, data, first ? MDB_FIRST_DUP : MDB_NEXT_DUP)) {
+                first = false;
+
+                try {
+                    auto eventid = data;
+                    if (auto sep = data.rfind('\0'); sep != std::string_view::npos) {
+                        if (eventsDb.get(txn, eventid.substr(sep + 1), value))
+                            events.push_back(
+                              nlohmann::json::parse(value).get<mtx::events::StateEvent<T>>());
+                    }
+                } catch (std::exception &e) {
+                    nhlog::db()->warn("Failed to parse state event: {}", e.what());
+                }
+            }
+        }
+    }
+
+    return events;
+}
+
+template<class T>
+void
+Cache::saveStateEvents(lmdb::txn &txn,
+                       lmdb::dbi &statesdb,
+                       lmdb::dbi &stateskeydb,
+                       lmdb::dbi &membersdb,
+                       lmdb::dbi &eventsDb,
+                       const std::string &room_id,
+                       const std::vector<T> &events)
+{
+    for (const auto &e : events)
+        saveStateEvent(txn, statesdb, stateskeydb, membersdb, eventsDb, room_id, e);
+}
+
+template<class T>
+void
+Cache::saveStateEvent(lmdb::txn &txn,
+                      lmdb::dbi &statesdb,
+                      lmdb::dbi &stateskeydb,
+                      lmdb::dbi &membersdb,
+                      lmdb::dbi &eventsDb,
+                      const std::string &room_id,
+                      const T &event)
+{
+    using namespace mtx::events;
+    using namespace mtx::events::state;
+
+    if (auto e = std::get_if<StateEvent<Member>>(&event); e != nullptr) {
+        switch (e->content.membership) {
+        //
+        // We only keep users with invite or join membership.
+        //
+        case Membership::Invite:
+        case Membership::Join: {
+            auto display_name =
+              e->content.display_name.empty() ? e->state_key : e->content.display_name;
+
+            std::string inviter = "";
+            if (e->content.membership == mtx::events::state::Membership::Invite) {
+                inviter = e->sender;
+            }
+
+            // Lightweight representation of a member.
+            MemberInfo tmp{
+              display_name,
+              e->content.avatar_url,
+              inviter,
+              e->content.reason,
+              e->content.is_direct,
+            };
+
+            membersdb.put(txn, e->state_key, nlohmann::json(tmp).dump());
+            break;
+        }
+        default: {
+            membersdb.del(txn, e->state_key, "");
+            break;
+        }
+        }
+    } else if (auto encr = std::get_if<StateEvent<Encryption>>(&event)) {
+        if (!encr->state_key.empty())
+            return;
+
+        setEncryptedRoom(txn, room_id);
+
+        std::string_view temp;
+        // ensure we don't replace the event in the db
+        if (statesdb.get(txn, to_string(encr->type), temp)) {
+            return;
+        }
+    }
+
+    std::visit(
+      [&txn, &statesdb, &stateskeydb, &eventsDb, &membersdb](const auto &e) {
+          if constexpr (isStateEvent_<decltype(e)>) {
+              eventsDb.put(txn, e.event_id, nlohmann::json(e).dump());
+
+              if (e.type != EventType::Unsupported) {
+                  if (std::is_same_v<std::remove_cv_t<std::remove_reference_t<decltype(e)>>,
+                                     StateEvent<mtx::events::msg::Redacted>>) {
+                      // apply the redaction event
+                      if (e.type == EventType::RoomMember) {
+                          // membership is not revoked, but names are yeeted (so we set the name
+                          // to the mxid)
+                          MemberInfo tmp{e.state_key, ""};
+                          membersdb.put(txn, e.state_key, nlohmann::json(tmp).dump());
+                      } else if (e.state_key.empty()) {
+                          // strictly speaking some stuff in those events can be redacted, but
+                          // this is close enough. Ref:
+                          // https://spec.matrix.org/v1.6/rooms/v10/#redactions
+                          if (e.type != EventType::RoomCreate &&
+                              e.type != EventType::RoomJoinRules &&
+                              e.type != EventType::RoomPowerLevels &&
+                              e.type != EventType::RoomHistoryVisibility)
+                              statesdb.del(txn, to_string(e.type));
+                      } else
+                          stateskeydb.del(txn, to_string(e.type), e.state_key + '\0' + e.event_id);
+                  } else if (e.state_key.empty()) {
+                      statesdb.put(txn, to_string(e.type), nlohmann::json(e).dump());
+                  } else {
+                      auto data = e.state_key + '\0' + e.event_id;
+                      auto key  = to_string(e.type);
+
+                      // Work around https://bugs.openldap.org/show_bug.cgi?id=8447
+                      stateskeydb.del(txn, key, data);
+                      stateskeydb.put(txn, key, data);
+                  }
+              }
+          }
+      },
+      event);
 }
 
 void
@@ -6004,3 +6213,33 @@ secret(const std::string &name)
     return instance_->secret(name);
 }
 } // namespace cache
+
+#define NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(Content)                                            \
+    template std::optional<mtx::events::StateEvent<Content>> Cache::getStateEvent(                 \
+      lmdb::txn &txn, const std::string &room_id, std::string_view state_key);                     \
+                                                                                                   \
+    template std::vector<mtx::events::StateEvent<Content>> Cache::getStateEventsWithType(          \
+      lmdb::txn &txn, const std::string &room_id, mtx::events::EventType type);
+
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Aliases)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Avatar)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::CanonicalAlias)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Create)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Encryption)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::GuestAccess)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::HistoryVisibility)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::JoinRules)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Member)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Name)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::PinnedEvents)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::PowerLevels)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Tombstone)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::ServerAcl)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Topic)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Widget)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::policy_rule::UserRule)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::policy_rule::RoomRule)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::policy_rule::ServerRule)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::space::Child)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::space::Parent)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::msc2545::ImagePack)

@@ -4,8 +4,6 @@
 
 #include "BlurhashProvider.h"
 
-#include <algorithm>
-
 #include <QUrl>
 
 #include "blurhash.hpp"

@@ -8,7 +8,6 @@
 
 #include <mtx/responses/users.hpp>
 
-#include "Cache.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 

@@ -4,6 +4,11 @@
 
 #include "Utils.h"
 
+#include <array>
+#include <cmath>
+#include <unordered_set>
+#include <variant>
+
 #include <QApplication>
 #include <QBuffer>
 #include <QComboBox>
@@ -20,13 +25,11 @@
 #include <QWindow>
 #include <QXmlStreamReader>
 
-#include <array>
-#include <cmath>
-#include <mtx/responses/messages.hpp>
-#include <unordered_set>
-#include <variant>
+#include <nlohmann/json.hpp>
 
 #include <cmark.h>
+
+#include <mtx/responses/messages.hpp>
 
 #include "Cache.h"
 #include "Cache_p.h"
@@ -36,7 +39,6 @@
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
-#include "timeline/Permissions.h"
 
 template<class T, class Event>
 static DescInfo

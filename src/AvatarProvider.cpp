@@ -6,14 +6,10 @@
 #include <QPixmapCache>
 #include <QPointer>
 #include <memory>
-#include <unordered_map>
 
 #include "AvatarProvider.h"
 #include "Cache.h"
-#include "Logging.h"
-#include "MatrixClient.h"
 #include "MxcImageProvider.h"
-#include "Utils.h"
 
 static QPixmapCache avatar_cache;
 

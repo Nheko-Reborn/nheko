@@ -5,14 +5,12 @@
 #include "MatrixClient.h"
 
 #include <memory>
-#include <set>
 
 #include <QMetaType>
 #include <QObject>
 #include <QStandardPaths>
 #include <QString>
 
-#include "nlohmann/json.hpp"
 #include <mtx/responses.hpp>
 
 namespace http {

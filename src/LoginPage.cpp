@@ -11,7 +11,6 @@
 #include <mtx/responses/login.hpp>
 #include <mtx/responses/version.hpp>
 
-#include "Config.h"
 #include "Logging.h"
 #include "LoginPage.h"
 #include "MainWindow.h"

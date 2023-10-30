@@ -10,8 +10,6 @@
 
 #include <mtx/events/canonical_alias.hpp>
 
-#include "CacheStructs.h"
-
 class FetchPublishedAliasesJob final : public QObject
 {
     Q_OBJECT

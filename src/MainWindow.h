@@ -14,8 +14,6 @@
 #include "UserSettingsPage.h"
 #include "dock/Dock.h"
 
-#include "jdenticoninterface.h"
-
 class ChatPage;
 class RegisterPage;
 class WelcomePage;

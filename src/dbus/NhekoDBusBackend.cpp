@@ -6,7 +6,6 @@
 
 #include <mutex>
 
-#include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"

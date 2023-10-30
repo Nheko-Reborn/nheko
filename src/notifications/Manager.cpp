@@ -6,7 +6,6 @@
 
 #include "Cache.h"
 #include "EventAccessors.h"
-#include "Logging.h"
 #include "Utils.h"
 
 QString

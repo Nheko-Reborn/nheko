@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <thread>
 #include <type_traits>
+#include <utility>
 
 #include <QClipboard>
 #include <QDesktopServices>
@@ -17,7 +18,8 @@
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QVariant>
-#include <utility>
+
+#include <nlohmann/json.hpp>
 
 #include "Cache.h"
 #include "Cache_p.h"

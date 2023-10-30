@@ -10,7 +10,6 @@
 #include <mtx/responses/well-known.hpp>
 #include <mtxclient/http/client.hpp>
 
-#include "Config.h"
 #include "Logging.h"
 #include "LoginPage.h"
 #include "MainWindow.h"

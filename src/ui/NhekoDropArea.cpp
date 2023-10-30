@@ -11,8 +11,6 @@
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 
-#include "Logging.h"
-
 NhekoDropArea::NhekoDropArea(QQuickItem *parent)
   : QQuickItem(parent)
 {

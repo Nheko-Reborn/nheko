@@ -4,7 +4,6 @@
 
 #pragma once
 
-#include <memory>
 #include <mtx/events.hpp>
 #include <mtx/events/encrypted.hpp>
 #include <mtxclient/crypto/client.hpp>

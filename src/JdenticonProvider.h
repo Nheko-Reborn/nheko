@@ -11,8 +11,6 @@
 
 #include <mtx/common.hpp>
 
-#include "jdenticoninterface.h"
-
 class JdenticonRunnable final
   : public QObject
   , public QRunnable

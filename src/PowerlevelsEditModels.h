@@ -8,9 +8,8 @@
 #include <QQmlEngine>
 #include <QSortFilterProxyModel>
 
+#include <mtx/events/event_type.hpp>
 #include <mtx/events/power_levels.hpp>
-
-#include "CacheStructs.h"
 
 class PowerlevelsTypeListModel final : public QAbstractListModel
 {

@@ -4,7 +4,9 @@
 
 #pragma once
 
+#include <QObject>
 #include <QPixmap>
+
 #include <functional>
 
 using AvatarCallback = std::function<void(QPixmap)>;

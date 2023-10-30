@@ -9,7 +9,6 @@
 
 #include "CompletionModelRoles.h"
 #include "Logging.h"
-#include "Utils.h"
 
 CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
                                            int max_mistakes,

@@ -6,6 +6,10 @@
 
 #include <QApplication>
 
+#include <nlohmann/json.hpp>
+
+#include <mtx/responses/common.hpp>
+
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
@@ -15,8 +19,6 @@
 #include "encryption/VerificationManager.h"
 #include "timeline/TimelineViewManager.h"
 #include "ui/UIA.h"
-
-#include <mtx/responses/common.hpp>
 
 SelfVerificationStatus::SelfVerificationStatus(QObject *o)
   : QObject(o)

@@ -6,7 +6,6 @@
 
 #include <QUrl>
 
-#include "Cache.h"
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
 #include "UserSettingsPage.h"

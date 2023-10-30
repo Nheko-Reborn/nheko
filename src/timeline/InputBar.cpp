@@ -14,20 +14,20 @@
 #include <QMediaPlayer>
 #include <QMimeData>
 #include <QMimeDatabase>
+#include <QRegularExpression>
 #include <QStandardPaths>
 #include <QTextBoundaryFinder>
 #include <QVideoFrame>
 #include <QVideoSink>
 
-#include <QRegularExpression>
+#include <nlohmann/json.hpp>
+
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/media.hpp>
 
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
-#include "CombinedImagePackModel.h"
-#include "Config.h"
 #include "EventAccessors.h"
 #include "Logging.h"
 #include "MatrixClient.h"

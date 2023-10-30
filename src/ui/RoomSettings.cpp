@@ -15,7 +15,6 @@
 
 #include "Cache.h"
 #include "Cache_p.h"
-#include "Config.h"
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "Utils.h"

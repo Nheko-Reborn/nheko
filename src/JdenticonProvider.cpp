@@ -12,10 +12,7 @@
 
 #include <mtxclient/crypto/client.hpp>
 
-#include "Cache.h"
 #include "Logging.h"
-#include "MatrixClient.h"
-#include "Utils.h"
 #include "jdenticoninterface.h"
 
 namespace Jdenticon {

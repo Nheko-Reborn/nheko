@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <unordered_set>
 
+#include <nlohmann/json.hpp>
+
 #include <mtx/responses.hpp>
 
 #include "AvatarProvider.h"
@@ -282,8 +284,8 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                             continue;
 
                         mtx::events::collections::TimelineEvents te{event};
-                        std::visit([room_id = room_id](auto &event_) { event_.room_id = room_id; },
-                                   te);
+                        std::visit(
+                          [room_id_ = room_id](auto &event_) { event_.room_id = room_id_; }, te);
 
                         if (auto encryptedEvent =
                               std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
@@ -342,14 +344,14 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
                       roomModel->roomAvatarUrl(),
                       96,
                       this,
-                      [this, te = te, room_id = room_id, actions = actions](QPixmap image) {
+                      [this, te_ = te, room_id_ = room_id, actions_ = actions](QPixmap image) {
                           notificationsManager->postNotification(
                             mtx::responses::Notification{
-                              .actions     = actions,
-                              .event       = std::move(te),
+                              .actions     = actions_,
+                              .event       = std::move(te_),
                               .read        = false,
                               .profile_tag = "",
-                              .room_id     = room_id,
+                              .room_id     = room_id_,
                               .ts          = 0,
                             },
                             image.toImage());

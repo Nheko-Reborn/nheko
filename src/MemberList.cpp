@@ -7,9 +7,7 @@
 #include "Cache.h"
 #include "Cache_p.h"
 #include "ChatPage.h"
-#include "Config.h"
 #include "Logging.h"
-#include "Utils.h"
 #include "timeline/TimelineViewManager.h"
 
 MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
