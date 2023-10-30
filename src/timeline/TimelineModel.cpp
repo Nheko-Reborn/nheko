@@ -260,8 +260,7 @@ toRoomEventType(const mtx::events::collections::TimelineEvents &event)
 QString
 toRoomEventTypeString(const mtx::events::collections::TimelineEvents &event)
 {
-    return std::visit([](const auto &e) { return QString::fromStdString(to_string(e.type)); },
-                      event);
+    return QString::fromStdString(to_string(mtx::accessors::event_type(event)));
 }
 
 mtx::events::EventType
@@ -1271,56 +1270,6 @@ TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
     updateLastMessage();
 }
 
-template<typename T>
-static constexpr auto
-isMessage(const mtx::events::RoomEvent<T> &e)
-  -> std::enable_if_t<std::is_same<decltype(e.content.msgtype), std::string>::value, bool>
-{
-    return true;
-}
-
-template<typename T>
-static constexpr auto
-isMessage(const mtx::events::Event<T> &)
-{
-    return false;
-}
-
-template<typename T>
-static constexpr auto
-isMessage(const mtx::events::EncryptedEvent<T> &)
-{
-    return true;
-}
-
-static constexpr auto
-isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallInvite> &)
-{
-    return true;
-}
-
-static constexpr auto
-isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &)
-{
-    return true;
-}
-static constexpr auto
-isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
-{
-    return true;
-}
-
-static constexpr auto
-isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &)
-{
-    return true;
-}
-static constexpr auto
-isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallSelectAnswer> &)
-{
-    return true;
-}
-
 // Workaround. We also want to see a room at the top, if we just joined it
 auto
 isYourJoin(const mtx::events::StateEvent<mtx::events::state::Member> &e, EventStore &events)
@@ -1385,7 +1334,7 @@ TimelineModel::updateLastMessage()
             }
             return;
         }
-        if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, *event))
+        if (!mtx::accessors::is_message(*event))
             continue;
 
         auto description = utils::getMessageDescription(

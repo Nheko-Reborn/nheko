@@ -48,16 +48,25 @@ const std::string &
 sender(const mtx::events::collections::TimelineEvents &event);
 
 bool
+is_state_event(const mtx::events::collections::StateEvents &event);
+bool
 is_state_event(const mtx::events::collections::TimelineEvents &event);
 
 QDateTime
 origin_server_ts(const mtx::events::collections::TimelineEvents &event);
 
+std::uint64_t
+origin_server_ts_ms(const mtx::events::collections::TimelineEvents &event);
+
 std::string
 filename(const mtx::events::collections::TimelineEvents &event);
 
+mtx::events::EventType
+event_type(const mtx::events::collections::TimelineEvents &event);
 mtx::events::MessageType
 msg_type(const mtx::events::collections::TimelineEvents &event);
+bool
+is_message(const mtx::events::collections::TimelineEvents &event);
 std::string
 room_name(const mtx::events::collections::TimelineEvents &event);
 std::string

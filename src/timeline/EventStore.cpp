@@ -509,8 +509,7 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
               std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(&event)) {
             auto d_event = decryptEvent({room_id_, encrypted->event_id}, *encrypted);
             if (d_event->event &&
-                std::visit([](auto e) { return (e.sender != utils::localUser().toStdString()); },
-                           *d_event->event)) {
+                mtx::accessors::sender(*d_event->event) != utils::localUser().toStdString()) {
                 handle_room_verification(this, *d_event->event);
             }
         }

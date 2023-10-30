@@ -6,8 +6,6 @@
 
 #include <mtxclient/http/client.hpp>
 
-#include "Logging.h"
-
 namespace http {
 mtx::http::Client *
 client();

@@ -197,14 +197,7 @@ compactDatabase(lmdb::env &from, lmdb::env &to)
     toTxn.commit();
 }
 
-template<class T>
-bool
-containsStateUpdates(const T &e)
-{
-    return std::visit([](const auto &ev) { return Cache::isStateEvent_<decltype(ev)>; }, e);
-}
-
-bool
+static bool
 containsStateUpdates(const mtx::events::collections::StrippedEvents &e)
 {
     using namespace mtx::events;
@@ -1996,54 +1989,6 @@ Cache::updateState(const std::string &room, const mtx::responses::StateEvents &s
     txn.commit();
 }
 
-namespace {
-template<typename T>
-auto
-isMessage(const mtx::events::RoomEvent<T> &e)
-  -> std::enable_if_t<std::is_same<decltype(e.content.msgtype), std::string>::value, bool>
-{
-    return true;
-}
-
-template<typename T>
-auto
-isMessage(const mtx::events::Event<T> &)
-{
-    return false;
-}
-
-template<typename T>
-auto
-isMessage(const mtx::events::EncryptedEvent<T> &)
-{
-    return true;
-}
-
-auto
-isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallInvite> &)
-{
-    return true;
-}
-
-auto
-isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallAnswer> &)
-{
-    return true;
-}
-
-auto
-isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallHangUp> &)
-{
-    return true;
-}
-
-// auto
-// isMessage(const mtx::events::RoomEvent<mtx::events::voip::CallReject> &)
-// {
-//     return true;
-// }
-}
-
 template<typename T>
 std::optional<mtx::events::StateEvent<T>>
 Cache::getStateEvent(lmdb::txn &txn, const std::string &room_id, std::string_view state_key)
@@ -2418,10 +2363,9 @@ Cache::saveState(const mtx::responses::Sync &res)
         }
 
         for (const auto &e : room.second.timeline.events) {
-            if (!std::visit([](const auto &e) -> bool { return isMessage(e); }, e))
+            if (!mtx::accessors::is_message(e))
                 continue;
-            updatedInfo.approximate_last_modification_ts =
-              std::visit([](const auto &e) -> uint64_t { return e.origin_server_ts; }, e);
+            updatedInfo.approximate_last_modification_ts = mtx::accessors::origin_server_ts_ms(e);
         }
 
         if (auto newRoomInfoDump = nlohmann::json(updatedInfo).dump();
@@ -2592,14 +2536,14 @@ Cache::roomsWithStateUpdates(const mtx::responses::Sync &res)
     for (const auto &room : res.rooms.join) {
         bool hasUpdates = false;
         for (const auto &s : room.second.state.events) {
-            if (containsStateUpdates(s)) {
+            if (mtx::accessors::is_state_event(s)) {
                 hasUpdates = true;
                 break;
             }
         }
 
         for (const auto &s : room.second.timeline.events) {
-            if (containsStateUpdates(s)) {
+            if (mtx::accessors::is_state_event(s)) {
                 hasUpdates = true;
                 break;
             }
