@@ -9,11 +9,26 @@ if (WIN32)
         CURL
         VERSION 8.4.0-p0
         CMAKE_ARGS
-            CMAKE_USE_SCHANNEL=ON
             BUILD_CURL_TESTS=OFF
             BUILD_CURL_EXE=OFF
-            CMAKE_USE_OPENSSL=OFF
-            CMAKE_USE_LIBSSH2=OFF
+            CURL_USE_SCHANNEL=ON
+            CURL_USE_OPENSSL=OFF
+            CURL_USE_LIBSSH2=OFF
+            CURL_DISABLE_FTP=ON
+            CURL_DISABLE_FTP=ON
+            CURL_DISABLE_FILE=ON
+            CURL_DISABLE_TELNET=ON
+            CURL_DISABLE_LDAP=ON
+            CURL_DISABLE_DICT=ON
+            CURL_DISABLE_TFTP=ON
+            CURL_DISABLE_GOPHER=ON
+            CURL_DISABLE_POP3=ON
+            CURL_DISABLE_IMAP=ON
+            CURL_DISABLE_SMB=ON
+            CURL_DISABLE_SMTP=ON
+            CURL_DISABLE_RTSP=ON
+            CURL_USE_LIBRTMP=OFF
+            CURL_DISABLE_MQTT=ON
             BUILD_TESTING=OFF
     )
 else()
@@ -21,11 +36,26 @@ else()
         CURL
         VERSION 8.4.0-p0
         CMAKE_ARGS
-            CMAKE_USE_SCHANNEL=OFF
             BUILD_CURL_TESTS=OFF
             BUILD_CURL_EXE=OFF
-            CMAKE_USE_OPENSSL=ON
-            CMAKE_USE_LIBSSH2=OFF
+            CURL_USE_SCHANNEL=OFF
+            CURL_USE_OPENSSL=ON
+            CURL_USE_LIBSSH2=OFF
+            CURL_DISABLE_FTP=ON
+            CURL_DISABLE_FTP=ON
+            CURL_DISABLE_FILE=ON
+            CURL_DISABLE_TELNET=ON
+            CURL_DISABLE_LDAP=ON
+            CURL_DISABLE_DICT=ON
+            CURL_DISABLE_TFTP=ON
+            CURL_DISABLE_GOPHER=ON
+            CURL_DISABLE_POP3=ON
+            CURL_DISABLE_IMAP=ON
+            CURL_DISABLE_SMB=ON
+            CURL_DISABLE_SMTP=ON
+            CURL_DISABLE_RTSP=ON
+            CURL_USE_LIBRTMP=OFF
+            CURL_DISABLE_MQTT=ON
             BUILD_TESTING=OFF
     )
 endif()

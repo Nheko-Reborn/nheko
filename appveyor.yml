@@ -14,7 +14,7 @@ environment:
 
 
 cache:
-  - c:\hunter\ -> appveyor.yml, CMakeLists.txt
+  - c:\hunter\ -> appveyor.yml, CMakeLists.txt, cmake/Hunter/config.cmake
   - build\_deps -> appveyor.yml, CMakeLists.txt
 
 build:
