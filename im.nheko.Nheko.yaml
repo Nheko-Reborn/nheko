@@ -156,9 +156,9 @@ modules:
     buildsystem: cmake
     name: nlohmann
     sources:
-      - sha256: 1155fd1a83049767360e9a120c43c578145db3204d2b309eba49fbbedd0f4ed3
+      - sha256: d69f9deb6a75e2580465c6c4c5111b89c4dc2fa94e3a85fcd2ffcd9a143d9273
         type: archive
-        url: https://github.com/nlohmann/json/archive/v3.10.4.tar.gz
+        url: https://github.com/nlohmann/json/archive/v3.11.2.tar.gz
   - buildsystem: simple
     build-commands:
       - make static
