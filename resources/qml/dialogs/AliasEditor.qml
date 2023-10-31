@@ -8,21 +8,31 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import im.nheko
 
-
 ApplicationWindow {
     id: aliasEditorW
 
-    property var roomSettings
     property var editingModel: Nheko.editAliases(roomSettings.roomId)
+    property var roomSettings
 
-    modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    minimumWidth: 300
-    minimumHeight: 400
     height: 600
+    minimumHeight: 400
+    minimumWidth: 300
+    modality: Qt.NonModal
+    title: qsTr("Aliases to %1").arg(roomSettings.roomName)
     width: 500
 
-    title: qsTr("Aliases to %1").arg(roomSettings.roomName);
+    footer: DialogButtonBox {
+        id: dbb
+
+        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+
+        onAccepted: {
+            editingModel.commit();
+            aliasEditorW.close();
+        }
+        onRejected: aliasEditorW.close()
+    }
 
     //    Shortcut {
     //        sequence: StandardKey.Cancel
@@ -30,32 +40,27 @@ ApplicationWindow {
     //    }
 
     ColumnLayout {
-        anchors.margins: Nheko.paddingMedium
         anchors.fill: parent
+        anchors.margins: Nheko.paddingMedium
         spacing: 0
 
-
         MatrixText {
-            text: qsTr("List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.")
-            font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
-            Layout.fillWidth: true
-            Layout.fillHeight: false
-            color: palette.text
             Layout.bottomMargin: Nheko.paddingMedium
-        }
-
-        ListView {
+            Layout.fillHeight: false
             Layout.fillWidth: true
-            Layout.fillHeight: true
-
+            color: palette.text
+            font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
+            text: qsTr("List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.")
+        }
+        ListView {
             id: view
 
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            cacheBuffer: 50
             clip: true
-
-
             model: editingModel
             spacing: 4
-            cacheBuffer: 50
 
             delegate: RowLayout {
                 anchors.left: parent.left
@@ -63,79 +68,70 @@ ApplicationWindow {
 
                 Text {
                     Layout.fillWidth: true
-                    text: model.name
                     color: model.isPublished ? palette.text : Nheko.theme.error
+                    text: model.name
                     textFormat: Text.PlainText
                 }
-
                 ImageButton {
                     Layout.alignment: Qt.AlignRight
                     Layout.margins: 2
-                    image: ":/icons/icons/ui/star.svg"
-                    hoverEnabled: true
+                    ToolTip.text: model.isCanonical ? qsTr("Primary alias") : qsTr("Make primary alias")
+                    ToolTip.visible: hovered
                     buttonTextColor: model.isCanonical ? palette.highlight : palette.text
                     highlightColor: editingModel.canAdvertize ? palette.highlight : buttonTextColor
-
-                    ToolTip.visible: hovered
-                    ToolTip.text: model.isCanonical ? qsTr("Primary alias") : qsTr("Make primary alias")
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/star.svg"
 
                     onClicked: editingModel.makeCanonical(model.index)
                 }
-
                 ImageButton {
                     Layout.alignment: Qt.AlignRight
                     Layout.margins: 2
-                    image: ":/icons/icons/ui/building-shop.svg"
-                    hoverEnabled: true
+                    ToolTip.text: qsTr("Advertise as an alias in this room")
+                    ToolTip.visible: hovered
                     buttonTextColor: model.isAdvertized ? palette.highlight : palette.text
                     highlightColor: editingModel.canAdvertize ? palette.highlight : buttonTextColor
-
-                    ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Advertise as an alias in this room")
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/building-shop.svg"
 
                     onClicked: editingModel.toggleAdvertize(model.index)
                 }
-
                 ImageButton {
                     Layout.alignment: Qt.AlignRight
                     Layout.margins: 2
-                    image: ":/icons/icons/ui/room-directory.svg"
-                    hoverEnabled: true
-                    buttonTextColor: model.isPublished ? palette.highlight : palette.text
-
-                    ToolTip.visible: hovered
                     ToolTip.text: qsTr("Publish in room directory")
+                    ToolTip.visible: hovered
+                    buttonTextColor: model.isPublished ? palette.highlight : palette.text
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/room-directory.svg"
 
                     onClicked: editingModel.togglePublish(model.index)
                 }
-
                 ImageButton {
                     Layout.alignment: Qt.AlignRight
                     Layout.margins: 2
-                    image: ":/icons/icons/ui/dismiss.svg"
-                    hoverEnabled: true
-
-                    ToolTip.visible: hovered
                     ToolTip.text: qsTr("Remove this alias")
+                    ToolTip.visible: hovered
+                    hoverEnabled: true
+                    image: ":/icons/icons/ui/dismiss.svg"
 
                     onClicked: editingModel.deleteAlias(model.index)
                 }
             }
         }
-
         RowLayout {
-            spacing: Nheko.paddingMedium
             Layout.fillWidth: true
+            spacing: Nheko.paddingMedium
 
             MatrixTextField {
                 id: newAliasVal
 
-                focus: true
                 Layout.fillWidth: true
-                selectByMouse: true
-                font.pixelSize: fontMetrics.font.pixelSize
                 color: palette.text
+                focus: true
+                font.pixelSize: fontMetrics.font.pixelSize
                 placeholderText: qsTr("#new-alias:server.tld")
+                selectByMouse: true
 
                 Component.onCompleted: forceActiveFocus()
                 Keys.onPressed: {
@@ -145,10 +141,10 @@ ApplicationWindow {
                     }
                 }
             }
-
             Button {
-                text: qsTr("Add")
                 Layout.preferredWidth: 100
+                text: qsTr("Add")
+
                 onClicked: {
                     editingModel.addAlias(newAliasVal.text);
                     newAliasVal.clear();
@@ -156,16 +152,4 @@ ApplicationWindow {
             }
         }
     }
-
-    footer: DialogButtonBox {
-        id: dbb
-
-        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
-        onAccepted: {
-            editingModel.commit();
-            aliasEditorW.close();
-        }
-        onRejected: aliasEditorW.close();
-    }
-
 }

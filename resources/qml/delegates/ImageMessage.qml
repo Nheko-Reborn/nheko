@@ -8,27 +8,28 @@ import QtQuick.Controls
 import im.nheko
 
 AbstractButton {
-    required property int type
-    required property int originalWidth
-    required property int originalHeight
-    required property double proportionalHeight
-    required property string url
     required property string blurhash
     required property string body
-    required property string filename
-    required property string eventId
     required property int containerHeight
     property double divisor: EventDelegateChooser.isReply ? 10 : 4
+    required property string eventId
+    required property string filename
+    property bool fitsMetadata: parent != null ? (parent.width - width) > metadataWidth + 4 : false
+    property int metadataWidth
+    required property int originalHeight
+    required property int originalWidth
+    required property double proportionalHeight
+    required property int type
+    required property string url
 
-    EventDelegateChooser.keepAspectRatio: true
-    EventDelegateChooser.maxWidth: originalWidth
-    EventDelegateChooser.maxHeight: containerHeight / divisor
     EventDelegateChooser.aspectRatio: proportionalHeight
-
-    hoverEnabled: true
+    EventDelegateChooser.keepAspectRatio: true
+    EventDelegateChooser.maxHeight: containerHeight / divisor
+    EventDelegateChooser.maxWidth: originalWidth
     enabled: !EventDelegateChooser.isReply
-
+    hoverEnabled: true
     state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"
+
     states: [
         State {
             name: "BlurhashVisible"
@@ -39,11 +40,9 @@ AbstractButton {
                     visible: (img.status != Image.Ready) || (timeline.privacyScreen.active && blurhash)
                 }
             }
-
             PropertyChanges {
                 img.opacity: 0
             }
-
             PropertyChanges {
                 mxcimage.opacity: 0
             }
@@ -57,11 +56,9 @@ AbstractButton {
                     visible: false
                 }
             }
-
             PropertyChanges {
                 img.opacity: 1
             }
-
             PropertyChanges {
                 mxcimage.opacity: 1
             }
@@ -70,114 +67,98 @@ AbstractButton {
     transitions: [
         Transition {
             from: "ImageVisible"
-            to: "BlurhashVisible"
             reversible: true
+            to: "BlurhashVisible"
 
             SequentialAnimation {
                 PropertyAction {
-                    target: blurhash_
                     property: "visible"
+                    target: blurhash_
                 }
-
                 ParallelAnimation {
                     NumberAnimation {
+                        duration: 300
+                        easing.type: Easing.Linear
+                        property: "opacity"
                         target: blurhash_
-                        property: "opacity"
+                    }
+                    NumberAnimation {
                         duration: 300
                         easing.type: Easing.Linear
-                    }
-
-                    NumberAnimation {
+                        property: "opacity"
                         target: img
-                        property: "opacity"
-                        duration: 300
-                        easing.type: Easing.Linear
                     }
-
                     NumberAnimation {
-                        target: mxcimage
-                        property: "opacity"
                         duration: 300
                         easing.type: Easing.Linear
+                        property: "opacity"
+                        target: mxcimage
                     }
                 }
             }
         }
     ]
 
-    property int metadataWidth
-    property bool fitsMetadata: parent != null ? (parent.width - width) > metadataWidth+4 : false
+    onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight)
 
     Image {
         id: img
 
-        visible: !mxcimage.loaded
         anchors.fill: parent
-        source: url != "" ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignLeft
-        smooth: true
         mipmap: true
-
+        smooth: true
+        source: url != "" ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
+        sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth * proportionalHeight)) * Screen.devicePixelRatio
         sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth < 1 ? Screen.desktopAvailableWidth : originalWidth) * Screen.devicePixelRatio
-        sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth*proportionalHeight)) * Screen.devicePixelRatio
+        visible: !mxcimage.loaded
     }
-
     MxcAnimatedImage {
         id: mxcimage
 
-        visible: loaded
-        roomm: room
-        play: !Settings.animateImagesOnHover || parent.hovered
-        eventId: parent.eventId
-
         anchors.fill: parent
+        eventId: parent.eventId
+        play: !Settings.animateImagesOnHover || parent.hovered
+        roomm: room
+        visible: loaded
     }
-
     Image {
         id: blurhash_
 
-        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + palette.buttonText)
+        anchors.fill: parent
         asynchronous: true
         fillMode: Image.PreserveAspectFit
-        sourceSize.width: parent.width * Screen.devicePixelRatio
+        source: blurhash ? ("image://blurhash/" + blurhash) : ("image://colorimage/:/icons/icons/ui/image-failed.svg?" + palette.buttonText)
         sourceSize.height: parent.height * Screen.devicePixelRatio
-
-        anchors.fill: parent
+        sourceSize.width: parent.width * Screen.devicePixelRatio
     }
-
-    onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
-
     Item {
         id: overlay
 
         anchors.fill: parent
-
         visible: parent.hovered
 
         Rectangle {
             id: container
 
-            width: parent.width
-            implicitHeight: imgcaption.implicitHeight
             anchors.bottom: overlay.bottom
             color: palette.window
+            implicitHeight: imgcaption.implicitHeight
             opacity: 0.75
+            width: parent.width
         }
-
         Text {
             id: imgcaption
 
             anchors.fill: container
+            color: palette.text
             elide: Text.ElideMiddle
             horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
             // See this MSC: https://github.com/matrix-org/matrix-doc/pull/2530
             text: filename ? filename : body
-            color: palette.text
+            verticalAlignment: Text.AlignVCenter
         }
-
     }
-
 }

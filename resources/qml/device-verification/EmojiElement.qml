@@ -8,9 +8,9 @@ import QtQuick.Layouts
 
 Rectangle {
     color: "red"
+    height: Qt.application.font.pixelSize * 4
     implicitHeight: Qt.application.font.pixelSize * 4
     implicitWidth: col.width
-    height: Qt.application.font.pixelSize * 4
     width: col.width
 
     ColumnLayout {
@@ -21,17 +21,14 @@ Rectangle {
         anchors.bottom: parent.bottom
 
         Label {
-            Layout.preferredHeight: font.pixelSize * 2
             Layout.alignment: Qt.AlignHCenter
-            text: col.emoji.emoji
+            Layout.preferredHeight: font.pixelSize * 2
             font.pixelSize: Qt.application.font.pixelSize * 2
+            text: col.emoji.emoji
         }
-
         Label {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignBottom
             text: col.emoji.description
         }
-
     }
-
 }

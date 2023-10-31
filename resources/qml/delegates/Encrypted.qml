@@ -13,29 +13,37 @@ Control {
     required property int encryptionError
     required property string eventId
 
-    padding: Nheko.paddingMedium
-    implicitHeight: contents.implicitHeight + Nheko.paddingMedium * 2
-    Layout.maximumWidth: contents.Layout.maximumWidth + padding * 2
     Layout.fillWidth: true
+    Layout.maximumWidth: contents.Layout.maximumWidth + padding * 2
+    implicitHeight: contents.implicitHeight + Nheko.paddingMedium * 2
+    padding: Nheko.paddingMedium
 
+    background: Rectangle {
+        color: palette.alternateBase
+        radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingMedium
+        visible: !Settings.bubbles // the bubble in a bubble looks odd
+    }
     contentItem: RowLayout {
         id: contents
 
         spacing: Nheko.paddingMedium
 
         Image {
-            source: "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?" + Nheko.theme.error
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 24
             Layout.preferredHeight: 24
+            Layout.preferredWidth: 24
+            source: "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?" + Nheko.theme.error
         }
-
         ColumnLayout {
-            spacing: Nheko.paddingSmall
             Layout.fillWidth: true
+            spacing: Nheko.paddingSmall
 
             Label {
                 id: encryptedText
+
+                Layout.fillWidth: true
+                Layout.maximumWidth: implicitWidth + 1
+                color: palette.text
                 text: {
                     switch (r.encryptionError) {
                     case Olm.MissingSession:
@@ -56,24 +64,13 @@ Control {
                 }
                 textFormat: Text.PlainText
                 wrapMode: Label.WordWrap
-                color: palette.text
-                Layout.fillWidth: true
-                Layout.maximumWidth: implicitWidth + 1
             }
-
             Button {
-                visible: r.encryptionError == Olm.MissingSession || encryptionError == Olm.MissingSessionIndex
                 text: qsTr("Request key")
+                visible: r.encryptionError == Olm.MissingSession || encryptionError == Olm.MissingSessionIndex
+
                 onClicked: room.requestKeyForEvent(eventId)
             }
-
         }
-
-    }
-
-    background: Rectangle {
-        color: palette.alternateBase
-        radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingMedium
-        visible: !Settings.bubbles // the bubble in a bubble looks odd
     }
 }

@@ -11,52 +11,27 @@ import im.nheko 1.0
 ApplicationWindow {
     id: inputDialog
 
-    property alias prompt: promptLabel.text
     property alias echoMode: statusInput.echoMode
-    signal accepted(text: string)
+    property alias prompt: promptLabel.text
 
-    modality: Qt.NonModal
-    flags: Qt.Dialog
-    width: 350
-    height: fontMetrics.lineSpacing * 7
+    signal accepted(string text)
 
     function forceActiveFocus() {
         statusInput.forceActiveFocus();
     }
 
-    Shortcut {
-        sequence: StandardKey.Cancel
-        onActivated: dbb.rejected()
-    }
-
-    ColumnLayout {
-        spacing: Nheko.paddingMedium
-        anchors.margins: Nheko.paddingMedium
-        anchors.fill: parent
-
-        Label {
-            id: promptLabel
-
-            color: palette.text
-        }
-
-        MatrixTextField {
-            id: statusInput
-
-            Layout.fillWidth: true
-            onAccepted: dbb.accepted()
-            focus: true
-        }
-
-    }
+    flags: Qt.Dialog
+    height: fontMetrics.lineSpacing * 7
+    modality: Qt.NonModal
+    width: 350
 
     footer: DialogButtonBox {
         id: dbb
 
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+
         onAccepted: {
             inputDialog.accepted(statusInput.text);
-
             inputDialog.close();
         }
         onRejected: {
@@ -64,4 +39,28 @@ ApplicationWindow {
         }
     }
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+
+        onActivated: dbb.rejected()
+    }
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: Nheko.paddingMedium
+        spacing: Nheko.paddingMedium
+
+        Label {
+            id: promptLabel
+
+            color: palette.text
+        }
+        MatrixTextField {
+            id: statusInput
+
+            Layout.fillWidth: true
+            focus: true
+
+            onAccepted: dbb.accepted()
+        }
+    }
 }

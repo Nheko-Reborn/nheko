@@ -11,48 +11,18 @@ import im.nheko 1.0
 ApplicationWindow {
     id: joinRoomRoot
 
-    title: qsTr("Join room")
-    modality: Qt.WindowModal
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     color: palette.window
-    width: 350
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     height: fontMetrics.lineSpacing * 7
-
-    Shortcut {
-        sequence: StandardKey.Cancel
-        onActivated: dbb.rejected()
-    }
-
-    ColumnLayout {
-        spacing: Nheko.paddingMedium
-        anchors.margins: Nheko.paddingMedium
-        anchors.fill: parent
-
-        Label {
-            id: promptLabel
-
-            text: qsTr("Room ID or alias")
-            color: palette.text
-        }
-
-        MatrixTextField {
-            id: input
-
-            focus: true
-            Layout.fillWidth: true
-            onAccepted: {
-                if (input.text.match("#.+?:.{3,}"))
-                    dbb.accepted();
-
-            }
-        }
-
-    }
+    modality: Qt.WindowModal
+    title: qsTr("Join room")
+    width: 350
 
     footer: DialogButtonBox {
         id: dbb
 
         standardButtons: DialogButtonBox.Cancel
+
         onAccepted: {
             Nheko.joinRoom(input.text);
             joinRoomRoot.close();
@@ -62,11 +32,38 @@ ApplicationWindow {
         }
 
         Button {
-            text: qsTr("Join")
-            enabled: input.text.match("#.+?:.{3,}")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            enabled: input.text.match("#.+?:.{3,}")
+            text: qsTr("Join")
         }
-
     }
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+
+        onActivated: dbb.rejected()
+    }
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: Nheko.paddingMedium
+        spacing: Nheko.paddingMedium
+
+        Label {
+            id: promptLabel
+
+            color: palette.text
+            text: qsTr("Room ID or alias")
+        }
+        MatrixTextField {
+            id: input
+
+            Layout.fillWidth: true
+            focus: true
+
+            onAccepted: {
+                if (input.text.match("#.+?:.{3,}"))
+                    dbb.accepted();
+            }
+        }
+    }
 }

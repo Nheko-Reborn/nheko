@@ -7,24 +7,20 @@ import QtQuick.Controls
 import im.nheko
 
 Image {
-    required property int powerlevel
-    required property var permissions
-
     readonly property bool isAdmin: permissions ? permissions.changeLevel(MtxEvent.PowerLevels) <= powerlevel : false
-    readonly property bool isModerator: permissions ? permissions.redactLevel() <= powerlevel : false
     readonly property bool isDefault: permissions ? permissions.defaultLevel() <= powerlevel : false
-
+    readonly property bool isModerator: permissions ? permissions.redactLevel() <= powerlevel : false
+    required property var permissions
+    required property int powerlevel
     readonly property string sourceUrl: {
         if (isAdmin)
-             return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?";
+            return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?";
         else if (isModerator)
             return "image://colorimage/:/icons/icons/ui/ribbon.svg?";
         else
             return "image://colorimage/:/icons/icons/ui/person.svg?";
     }
 
-    source: sourceUrl + (ma.hovered ? palette.highlight : palette.buttonText)
-    ToolTip.visible: ma.hovered
     ToolTip.text: {
         if (isAdmin)
             return qsTr("Administrator: %1").arg(powerlevel);
@@ -33,8 +29,11 @@ Image {
         else
             return qsTr("User: %1").arg(powerlevel);
     }
+    ToolTip.visible: ma.hovered
+    source: sourceUrl + (ma.hovered ? palette.highlight : palette.buttonText)
 
     HoverHandler {
         id: ma
+
     }
 }

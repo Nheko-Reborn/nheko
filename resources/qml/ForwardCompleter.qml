@@ -55,8 +55,8 @@ Popup {
             id: replyPreview
 
             eventId: mid
-            userColor: TimelineManager.userColor(replyPreview.userId, palette.window)
             maxWidth: parent.width
+            userColor: TimelineManager.userColor(replyPreview.userId, palette.window)
         }
         MatrixTextField {
             id: roomTextInput
@@ -64,7 +64,7 @@ Popup {
             color: palette.text
             width: forwardMessagePopup.width - forwardMessagePopup.leftPadding * 2
 
-            Keys.onPressed: (event) => {
+            Keys.onPressed: event => {
                 if (event.key == Qt.Key_Up || event.key == Qt.Key_Backtab) {
                     event.accepted = true;
                     completerPopup.up();

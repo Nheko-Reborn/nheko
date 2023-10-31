@@ -15,6 +15,14 @@ do
     clang-format -i "$f"
 done;
 
+if command -v /usr/lib64/qt6/bin/qmlformat &> /dev/null; then
+    /usr/lib64/qt6/bin/qmlformat -i $QML_FILES
+elif command -v /usr/lib/qt6/bin/qmlformat &> /dev/null; then
+    /usr/lib/qt6/bin/qmlformat -i $QML_FILES
+else
+    echo "No qmlformat found, skipping check!"
+fi
+
 git diff --exit-code
 
 if command -v /usr/lib64/qt6/bin/qmllint &> /dev/null; then

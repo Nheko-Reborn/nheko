@@ -5,20 +5,20 @@
 import QtQuick
 
 Item {
-    property int minimumWidth: 100
-    property int maximumWidth: 400
+    property bool collapsed: width < minimumWidth
     property int collapsedWidth: 40
     property bool collapsible: true
-    property bool collapsed: width < minimumWidth
-    property int splitterWidth: 1
+    property int maximumWidth: 400
+    property int minimumWidth: 100
     property int preferredWidth: 100
+    property int splitterWidth: 1
 
     Component.onCompleted: {
         children[0].width = Qt.binding(() => {
-            return parent.singlePageMode ? parent.width : width - splitterWidth;
-        });
+                return parent.singlePageMode ? parent.width : width - splitterWidth;
+            });
         children[0].height = Qt.binding(() => {
-            return parent.height;
-        });
+                return parent.height;
+            });
     }
 }

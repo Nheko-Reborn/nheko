@@ -13,53 +13,48 @@ Control {
 
     required property string userName
 
-    padding: Nheko.paddingMedium
+    Layout.fillWidth: true
     //implicitHeight: contents.implicitHeight + padd * 2
     Layout.maximumWidth: contents.Layout.maximumWidth + padding * 2
-    Layout.fillWidth: true
+    padding: Nheko.paddingMedium
 
+    background: Rectangle {
+        border.color: Nheko.theme.green
+        border.width: 2
+        color: palette.alternateBase
+        height: contents.implicitHeight + Nheko.paddingMedium * 2
+        radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
+    }
     contentItem: RowLayout {
         id: contents
 
         spacing: Nheko.paddingMedium
 
         Image {
-            source: "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?" + Nheko.theme.green
             Layout.alignment: Qt.AlignVCenter
-            Layout.preferredWidth: 24
             Layout.preferredHeight: 24
+            Layout.preferredWidth: 24
+            source: "image://colorimage/:/icons/icons/ui/shield-filled-checkmark.svg?" + Nheko.theme.green
         }
-
         ColumnLayout {
-            spacing: Nheko.paddingSmall
             Layout.fillWidth: true
+            spacing: Nheko.paddingSmall
 
             MatrixText {
-                text: qsTr("%1 enabled end-to-end encryption").arg(r.userName)
-                font.bold: true
-                font.pointSize: 14
-                color: palette.text
                 Layout.fillWidth: true
                 Layout.maximumWidth: implicitWidth + 1
+                color: palette.text
+                font.bold: true
+                font.pointSize: 14
+                text: qsTr("%1 enabled end-to-end encryption").arg(r.userName)
             }
-
             Label {
+                Layout.fillWidth: true
+                Layout.maximumWidth: implicitWidth + 1
                 text: qsTr("Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.")
                 textFormat: Text.PlainText
                 wrapMode: Label.WordWrap
-                Layout.fillWidth: true
-                Layout.maximumWidth: implicitWidth + 1
             }
-
         }
-
-    }
-
-    background: Rectangle {
-        radius: fontMetrics.lineSpacing / 2 + Nheko.paddingMedium
-        height: contents.implicitHeight + Nheko.paddingMedium * 2
-        color: palette.alternateBase
-        border.color: Nheko.theme.green
-        border.width: 2
     }
 }

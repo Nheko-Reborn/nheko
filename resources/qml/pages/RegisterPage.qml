@@ -13,208 +13,197 @@ import "../"
 
 Item {
     id: registrationPage
-    property int maxExpansion: 400
 
     property string error: regis.error
+    property int maxExpansion: 400
 
     Registration {
         id: regis
-    }
 
+    }
     ScrollView {
         id: scroll
 
-        clip: false
         ScrollBar.horizontal.visible: false
         anchors.left: parent.left
+        anchors.margins: Nheko.paddingLarge
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        height: Math.min(registrationPage.height, col.implicitHeight)
-        anchors.margins: Nheko.paddingLarge
-
+        clip: false
         contentWidth: availableWidth
+        height: Math.min(registrationPage.height, col.implicitHeight)
 
         ColumnLayout {
             id: col
 
-            spacing: Nheko.paddingMedium
-
             anchors.horizontalCenter: parent.horizontalCenter
-            width: Math.min(registrationPage.maxExpansion, scroll.width- Nheko.paddingLarge*2)
+            spacing: Nheko.paddingMedium
+            width: Math.min(registrationPage.maxExpansion, scroll.width - Nheko.paddingLarge * 2)
 
             Image {
                 Layout.alignment: Qt.AlignHCenter
-                source: "qrc:/logos/login.png"
                 Layout.preferredHeight: 128
                 Layout.preferredWidth: 128
+                source: "qrc:/logos/login.png"
             }
-
             RowLayout {
+                Layout.fillWidth: true
                 spacing: Nheko.paddingLarge
 
-                Layout.fillWidth: true
                 MatrixTextField {
                     id: hsLabel
-                    label: qsTr("Homeserver")
-                    placeholderText: qsTr("your.server")
-                    onEditingFinished: regis.setServer(text)
 
                     ToolTip.text: qsTr("A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.")
+                    label: qsTr("Homeserver")
+                    placeholderText: qsTr("your.server")
+
+                    onEditingFinished: regis.setServer(text)
                 }
-
-
                 Spinner {
-                    Layout.preferredHeight: hsLabel.height/2
                     Layout.alignment: Qt.AlignBottom
-
-                    visible: running
-                    running: regis.lookingUpHs
+                    Layout.preferredHeight: hsLabel.height / 2
                     foreground: palette.mid
+                    running: regis.lookingUpHs
+                    visible: running
                 }
             }
-
             MatrixText {
                 Layout.fillWidth: true
-                textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: regis.hsError
+                textFormat: Text.PlainText
                 visible: text
                 wrapMode: TextEdit.Wrap
             }
-
             RowLayout {
+                Layout.fillWidth: true
                 spacing: Nheko.paddingLarge
-
                 visible: regis.supported
 
-                Layout.fillWidth: true
                 MatrixTextField {
                     id: usernameLabel
+
                     Layout.fillWidth: true
-                    label: qsTr("Username")
                     ToolTip.text: qsTr("The username must not be empty, and must contain only the characters a-z, 0-9, ., _, =, -, and /.")
+                    label: qsTr("Username")
+
                     onEditingFinished: regis.checkUsername(text)
                 }
                 Spinner {
-                    Layout.preferredHeight: usernameLabel.height/2
                     Layout.alignment: Qt.AlignBottom
-
-                    visible: running
-                    running: regis.lookingUpUsername
+                    Layout.preferredHeight: usernameLabel.height / 2
                     foreground: palette.mid
+                    running: regis.lookingUpUsername
+                    visible: running
                 }
-
                 Image {
-                    Layout.preferredHeight: usernameLabel.height/2
-                    Layout.preferredWidth: usernameLabel.height/2
                     Layout.alignment: Qt.AlignBottom
-                    source: regis.usernameAvailable ? ("image://colorimage/:/icons/icons/ui/checkmark.svg?green") : ("image://colorimage/:/icons/icons/ui/dismiss.svg?"+Nheko.theme.error)
-                    visible: regis.usernameAvailable || regis.usernameUnavailable
-                    ToolTip.visible: ma.hovered
+                    Layout.preferredHeight: usernameLabel.height / 2
+                    Layout.preferredWidth: usernameLabel.height / 2
                     ToolTip.text: qsTr("Back")
+                    ToolTip.visible: ma.hovered
+                    source: regis.usernameAvailable ? ("image://colorimage/:/icons/icons/ui/checkmark.svg?green") : ("image://colorimage/:/icons/icons/ui/dismiss.svg?" + Nheko.theme.error)
                     sourceSize.height: height * Screen.devicePixelRatio
                     sourceSize.width: width * Screen.devicePixelRatio
+                    visible: regis.usernameAvailable || regis.usernameUnavailable
+
                     HoverHandler {
                         id: ma
+
                     }
                 }
             }
-
             MatrixText {
                 Layout.fillWidth: true
-                textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: regis.usernameError
+                textFormat: Text.PlainText
                 visible: text && regis.supported
                 wrapMode: TextEdit.Wrap
             }
-
-
             MatrixTextField {
-                visible: regis.supported
                 id: passwordLabel
+
                 Layout.fillWidth: true
-                label: qsTr("Password")
-                echoMode: TextInput.Password
                 ToolTip.text: qsTr("Please choose a secure password. The exact requirements for password strength may depend on your server.")
-            }
-
-            MatrixTextField {
-                visible: regis.supported
-                id: passwordConfirmationLabel
-                Layout.fillWidth: true
-                label: qsTr("Password confirmation")
                 echoMode: TextInput.Password
+                label: qsTr("Password")
+                visible: regis.supported
             }
+            MatrixTextField {
+                id: passwordConfirmationLabel
 
+                Layout.fillWidth: true
+                echoMode: TextInput.Password
+                label: qsTr("Password confirmation")
+                visible: regis.supported
+            }
             MatrixText {
                 Layout.fillWidth: true
-                visible: regis.supported
-                textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: passwordLabel.text != passwordConfirmationLabel.text ? qsTr("Your passwords do not match!") : ""
+                textFormat: Text.PlainText
+                visible: regis.supported
                 wrapMode: TextEdit.Wrap
             }
-
             MatrixTextField {
-                visible: regis.supported
                 id: deviceNameLabel
+
                 Layout.fillWidth: true
+                ToolTip.text: qsTr("A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.")
                 label: qsTr("Device name")
                 placeholderText: regis.initialDeviceName()
-                ToolTip.text: qsTr("A name for this device which will be shown to others when verifying your devices. If nothing is provided a default is used.")
+                visible: regis.supported
             }
-
             Item {
-                Layout.preferredHeight: Nheko.avatarSize
                 Layout.fillWidth: true
+                Layout.preferredHeight: Nheko.avatarSize
 
                 Spinner {
-                    height: parent.height
                     anchors.centerIn: parent
-
-                    visible: running
-                    running: regis.registering
                     foreground: palette.mid
+                    height: parent.height
+                    running: regis.registering
+                    visible: running
                 }
             }
-
             MatrixText {
                 Layout.fillWidth: true
-                textFormat: Text.PlainText
                 color: Nheko.theme.error
                 text: registrationPage.error
+                textFormat: Text.PlainText
                 visible: text
                 wrapMode: TextEdit.Wrap
             }
-
             FlatButton {
                 id: regisBtn
-                visible: regis.supported
-                enabled: usernameLabel.text && passwordLabel.text && passwordLabel.text == passwordConfirmationLabel.text
-                Layout.alignment: Qt.AlignHCenter
-                text: qsTr("REGISTER")
+
                 function register() {
-                    regis.startRegistration(usernameLabel.text, passwordLabel.text, deviceNameLabel.text)
+                    regis.startRegistration(usernameLabel.text, passwordLabel.text, deviceNameLabel.text);
                 }
-                onClicked: regisBtn.register()
+
+                Keys.enabled: regisBtn.enabled && regis.supported
+                Layout.alignment: Qt.AlignHCenter
+                enabled: usernameLabel.text && passwordLabel.text && passwordLabel.text == passwordConfirmationLabel.text
+                text: qsTr("REGISTER")
+                visible: regis.supported
+
                 Keys.onEnterPressed: regisBtn.register()
                 Keys.onReturnPressed: regisBtn.register()
-                Keys.enabled: regisBtn.enabled && regis.supported
+                onClicked: regisBtn.register()
             }
         }
     }
-
     ImageButton {
-        anchors.top: parent.top
+        ToolTip.text: qsTr("Back")
+        ToolTip.visible: hovered
         anchors.left: parent.left
         anchors.margins: Nheko.paddingMedium
-        width: Nheko.avatarSize
+        anchors.top: parent.top
         height: Nheko.avatarSize
         image: ":/icons/icons/ui/angle-arrow-left.svg"
-        ToolTip.visible: hovered
-        ToolTip.text: qsTr("Back")
+        width: Nheko.avatarSize
+
         onClicked: mainWindow.pop()
     }
 }
-

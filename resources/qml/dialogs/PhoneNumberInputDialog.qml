@@ -11,21 +11,34 @@ import im.nheko 1.0
 ApplicationWindow {
     id: inputDialog
 
-    property alias prompt: promptLabel.text
     property alias echoMode: statusInput.echoMode
-    signal accepted(countryCode: string, text: string)
+    property alias prompt: promptLabel.text
 
-    modality: Qt.NonModal
+    signal accepted(string countryCode, string text)
+
     flags: Qt.Dialog
-    width: 350
     height: fontMetrics.lineSpacing * 7
+    modality: Qt.NonModal
+    width: 350
+
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+
+        onAccepted: {
+            inputDialog.accepted(numberPrefix.model.get(numberPrefix.currentIndex).i, statusInput.text);
+            inputDialog.close();
+        }
+        onRejected: {
+            inputDialog.close();
+        }
+    }
 
     GridLayout {
-        rowSpacing: Nheko.paddingMedium
-        columnSpacing: Nheko.paddingMedium
-        anchors.margins: Nheko.paddingMedium
         anchors.fill: parent
+        anchors.margins: Nheko.paddingMedium
+        columnSpacing: Nheko.paddingMedium
         columns: 2
+        rowSpacing: Nheko.paddingMedium
 
         Label {
             id: promptLabel
@@ -33,7 +46,6 @@ ApplicationWindow {
             Layout.columnSpan: 2
             color: palette.text
         }
-
         ComboBox {
             id: numberPrefix
 
@@ -47,255 +59,215 @@ ApplicationWindow {
             //n=name,i=ISO,p=prefix -- see countries.js.md for source
             model: ListModel {
                 ListElement {
-                    n: "Afghanistan"
                     i: "AF"
+                    n: "Afghanistan"
                     p: "+93"
                 }
-
                 ListElement {
-                    n: "Åland Islands"
                     i: "AX"
+                    n: "Åland Islands"
                     p: "+358 18"
                 }
-
                 ListElement {
-                    n: "Albania"
                     i: "AL"
+                    n: "Albania"
                     p: "+355"
                 }
-
                 ListElement {
-                    n: "Algeria"
                     i: "DZ"
+                    n: "Algeria"
                     p: "+213"
                 }
-
                 ListElement {
-                    n: "American Samoa"
                     i: "AS"
+                    n: "American Samoa"
                     p: "+1 684"
                 }
-
                 ListElement {
-                    n: "Andorra"
                     i: "AD"
+                    n: "Andorra"
                     p: "+376"
                 }
-
                 ListElement {
-                    n: "Angola"
                     i: "AO"
+                    n: "Angola"
                     p: "+244"
                 }
-
                 ListElement {
-                    n: "Anguilla"
                     i: "AI"
+                    n: "Anguilla"
                     p: "+1 264"
                 }
-
                 ListElement {
-                    n: "Antigua and Barbuda"
                     i: "AG"
+                    n: "Antigua and Barbuda"
                     p: "+1 268"
                 }
-
                 ListElement {
-                    n: "Argentina"
                     i: "AR"
+                    n: "Argentina"
                     p: "+54"
                 }
-
                 ListElement {
-                    n: "Armenia"
                     i: "AM"
+                    n: "Armenia"
                     p: "+374"
                 }
-
                 ListElement {
-                    n: "Aruba"
                     i: "AW"
+                    n: "Aruba"
                     p: "+297"
                 }
-
                 ListElement {
-                    n: "Ascension"
                     i: "SH"
+                    n: "Ascension"
                     p: "+247"
                 }
-
                 ListElement {
-                    n: "Australia"
                     i: "AU"
+                    n: "Australia"
                     p: "+61"
                 }
-
                 ListElement {
-                    n: "Australian Antarctic Territory"
                     i: "AQ"
+                    n: "Australian Antarctic Territory"
                     p: "+672 1"
                 }
                 //ListElement{n:"Australian External Territories";i:"";p:"+672"} // NO ISO
 
                 ListElement {
-                    n: "Austria"
                     i: "AT"
+                    n: "Austria"
                     p: "+43"
                 }
-
                 ListElement {
-                    n: "Azerbaijan"
                     i: "AZ"
+                    n: "Azerbaijan"
                     p: "+994"
                 }
-
                 ListElement {
-                    n: "Bahamas"
                     i: "BS"
+                    n: "Bahamas"
                     p: "+1 242"
                 }
-
                 ListElement {
-                    n: "Bahrain"
                     i: "BH"
+                    n: "Bahrain"
                     p: "+973"
                 }
-
                 ListElement {
-                    n: "Bangladesh"
                     i: "BD"
+                    n: "Bangladesh"
                     p: "+880"
                 }
-
                 ListElement {
-                    n: "Barbados"
                     i: "BB"
+                    n: "Barbados"
                     p: "+1 246"
                 }
-
                 ListElement {
-                    n: "Barbuda"
                     i: "AG"
+                    n: "Barbuda"
                     p: "+1 268"
                 }
-
                 ListElement {
-                    n: "Belarus"
                     i: "BY"
+                    n: "Belarus"
                     p: "+375"
                 }
-
                 ListElement {
-                    n: "Belgium"
                     i: "BE"
+                    n: "Belgium"
                     p: "+32"
                 }
-
                 ListElement {
-                    n: "Belize"
                     i: "BZ"
+                    n: "Belize"
                     p: "+501"
                 }
-
                 ListElement {
-                    n: "Benin"
                     i: "BJ"
+                    n: "Benin"
                     p: "+229"
                 }
-
                 ListElement {
-                    n: "Bermuda"
                     i: "BM"
+                    n: "Bermuda"
                     p: "+1 441"
                 }
-
                 ListElement {
-                    n: "Bhutan"
                     i: "BT"
+                    n: "Bhutan"
                     p: "+975"
                 }
-
                 ListElement {
-                    n: "Bolivia"
                     i: "BO"
+                    n: "Bolivia"
                     p: "+591"
                 }
-
                 ListElement {
-                    n: "Bonaire"
                     i: "BQ"
+                    n: "Bonaire"
                     p: "+599 7"
                 }
-
                 ListElement {
-                    n: "Bosnia and Herzegovina"
                     i: "BA"
+                    n: "Bosnia and Herzegovina"
                     p: "+387"
                 }
-
                 ListElement {
-                    n: "Botswana"
                     i: "BW"
+                    n: "Botswana"
                     p: "+267"
                 }
-
                 ListElement {
-                    n: "Brazil"
                     i: "BR"
+                    n: "Brazil"
                     p: "+55"
                 }
-
                 ListElement {
-                    n: "British Indian Ocean Territory"
                     i: "IO"
+                    n: "British Indian Ocean Territory"
                     p: "+246"
                 }
-
                 ListElement {
-                    n: "Brunei Darussalam"
                     i: "BN"
+                    n: "Brunei Darussalam"
                     p: "+673"
                 }
-
                 ListElement {
-                    n: "Bulgaria"
                     i: "BG"
+                    n: "Bulgaria"
                     p: "+359"
                 }
-
                 ListElement {
-                    n: "Burkina Faso"
                     i: "BF"
+                    n: "Burkina Faso"
                     p: "+226"
                 }
-
                 ListElement {
-                    n: "Burundi"
                     i: "BI"
+                    n: "Burundi"
                     p: "+257"
                 }
-
                 ListElement {
-                    n: "Cambodia"
                     i: "KH"
+                    n: "Cambodia"
                     p: "+855"
                 }
-
                 ListElement {
-                    n: "Cameroon"
                     i: "CM"
+                    n: "Cameroon"
                     p: "+237"
                 }
-
                 ListElement {
-                    n: "Canada"
                     i: "CA"
+                    n: "Canada"
                     p: "+1"
                 }
-
                 ListElement {
-                    n: "Cape Verde"
                     i: "CV"
+                    n: "Cape Verde"
                     p: "+238"
                 }
                 //ListElement{n:"Caribbean Netherlands";i:"";p:"+599 3"} // NO ISO
@@ -303,1439 +275,1197 @@ ApplicationWindow {
                 //ListElement{n:"Caribbean Netherlands";i:"";p:"+599 4"} // NO ISO
                 //ListElement{n:"Caribbean Netherlands";i:"";p:"+599 7"} // NO ISO
                 ListElement {
-                    n: "Cayman Islands"
                     i: "KY"
+                    n: "Cayman Islands"
                     p: "+1 345"
                 }
-
                 ListElement {
-                    n: "Central African Republic"
                     i: "CF"
+                    n: "Central African Republic"
                     p: "+236"
                 }
-
                 ListElement {
-                    n: "Chad"
                     i: "TD"
+                    n: "Chad"
                     p: "+235"
                 }
-
                 ListElement {
-                    n: "Chatham Island (New Zealand)"
                     i: "NZ"
+                    n: "Chatham Island (New Zealand)"
                     p: "+64"
                 }
-
                 ListElement {
-                    n: "Chile"
                     i: "CL"
+                    n: "Chile"
                     p: "+56"
                 }
-
                 ListElement {
-                    n: "China"
                     i: "CN"
+                    n: "China"
                     p: "+86"
                 }
-
                 ListElement {
-                    n: "Christmas Island"
                     i: "CX"
+                    n: "Christmas Island"
                     p: "+61 89164"
                 }
-
                 ListElement {
-                    n: "Cocos (Keeling) Islands"
                     i: "CC"
+                    n: "Cocos (Keeling) Islands"
                     p: "+61 89162"
                 }
-
                 ListElement {
-                    n: "Colombia"
                     i: "CO"
+                    n: "Colombia"
                     p: "+57"
                 }
-
                 ListElement {
-                    n: "Comoros"
                     i: "KM"
+                    n: "Comoros"
                     p: "+269"
                 }
-
                 ListElement {
-                    n: "Congo (Democratic Republic of the)"
                     i: "CD"
+                    n: "Congo (Democratic Republic of the)"
                     p: "+243"
                 }
-
                 ListElement {
-                    n: "Congo"
                     i: "CG"
+                    n: "Congo"
                     p: "+242"
                 }
-
                 ListElement {
-                    n: "Cook Islands"
                     i: "CK"
+                    n: "Cook Islands"
                     p: "+682"
                 }
-
                 ListElement {
-                    n: "Costa Rica"
                     i: "CR"
+                    n: "Costa Rica"
                     p: "+506"
                 }
-
                 ListElement {
-                    n: "Côte d'Ivoire"
                     i: "CI"
+                    n: "Côte d'Ivoire"
                     p: "+225"
                 }
-
                 ListElement {
-                    n: "Croatia"
                     i: "HR"
+                    n: "Croatia"
                     p: "+385"
                 }
-
                 ListElement {
-                    n: "Cuba"
                     i: "CU"
+                    n: "Cuba"
                     p: "+53"
                 }
-
                 ListElement {
-                    n: "Curaçao"
                     i: "CW"
+                    n: "Curaçao"
                     p: "+599 9"
                 }
-
                 ListElement {
-                    n: "Cyprus"
                     i: "CY"
+                    n: "Cyprus"
                     p: "+357"
                 }
-
                 ListElement {
-                    n: "Czech Republic"
                     i: "CZ"
+                    n: "Czech Republic"
                     p: "+420"
                 }
-
                 ListElement {
-                    n: "Denmark"
                     i: "DK"
+                    n: "Denmark"
                     p: "+45"
                 }
                 //ListElement{n:"Diego Garcia";i:"";p:"+246"} // NO ISO, OCC. BY GB
 
                 ListElement {
-                    n: "Djibouti"
                     i: "DJ"
+                    n: "Djibouti"
                     p: "+253"
                 }
-
                 ListElement {
-                    n: "Dominica"
                     i: "DM"
+                    n: "Dominica"
                     p: "+1 767"
                 }
-
                 ListElement {
-                    n: "Dominican Republic"
                     i: "DO"
+                    n: "Dominican Republic"
                     p: "+1 809"
                 }
-
                 ListElement {
-                    n: "Dominican Republic"
                     i: "DO"
+                    n: "Dominican Republic"
                     p: "+1 829"
                 }
-
                 ListElement {
-                    n: "Dominican Republic"
                     i: "DO"
+                    n: "Dominican Republic"
                     p: "+1 849"
                 }
-
                 ListElement {
-                    n: "Easter Island"
                     i: "CL"
+                    n: "Easter Island"
                     p: "+56"
                 }
-
                 ListElement {
-                    n: "Ecuador"
                     i: "EC"
+                    n: "Ecuador"
                     p: "+593"
                 }
-
                 ListElement {
-                    n: "Egypt"
                     i: "EG"
+                    n: "Egypt"
                     p: "+20"
                 }
-
                 ListElement {
-                    n: "El Salvador"
                     i: "SV"
+                    n: "El Salvador"
                     p: "+503"
                 }
-
                 ListElement {
-                    n: "Equatorial Guinea"
                     i: "GQ"
+                    n: "Equatorial Guinea"
                     p: "+240"
                 }
-
                 ListElement {
-                    n: "Eritrea"
                     i: "ER"
+                    n: "Eritrea"
                     p: "+291"
                 }
-
                 ListElement {
-                    n: "Estonia"
                     i: "EE"
+                    n: "Estonia"
                     p: "+372"
                 }
-
                 ListElement {
-                    n: "eSwatini"
                     i: "SZ"
+                    n: "eSwatini"
                     p: "+268"
                 }
-
                 ListElement {
-                    n: "Ethiopia"
                     i: "ET"
+                    n: "Ethiopia"
                     p: "+251"
                 }
-
                 ListElement {
-                    n: "Falkland Islands (Malvinas)"
                     i: "FK"
+                    n: "Falkland Islands (Malvinas)"
                     p: "+500"
                 }
-
                 ListElement {
-                    n: "Faroe Islands"
                     i: "FO"
+                    n: "Faroe Islands"
                     p: "+298"
                 }
-
                 ListElement {
-                    n: "Fiji"
                     i: "FJ"
+                    n: "Fiji"
                     p: "+679"
                 }
-
                 ListElement {
-                    n: "Finland"
                     i: "FI"
+                    n: "Finland"
                     p: "+358"
                 }
-
                 ListElement {
-                    n: "France"
                     i: "FR"
+                    n: "France"
                     p: "+33"
                 }
                 //ListElement{n:"French Antilles";i:"";p:"+596"} // NO ISO
 
                 ListElement {
-                    n: "French Guiana"
                     i: "GF"
+                    n: "French Guiana"
                     p: "+594"
                 }
-
                 ListElement {
-                    n: "French Polynesia"
                     i: "PF"
+                    n: "French Polynesia"
                     p: "+689"
                 }
-
                 ListElement {
-                    n: "Gabon"
                     i: "GA"
+                    n: "Gabon"
                     p: "+241"
                 }
-
                 ListElement {
-                    n: "Gambia"
                     i: "GM"
+                    n: "Gambia"
                     p: "+220"
                 }
-
                 ListElement {
-                    n: "Georgia"
                     i: "GE"
+                    n: "Georgia"
                     p: "+995"
                 }
-
                 ListElement {
-                    n: "Germany"
                     i: "DE"
+                    n: "Germany"
                     p: "+49"
                 }
-
                 ListElement {
-                    n: "Ghana"
                     i: "GH"
+                    n: "Ghana"
                     p: "+233"
                 }
-
                 ListElement {
-                    n: "Gibraltar"
                     i: "GI"
+                    n: "Gibraltar"
                     p: "+350"
                 }
-
                 ListElement {
-                    n: "Greece"
                     i: "GR"
+                    n: "Greece"
                     p: "+30"
                 }
-
                 ListElement {
-                    n: "Greenland"
                     i: "GL"
+                    n: "Greenland"
                     p: "+299"
                 }
-
                 ListElement {
-                    n: "Grenada"
                     i: "GD"
+                    n: "Grenada"
                     p: "+1 473"
                 }
-
                 ListElement {
-                    n: "Guadeloupe"
                     i: "GP"
+                    n: "Guadeloupe"
                     p: "+590"
                 }
-
                 ListElement {
-                    n: "Guam"
                     i: "GU"
+                    n: "Guam"
                     p: "+1 671"
                 }
-
                 ListElement {
-                    n: "Guatemala"
                     i: "GT"
+                    n: "Guatemala"
                     p: "+502"
                 }
-
                 ListElement {
-                    n: "Guernsey"
                     i: "GG"
+                    n: "Guernsey"
                     p: "+44 1481"
                 }
-
                 ListElement {
-                    n: "Guernsey"
                     i: "GG"
+                    n: "Guernsey"
                     p: "+44 7781"
                 }
-
                 ListElement {
-                    n: "Guernsey"
                     i: "GG"
+                    n: "Guernsey"
                     p: "+44 7839"
                 }
-
                 ListElement {
-                    n: "Guernsey"
                     i: "GG"
+                    n: "Guernsey"
                     p: "+44 7911"
                 }
-
                 ListElement {
-                    n: "Guinea-Bissau"
                     i: "GW"
+                    n: "Guinea-Bissau"
                     p: "+245"
                 }
-
                 ListElement {
-                    n: "Guinea"
                     i: "GN"
+                    n: "Guinea"
                     p: "+224"
                 }
-
                 ListElement {
-                    n: "Guyana"
                     i: "GY"
+                    n: "Guyana"
                     p: "+592"
                 }
-
                 ListElement {
-                    n: "Haiti"
                     i: "HT"
+                    n: "Haiti"
                     p: "+509"
                 }
-
                 ListElement {
-                    n: "Honduras"
                     i: "HN"
+                    n: "Honduras"
                     p: "+504"
                 }
-
                 ListElement {
-                    n: "Hong Kong"
                     i: "HK"
+                    n: "Hong Kong"
                     p: "+852"
                 }
-
                 ListElement {
-                    n: "Hungary"
                     i: "HU"
+                    n: "Hungary"
                     p: "+36"
                 }
-
                 ListElement {
-                    n: "Iceland"
                     i: "IS"
+                    n: "Iceland"
                     p: "+354"
                 }
-
                 ListElement {
-                    n: "India"
                     i: "IN"
+                    n: "India"
                     p: "+91"
                 }
-
                 ListElement {
-                    n: "Indonesia"
                     i: "ID"
+                    n: "Indonesia"
                     p: "+62"
                 }
-
                 ListElement {
-                    n: "Iran"
                     i: "IR"
+                    n: "Iran"
                     p: "+98"
                 }
-
                 ListElement {
-                    n: "Iraq"
                     i: "IQ"
+                    n: "Iraq"
                     p: "+964"
                 }
-
                 ListElement {
-                    n: "Ireland"
                     i: "IE"
+                    n: "Ireland"
                     p: "+353"
                 }
-
                 ListElement {
-                    n: "Isle of Man"
                     i: "IM"
+                    n: "Isle of Man"
                     p: "+44 1624"
                 }
-
                 ListElement {
-                    n: "Isle of Man"
                     i: "IM"
+                    n: "Isle of Man"
                     p: "+44 7524"
                 }
-
                 ListElement {
-                    n: "Isle of Man"
                     i: "IM"
+                    n: "Isle of Man"
                     p: "+44 7624"
                 }
-
                 ListElement {
-                    n: "Isle of Man"
                     i: "IM"
+                    n: "Isle of Man"
                     p: "+44 7924"
                 }
-
                 ListElement {
-                    n: "Israel"
                     i: "IL"
+                    n: "Israel"
                     p: "+972"
                 }
-
                 ListElement {
-                    n: "Italy"
                     i: "IT"
+                    n: "Italy"
                     p: "+39"
                 }
-
                 ListElement {
-                    n: "Jamaica"
                     i: "JM"
+                    n: "Jamaica"
                     p: "+1 876"
                 }
-
                 ListElement {
-                    n: "Jan Mayen"
                     i: "SJ"
+                    n: "Jan Mayen"
                     p: "+47 79"
                 }
-
                 ListElement {
-                    n: "Japan"
                     i: "JP"
+                    n: "Japan"
                     p: "+81"
                 }
-
                 ListElement {
-                    n: "Jersey"
                     i: "JE"
+                    n: "Jersey"
                     p: "+44 1534"
                 }
-
                 ListElement {
-                    n: "Jordan"
                     i: "JO"
+                    n: "Jordan"
                     p: "+962"
                 }
-
                 ListElement {
-                    n: "Kazakhstan"
                     i: "KZ"
+                    n: "Kazakhstan"
                     p: "+7 6"
                 }
-
                 ListElement {
-                    n: "Kazakhstan"
                     i: "KZ"
+                    n: "Kazakhstan"
                     p: "+7 7"
                 }
-
                 ListElement {
-                    n: "Kenya"
                     i: "KE"
+                    n: "Kenya"
                     p: "+254"
                 }
-
                 ListElement {
-                    n: "Kiribati"
                     i: "KI"
+                    n: "Kiribati"
                     p: "+686"
                 }
-
                 ListElement {
-                    n: "Korea (North)"
                     i: "KP"
+                    n: "Korea (North)"
                     p: "+850"
                 }
-
                 ListElement {
-                    n: "Korea (South)"
                     i: "KR"
+                    n: "Korea (South)"
                     p: "+82"
                 }
                 // TEMP. CODE
 
                 ListElement {
-                    n: "Kosovo"
                     i: "XK"
+                    n: "Kosovo"
                     p: "+383"
                 }
-
                 ListElement {
-                    n: "Kuwait"
                     i: "KW"
+                    n: "Kuwait"
                     p: "+965"
                 }
-
                 ListElement {
-                    n: "Kyrgyzstan"
                     i: "KG"
+                    n: "Kyrgyzstan"
                     p: "+996"
                 }
-
                 ListElement {
-                    n: "Laos"
                     i: "LA"
+                    n: "Laos"
                     p: "+856"
                 }
-
                 ListElement {
-                    n: "Latvia"
                     i: "LV"
+                    n: "Latvia"
                     p: "+371"
                 }
-
                 ListElement {
-                    n: "Lebanon"
                     i: "LB"
+                    n: "Lebanon"
                     p: "+961"
                 }
-
                 ListElement {
-                    n: "Lesotho"
                     i: "LS"
+                    n: "Lesotho"
                     p: "+266"
                 }
-
                 ListElement {
-                    n: "Liberia"
                     i: "LR"
+                    n: "Liberia"
                     p: "+231"
                 }
-
                 ListElement {
-                    n: "Libya"
                     i: "LY"
+                    n: "Libya"
                     p: "+218"
                 }
-
                 ListElement {
-                    n: "Liechtenstein"
                     i: "LI"
+                    n: "Liechtenstein"
                     p: "+423"
                 }
-
                 ListElement {
-                    n: "Lithuania"
                     i: "LT"
+                    n: "Lithuania"
                     p: "+370"
                 }
-
                 ListElement {
-                    n: "Luxembourg"
                     i: "LU"
+                    n: "Luxembourg"
                     p: "+352"
                 }
-
                 ListElement {
-                    n: "Macau (Macao)"
                     i: "MO"
+                    n: "Macau (Macao)"
                     p: "+853"
                 }
-
                 ListElement {
-                    n: "Madagascar"
                     i: "MG"
+                    n: "Madagascar"
                     p: "+261"
                 }
-
                 ListElement {
-                    n: "Malawi"
                     i: "MW"
+                    n: "Malawi"
                     p: "+265"
                 }
-
                 ListElement {
-                    n: "Malaysia"
                     i: "MY"
+                    n: "Malaysia"
                     p: "+60"
                 }
-
                 ListElement {
-                    n: "Maldives"
                     i: "MV"
+                    n: "Maldives"
                     p: "+960"
                 }
-
                 ListElement {
-                    n: "Mali"
                     i: "ML"
+                    n: "Mali"
                     p: "+223"
                 }
-
                 ListElement {
-                    n: "Malta"
                     i: "MT"
+                    n: "Malta"
                     p: "+356"
                 }
-
                 ListElement {
-                    n: "Marshall Islands"
                     i: "MH"
+                    n: "Marshall Islands"
                     p: "+692"
                 }
-
                 ListElement {
-                    n: "Martinique"
                     i: "MQ"
+                    n: "Martinique"
                     p: "+596"
                 }
-
                 ListElement {
-                    n: "Mauritania"
                     i: "MR"
+                    n: "Mauritania"
                     p: "+222"
                 }
-
                 ListElement {
-                    n: "Mauritius"
                     i: "MU"
+                    n: "Mauritius"
                     p: "+230"
                 }
-
                 ListElement {
-                    n: "Mayotte"
                     i: "YT"
+                    n: "Mayotte"
                     p: "+262 269"
                 }
-
                 ListElement {
-                    n: "Mayotte"
                     i: "YT"
+                    n: "Mayotte"
                     p: "+262 639"
                 }
-
                 ListElement {
-                    n: "Mexico"
                     i: "MX"
+                    n: "Mexico"
                     p: "+52"
                 }
-
                 ListElement {
-                    n: "Micronesia (Federated States of)"
                     i: "FM"
+                    n: "Micronesia (Federated States of)"
                     p: "+691"
                 }
-
                 ListElement {
-                    n: "Midway Island (USA)"
                     i: "US"
+                    n: "Midway Island (USA)"
                     p: "+1 808"
                 }
-
                 ListElement {
-                    n: "Moldova"
                     i: "MD"
+                    n: "Moldova"
                     p: "+373"
                 }
-
                 ListElement {
-                    n: "Monaco"
                     i: "MC"
+                    n: "Monaco"
                     p: "+377"
                 }
-
                 ListElement {
-                    n: "Mongolia"
                     i: "MN"
+                    n: "Mongolia"
                     p: "+976"
                 }
-
                 ListElement {
-                    n: "Montenegro"
                     i: "ME"
+                    n: "Montenegro"
                     p: "+382"
                 }
-
                 ListElement {
-                    n: "Montserrat"
                     i: "MS"
+                    n: "Montserrat"
                     p: "+1 664"
                 }
-
                 ListElement {
-                    n: "Morocco"
                     i: "MA"
+                    n: "Morocco"
                     p: "+212"
                 }
-
                 ListElement {
-                    n: "Mozambique"
                     i: "MZ"
+                    n: "Mozambique"
                     p: "+258"
                 }
-
                 ListElement {
-                    n: "Myanmar"
                     i: "MM"
+                    n: "Myanmar"
                     p: "+95"
                 }
                 // NO OWN ISO, DISPUTED
 
                 ListElement {
-                    n: "Nagorno-Karabakh"
                     i: "AZ"
+                    n: "Nagorno-Karabakh"
                     p: "+374 47"
                 }
                 // NO OWN ISO, DISPUTED
 
                 ListElement {
-                    n: "Nagorno-Karabakh"
                     i: "AZ"
+                    n: "Nagorno-Karabakh"
                     p: "+374 97"
                 }
-
                 ListElement {
-                    n: "Namibia"
                     i: "NA"
+                    n: "Namibia"
                     p: "+264"
                 }
-
                 ListElement {
-                    n: "Nauru"
                     i: "NR"
+                    n: "Nauru"
                     p: "+674"
                 }
-
                 ListElement {
-                    n: "Nepal"
                     i: "NP"
+                    n: "Nepal"
                     p: "+977"
                 }
-
                 ListElement {
-                    n: "Netherlands"
                     i: "NL"
+                    n: "Netherlands"
                     p: "+31"
                 }
-
                 ListElement {
-                    n: "Nevis"
                     i: "KN"
+                    n: "Nevis"
                     p: "+1 869"
                 }
-
                 ListElement {
-                    n: "New Caledonia"
                     i: "NC"
+                    n: "New Caledonia"
                     p: "+687"
                 }
-
                 ListElement {
-                    n: "New Zealand"
                     i: "NZ"
+                    n: "New Zealand"
                     p: "+64"
                 }
-
                 ListElement {
-                    n: "Nicaragua"
                     i: "NI"
+                    n: "Nicaragua"
                     p: "+505"
                 }
-
                 ListElement {
-                    n: "Nigeria"
                     i: "NG"
+                    n: "Nigeria"
                     p: "+234"
                 }
-
                 ListElement {
-                    n: "Niger"
                     i: "NE"
+                    n: "Niger"
                     p: "+227"
                 }
-
                 ListElement {
-                    n: "Niue"
                     i: "NU"
+                    n: "Niue"
                     p: "+683"
                 }
-
                 ListElement {
-                    n: "Norfolk Island"
                     i: "NF"
+                    n: "Norfolk Island"
                     p: "+672 3"
                 }
                 // OCC. BY TR
 
                 ListElement {
-                    n: "Northern Cyprus"
                     i: "CY"
+                    n: "Northern Cyprus"
                     p: "+90 392"
                 }
-
                 ListElement {
-                    n: "Northern Ireland"
                     i: "GB"
+                    n: "Northern Ireland"
                     p: "+44 28"
                 }
-
                 ListElement {
-                    n: "Northern Mariana Islands"
                     i: "MP"
+                    n: "Northern Mariana Islands"
                     p: "+1 670"
                 }
-
                 ListElement {
-                    n: "North Macedonia"
                     i: "MK"
+                    n: "North Macedonia"
                     p: "+389"
                 }
-
                 ListElement {
-                    n: "Norway"
                     i: "NO"
+                    n: "Norway"
                     p: "+47"
                 }
-
                 ListElement {
-                    n: "Oman"
                     i: "OM"
+                    n: "Oman"
                     p: "+968"
                 }
-
                 ListElement {
-                    n: "Pakistan"
                     i: "PK"
+                    n: "Pakistan"
                     p: "+92"
                 }
-
                 ListElement {
-                    n: "Palau"
                     i: "PW"
+                    n: "Palau"
                     p: "+680"
                 }
-
                 ListElement {
-                    n: "Palestine (State of)"
                     i: "PS"
+                    n: "Palestine (State of)"
                     p: "+970"
                 }
-
                 ListElement {
-                    n: "Panama"
                     i: "PA"
+                    n: "Panama"
                     p: "+507"
                 }
-
                 ListElement {
-                    n: "Papua New Guinea"
                     i: "PG"
+                    n: "Papua New Guinea"
                     p: "+675"
                 }
-
                 ListElement {
-                    n: "Paraguay"
                     i: "PY"
+                    n: "Paraguay"
                     p: "+595"
                 }
-
                 ListElement {
-                    n: "Peru"
                     i: "PE"
+                    n: "Peru"
                     p: "+51"
                 }
-
                 ListElement {
-                    n: "Philippines"
                     i: "PH"
+                    n: "Philippines"
                     p: "+63"
                 }
-
                 ListElement {
-                    n: "Pitcairn Islands"
                     i: "PN"
+                    n: "Pitcairn Islands"
                     p: "+64"
                 }
-
                 ListElement {
-                    n: "Poland"
                     i: "PL"
+                    n: "Poland"
                     p: "+48"
                 }
-
                 ListElement {
-                    n: "Portugal"
                     i: "PT"
+                    n: "Portugal"
                     p: "+351"
                 }
-
                 ListElement {
-                    n: "Puerto Rico"
                     i: "PR"
+                    n: "Puerto Rico"
                     p: "+1 787"
                 }
-
                 ListElement {
-                    n: "Puerto Rico"
                     i: "PR"
+                    n: "Puerto Rico"
                     p: "+1 939"
                 }
-
                 ListElement {
-                    n: "Qatar"
                     i: "QA"
+                    n: "Qatar"
                     p: "+974"
                 }
-
                 ListElement {
-                    n: "Réunion"
                     i: "RE"
+                    n: "Réunion"
                     p: "+262"
                 }
-
                 ListElement {
-                    n: "Romania"
                     i: "RO"
+                    n: "Romania"
                     p: "+40"
                 }
-
                 ListElement {
-                    n: "Russia"
                     i: "RU"
+                    n: "Russia"
                     p: "+7"
                 }
-
                 ListElement {
-                    n: "Rwanda"
                     i: "RW"
+                    n: "Rwanda"
                     p: "+250"
                 }
-
                 ListElement {
-                    n: "Saba"
                     i: "BQ"
+                    n: "Saba"
                     p: "+599 4"
                 }
-
                 ListElement {
-                    n: "Saint Barthélemy"
                     i: "BL"
+                    n: "Saint Barthélemy"
                     p: "+590"
                 }
-
                 ListElement {
-                    n: "Saint Helena"
                     i: "SH"
+                    n: "Saint Helena"
                     p: "+290"
                 }
-
                 ListElement {
-                    n: "Saint Kitts and Nevis"
                     i: "KN"
+                    n: "Saint Kitts and Nevis"
                     p: "+1 869"
                 }
-
                 ListElement {
-                    n: "Saint Lucia"
                     i: "LC"
+                    n: "Saint Lucia"
                     p: "+1 758"
                 }
-
                 ListElement {
-                    n: "Saint Martin (France)"
                     i: "MF"
+                    n: "Saint Martin (France)"
                     p: "+590"
                 }
-
                 ListElement {
-                    n: "Saint Pierre and Miquelon"
                     i: "PM"
+                    n: "Saint Pierre and Miquelon"
                     p: "+508"
                 }
-
                 ListElement {
-                    n: "Saint Vincent and the Grenadines"
                     i: "VC"
+                    n: "Saint Vincent and the Grenadines"
                     p: "+1 784"
                 }
-
                 ListElement {
-                    n: "Samoa"
                     i: "WS"
+                    n: "Samoa"
                     p: "+685"
                 }
-
                 ListElement {
-                    n: "San Marino"
                     i: "SM"
+                    n: "San Marino"
                     p: "+378"
                 }
-
                 ListElement {
-                    n: "São Tomé and Príncipe"
                     i: "ST"
+                    n: "São Tomé and Príncipe"
                     p: "+239"
                 }
-
                 ListElement {
-                    n: "Saudi Arabia"
                     i: "SA"
+                    n: "Saudi Arabia"
                     p: "+966"
                 }
-
                 ListElement {
-                    n: "Senegal"
                     i: "SN"
+                    n: "Senegal"
                     p: "+221"
                 }
-
                 ListElement {
-                    n: "Serbia"
                     i: "RS"
+                    n: "Serbia"
                     p: "+381"
                 }
-
                 ListElement {
-                    n: "Seychelles"
                     i: "SC"
+                    n: "Seychelles"
                     p: "+248"
                 }
-
                 ListElement {
-                    n: "Sierra Leone"
                     i: "SL"
+                    n: "Sierra Leone"
                     p: "+232"
                 }
-
                 ListElement {
-                    n: "Singapore"
                     i: "SG"
+                    n: "Singapore"
                     p: "+65"
                 }
-
                 ListElement {
-                    n: "Sint Eustatius"
                     i: "BQ"
+                    n: "Sint Eustatius"
                     p: "+599 3"
                 }
-
                 ListElement {
-                    n: "Sint Maarten (Netherlands)"
                     i: "SX"
+                    n: "Sint Maarten (Netherlands)"
                     p: "+1 721"
                 }
-
                 ListElement {
-                    n: "Slovakia"
                     i: "SK"
+                    n: "Slovakia"
                     p: "+421"
                 }
-
                 ListElement {
-                    n: "Slovenia"
                     i: "SI"
+                    n: "Slovenia"
                     p: "+386"
                 }
-
                 ListElement {
-                    n: "Solomon Islands"
                     i: "SB"
+                    n: "Solomon Islands"
                     p: "+677"
                 }
-
                 ListElement {
-                    n: "Somalia"
                     i: "SO"
+                    n: "Somalia"
                     p: "+252"
                 }
-
                 ListElement {
-                    n: "South Africa"
                     i: "ZA"
+                    n: "South Africa"
                     p: "+27"
                 }
-
                 ListElement {
-                    n: "South Georgia and the South Sandwich Islands"
                     i: "GS"
+                    n: "South Georgia and the South Sandwich Islands"
                     p: "+500"
                 }
                 // NO OWN ISO, DISPUTED
 
                 ListElement {
-                    n: "South Ossetia"
                     i: "GE"
+                    n: "South Ossetia"
                     p: "+995 34"
                 }
-
                 ListElement {
-                    n: "South Sudan"
                     i: "SS"
+                    n: "South Sudan"
                     p: "+211"
                 }
-
                 ListElement {
-                    n: "Spain"
                     i: "ES"
+                    n: "Spain"
                     p: "+34"
                 }
-
                 ListElement {
-                    n: "Sri Lanka"
                     i: "LK"
+                    n: "Sri Lanka"
                     p: "+94"
                 }
-
                 ListElement {
-                    n: "Sudan"
                     i: "SD"
+                    n: "Sudan"
                     p: "+249"
                 }
-
                 ListElement {
-                    n: "Suriname"
                     i: "SR"
+                    n: "Suriname"
                     p: "+597"
                 }
-
                 ListElement {
-                    n: "Svalbard"
                     i: "SJ"
+                    n: "Svalbard"
                     p: "+47 79"
                 }
-
                 ListElement {
-                    n: "Sweden"
                     i: "SE"
+                    n: "Sweden"
                     p: "+46"
                 }
-
                 ListElement {
-                    n: "Switzerland"
                     i: "CH"
+                    n: "Switzerland"
                     p: "+41"
                 }
-
                 ListElement {
-                    n: "Syria"
                     i: "SY"
+                    n: "Syria"
                     p: "+963"
                 }
-
                 ListElement {
-                    n: "Taiwan"
                     i: "SJ"
+                    n: "Taiwan"
                     p: "+886"
                 }
-
                 ListElement {
-                    n: "Tajikistan"
                     i: "TJ"
+                    n: "Tajikistan"
                     p: "+992"
                 }
-
                 ListElement {
-                    n: "Tanzania"
                     i: "TZ"
+                    n: "Tanzania"
                     p: "+255"
                 }
-
                 ListElement {
-                    n: "Thailand"
                     i: "TH"
+                    n: "Thailand"
                     p: "+66"
                 }
-
                 ListElement {
-                    n: "Timor-Leste"
                     i: "TL"
+                    n: "Timor-Leste"
                     p: "+670"
                 }
-
                 ListElement {
-                    n: "Togo"
                     i: "TG"
+                    n: "Togo"
                     p: "+228"
                 }
-
                 ListElement {
-                    n: "Tokelau"
                     i: "TK"
+                    n: "Tokelau"
                     p: "+690"
                 }
-
                 ListElement {
-                    n: "Tonga"
                     i: "TO"
+                    n: "Tonga"
                     p: "+676"
                 }
-
                 ListElement {
-                    n: "Transnistria"
                     i: "MD"
+                    n: "Transnistria"
                     p: "+373 2"
                 }
-
                 ListElement {
-                    n: "Transnistria"
                     i: "MD"
+                    n: "Transnistria"
                     p: "+373 5"
                 }
-
                 ListElement {
-                    n: "Trinidad and Tobago"
                     i: "TT"
+                    n: "Trinidad and Tobago"
                     p: "+1 868"
                 }
-
                 ListElement {
-                    n: "Tristan da Cunha"
                     i: "SH"
+                    n: "Tristan da Cunha"
                     p: "+290 8"
                 }
-
                 ListElement {
-                    n: "Tunisia"
                     i: "TN"
+                    n: "Tunisia"
                     p: "+216"
                 }
-
                 ListElement {
-                    n: "Turkey"
                     i: "TR"
+                    n: "Turkey"
                     p: "+90"
                 }
-
                 ListElement {
-                    n: "Turkmenistan"
                     i: "TM"
+                    n: "Turkmenistan"
                     p: "+993"
                 }
-
                 ListElement {
-                    n: "Turks and Caicos Islands"
                     i: "TC"
+                    n: "Turks and Caicos Islands"
                     p: "+1 649"
                 }
-
                 ListElement {
-                    n: "Tuvalu"
                     i: "TV"
+                    n: "Tuvalu"
                     p: "+688"
                 }
-
                 ListElement {
-                    n: "Uganda"
                     i: "UG"
+                    n: "Uganda"
                     p: "+256"
                 }
-
                 ListElement {
-                    n: "Ukraine"
                     i: "UA"
+                    n: "Ukraine"
                     p: "+380"
                 }
-
                 ListElement {
-                    n: "United Arab Emirates"
                     i: "AE"
+                    n: "United Arab Emirates"
                     p: "+971"
                 }
-
                 ListElement {
-                    n: "United Kingdom"
                     i: "GB"
+                    n: "United Kingdom"
                     p: "+44"
                 }
-
                 ListElement {
-                    n: "United States"
                     i: "US"
+                    n: "United States"
                     p: "+1"
                 }
-
                 ListElement {
-                    n: "Uruguay"
                     i: "UY"
+                    n: "Uruguay"
                     p: "+598"
                 }
-
                 ListElement {
-                    n: "Uzbekistan"
                     i: "UZ"
+                    n: "Uzbekistan"
                     p: "+998"
                 }
-
                 ListElement {
-                    n: "Vanuatu"
                     i: "VU"
+                    n: "Vanuatu"
                     p: "+678"
                 }
-
                 ListElement {
-                    n: "Vatican City State (Holy See)"
                     i: "VA"
+                    n: "Vatican City State (Holy See)"
                     p: "+379"
                 }
-
                 ListElement {
-                    n: "Vatican City State (Holy See)"
                     i: "VA"
+                    n: "Vatican City State (Holy See)"
                     p: "+39 06 698"
                 }
-
                 ListElement {
-                    n: "Venezuela"
                     i: "VE"
+                    n: "Venezuela"
                     p: "+58"
                 }
-
                 ListElement {
-                    n: "Vietnam"
                     i: "VN"
+                    n: "Vietnam"
                     p: "+84"
                 }
-
                 ListElement {
-                    n: "Virgin Islands (British)"
                     i: "VG"
+                    n: "Virgin Islands (British)"
                     p: "+1 284"
                 }
-
                 ListElement {
-                    n: "Virgin Islands (US)"
                     i: "VI"
+                    n: "Virgin Islands (US)"
                     p: "+1 340"
                 }
-
                 ListElement {
-                    n: "Wake Island (USA)"
                     i: "US"
+                    n: "Wake Island (USA)"
                     p: "+1 808"
                 }
-
                 ListElement {
-                    n: "Wallis and Futuna"
                     i: "WF"
+                    n: "Wallis and Futuna"
                     p: "+681"
                 }
-
                 ListElement {
-                    n: "Yemen"
                     i: "YE"
+                    n: "Yemen"
                     p: "+967"
                 }
-
                 ListElement {
-                    n: "Zambia"
                     i: "ZM"
+                    n: "Zambia"
                     p: "+260"
                 }
                 // NO OWN ISO, DISPUTED?
 
                 ListElement {
-                    n: "Zanzibar"
                     i: "TZ"
+                    n: "Zanzibar"
                     p: "+255 24"
                 }
-
                 ListElement {
-                    n: "Zimbabwe"
                     i: "ZW"
+                    n: "Zimbabwe"
                     p: "+263"
                 }
-
             }
-
         }
-
         MatrixTextField {
             id: statusInput
 
             Layout.fillWidth: true
         }
-
     }
-
-    footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
-        onAccepted: {
-            inputDialog.accepted(numberPrefix.model.get(numberPrefix.currentIndex).i, statusInput.text);
-
-            inputDialog.close();
-        }
-        onRejected: {
-            inputDialog.close();
-        }
-    }
-
 }

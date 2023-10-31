@@ -14,11 +14,32 @@ ApplicationWindow {
 
     property bool space: false
 
-    title: space ? qsTr("New community") : qsTr("New Room")
-    minimumWidth: Math.max(rootLayout.implicitWidth+2*rootLayout.anchors.margins, footer.implicitWidth + Nheko.paddingLarge)
-    minimumHeight: rootLayout.implicitHeight+footer.implicitHeight+2*rootLayout.anchors.margins
-    modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    minimumHeight: rootLayout.implicitHeight + footer.implicitHeight + 2 * rootLayout.anchors.margins
+    minimumWidth: Math.max(rootLayout.implicitWidth + 2 * rootLayout.anchors.margins, footer.implicitWidth + Nheko.paddingLarge)
+    modality: Qt.NonModal
+    title: space ? qsTr("New community") : qsTr("New Room")
+
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Cancel
+
+        onAccepted: {
+            var preset = 0;
+            if (isPublic.checked) {
+                preset = 1;
+            } else {
+                preset = isTrusted.checked ? 2 : 0;
+            }
+            Nheko.createRoom(space, newRoomName.text, newRoomTopic.text, newRoomAlias.text, isEncrypted.checked, preset);
+            createRoomRoot.close();
+        }
+        onRejected: createRoomRoot.close()
+
+        Button {
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            text: qsTr("Create Room")
+        }
+    }
 
     onVisibilityChanged: {
         newRoomName.forceActiveFocus();
@@ -26,10 +47,12 @@ ApplicationWindow {
 
     Shortcut {
         sequence: StandardKey.Cancel
+
         onActivated: createRoomRoot.close()
     }
     GridLayout {
         id: rootLayout
+
         anchors.fill: parent
         anchors.margins: Nheko.paddingLarge
         columns: 2
@@ -37,127 +60,118 @@ ApplicationWindow {
 
         MatrixTextField {
             id: newRoomName
+
             Layout.columnSpan: 2
             Layout.fillWidth: true
-
             focus: true
             label: qsTr("Name")
             placeholderText: qsTr("No name")
         }
         MatrixTextField {
             id: newRoomTopic
+
             Layout.columnSpan: 2
             Layout.fillWidth: true
-
             focus: true
             label: qsTr("Topic")
             placeholderText: qsTr("No topic")
         }
-
         Item {
             Layout.preferredHeight: newRoomName.height / 2
         }
-
         RowLayout {
             Layout.columnSpan: 2
             Layout.fillWidth: true
+
             Label {
                 Layout.preferredWidth: implicitWidth
-                text: "#"
                 color: palette.text
+                text: "#"
             }
             MatrixTextField {
                 id: newRoomAlias
+
                 focus: true
                 placeholderText: qsTr("Alias")
             }
             Label {
-                Layout.preferredWidth: implicitWidth
                 property string userName: userInfoGrid.profile.userid
-                text: userName.substring(userName.indexOf(":"))
+
+                Layout.preferredWidth: implicitWidth
                 color: palette.text
+                text: userName.substring(userName.indexOf(":"))
             }
         }
         Label {
-            Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
-            text: qsTr("Public")
+            Layout.preferredWidth: implicitWidth
+            ToolTip.delay: Nheko.tooltipDelay
+            ToolTip.text: qsTr("Public rooms can be joined by anyone; private rooms need explicit invites.")
+            ToolTip.visible: privateHover.hovered
             color: palette.text
+            text: qsTr("Public")
+
             HoverHandler {
                 id: privateHover
+
             }
-            ToolTip.visible: privateHover.hovered
-            ToolTip.text: qsTr("Public rooms can be joined by anyone; private rooms need explicit invites.")
-            ToolTip.delay: Nheko.tooltipDelay
         }
         ToggleButton {
+            id: isPublic
+
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
-            id: isPublic
             checked: false
         }
         Label {
-            visible: !space
-            Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
-            text: qsTr("Trusted")
+            Layout.preferredWidth: implicitWidth
+            ToolTip.delay: Nheko.tooltipDelay
+            ToolTip.text: qsTr("All invitees are given the same power level as the creator")
+            ToolTip.visible: trustedHover.hovered
             color: palette.text
+            text: qsTr("Trusted")
+            visible: !space
+
             HoverHandler {
                 id: trustedHover
+
             }
-            ToolTip.visible: trustedHover.hovered
-            ToolTip.text: qsTr("All invitees are given the same power level as the creator")
-            ToolTip.delay: Nheko.tooltipDelay
         }
         ToggleButton {
-            visible: !space
+            id: isTrusted
+
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
-            id: isTrusted
             checked: false
             enabled: !isPublic.checked
+            visible: !space
         }
         Label {
-            visible: !space
-            Layout.preferredWidth: implicitWidth
             Layout.alignment: Qt.AlignLeft
-            text: qsTr("Encryption")
+            Layout.preferredWidth: implicitWidth
+            ToolTip.delay: Nheko.tooltipDelay
+            ToolTip.text: qsTr("Caution: Encryption cannot be disabled")
+            ToolTip.visible: encryptionHover.hovered
             color: palette.text
+            text: qsTr("Encryption")
+            visible: !space
+
             HoverHandler {
                 id: encryptionHover
+
             }
-            ToolTip.visible: encryptionHover.hovered
-            ToolTip.text: qsTr("Caution: Encryption cannot be disabled")
-            ToolTip.delay: Nheko.tooltipDelay
         }
         ToggleButton {
-            visible: !space
+            id: isEncrypted
+
             Layout.alignment: Qt.AlignRight
             Layout.preferredWidth: implicitWidth
-            id: isEncrypted
             checked: false
+            visible: !space
         }
-
-        Item {Layout.fillHeight: true}
-    }
-    footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Cancel
-        Button {
-            text: qsTr("Create Room")
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-        }
-        onRejected: createRoomRoot.close();
-        onAccepted: {
-            var preset = 0;
-
-            if (isPublic.checked) {
-                preset = 1;
-            }
-            else {
-                preset = isTrusted.checked ? 2 : 0;
-            }
-            Nheko.createRoom(space, newRoomName.text, newRoomTopic.text, newRoomAlias.text, isEncrypted.checked, preset)
-            createRoomRoot.close();
+        Item {
+            Layout.fillHeight: true
         }
     }
 }

@@ -149,10 +149,10 @@ Control {
                         spacing: rowSpacing
 
                         Avatar {
-                            displayName: model.displayName
-                            enabled: false
                             Layout.preferredHeight: popup.avatarHeight
                             Layout.preferredWidth: popup.avatarWidth
+                            displayName: model.displayName
+                            enabled: false
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
                             userid: model.userid
                         }
@@ -180,14 +180,14 @@ Control {
                             visible: !!model.unicode
                         }
                         Avatar {
+                            Layout.preferredHeight: popup.avatarHeight
+                            Layout.preferredWidth: popup.avatarWidth
                             crop: false
                             displayName: model.shortcode
                             enabled: false
-                            Layout.preferredHeight: popup.avatarHeight
                             //userid: model.shortcode
                             url: (model.url ? model.url : "").replace("mxc://", "image://MxcImage/")
                             visible: !model.unicode
-                            Layout.preferredWidth: popup.avatarWidth
                         }
                         Label {
                             Layout.leftMargin: Nheko.paddingSmall
@@ -227,12 +227,12 @@ Control {
                         spacing: rowSpacing
 
                         Avatar {
+                            Layout.preferredHeight: popup.avatarHeight
+                            Layout.preferredWidth: popup.avatarWidth
                             displayName: model.roomName
                             enabled: false
-                            Layout.preferredHeight: popup.avatarHeight
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            Layout.preferredWidth: popup.avatarWidth
                         }
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
@@ -251,12 +251,12 @@ Control {
                         spacing: rowSpacing
 
                         Avatar {
+                            Layout.preferredHeight: popup.avatarHeight
+                            Layout.preferredWidth: popup.avatarWidth
                             displayName: model.roomName
                             enabled: false
-                            Layout.preferredHeight: popup.avatarHeight
                             roomid: model.roomid
                             url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                            Layout.preferredWidth: popup.avatarWidth
                         }
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text

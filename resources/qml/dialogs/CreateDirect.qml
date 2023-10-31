@@ -11,13 +11,31 @@ import im.nheko
 
 ApplicationWindow {
     id: createDirectRoot
-    title: qsTr("Create Direct Chat")
+
+    property bool otherUserHasE2ee: profile ? profile.deviceList.rowCount() > 0 : true
     property var profile
-    property bool otherUserHasE2ee: profile? profile.deviceList.rowCount() > 0 : true
-    minimumHeight: layout.implicitHeight + footer.implicitHeight + Nheko.paddingLarge*2
+
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    minimumHeight: layout.implicitHeight + footer.implicitHeight + Nheko.paddingLarge * 2
     minimumWidth: Math.max(footer.implicitWidth, layout.implicitWidth)
     modality: Qt.NonModal
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    title: qsTr("Create Direct Chat")
+
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Cancel
+
+        onAccepted: {
+            profile.startChat(encryption.checked);
+            createDirectRoot.close();
+        }
+        onRejected: createDirectRoot.close()
+
+        Button {
+            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            enabled: userID.isValidMxid && profile
+            text: "Start Direct Chat"
+        }
+    }
 
     onVisibilityChanged: {
         userID.forceActiveFocus();
@@ -25,91 +43,82 @@ ApplicationWindow {
 
     Shortcut {
         sequence: StandardKey.Cancel
+
         onActivated: createDirectRoot.close()
     }
-
     ColumnLayout {
         id: layout
+
         anchors.fill: parent
         anchors.margins: Nheko.paddingLarge
-        spacing: userID.height/4
+        spacing: userID.height / 4
 
         GridLayout {
             Layout.fillWidth: true
-            rows: 2
+            columnSpacing: Nheko.paddingMedium
             columns: 2
             rowSpacing: Nheko.paddingSmall
-            columnSpacing: Nheko.paddingMedium
+            rows: 2
 
             Avatar {
-                Layout.rowSpan: 2
-                Layout.preferredWidth: Nheko.avatarSize
-                Layout.preferredHeight: Nheko.avatarSize
                 Layout.alignment: Qt.AlignLeft
-                userid: profile? profile.userid : ""
-                url: profile? profile.avatarUrl.replace("mxc://", "image://MxcImage/") : null
-                displayName: profile? profile.displayName : ""
+                Layout.preferredHeight: Nheko.avatarSize
+                Layout.preferredWidth: Nheko.avatarSize
+                Layout.rowSpan: 2
+                displayName: profile ? profile.displayName : ""
                 enabled: false
+                url: profile ? profile.avatarUrl.replace("mxc://", "image://MxcImage/") : null
+                userid: profile ? profile.userid : ""
             }
             Label {
                 Layout.fillWidth: true
-                text: profile? profile.displayName : ""
                 color: TimelineManager.userColor(userID.text, palette.window)
                 font.pointSize: fontMetrics.font.pointSize
+                text: profile ? profile.displayName : ""
             }
-
             Label {
                 Layout.fillWidth: true
-                text: userID.text
                 color: palette.buttonText
                 font.pointSize: fontMetrics.font.pointSize * 0.9
+                text: userID.text
             }
         }
-
         MatrixTextField {
             id: userID
+
             property bool isValidMxid: text.match("@.+?:.{3,}")
+
             Layout.fillWidth: true
             focus: true
             label: qsTr("User to invite")
             placeholderText: qsTr("@user:server.tld")
+
             onTextChanged: {
                 // we can't use "isValidMxid" here, since the property might only be reevaluated after this change handler.
-                if(text.match("@.+?:.{3,}")) {
+                if (text.match("@.+?:.{3,}")) {
                     profile = TimelineManager.getGlobalUserProfile(text);
                 } else
                     profile = null;
             }
         }
-
         RowLayout {
             Layout.fillWidth: true
+
             Label {
-                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft
-                text: qsTr("Encryption")
+                Layout.fillWidth: true
                 color: palette.text
+                text: qsTr("Encryption")
             }
             ToggleButton {
-                Layout.alignment: Qt.AlignRight
                 id: encryption
+
+                Layout.alignment: Qt.AlignRight
                 checked: otherUserHasE2ee
             }
         }
-
-        Item {Layout.fillHeight: true}
-    }
-    footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Cancel
-        Button {
-            text: "Start Direct Chat"
-            DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
-            enabled: userID.isValidMxid && profile
-        }
-        onRejected: createDirectRoot.close();
-        onAccepted: {
-            profile.startChat(encryption.checked)
-            createDirectRoot.close()
+        Item {
+            Layout.fillHeight: true
         }
     }
 }

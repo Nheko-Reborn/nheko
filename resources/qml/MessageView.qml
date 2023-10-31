@@ -16,8 +16,8 @@ Item {
 
     property int availableWidth: width
     property int padding: Nheko.paddingMedium
-    property string searchString: ""
     property Room roommodel: room
+    property string searchString: ""
 
     // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
     Connections {
@@ -41,6 +41,7 @@ Item {
 
         property int delegateMaxWidth: ((Settings.timelineMaxWidth > 100 && Settings.timelineMaxWidth < chatRoot.availableWidth) ? Settings.timelineMaxWidth : chatRoot.availableWidth) - chatRoot.padding * 2 - (scrollbar.interactive ? scrollbar.width : 0)
         readonly property alias filteringInProgress: filteredTimeline.filteringInProgress
+        property int lastScrollPos: 0
 
         ScrollBar.vertical: scrollbar
         anchors.fill: parent
@@ -49,6 +50,7 @@ Item {
         //onModelChanged: if (room) room.sendReset()
         //reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
+        delegate: Settings.bubbles ? bubbleMessageStyle : defaultMessageStyle
         displayMarginBeginning: height / 4
         displayMarginEnd: height / 4
         model: (filteredTimeline.filterByThread || filteredTimeline.filterByContent) ? filteredTimeline : room
@@ -56,35 +58,6 @@ Item {
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
 
-        property int lastScrollPos: 0
-
-        // Fixup the scroll position when the height changes. Without this, the view is kept around the center of the currently visible content, while we usually want to stick to the bottom.
-        onMovementEnded: lastScrollPos = (contentY+height)
-        onModelChanged: lastScrollPos = (contentY+height)
-        onHeightChanged: contentY = (lastScrollPos-height)
-
-        Component {
-            id: defaultMessageStyle
-
-            TimelineDefaultMessageStyle {
-                messageActions: messageActionsC
-                messageContextMenu: messageContextMenuC
-                replyContextMenu: replyContextMenuC
-                scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
-            }
-        }
-        Component {
-            id: bubbleMessageStyle
-
-            TimelineBubbleMessageStyle {
-                messageActions: messageActionsC
-                messageContextMenu: messageContextMenuC
-                replyContextMenu: replyContextMenuC
-                scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
-            }
-        }
-
-        delegate: Settings.bubbles ? bubbleMessageStyle : defaultMessageStyle
         footer: Item {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.margins: Nheko.paddingLarge
@@ -109,7 +82,32 @@ Item {
             if (atYEnd && room)
                 model.currentIndex = 0;
         }
+        onHeightChanged: contentY = (lastScrollPos - height)
+        onModelChanged: lastScrollPos = (contentY + height)
 
+        // Fixup the scroll position when the height changes. Without this, the view is kept around the center of the currently visible content, while we usually want to stick to the bottom.
+        onMovementEnded: lastScrollPos = (contentY + height)
+
+        Component {
+            id: defaultMessageStyle
+
+            TimelineDefaultMessageStyle {
+                messageActions: messageActionsC
+                messageContextMenu: messageContextMenuC
+                replyContextMenu: replyContextMenuC
+                scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+            }
+        }
+        Component {
+            id: bubbleMessageStyle
+
+            TimelineBubbleMessageStyle {
+                messageActions: messageActionsC
+                messageContextMenu: messageContextMenuC
+                replyContextMenu: replyContextMenuC
+                scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+            }
+        }
         TimelineFilter {
             id: filteredTimeline
 
@@ -124,13 +122,13 @@ Item {
             // use comma to update on scroll
             property alias model: row.model
 
-            hoverEnabled: true
-            padding: Nheko.paddingSmall
-            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
-            z: 10
-            parent: chat.contentItem
             anchors.bottom: attached?.top
             anchors.right: attached?.right
+            hoverEnabled: true
+            padding: Nheko.paddingSmall
+            parent: chat.contentItem
+            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
+            z: 10
 
             background: Rectangle {
                 border.color: palette.buttonText
@@ -200,6 +198,7 @@ Item {
                     }
                 }
                 ImageButton {
+                    Layout.preferredWidth: 16
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Edit")
                     ToolTip.visible: hovered
@@ -207,7 +206,6 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
                     visible: !!row.model && row.model.isEditable
-                    Layout.preferredWidth: 16
 
                     onClicked: {
                         if (row.model.isEditable)
@@ -217,13 +215,13 @@ Item {
                 ImageButton {
                     id: reactButton
 
+                    Layout.preferredWidth: 16
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("React")
                     ToolTip.visible: hovered
                     hoverEnabled: true
                     image: ":/icons/icons/ui/smile-add.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
-                    Layout.preferredWidth: 16
 
                     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, room.roomId, function (plaintext, markdown) {
                             var event_id = row.model ? row.model.eventId : "";
@@ -232,28 +230,29 @@ Item {
                         })
                 }
                 ImageButton {
+                    Layout.preferredWidth: 16
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: (row.model && row.model.threadId) ? qsTr("Reply in thread") : qsTr("New thread")
                     ToolTip.visible: hovered
                     hoverEnabled: true
                     image: (row.model && row.model.threadId) ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    Layout.preferredWidth: 16
 
                     onClicked: room.thread = (row.model.threadId || row.model.eventId)
                 }
                 ImageButton {
+                    Layout.preferredWidth: 16
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Reply")
                     ToolTip.visible: hovered
                     hoverEnabled: true
                     image: ":/icons/icons/ui/reply.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    Layout.preferredWidth: 16
 
                     onClicked: room.reply = row.model.eventId
                 }
                 ImageButton {
+                    Layout.preferredWidth: 16
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Go to message")
                     ToolTip.visible: hovered
@@ -261,7 +260,6 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/go-to.svg"
                     visible: !!row.model && filteredTimeline.filterByContent
-                    Layout.preferredWidth: 16
 
                     onClicked: {
                         topBar.searchString = "";
@@ -271,12 +269,12 @@ Item {
                 ImageButton {
                     id: optionsButton
 
+                    Layout.preferredWidth: 16
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Options")
                     ToolTip.visible: hovered
                     hoverEnabled: true
                     image: ":/icons/icons/ui/options.svg"
-                    Layout.preferredWidth: 16
 
                     onClicked: messageContextMenuC.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
@@ -413,9 +411,9 @@ Item {
         Component {
             id: reportDialog
 
-            ReportMessage {}
+            ReportMessage {
+            }
         }
-
         Platform.MenuItem {
             enabled: visible
             text: qsTr("Go to &message")
@@ -523,10 +521,13 @@ Item {
             }
         }
         Platform.MenuItem {
-            text: qsTr("Report message")
             enabled: visible
+            text: qsTr("Report message")
+
             onTriggered: function () {
-                var dialog = reportDialog.createObject(timelineRoot, {"eventId": messageContextMenu.eventId});
+                var dialog = reportDialog.createObject(timelineRoot, {
+                        "eventId": messageContextMenu.eventId
+                    });
                 dialog.show();
                 dialog.forceActiveFocus();
                 timelineRoot.destroyOnClose(dialog);

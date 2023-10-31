@@ -9,39 +9,38 @@ import im.nheko 1.0
 Rectangle {
     id: bubbleRoot
 
-    required property int notificationCount
-    required property bool hasLoudNotification
     required property color bubbleBackgroundColor
     required property color bubbleTextColor
-    property bool mayBeVisible: true
     property alias font: notificationBubbleText.font
-    baselineOffset: notificationBubbleText.baseline - bubbleRoot.top
+    required property bool hasLoudNotification
+    property bool mayBeVisible: true
+    required property int notificationCount
 
-    visible: mayBeVisible && notificationCount > 0
+    ToolTip.delay: Nheko.tooltipDelay
+    ToolTip.text: notificationCount
+    ToolTip.visible: notificationBubbleHover.hovered && (notificationCount > 9999)
+    baselineOffset: notificationBubbleText.baseline - bubbleRoot.top
+    color: hasLoudNotification ? Nheko.theme.red : bubbleBackgroundColor
     implicitHeight: notificationBubbleText.height + Nheko.paddingMedium
     implicitWidth: Math.max(notificationBubbleText.width, height)
     radius: height / 2
-    color: hasLoudNotification ? Nheko.theme.red : bubbleBackgroundColor
-    ToolTip.text: notificationCount
-    ToolTip.delay: Nheko.tooltipDelay
-    ToolTip.visible: notificationBubbleHover.hovered && (notificationCount > 9999)
+    visible: mayBeVisible && notificationCount > 0
 
     Label {
         id: notificationBubbleText
 
         anchors.centerIn: bubbleRoot
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        width: Math.max(implicitWidth + Nheko.paddingMedium, bubbleRoot.height)
+        color: bubbleRoot.hasLoudNotification ? "white" : bubbleRoot.bubbleTextColor
         font.bold: true
         font.pixelSize: fontMetrics.font.pixelSize * 0.8
-        color: bubbleRoot.hasLoudNotification ? "white" : bubbleRoot.bubbleTextColor
+        horizontalAlignment: Text.AlignHCenter
         text: bubbleRoot.notificationCount > 9999 ? "9999+" : bubbleRoot.notificationCount
+        verticalAlignment: Text.AlignVCenter
+        width: Math.max(implicitWidth + Nheko.paddingMedium, bubbleRoot.height)
 
         HoverHandler {
             id: notificationBubbleHover
+
         }
-
     }
-
 }

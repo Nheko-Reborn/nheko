@@ -9,49 +9,48 @@ import im.nheko 1.0
 
 ColumnLayout {
     property string title: qsTr("Verification failed")
+
     spacing: 16
 
     Text {
         id: content
 
-        Layout.preferredWidth: 400
         Layout.fillWidth: true
-        wrapMode: Text.Wrap
+        Layout.preferredWidth: 400
+        color: palette.text
         text: {
             switch (flow.error) {
-                case DeviceVerificationFlow.UnknownMethod:
+            case DeviceVerificationFlow.UnknownMethod:
                 return qsTr("Other client does not support our verification protocol.");
-                case DeviceVerificationFlow.MismatchedCommitment:
-                case DeviceVerificationFlow.MismatchedSAS:
-                case DeviceVerificationFlow.KeyMismatch:
+            case DeviceVerificationFlow.MismatchedCommitment:
+            case DeviceVerificationFlow.MismatchedSAS:
+            case DeviceVerificationFlow.KeyMismatch:
                 return qsTr("Key mismatch detected!");
-                case DeviceVerificationFlow.Timeout:
+            case DeviceVerificationFlow.Timeout:
                 return qsTr("Device verification timed out.");
-                case DeviceVerificationFlow.User:
+            case DeviceVerificationFlow.User:
                 return qsTr("Other party canceled the verification.");
-                case DeviceVerificationFlow.OutOfOrder:
+            case DeviceVerificationFlow.OutOfOrder:
                 return qsTr("Verification messages received out of order!");
-                default:
+            default:
                 return qsTr("Unknown verification error.");
             }
         }
-        color: palette.text
         verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.Wrap
     }
-
-    Item { Layout.fillHeight: true; }
-
+    Item {
+        Layout.fillHeight: true
+    }
     RowLayout {
         Item {
             Layout.fillWidth: true
         }
-
         Button {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Close")
+
             onClicked: dialog.close()
         }
-
     }
-
 }

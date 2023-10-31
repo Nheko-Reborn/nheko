@@ -17,18 +17,24 @@ ApplicationWindow {
     property MemberList members
     property Room room
 
-    title: qsTr("Members of %1").arg(members.roomName)
-    height: 650
-    width: 420
-    minimumHeight: 420
     color: palette.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    height: 650
+    minimumHeight: 420
+    title: qsTr("Members of %1").arg(members.roomName)
+    width: 420
+
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Ok
+
+        onAccepted: roomMembersRoot.close()
+    }
 
     Shortcut {
         sequence: StandardKey.Cancel
+
         onActivated: roomMembersRoot.close()
     }
-
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: Nheko.paddingMedium
@@ -37,148 +43,146 @@ ApplicationWindow {
         Avatar {
             id: roomAvatar
 
+            Layout.alignment: Qt.AlignHCenter
             Layout.preferredHeight: 130
             Layout.preferredWidth: 130
-
-            roomid: members.roomId
             displayName: members.roomName
-            Layout.alignment: Qt.AlignHCenter
+            roomid: members.roomId
             url: members.avatarUrl.replace("mxc://", "image://MxcImage/")
+
             onClicked: TimelineManager.openRoomSettings(members.roomId)
         }
-
         ElidedLabel {
-            font.pixelSize: fontMetrics.font.pixelSize * 2
-            fullText: qsTr("%n people in %1", "Summary above list of members", members.memberCount).arg(members.roomName)
             Layout.alignment: Qt.AlignHCenter
             elideWidth: parent.width - Nheko.paddingMedium
+            font.pixelSize: fontMetrics.font.pixelSize * 2
+            fullText: qsTr("%n people in %1", "Summary above list of members", members.memberCount).arg(members.roomName)
         }
-
         ImageButton {
             Layout.alignment: Qt.AlignHCenter
-            image: ":/icons/icons/ui/add-square-button.svg"
-            hoverEnabled: true
-            ToolTip.visible: hovered
             ToolTip.text: qsTr("Invite more people")
+            ToolTip.visible: hovered
+            hoverEnabled: true
+            image: ":/icons/icons/ui/add-square-button.svg"
+
             onClicked: TimelineManager.openInviteUsers(members.roomId)
         }
-
         MatrixTextField {
             id: searchBar
 
             Layout.fillWidth: true
             placeholderText: qsTr("Search...")
-            onTextChanged: members.setFilterString(text)
 
             Component.onCompleted: forceActiveFocus()
+            onTextChanged: members.setFilterString(text)
         }
-
         RowLayout {
             spacing: Nheko.paddingMedium
 
             Label {
-                text: qsTr("Sort by: ")
                 color: palette.text
+                text: qsTr("Sort by: ")
             }
-
             ComboBox {
-                model: ListModel {
-                    ListElement { data: MemberList.Mxid; text: qsTr("User ID") }
-                    ListElement { data: MemberList.DisplayName; text: qsTr("Display name") }
-                    ListElement { data: MemberList.Powerlevel; text: qsTr("Power level") }
-                }
+                Layout.fillWidth: true
                 textRole: "text"
                 valueRole: "data"
+
+                model: ListModel {
+                    ListElement {
+                        data: MemberList.Mxid
+                        text: qsTr("User ID")
+                    }
+                    ListElement {
+                        data: MemberList.DisplayName
+                        text: qsTr("Display name")
+                    }
+                    ListElement {
+                        data: MemberList.Powerlevel
+                        text: qsTr("Power level")
+                    }
+                }
+
                 onCurrentValueChanged: members.sortBy(currentValue)
-                Layout.fillWidth: true
             }
         }
-
         ScrollView {
-            padding: Nheko.paddingMedium
-            ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
-            Layout.minimumHeight: 200
             Layout.fillWidth: true
+            Layout.minimumHeight: 200
+            ScrollBar.horizontal.visible: false
+            padding: Nheko.paddingMedium
 
             ListView {
                 id: memberList
 
-                clip: true
                 boundsBehavior: Flickable.StopAtBounds
+                clip: true
                 model: members
-
 
                 delegate: ItemDelegate {
                     id: del
 
-                    onClicked: room.openUserProfile(model.mxid)
-                    padding: Nheko.paddingMedium
-                    width: ListView.view.width
                     height: memberLayout.implicitHeight + Nheko.paddingSmall * 2
                     hoverEnabled: true
+                    padding: Nheko.paddingMedium
+                    width: ListView.view.width
+
                     background: Rectangle {
                         color: del.hovered ? palette.dark : roomMembersRoot.color
                     }
 
+                    onClicked: room.openUserProfile(model.mxid)
+
                     RowLayout {
                         id: memberLayout
 
-                        spacing: Nheko.paddingMedium
                         anchors.centerIn: parent
+                        spacing: Nheko.paddingMedium
                         width: parent.width - Nheko.paddingSmall * 2
 
                         Avatar {
                             id: avatar
 
-                            Layout.preferredWidth: Nheko.avatarSize
                             Layout.preferredHeight: Nheko.avatarSize
-                            userid: model.mxid
-                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            Layout.preferredWidth: Nheko.avatarSize
                             displayName: model.displayName
                             enabled: false
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            userid: model.mxid
                         }
-
                         ColumnLayout {
-                            spacing: Nheko.paddingSmall
                             Layout.fillWidth: true
+                            spacing: Nheko.paddingSmall
 
                             ElidedLabel {
-                                fullText: model.displayName
+                                Layout.fillWidth: true
                                 color: TimelineManager.userColor(model ? model.mxid : "", del.background.color)
+                                elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                                 font.pixelSize: fontMetrics.font.pixelSize
-                                elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
-                                Layout.fillWidth: true
+                                fullText: model.displayName
                             }
-
                             ElidedLabel {
-                                fullText: model.mxid
-                                color: del.hovered ? palette.brightText : palette.buttonText
-                                font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
-                                elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
                                 Layout.fillWidth: true
+                                color: del.hovered ? palette.brightText : palette.buttonText
+                                elideWidth: del.width - Nheko.paddingMedium * 2 - avatar.width - encryptInd.width
+                                font.pixelSize: Math.ceil(fontMetrics.font.pixelSize * 0.9)
+                                fullText: model.mxid
                             }
-
                         }
-
                         PowerlevelIndicator {
-                            powerlevel: model.powerlevel
                             permissions: room.permissions
+                            powerlevel: model.powerlevel
                         }
-
                         EncryptionIndicator {
                             id: encryptInd
 
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
                             Layout.alignment: Qt.AlignRight
-                            visible: room.isEncrypted
-                            encrypted: room.isEncrypted
-                            trust: encrypted ? model.trustlevel : Crypto.Unverified
+                            Layout.preferredHeight: 16
+                            Layout.preferredWidth: 16
                             ToolTip.text: {
                                 if (!encrypted)
                                     return qsTr("This room is not encrypted!");
-
                                 switch (trust) {
                                 case Crypto.Verified:
                                     return qsTr("This user is verified.");
@@ -188,23 +192,22 @@ ApplicationWindow {
                                     return qsTr("This user has unverified devices!");
                                 }
                             }
+                            encrypted: room.isEncrypted
+                            trust: encrypted ? model.trustlevel : Crypto.Unverified
+                            visible: room.isEncrypted
                         }
-
                     }
-
                     NhekoCursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                     }
-
                 }
-
                 footer: Item {
-                    width: parent.width
-                    visible: (members.numUsersLoaded < members.memberCount) && members.loadingMoreMembers
+                    anchors.margins: Nheko.paddingMedium
                     // use the default height if it's visible, otherwise no height at all
                     height: membersLoadingSpinner.implicitHeight
-                    anchors.margins: Nheko.paddingMedium
+                    visible: (members.numUsersLoaded < members.memberCount) && members.loadingMoreMembers
+                    width: parent.width
 
                     Spinner {
                         id: membersLoadingSpinner
@@ -212,18 +215,8 @@ ApplicationWindow {
                         anchors.centerIn: parent
                         implicitHeight: parent.visible ? 35 : 0
                     }
-
                 }
-
             }
-
         }
-
     }
-
-    footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Ok
-        onAccepted: roomMembersRoot.close()
-    }
-
 }

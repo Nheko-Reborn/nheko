@@ -6,11 +6,9 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
 import im.nheko
-
 import "./components"
 
 Column {
-
     required property var day
     required property bool isSender
     required property bool isStateEvent
@@ -79,31 +77,14 @@ Column {
 
             target: room
         }
-
         AbstractButton {
             id: userNameButton
-
-            PowerlevelIndicator {
-                id: powerlevelIndicator
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
-
-                powerlevel: userPowerlevel
-                height: fontMetrics.ascent
-                width: height
-
-                sourceSize.width: fontMetrics.lineSpacing
-                sourceSize.height: fontMetrics.lineSpacing
-
-                permissions: room ? room.permissions : null
-                visible: isAdmin || isModerator
-            }
 
             ToolTip.delay: Nheko.tooltipDelay
             ToolTip.text: userId
             ToolTip.visible: hovered
-            leftPadding: powerlevelIndicator.visible ? 16 : 0
             leftInset: 0
+            leftPadding: powerlevelIndicator.visible ? 16 : 0
             rightInset: 0
             rightPadding: 0
 
@@ -117,6 +98,19 @@ Column {
 
             onClicked: room.openUserProfile(userId)
 
+            PowerlevelIndicator {
+                id: powerlevelIndicator
+
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                height: fontMetrics.ascent
+                permissions: room ? room.permissions : null
+                powerlevel: userPowerlevel
+                sourceSize.height: fontMetrics.lineSpacing
+                sourceSize.width: fontMetrics.lineSpacing
+                visible: isAdmin || isModerator
+                width: height
+            }
             TextMetrics {
                 id: userNameTextMetrics
 
@@ -153,7 +147,7 @@ Column {
             Connections {
                 function onPresenceChanged(id) {
                     if (id == userId)
-                    statusMsg.userStatus = Presence.userStatus(userId);
+                        statusMsg.userStatus = Presence.userStatus(userId);
                 }
 
                 target: Presence
@@ -161,4 +155,3 @@ Column {
         }
     }
 }
-

@@ -9,43 +9,50 @@ import QtQuick.Layouts 1.12
 import im.nheko 1.0
 
 ItemDelegate {
-    property alias bgColor: background.color
-    property alias userid: avatar.userid
-    property alias displayName: avatar.displayName
     property string avatarUrl
+    property alias bgColor: background.color
+    property alias displayName: avatar.displayName
+    property alias userid: avatar.userid
+
     implicitHeight: layout.implicitHeight + Nheko.paddingSmall * 2
-    background: Rectangle {id: background}
+
+    background: Rectangle {
+        id: background
+
+    }
+
     GridLayout {
         id: layout
+
         anchors.centerIn: parent
-        width: parent.width - Nheko.paddingSmall * 2
-        rows: 2
+        columnSpacing: Nheko.paddingMedium
         columns: 2
         rowSpacing: Nheko.paddingSmall
-        columnSpacing: Nheko.paddingMedium
+        rows: 2
+        width: parent.width - Nheko.paddingSmall * 2
 
         Avatar {
             id: avatar
-            Layout.rowSpan: 2
-            Layout.preferredWidth: Nheko.avatarSize
-            Layout.preferredHeight: Nheko.avatarSize
+
             Layout.alignment: Qt.AlignLeft
-            url: avatarUrl.replace("mxc://", "image://MxcImage/")
+            Layout.preferredHeight: Nheko.avatarSize
+            Layout.preferredWidth: Nheko.avatarSize
+            Layout.rowSpan: 2
             enabled: false
+            url: avatarUrl.replace("mxc://", "image://MxcImage/")
         }
         Label {
             Layout.fillWidth: true
-            text: displayName
             color: TimelineManager.userColor(userid, palette.window)
             font.pointSize: fontMetrics.font.pointSize
+            text: displayName
         }
-
         Label {
-            Layout.fillWidth: true
             Layout.alignment: Qt.AlignTop
-            text: userid
+            Layout.fillWidth: true
             color: palette.buttonText
             font.pointSize: fontMetrics.font.pointSize * 0.9
+            text: userid
         }
     }
 }

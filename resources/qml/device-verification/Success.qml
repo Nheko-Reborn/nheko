@@ -14,27 +14,25 @@ ColumnLayout {
     Label {
         id: content
 
-        Layout.preferredWidth: 400
         Layout.fillWidth: true
-        wrapMode: Text.Wrap
-        text: qsTr("Verification successful! Both sides verified their devices!")
+        Layout.preferredWidth: 400
         color: palette.text
+        text: qsTr("Verification successful! Both sides verified their devices!")
         verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.Wrap
     }
-
-    Item { Layout.fillHeight: true; }
-
+    Item {
+        Layout.fillHeight: true
+    }
     RowLayout {
         Item {
             Layout.fillWidth: true
         }
-
         Button {
             Layout.alignment: Qt.AlignRight
             text: qsTr("Close")
+
             onClicked: dialog.close()
         }
-
     }
-
 }

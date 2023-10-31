@@ -59,7 +59,7 @@ Item {
         visible: TimelineManager.isInitialSync
         z: 3
 
-        Behavior on opacity  {
+        Behavior on opacity {
             NumberAnimation {
                 duration: 100
             }
@@ -188,9 +188,9 @@ Item {
             displayName: parent.roomName
             enabled: false
             implicitHeight: 130
+            implicitWidth: 130
             roomid: parent.roomId
             url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
-            implicitWidth: 130
         }
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
@@ -293,10 +293,10 @@ Item {
                 displayName: roomPreview?.inviterDisplayName ?? ""
                 enabled: true
                 implicitHeight: 48
+                implicitWidth: 48
                 roomid: preview.roomId
                 url: (roomPreview?.inviterAvatarUrl ?? "").replace("mxc://", "image://MxcImage/")
                 userid: roomPreview?.inviterUserId ?? ""
-                implicitWidth: 48
 
                 onClicked: TimelineManager.openGlobalUserProfile(roomPreview.inviterUserId)
             }
@@ -378,8 +378,8 @@ Item {
         running: false
 
         onTriggered: {
-            timelineEffects.removeParticles()
-            shouldEffectsRun = false
+            timelineEffects.removeParticles();
+            shouldEffectsRun = false;
         }
     }
     Connections {

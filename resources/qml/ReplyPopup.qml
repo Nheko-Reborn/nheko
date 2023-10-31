@@ -30,9 +30,9 @@ Rectangle {
         anchors.top: parent.top
         anchors.topMargin: Nheko.paddingSmall
         eventId: room?.reply ?? ""
+        maxWidth: parent.width - anchors.leftMargin - anchors.rightMargin
         userColor: TimelineManager.userColor(modelData.userId, palette.window)
         visible: room && room.reply
-        maxWidth: parent.width - anchors.leftMargin - anchors.rightMargin
     }
     ImageButton {
         id: closeReplyButton

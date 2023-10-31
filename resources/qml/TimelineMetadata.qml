@@ -11,17 +11,16 @@ import im.nheko
 RowLayout {
     id: metadata
 
-    property int iconSize: Math.floor(fontMetrics.ascent * scaling)
-    required property double scaling
-
     required property string eventId
-    required property int status
-    required property int trustlevel
+    property int iconSize: Math.floor(fontMetrics.ascent * scaling)
     required property bool isEdited
     required property bool isEncrypted
+    required property Room room
+    required property double scaling
+    required property int status
     required property string threadId
     required property date timestamp
-    required property Room room
+    required property int trustlevel
 
     spacing: 2
 
@@ -43,6 +42,7 @@ RowLayout {
         sourceSize.height: parent.iconSize * Screen.devicePixelRatio
         sourceSize.width: parent.iconSize * Screen.devicePixelRatio
         visible: metadata.isEdited || metadata.eventId == metadata.room.edit
+
         HoverHandler {
             id: editHovered
 

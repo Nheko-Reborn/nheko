@@ -35,9 +35,9 @@ Page {
 
         anchors.left: parent.left
         anchors.right: parent.right
+        boundsBehavior: Flickable.StopAtBounds
         height: parent.height
         model: Communities.filtered()
-        boundsBehavior: Flickable.StopAtBounds
 
         ScrollBar.vertical: ScrollBar {
             id: scrollbar
@@ -138,10 +138,11 @@ Page {
                     id: avatar
 
                     Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredHeight: avatarSize
+                    Layout.preferredWidth: avatarSize
                     color: communityItem.backgroundColor
                     displayName: model.displayName
                     enabled: false
-                    Layout.preferredHeight: avatarSize
                     roomid: model.id
                     textColor: model.avatarUrl?.startsWith(":/") == true ? communityItem.unimportantText : communityItem.importantText
                     url: {
@@ -152,7 +153,6 @@ Page {
                         else
                             return "";
                     }
-                    Layout.preferredWidth: avatarSize
 
                     NotificationBubble {
                         anchors.bottom: avatar.bottom

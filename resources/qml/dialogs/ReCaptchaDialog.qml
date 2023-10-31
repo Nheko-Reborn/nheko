@@ -15,30 +15,16 @@ ApplicationWindow {
         recaptcha.confirm();
         recaptchaRoot.close();
     }
-
     function reject() {
         recaptcha.cancel();
         recaptchaRoot.close();
     }
 
     color: palette.window
-    title: recaptcha.context
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     height: msg.implicitHeight + footer.implicitHeight
+    title: recaptcha.context
     width: Math.max(msg.implicitWidth, footer.implicitWidth)
-
-    Shortcut {
-        sequence: StandardKey.Cancel
-        onActivated: recaptchaRoot.reject()
-    }
-
-    Label {
-        id: msg
-
-        anchors.fill: parent
-        padding: 8
-        text: qsTr("Solve the reCAPTCHA and press the confirm button")
-    }
 
     footer: DialogButtonBox {
         onAccepted: recaptchaRoot.accept()
@@ -46,18 +32,29 @@ ApplicationWindow {
 
         Button {
             text: qsTr("Open reCAPTCHA")
+
             onClicked: recaptcha.openReCaptcha()
         }
-
         Button {
-            text: qsTr("Cancel")
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            text: qsTr("Cancel")
         }
-
         Button {
-            text: qsTr("Confirm")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            text: qsTr("Confirm")
         }
     }
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+
+        onActivated: recaptchaRoot.reject()
+    }
+    Label {
+        id: msg
+
+        anchors.fill: parent
+        padding: 8
+        text: qsTr("Solve the reCAPTCHA and press the confirm button")
+    }
 }

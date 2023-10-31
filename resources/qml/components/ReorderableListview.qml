@@ -8,8 +8,8 @@ import QtQml.Models
 Item {
     id: root
 
-    property alias model: visualModel.model
     property Component delegate
+    property alias model: visualModel.model
 
     Component {
         id: dragDelegate
@@ -17,104 +17,117 @@ Item {
         MouseArea {
             id: dragArea
 
-            required property var model
-            required property int index
-
-            enabled: model.moveable == undefined || model.moveable
-
             property bool held: false
+            required property int index
+            required property var model
 
-            anchors { left: parent.left; right: parent.right }
+            drag.axis: Drag.YAxis
+            drag.target: held ? content : undefined
+            enabled: model.moveable == undefined || model.moveable
             height: content.height
 
-            drag.target: held ? content : undefined
-            drag.axis: Drag.YAxis
-
+            onHeldChanged: if (held)
+                ListView.view.currentIndex = dragArea.index
+            else
+                ListView.view.currentIndex = -1
             onPressAndHold: held = true
-            onPressed: if (mouse.source !== Qt.MouseEventNotSynthesized) { held = true }
+            onPressed: if (mouse.source !== Qt.MouseEventNotSynthesized) {
+                held = true;
+            }
             onReleased: held = false
-            onHeldChanged: if (held) ListView.view.currentIndex = dragArea.index; else ListView.view.currentIndex = -1
 
+            anchors {
+                left: parent.left
+                right: parent.right
+            }
             Rectangle {
                 id: content
+
+                Drag.active: dragArea.held
+                Drag.hotSpot.x: width / 2
+                Drag.hotSpot.y: height / 2
+                Drag.source: dragArea
+                border.color: palette.highlight
+                border.width: dragArea.enabled ? 1 : 0
+                color: dragArea.held ? palette.highlight : palette.base
+                height: actualDelegate.implicitHeight + 4
+                radius: 2
+                width: dragArea.width
+
+                Behavior on color {
+                    ColorAnimation {
+                        duration: 100
+                    }
+                }
+                states: State {
+                    when: dragArea.held
+
+                    ParentChange {
+                        parent: root
+                        target: content
+                    }
+                    AnchorChanges {
+                        target: content
+
+                        anchors {
+                            horizontalCenter: undefined
+                            verticalCenter: undefined
+                        }
+                    }
+                }
 
                 anchors {
                     horizontalCenter: parent.horizontalCenter
                     verticalCenter: parent.verticalCenter
                 }
-                width: dragArea.width; height: actualDelegate.implicitHeight + 4
-
-                border.width: dragArea.enabled ? 1 : 0
-                border.color: palette.highlight
-
-                color: dragArea.held ? palette.highlight : palette.base
-                Behavior on color { ColorAnimation { duration: 100 } }
-
-                radius: 2
-
-                Drag.active: dragArea.held
-                Drag.source: dragArea
-                Drag.hotSpot.x: width / 2
-                Drag.hotSpot.y: height / 2
-
-                states: State {
-                    when: dragArea.held
-
-                    ParentChange { target: content; parent: root }
-                    AnchorChanges {
-                        target: content
-                        anchors { horizontalCenter: undefined; verticalCenter: undefined }
-                    }
-                }
-
                 Loader {
                     id: actualDelegate
-                    sourceComponent: root.delegate
-                    property var model: dragArea.model
+
                     property int index: dragArea.index
+                    property var model: dragArea.model
                     property int offset: -view.contentY + dragArea.y
-                    anchors { fill: parent; margins: 2 }
-                }
 
-            }
+                    sourceComponent: root.delegate
 
-            DropArea {
-                enabled: index != 0 || model.moveable == undefined || model.moveable
-                anchors { fill: parent; margins: 8 }
-
-                onEntered: (drag)=> {
-                    visualModel.model.move(drag.source.index, dragArea.index)
+                    anchors {
+                        fill: parent
+                        margins: 2
                     }
                 }
+            }
+            DropArea {
+                enabled: index != 0 || model.moveable == undefined || model.moveable
 
+                onEntered: drag => {
+                    visualModel.model.move(drag.source.index, dragArea.index);
+                }
+
+                anchors {
+                    fill: parent
+                    margins: 8
+                }
             }
         }
-
-
-        DelegateModel {
-            id: visualModel
-
-            delegate: dragDelegate
-        }
-
-        ListView {
-            id: view
-
-            clip: true
-
-            anchors { fill: parent; margins: 2 }
-
-            model: visualModel
-
-            highlightRangeMode: ListView.ApplyRange
-            preferredHighlightBegin: 0.2 * height
-            preferredHighlightEnd: 0.8 * height
-
-            spacing: 4
-            cacheBuffer: 50
-        }
-
-
     }
+    DelegateModel {
+        id: visualModel
 
+        delegate: dragDelegate
+    }
+    ListView {
+        id: view
 
+        cacheBuffer: 50
+        clip: true
+        highlightRangeMode: ListView.ApplyRange
+        model: visualModel
+        preferredHighlightBegin: 0.2 * height
+        preferredHighlightEnd: 0.8 * height
+        spacing: 4
+
+        anchors {
+            fill: parent
+            margins: 2
+        }
+    }
+}

@@ -15,30 +15,16 @@ ApplicationWindow {
         fallback.confirm();
         fallbackRoot.close();
     }
-
     function reject() {
         fallback.cancel();
         fallbackRoot.close();
     }
 
     color: palette.window
-    title: qsTr("Fallback authentication")
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     height: msg.implicitHeight + footer.implicitHeight
+    title: qsTr("Fallback authentication")
     width: Math.max(msg.implicitWidth, footer.implicitWidth)
-
-    Shortcut {
-        sequence: StandardKey.Cancel
-        onActivated: fallbackRoot.reject()
-    }
-
-    Label {
-        id: msg
-
-        anchors.fill: parent
-        padding: 8
-        text: qsTr("Open the fallback, follow the steps, and confirm after completing them.")
-    }
 
     footer: DialogButtonBox {
         onAccepted: fallbackRoot.accept()
@@ -46,18 +32,29 @@ ApplicationWindow {
 
         Button {
             text: qsTr("Open Fallback in Browser")
+
             onClicked: fallback.openFallbackAuth()
         }
-
         Button {
-            text: qsTr("Cancel")
             DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
+            text: qsTr("Cancel")
         }
-
         Button {
-            text: qsTr("Confirm")
             DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
+            text: qsTr("Confirm")
         }
     }
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+
+        onActivated: fallbackRoot.reject()
+    }
+    Label {
+        id: msg
+
+        anchors.fill: parent
+        padding: 8
+        text: qsTr("Open the fallback, follow the steps, and confirm after completing them.")
+    }
 }

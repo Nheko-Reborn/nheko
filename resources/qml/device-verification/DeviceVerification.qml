@@ -12,82 +12,69 @@ ApplicationWindow {
 
     property var flow
 
-    onClosing: VerificationManager.removeVerificationFlow(flow)
-    title: stack.currentItem ? (stack.currentItem.title_ || "") : ""
-    modality: Qt.NonModal
     color: palette.window
+    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    height: stack.currentItem.implicitHeight + 2 * Nheko.paddingMedium
     //height: stack.currentItem.implicitHeight
     minimumHeight: stack.currentItem.implicitHeight + 2 * Nheko.paddingLarge
-    height: stack.currentItem.implicitHeight + 2 * Nheko.paddingMedium
     minimumWidth: 400
+    modality: Qt.NonModal
+    title: stack.currentItem ? (stack.currentItem.title_ || "") : ""
     width: 400
-    flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
 
     background: Rectangle {
         color: palette.window
     }
 
+    onClosing: VerificationManager.removeVerificationFlow(flow)
 
     StackView {
         id: stack
 
         anchors.centerIn: parent
-
+        implicitHeight: dialog.height - 2 * Nheko.paddingMedium
+        implicitWidth: dialog.width - 2 * Nheko.paddingMedium
         initialItem: newVerificationRequest
-        implicitWidth: dialog.width - 2* Nheko.paddingMedium
-        implicitHeight: dialog.height - 2* Nheko.paddingMedium
     }
-
     Component {
         id: newVerificationRequest
 
         NewVerificationRequest {
         }
-
     }
-
     Component {
         id: waiting
 
         Waiting {
         }
-
     }
-
     Component {
         id: success
 
         Success {
         }
-
     }
-
     Component {
         id: failed
 
         Failed {
         }
-
     }
-
     Component {
         id: digitVerification
 
         DigitVerification {
         }
-
     }
-
     Component {
         id: emojiVerification
 
         EmojiVerification {
         }
-
     }
-
     Item {
         state: flow.state
+
         states: [
             State {
                 name: "PromptStartVerification"
@@ -95,7 +82,6 @@ ApplicationWindow {
                 StateChangeScript {
                     script: stack.replace(null, newVerificationRequest)
                 }
-
             },
             State {
                 name: "CompareEmoji"
@@ -103,7 +89,6 @@ ApplicationWindow {
                 StateChangeScript {
                     script: stack.replace(null, emojiVerification)
                 }
-
             },
             State {
                 name: "CompareNumber"
@@ -111,7 +96,6 @@ ApplicationWindow {
                 StateChangeScript {
                     script: stack.replace(null, digitVerification)
                 }
-
             },
             State {
                 name: "WaitingForKeys"
@@ -119,7 +103,6 @@ ApplicationWindow {
                 StateChangeScript {
                     script: stack.replace(null, waiting)
                 }
-
             },
             State {
                 name: "WaitingForOtherToAccept"
@@ -127,7 +110,6 @@ ApplicationWindow {
                 StateChangeScript {
                     script: stack.replace(null, waiting)
                 }
-
             },
             State {
                 name: "WaitingForMac"
@@ -135,7 +117,6 @@ ApplicationWindow {
                 StateChangeScript {
                     script: stack.replace(null, waiting)
                 }
-
             },
             State {
                 name: "Success"
@@ -143,7 +124,6 @@ ApplicationWindow {
                 StateChangeScript {
                     script: stack.replace(null, success)
                 }
-
             },
             State {
                 name: "Failed"
@@ -151,9 +131,7 @@ ApplicationWindow {
                 StateChangeScript {
                     script: stack.replace(null, failed)
                 }
-
             }
         ]
     }
-
 }

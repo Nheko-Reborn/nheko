@@ -12,11 +12,11 @@ ColumnLayout {
     spacing: 16
 
     Label {
+        Layout.fillWidth: true
         // Self verification
 
         Layout.preferredWidth: 400
-        Layout.fillWidth: true
-        wrapMode: Text.Wrap
+        color: palette.text
         text: {
             if (flow.sender) {
                 if (flow.isSelfVerification)
@@ -35,32 +35,30 @@ ColumnLayout {
                     return qsTr("Your device (%1) has requested to be verified.").arg(flow.deviceId);
             }
         }
-        color: palette.text
         verticalAlignment: Text.AlignVCenter
+        wrapMode: Text.Wrap
     }
-
-    Item { Layout.fillHeight: true; }
-
+    Item {
+        Layout.fillHeight: true
+    }
     RowLayout {
         Button {
             Layout.alignment: Qt.AlignLeft
             text: flow.sender ? qsTr("Cancel") : qsTr("Deny")
+
             onClicked: {
                 flow.cancel();
                 dialog.close();
             }
         }
-
         Item {
             Layout.fillWidth: true
         }
-
         Button {
             Layout.alignment: Qt.AlignRight
             text: flow.sender ? qsTr("Start verification") : qsTr("Accept")
+
             onClicked: flow.next()
         }
-
     }
-
 }

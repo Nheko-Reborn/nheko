@@ -140,8 +140,8 @@ ColumnLayout {
         id: blueBar
 
         Layout.fillWidth: true
-        color: palette.highlight
         Layout.preferredHeight: 1
+        color: palette.highlight
 
         Rectangle {
             id: blackBar

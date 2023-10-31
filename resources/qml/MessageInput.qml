@@ -44,14 +44,14 @@ Rectangle {
         ImageButton {
             Layout.alignment: Qt.AlignBottom
             Layout.margins: 8
+            Layout.preferredHeight: 22
+            Layout.preferredWidth: 22
             ToolTip.text: CallManager.isOnCall ? qsTr("Hang up") : (CallManager.isOnCallOnOtherDevice ? qsTr("Already on a call") : qsTr("Place a call"))
             ToolTip.visible: hovered
-            Layout.preferredHeight: 22
             hoverEnabled: true
             image: CallManager.isOnCall ? ":/icons/icons/ui/end-call.svg" : ":/icons/icons/ui/place-call.svg"
             opacity: (CallManager.haveCallInvite || CallManager.isOnCallOnOtherDevice) ? 0.3 : 1
             visible: CallManager.callsSupported && showAllButtons
-            Layout.preferredWidth: 22
 
             onClicked: {
                 if (room) {
@@ -72,13 +72,13 @@ Rectangle {
         ImageButton {
             Layout.alignment: Qt.AlignBottom
             Layout.margins: 8
+            Layout.preferredHeight: 22
+            Layout.preferredWidth: 22
             ToolTip.text: qsTr("Send a file")
             ToolTip.visible: hovered
-            Layout.preferredHeight: 22
             hoverEnabled: true
             image: ":/icons/icons/ui/attach.svg"
             visible: showAllButtons
-            Layout.preferredWidth: 22
 
             onClicked: room.input.openFileSelection()
 
@@ -393,13 +393,13 @@ Rectangle {
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
+            Layout.preferredHeight: 22
+            Layout.preferredWidth: 22
             ToolTip.text: qsTr("Stickers")
             ToolTip.visible: hovered
-            Layout.preferredHeight: 22
             hoverEnabled: true
             image: ":/icons/icons/ui/sticky-note-solid.svg"
             visible: showAllButtons
-            Layout.preferredWidth: 22
 
             onClicked: stickerPopup.visible ? stickerPopup.close() : stickerPopup.show(stickerButton, room.roomId, function (row) {
                     room.input.sticker(row);
@@ -417,12 +417,12 @@ Rectangle {
 
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
+            Layout.preferredHeight: 22
+            Layout.preferredWidth: 22
             ToolTip.text: qsTr("Emoji")
             ToolTip.visible: hovered
-            Layout.preferredHeight: 22
             hoverEnabled: true
             image: ":/icons/icons/ui/smile.svg"
-            Layout.preferredWidth: 22
 
             onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(emojiButton, room.roomId, function (plaintext, markdown) {
                     messageInput.insert(messageInput.cursorPosition, markdown);
@@ -438,13 +438,13 @@ Rectangle {
         ImageButton {
             Layout.alignment: Qt.AlignRight | Qt.AlignBottom
             Layout.margins: 8
+            Layout.preferredHeight: 22
+            Layout.preferredWidth: 22
             Layout.rightMargin: 8
             ToolTip.text: qsTr("Send")
             ToolTip.visible: hovered
-            Layout.preferredHeight: 22
             hoverEnabled: true
             image: ":/icons/icons/ui/send.svg"
-            Layout.preferredWidth: 22
 
             onClicked: {
                 room.input.send();

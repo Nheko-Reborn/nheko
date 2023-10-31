@@ -11,42 +11,39 @@ ApplicationWindow {
 
     property alias rawMessage: rawMessageView.text
 
-    height: 420
-    width: 420
     color: palette.window
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    height: 420
+    width: 420
+
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Ok
+
+        onAccepted: rawMessageRoot.close()
+    }
 
     Shortcut {
         sequence: StandardKey.Cancel
+
         onActivated: rawMessageRoot.close()
     }
-
     ScrollView {
-        anchors.margins: Nheko.paddingMedium
         anchors.fill: parent
+        anchors.margins: Nheko.paddingMedium
         padding: Nheko.paddingMedium
 
         TextArea {
             id: rawMessageView
 
-            font: Nheko.monospaceFont()
+            anchors.fill: parent
             color: palette.text
+            font: Nheko.monospaceFont()
             readOnly: true
             textFormat: Text.PlainText
-
-            anchors.fill: parent
 
             background: Rectangle {
                 color: palette.base
             }
-
         }
-
     }
-
-    footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Ok
-        onAccepted: rawMessageRoot.close()
-    }
-
 }

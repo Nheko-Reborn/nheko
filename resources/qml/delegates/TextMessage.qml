@@ -7,14 +7,17 @@ import im.nheko
 
 MatrixText {
     required property string body
+    property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
+    property bool fitsMetadata: false //positionAt(width,height-4) == positionAt(width-metadataWidth-10, height-4)
+
+    required property string formatted
     required property bool isOnlyEmoji
     property bool isReply: EventDelegateChooser.isReply
     required property bool keepFullText
-    required property string formatted
-
-    property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
     property int metadataWidth: 100
-    property bool fitsMetadata: false //positionAt(width,height-4) == positionAt(width-metadataWidth-10, height-4)
+
+    enabled: !isReply
+    font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
 
     // table border-collapse doesn't seem to work
     text: `
@@ -30,7 +33,7 @@ MatrixText {
     }
     table th,
     table td {
-        padding: ` + Math.ceil(fontMetrics.lineSpacing/2) + `px;
+        padding: ` + Math.ceil(fontMetrics.lineSpacing / 2) + `px;
     }
     blockquote { margin-left: 1em; }
     ` + (!Settings.mobileMode ? `span[data-mx-spoiler] {
@@ -40,13 +43,9 @@ MatrixText {
     `</style>
     ` + formatted.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
 
-    enabled: !isReply
-    font.pointSize: (Settings.enlargeEmojiOnlyMessages && isOnlyEmoji > 0 && isOnlyEmoji < 4) ? Settings.fontSize * 3 : Settings.fontSize
-
     NhekoCursorShape {
-        enabled: isReply
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
+        enabled: isReply
     }
-
 }

@@ -50,8 +50,8 @@ Item {
                 name: "Visible"
 
                 PropertyChanges {
-                    screenSaver.visible: true
                     screenSaver.opacity: 1
+                    screenSaver.visible: true
                 }
             },
             State {

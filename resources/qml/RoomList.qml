@@ -26,8 +26,8 @@ Page {
 
         Rectangle {
             Layout.fillWidth: true
-            color: Nheko.theme.separator
             Layout.preferredHeight: 1
+            color: Nheko.theme.separator
         }
         Pane {
             Layout.alignment: Qt.AlignBottom
@@ -45,11 +45,11 @@ Page {
                 ImageButton {
                     Layout.fillWidth: true
                     Layout.margins: Nheko.paddingMedium
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: 22
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Start a new chat")
                     ToolTip.visible: hovered
-                    Layout.preferredHeight: 22
-                    Layout.preferredWidth: 22
                     hoverEnabled: true
                     image: ":/icons/icons/ui/add-square-button.svg"
 
@@ -97,11 +97,11 @@ Page {
                 ImageButton {
                     Layout.fillWidth: true
                     Layout.margins: Nheko.paddingMedium
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: 22
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Room directory")
                     ToolTip.visible: hovered
-                    Layout.preferredHeight: 22
-                    Layout.preferredWidth: 22
                     hoverEnabled: true
                     image: ":/icons/icons/ui/room-directory.svg"
                     visible: !collapsed
@@ -115,11 +115,11 @@ Page {
                 ImageButton {
                     Layout.fillWidth: true
                     Layout.margins: Nheko.paddingMedium
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: 22
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Search rooms (Ctrl+K)")
                     ToolTip.visible: hovered
-                    Layout.preferredHeight: 22
-                    Layout.preferredWidth: 22
                     hoverEnabled: true
                     image: ":/icons/icons/ui/search.svg"
                     ripple: false
@@ -139,11 +139,11 @@ Page {
                 ImageButton {
                     Layout.fillWidth: true
                     Layout.margins: Nheko.paddingMedium
+                    Layout.preferredHeight: 22
+                    Layout.preferredWidth: 22
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("User settings")
                     ToolTip.visible: hovered
-                    Layout.preferredHeight: 22
-                    Layout.preferredWidth: 22
                     hoverEnabled: true
                     image: ":/icons/icons/ui/settings.svg"
                     ripple: false
@@ -268,37 +268,45 @@ Page {
                 }
                 Platform.MenuSeparator {
                 }
-
                 Platform.MenuItemGroup {
                     id: onlineStateGroup
+
                 }
                 Platform.MenuItem {
-                    text: qsTr("Automatic online status")
-                    group: onlineStateGroup
                     checkable: true
                     checked: Settings.presence == Settings.AutomaticPresence
-                    onTriggered: if (checked) Settings.presence = Settings.AutomaticPresence
+                    group: onlineStateGroup
+                    text: qsTr("Automatic online status")
+
+                    onTriggered: if (checked)
+                        Settings.presence = Settings.AutomaticPresence
                 }
                 Platform.MenuItem {
-                    text: qsTr("Online")
-                    group: onlineStateGroup
                     checkable: true
                     checked: Settings.presence == Settings.Online
-                    onTriggered: if (checked) Settings.presence = Settings.Online
+                    group: onlineStateGroup
+                    text: qsTr("Online")
+
+                    onTriggered: if (checked)
+                        Settings.presence = Settings.Online
                 }
                 Platform.MenuItem {
-                    text: qsTr("Unavailable")
-                    group: onlineStateGroup
                     checkable: true
                     checked: Settings.presence == Settings.Unavailable
-                    onTriggered: if (checked) Settings.presence = Settings.Unavailable
+                    group: onlineStateGroup
+                    text: qsTr("Unavailable")
+
+                    onTriggered: if (checked)
+                        Settings.presence = Settings.Unavailable
                 }
                 Platform.MenuItem {
-                    text: qsTr("Offline")
-                    group: onlineStateGroup
                     checkable: true
                     checked: Settings.presence == Settings.Offline
-                    onTriggered: if (checked) Settings.presence = Settings.Offline
+                    group: onlineStateGroup
+                    text: qsTr("Offline")
+
+                    onTriggered: if (checked)
+                        Settings.presence = Settings.Offline
                 }
             }
             TapHandler {
@@ -319,8 +327,8 @@ Page {
         }
         Rectangle {
             Layout.fillWidth: true
-            color: Nheko.theme.separator
             Layout.preferredHeight: 2
+            color: Nheko.theme.separator
         }
         Rectangle {
             id: unverifiedStuffBubble
@@ -366,14 +374,14 @@ Page {
                     id: closeUnverifiedBubble
 
                     Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                    Layout.preferredHeight: fontMetrics.font.pixelSize
+                    Layout.preferredWidth: fontMetrics.font.pixelSize
                     Layout.rightMargin: Nheko.paddingMedium
                     ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Close")
                     ToolTip.visible: closeUnverifiedBubble.hovered
-                    Layout.preferredHeight: fontMetrics.font.pixelSize
                     hoverEnabled: true
                     image: ":/icons/icons/ui/dismiss.svg"
-                    Layout.preferredWidth: fontMetrics.font.pixelSize
 
                     onClicked: unverifiedStuffBubble.visible = false
                 }
@@ -398,8 +406,8 @@ Page {
         }
         Rectangle {
             Layout.fillWidth: true
-            color: Nheko.theme.separator
             Layout.preferredHeight: 1
+            color: Nheko.theme.separator
             visible: unverifiedStuffBubble.visible
         }
     }
@@ -436,9 +444,9 @@ Page {
 
         anchors.left: parent.left
         anchors.right: parent.right
+        boundsBehavior: Flickable.StopAtBounds
         height: parent.height
         model: Rooms
-        boundsBehavior: Flickable.StopAtBounds
 
         //reuseItems: true
         ScrollBar.vertical: ScrollBar {
@@ -550,13 +558,13 @@ Page {
                     id: avatar
 
                     Layout.alignment: Qt.AlignVCenter
+                    Layout.preferredHeight: avatarSize
+                    Layout.preferredWidth: avatarSize
                     displayName: roomName
                     enabled: false
                     roomid: roomId
                     url: avatarUrl.replace("mxc://", "image://MxcImage/")
                     userid: isDirect ? directChatOtherUserId : ""
-                    Layout.preferredWidth: avatarSize
-                    Layout.preferredHeight: avatarSize
 
                     NotificationBubble {
                         id: collapsedNotificationBubble
@@ -576,8 +584,8 @@ Page {
 
                     Layout.alignment: Qt.AlignLeft
                     Layout.minimumWidth: 100
-                    Layout.preferredWidth: roomItem.width - avatar.width
                     Layout.preferredHeight: avatar.height
+                    Layout.preferredWidth: roomItem.width - avatar.width
                     spacing: Nheko.paddingSmall
                     visible: !collapsed
 

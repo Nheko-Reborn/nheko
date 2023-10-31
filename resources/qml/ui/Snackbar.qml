@@ -9,11 +9,8 @@ import im.nheko 1.0
 Popup {
     id: snackbar
 
-    // Workaround palettes not inheriting for popups
-    palette: timelineRoot.palette
-
-    property var messages: []
     property string currentMessage: ""
+    property var messages: []
 
     function showNotification(msg) {
         messages.push(msg);
@@ -24,10 +21,61 @@ Popup {
         }
     }
 
-    Timer {
-        id: dismissTimer
-        interval: 10000
-        onTriggered: snackbar.close()
+    opacity: 0
+    padding: Nheko.paddingLarge
+
+    // Workaround palettes not inheriting for popups
+    palette: timelineRoot.palette
+    parent: Overlay.overlay
+    x: (parent.width - width) / 2
+    y: -100
+
+    background: Rectangle {
+        color: palette.dark
+        opacity: 0.8
+        radius: Nheko.paddingLarge
+    }
+    contentItem: Label {
+        color: palette.light
+        font.bold: true
+        text: snackbar.currentMessage
+        width: Math.max(snackbar.Overlay.overlay ? snackbar.Overlay.overlay.width / 2 : 0, 400)
+    }
+    enter: Transition {
+        NumberAnimation {
+            duration: 200
+            easing.type: Easing.OutCubic
+            from: 0.0
+            property: "opacity"
+            target: snackbar
+            to: 1.0
+        }
+        NumberAnimation {
+            duration: 1000
+            easing.type: Easing.OutCubic
+            from: -100
+            properties: "y"
+            target: snackbar
+            to: 100
+        }
+    }
+    exit: Transition {
+        NumberAnimation {
+            duration: 300
+            easing.type: Easing.InCubic
+            from: 1.0
+            property: "opacity"
+            target: snackbar
+            to: 0.0
+        }
+        NumberAnimation {
+            duration: 300
+            easing.type: Easing.InCubic
+            from: 100
+            properties: "y"
+            target: snackbar
+            to: -100
+        }
     }
 
     onAboutToHide: {
@@ -41,61 +89,11 @@ Popup {
         }
     }
 
-    parent: Overlay.overlay
-    opacity: 0
-    y: -100
-    x: (parent.width - width)/2
-    padding: Nheko.paddingLarge
+    Timer {
+        id: dismissTimer
 
-    contentItem: Label {
-        color: palette.light
-        width: Math.max(snackbar.Overlay.overlay? snackbar.Overlay.overlay.width/2 : 0, 400)
-        text: snackbar.currentMessage
-        font.bold: true
-    }
+        interval: 10000
 
-    background: Rectangle {
-        radius: Nheko.paddingLarge
-        color: palette.dark
-        opacity: 0.8
-    }
-
-    enter: Transition {
-        NumberAnimation {
-            target: snackbar
-            property: "opacity"
-            from: 0.0
-            to: 1.0
-            duration: 200
-            easing.type: Easing.OutCubic
-        }
-        NumberAnimation {
-            target: snackbar
-            properties: "y"
-            from: -100
-            to: 100
-            duration: 1000
-            easing.type: Easing.OutCubic
-        }
-    }
-    exit: Transition {
-        NumberAnimation {
-            target: snackbar
-            property: "opacity"
-            from: 1.0
-            to: 0.0
-            duration: 300
-            easing.type: Easing.InCubic
-        }
-        NumberAnimation {
-            target: snackbar
-            properties: "y"
-            to: -100
-            from: 100
-            duration: 300
-            easing.type: Easing.InCubic
-        }
+        onTriggered: snackbar.close()
     }
 }
-
-

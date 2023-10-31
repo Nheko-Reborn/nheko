@@ -10,25 +10,26 @@ import im.nheko
 Rectangle {
     id: tile
 
-    property color background: palette.window
-    property color importantText: palette.text
-    property color unimportantText: palette.buttonText
-    property color bubbleBackground: palette.highlight
-    property color bubbleText: palette.highlightedText
     property int avatarSize: Math.ceil(fontMetrics.lineSpacing * 2.3)
     required property string avatarUrl
-    required property string title
-    required property string subtitle
-    required property int index
-    required property int selectedIndex
+    property color background: palette.window
+    property color bubbleBackground: palette.highlight
+    property color bubbleText: palette.highlightedText
     property bool crop: true
+    property color importantText: palette.text
+    required property int index
     property alias roomid: avatar.roomid
+    required property int selectedIndex
+    required property string subtitle
+    required property string title
+    property color unimportantText: palette.buttonText
     property alias userid: avatar.userid
 
     color: background
     height: avatarSize + 2 * Nheko.paddingMedium
-    width: ListView.view.width
     state: "normal"
+    width: ListView.view.width
+
     states: [
         State {
             name: "highlight"
@@ -37,13 +38,12 @@ Rectangle {
             PropertyChanges {
                 tile {
                     background: palette.dark
-                    importantText: palette.brightText
-                    unimportantText: palette.brightText
                     bubbleBackground: palette.highlight
                     bubbleText: palette.highlightedText
+                    importantText: palette.brightText
+                    unimportantText: palette.brightText
                 }
             }
-
         },
         State {
             name: "selected"
@@ -52,37 +52,35 @@ Rectangle {
             PropertyChanges {
                 tile {
                     background: palette.highlight
-                    importantText: palette.highlightedText
-                    unimportantText: palette.highlightedText
                     bubbleBackground: palette.highlightedText
                     bubbleText: palette.highlight
+                    importantText: palette.highlightedText
+                    unimportantText: palette.highlightedText
                 }
             }
-
         }
     ]
 
     HoverHandler {
         id: hovered
-    }
 
+    }
     RowLayout {
-        spacing: Nheko.paddingMedium
         anchors.fill: parent
         anchors.margins: Nheko.paddingMedium
+        spacing: Nheko.paddingMedium
 
         Avatar {
             id: avatar
 
-            enabled: false
             Layout.alignment: Qt.AlignVCenter
+            crop: tile.crop
+            displayName: title
+            enabled: false
             implicitHeight: avatarSize
             implicitWidth: avatarSize
             url: tile.avatarUrl.replace("mxc://", "image://MxcImage/")
-            displayName: title
-            crop: tile.crop
         }
-
         ColumnLayout {
             id: textContent
 
@@ -103,33 +101,25 @@ Rectangle {
                     fullText: title
                     textFormat: Text.PlainText
                 }
-
                 Item {
                     Layout.fillWidth: true
                 }
-
             }
-
             RowLayout {
                 Layout.fillWidth: true
                 spacing: 0
 
                 ElidedLabel {
                     color: tile.unimportantText
-                    font.pixelSize: fontMetrics.font.pixelSize * 0.9
                     elideWidth: textContent.width - Nheko.paddingSmall
+                    font.pixelSize: fontMetrics.font.pixelSize * 0.9
                     fullText: subtitle
                     textFormat: Text.PlainText
                 }
-
                 Item {
                     Layout.fillWidth: true
                 }
-
             }
-
         }
-
     }
-
 }

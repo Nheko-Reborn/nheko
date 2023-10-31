@@ -12,124 +12,23 @@ import im.nheko
 ApplicationWindow {
     id: applyDialog
 
-    property RoomSettings roomSettings
     property PowerlevelEditingModels editingModel
+    property RoomSettings roomSettings
 
-    minimumWidth: 340
-    minimumHeight: 450
-    width: 450
-    height: 680
     color: palette.window
-    modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    height: 680
+    minimumHeight: 450
+    minimumWidth: 340
+    modality: Qt.NonModal
     title: qsTr("Apply permission changes")
-
-    Shortcut {
-        sequence: StandardKey.Cancel
-        onActivated: roomSettingsDialog.close()
-    }
-
-    ColumnLayout {
-        anchors.margins: Nheko.paddingMedium
-        anchors.fill: parent
-        spacing: Nheko.paddingLarge
-
-
-        MatrixText {
-            text: qsTr("Which of the subcommunities and rooms should these permissions be applied to?")
-            font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
-            Layout.fillWidth: true
-            Layout.fillHeight: false
-            color: palette.text
-            Layout.bottomMargin: Nheko.paddingMedium
-        }
-
-        GridLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: false
-            columns: 2
-
-                Label {
-                    text: qsTr("Apply permissions recursively")
-                    Layout.fillWidth: true
-                    color: palette.text
-                }
-
-                ToggleButton {
-                    checked: editingModel.spaces.applyToChildren
-                    Layout.alignment: Qt.AlignRight
-                    onCheckedChanged: editingModel.spaces.applyToChildren = checked
-                }
-
-                Label {
-                    text: qsTr("Overwrite exisiting modifications in rooms")
-                    Layout.fillWidth: true
-                    color: palette.text
-                }
-
-                ToggleButton {
-                    checked: editingModel.spaces.overwriteDiverged
-                    Layout.alignment: Qt.AlignRight
-                    onCheckedChanged: editingModel.spaces.overwriteDiverged = checked
-                }
-        }
-
-        ListView {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-
-            id: view
-
-            clip: true
-
-            model: editingModel.spaces
-            spacing: 4
-            cacheBuffer: 50
-
-            delegate: RowLayout {
-                anchors.left: parent.left
-                anchors.right: parent.right
-
-                ColumnLayout {
-                    Layout.fillWidth: true
-                    Text {
-                        Layout.fillWidth: true
-                        text: model.displayName
-                        color: palette.text
-                        textFormat: Text.PlainText
-                        elide: Text.ElideRight
-                    }
-
-                    Text {
-                        Layout.fillWidth: true
-                        text: {
-                            if (!model.isEditable) return qsTr("No permissions to apply the new permissions here");
-                            if (model.isAlreadyUpToDate) return qsTr("No changes needed");
-                            if (model.isDifferentFromBase) return qsTr("Existing modifications to the permissions in this room will be overwritten");
-                            return qsTr("Permissions synchronized with community")
-                        }
-                        elide: Text.ElideRight
-                        color: palette.buttonText
-                        textFormat: Text.PlainText
-                    }
-                }
-
-                ToggleButton {
-                    checked: model.applyPermissions
-                    Layout.alignment: Qt.AlignRight
-                    onCheckedChanged: model.applyPermissions = checked
-                    enabled: model.isEditable
-                }
-            }
-        }
-
-
-    }
+    width: 450
 
     footer: DialogButtonBox {
         id: dbb
 
         standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+
         onAccepted: {
             editingModel.spaces.commit();
             applyDialog.close();
@@ -137,4 +36,100 @@ ApplicationWindow {
         onRejected: applyDialog.close()
     }
 
+    Shortcut {
+        sequence: StandardKey.Cancel
+
+        onActivated: roomSettingsDialog.close()
+    }
+    ColumnLayout {
+        anchors.fill: parent
+        anchors.margins: Nheko.paddingMedium
+        spacing: Nheko.paddingLarge
+
+        MatrixText {
+            Layout.bottomMargin: Nheko.paddingMedium
+            Layout.fillHeight: false
+            Layout.fillWidth: true
+            color: palette.text
+            font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
+            text: qsTr("Which of the subcommunities and rooms should these permissions be applied to?")
+        }
+        GridLayout {
+            Layout.fillHeight: false
+            Layout.fillWidth: true
+            columns: 2
+
+            Label {
+                Layout.fillWidth: true
+                color: palette.text
+                text: qsTr("Apply permissions recursively")
+            }
+            ToggleButton {
+                Layout.alignment: Qt.AlignRight
+                checked: editingModel.spaces.applyToChildren
+
+                onCheckedChanged: editingModel.spaces.applyToChildren = checked
+            }
+            Label {
+                Layout.fillWidth: true
+                color: palette.text
+                text: qsTr("Overwrite exisiting modifications in rooms")
+            }
+            ToggleButton {
+                Layout.alignment: Qt.AlignRight
+                checked: editingModel.spaces.overwriteDiverged
+
+                onCheckedChanged: editingModel.spaces.overwriteDiverged = checked
+            }
+        }
+        ListView {
+            id: view
+
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+            cacheBuffer: 50
+            clip: true
+            model: editingModel.spaces
+            spacing: 4
+
+            delegate: RowLayout {
+                anchors.left: parent.left
+                anchors.right: parent.right
+
+                ColumnLayout {
+                    Layout.fillWidth: true
+
+                    Text {
+                        Layout.fillWidth: true
+                        color: palette.text
+                        elide: Text.ElideRight
+                        text: model.displayName
+                        textFormat: Text.PlainText
+                    }
+                    Text {
+                        Layout.fillWidth: true
+                        color: palette.buttonText
+                        elide: Text.ElideRight
+                        text: {
+                            if (!model.isEditable)
+                                return qsTr("No permissions to apply the new permissions here");
+                            if (model.isAlreadyUpToDate)
+                                return qsTr("No changes needed");
+                            if (model.isDifferentFromBase)
+                                return qsTr("Existing modifications to the permissions in this room will be overwritten");
+                            return qsTr("Permissions synchronized with community");
+                        }
+                        textFormat: Text.PlainText
+                    }
+                }
+                ToggleButton {
+                    Layout.alignment: Qt.AlignRight
+                    checked: model.applyPermissions
+                    enabled: model.isEditable
+
+                    onCheckedChanged: model.applyPermissions = checked
+                }
+            }
+        }
+    }
 }

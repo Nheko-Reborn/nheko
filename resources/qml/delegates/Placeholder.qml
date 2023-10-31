@@ -8,7 +8,7 @@ import im.nheko 1.0
 MatrixText {
     required property string typeString
 
-    text: qsTr("unimplemented event: ") + typeString
-//    width: parent.width
+    //    width: parent.width
     color: palette.inactive.text
+    text: qsTr("unimplemented event: ") + typeString
 }

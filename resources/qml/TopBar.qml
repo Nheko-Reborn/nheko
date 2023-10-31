@@ -124,9 +124,9 @@ Pane {
                 Layout.maximumHeight: fontMetrics.lineSpacing * 2 // show 2 lines
                 Layout.row: 2
                 clip: true
-                enabled: false
                 // don't use the disabled color
                 color: topBar.palette.text
+                enabled: false
                 selectByMouse: false
                 text: roomTopic
             }
@@ -287,9 +287,9 @@ Pane {
 
                             property var e: room ? room.getDump(modelData, "pins") : {}
 
-                            maxWidth: pinnedMessages.width
                             //Layout.preferredHeight: height
                             eventId: e.eventId ?? ""
+                            maxWidth: pinnedMessages.width
                             userColor: TimelineManager.userColor(e.userId, palette.window)
 
                             Connections {

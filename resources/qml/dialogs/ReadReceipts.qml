@@ -14,18 +14,24 @@ ApplicationWindow {
     property ReadReceiptsProxy readReceipts
     property Room room
 
-    height: 380
-    width: 340
-    minimumHeight: 380
-    minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
     color: palette.window
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
+    height: 380
+    minimumHeight: 380
+    minimumWidth: headerTitle.width + 2 * Nheko.paddingMedium
+    width: 340
+
+    footer: DialogButtonBox {
+        standardButtons: DialogButtonBox.Ok
+
+        onAccepted: readReceiptsRoot.close()
+    }
 
     Shortcut {
         sequence: StandardKey.Cancel
+
         onActivated: readReceiptsRoot.close()
     }
-
     ColumnLayout {
         anchors.fill: parent
         anchors.margins: Nheko.paddingMedium
@@ -34,98 +40,84 @@ ApplicationWindow {
         Label {
             id: headerTitle
 
-            color: palette.text
             Layout.alignment: Qt.AlignCenter
-            text: qsTr("Read receipts")
+            color: palette.text
             font.pointSize: fontMetrics.font.pointSize * 1.5
+            text: qsTr("Read receipts")
         }
-
         ScrollView {
-            padding: Nheko.paddingMedium
-            ScrollBar.horizontal.visible: false
             Layout.fillHeight: true
-            Layout.minimumHeight: 200
             Layout.fillWidth: true
+            Layout.minimumHeight: 200
+            ScrollBar.horizontal.visible: false
+            padding: Nheko.paddingMedium
 
             ListView {
                 id: readReceiptsList
 
-                clip: true
                 boundsBehavior: Flickable.StopAtBounds
+                clip: true
                 model: readReceipts
 
                 delegate: ItemDelegate {
                     id: del
 
-                    onClicked: room.openUserProfile(model.mxid)
-                    padding: Nheko.paddingMedium
-                    width: ListView.view.width
+                    ToolTip.text: model.mxid
+                    ToolTip.visible: hovered
                     height: receiptLayout.implicitHeight + Nheko.paddingSmall * 2
                     hoverEnabled: true
-                    ToolTip.visible: hovered
-                    ToolTip.text: model.mxid
+                    padding: Nheko.paddingMedium
+                    width: ListView.view.width
+
                     background: Rectangle {
                         color: del.hovered ? palette.dark : readReceiptsRoot.color
                     }
 
+                    onClicked: room.openUserProfile(model.mxid)
+
                     RowLayout {
                         id: receiptLayout
 
-                        spacing: Nheko.paddingMedium
                         anchors.fill: parent
                         anchors.margins: Nheko.paddingSmall
+                        spacing: Nheko.paddingMedium
 
                         Avatar {
                             id: avatar
 
-                            Layout.preferredWidth: Nheko.avatarSize
                             Layout.preferredHeight: Nheko.avatarSize
-                            userid: model.mxid
-                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            Layout.preferredWidth: Nheko.avatarSize
                             displayName: model.displayName
                             enabled: false
+                            url: model.avatarUrl.replace("mxc://", "image://MxcImage/")
+                            userid: model.mxid
                         }
-
                         ColumnLayout {
-                            spacing: Nheko.paddingSmall
                             Layout.fillWidth: true
+                            spacing: Nheko.paddingSmall
 
                             ElidedLabel {
-                                fullText: model.displayName
+                                Layout.fillWidth: true
                                 color: TimelineManager.userColor(model ? model.mxid : "", palette.window)
+                                elideWidth: del.width - Nheko.paddingMedium - avatar.width
                                 font.pointSize: fontMetrics.font.pointSize
-                                elideWidth: del.width - Nheko.paddingMedium - avatar.width
-                                Layout.fillWidth: true
+                                fullText: model.displayName
                             }
-
                             ElidedLabel {
-                                fullText: model.timestamp
-                                color: palette.buttonText
-                                font.pointSize: fontMetrics.font.pointSize * 0.9
-                                elideWidth: del.width - Nheko.paddingMedium - avatar.width
                                 Layout.fillWidth: true
+                                color: palette.buttonText
+                                elideWidth: del.width - Nheko.paddingMedium - avatar.width
+                                font.pointSize: fontMetrics.font.pointSize * 0.9
+                                fullText: model.timestamp
                             }
-
                         }
-
                     }
-
                     NhekoCursorShape {
                         anchors.fill: parent
                         cursorShape: Qt.PointingHandCursor
                     }
-
                 }
-
             }
-
         }
-
     }
-
-    footer: DialogButtonBox {
-        standardButtons: DialogButtonBox.Ok
-        onAccepted: readReceiptsRoot.close()
-    }
-
 }

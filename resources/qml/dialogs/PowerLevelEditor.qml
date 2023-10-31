@@ -9,21 +9,38 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import im.nheko 1.0
 
-
 ApplicationWindow {
     id: plEditorW
 
-    property var roomSettings
     property var editingModel: Nheko.editPowerlevels(roomSettings.roomId)
+    property var roomSettings
 
-    modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
-    minimumWidth: 300
-    minimumHeight: 400
     height: 600
+    minimumHeight: 400
+    minimumWidth: 300
+    modality: Qt.NonModal
+    title: qsTr("Permissions in %1").arg(roomSettings.roomName)
     width: 300
 
-    title: qsTr("Permissions in %1").arg(roomSettings.roomName);
+    footer: DialogButtonBox {
+        id: dbb
+
+        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
+
+        onAccepted: {
+            if (editingModel.isSpace) {
+                // TODO(Nico): Replace with showing a list of spaces to apply to
+                editingModel.updateSpacesModel();
+                plEditorW.close();
+                timelineRoot.showSpacePLApplyPrompt(roomSettings, editingModel);
+            } else {
+                editingModel.commit();
+                plEditorW.close();
+            }
+        }
+        onRejected: plEditorW.close()
+    }
 
     //    Shortcut {
     //        sequence: StandardKey.Cancel
@@ -31,22 +48,21 @@ ApplicationWindow {
     //    }
 
     ColumnLayout {
-        anchors.margins: Nheko.paddingMedium
         anchors.fill: parent
+        anchors.margins: Nheko.paddingMedium
         spacing: 0
 
-
         MatrixText {
-            text: qsTr("Be careful when editing permissions. You can't lower the permissions of people with a same or higher level than you. Be careful when promoting others.")
-            font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
-            Layout.fillWidth: true
-            Layout.fillHeight: false
-            color: palette.text
             Layout.bottomMargin: Nheko.paddingMedium
+            Layout.fillHeight: false
+            Layout.fillWidth: true
+            color: palette.text
+            font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
+            text: qsTr("Be careful when editing permissions. You can't lower the permissions of people with a same or higher level than you. Be careful when promoting others.")
         }
-
         TabBar {
             id: bar
+
             Layout.preferredWidth: parent.width
 
             NhekoTabButton {
@@ -57,95 +73,95 @@ ApplicationWindow {
             }
         }
         Rectangle {
-            Layout.fillWidth: true
             Layout.fillHeight: true
-            color: palette.alternateBase
-            border.width: 1
+            Layout.fillWidth: true
             border.color: Nheko.theme.separator
+            border.width: 1
+            color: palette.alternateBase
 
             StackLayout {
                 anchors.fill: parent
                 anchors.margins: Nheko.paddingMedium
                 currentIndex: bar.currentIndex
 
-
                 ColumnLayout {
                     spacing: Nheko.paddingMedium
 
                     MatrixText {
-                        text: qsTr("Move permissions between roles to change them")
-                        font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
-                        Layout.fillWidth: true
                         Layout.fillHeight: false
-                        color: palette.text
-                    }
-
-                    ReorderableListview {
                         Layout.fillWidth: true
+                        color: palette.text
+                        font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
+                        text: qsTr("Move permissions between roles to change them")
+                    }
+                    ReorderableListview {
                         Layout.fillHeight: true
-
+                        Layout.fillWidth: true
                         model: editingModel.types
 
                         delegate: RowLayout {
                             Column {
                                 Layout.fillWidth: true
 
-                                Text { visible: model.isType; text: model.displayName; color: palette.text}
                                 Text {
-                                    visible: !model.isType;
+                                    color: palette.text
+                                    text: model.displayName
+                                    visible: model.isType
+                                }
+                                Text {
+                                    color: palette.text
                                     text: {
                                         if (editingModel.adminLevel == model.powerlevel)
-                                        return qsTr("Administrator (%1)").arg(model.powerlevel)
+                                            return qsTr("Administrator (%1)").arg(model.powerlevel);
                                         else if (editingModel.moderatorLevel == model.powerlevel)
-                                        return qsTr("Moderator (%1)").arg(model.powerlevel)
+                                            return qsTr("Moderator (%1)").arg(model.powerlevel);
                                         else if (editingModel.defaultUserLevel == model.powerlevel)
-                                        return qsTr("User (%1)").arg(model.powerlevel)
+                                            return qsTr("User (%1)").arg(model.powerlevel);
                                         else
-                                        return qsTr("Custom (%1)").arg(model.powerlevel)
+                                            return qsTr("Custom (%1)").arg(model.powerlevel);
                                     }
-                                    color: palette.text
+                                    visible: !model.isType
                                 }
                             }
-
                             ImageButton {
                                 Layout.alignment: Qt.AlignRight
                                 Layout.rightMargin: 2
-                                image: model.isType ? ":/icons/icons/ui/dismiss.svg" : ":/icons/icons/ui/add-square-button.svg" 
-                                visible: !model.isType || model.removeable
-                                hoverEnabled: true
-                                ToolTip.visible: hovered
                                 ToolTip.text: model.isType ? qsTr("Remove event type") : qsTr("Add event type")
+                                ToolTip.visible: hovered
+                                hoverEnabled: true
+                                image: model.isType ? ":/icons/icons/ui/dismiss.svg" : ":/icons/icons/ui/add-square-button.svg"
+                                visible: !model.isType || model.removeable
+
                                 onClicked: {
                                     if (model.isType) {
                                         editingModel.types.remove(index);
                                     } else {
-                                        typeEntry.y = offset
-                                        typeEntry.visible = true
+                                        typeEntry.y = offset;
+                                        typeEntry.visible = true;
                                         typeEntry.index = index;
-                                        typeEntry.forceActiveFocus()
+                                        typeEntry.forceActiveFocus();
                                     }
                                 }
                             }
                         }
+
                         MatrixTextField {
                             id: typeEntry
 
                             property int index
 
+                            color: palette.text
+                            visible: false
                             width: parent.width
                             z: 5
-                            visible: false
-
-                            color: palette.text
 
                             Keys.onPressed: {
                                 if (typeEntry.text.includes('.') && event.matches(StandardKey.InsertParagraphSeparator)) {
-                                    editingModel.types.add(typeEntry.index, typeEntry.text)
+                                    editingModel.types.add(typeEntry.index, typeEntry.text);
                                     typeEntry.visible = false;
                                     typeEntry.clear();
                                     event.accepted = true;
-                                }
-                                else if (event.matches(StandardKey.Cancel)) {
+                                } else if (event.matches(StandardKey.Cancel)) {
                                     typeEntry.visible = false;
                                     typeEntry.clear();
                                     event.accepted = true;
@@ -153,7 +169,6 @@ ApplicationWindow {
                             }
                         }
                     }
-
                     Button {
                         Layout.fillWidth: true
                         text: qsTr("Add new role")
@@ -164,19 +179,18 @@ ApplicationWindow {
                             id: newPLLay
 
                             anchors.fill: parent
-                            visible: false
                             color: palette.alternateBase
+                            visible: false
 
                             RowLayout {
-                                spacing: Nheko.paddingMedium
                                 anchors.fill: parent
+                                spacing: Nheko.paddingMedium
 
                                 SpinBox {
                                     id: newPLVal
 
-                                    Layout.fillWidth: true
                                     Layout.fillHeight: true
-
+                                    Layout.fillWidth: true
                                     editable: true
                                     //from: -9007199254740991
                                     //to: 9007199254740991
@@ -192,10 +206,10 @@ ApplicationWindow {
                                         }
                                     }
                                 }
-
                                 Button {
-                                    text: qsTr("Add")
                                     Layout.preferredWidth: 100
+                                    text: qsTr("Add")
+
                                     onClicked: {
                                         editingModel.addRole(newPLVal.value);
                                         newPLLay.visible = false;
@@ -205,42 +219,109 @@ ApplicationWindow {
                         }
                     }
                 }
-
                 ColumnLayout {
                     spacing: Nheko.paddingMedium
 
                     MatrixText {
-                        text: qsTr("Move users up or down to change their permissions")
-                        font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
-                        Layout.fillWidth: true
                         Layout.fillHeight: false
-                    }
-
-                    ReorderableListview {
                         Layout.fillWidth: true
+                        font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 1.1)
+                        text: qsTr("Move users up or down to change their permissions")
+                    }
+                    ReorderableListview {
                         Layout.fillHeight: true
-
+                        Layout.fillWidth: true
                         model: editingModel.users
 
-                        Column{
+                        delegate: RowLayout {
+                            //anchors { fill: parent; margins: 2 }
+                            id: row
+
+                            Avatar {
+                                id: avatar
+
+                                Layout.leftMargin: 2
+                                Layout.preferredHeight: Nheko.avatarSize / 2
+                                Layout.preferredWidth: Nheko.avatarSize / 2
+                                displayName: model.displayName
+                                enabled: false
+                                url: {
+                                    if (model.isUser)
+                                        return model.avatarUrl.replace("mxc://", "image://MxcImage/");
+                                    else if (editingModel.adminLevel >= model.powerlevel)
+                                        return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?" + palette.buttonText;
+                                    else if (editingModel.moderatorLevel >= model.powerlevel)
+                                        return "image://colorimage/:/icons/icons/ui/ribbon.svg?" + palette.buttonText;
+                                    else
+                                        return "image://colorimage/:/icons/icons/ui/person.svg?" + palette.buttonText;
+                                }
+                                userid: model.mxid
+                            }
+                            Column {
+                                Layout.fillWidth: true
+
+                                Text {
+                                    color: palette.text
+                                    text: model.displayName
+                                    visible: model.isUser
+                                }
+                                Text {
+                                    color: palette.text
+                                    text: model.mxid
+                                    visible: model.isUser
+                                }
+                                Text {
+                                    color: palette.text
+                                    text: {
+                                        if (editingModel.adminLevel == model.powerlevel)
+                                            return qsTr("Administrator (%1)").arg(model.powerlevel);
+                                        else if (editingModel.moderatorLevel == model.powerlevel)
+                                            return qsTr("Moderator (%1)").arg(model.powerlevel);
+                                        else
+                                            return qsTr("Custom (%1)").arg(model.powerlevel);
+                                    }
+                                    visible: !model.isUser
+                                }
+                            }
+                            ImageButton {
+                                Layout.alignment: Qt.AlignRight
+                                Layout.rightMargin: 2
+                                ToolTip.text: model.isUser ? qsTr("Remove user") : qsTr("Add user")
+                                ToolTip.visible: hovered
+                                hoverEnabled: true
+                                image: model.isUser ? ":/icons/icons/ui/dismiss.svg" : ":/icons/icons/ui/add-square-button.svg"
+                                visible: !model.isUser || model.removeable
+
+                                onClicked: {
+                                    if (model.isUser) {
+                                        editingModel.users.remove(index);
+                                    } else {
+                                        userEntryCompleter.y = offset;
+                                        userEntryCompleter.visible = true;
+                                        userEntryCompleter.index = index;
+                                        userEntry.forceActiveFocus();
+                                    }
+                                }
+                            }
+                        }
+
+                        Column {
                             id: userEntryCompleter
 
                             property int index: 0
 
-                            visible: false
-
-                            width: parent.width
                             spacing: 1
+                            visible: false
+                            width: parent.width
                             z: 5
+
                             MatrixTextField {
                                 id: userEntry
 
-                                width: parent.width
                                 //font.pixelSize: Math.ceil(quickSwitcher.textHeight * 0.6)
                                 color: palette.text
-                                onTextEdited: {
-                                    userCompleter.completer.searchString = text;
-                                }
+                                width: parent.width
+
                                 Keys.onPressed: {
                                     if (event.key == Qt.Key_Up || event.key == Qt.Key_Backtab) {
                                         event.accepted = true;
@@ -248,9 +329,9 @@ ApplicationWindow {
                                     } else if (event.key == Qt.Key_Down || event.key == Qt.Key_Tab) {
                                         event.accepted = true;
                                         if (event.key == Qt.Key_Tab && (event.modifiers & Qt.ShiftModifier))
-                                        userCompleter.up();
+                                            userCompleter.up();
                                         else
-                                        userCompleter.down();
+                                            userCompleter.down();
                                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                                         if (userCompleter.currentCompletion()) {
                                             userCompleter.finishCompletion();
@@ -264,130 +345,45 @@ ApplicationWindow {
                                         event.accepted = true;
                                     }
                                 }
+                                onTextEdited: {
+                                    userCompleter.completer.searchString = text;
+                                }
                             }
-
-
                             Completer {
                                 id: userCompleter
 
-                                visible: userEntry.text.length > 0
-                                width: parent.width
-                                roomId: plEditorW.roomSettings.roomId
-                                completerName: "user"
-                                bottomToTop: false
-                                fullWidth: true
                                 avatarHeight: Nheko.avatarSize / 2
                                 avatarWidth: Nheko.avatarSize / 2
+                                bottomToTop: false
                                 centerRowContent: false
+                                completerName: "user"
+                                fullWidth: true
+                                roomId: plEditorW.roomSettings.roomId
                                 rowMargin: 2
                                 rowSpacing: 2
+                                visible: userEntry.text.length > 0
+                                width: parent.width
                             }
                         }
-
                         Connections {
+                            id: userCompletionConnections
+
                             function onCompletionSelected(id) {
                                 console.log("selected: " + id);
                                 editingModel.users.add(userEntryCompleter.index, id);
                                 userEntry.clear();
                                 userEntryCompleter.visible = false;
                             }
-
                             function onCountChanged() {
                                 if (userCompleter.count > 0 && (userCompleter.currentIndex < 0 || userCompleter.currentIndex >= userCompleter.count))
-                                userCompleter.currentIndex = 0;
-
+                                    userCompleter.currentIndex = 0;
                             }
 
                             target: userCompleter
-                            id: userCompletionConnections
-                        }
-
-                        delegate: RowLayout {
-                            //anchors { fill: parent; margins: 2 }
-                            id: row
-
-                            Avatar {
-                                id: avatar
-
-                                Layout.preferredHeight: Nheko.avatarSize / 2
-                                Layout.preferredWidth: Nheko.avatarSize / 2
-                                Layout.leftMargin: 2
-                                userid: model.mxid
-                                url: {
-                                    if (model.isUser)
-                                    return model.avatarUrl.replace("mxc://", "image://MxcImage/")
-                                    else if (editingModel.adminLevel >= model.powerlevel)
-                                    return "image://colorimage/:/icons/icons/ui/ribbon_star.svg?" + palette.buttonText;
-                                    else if (editingModel.moderatorLevel >= model.powerlevel)
-                                    return "image://colorimage/:/icons/icons/ui/ribbon.svg?" + palette.buttonText;
-                                    else
-                                    return "image://colorimage/:/icons/icons/ui/person.svg?" + palette.buttonText;
-                                }
-                                displayName: model.displayName
-                                enabled: false
-                            }
-                            Column {
-                                Layout.fillWidth: true
-
-                                Text { visible: model.isUser; text: model.displayName; color: palette.text}
-                                Text { visible: model.isUser; text: model.mxid; color: palette.text}
-                                Text {
-                                    visible: !model.isUser;
-                                    text: {
-                                        if (editingModel.adminLevel == model.powerlevel)
-                                        return qsTr("Administrator (%1)").arg(model.powerlevel)
-                                        else if (editingModel.moderatorLevel == model.powerlevel)
-                                        return qsTr("Moderator (%1)").arg(model.powerlevel)
-                                        else
-                                        return qsTr("Custom (%1)").arg(model.powerlevel)
-                                    }
-                                    color: palette.text
-                                }
-                            }
-
-                            ImageButton {
-                                Layout.alignment: Qt.AlignRight
-                                Layout.rightMargin: 2
-                                image: model.isUser ? ":/icons/icons/ui/dismiss.svg" : ":/icons/icons/ui/add-square-button.svg" 
-                                visible: !model.isUser || model.removeable
-                                hoverEnabled: true
-                                ToolTip.visible: hovered
-                                ToolTip.text: model.isUser ? qsTr("Remove user") : qsTr("Add user")
-                                onClicked: {
-                                    if (model.isUser) {
-                                        editingModel.users.remove(index);
-                                    } else {
-                                        userEntryCompleter.y = offset
-                                        userEntryCompleter.visible = true
-                                        userEntryCompleter.index = index;
-                                        userEntry.forceActiveFocus()
-                                    }
-                                }
-                            }
                         }
                     }
-
                 }
             }
         }
     }
-
-    footer: DialogButtonBox {
-        id: dbb
-
-        standardButtons: DialogButtonBox.Ok | DialogButtonBox.Cancel
-        onAccepted: {
-            if (editingModel.isSpace) {
-                // TODO(Nico): Replace with showing a list of spaces to apply to
-                editingModel.updateSpacesModel();
-                plEditorW.close();
-                timelineRoot.showSpacePLApplyPrompt(roomSettings, editingModel)
-            } else {
-                editingModel.commit();
-                plEditorW.close();
-            }
-        }
-        onRejected: plEditorW.close();
-    }
-
 }

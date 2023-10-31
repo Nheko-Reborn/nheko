@@ -9,9 +9,9 @@ Item {
 
     property color color: "#22000000"
     property real maxRadius: Math.max(width, height)
+    readonly property real opacityAnimationDuration: 300
     readonly property real radiusAnimationRate: 0.05
     readonly property real radiusTailAnimationRate: 0.5
-    readonly property real opacityAnimationDuration: 300
     property var rippleTarget: parent
 
     anchors.fill: parent
@@ -19,18 +19,13 @@ Item {
     PointHandler {
         id: ph
 
-        onGrabChanged: (_, point) => {
-            circle.centerX = point.position.x
-            circle.centerY = point.position.y
-        }
-
         target: Rectangle {
             id: backgroundLayer
-            parent: rippleTarget
 
             anchors.fill: parent
-            color: "transparent"
             clip: true
+            color: "transparent"
+            parent: rippleTarget
 
             Rectangle {
                 id: circle
@@ -38,15 +33,14 @@ Item {
                 property real centerX
                 property real centerY
 
+                color: ripple.color
+                height: radius * 2
+                radius: 0
+                state: ph.active ? "ACTIVE" : "NORMAL"
+                width: radius * 2
                 x: centerX - radius
                 y: centerY - radius
 
-                height: radius*2
-                width: radius*2
-                radius: 0
-                color: ripple.color
-
-                state: ph.active ? "ACTIVE" : "NORMAL"
                 states: [
                     State {
                         name: "NORMAL"
@@ -63,26 +57,30 @@ Item {
                         SequentialAnimation {
                             //PropertyAction { target: circle; property: "centerX"; value: ph.point.position.x }
                             //PropertyAction { target: circle; property: "centerY"; value: ph.point.position.y }
-                            PropertyAction { target: circle; property: "visible"; value: true }
-                            PropertyAction { target: circle; property: "opacity"; value: 1 }
-
+                            PropertyAction {
+                                property: "visible"
+                                target: circle
+                                value: true
+                            }
+                            PropertyAction {
+                                property: "opacity"
+                                target: circle
+                                value: 1
+                            }
                             NumberAnimation {
                                 id: radius_animation
 
-                                target: circle
-                                properties: "radius"
-                                from: 0
-                                to: ripple.maxRadius
                                 duration: ripple.maxRadius / ripple.radiusAnimationRate
+                                from: 0
+                                properties: "radius"
+                                target: circle
+                                to: ripple.maxRadius
 
                                 easing {
                                     type: Easing.OutQuad
                                 }
-
                             }
-
                         }
-
                     },
                     Transition {
                         from: "ACTIVE"
@@ -93,37 +91,42 @@ Item {
                                 NumberAnimation {
                                     id: radius_tail_animation
 
-                                    target: circle
-                                    properties: "radius"
-                                    to: ripple.maxRadius
                                     duration: ripple.maxRadius / ripple.radiusTailAnimationRate
+                                    properties: "radius"
+                                    target: circle
+                                    to: ripple.maxRadius
 
                                     easing {
                                         type: Easing.Linear
                                     }
-
                                 }
-
                                 NumberAnimation {
                                     id: opacity_animation
 
-                                    target: circle
-                                    properties: "opacity"
-                                    to: 0
                                     duration: ripple.opacityAnimationDuration
+                                    properties: "opacity"
+                                    target: circle
+                                    to: 0
 
                                     easing {
                                         type: Easing.InQuad
                                     }
-
                                 }
-
                             }
-                            PropertyAction { target: circle; property: "visible"; value: false }
+                            PropertyAction {
+                                property: "visible"
+                                target: circle
+                                value: false
+                            }
                         }
                     }
                 ]
             }
+        }
+
+        onGrabChanged: (_, point) => {
+            circle.centerX = point.position.x;
+            circle.centerY = point.position.y;
         }
     }
 }
