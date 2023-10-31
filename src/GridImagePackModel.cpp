@@ -10,7 +10,6 @@
 #include <algorithm>
 
 #include "Cache.h"
-#include "Cache_p.h"
 #include "emoji/Provider.h"
 
 QString
@@ -102,7 +101,7 @@ GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers,
         }
     }
 
-    auto originalPacks = cache::client()->getImagePacks(room_id, stickers);
+    auto originalPacks = cache::getImagePacks(room_id, stickers);
 
     for (auto &pack : originalPacks) {
         PackDesc newPack{};

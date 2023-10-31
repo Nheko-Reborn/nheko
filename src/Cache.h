@@ -253,7 +253,10 @@ std::string
 restoreOlmAccount();
 
 void
-storeSecret(const std::string &name, const std::string &secret);
+storeSecret(std::string_view name, const std::string &secret);
 std::optional<std::string>
-secret(const std::string &name);
+secret(std::string_view name);
+
+std::vector<ImagePackInfo>
+getImagePacks(const std::string &room_id, std::optional<bool> stickers);
 }

@@ -4,7 +4,7 @@
 
 #include "CombinedImagePackModel.h"
 
-#include "Cache_p.h"
+#include "Cache.h"
 #include "CompletionModelRoles.h"
 #include "emoji/Provider.h"
 
@@ -12,7 +12,7 @@ CombinedImagePackModel::CombinedImagePackModel(const std::string &roomId, QObjec
   : QAbstractListModel(parent)
   , room_id(roomId)
 {
-    auto packs = cache::client()->getImagePacks(room_id, false);
+    auto packs = cache::getImagePacks(room_id, false);
 
     for (const auto &pack : packs) {
         QString packname =

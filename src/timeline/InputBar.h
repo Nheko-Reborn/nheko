@@ -18,7 +18,7 @@
 #include <memory>
 
 #include <mtx/common.hpp>
-#include <mtx/responses/messages.hpp>
+#include <mtx/events/common.hpp>
 
 class TimelineModel;
 class CombinedImagePackModel;

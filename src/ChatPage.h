@@ -6,7 +6,6 @@
 
 #include <atomic>
 #include <optional>
-#include <variant>
 
 #include <mtx/common.hpp>
 #include <mtx/events.hpp>
@@ -191,7 +190,7 @@ private:
     void tryInitialSync();
     void trySync();
     void verifyOneTimeKeyCountAfterStartup();
-    void ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts,
+    void ensureOneTimeKeyCount(const std::map<std::string_view, uint16_t> &counts,
                                const std::optional<std::vector<std::string>> &fallback_keys);
     void removeOldFallbackKey();
     void getProfileInfo();

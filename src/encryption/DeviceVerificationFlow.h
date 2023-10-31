@@ -7,13 +7,14 @@
 #include <QObject>
 
 #include <mtx/responses/crypto.hpp>
+#include <mtxclient/crypto/client.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "Logging.h"
 #include "MatrixClient.h"
-#include "timeline/TimelineModel.h"
 
 class QTimer;
+class TimelineModel;
 
 using sas_ptr = std::unique_ptr<mtx::crypto::SAS>;
 
@@ -230,32 +231,5 @@ private:
     bool keySent = false, macSent = false, acceptSent = false, startSent = false;
 
     template<typename T>
-    void send(T msg)
-    {
-        if (this->type == DeviceVerificationFlow::Type::ToDevice) {
-            mtx::requests::ToDeviceMessages<T> body;
-            msg.transaction_id = this->transaction_id;
-            for (const auto &d : deviceIds)
-                body[this->toClient][d.toStdString()] = msg;
-
-            http::client()->send_to_device<T>(
-              http::client()->generate_txn_id(), body, [](mtx::http::RequestErr err) {
-                  if (err)
-                      nhlog::net()->warn("failed to send verification to_device message: {} {}",
-                                         err->matrix_error.error,
-                                         static_cast<int>(err->status_code));
-              });
-        } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
-            if constexpr (!std::is_same_v<T, mtx::events::msg::KeyVerificationRequest>) {
-                msg.relations.relations.push_back(this->relation);
-                // Set synthesized to surpress the nheko relation extensions
-                msg.relations.synthesized = true;
-            }
-            (model_)->sendMessageEvent(msg, mtx::events::to_device_content_to_type<T>);
-        }
-
-        nhlog::net()->debug("Sent verification step: {} in state: {}",
-                            mtx::events::to_string(mtx::events::to_device_content_to_type<T>),
-                            state().toStdString());
-    }
+    void send(T msg);
 };

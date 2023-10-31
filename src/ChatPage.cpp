@@ -778,7 +778,9 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
     nhlog::net()->debug("sync completed: {}", res.next_batch);
 
     // Ensure that we have enough one-time keys available.
-    ensureOneTimeKeyCount(res.device_one_time_keys_count, res.device_unused_fallback_key_types);
+    std::map<std::string_view, std::uint16_t> counts{res.device_one_time_keys_count.begin(),
+                                                     res.device_one_time_keys_count.end()};
+    ensureOneTimeKeyCount(counts, res.device_unused_fallback_key_types);
 
     std::optional<mtx::events::account_data::IgnoredUsers> oldIgnoredUsers;
     if (auto ignoreEv = std::ranges::find_if(
@@ -1194,7 +1196,7 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
                   return;
           }
 
-          std::map<std::string, uint16_t> key_counts;
+          std::map<std::string_view, uint16_t> key_counts;
           std::uint64_t count = 0;
           if (auto c = res.one_time_key_counts.find(mtx::crypto::SIGNED_CURVE25519);
               c == res.one_time_key_counts.end()) {
@@ -1215,7 +1217,7 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
 }
 
 void
-ChatPage::ensureOneTimeKeyCount(const std::map<std::string, uint16_t> &counts,
+ChatPage::ensureOneTimeKeyCount(const std::map<std::string_view, uint16_t> &counts,
                                 const std::optional<std::vector<std::string>> &unused_fallback_keys)
 {
     if (auto count = counts.find(mtx::crypto::SIGNED_CURVE25519); count != counts.end()) {

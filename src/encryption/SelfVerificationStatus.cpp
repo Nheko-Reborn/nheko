@@ -110,7 +110,7 @@ SelfVerificationStatus::setupCrosssigning(bool useSSSS,
         http::client()->set_secret_storage_default_key(ssss->keyDescription.name,
                                                        [](mtx::http::RequestErr) {});
 
-        auto uploadSecret = [ssss](const std::string &key_name, const std::string &secret) {
+        auto uploadSecret = [ssss](std::string_view key_name, const std::string &secret) {
             mtx::secret_storage::Secret s;
             s.encrypted[ssss->keyDescription.name] =
               mtx::crypto::encrypt(secret, ssss->privateKey, key_name);

@@ -101,58 +101,6 @@ MainWindow::MainWindow(QWindow *parent)
 void
 MainWindow::registerQmlTypes()
 {
-    // qmlRegisterUncreatableType<DeviceVerificationFlow>(
-    //   "im.nheko",
-    //   1,
-    //   0,
-    //   "DeviceVerificationFlow",
-    //   QStringLiteral("Can't create verification flow from QML!"));
-    // qmlRegisterUncreatableType<UserProfile>(
-    //   "im.nheko",
-    //   1,
-    //   0,
-    //   "UserProfileModel",
-    //   QStringLiteral("UserProfile needs to be instantiated on the C++ side"));
-    // qmlRegisterUncreatableType<MemberList>(
-    //   "im.nheko",
-    //   1,
-    //   0,
-    //   "MemberList",
-    //   QStringLiteral("MemberList needs to be instantiated on the C++ side"));
-    // qmlRegisterUncreatableType<RoomSettings>(
-    //   "im.nheko",
-    //   1,
-    //   0,
-    //   "RoomSettingsModel",
-    //   QStringLiteral("Room Settings needs to be instantiated on the C++ side"));
-    // qmlRegisterUncreatableType<TimelineModel>(
-    //   "im.nheko", 1, 0, "Room", QStringLiteral("Room needs to be instantiated on the C++ side"));
-    // qmlRegisterUncreatableType<ImagePackListModel>(
-    //   "im.nheko",
-    //   1,
-    //   0,
-    //   "ImagePackListModel",
-    //   QStringLiteral("ImagePackListModel needs to be instantiated on the C++ side"));
-    // qmlRegisterUncreatableType<SingleImagePackModel>(
-    //   "im.nheko",
-    //   1,
-    //   0,
-    //   "SingleImagePackModel",
-    //   QStringLiteral("SingleImagePackModel needs to be instantiated on the C++ side"));
-    // qmlRegisterUncreatableType<InviteesModel>(
-    //   "im.nheko",
-    //   1,
-    //   0,
-    //   "InviteesModel",
-    //   QStringLiteral("InviteesModel needs to be instantiated on the C++ side"));
-
-    // qmlRegisterUncreatableMetaObject(emoji::staticMetaObject,
-    //                                  "im.nheko.EmojiModel",
-    //                                  1,
-    //                                  0,
-    //                                  "EmojiCategory",
-    //                                  QStringLiteral("Error: Only enums"));
-
     imgProvider = new MxcImageProvider();
     engine()->addImageProvider(QStringLiteral("MxcImage"), imgProvider);
     engine()->addImageProvider(QStringLiteral("colorimage"), new ColorImageProvider());

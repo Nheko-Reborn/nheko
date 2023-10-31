@@ -10,6 +10,8 @@
 #include <cctype>
 #include <type_traits>
 
+#include <mtx/events/collections.hpp>
+
 namespace {
 
 struct IsStateEvent

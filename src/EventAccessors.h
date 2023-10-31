@@ -9,7 +9,13 @@
 #include <QDateTime>
 #include <QString>
 
-#include <mtx/events/collections.hpp>
+#include <mtx/common.hpp>
+#include <mtx/events.hpp>
+
+namespace mtx::events::collections {
+struct TimelineEvents;
+struct StateEvents;
+}
 
 namespace nheko {
 struct nonesuch

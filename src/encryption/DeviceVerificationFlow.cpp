@@ -944,3 +944,33 @@ DeviceVerificationFlow::InitiateDeviceVerification(QObject *parent_,
 
     return flow;
 }
+template<typename T>
+void
+DeviceVerificationFlow::send(T msg)
+{
+    if (this->type == DeviceVerificationFlow::Type::ToDevice) {
+        mtx::requests::ToDeviceMessages<T> body;
+        msg.transaction_id = this->transaction_id;
+        for (const auto &d : deviceIds)
+            body[this->toClient][d.toStdString()] = msg;
+
+        http::client()->send_to_device<T>(
+          http::client()->generate_txn_id(), body, [](mtx::http::RequestErr err) {
+              if (err)
+                  nhlog::net()->warn("failed to send verification to_device message: {} {}",
+                                     err->matrix_error.error,
+                                     static_cast<int>(err->status_code));
+          });
+    } else if (this->type == DeviceVerificationFlow::Type::RoomMsg && model_) {
+        if constexpr (!std::is_same_v<T, mtx::events::msg::KeyVerificationRequest>) {
+            msg.relations.relations.push_back(this->relation);
+            // Set synthesized to surpress the nheko relation extensions
+            msg.relations.synthesized = true;
+        }
+        (model_)->sendMessageEvent(msg, mtx::events::to_device_content_to_type<T>);
+    }
+
+    nhlog::net()->debug("Sent verification step: {} in state: {}",
+                        mtx::events::to_string(mtx::events::to_device_content_to_type<T>),
+                        state().toStdString());
+}

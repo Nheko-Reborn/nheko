@@ -1665,10 +1665,10 @@ request_cross_signing_keys()
         });
     };
 
-    request(mtx::secret_storage::secrets::cross_signing_master);
-    request(mtx::secret_storage::secrets::cross_signing_self_signing);
-    request(mtx::secret_storage::secrets::cross_signing_user_signing);
-    request(mtx::secret_storage::secrets::megolm_backup_v1);
+    request(std::string(mtx::secret_storage::secrets::cross_signing_master));
+    request(std::string(mtx::secret_storage::secrets::cross_signing_self_signing));
+    request(std::string(mtx::secret_storage::secrets::cross_signing_user_signing));
+    request(std::string(mtx::secret_storage::secrets::megolm_backup_v1));
 }
 
 namespace {
@@ -1725,22 +1725,22 @@ download_cross_signing_keys()
 
                             if (backup_key && !backup_key->encrypted.empty())
                                 secrets[backup_key->encrypted.begin()->first]
-                                       [secrets::megolm_backup_v1] =
+                                       [std::string(secrets::megolm_backup_v1)] =
                                          backup_key->encrypted.begin()->second;
 
                             if (master_key && !master_key->encrypted.empty())
                                 secrets[master_key->encrypted.begin()->first]
-                                       [secrets::cross_signing_master] =
+                                       [std::string(secrets::cross_signing_master)] =
                                          master_key->encrypted.begin()->second;
 
                             if (self_signing_key && !self_signing_key->encrypted.empty())
                                 secrets[self_signing_key->encrypted.begin()->first]
-                                       [secrets::cross_signing_self_signing] =
+                                       [std::string(secrets::cross_signing_self_signing)] =
                                          self_signing_key->encrypted.begin()->second;
 
                             if (user_signing_key && !user_signing_key->encrypted.empty())
                                 secrets[user_signing_key->encrypted.begin()->first]
-                                       [secrets::cross_signing_user_signing] =
+                                       [std::string(secrets::cross_signing_user_signing)] =
                                          user_signing_key->encrypted.begin()->second;
 
                             for (const auto &[key, secret_] : secrets)

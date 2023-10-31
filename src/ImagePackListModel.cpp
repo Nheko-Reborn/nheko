@@ -6,14 +6,14 @@
 
 #include <QQmlEngine>
 
-#include "Cache_p.h"
+#include "Cache.h"
 #include "SingleImagePackModel.h"
 
 ImagePackListModel::ImagePackListModel(const std::string &roomId, QObject *parent)
   : QAbstractListModel(parent)
   , room_id(roomId)
 {
-    auto packs_ = cache::client()->getImagePacks(room_id, std::nullopt);
+    auto packs_ = cache::getImagePacks(room_id, std::nullopt);
 
     packs.reserve(packs_.size());
     for (const auto &pack : packs_) {

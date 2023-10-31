@@ -463,14 +463,14 @@ fatalSecretError()
 }
 
 static QString
-secretName(std::string name, bool internal)
+secretName(std::string_view name, bool internal)
 {
     auto settings = UserSettings::instance();
     return (internal ? "nheko." : "matrix.") +
            QString(
              QCryptographicHash::hash(settings->profile().toUtf8(), QCryptographicHash::Sha256)
                .toBase64()) +
-           "." + QString::fromStdString(name);
+           "." + QString::fromUtf8(name);
 }
 
 void
@@ -560,7 +560,7 @@ Cache::loadSecretsFromStore(
 }
 
 std::optional<std::string>
-Cache::secret(const std::string &name_, bool internal)
+Cache::secret(std::string_view name_, bool internal)
 {
     auto name = secretName(name_, internal);
 
@@ -580,7 +580,7 @@ Cache::secret(const std::string &name_, bool internal)
 }
 
 void
-Cache::storeSecret(const std::string &name_, const std::string &secret, bool internal)
+Cache::storeSecret(std::string_view name_, const std::string &secret, bool internal)
 {
     auto name = secretName(name_, internal);
 
@@ -592,11 +592,11 @@ Cache::storeSecret(const std::string &name_, const std::string &secret, bool int
     auto db_name = "secret." + name.toStdString();
     syncStateDb_.put(txn, db_name, nlohmann::json(encrypted).dump());
     txn.commit();
-    emit secretChanged(name_);
+    emit secretChanged(std::string(name_));
 }
 
 void
-Cache::deleteSecret(const std::string &name_, bool internal)
+Cache::deleteSecret(std::string_view name_, bool internal)
 {
     auto name = secretName(name_, internal);
 
@@ -1631,10 +1631,10 @@ Cache::runMigrations()
            this->databaseReady_ = false;
            loadSecretsFromStore(
              {
-               {mtx::secret_storage::secrets::cross_signing_master, false},
-               {mtx::secret_storage::secrets::cross_signing_self_signing, false},
-               {mtx::secret_storage::secrets::cross_signing_user_signing, false},
-               {mtx::secret_storage::secrets::megolm_backup_v1, false},
+               {std::string(mtx::secret_storage::secrets::cross_signing_master), false},
+               {std::string(mtx::secret_storage::secrets::cross_signing_self_signing), false},
+               {std::string(mtx::secret_storage::secrets::cross_signing_user_signing), false},
+               {std::string(mtx::secret_storage::secrets::megolm_backup_v1), false},
              },
              [this,
               count = 1](const std::string &name, bool internal, const std::string &value) mutable {
@@ -6147,14 +6147,20 @@ restoreOlmAccount()
 }
 
 void
-storeSecret(const std::string &name, const std::string &secret)
+storeSecret(std::string_view name, const std::string &secret)
 {
     instance_->storeSecret(name, secret);
 }
 std::optional<std::string>
-secret(const std::string &name)
+secret(std::string_view name)
 {
     return instance_->secret(name);
+}
+
+std::vector<ImagePackInfo>
+getImagePacks(const std::string &room_id, std::optional<bool> stickers)
+{
+    return instance_->getImagePacks(room_id, stickers);
 }
 } // namespace cache
 
