@@ -30,8 +30,7 @@ build_script:
     # WINVERSION format:  9999.0.0.123/1.2.0.234
     - if "%APPVEYOR_REPO_TAG%"=="false" set INSTVERSION=0.11.3
     - if "%APPVEYOR_REPO_TAG%"=="false" set VERSION=0.11.3
-    - if "%APPVEYOR_REPO_TAG%"=="false" if "%APPVEYOR_REPO_BRANCH%"=="master" set INSTVERSION=9999.0
-    - if "%APPVEYOR_REPO_TAG%"=="false" set WINVERSION=%INSTVERSION%.0.%APPVEYOR_BUILD_NUMBER%
+    - if "%APPVEYOR_REPO_TAG%"=="false" set WINVERSION=%INSTVERSION%.%APPVEYOR_BUILD_NUMBER%
     # VERSION format:     v1.2.3/v1.3.4
     # INSTVERSION format: 1.2.3/1.3.4
     # WINVERSION format:  1.2.3.123/1.3.4.234
