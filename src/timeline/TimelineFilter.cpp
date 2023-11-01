@@ -81,9 +81,7 @@ TimelineFilter::event(QEvent *ev)
                                s->index(std::min(incrementalSearchIndex, count - 1)),
                                {FilterRole});
 
-                if (incrementalSearchIndex < count && incrementalSearchIndex > 0) {
-                    continueFiltering();
-                }
+                continueFiltering();
             }
             emit isFilteringChanged();
         }
