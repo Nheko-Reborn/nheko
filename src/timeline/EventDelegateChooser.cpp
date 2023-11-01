@@ -142,7 +142,7 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
     auto attached = qobject_cast<EventDelegateChooserAttachedType *>(
       qmlAttachedPropertiesObject<EventDelegateChooser>(obj));
     Q_ASSERT(attached != nullptr);
-    attached->setIsReply(this->forReply);
+    attached->setIsReply(this->forReply || chooser.limitAsReply_);
 
     for (const auto &role : roles) {
         const auto &roleName = roleNames[role.role()];

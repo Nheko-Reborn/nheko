@@ -137,6 +137,7 @@ class EventDelegateChooser : public QQuickItem
     Q_PROPERTY(int maxWidth READ maxWidth WRITE setMaxWidth NOTIFY maxWidthChanged)
     Q_PROPERTY(int replyInset READ replyInset WRITE setReplyInset NOTIFY replyInsetChanged)
     Q_PROPERTY(int mainInset READ mainInset WRITE setMainInset NOTIFY mainInsetChanged)
+    Q_PROPERTY(bool limitAsReply READ limitAsReply WRITE setLimitAsReply NOTIFY limitAsReplyChanged)
 
 public:
     QQmlListProperty<EventDelegateChoice> choices();
@@ -155,6 +156,12 @@ public:
     {
         sameWidth_ = width;
         emit sameWidthChanged();
+    }
+    bool limitAsReply() const { return limitAsReply_; }
+    void setLimitAsReply(bool width)
+    {
+        limitAsReply_ = width;
+        emit limitAsReplyChanged();
     }
     int maxWidth() const { return maxWidth_; }
     void setMaxWidth(int width)
@@ -229,6 +236,7 @@ signals:
     void eventIdChanged();
     void replyToChanged();
     void sameWidthChanged();
+    void limitAsReplyChanged();
     void maxWidthChanged();
     void replyInsetChanged();
     void mainInsetChanged();
@@ -264,10 +272,11 @@ private:
     TimelineModel *room_{nullptr};
     QString eventId_;
     QString replyId;
-    bool sameWidth_ = false;
-    int maxWidth_   = 400;
-    int replyInset_ = 0;
-    int mainInset_  = 0;
+    bool sameWidth_    = false;
+    bool limitAsReply_ = false;
+    int maxWidth_      = 400;
+    int replyInset_    = 0;
+    int mainInset_     = 0;
 
     static void appendChoice(QQmlListProperty<EventDelegateChoice> *, EventDelegateChoice *);
     static qsizetype choiceCount(QQmlListProperty<EventDelegateChoice> *);

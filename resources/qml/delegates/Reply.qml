@@ -20,9 +20,10 @@ AbstractButton {
 
     property string userId: eventId ? room.dataById(eventId, Room.UserId, "") : ""
     property string userName: eventId ? room.dataById(eventId, Room.UserName, "") : ""
-    implicitHeight: replyContainer.implicitHeight
+    implicitHeight: replyContainer.height
     implicitWidth: replyContainer.implicitWidth
     required property int maxWidth
+    property bool limitHeight: false
 
     NhekoCursorShape {
         anchors.fill: parent
@@ -48,12 +49,17 @@ AbstractButton {
         replyTo: ""
         mainInset: 4 + Nheko.paddingMedium
         maxWidth: r.maxWidth
+        limitAsReply: r.limitHeight
 
         //height: replyContainer.implicitHeight
         data: Row {
             id: replyContainer
 
             spacing: Nheko.paddingSmall
+
+            clip: r.limitHeight
+
+            height: Math.min( timelineEvent.main?.height, timelineView.height / 10) + Nheko.paddingSmall + usernameBtn.height
 
             Rectangle {
                 id: colorline
@@ -70,6 +76,7 @@ AbstractButton {
 
                 AbstractButton {
                     id: usernameBtn
+
 
                     contentItem: Label {
                         id: userName_
