@@ -203,6 +203,13 @@ private:
     void loadStateFromCache();
     void resetUI();
 
+    // returns if the user had no interaction with Nheko for quite a while, which means we set our
+    // presence to unavailable if automatic presence is enabled
+    bool shouldBeUnavailable() const;
+    // If we should throttle sync processing to reduce CPU load, if people are spamming messages and
+    // we aren't looking
+    bool shouldThrottleSync() const;
+
     template<class Collection>
     Memberships getMemberships(const std::vector<Collection> &events) const;
 

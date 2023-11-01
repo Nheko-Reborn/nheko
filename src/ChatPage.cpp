@@ -844,7 +844,10 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
         nhlog::db()->error("saving sync response: {}", e.what());
     }
 
-    emit trySyncCb();
+    if (shouldThrottleSync())
+        QTimer::singleShot(1000, this, &ChatPage::trySyncCb);
+    else
+        emit trySyncCb();
 }
 
 void
@@ -1161,6 +1164,20 @@ ChatPage::setStatus(const QString &status)
       });
 }
 
+bool
+ChatPage::shouldBeUnavailable() const
+{
+    return lastWindowActive.isValid() &&
+           lastWindowActive.addSecs(60 * 5) < QDateTime::currentDateTime();
+}
+
+bool
+ChatPage::shouldThrottleSync() const
+{
+    return lastWindowActive.isValid() &&
+           lastWindowActive.addSecs(6 * 5) < QDateTime::currentDateTime();
+}
+
 mtx::presence::PresenceState
 ChatPage::currentPresence() const
 {
@@ -1172,8 +1189,7 @@ ChatPage::currentPresence() const
     case UserSettings::Presence::Offline:
         return mtx::presence::offline;
     case UserSettings::Presence::AutomaticPresence:
-        if (lastWindowActive.isValid() &&
-            lastWindowActive.addSecs(60 * 5) < QDateTime::currentDateTime())
+        if (shouldBeUnavailable())
             return mtx::presence::unavailable;
         else
             return mtx::presence::online;
