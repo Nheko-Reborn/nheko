@@ -288,7 +288,7 @@ SelfVerificationStatus::invalidate()
 {
     using namespace mtx::secret_storage;
 
-    nhlog::db()->info("Invalidating self verification status");
+    nhlog::db()->debug("Invalidating self verification status");
     if (!cache::isInitialized()) {
         nhlog::db()->warn("SelfVerificationStatus: cache not initialized");
         return;
