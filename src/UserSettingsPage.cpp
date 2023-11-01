@@ -49,90 +49,73 @@ UserSettings::initialize(std::optional<QString> profile)
 void
 UserSettings::load(std::optional<QString> profile)
 {
-    tray_        = settings.value(QStringLiteral("user/window/tray"), false).toBool();
-    startInTray_ = settings.value(QStringLiteral("user/window/start_in_tray"), false).toBool();
+    tray_        = settings.value("user/window/tray", false).toBool();
+    startInTray_ = settings.value("user/window/start_in_tray", false).toBool();
 
-    roomListWidth_ = settings.value(QStringLiteral("user/sidebar/room_list_width"), -1).toInt();
-    communityListWidth_ =
-      settings.value(QStringLiteral("user/sidebar/community_list_width"), -1).toInt();
+    roomListWidth_      = settings.value("user/sidebar/room_list_width", -1).toInt();
+    communityListWidth_ = settings.value("user/sidebar/community_list_width", -1).toInt();
 
-    hasDesktopNotifications_ =
-      settings.value(QStringLiteral("user/desktop_notifications"), true).toBool();
-    hasAlertOnNotification_ =
-      settings.value(QStringLiteral("user/alert_on_notification"), false).toBool();
-    groupView_ = settings.value(QStringLiteral("user/group_view"), true).toBool();
-    scrollbarsInRoomlist_ =
-      settings.value(QStringLiteral("user/scrollbars_in_roomlist"), false).toBool();
-    buttonsInTimeline_ = settings.value(QStringLiteral("user/timeline/buttons"), true).toBool();
-    timelineMaxWidth_  = settings.value(QStringLiteral("user/timeline/max_width"), 0).toInt();
+    hasDesktopNotifications_ = settings.value("user/desktop_notifications", true).toBool();
+    hasAlertOnNotification_  = settings.value("user/alert_on_notification", false).toBool();
+    groupView_               = settings.value("user/group_view", true).toBool();
+    scrollbarsInRoomlist_    = settings.value("user/scrollbars_in_roomlist", false).toBool();
+    buttonsInTimeline_       = settings.value("user/timeline/buttons", true).toBool();
+    timelineMaxWidth_        = settings.value("user/timeline/max_width", 0).toInt();
     messageHoverHighlight_ =
-      settings.value(QStringLiteral("user/timeline/message_hover_highlight"), false).toBool();
+      settings.value("user/timeline/message_hover_highlight", false).toBool();
     enlargeEmojiOnlyMessages_ =
-      settings.value(QStringLiteral("user/timeline/enlarge_emoji_only_msg"), false).toBool();
-    markdown_       = settings.value(QStringLiteral("user/markdown_enabled"), true).toBool();
-    invertEnterKey_ = settings.value(QStringLiteral("user/invert_enter_key"), false).toBool();
-    bubbles_        = settings.value(QStringLiteral("user/bubbles_enabled"), false).toBool();
-    smallAvatars_   = settings.value(QStringLiteral("user/small_avatars_enabled"), false).toBool();
-    animateImagesOnHover_ =
-      settings.value(QStringLiteral("user/animate_images_on_hover"), false).toBool();
-    typingNotifications_ =
-      settings.value(QStringLiteral("user/typing_notifications"), true).toBool();
-    sortByImportance_ = settings.value(QStringLiteral("user/sort_by_unread"), true).toBool();
-    sortByAlphabet_   = settings.value(QStringLiteral("user/sort_by_alphabet"), false).toBool();
-    readReceipts_     = settings.value(QStringLiteral("user/read_receipts"), true).toBool();
-    theme_            = settings.value(QStringLiteral("user/theme"), defaultTheme_).toString();
+      settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
+    markdown_             = settings.value("user/markdown_enabled", true).toBool();
+    invertEnterKey_       = settings.value("user/invert_enter_key", false).toBool();
+    bubbles_              = settings.value("user/bubbles_enabled", false).toBool();
+    smallAvatars_         = settings.value("user/small_avatars_enabled", false).toBool();
+    animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
+    typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
+    sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
+    sortByAlphabet_       = settings.value("user/sort_by_alphabet", false).toBool();
+    readReceipts_         = settings.value("user/read_receipts", true).toBool();
+    theme_                = settings.value("user/theme", defaultTheme_).toString();
 
-    font_ = settings.value(QStringLiteral("user/font_family"), "").toString();
+    font_ = settings.value("user/font_family", "").toString();
 
-    avatarCircles_     = settings.value(QStringLiteral("user/avatar_circles"), true).toBool();
-    useIdenticon_      = settings.value(QStringLiteral("user/use_identicon"), true).toBool();
-    openImageExternal_ = settings.value(QStringLiteral("user/open_image_external"), false).toBool();
-    openVideoExternal_ = settings.value(QStringLiteral("user/open_video_external"), false).toBool();
-    decryptSidebar_    = settings.value(QStringLiteral("user/decrypt_sidebar"), true).toBool();
-    decryptNotifications_ =
-      settings.value(QStringLiteral("user/decrypt_notifications"), true).toBool();
-    spaceNotifications_ = settings.value(QStringLiteral("user/space_notifications"), true).toBool();
-    fancyEffects_       = settings.value(QStringLiteral("user/fancy_effects"), true).toBool();
-    reducedMotion_      = settings.value(QStringLiteral("user/reduced_motion"), false).toBool();
-    privacyScreen_      = settings.value(QStringLiteral("user/privacy_screen"), false).toBool();
-    privacyScreenTimeout_ =
-      settings.value(QStringLiteral("user/privacy_screen_timeout"), 0).toInt();
-    exposeDBusApi_ = settings.value(QStringLiteral("user/expose_dbus_api"), false).toBool();
-    updateSpaceVias_ =
-      settings.value(QStringLiteral("user/space_background_maintenance"), true).toBool();
-    expireEvents_ =
-      settings.value(QStringLiteral("user/expired_events_background_maintenance"), false).toBool();
+    avatarCircles_        = settings.value("user/avatar_circles", true).toBool();
+    useIdenticon_         = settings.value("user/use_identicon", true).toBool();
+    openImageExternal_    = settings.value("user/open_image_external", false).toBool();
+    openVideoExternal_    = settings.value("user/open_video_external", false).toBool();
+    decryptSidebar_       = settings.value("user/decrypt_sidebar", true).toBool();
+    decryptNotifications_ = settings.value("user/decrypt_notifications", true).toBool();
+    spaceNotifications_   = settings.value("user/space_notifications", true).toBool();
+    fancyEffects_         = settings.value("user/fancy_effects", true).toBool();
+    reducedMotion_        = settings.value("user/reduced_motion", false).toBool();
+    privacyScreen_        = settings.value("user/privacy_screen", false).toBool();
+    privacyScreenTimeout_ = settings.value("user/privacy_screen_timeout", 0).toInt();
+    exposeDBusApi_        = settings.value("user/expose_dbus_api", false).toBool();
+    updateSpaceVias_      = settings.value("user/space_background_maintenance", true).toBool();
+    expireEvents_ = settings.value("user/expired_events_background_maintenance", false).toBool();
 
-    mobileMode_ = settings.value(QStringLiteral("user/mobile_mode"), false).toBool();
-    emojiFont_  = settings.value(QStringLiteral("user/emoji_font_family"), "emoji").toString();
-    baseFontSize_ =
-      settings.value(QStringLiteral("user/font_size"), QFont().pointSizeF()).toDouble();
-    auto tempPresence =
-      settings.value(QStringLiteral("user/presence"), "").toString().toStdString();
+    mobileMode_        = settings.value("user/mobile_mode", false).toBool();
+    emojiFont_         = settings.value("user/emoji_font_family", "emoji").toString();
+    baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
+    auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
     auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
     if (presenceValue < 0)
         presenceValue = 0;
-    presence_   = static_cast<Presence>(presenceValue);
-    ringtone_   = settings.value(QStringLiteral("user/ringtone"), "Default").toString();
-    microphone_ = settings.value(QStringLiteral("user/microphone"), QString()).toString();
-    camera_     = settings.value(QStringLiteral("user/camera"), QString()).toString();
-    cameraResolution_ =
-      settings.value(QStringLiteral("user/camera_resolution"), QString()).toString();
-    cameraFrameRate_ =
-      settings.value(QStringLiteral("user/camera_frame_rate"), QString()).toString();
-    screenShareFrameRate_ =
-      settings.value(QStringLiteral("user/screen_share_frame_rate"), 5).toInt();
-    screenSharePiP_ = settings.value(QStringLiteral("user/screen_share_pip"), true).toBool();
-    screenShareRemoteVideo_ =
-      settings.value(QStringLiteral("user/screen_share_remote_video"), false).toBool();
-    screenShareHideCursor_ =
-      settings.value(QStringLiteral("user/screen_share_hide_cursor"), false).toBool();
-    useStunServer_ = settings.value(QStringLiteral("user/use_stun_server"), false).toBool();
+    presence_               = static_cast<Presence>(presenceValue);
+    ringtone_               = settings.value("user/ringtone", "Default").toString();
+    microphone_             = settings.value("user/microphone", QString()).toString();
+    camera_                 = settings.value("user/camera", QString()).toString();
+    cameraResolution_       = settings.value("user/camera_resolution", QString()).toString();
+    cameraFrameRate_        = settings.value("user/camera_frame_rate", QString()).toString();
+    screenShareFrameRate_   = settings.value("user/screen_share_frame_rate", 5).toInt();
+    screenSharePiP_         = settings.value("user/screen_share_pip", true).toBool();
+    screenShareRemoteVideo_ = settings.value("user/screen_share_remote_video", false).toBool();
+    screenShareHideCursor_  = settings.value("user/screen_share_hide_cursor", false).toBool();
+    useStunServer_          = settings.value("user/use_stun_server", false).toBool();
 
     if (profile) // set to "" if it's the default to maintain compatibility
         profile_ = (*profile == QLatin1String("default")) ? QLatin1String("") : *profile;
     else
-        profile_ = settings.value(QStringLiteral("user/currentProfile"), "").toString();
+        profile_ = settings.value("user/currentProfile", "").toString();
 
     QString prefix = (profile_ != QLatin1String("") && profile_ != QLatin1String("default"))
                        ? "profile/" + profile_ + "/"
@@ -161,7 +144,7 @@ UserSettings::load(std::optional<QString> profile)
     useOnlineKeyBackup_ = settings.value(prefix + "user/online_key_backup", true).toBool();
 
     disableCertificateValidation_ =
-      settings.value(QStringLiteral("disable_certificate_validation"), false).toBool();
+      settings.value("disable_certificate_validation", false).toBool();
 
     applyTheme();
 }
@@ -871,72 +854,72 @@ UserSettings::applyTheme()
 void
 UserSettings::save()
 {
-    settings.beginGroup(QStringLiteral("user"));
+    settings.beginGroup("user");
 
-    settings.beginGroup(QStringLiteral("window"));
-    settings.setValue(QStringLiteral("tray"), tray_);
-    settings.setValue(QStringLiteral("start_in_tray"), startInTray_);
+    settings.beginGroup("window");
+    settings.setValue("tray", tray_);
+    settings.setValue("start_in_tray", startInTray_);
     settings.endGroup(); // window
 
-    settings.beginGroup(QStringLiteral("sidebar"));
-    settings.setValue(QStringLiteral("community_list_width"), communityListWidth_);
-    settings.setValue(QStringLiteral("room_list_width"), roomListWidth_);
+    settings.beginGroup("sidebar");
+    settings.setValue("community_list_width", communityListWidth_);
+    settings.setValue("room_list_width", roomListWidth_);
     settings.endGroup(); // window
 
-    settings.beginGroup(QStringLiteral("timeline"));
-    settings.setValue(QStringLiteral("buttons"), buttonsInTimeline_);
-    settings.setValue(QStringLiteral("message_hover_highlight"), messageHoverHighlight_);
-    settings.setValue(QStringLiteral("enlarge_emoji_only_msg"), enlargeEmojiOnlyMessages_);
-    settings.setValue(QStringLiteral("max_width"), timelineMaxWidth_);
+    settings.beginGroup("timeline");
+    settings.setValue("buttons", buttonsInTimeline_);
+    settings.setValue("message_hover_highlight", messageHoverHighlight_);
+    settings.setValue("enlarge_emoji_only_msg", enlargeEmojiOnlyMessages_);
+    settings.setValue("max_width", timelineMaxWidth_);
     settings.endGroup(); // timeline
 
-    settings.setValue(QStringLiteral("avatar_circles"), avatarCircles_);
-    settings.setValue(QStringLiteral("decrypt_sidebar"), decryptSidebar_);
-    settings.setValue(QStringLiteral("decrypt_notificatons"), decryptNotifications_);
-    settings.setValue(QStringLiteral("space_notifications"), spaceNotifications_);
-    settings.setValue(QStringLiteral("fancy_effects"), fancyEffects_);
-    settings.setValue(QStringLiteral("reduced_motion"), reducedMotion_);
-    settings.setValue(QStringLiteral("privacy_screen"), privacyScreen_);
-    settings.setValue(QStringLiteral("privacy_screen_timeout"), privacyScreenTimeout_);
-    settings.setValue(QStringLiteral("mobile_mode"), mobileMode_);
-    settings.setValue(QStringLiteral("font_size"), baseFontSize_);
-    settings.setValue(QStringLiteral("typing_notifications"), typingNotifications_);
-    settings.setValue(QStringLiteral("sort_by_unread"), sortByImportance_);
-    settings.setValue(QStringLiteral("sort_by_alphabet"), sortByAlphabet_);
-    settings.setValue(QStringLiteral("minor_events"), sortByImportance_);
-    settings.setValue(QStringLiteral("read_receipts"), readReceipts_);
-    settings.setValue(QStringLiteral("group_view"), groupView_);
-    settings.setValue(QStringLiteral("scrollbars_in_roomlist"), scrollbarsInRoomlist_);
-    settings.setValue(QStringLiteral("markdown_enabled"), markdown_);
-    settings.setValue(QStringLiteral("invert_enter_key"), invertEnterKey_);
-    settings.setValue(QStringLiteral("bubbles_enabled"), bubbles_);
-    settings.setValue(QStringLiteral("small_avatars_enabled"), smallAvatars_);
-    settings.setValue(QStringLiteral("animate_images_on_hover"), animateImagesOnHover_);
-    settings.setValue(QStringLiteral("desktop_notifications"), hasDesktopNotifications_);
-    settings.setValue(QStringLiteral("alert_on_notification"), hasAlertOnNotification_);
-    settings.setValue(QStringLiteral("theme"), theme());
-    settings.setValue(QStringLiteral("font_family"), font_);
-    settings.setValue(QStringLiteral("emoji_font_family"), emojiFont_);
+    settings.setValue("avatar_circles", avatarCircles_);
+    settings.setValue("decrypt_sidebar", decryptSidebar_);
+    settings.setValue("decrypt_notifications", decryptNotifications_);
+    settings.setValue("space_notifications", spaceNotifications_);
+    settings.setValue("fancy_effects", fancyEffects_);
+    settings.setValue("reduced_motion", reducedMotion_);
+    settings.setValue("privacy_screen", privacyScreen_);
+    settings.setValue("privacy_screen_timeout", privacyScreenTimeout_);
+    settings.setValue("mobile_mode", mobileMode_);
+    settings.setValue("font_size", baseFontSize_);
+    settings.setValue("typing_notifications", typingNotifications_);
+    settings.setValue("sort_by_unread", sortByImportance_);
+    settings.setValue("sort_by_alphabet", sortByAlphabet_);
+    settings.setValue("minor_events", sortByImportance_);
+    settings.setValue("read_receipts", readReceipts_);
+    settings.setValue("group_view", groupView_);
+    settings.setValue("scrollbars_in_roomlist", scrollbarsInRoomlist_);
+    settings.setValue("markdown_enabled", markdown_);
+    settings.setValue("invert_enter_key", invertEnterKey_);
+    settings.setValue("bubbles_enabled", bubbles_);
+    settings.setValue("small_avatars_enabled", smallAvatars_);
+    settings.setValue("animate_images_on_hover", animateImagesOnHover_);
+    settings.setValue("desktop_notifications", hasDesktopNotifications_);
+    settings.setValue("alert_on_notification", hasAlertOnNotification_);
+    settings.setValue("theme", theme());
+    settings.setValue("font_family", font_);
+    settings.setValue("emoji_font_family", emojiFont_);
     settings.setValue(
-      QStringLiteral("presence"),
+      "presence",
       QString::fromUtf8(QMetaEnum::fromType<Presence>().valueToKey(static_cast<int>(presence_))));
-    settings.setValue(QStringLiteral("ringtone"), ringtone_);
-    settings.setValue(QStringLiteral("microphone"), microphone_);
-    settings.setValue(QStringLiteral("camera"), camera_);
-    settings.setValue(QStringLiteral("camera_resolution"), cameraResolution_);
-    settings.setValue(QStringLiteral("camera_frame_rate"), cameraFrameRate_);
-    settings.setValue(QStringLiteral("screen_share_frame_rate"), screenShareFrameRate_);
-    settings.setValue(QStringLiteral("screen_share_pip"), screenSharePiP_);
-    settings.setValue(QStringLiteral("screen_share_remote_video"), screenShareRemoteVideo_);
-    settings.setValue(QStringLiteral("screen_share_hide_cursor"), screenShareHideCursor_);
-    settings.setValue(QStringLiteral("use_stun_server"), useStunServer_);
-    settings.setValue(QStringLiteral("currentProfile"), profile_);
-    settings.setValue(QStringLiteral("use_identicon"), useIdenticon_);
-    settings.setValue(QStringLiteral("open_image_external"), openImageExternal_);
-    settings.setValue(QStringLiteral("open_video_external"), openVideoExternal_);
-    settings.setValue(QStringLiteral("expose_dbus_api"), exposeDBusApi_);
-    settings.setValue(QStringLiteral("space_background_maintenance"), updateSpaceVias_);
-    settings.setValue(QStringLiteral("expired_events_background_maintenance"), expireEvents_);
+    settings.setValue("ringtone", ringtone_);
+    settings.setValue("microphone", microphone_);
+    settings.setValue("camera", camera_);
+    settings.setValue("camera_resolution", cameraResolution_);
+    settings.setValue("camera_frame_rate", cameraFrameRate_);
+    settings.setValue("screen_share_frame_rate", screenShareFrameRate_);
+    settings.setValue("screen_share_pip", screenSharePiP_);
+    settings.setValue("screen_share_remote_video", screenShareRemoteVideo_);
+    settings.setValue("screen_share_hide_cursor", screenShareHideCursor_);
+    settings.setValue("use_stun_server", useStunServer_);
+    settings.setValue("currentProfile", profile_);
+    settings.setValue("use_identicon", useIdenticon_);
+    settings.setValue("open_image_external", openImageExternal_);
+    settings.setValue("open_video_external", openVideoExternal_);
+    settings.setValue("expose_dbus_api", exposeDBusApi_);
+    settings.setValue("space_background_maintenance", updateSpaceVias_);
+    settings.setValue("expired_events_background_maintenance", expireEvents_);
 
     settings.endGroup(); // user
 
@@ -965,8 +948,7 @@ UserSettings::save()
         v.push_back(e);
     settings.setValue(prefix + "user/collapsed_spaces", v);
 
-    settings.setValue(QStringLiteral("disable_certificate_validation"),
-                      disableCertificateValidation_);
+    settings.setValue("disable_certificate_validation", disableCertificateValidation_);
 
     settings.sync();
 }
@@ -1616,6 +1598,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             QStringList l;
             for (const auto &d : vec)
                 l.push_back(QString::fromStdString(d));
+
             return l;
         };
         switch (index.row()) {
