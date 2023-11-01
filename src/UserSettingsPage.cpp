@@ -147,6 +147,9 @@ UserSettings::load(std::optional<QString> profile)
       settings.value("disable_certificate_validation", false).toBool();
 
     applyTheme();
+
+    if (profile)
+        setProfile(profile_);
 }
 
 bool
@@ -748,8 +751,7 @@ UserSettings::setScreenShareHideCursor(bool state)
 void
 UserSettings::setProfile(QString profile)
 {
-    if (profile == profile_)
-        return;
+    // always set this to allow setting this when loading and it is overwritten on the cli
     profile_ = profile;
     emit profileChanged(profile_);
     save();
