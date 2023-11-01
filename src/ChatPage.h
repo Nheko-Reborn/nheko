@@ -7,17 +7,11 @@
 #include <atomic>
 #include <optional>
 
-#include <mtx/common.hpp>
 #include <mtx/events.hpp>
-#include <mtx/events/encrypted.hpp>
-#include <mtx/events/member.hpp>
-#include <mtx/events/policy_rules.hpp>
 #include <mtx/events/presence.hpp>
 #include <mtx/secret_storage.hpp>
 
 #include <QDateTime>
-#include <QMap>
-#include <QPoint>
 #include <QSharedPointer>
 #include <QTimer>
 
@@ -196,10 +190,6 @@ private:
     void getProfileInfo();
     void getBackupVersion();
 
-    using UserID      = QString;
-    using Membership  = mtx::events::StateEvent<mtx::events::state::Member>;
-    using Memberships = std::map<std::string, Membership>;
-
     void loadStateFromCache();
     void resetUI();
 
@@ -209,9 +199,6 @@ private:
     // If we should throttle sync processing to reduce CPU load, if people are spamming messages and
     // we aren't looking
     bool shouldThrottleSync() const;
-
-    template<class Collection>
-    Memberships getMemberships(const std::vector<Collection> &events) const;
 
     template<typename T>
     void connectCallMessage();
@@ -235,19 +222,3 @@ private:
     QDateTime lastWindowActive;
 };
 
-template<class Collection>
-std::map<std::string, mtx::events::StateEvent<mtx::events::state::Member>>
-ChatPage::getMemberships(const std::vector<Collection> &collection) const
-{
-    std::map<std::string, mtx::events::StateEvent<mtx::events::state::Member>> memberships;
-
-    using Member = mtx::events::StateEvent<mtx::events::state::Member>;
-
-    for (const auto &event : collection) {
-        if (auto member = std::get_if<Member>(event)) {
-            memberships.emplace(member->state_key, *member);
-        }
-    }
-
-    return memberships;
-}
