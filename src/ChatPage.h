@@ -221,4 +221,3 @@ private:
     // Stores when our windows lost focus. Invalid when our windows have focus.
     QDateTime lastWindowActive;
 };
-
