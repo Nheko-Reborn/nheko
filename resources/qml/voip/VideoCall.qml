@@ -2,8 +2,8 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import org.freedesktop.gstreamer.GLVideoItem 1.0
+import org.freedesktop.gstreamer.Qt6GLVideoItem 1.0
 
-GstGLVideoItem {
+GstGLQt6VideoItem {
     objectName: "videoCallItem"
 }
