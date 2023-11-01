@@ -162,48 +162,50 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
 
     // setInitialProperties(rolesToSet);
 
-    auto update =
-      [this, obj, roleToPropIdx = std::move(roleToPropIdx)](const QList<int> &changedRoles) {
-          if (changedRoles.empty() || changedRoles.contains(TimelineModel::Roles::Type)) {
-              int type = chooser.room_
-                           ->dataById(currentId,
-                                      TimelineModel::Roles::Type,
-                                      forReply ? chooser.eventId_ : QString())
-                           .toInt();
-              if (type != oldType) {
-                  // nhlog::ui()->debug("Type changed!");
-                  reset(currentId);
-                  return;
-              }
-          }
+    auto update = [this, obj, roleToPropIdx = std::move(roleToPropIdx)](
+                    const QList<int> &changedRoles, TimelineModel *room) {
+        if (!room)
+            return;
 
-          std::vector<QModelRoleData> rolesToRequest;
+        if (changedRoles.empty() || changedRoles.contains(TimelineModel::Roles::Type)) {
+            int type = room
+                         ->dataById(currentId,
+                                    TimelineModel::Roles::Type,
+                                    forReply ? chooser.eventId_ : QString())
+                         .toInt();
+            if (type != oldType) {
+                // nhlog::ui()->debug("Type changed!");
+                reset(currentId);
+                return;
+            }
+        }
 
-          if (changedRoles.empty()) {
-              for (const auto role :
-                   std::ranges::subrange(roleToPropIdx.keyBegin(), roleToPropIdx.keyEnd()))
-                  rolesToRequest.emplace_back(role);
-          } else {
-              for (auto role : changedRoles) {
-                  if (roleToPropIdx.contains(role)) {
-                      rolesToRequest.emplace_back(role);
-                  }
-              }
-          }
+        std::vector<QModelRoleData> rolesToRequest;
 
-          if (rolesToRequest.empty())
-              return;
+        if (changedRoles.empty()) {
+            for (const auto role :
+                 std::ranges::subrange(roleToPropIdx.keyBegin(), roleToPropIdx.keyEnd()))
+                rolesToRequest.emplace_back(role);
+        } else {
+            for (auto role : changedRoles) {
+                if (roleToPropIdx.contains(role)) {
+                    rolesToRequest.emplace_back(role);
+                }
+            }
+        }
 
-          auto mo = obj->metaObject();
-          chooser.room_->multiData(
-            currentId, forReply ? chooser.eventId_ : QString(), rolesToRequest);
+        if (rolesToRequest.empty())
+            return;
 
-          Qt::beginPropertyUpdateGroup();
-          for (const auto &role : rolesToRequest) {
-              mo->property(roleToPropIdx[role.role()]).write(obj, role.data());
-          }
-          Qt::endPropertyUpdateGroup();
-      };
+        auto mo = obj->metaObject();
+        room->multiData(currentId, forReply ? chooser.eventId_ : QString(), rolesToRequest);
+
+        Qt::beginPropertyUpdateGroup();
+        for (const auto &role : rolesToRequest) {
+            mo->property(roleToPropIdx[role.role()]).write(obj, role.data());
+        }
+        Qt::endPropertyUpdateGroup();
+    };
 
     if (!forReply) {
         auto row        = chooser.room_->idToIndex(currentId);
@@ -211,18 +213,27 @@ EventDelegateChooser::DelegateIncubator::setInitialState(QObject *obj)
           chooser.room_,
           &QAbstractItemModel::dataChanged,
           obj,
-          [row, update](const QModelIndex &topLeft,
-                        const QModelIndex &bottomRight,
-                        const QList<int> &changedRoles) {
+          [row, update, room = chooser.room_](const QModelIndex &topLeft,
+                                              const QModelIndex &bottomRight,
+                                              const QList<int> &changedRoles) {
               if (row < topLeft.row() || row > bottomRight.row())
                   return;
 
-              update(changedRoles);
+              update(changedRoles, room);
           },
           Qt::QueuedConnection);
-        connect(&this->chooser, &EventDelegateChooser::destroyed, obj, [connection]() {
-            QObject::disconnect(connection);
-        });
+        connect(
+          &this->chooser,
+          &EventDelegateChooser::destroyed,
+          obj,
+          [connection]() { QObject::disconnect(connection); },
+          Qt::SingleShotConnection);
+        connect(
+          &this->chooser,
+          &EventDelegateChooser::roomChanged,
+          obj,
+          [connection]() { QObject::disconnect(connection); },
+          Qt::SingleShotConnection);
     }
 }
 
