@@ -110,6 +110,7 @@ struct RoomNameAlias
     std::string id, name, alias;
     std::uint64_t recent_activity;
     bool is_tombstoned;
+    bool is_space;
 };
 
 //! Basic information per member.

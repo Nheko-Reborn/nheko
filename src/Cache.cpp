@@ -2866,6 +2866,7 @@ Cache::roomNamesAndAliases()
               .alias           = std::move(alias),
               .recent_activity = info.approximate_last_modification_ts,
               .is_tombstoned   = info.is_tombstoned,
+              .is_space        = info.is_space,
             });
         } catch (std::exception &e) {
             nhlog::db()->warn("Failed to add room {} to result: {}", room_id, e.what());

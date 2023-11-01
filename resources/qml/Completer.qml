@@ -237,6 +237,7 @@ Control {
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font.italic: model.isTombstoned
+                            font.bold: model.isSpace
                             font.pixelSize: popup.avatarHeight * 0.5
                             text: model.roomName
                             textFormat: Text.RichText
@@ -261,6 +262,7 @@ Control {
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
                             font.italic: model.isTombstoned
+                            font.bold: model.isSpace
                             text: model.roomName
                             textFormat: Text.RichText
                         }

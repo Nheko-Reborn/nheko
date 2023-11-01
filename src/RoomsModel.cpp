@@ -36,6 +36,7 @@ RoomsModel::roleNames() const
       {Roles::RoomID, "roomid"},
       {Roles::RoomName, "roomName"},
       {Roles::IsTombstoned, "isTombstoned"},
+      {Roles::IsSpace, "isSpace"},
     };
 }
 
@@ -69,6 +70,8 @@ RoomsModel::data(const QModelIndex &index, int role) const
             return QString::fromStdString(rooms[index.row()].id).toHtmlEscaped();
         case Roles::IsTombstoned:
             return rooms[index.row()].is_tombstoned;
+        case Roles::IsSpace:
+            return rooms[index.row()].is_space;
         }
     }
     return {};

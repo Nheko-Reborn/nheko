@@ -19,6 +19,7 @@ public:
         RoomID,
         RoomName,
         IsTombstoned,
+        IsSpace,
     };
 
     RoomsModel(bool showOnlyRoomWithAliases = false, QObject *parent = nullptr);
