@@ -296,8 +296,8 @@ cacheDirectoryName(const QString &userid, const QString &profile)
     hash.addData(userid.toUtf8());
     hash.addData(profile.toUtf8());
     return QStringLiteral("%1/db-%2")
-      .arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
-      .arg(hash.result().toHex());
+      .arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation),
+           hash.result().toHex());
 }
 
 void
