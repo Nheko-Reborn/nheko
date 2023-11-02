@@ -289,6 +289,17 @@ Cache::Cache(const QString &userId, QObject *parent)
     setup();
 }
 
+static QString
+cacheDirectoryName(const QString &userid, const QString &profile)
+{
+    QCryptographicHash hash(QCryptographicHash::Algorithm::Sha256);
+    hash.addData(userid.toUtf8());
+    hash.addData(profile.toUtf8());
+    return QStringLiteral("%1/db-%2")
+      .arg(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation))
+      .arg(hash.result().toHex());
+}
+
 void
 Cache::setup()
 {
@@ -297,31 +308,45 @@ Cache::setup()
     nhlog::db()->debug("setting up cache");
 
     // Previous location of the cache directory
-    auto oldCache =
+    auto oldCache2 =
       QStringLiteral("%1/%2%3").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation),
                                     QString::fromUtf8(localUserId_.toUtf8().toHex()),
                                     QString::fromUtf8(settings->profile().toUtf8().toHex()));
 
-    cacheDirectory_ = QStringLiteral("%1/%2%3").arg(
+    auto oldCache = QStringLiteral("%1/%2%3").arg(
       QStandardPaths::writableLocation(QStandardPaths::AppDataLocation),
       QString::fromUtf8(localUserId_.toUtf8().toHex()),
       QString::fromUtf8(settings->profile().toUtf8().toHex()));
+
+    cacheDirectory_ = cacheDirectoryName(localUserId_, settings->profile());
+
+    nhlog::db()->debug("Database at: {}", cacheDirectory_.toStdString());
 
     bool isInitial = !QFile::exists(cacheDirectory_);
 
     // NOTE: If both cache directories exist it's better to do nothing: it
     // could mean a previous migration failed or was interrupted.
-    bool needsMigration = isInitial && QFile::exists(oldCache);
-
-    if (needsMigration) {
-        nhlog::db()->info("found old state directory, migrating");
-        if (!QDir().rename(oldCache, cacheDirectory_)) {
-            throw std::runtime_error(("Unable to migrate the old state directory (" + oldCache +
-                                      ") to the new location (" + cacheDirectory_ + ")")
-                                       .toStdString()
-                                       .c_str());
+    if (isInitial) {
+        if (QFile::exists(oldCache)) {
+            nhlog::db()->info("found old state directory, migrating");
+            if (!QDir().rename(oldCache, cacheDirectory_)) {
+                throw std::runtime_error(("Unable to migrate the old state directory (" + oldCache +
+                                          ") to the new location (" + cacheDirectory_ + ")")
+                                           .toStdString()
+                                           .c_str());
+            }
+            nhlog::db()->info("completed state migration");
+        } else if (QFile::exists(oldCache2)) {
+            nhlog::db()->info("found very old state directory, migrating");
+            if (!QDir().rename(oldCache2, cacheDirectory_)) {
+                throw std::runtime_error(("Unable to migrate the very old state directory (" +
+                                          oldCache2 + ") to the new location (" + cacheDirectory_ +
+                                          ")")
+                                           .toStdString()
+                                           .c_str());
+            }
+            nhlog::db()->info("completed state migration");
         }
-        nhlog::db()->info("completed state migration");
     }
 
     auto openEnv = [](const QString &name) {
@@ -356,8 +381,8 @@ Cache::setup()
         env_ = openEnv(cacheDirectory_);
 
         if (needsCompact) {
-            auto compactDir  = QStringLiteral("%1-compacting").arg(cacheDirectory_);
-            auto toDeleteDir = QStringLiteral("%1-olddb").arg(cacheDirectory_);
+            auto compactDir  = cacheDirectory_ + "-compacting";
+            auto toDeleteDir = cacheDirectory_ + "-olddb";
             if (QFile::exists(cacheDirectory_))
                 QDir(compactDir).removeRecursively();
             if (QFile::exists(toDeleteDir))
