@@ -134,8 +134,14 @@ Rectangle {
                         callTimer.startTime: Math.floor((new Date()).getTime() / 1000)
                     }
 
+                    // HACK(Nico): Somehow this causes a crash when not using the custom parser for that property change...
+                    //PropertyChanges {
+                    //    stackLayout.currentIndex: CallManager.callType != Voip.VOICE ? 1 : 0
+                    //}
+
                     PropertyChanges {
-                        stackLayout.currentIndex: CallManager.callType != Voip.VOICE ? 1 : 0
+                        target: stackLayout
+                        currentIndex: CallManager.callType != Voip.VOICE ? 1 : 0 // qmllint disable Quick.property-changes-parsed
                     }
 
                 },
