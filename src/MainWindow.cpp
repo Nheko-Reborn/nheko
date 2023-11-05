@@ -251,9 +251,9 @@ MainWindow::hasActiveUser()
     if (userSettings_->profile() != QLatin1String(""))
         prefix = "profile/" + userSettings_->profile() + "/";
 
-    return settings->contains(prefix + "auth/access_token") &&
-           settings->contains(prefix + "auth/home_server") &&
-           settings->contains(prefix + "auth/user_id");
+    return !settings->value(prefix + "auth/access_token").toString().isEmpty() &&
+           !settings->value(prefix + "auth/home_server").toString().isEmpty() &&
+           !settings->value(prefix + "auth/user_id").toString().isEmpty();
 }
 
 bool
