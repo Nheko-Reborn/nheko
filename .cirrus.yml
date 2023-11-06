@@ -12,9 +12,10 @@ task:
   aqt_script:
     - pip3 install aqtinstall
     - mkdir $HOME/Qt
-    - aqt install-qt --outputdir $HOME/qt mac desktop 6.5.1 clang_64 -m all
+    - aqt install-qt --outputdir $HOME/qt mac desktop 6 clang_64 -m all
   build_script:
-    - export PATH="${HOME}/Qt/6.5.1/macos/bin:${PATH}"
+    - export QTPATH=($HOME/qt/6.*/macos/bin)
+    - export PATH="$QTPATH:${PATH}"
     - ./.ci/macos/build.sh
   zip_script:
     - ditto -c -k --sequesterRsrc --keepParent nheko.app nheko.zip
