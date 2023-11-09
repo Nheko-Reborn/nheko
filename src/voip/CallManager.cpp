@@ -7,8 +7,8 @@
 #include <chrono>
 #include <cstdint>
 #include <cstdlib>
-#include <memory>
 
+#include <QAudioOutput>
 #include <QGuiApplication>
 #include <QUrl>
 
@@ -186,10 +186,13 @@ CallManager::CallManager(QObject *parent)
     connect(
       &CallDevices::instance(), &CallDevices::devicesChanged, this, &CallManager::devicesChanged);
 
+    auto audioOutput = new QAudioOutput(&player_);
+    player_.setAudioOutput(audioOutput);
+
     connect(
       &player_, &QMediaPlayer::mediaStatusChanged, this, [this](QMediaPlayer::MediaStatus status) {
-          if (status == QMediaPlayer::LoadedMedia)
-              player_.play();
+          nhlog::ui()->debug("WebRTC: ringtone status {}",
+                             QMetaEnum::fromType<QMediaPlayer::MediaStatus>().valueToKey(status));
       });
 
     connect(&player_,
@@ -841,6 +844,7 @@ CallManager::retrieveTurnServer()
 void
 CallManager::playRingtone(const QUrl &ringtone, bool repeat)
 {
+    nhlog::ui()->debug("Trying to play ringtone {}", ringtone.toString().toStdString());
     player_.setLoops(repeat ? QMediaPlayer::Infinite : 1);
     player_.setSource(ringtone);
     // player_.audioOutput()->setVolume(100);
