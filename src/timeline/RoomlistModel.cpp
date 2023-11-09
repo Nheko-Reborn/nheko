@@ -528,13 +528,14 @@ RoomlistModel::sync(const mtx::responses::Sync &sync_)
         // addRoom will only add the room, if it doesn't exist
         addRoom(qroomid);
         const auto &room_model = models.value(qroomid);
-        room_model->sync(room);
-        // room_model->addEvents(room.timeline);
+
         connect(room_model.data(),
                 &TimelineModel::newCallEvent,
                 ChatPage::instance()->callManager(),
                 &CallManager::syncEvent,
                 Qt::UniqueConnection);
+
+        room_model->sync(room);
 
         if (ChatPage::instance()->userSettings()->typingNotifications()) {
             for (const auto &ev : room.ephemeral.events) {
