@@ -25,6 +25,7 @@
 #ifdef GSTREAMER_AVAILABLE
 extern "C"
 {
+#include "gst/gl/gstgldisplay.h"
 #include "gst/gst.h"
 #include "gst/sdp/sdp.h"
 
@@ -346,6 +347,21 @@ newVideoSinkChain(GstElement *pipe)
     gst_element_sync_state_with_parent(glupload);
     gst_element_sync_state_with_parent(glcolorconvert);
     gst_element_sync_state_with_parent(glsinkbin);
+
+    // to propagate context (hopefully)
+    gst_element_set_state(qmlglsink, GST_STATE_READY);
+
+    // Workaround: On wayland, when egl is used, gstreamer might terminate the display connection.
+    // Prevent that by "leaking" a reference to the display. See
+    // https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/3743
+    if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
+        auto context = gst_element_get_context(qmlglsink, "gst.gl.GLDisplay");
+        if (context) {
+            GstGLDisplay *display;
+            gst_context_get_gl_display(context, &display);
+        }
+    }
+
     return queue;
 }
 

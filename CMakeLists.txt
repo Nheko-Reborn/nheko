@@ -606,7 +606,7 @@ endif()
 
 if(VOIP)
     include(FindPkgConfig)
-    pkg_check_modules(GSTREAMER REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.18 gstreamer-webrtc-1.0>=1.18)
+    pkg_check_modules(GSTREAMER REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.18 gstreamer-webrtc-1.0>=1.18 gstreamer-gl-1.0)
 endif()
 
 if(X11 AND NOT WIN32 AND NOT APPLE AND NOT HAIKU)
