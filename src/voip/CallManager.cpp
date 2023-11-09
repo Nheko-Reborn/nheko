@@ -190,7 +190,7 @@ CallManager::CallManager(QObject *parent)
     player_.setAudioOutput(audioOutput);
 
     connect(
-      &player_, &QMediaPlayer::mediaStatusChanged, this, [this](QMediaPlayer::MediaStatus status) {
+      &player_, &QMediaPlayer::mediaStatusChanged, this, [](QMediaPlayer::MediaStatus status) {
           nhlog::ui()->debug("WebRTC: ringtone status {}",
                              QMetaEnum::fromType<QMediaPlayer::MediaStatus>().valueToKey(status));
       });
