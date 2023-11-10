@@ -2982,7 +2982,7 @@ Example: https://yourserver.example.com:8787</source>
         <comment>Summary above list of members</comment>
         <translation>
             <numerusform>%n henkilö huoneessa %1</numerusform>
-            <numerusform>%n henkilöä huonessa %1</numerusform>
+            <numerusform>%n henkilöä huoneessa %1</numerusform>
         </translation>
     </message>
     <message>
