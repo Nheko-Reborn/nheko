@@ -14,6 +14,7 @@ if (WIN32)
             CURL_USE_SCHANNEL=ON
             CURL_USE_OPENSSL=OFF
             CURL_USE_LIBSSH2=OFF
+            CURL_USE_LIBPSL=OFF
             CURL_DISABLE_FTP=ON
             CURL_DISABLE_FTP=ON
             CURL_DISABLE_FILE=ON
@@ -41,6 +42,7 @@ else()
             CURL_USE_SCHANNEL=OFF
             CURL_USE_OPENSSL=ON
             CURL_USE_LIBSSH2=OFF
+            CURL_USE_LIBPSL=OFF
             CURL_DISABLE_FTP=ON
             CURL_DISABLE_FTP=ON
             CURL_DISABLE_FILE=ON
