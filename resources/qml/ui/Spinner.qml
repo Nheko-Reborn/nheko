@@ -141,7 +141,7 @@ Item {
 
     MultiEffect {
         anchors.fill: row
-        shadowBlur: 14
+        blurMax: 14
         shadowEnabled: true
         shadowColor: spinner.foreground
         source: row
