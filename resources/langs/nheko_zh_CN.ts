@@ -263,7 +263,7 @@
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation>未能打开数据库，账户将登出！</translation>
+        <translation>未能打开数据库，账户将退出登录！</translation>
     </message>
     <message>
         <location line="+305"/>
@@ -692,7 +692,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation>/me 以彩虹色发送。</translation>
+        <translation>以彩虹色发送 /me。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -722,7 +722,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation>发送一条自定义消息类型的消息。</translation>
+        <translation>用自定义消息类型发送消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1145,12 +1145,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>You can configure when your messages will be deleted in %1. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation>你可以在 %1 中配置何时删除你的消息。在 Matrix 服务器原生支持此功能之前，只有当 Nheko 打开并且有删除消息的权限时才会执行删除。一般来说，0 表示禁用。</translation>
+        <translation>你可以在 %1 中配置何时删除你的消息。在 Matrix 服务器原生支持此功能之前，只有当 Nheko 打开并且有权限删除消息时才会执行删除。一般来说，0 表示禁用。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You can configure when your messages will be deleted in all rooms unless configured otherwise. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation>你可以在所有聊天室中配置何时删除你的消息，除非另有配置。在 Matrix 服务器原生支持此功能之前，只有当 Nheko 打开并且有删除消息的权限时才会执行删除。一般来说，0 表示禁用。</translation>
+        <translation>除非另有配置，你可以在所有聊天室中配置何时删除你的消息。在 Matrix 服务器原生支持此功能之前，只有当 Nheko 打开并且有权限删除消息时才会执行删除。一般来说，0 表示禁用。</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1160,7 +1160,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Automatically redacts messages after X days, unless otherwise protected. Set to 0 to disable.</source>
-        <translation>在 X 天后自动删除消息，除非另有保护。设为 0 则禁用。</translation>
+        <translation>除非另有保护，在 X 天后自动删除消息。设为 0 则禁用。</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1170,7 +1170,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Deletes your events in this room if there are more than X newer messages unless otherwise protected. Set to 0 to disable.</source>
-        <translation>如果有超过 X 条新消息，则删除你在此聊天室中的事件，除非另有保护。设为 0 则禁用。</translation>
+        <translation>除另有保护外，如果新消息超过 X 条，则删除你在此聊天室中的事件。设为 0 则禁用。</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1328,7 +1328,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation>用户加入、离开、名称或头像变更、封禁等</translation>
+        <translation>用户加入、离开、名称或头像变更、封禁等…</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1628,12 +1628,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>An unknown error occured. Make sure the homeserver domain is valid.</source>
-        <translation>发生了未知错误。请确保主服务器域名有效。</translation>
+        <translation>发生了未知错误。请确认服务器域名合法。</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本（v1.1 到 v1.5）。你无法登录。</translation>
+        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本 (v1.1 到 v1.5) 。您无法登录。</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -2520,7 +2520,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation>写一条消息…</translation>
+        <translation>写消息…</translation>
     </message>
 </context>
 <context>
@@ -3553,7 +3553,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+158"/>
         <source>Identity key changed. This breaks E2EE, so logging out.</source>
-        <translation>身份密钥已改变。此操作破坏了 E2EE，因此请登出。</translation>
+        <translation>身份密钥已改变。此操作破坏了 E2EE，因此请退出登录。</translation>
     </message>
 </context>
 <context>
@@ -4448,12 +4448,12 @@ Reason: %4</source>
     <message>
         <location filename="../../src/ui/UserProfile.cpp" line="+217"/>
         <source>Sign out device %1</source>
-        <translation>登出设备 %1</translation>
+        <translation>退出设备 %1</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>You signed out this device.</source>
-        <translation>你已登出此设备。</translation>
+        <translation>你已退出此设备。</translation>
     </message>
     <message>
         <location line="+50"/>
