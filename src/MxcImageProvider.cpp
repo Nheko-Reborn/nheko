@@ -181,7 +181,7 @@ MxcImageProvider::download(const QString &id,
                              .arg(requestedSize.width())
                              .arg(requestedSize.height())
                              .arg(crop ? "crop" : "scale")
-                             .arg(cropLocally ? 0 : radius);
+                             .arg(radius);
         QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                              "/media_cache",
                            fileName);
