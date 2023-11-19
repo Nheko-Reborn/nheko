@@ -21,6 +21,7 @@ Image {
         case Crypto.TOFU:
             return "image://colorimage/:/icons/icons/ui/shield-filled.svg?";
         case Crypto.Unverified:
+        case Crypto.MessageUnverified:
             return "image://colorimage/:/icons/icons/ui/shield-filled-exclamation-mark.svg?";
         default:
             return "image://colorimage/:/icons/icons/ui/shield-filled-cross.svg?";
@@ -39,8 +40,10 @@ Image {
             return qsTr("Encrypted by a verified device");
         case Crypto.TOFU:
             return qsTr("Encrypted by an unverified device, but you have trusted that user so far.");
+        case Crypto.MessageUnverified:
+            return qsTr("Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can't verify who sent the message.");
         default:
-            return qsTr("Encrypted by an unverified device or the key is from an untrusted source like the key backup.");
+            return qsTr("Encrypted by an unverified device.");
         }
     }
     ToolTip.visible: stateImg.hovered

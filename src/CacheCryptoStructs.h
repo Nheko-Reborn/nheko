@@ -22,10 +22,12 @@ QML_NAMED_ELEMENT(Crypto)
 //! How much a participant is trusted.
 enum Trust
 {
-    Unverified, //! Device unverified or master key changed.
-    TOFU,       //! Device is signed by the sender, but the user is not verified, but they never
-                //! changed the master key.
-    Verified,   //! User was verified and has crosssigned this device or device is verified.
+    Unverified,        //! Device unverified or master key changed.
+    MessageUnverified, //! Only for messages. The sender might be trusted, but we don't know, who
+                       //! was the sender for the message.
+    TOFU,     //! Device is signed by the sender, but the user is not verified, but they never
+              //! changed the master key.
+    Verified, //! User was verified and has crosssigned this device or device is verified.
 };
 Q_ENUM_NS(Trust)
 }
@@ -50,10 +52,9 @@ struct GroupSessionData
     uint64_t timestamp     = 0;
     uint32_t message_index = 0;
 
-    // If we got the session via key sharing or forwarding, we can usually trust it.
-    // If it came from asymmetric key backup, it is not trusted.
-    // TODO(Nico): What about forwards? They might come from key backup?
-    bool trusted = true;
+    // We generally don't trust keys unless they were sent to us by the original sender and include
+    // that senders signature.
+    bool trusted = false;
 
     // the original 25519 key
     std::string sender_key;

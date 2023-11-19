@@ -96,7 +96,9 @@ decryptEvent(const MegolmSessionIndex &index,
              const mtx::events::EncryptedEvent<mtx::events::msg::Encrypted> &event,
              bool dont_write_db = false);
 crypto::Trust
-calculate_trust(const std::string &user_id, const MegolmSessionIndex &index);
+calculate_trust(const std::string &user_id,
+                const std::string &room_id,
+                const mtx::events::msg::Encrypted &event);
 
 void
 mark_keys_as_published();

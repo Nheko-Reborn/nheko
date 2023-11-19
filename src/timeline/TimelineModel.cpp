@@ -854,8 +854,7 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                   std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                     &*encrypted_event)) {
                 return olm::calculate_trust(
-                  encrypted->sender,
-                  MegolmSessionIndex(room_id_.toStdString(), encrypted->content));
+                  encrypted->sender, room_id_.toStdString(), encrypted->content);
             }
         }
         return crypto::Trust::Unverified;

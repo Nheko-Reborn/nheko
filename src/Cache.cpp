@@ -924,9 +924,29 @@ Cache::saveInboundMegolmSession(const MegolmSessionIndex &index,
     std::string_view value;
     if (inboundMegolmSessionDb_.get(txn, key, value)) {
         auto oldSession = unpickle<InboundSessionObject>(std::string(value), pickle_secret_);
-        if (olm_inbound_group_session_first_known_index(session.get()) >
-            olm_inbound_group_session_first_known_index(oldSession.get())) {
-            nhlog::crypto()->warn("Not storing inbound session with newer first known index");
+
+        auto newIndex = olm_inbound_group_session_first_known_index(session.get());
+        auto oldIndex = olm_inbound_group_session_first_known_index(oldSession.get());
+
+        // merge trusted > untrusted
+        // first known index minimum
+        if (megolmSessionDataDb_.get(txn, key, value)) {
+            auto oldData = nlohmann::json::parse(value).get<GroupSessionData>();
+            if (oldData.trusted && newIndex >= oldIndex) {
+                nhlog::crypto()->warn(
+                  "Not storing inbound session of lesser trust or bigger index.");
+                return;
+            }
+
+            oldData.trusted = data.trusted || oldData.trusted;
+
+            if (newIndex < oldIndex) {
+                inboundMegolmSessionDb_.put(txn, key, pickled);
+                oldData.message_index = newIndex;
+            }
+
+            megolmSessionDataDb_.put(txn, key, nlohmann::json(oldData).dump());
+            txn.commit();
             return;
         }
     }
