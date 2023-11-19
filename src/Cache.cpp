@@ -39,7 +39,9 @@
 
 //! Should be changed when a breaking change occurs in the cache format.
 //! This will reset client's data.
-static const std::string CURRENT_CACHE_FORMAT_VERSION{"2023.10.22"};
+static constexpr std::string_view CURRENT_CACHE_FORMAT_VERSION{"2023.10.22"};
+static constexpr std::string_view MAX_DBS_SETTINGS_KEY{"database/maxdbs"};
+static constexpr std::string_view MAX_DB_SIZE_SETTINGS_KEY{"database/maxsize"};
 
 //! Keys used for the DB
 static const std::string_view NEXT_BATCH_KEY("next_batch");
@@ -47,13 +49,13 @@ static const std::string_view OLM_ACCOUNT_KEY("olm_account");
 static const std::string_view CACHE_FORMAT_VERSION_KEY("cache_format_version");
 static const std::string_view CURRENT_ONLINE_BACKUP_VERSION("current_online_backup_version");
 
-static constexpr auto MAX_DBS = 32384UL;
+static constexpr auto MAX_DBS_DEFAULT = 32384U;
 
 #if Q_PROCESSOR_WORDSIZE >= 5 // 40-bit or more, up to 2^(8*WORDSIZE) words addressable.
-static constexpr auto DB_SIZE                 = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
+static constexpr auto DB_SIZE_DEFAULT         = 32ULL * 1024ULL * 1024ULL * 1024ULL; // 32 GB
 static constexpr size_t MAX_RESTORED_MESSAGES = 30'000;
 #elif Q_PROCESSOR_WORDSIZE == 4 // 32-bit address space limits mmaps
-static constexpr auto DB_SIZE                 = 1ULL * 1024ULL * 1024ULL * 1024ULL; // 1 GB
+static constexpr auto DB_SIZE_DEFAULT         = 1ULL * 1024ULL * 1024ULL * 1024ULL; // 1 GB
 static constexpr size_t MAX_RESTORED_MESSAGES = 5'000;
 #else
 #error Not enough virtual address space for the database on target CPU
@@ -350,9 +352,28 @@ Cache::setup()
     }
 
     auto openEnv = [](const QString &name) {
+        auto settings      = UserSettings::instance();
+        std::size_t dbSize = std::max(
+          settings->qsettings()->value(MAX_DB_SIZE_SETTINGS_KEY, DB_SIZE_DEFAULT).toULongLong(),
+          DB_SIZE_DEFAULT);
+        unsigned dbCount =
+          std::max(settings->qsettings()->value(MAX_DBS_SETTINGS_KEY, MAX_DBS_DEFAULT).toUInt(),
+                   MAX_DBS_DEFAULT);
+
+        // ignore unreasonably high values of more than a quarter of the addressable memory
+        if (dbSize > (1ull << (Q_PROCESSOR_WORDSIZE * 8 - 2))) {
+            dbSize = DB_SIZE_DEFAULT;
+        }
+        // Limit databases to about a million. This would cause more than 7-120MB to get written on
+        // every commit, which I doubt would work well. File an issue, if you tested this and it
+        // works fine.
+        if (dbCount > (1u << 20)) {
+            dbCount = 1u << 20;
+        }
+
         auto e = lmdb::env::create();
-        e.set_mapsize(DB_SIZE);
-        e.set_max_dbs(MAX_DBS);
+        e.set_mapsize(dbSize);
+        e.set_max_dbs(dbCount);
         e.open(name.toStdString().c_str(), MDB_NOMETASYNC | MDB_NOSYNC);
         return e;
     };
@@ -2243,7 +2264,7 @@ Cache::saveStateEvent(lmdb::txn &txn,
 
 void
 Cache::saveState(const mtx::responses::Sync &res)
-{
+try {
     using namespace mtx::events;
     auto local_user_id = this->localUserId_.toStdString();
 
@@ -2489,6 +2510,42 @@ Cache::saveState(const mtx::responses::Sync &res)
     }
 
     emit roomReadStatus(readStatus);
+} catch (const lmdb::error &lmdbException) {
+    if (lmdbException.code() == MDB_DBS_FULL || lmdbException.code() == MDB_MAP_FULL) {
+        if (lmdbException.code() == MDB_DBS_FULL) {
+            auto settings = UserSettings::instance();
+
+            unsigned roomDbCount =
+              static_cast<unsigned>((res.rooms.invite.size() + res.rooms.join.size() +
+                                     res.rooms.knock.size() + res.rooms.leave.size()) *
+                                    20);
+
+            settings->qsettings()->setValue(
+              MAX_DBS_SETTINGS_KEY,
+              std::max(
+                settings->qsettings()->value(MAX_DBS_SETTINGS_KEY, MAX_DBS_DEFAULT).toUInt() * 2,
+                roomDbCount));
+        } else if (lmdbException.code() == MDB_MAP_FULL) {
+            auto settings = UserSettings::instance();
+
+            MDB_envinfo envinfo = {};
+            lmdb::env_info(env_, &envinfo);
+            settings->qsettings()->setValue(MAX_DB_SIZE_SETTINGS_KEY,
+                                            static_cast<qulonglong>(envinfo.me_mapsize * 2));
+        }
+
+        QMessageBox::warning(
+          nullptr,
+          tr("Database limit reached"),
+          tr("Your account is larger than our default database limit. We have "
+             "increased the capacity automatically, however you will need to "
+             "restart to apply this change. Nheko will now close automatically."),
+          QMessageBox::StandardButton::Close);
+        QCoreApplication::exit(1);
+        exit(1);
+    }
+
+    throw;
 }
 
 void
