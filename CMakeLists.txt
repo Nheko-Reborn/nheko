@@ -48,6 +48,8 @@ macro(hunter_add_package_safe)
     message("pkg_conf_path: '$ENV{PKG_CONFIG_PATH}', pkg_conf_libdir: '$ENV{PKG_CONFIG_LIBDIR}'")
 endmacro()
 
+project(nheko LANGUAGES CXX C)
+
 option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog." ${HUNTER_ENABLED})
 option(USE_BUNDLED_OLM "Use the bundled version of libolm." ${HUNTER_ENABLED})
 option(USE_BUNDLED_GTEST "Use the bundled version of Google Test." ${HUNTER_ENABLED})
@@ -108,8 +110,6 @@ endif()
 
 # Include Qt basic functions
 include(QtCommon)
-
-project(nheko LANGUAGES CXX C)
 
 include(GNUInstallDirs)
 
