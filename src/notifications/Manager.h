@@ -101,6 +101,7 @@ private:
     // but Qt slot declarations can not be inside an ifdef!
 private slots:
     void actionInvoked(uint id, QString action);
+    void activationToken(uint id, QString action);
     void notificationClosed(uint id, uint reason);
     void notificationReplied(uint id, QString reply);
 

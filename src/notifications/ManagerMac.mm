@@ -182,6 +182,8 @@ void NotificationsManager::attachToMacNotifCenter()
 // unused
 void NotificationsManager::actionInvoked(uint, QString) { }
 
+void NotificationsManager::activationToken(uint, QString) { }
+
 void NotificationsManager::notificationReplied(uint, QString) { }
 
 void NotificationsManager::notificationClosed(uint, uint) { }

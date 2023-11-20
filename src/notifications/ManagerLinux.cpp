@@ -22,6 +22,7 @@
 
 #include "Cache.h"
 #include "EventAccessors.h"
+#include "Logging.h"
 #include "MxcImageProvider.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
@@ -58,6 +59,12 @@ NotificationsManager::NotificationsManager(QObject *parent)
                                           QStringLiteral("ActionInvoked"),
                                           this,
                                           SLOT(actionInvoked(uint,QString)));
+    QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.Notifications"),
+                                          QStringLiteral("/org/freedesktop/Notifications"),
+                                          QStringLiteral("org.freedesktop.Notifications"),
+                                          QStringLiteral("ActivationToken"),
+                                          this,
+                                          SLOT(activationToken(uint,QString)));
     QDBusConnection::sessionBus().connect(QStringLiteral("org.freedesktop.Notifications"),
                                           QStringLiteral("/org/freedesktop/Notifications"),
                                           QStringLiteral("org.freedesktop.Notifications"),
@@ -254,6 +261,14 @@ NotificationsManager::actionInvoked(uint id, QString action)
             emit notificationClicked(idEntry.roomId, idEntry.eventId);
         }
     }
+}
+
+// receive a wayland activation token from the notification manager
+void
+NotificationsManager::activationToken(uint, QString action)
+{
+    nhlog::net()->debug("Got activation token for notification");
+    qputenv("XDG_ACTIVATION_TOKEN", action.toUtf8());
 }
 
 void

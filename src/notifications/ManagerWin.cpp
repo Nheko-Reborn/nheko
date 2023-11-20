@@ -96,6 +96,10 @@ NotificationsManager::actionInvoked(uint, QString)
 {}
 
 void
+NotificationsManager::activationToken(uint, QString)
+{}
+
+void
 NotificationsManager::notificationReplied(uint, QString)
 {}
 
