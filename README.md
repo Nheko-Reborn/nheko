@@ -251,6 +251,7 @@ KDE has similar plugins, that can extend the supported image types even more.
     - [libnice](https://gitlab.freedesktop.org/libnice/libnice)
 - XCB, XCB-EWMH: For screensharing support on X11 and setting window roles. Can be disabled with `-DSCREENSHARE_X11=OFF`.
 - [qtkeychain](https://github.com/frankosterfeld/qtkeychain) (You need at least version 0.12 for proper Gnome Keychain support. The bundled version requires libsecret, unless you pass `-DLIBSECRET_SUPPORT=OFF`.)
+- [KDSingleApplication](https://github.com/KDAB/KDSingleApplication) (1.0 or greater with Qt6 support)
 - A compiler that supports C++ 20:
     - Clang 16 (Only clazy 16 is tested in CI)
     - GCC 11 (tested on Gitlab CI)
@@ -276,6 +277,7 @@ The bundle flags are currently:
 - USE_BUNDLED_COEURL
 - USE_BUNDLED_LIBCURL
 - USE_BUNDLED_LIBEVENT
+- USE_BUNDLED_KDSINGLEAPPLICATION
 
 A note on bundled OpenSSL: You need to explicitly enable it and it will not be using your system certificate directory by default, if you enable it. You need to override that at runtime with the SSL_CERT_FILE variable. On Windows it will still be using your system certificates though, since it loads them from the system store instead of the OpenSSL directory.
 
@@ -442,7 +444,6 @@ Here are some screen shots to get a feel for the UI, but things will probably ch
 
 ### Third party
 
-- [Single Application for Qt](https://github.com/itay-grudev/SingleApplication)
 - [Fluent Icons](https://github.com/microsoft/fluentui-system-icons)
 
 [Matrix]:https://matrix.org

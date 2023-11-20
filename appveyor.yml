@@ -45,7 +45,7 @@ build_script:
     # Build nheko
     - cmake -G "Visual Studio 17 2022" -A x64 -H. -Bbuild
       -DHUNTER_ROOT="C:\hunter"
-      -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON
+      -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_KDSINGLEAPPLICATION=ON
       -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
 
     - cmake --build build --config Release

@@ -63,6 +63,7 @@ option(USE_BUNDLED_COEURL "Use a bundled version of the Curl wrapper"
 option(USE_BUNDLED_LIBEVENT "Use the bundled version of libevent." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LIBCURL "Use the bundled version of libcurl." ${HUNTER_ENABLED})
 option(USE_BUNDLED_RE2 "Use the bundled version of re2." ${HUNTER_ENABLED})
+option(USE_BUNDLED_KDSINGLEAPPLICATION "Use the bundled version of KDSingleApplication." ${HUNTER_ENABLED})
 option(USE_BUNDLED_CPPHTTPLIB "Use the bundled version of cpp-httplib." ON)
 option(USE_BUNDLED_BLURHASH "Use the bundled version of blurhash." ON)
 
@@ -251,15 +252,24 @@ if(USE_BUNDLED_QTKEYCHAIN)
         GIT_REPOSITORY https://github.com/frankosterfeld/qtkeychain.git
         GIT_TAG        v0.14.0
     )
-    if(BUILD_SHARED_LIBS)
-        set(QTKEYCHAIN_STATIC OFF CACHE INTERNAL "")
-    else()
-        set(QTKEYCHAIN_STATIC ON CACHE INTERNAL "")
-    endif()
     set(BUILD_TEST_APPLICATION OFF CACHE INTERNAL "")
     FetchContent_MakeAvailable(qt6keychain)
 else()
     find_package(Qt6Keychain REQUIRED)
+endif()
+
+if(USE_BUNDLED_KDSINGLEAPPLICATION)
+    include(FetchContent)
+    set(KDSingleApplication_QT6 ON CACHE BOOL INTERNAL)
+    set(KDSingleApplication_EXAMPLES OFF CACHE BOOL INTERNAL)
+    FetchContent_Declare(
+        kdsingleapplication
+        GIT_REPOSITORY https://github.com/KDAB/KDSingleApplication.git
+        GIT_TAG        v1.0.0
+    )
+    FetchContent_MakeAvailable(kdsingleapplication)
+else()
+    find_package(KDSingleApplication-qt6 REQUIRED)
 endif()
 
 if(Qt6Widgets_FOUND)
@@ -613,10 +623,6 @@ if(X11 AND NOT WIN32 AND NOT APPLE AND NOT HAIKU)
     pkg_check_modules(XCB REQUIRED IMPORTED_TARGET xcb xcb-ewmh)
 endif()
 
-# single instance functionality
-set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
-add_subdirectory(third_party/SingleApplication-3.3.2/)
-
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 # this must be defined here to make the moc work properly
@@ -867,6 +873,9 @@ endif()
 if(USE_BUNDLED_QTKEYCHAIN)
     target_include_directories(nheko PRIVATE ${qt6keychain_SOURCE_DIR} ${qt6keychain_BINARY_DIR})
 endif()
+if(USE_BUNDLED_KDSINGLEAPPLICATION)
+    target_include_directories(nheko PRIVATE ${kdsingleapplication_SOURCE_DIR} ${kdsingleapplication_BINARY_DIR})
+endif()
 
 if(NOT JSON_ImplicitConversions)
     set_target_properties(nlohmann_json::nlohmann_json PROPERTIES
@@ -888,10 +897,11 @@ target_link_libraries(nheko PRIVATE
     Qt::QmlPrivate
     Qt::QuickControls2
     qt6keychain
+    KDAB::kdsingleapplication
     nlohmann_json::nlohmann_json
     lmdbxx::lmdbxx
-    liblmdb::lmdb
-    SingleApplication::SingleApplication)
+    liblmdb::lmdb)
+    
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
     target_precompile_headers(nheko

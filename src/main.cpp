@@ -20,6 +20,8 @@
 #include <QStandardPaths>
 #include <QTranslator>
 
+#include <kdsingleapplication.h>
+
 #include "Cache.h"
 #include "ChatPage.h"
 #include "Logging.h"
@@ -27,7 +29,6 @@
 #include "MatrixClient.h"
 #include "Utils.h"
 #include "config/nheko.h"
-#include "singleapplication.h"
 
 #if defined(Q_OS_MAC)
 #include "emoji/MacHelper.h"
@@ -196,14 +197,11 @@ main(int argc, char *argv[])
         }
     }
 
-    SingleApplication app(argc,
-                          argv,
-                          true,
-                          SingleApplication::Mode::User | SingleApplication::Mode::ExcludeAppPath |
-                            SingleApplication::Mode::ExcludeAppVersion |
-                            SingleApplication::Mode::SecondaryNotification,
-                          100,
-                          userdata == QLatin1String("default") ? QLatin1String("") : userdata);
+    QApplication app(argc, argv);
+
+    KDSingleApplication singleapp(
+      QStringLiteral("im.nheko.nheko-%1")
+        .arg(userdata == QLatin1String("default") ? QLatin1String("") : userdata));
 
     QCommandLineParser parser;
     parser.addHelpOption();
@@ -249,11 +247,19 @@ main(int argc, char *argv[])
 
     // This check needs to happen _after_ process(), so that we actually print help for --help when
     // Nheko is already running.
-    if (app.isSecondary()) {
-        std::cout << "Sending Matrix URL to main application: " << matrixUri.toStdString()
-                  << std::endl;
+    if (!singleapp.isPrimaryInstance()) {
+        std::cout << "Activating main app (instead of opening it a second time)." << std::endl;
         //  open uri in main instance
-        app.sendMessage(matrixUri.toUtf8());
+        //  TODO(Nico): Send also an activation token.
+        singleapp.sendMessage("activate");
+
+        if (!matrixUri.isEmpty()) {
+            std::cout << "Sending Matrix URL to main application: " << matrixUri.toStdString()
+                      << std::endl;
+            //  open uri in main instance
+            singleapp.sendMessage(matrixUri.toUtf8());
+        }
+
         return 0;
     }
 
@@ -384,27 +390,28 @@ main(int argc, char *argv[])
             nhlog::net()->debug("bye");
         }
     });
-    QObject::connect(&app, &SingleApplication::instanceStarted, &w, [&w]() {
-        w.show();
-        w.raise();
-        w.requestActivate();
-    });
 
     // It seems like handling the message in a blocking manner is a no-go. I have no idea how to
     // fix that, so just use a queued connection for now...  (ASAN does not cooperate and just
     // hides the crash D:)
     QObject::connect(
-      &app,
-      &SingleApplication::receivedMessage,
+      &singleapp,
+      &KDSingleApplication::messageReceived,
       ChatPage::instance(),
-      [&](quint32, QByteArray message) {
-          QString m = QString::fromUtf8(message);
-          ChatPage::instance()->handleMatrixUri(m);
+      [&](QByteArray message) {
+          if (message.isEmpty() || message.startsWith("activate")) {
+              w.show();
+              w.raise();
+              w.requestActivate();
+          } else {
+              QString m = QString::fromUtf8(message);
+              ChatPage::instance()->handleMatrixUri(m);
+          }
       },
       Qt::QueuedConnection);
 
     QMetaObject::Connection uriConnection;
-    if (app.isPrimary() && !matrixUri.isEmpty()) {
+    if (singleapp.isPrimaryInstance() && !matrixUri.isEmpty()) {
         uriConnection = QObject::connect(ChatPage::instance(),
                                          &ChatPage::contentLoaded,
                                          ChatPage::instance(),

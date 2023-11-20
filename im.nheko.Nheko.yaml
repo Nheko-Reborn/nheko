@@ -16,8 +16,6 @@ finish-args:
   - --talk-name=org.freedesktop.secrets
   - --talk-name=org.freedesktop.StatusNotifierItem
   - --talk-name=org.kde.*
-  # needed for SingleApplication to work
-  - --allow=per-app-dev-shm
 cleanup:
   - /include
   - /lib/pkgconfig
@@ -159,6 +157,15 @@ modules:
       - sha256: d69f9deb6a75e2580465c6c4c5111b89c4dc2fa94e3a85fcd2ffcd9a143d9273
         type: archive
         url: https://github.com/nlohmann/json/archive/v3.11.2.tar.gz
+  - config-opts:
+      - -DKDSingleApplication_EXAMPLES=OFF
+      - -DKDSingleApplication_QT6=ON
+    buildsystem: cmake
+    name: kdsingleapplication
+    sources:
+      - sha256: c92355dc10f3ebd39363458458fb5bdd9662e080cf77d91f0437763c4d936520
+        type: archive
+        url: https://github.com/KDAB/KDSingleApplication/releases/download/v1.0.0/kdsingleapplication-1.0.0.tar.gz
   - buildsystem: simple
     build-commands:
       - make static
