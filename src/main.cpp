@@ -10,7 +10,6 @@
 #include <QDir>
 #include <QFile>
 #include <QFontDatabase>
-#include <QGuiApplication>
 #include <QLabel>
 #include <QLibraryInfo>
 #include <QMessageBox>
@@ -19,6 +18,10 @@
 #include <QScreen>
 #include <QStandardPaths>
 #include <QTranslator>
+
+#ifdef Q_OS_UNIX
+#include <QtGui/qpa/qplatformwindow_p.h>
+#endif
 
 #include <kdsingleapplication.h>
 
@@ -248,10 +251,47 @@ main(int argc, char *argv[])
     // This check needs to happen _after_ process(), so that we actually print help for --help when
     // Nheko is already running.
     if (!singleapp.isPrimaryInstance()) {
-        std::cout << "Activating main app (instead of opening it a second time)." << std::endl;
+        auto token = qgetenv("XDG_ACTIVATION_TOKEN");
+
+#ifdef Q_OS_UNIX
+        // getting a valid activation token on wayland is a bit of a pain, it works most reliably
+        // when you have an actual window, that has the focus...
+        auto waylandApp = app.nativeInterface<QNativeInterface::QWaylandApplication>();
+        if (waylandApp) {
+            QQuickView window;
+            window.setTitle("Activate main instance");
+            window.setMaximumSize(QSize(100, 50));
+            window.setMinimumSize(QSize(100, 50));
+            window.setResizeMode(QQuickView::ResizeMode::SizeRootObjectToView);
+            window.setSource(QUrl(QStringLiteral("qrc:///resources/qml/ui/Spinner.qml")));
+            window.show();
+            auto waylandWindow =
+              window.nativeInterface<QNativeInterface::Private::QWaylandWindow>();
+            if (waylandWindow) {
+                std::cout << "Launching temp window to activate main instance!\n";
+                QObject::connect(
+                  waylandWindow,
+                  &QNativeInterface::Private::QWaylandWindow::xdgActivationTokenCreated,
+                  waylandWindow,
+                  [&token, &app](QString newToken) { // clazy:exclude=lambda-in-connect
+                      token = newToken.toUtf8();
+                      app.exit();
+                  },
+                  Qt::SingleShotConnection);
+                QTimer::singleShot(100, waylandWindow, [waylandWindow, waylandApp] {
+                    waylandWindow->requestXdgActivationToken(waylandApp->lastInputSerial());
+                });
+                app.exec();
+            }
+        }
+#endif
+
+        std::cout << "Activating main app (instead of opening it a second time)."
+                  << token.toStdString() << std::endl;
+
         //  open uri in main instance
         //  TODO(Nico): Send also an activation token.
-        singleapp.sendMessage("activate");
+        singleapp.sendMessage("activate" + token);
 
         if (!matrixUri.isEmpty()) {
             std::cout << "Sending Matrix URL to main application: " << matrixUri.toStdString()
@@ -400,6 +440,11 @@ main(int argc, char *argv[])
       ChatPage::instance(),
       [&](QByteArray message) {
           if (message.isEmpty() || message.startsWith("activate")) {
+              auto token = message.remove(0, sizeof("activate") - 1);
+              if (!token.isEmpty()) {
+                  nhlog::ui()->debug("Setting activation token to: {}", token.toStdString());
+                  qputenv("XDG_ACTIVATION_TOKEN", token);
+              }
               w.show();
               w.raise();
               w.requestActivate();

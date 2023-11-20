@@ -902,6 +902,10 @@ target_link_libraries(nheko PRIVATE
     lmdbxx::lmdbxx
     liblmdb::lmdb)
     
+if(UNIX)
+    # for wayland activation tokens
+    target_link_libraries(nheko PRIVATE Qt::GuiPrivate)
+endif()
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
     target_precompile_headers(nheko
