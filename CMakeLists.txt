@@ -69,7 +69,7 @@ option(USE_BUNDLED_BLURHASH "Use the bundled version of blurhash." ON)
 
 include(CMakeDependentOption)
 set(VOIP_DEFAULT ON)
-if(APPLE OR WIN32)
+if(APPLE OR WIN32 OR HAIKU)
     set(VOIP_DEFAULT OFF)
 endif()
 option(VOIP "Whether to enable voip support. Disable this, if you don't have gstreamer." ${VOIP_DEFAULT})
@@ -926,6 +926,10 @@ endif()
 
 if(MSVC)
     target_link_libraries(nheko PRIVATE ntdll)
+endif()
+
+if(HAIKU)
+    target_link_libraries(nheko PRIVATE network)
 endif()
 
 if(QML_DEBUGGING)
