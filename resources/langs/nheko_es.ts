@@ -216,12 +216,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+878"/>
         <source>X11</source>
-        <translation></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -265,7 +265,7 @@
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
         <translation>Debido a la siguiente razón Nheko quiere dejarte en la página de inicio de sesión:
 %1
-Si crees que se trata de un error, puedes cerrar Nheko para recuperar tus claves de encriptación. Después de haber sido dejado en la página de inicio de sesión, puede iniciar sesión de nuevo utilizando sus métodos habituales.</translation>
+Si crees que se trata de un error, puedes cerrar Nheko para recuperar tus claves de cifrado. Después de haber sido dejado en la página de inicio de sesión, puede iniciar sesión de nuevo utilizando sus métodos habituales.</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -280,29 +280,30 @@ Si crees que se trata de un error, puedes cerrar Nheko para recuperar tus claves
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation>Error al abrir la base de datos, cerrando sesión!</translation>
+        <translation>Error al abrir la base de datos, ¡cerrando sesión!</translation>
     </message>
     <message>
         <location line="+305"/>
         <source>Knock on room</source>
-        <translation>Llamar a la sala</translation>
+        <translatorcomment>@CM0use: Empezare a usar &quot;Toc&quot; y no &quot;Llamar&quot; para no confundir ambos terminos</translatorcomment>
+        <translation>Toc en la habitación</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation>No has podido entrar en %1. Puedes intentar llamar para que otros te inviten a entrar. ¿Quieres hacerlo?
-Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translation>
+        <translation>No has podido entrar en %1. Puedes intentar hacer toc para que otros te inviten a entrar. ¿Quieres hacerlo?
+Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation>¿De verdad quieres llamar a %1? Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translation>
+        <translation>¿De verdad quieres hacer toc a %1? Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Failed to knock room: %1</source>
-        <translation>Fallo al llamar a la sala: %1</translation>
+        <translation>Fallo al hacer toc a la sala: %1</translation>
     </message>
     <message>
         <location line="+59"/>
@@ -393,7 +394,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="-984"/>
         <source>Cache migration failed!</source>
-        <translation>Migración de cache fallida!</translation>
+        <translation>¡Migración de cache fallida!</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -415,7 +416,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+54"/>
         <source>Failed to setup encryption keys. Server response: %1 %2. Please try again later.</source>
-        <translation>No se han podido configurar las claves de encriptación. Respuesta del servidor: %1 %2. Por favor intentalo de nuevo más tarde.</translation>
+        <translation>No se han podido configurar las claves de cifrado. Respuesta del servidor: %1 %2. Por favor intentalo de nuevo más tarde.</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -459,288 +460,288 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+108"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;mensaje&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;texto&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/join &lt;!roomid|#alias&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/join &lt;!idsala|#alias&gt; [motivo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/knock &lt;!roomid|#alias&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/knock &lt;!idsala|#alias&gt; [motivo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [motivo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [motivo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/invite &lt;@userid&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/invite &lt;@idusuario&gt; [motivo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/kick &lt;@userid&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/kick &lt;@idusuario&gt; [motivo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/ban &lt;@userid&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/ban &lt;@idusuario&gt; [motivo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/unban &lt;@userid&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/unban &lt;@idusuario&gt; [motivo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/redact &lt;$eventid|@userid&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/redact &lt;$eventoid|@idusuario&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/roomnick &lt;displayname&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/roomnick &lt;nombre visual&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/shrug [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/shrug [mensaje]</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>/md &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/md &lt;mensaje&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;mensaje&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/plain &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/plain &lt;mensaje&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbow &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbow &lt;mensaje&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowme &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowme &lt;mensaje&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/notice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice &lt;mensaje&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbownotice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbownotice &lt;mensaje&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/confetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/confetti [mensaje]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowconfetti [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowconfetti [mensaje]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [mensaje]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;tipomensaje&gt; [mensaje]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;mensaje de referencia&gt;</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar un mensaje expresando una acción.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar &lt;texto&gt; como reacción cuando respondas a un mensaje.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Unirse a una sala. El motivo es opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pide entrar en una sala. El motivo es opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Abandona una habitación. El motivo es opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Invita a un usuario a la sala actual. El motivo es opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Expulsa a un usuario de la sala actual. El motivo es opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Banea a un usuario de la sala actual. El motivo es opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Desbanea a un usuario de la sala actual. El motivo es opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Redacta un evento o todos los mensajes almacenados en caché local de un usuario.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change your displayname in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cambia tu nombre visual en esta sala.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>¯\_(ツ)_/¯ with an optional message.</source>
-        <translation type="unfinished"></translation>
+        <translation>¯\_(ツ)_/¯ con un mensaje opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>(╯°□°)╯︵ ┻━┻</source>
-        <translation type="unfinished"></translation>
+        <translation>(╯°□°)╯︵ ┻━┻</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>┯━┯╭( º _ º╭)</source>
-        <translation type="unfinished"></translation>
+        <translation>┯━┯╭( º _ º╭)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ノ┬─┬ノ ︵ ( \o°o)\</source>
-        <translation type="unfinished"></translation>
+        <translation>ノ┬─┬ノ ︵ ( \o°o)\</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Clear the currently cached messages in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Borra los mensajes actualmente almacenados en caché en esta sala.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refetch the state in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vuelva a buscar el estado en esta sala.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Gira la clave de cifrado simétrica actual.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar un mensaje con formato markdown (ignorando la configuración global).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envía un mensaje con formato commonmark deshabilitando la mayoría de las extensiones en comparación con /md.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar un mensaje sin formato (ignorando la configuración global).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envía un mensaje con los colores del arcoiris.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envíame a /me en los colores del arcoiris.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar un mensaje bot.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envía un mensaje bot con los colores del arcoiris.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envía un mensaje con confeti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envía un mensaje con los colores del arcoiris con confeti.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envía un mensaje con lluvia.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar un mensaje con un tipo de mensaje personalizado.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Ir a un mensaje específico utilizando un id de evento, índice o matrix: enlace</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convierte esta sala en un chat directo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convierte este chat directo en una sala.</translation>
     </message>
 </context>
 <context>
@@ -862,7 +863,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation>A esta sala no se puede entrar directamente. Sin embargo, puede llamar a la sala y los miembros de la sala pueden aceptar o rechazar esta solicitud de ingreso. Además, a continuación puedes darles una razón para que te dejen entrar:</translation>
+        <translation>A esta sala no se puede entrar directamente. Sin embargo, puede hacer toc a la sala y los miembros de la sala pueden aceptar o rechazar esta solicitud de ingreso. Además, a continuación puedes darles una razón para que te dejen entrar:</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -872,7 +873,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation>Llamar</translation>
+        <translation>Toc</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -895,12 +896,12 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation>@usuario:server.tld</translation>
+        <translation>@usuario:servidor.tld</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation>Encriptación</translation>
+        <translation>Cifrado</translation>
     </message>
 </context>
 <context>
@@ -958,12 +959,13 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation>Todos los invitados tienen el mismo nivel de poder que el creador</translation>
+        <translatorcomment>@CM0use: Considero que es mejor usar &quot;powerlevel&quot; que &quot;nivel de poder&quot;</translatorcomment>
+        <translation>Todos los invitados tienen el mismo powerlevel que el creador</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation>Encriptación</translation>
+        <translation>Cifrado</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -981,27 +983,27 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location filename="../../src/ChatPage.cpp" line="+312"/>
         <source>Decrypt secrets</source>
-        <translation>Desencriptar secretos</translation>
+        <translation>Descifrar secretos</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase to decrypt your secrets:</source>
-        <translation>Utiliza tu clave de recuperación o contraseña para desencriptar tus secretos:</translation>
+        <translation>Utiliza tu clave de recuperación o contraseña para descifrar tus secretos:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Enter your recovery key or passphrase called %1 to decrypt your secrets:</source>
-        <translation>Utiliza tu clave de recuperación o contraseña llamada %1 para desencriptar tus secretos:</translation>
+        <translation>Utiliza tu clave de recuperación o contraseña llamada %1 para descifrar tus secretos:</translation>
     </message>
     <message>
         <location line="+28"/>
         <source>Decryption failed</source>
-        <translation>Desencriptación fallida</translation>
+        <translation>Descifrado fallido</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Failed to decrypt secrets with the provided recovery key or passphrase</source>
-        <translation>Error al desencriptar los secretos con la clave de recuperación o contraseña utilizadas</translation>
+        <translation>Error al descifrar los secretos con la clave de recuperación o contraseña utilizadas</translation>
     </message>
 </context>
 <context>
@@ -1014,17 +1016,17 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+8"/>
         <source>Please verify the following digits. You should see the same numbers on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Por favor verifica los siguientes digitos. Deberías ver los mismos números en ambos lados. Si son diferentes,por favor presiona &apos;No son iguales!&apos; para abortar la verificación!</translation>
+        <translation>Por favor verifica los siguientes digitos. Deberías ver los mismos números en ambos lados. Si son diferentes,por favor presiona &apos;¡No son iguales!&apos; ¡para abortar la verificación!</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>They do not match!</source>
-        <translation>No son iguales!</translation>
+        <translation>¡No son iguales!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation>Son iguales!</translation>
+        <translation>¡Son iguales!</translation>
     </message>
 </context>
 <context>
@@ -1037,7 +1039,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Por favor verifica el siguiente emoji. Deberías ver el mismo emoji en ambos lados. Si son diferentes, por favor presiona &apos;No son iguales!&apos; para abortar la verificación!</translation>
+        <translation>Por favor verifica el siguiente emoji. Deberías ver el mismo emoji en ambos lados. Si son diferentes, por favor presiona &apos;¡No son iguales!&apos; ¡para abortar la verificación!</translation>
     </message>
     <message>
         <location line="+379"/>
@@ -1047,12 +1049,12 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+10"/>
         <source>They do not match!</source>
-        <translation>No son iguales!</translation>
+        <translation>¡No son iguales!</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>They match!</source>
-        <translation>Son iguales!</translation>
+        <translation>¡Son iguales!</translation>
     </message>
 </context>
 <context>
@@ -1065,17 +1067,17 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+2"/>
         <source>This message couldn&apos;t be decrypted, because we only have a key for newer messages. You can try requesting access to this message.</source>
-        <translation>Este mensaje no pudo ser desencriptado, porque sólo tenemos la clave para los mensajes más recientes. Puedes intentar solicitando acceso a este mensaje.</translation>
+        <translation>Este mensaje no pudo ser descifrado, porque sólo tenemos la clave para los mensajes más recientes. Puedes intentar solicitando acceso a este mensaje.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an internal error reading the decryption key from the database.</source>
-        <translation>Hubo un error interno leyendo la clave de desencriptación de la base de datos.</translation>
+        <translation>Hubo un error interno leyendo la clave de descifrado de la base de datos.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>There was an error decrypting this message.</source>
-        <translation>Hubo un error desencriptando este mensaje.</translation>
+        <translation>Hubo un error descifrando este mensaje.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1085,12 +1087,12 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation>La clave de encriptación fue reusada! Es posible que alguien este intentando insertar mensajes falsos en enste chat!</translation>
+        <translation>¡La clave de cifrado fue reusada! Es posible que alguien este ¡intentando insertar mensajes falsos en enste chat!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation>Error de desencriptación desconocido</translation>
+        <translation>Error de descifrado desconocido</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1116,22 +1118,22 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
         <source>This message is not encrypted!</source>
-        <translation>Este mensaje no está encriptado!</translation>
+        <translation>¡Este mensaje no está cifrado!</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Encrypted by a verified device</source>
-        <translation>Encriptado por un dispositivo verificado</translation>
+        <translation>Cifrado por un dispositivo verificado</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation>Encriptado por un dispositivo sin verificar, pero hasta ahora has confiado en este usuario.</translation>
+        <translation>Cifrado por un dispositivo sin verificar, pero hasta ahora has confiado en este usuario.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation>Encriptado por un dispositivo sin verificar o la clave proviene de una fuente no confiable como la copia de seguridad.</translation>
+        <translation>Cifrado por un dispositivo sin verificar o la clave proviene de una fuente no confiable como la copia de seguridad.</translation>
     </message>
 </context>
 <context>
@@ -1221,7 +1223,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+4"/>
         <source>Key mismatch detected!</source>
-        <translation>Las claves no son iguales!</translation>
+        <translation>¡Las claves no son iguales!</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1236,7 +1238,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation>Los mensajes de verificación fueron recibidos en desorden!</translation>
+        <translation>¡Los mensajes de verificación fueron recibidos en desorden!</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1337,7 +1339,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation>Cambios en el nivel de poder</translation>
+        <translation>Cambios en el powerlevel</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1347,6 +1349,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+16"/>
         <source>Stickers</source>
+        <translatorcomment>@CM0use: Es valido colocarlo como &quot;Pegatinas&quot; o como &quot;Stickers&quot;, preferi escoger &quot;Pegatinas&quot;.</translatorcomment>
         <translation>Pegatinas</translation>
     </message>
 </context>
@@ -1490,7 +1493,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation></translation>
+        <translation>Pack de la comunidad parental</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1609,7 +1612,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu llamada:</translat
         <location line="+64"/>
         <location line="+127"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
-        <translation>Ha introducido un ID de matriz no válido, por ejemplo @usuario:suservidor.ejemplo.com</translation>
+        <translation>Ha introducido un ID de matrix no válido, por ejemplo @usuario:suservidor.ejemplo.com</translation>
     </message>
     <message>
         <location line="-157"/>
@@ -1943,7 +1946,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location line="+6"/>
         <source>View decrypted raw message</source>
-        <translation>Ver código fuente sin encriptar</translation>
+        <translation>Ver código fuente sin cifrar</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1991,7 +1994,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation>Para que otros usuarios puedan ver cuáles de tus dispositivos te pertenecen realmente, puedes verificarlos. Esto también permite que la copia de seguridad de las claves funcione automáticamente. ¿Verificar ahora un dispositivo no verificado? (Asegúrate de que tienes uno de esos dispositivos disponible).</translation>
+        <translation>Para que otros usuarios puedan ver cuáles de tus dispositivos te pertenecen realmente, puedes verificarlos. Esto también permite que la copia de seguridad de las claves funcione automáticamente. ¿Verificar ahora un dispositivo no verificado? (Asegúrate de que tienes uno de esos dispositivos disponible.)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2045,7 +2048,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
         <location filename="../../src/notifications/Manager.cpp" line="+23"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+83"/>
         <source>%1 sent an encrypted message</source>
-        <translation>%1 envió un mensaje encriptado</translation>
+        <translation>%1 envió un mensaje cifrado</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2056,7 +2059,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
         <source>%1 replied with an encrypted message</source>
-        <translation>%1 respondió con un mensaje encriptado</translation>
+        <translation>%1 respondió con un mensaje cifrado</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2125,7 +2128,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location line="+13"/>
         <source>Roles</source>
-        <translation></translation>
+        <translation>Roles</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2629,7 +2632,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location filename="../qml/pages/RegisterPage.qml" line="+58"/>
         <source>Homeserver</source>
-        <translation></translation>
+        <translation>Homeserver</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -2870,12 +2873,12 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location line="+11"/>
         <source>Automatic online status</source>
-        <translation>Estado online automático</translation>
+        <translation>Estado en línea automático</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Online</source>
-        <translation></translation>
+        <translation>En línea</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2891,7 +2894,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
         <location line="+54"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
-        <translation>La encriptación no está configurada</translation>
+        <translation>El cifrado no está configurado</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -3020,7 +3023,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation></translation>
+        <translation>Power level</translation>
     </message>
     <message>
         <location line="+92"/>
@@ -3155,7 +3158,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation>Permitir llamar</translation>
+        <translation>Permitir hacer toc</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3294,7 +3297,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     <message>
         <location line="+17"/>
         <source>Permission</source>
-        <translation>Permisos</translation>
+        <translation>Permiso</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3507,7 +3510,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
         <source>Hello and welcome to Matrix!
 It seems like you are new. Before you can securely encrypt your messages, we need to setup a few small things. You can either press accept immediately or adjust a few basic options. We also try to explain a few of the basics. You can skip those parts, but they might prove to be helpful!</source>
         <translation>¡Hola y bienvenido a Matrix!
-Parece que eres nuevo. Antes de que puedas encriptar tus mensajes de forma segura, debemos configurar unas cuantas cosas. Puedes presionar aceptar de inmediato o ajustar unas cuantas opciones básicas. También intentamos explicar algunas de las bases. Puedes omitir esas partes pero, ¡podrían ser útiles!</translation>
+Parece que eres nuevo. Antes de que puedas cifrar tus mensajes de forma segura, debemos configurar unas cuantas cosas. Puedes presionar aceptar de inmediato o ajustar unas cuantas opciones básicas. También intentamos explicar algunas de las bases. Puedes omitir esas partes pero, ¡podrían ser útiles!</translation>
     </message>
     <message>
         <location line="+108"/>
@@ -3819,7 +3822,7 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
     <message>
         <location line="+2"/>
         <source>%1 allowed to join this room by knocking.</source>
-        <translation>%1 se le permitió unirse a esta sala tocando la puerta.</translation>
+        <translation>%1 se le permitió unirse a esta sala haciendo toc a la puerta.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3870,9 +3873,9 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now kick room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ahora un miembro puede expulsar a los miembros de la sala.</numerusform>
+            <numerusform>%n ahora los miembros pueden expulsar a los miembros de la sala.</numerusform>
         </translation>
     </message>
     <message>
@@ -3888,9 +3891,9 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
     <message numerus="yes">
         <location line="+14"/>
         <source>%n member(s) can now redact room messages.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ahora puede redactar mensajes de sala.</numerusform>
+            <numerusform>%n ahora pueden redactar mensajes de sala.</numerusform>
         </translation>
     </message>
     <message>
@@ -3906,9 +3909,9 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now ban room members.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ahora un miembro puede banear a los miembros de la sala.</numerusform>
+            <numerusform>%n ahora los miembros pueden banear a los miembros de la sala.</numerusform>
         </translation>
     </message>
     <message>
@@ -3924,9 +3927,9 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
     <message numerus="yes">
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n ahora un miembro puede enviar eventos de estado.</numerusform>
+            <numerusform>%n ahora los miembros pueden enviar eventos de estado.</numerusform>
         </translation>
     </message>
     <message>
@@ -3977,22 +3980,22 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
     <message>
         <location line="+16"/>
         <source>%1 allowed only administrators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sólo permitía a los administradores enviar &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed only moderators to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sólo permitía a los moderadores enviar &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 allowed everyone to send &quot;%2&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 permitió a todos enviar &quot;%2&quot;.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed the powerlevel of event type &quot;%2&quot; from the default to %3.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 ha cambiado el powerlevel del tipo de evento &quot;%2&quot; del predeterminado a %3.</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -4022,37 +4025,37 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
     <message>
         <location line="+35"/>
         <source>%1 disabled the rule to ban users matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 deshabilitó la regla para banear usuarios que coincidan con %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban users matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 añadió una regla para banear usuarios que coincidan con %2 para &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban rooms matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 desactivó la regla para banear salas que coincidan con %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban rooms matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 añadió una regla para banear salas que coincidan con %2 para &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 disabled the rule to ban servers matching %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 desactivó la regla para banear servidores que coincidan con %2.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 added a rule to ban servers matching %2 for &apos;%3&apos;.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 añadió una regla para banear servidores que coincidan con %2 para &apos;%3&apos;.</translation>
     </message>
     <message>
         <location line="+34"/>
         <source>Removed by %1</source>
-        <translation>Mensaje eliminado por %1</translation>
+        <translation>Eliminado por %1</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4062,14 +4065,14 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
     <message>
         <location line="+2"/>
         <source>Removed by %1 because: %2</source>
-        <translation>Mensaje eliminado por %1, razón: %2</translation>
+        <translation>Eliminado por %1 porque: %2</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
         <translation>%1 (%2) eliminó este mensaje a las %3
-Razón: %4</translation>
+Motivo: %4</translation>
     </message>
     <message>
         <location line="+102"/>
@@ -4109,7 +4112,7 @@ Razón: %4</translation>
     <message>
         <location line="+10"/>
         <source>%2 kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 expulso a %1.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4124,17 +4127,17 @@ Razón: %4</translation>
     <message>
         <location line="+31"/>
         <source>Reason: %1</source>
-        <translation>Razón: %1</translation>
+        <translation>Motivo: %1</translation>
     </message>
     <message>
         <location line="-19"/>
         <source>%1 redacted their knock.</source>
-        <translation>%1 canceló después de tocar la puerta.</translation>
+        <translation>%1 redactó su toc.</translation>
     </message>
     <message>
         <location line="-2345"/>
         <source>%1 changed which servers are allowed in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 changed which servers are allowed in this room.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4179,7 +4182,7 @@ Razón: %4</translation>
     <message>
         <location line="+3"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 cambió las comunidades parentales para esta sala.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4189,7 +4192,7 @@ Razón: %4</translation>
     <message>
         <location line="+18"/>
         <source>%1 changed unknown state event %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 cambió evento de estado desconocido %2.</translation>
     </message>
     <message>
         <location line="+603"/>
@@ -4209,7 +4212,7 @@ Razón: %4</translation>
     <message>
         <location line="+5"/>
         <source>%2 rejected the knock from %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 rechazó el toc de %1.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4225,7 +4228,7 @@ Razón: %4</translation>
     <message>
         <location line="+3"/>
         <source>%1 knocked.</source>
-        <translation>%1 tocó a la puerta.</translation>
+        <translation>%1 hizo toc a la puerta.</translation>
     </message>
 </context>
 <context>
@@ -4337,7 +4340,7 @@ Razón: %4</translation>
     <message>
         <location line="+53"/>
         <source>In %1</source>
-        <translation type="unfinished"></translation>
+        <translation>En %1</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -4474,7 +4477,7 @@ Razón: %4</translation>
     <message>
         <location line="+50"/>
         <source>Failed to ignore &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Error al ignorar &quot;%1&quot;: %2</translation>
     </message>
     <message>
         <location line="+211"/>
@@ -4657,12 +4660,12 @@ Razón: %4</translation>
     <message>
         <location line="+2"/>
         <source>Communities sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Barra lateral de Comunidades</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Scrollbars in room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Barras de desplazamiento en la lista de salas</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4677,7 +4680,7 @@ Razón: %4</translation>
     <message>
         <location line="+2"/>
         <source>Enable message bubbles</source>
-        <translation type="unfinished"></translation>
+        <translation>Activar las burbujas en los mensajes</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4887,7 +4890,7 @@ Razón: %4</translation>
     <message>
         <location line="+2"/>
         <source>Homeserver</source>
-        <translation></translation>
+        <translation>Homeserver</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4957,7 +4960,7 @@ Razón: %4</translation>
     <message>
         <location line="+2"/>
         <source>Cross Signing Secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Secretos de la firma cruzada</translation>
     </message>
     <message>
         <location line="+2"/>
