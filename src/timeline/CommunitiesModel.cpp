@@ -556,6 +556,11 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
         (void)room;
         if (spaces_.count(QString::fromStdString(roomid)))
             tagsUpdated = true;
+        if (hiddenTagIds_.contains(QString::fromStdString("space:" + roomid))) {
+            hiddenTagIds_.removeAll(QString::fromStdString("space:" + roomid));
+            UserSettings::instance()->setHiddenTags(hiddenTagIds_);
+            tagsUpdated = true;
+        }
     }
     for (const auto &e : sync_.account_data.events) {
         if (auto event =
@@ -633,6 +638,12 @@ CommunitiesModel::toggleTagId(QString tagId)
         hiddenTagIds_.removeOne(tagId);
     else
         hiddenTagIds_.push_back(tagId);
+
+    // sanity check to remove stale spaces
+    hiddenTagIds_.removeIf([this](const QString &value) {
+        return value.startsWith("space:") && !spaces_.contains(value.mid(6));
+    });
+
     UserSettings::instance()->setHiddenTags(hiddenTagIds_);
 
     if (tagId.startsWith(QLatin1String("tag:"))) {
