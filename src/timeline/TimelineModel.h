@@ -311,7 +311,8 @@ public:
     Q_INVOKABLE void joinReplacementRoom(const QString &id);
     Q_INVOKABLE QString
     formatMemberEvent(const mtx::events::StateEvent<mtx::events::state::Member> &event) const;
-    Q_INVOKABLE QString formatJoinRuleEvent(const QString &id);
+    QString
+    formatJoinRuleEvent(const mtx::events::StateEvent<mtx::events::state::JoinRules> &event) const;
     QString formatHistoryVisibilityEvent(
       const mtx::events::StateEvent<mtx::events::state::HistoryVisibility> &event) const;
     QString

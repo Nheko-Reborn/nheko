@@ -740,8 +740,10 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                   } else if constexpr (t == mtx::events::EventType::RoomPinnedEvents)
                       return tr("%1 changed the pinned messages.")
                         .arg(displayName(QString::fromStdString(e.sender)));
+                  else if constexpr (t == mtx::events::EventType::RoomJoinRules)
+                      return formatJoinRuleEvent(e);
                   else if constexpr (t == mtx::events::EventType::ImagePackInRoom)
-                      formatImagePackEvent(e);
+                      return formatImagePackEvent(e);
                   else if constexpr (t == mtx::events::EventType::RoomCanonicalAlias)
                       return tr("%1 changed the addresses for this room.")
                         .arg(displayName(QString::fromStdString(e.sender)));
@@ -2321,20 +2323,13 @@ TimelineModel::formatTypingUsers(const QStringList &users, const QColor &bg)
 }
 
 QString
-TimelineModel::formatJoinRuleEvent(const QString &id)
+TimelineModel::formatJoinRuleEvent(
+  const mtx::events::StateEvent<mtx::events::state::JoinRules> &event) const
 {
-    auto e = events.get(id.toStdString(), "");
-    if (!e)
-        return {};
-
-    auto event = std::get_if<mtx::events::StateEvent<mtx::events::state::JoinRules>>(e);
-    if (!event)
-        return {};
-
-    QString user = QString::fromStdString(event->sender);
+    QString user = QString::fromStdString(event.sender);
     QString name = utils::replaceEmoji(displayName(user));
 
-    switch (event->content.join_rule) {
+    switch (event.content.join_rule) {
     case mtx::events::state::JoinRule::Public:
         return tr("%1 opened the room to the public.").arg(name);
     case mtx::events::state::JoinRule::Invite:
@@ -2343,7 +2338,7 @@ TimelineModel::formatJoinRuleEvent(const QString &id)
         return tr("%1 allowed to join this room by knocking.").arg(name);
     case mtx::events::state::JoinRule::Restricted: {
         QStringList rooms;
-        for (const auto &r : event->content.allow) {
+        for (const auto &r : event.content.allow) {
             if (r.type == mtx::events::state::JoinAllowanceType::RoomMembership)
                 rooms.push_back(QString::fromStdString(r.room_id));
         }
