@@ -185,7 +185,7 @@ main(int argc, char *argv[])
         if (arg.startsWith(QLatin1String("--profile="))) {
             arg.remove(QStringLiteral("--profile="));
             userdata = arg;
-        } else if (arg.startsWith(QLatin1String("--p="))) {
+        } else if (arg.startsWith(QLatin1String("-p="))) {
             arg.remove(QStringLiteral("-p="));
             userdata = arg;
         } else if (arg == QLatin1String("--profile") || arg == QLatin1String("-p")) {
