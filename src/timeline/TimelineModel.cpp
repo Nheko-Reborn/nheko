@@ -3282,7 +3282,9 @@ TimelineModel::widgetLinks() const
         // compat with some widgets, i.e. FOSDEM
         url.replace("$theme", theme);
 
-        url = QUrl::toPercentEncoding(url, "/:@?#&=%");
+        // See https://bugreports.qt.io/browse/QTBUG-110446
+        // We want to make sure that urls are encoded, even if the source is untrustworthy.
+        url = QUrl(url).toEncoded();
 
         list.push_back(
           QLatin1String("<a href='%1'>%2</a>")
