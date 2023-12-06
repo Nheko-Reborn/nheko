@@ -70,6 +70,7 @@ public:
     void setIsEmotePack(bool val);
 
     Q_INVOKABLE void save();
+    Q_INVOKABLE void remove();
     Q_INVOKABLE void addStickers(QList<QUrl> files);
     Q_INVOKABLE void remove(int index);
     Q_INVOKABLE void setAvatar(QUrl file);

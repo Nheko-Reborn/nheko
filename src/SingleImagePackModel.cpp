@@ -285,18 +285,7 @@ SingleImagePackModel::save()
         });
     } else {
         if (old_statekey_ != statekey_) {
-            http::client()->send_state_event(
-              roomid_,
-              to_string(mtx::events::EventType::ImagePackInRoom),
-              old_statekey_,
-              nlohmann::json::object(),
-              [](const mtx::responses::EventId &, mtx::http::RequestErr e) {
-                  if (e)
-                      ChatPage::instance()->showNotification(
-                        tr("Failed to delete old image pack: %1")
-                          .arg(QString::fromStdString(e->matrix_error.error)));
-              });
-            old_statekey_ = statekey_;
+            this->remove();
         }
 
         http::client()->send_state_event(
@@ -312,6 +301,23 @@ SingleImagePackModel::save()
               nhlog::net()->info("Uploaded image pack: %1", statekey_);
           });
     }
+}
+
+void
+SingleImagePackModel::remove()
+{
+    http::client()->send_state_event(
+      roomid_,
+      to_string(mtx::events::EventType::ImagePackInRoom),
+      old_statekey_,
+      nlohmann::json::object(),
+      [](const mtx::responses::EventId &, mtx::http::RequestErr e) {
+          if (e)
+              ChatPage::instance()->showNotification(
+                tr("Failed to delete old image pack: %1")
+                  .arg(QString::fromStdString(e->matrix_error.error)));
+      });
+    old_statekey_ = statekey_;
 }
 
 void
