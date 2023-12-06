@@ -9,6 +9,33 @@ variables:
   # prevent configure tzdata hanging apt install commands
   DEBIAN_FRONTEND: noninteractive
 
+build-windows:
+  stage: build
+  image: win10-base
+  tags: [libvirt,powershell]
+  variables:
+    APPVEYOR_REPO_BRANCH: "${CI_COMMIT_REF_NAME}"
+    APPVEYOR_REPO_COMMIT: "${CI_COMMIT_SHORT_SHA}"
+  before_script:
+    - mkdir -p hunter
+    - Move-Item -Path hunter -Destination C:/hunter
+  script:
+    - ./.ci/windows/build.bat
+  after_script:
+    - ./.ci/upload-nightly.ps1
+    - Move-Item -Path C:/hunter -Destination hunter -Force
+  cache:
+    key: "$CI_JOB_NAME"
+    paths:
+      - hunter/
+      - build/_deps
+  artifacts:
+    paths:
+      - nheko.msix
+      - nheko_win_64.zip
+    name: nheko-${CI_COMMIT_SHORT_SHA}-windows
+    expose_as: 'windows-app'
+
 build-clazy:
   stage: build
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:latest
@@ -18,11 +45,12 @@ build-clazy:
     TRAVIS_OS_NAME: linux
   before_script:
     - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apk dependencies"
-    - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qtmultimedia-dev qt6-qtsvg-dev qt6-qttools-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang16 gcc musl-dev git re2-dev libsecret-dev
+    - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qtmultimedia-dev qt6-qtsvg-dev qt6-qttools-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang16 gcc musl-dev git re2-dev libsecret-dev clang16
     - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib/ccache:${PATH}"
     - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
+    - export CLANGXX=clang++-16
     - cmake -GNinja -H. -Bbuild
         -DCMAKE_INSTALL_PREFIX=.deps/usr
         -DHUNTER_ENABLED=OFF -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_MTXCLIENT=ON -DUSE_BUNDLED_COEURL=ON -DUSE_BUNDLED_OLM=ON -DUSE_BUNDLED_QTKEYCHAIN=ON -DUSE_BUNDLED_KDSINGLEAPPLICATION=ON
@@ -317,7 +345,7 @@ linting:
     - apk update && apk add make git python3 py3-pip qt6-qtdeclarative-dev
     - apk add clang-extra-tools --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
     - export PATH="$PATH:/root/.local/bin"
-    - pip3 install --user reuse
+    - pip3 install --break-system-packages --user reuse
   script:
     - make lint
     - make license

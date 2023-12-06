@@ -1,3 +1,6 @@
+# disable progress bar since that requires a pty
+$ProgressPreference = "SilentlyContinue"
+
 $file = "nheko_win_64.zip"
 $fileName = "nheko-${env:APPVEYOR_REPO_BRANCH}-${env:APPVEYOR_REPO_COMMIT}-win64.zip"
 
@@ -19,3 +22,4 @@ $room = "!TshDrgpBNBDmfDeEGN:neko.dev"
 
 Invoke-RestMethod -uri "https://matrix.neko.dev/_matrix/client/r0/rooms/${room}/send/m.room.message/${txid}" -Method Put -Body "$body" -ContentType 'application/json' -Headers @{"Authorization"="Bearer ${env:MATRIX_ACCESS_TOKEN}"}
 
+exit 0

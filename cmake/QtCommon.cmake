@@ -64,14 +64,4 @@ elseif (WIN32)
 endif()
 endmacro()
 
-macro(fix_win_compiler)
-if (MSVC)
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        WIN32_EXECUTABLE YES
-        LINK_FLAGS "/ENTRY:mainCRTStartup"
-    )
-endif()
-endmacro()
-
 init_os_bundle()
-fix_win_compiler()
