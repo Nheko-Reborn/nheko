@@ -215,7 +215,6 @@ ApplicationWindow {
                                     "imagePack": currentPack
                                 });
                                 dialog.open();
-                                timelineRoot.destroyOnClose(packDeleteDialog);
                             }
                         }
                     }
