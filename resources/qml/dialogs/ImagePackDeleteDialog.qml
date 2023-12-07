@@ -11,7 +11,7 @@ P.MessageDialog {
 
     property SingleImagePackModel imagePack
 
-    text: "Are you sure you wish to delete the sticker pack \"" + imagePack.packname + "\"?"
+    text: qsTr("Are you sure you wish to delete the sticker pack '%1'?").arg(imagePack.packname)
     modality: Qt.ApplicationModal
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     buttons: P.MessageDialog.Yes | P.MessageDialog.No
