@@ -195,10 +195,13 @@ Item {
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
             spacing: Nheko.paddingMedium
+            Layout.fillWidth: true
 
             MatrixText {
+                Layout.preferredWidth: implicitWidth
+                horizontalAlignment: TextEdit.AlignRight
                 font.pixelSize: 24
-                text: !(roomPreview?.isFetched ?? false) ? qsTr("No preview available") : preview.roomName
+                text: (!room && !(roomPreview?.isFetched ?? false)) ? qsTr("No preview available") : preview.roomName
             }
             ImageButton {
                 ToolTip.text: qsTr("Settings")
@@ -214,8 +217,10 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             spacing: Nheko.paddingMedium
             visible: !!room
+            Layout.fillWidth: true
 
             MatrixText {
+                Layout.preferredWidth: implicitWidth
                 text: qsTr("%n member(s)", "", room ? room.roomMemberCount : 0)
             }
             ImageButton {
@@ -232,13 +237,14 @@ Item {
             Layout.fillWidth: true
             Layout.leftMargin: Nheko.paddingLarge
             Layout.rightMargin: Nheko.paddingLarge
+            Layout.maximumHeight: timelineView.height / 3
 
             TextArea {
                 background: null
                 horizontalAlignment: TextEdit.AlignHCenter
                 readOnly: true
                 selectByMouse: true
-                text: (roomPreview?.isFetched ?? false) ? TimelineManager.escapeEmoji(preview.roomTopic) : qsTr("This room is possibly inaccessible. If this room is private, you should remove it from this community.")
+                text: (room || (roomPreview?.isFetched ?? false)) ? TimelineManager.escapeEmoji(preview.roomTopic) : qsTr("This room is possibly inaccessible. If this room is private, you should remove it from this community.")
                 textFormat: TextEdit.RichText
                 wrapMode: TextEdit.WordWrap
 
@@ -280,6 +286,7 @@ Item {
         }
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
             spacing: Nheko.paddingMedium
             visible: roomPreview && roomPreview.isInvite && reasonField.showReason
 
