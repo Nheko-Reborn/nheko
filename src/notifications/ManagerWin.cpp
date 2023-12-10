@@ -13,6 +13,7 @@
 
 #include "Cache.h"
 #include "EventAccessors.h"
+#include "MxcImageProvider.h"
 #include "Utils.h"
 
 using namespace WinToastLib;
@@ -34,9 +35,9 @@ init()
 {
     isInitialized = true;
 
-    WinToast::instance()->setAppName(L"Nheko");
     WinToast::instance()->setAppUserModelId(
       WinToast::configureAUMI(L"NhekoReborn", L"in.nheko.Nheko"));
+    WinToast::instance()->setAppName(L"Nheko");
     if (!WinToast::instance()->initialize())
         std::wcout << "Your system is not compatible with toast notifications\n";
 }
@@ -61,20 +62,35 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
         }
 
         return template_.arg(utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body);
-    };
+    }();
 
     auto iconPath = QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + room_name +
                     "-room-avatar.png";
     if (!icon.save(iconPath))
         iconPath.clear();
 
-    systemPostNotification(room_name, formatNotification(), iconPath);
+    if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image ||
+        mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image) {
+        MxcImageProvider::download(
+          QString::fromStdString(mtx::accessors::url(notification.event))
+            .remove(QStringLiteral("mxc://")),
+          QSize(200, 80),
+          [this, room_name, formatNotification, iconPath](QString, QSize, QImage, QString imgPath) {
+              if (imgPath.isEmpty())
+                  systemPostNotification(room_name, formatNotification, iconPath, "");
+              else
+                  systemPostNotification(room_name, formatNotification, iconPath, imgPath);
+          });
+    } else {
+        systemPostNotification(room_name, formatNotification, iconPath, "");
+    }
 }
 
 void
 NotificationsManager::systemPostNotification(const QString &line1,
                                              const QString &line2,
-                                             const QString &iconPath)
+                                             const QString &iconPath,
+                                             const QString &bodyImagePath)
 {
     if (!isInitialized)
         init();
@@ -85,6 +101,10 @@ NotificationsManager::systemPostNotification(const QString &line1,
 
     if (!iconPath.isNull())
         templ.setImagePath(iconPath.toStdWString());
+    if (!bodyImagePath.isNull())
+        templ.setHeroImagePath(bodyImagePath.toStdWString(), true);
+
+    templ.setAudioPath(WinToastTemplate::IM);
 
     WinToast::instance()->showToast(templ, new CustomHandler());
 }

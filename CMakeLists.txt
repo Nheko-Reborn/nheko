@@ -647,14 +647,14 @@ if(APPLE)
     endif()
 elseif(WIN32)
     file(DOWNLOAD
-        "https://raw.githubusercontent.com/mohabouje/WinToast/41ed1c58d5dce0ee9c01dbdeac05be45358d4f57/src/wintoastlib.cpp"
+        "https://raw.githubusercontent.com/mohabouje/WinToast/v1.3.0/src/wintoastlib.cpp"
         ${PROJECT_SOURCE_DIR}/src/wintoastlib.cpp
-        EXPECTED_HASH SHA256=1A1A7CE41C1052B12946798F4A6C67CE1FAD209C967F5ED4D720B173527E2073)
+        EXPECTED_HASH SHA256=1ddf8ee2604e1757d383a2f60d4d597c4f5d9496369e6a22586cedf4af77ca8f)
 
     file(DOWNLOAD
-        "https://raw.githubusercontent.com/mohabouje/WinToast/41ed1c58d5dce0ee9c01dbdeac05be45358d4f57/src/wintoastlib.h"
+        "https://raw.githubusercontent.com/mohabouje/WinToast/v1.3.0/include/wintoastlib.h"
         ${PROJECT_SOURCE_DIR}/src/wintoastlib.h
-        EXPECTED_HASH SHA256=b4481023c5782733795838be22bf1a75f45d87458cd4d9a5a75f664a146eea11)
+        EXPECTED_HASH SHA256=08cb30d28db9c851d3d4259ae6108ce7dafa966957df6735a06cd55e0716fded)
 
     set(SRC_FILES ${SRC_FILES} src/notifications/ManagerWin.cpp src/wintoastlib.cpp src/wintoastlib.h)
 else()
