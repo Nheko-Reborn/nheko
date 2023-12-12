@@ -30,6 +30,7 @@
 #include "ChatPage.h"
 #include "EventAccessors.h"
 #include "Logging.h"
+#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "TimelineModel.h"
 #include "TimelineViewManager.h"
@@ -239,7 +240,8 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("msgtype"),
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
-                                             QStringLiteral("converttoroom")};
+                                             QStringLiteral("converttoroom"),
+                                             QStringLiteral("ignore")};
     bool hasInvalidCommand    = !commandName.isNull() && !validCommands.contains(commandName);
     bool hasIncompleteCommand = hasInvalidCommand && '/' + commandName == t;
 
@@ -937,6 +939,16 @@ InputBar::command(const QString &command, QString args)
                                 cache::getMembers(this->room->roomId().toStdString(), 0, -1));
     } else if (command == QLatin1String("converttoroom")) {
         utils::removeDirectFromRoom(this->room->roomId());
+    } else if (command == QLatin1String("ignore")) {
+        QSharedPointer<UserProfile> user(
+          new UserProfile(QString(), args, TimelineViewManager::instance()));
+        connect(user.get(), &UserProfile::failedToFetchProfile, [args] {
+            MainWindow::instance()->showNotification(tr("Failed to fetch user %1").arg(args));
+        });
+        connect(user.get(), &UserProfile::globalUsernameRetrieved, [user](const QString &user_id) {
+            Q_UNUSED(user_id)
+            user->setIgnored(true);
+        });
     } else {
         return false;
     }

@@ -51,6 +51,7 @@ public:
         Goto,
         ConvertToDm,
         ConvertToRoom,
+        Ignore,
         COUNT,
     };
 

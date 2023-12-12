@@ -592,12 +592,18 @@ UserProfile::getGlobalProfileData()
                 emit avatarUrlChanged();
             });
 
+    connect(profProx.get(),
+            &UserProfileFetchProxy::failedToFetchProfile,
+            this,
+            &UserProfile::failedToFetchProfile);
+
     http::client()->get_profile(userid_.toStdString(),
                                 [prox = std::move(profProx), user = userid_.toStdString()](
                                   const mtx::responses::Profile &res, mtx::http::RequestErr err) {
                                     if (err) {
                                         nhlog::net()->warn("failed to retrieve profile info for {}",
                                                            user);
+                                        emit prox->failedToFetchProfile();
                                         return;
                                     }
 

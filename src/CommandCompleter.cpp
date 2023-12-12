@@ -97,6 +97,8 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QStringLiteral("/converttodm");
             case ConvertToRoom:
                 return QStringLiteral("/converttoroom");
+            case Ignore:
+                return QStringLiteral("/ignore");
             default:
                 return {};
             }
@@ -170,6 +172,8 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QStringLiteral("/converttodm");
             case ConvertToRoom:
                 return QStringLiteral("/converttoroom");
+            case Ignore:
+                return QStringLiteral("/ignore <@userid>");
             default:
                 return {};
             }
@@ -243,6 +247,8 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("Convert this room to a direct chat.");
             case ConvertToRoom:
                 return tr("Convert this direct chat into a room.");
+            case Ignore:
+                return tr("Ignores a user.");
             default:
                 return {};
             }
