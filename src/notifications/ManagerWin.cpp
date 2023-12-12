@@ -21,10 +21,21 @@ using namespace WinToastLib;
 class CustomHandler : public IWinToastHandler
 {
 public:
-    void toastActivated() const {}
+    CustomHandler(NotificationsManager *manager_, const QString &roomid_, const QString &eventid_)
+      : manager(manager_)
+      , roomid(roomid_)
+      , eventid(eventid_)
+    {
+    }
+
+    void toastActivated() const { manager->notificationClicked(roomid, eventid); }
     void toastActivated(int) const {}
     void toastFailed() const { std::wcout << L"Error showing current toast" << std::endl; }
     void toastDismissed(WinToastDismissalReason) const {}
+
+    NotificationsManager *manager;
+    QString roomid;
+    QString eventid;
 };
 
 namespace {
@@ -53,6 +64,8 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
                                        const QImage &icon)
 {
     const auto room_name = QString::fromStdString(cache::singleRoomInfo(notification.room_id).name);
+    auto roomid          = QString::fromStdString(notification.room_id);
+    auto eventid         = QString::fromStdString(mtx::accessors::event_id(notification.event));
 
     auto formatNotification = [this, notification] {
         const auto template_ = getMessageTemplate(notification);
@@ -75,19 +88,24 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
           QString::fromStdString(mtx::accessors::url(notification.event))
             .remove(QStringLiteral("mxc://")),
           QSize(200, 80),
-          [this, room_name, formatNotification, iconPath](QString, QSize, QImage, QString imgPath) {
+          [this, roomid, eventid, room_name, formatNotification, iconPath](
+            QString, QSize, QImage, QString imgPath) {
               if (imgPath.isEmpty())
-                  systemPostNotification(room_name, formatNotification, iconPath, "");
+                  systemPostNotification(
+                    roomid, eventid, room_name, formatNotification, iconPath, "");
               else
-                  systemPostNotification(room_name, formatNotification, iconPath, imgPath);
+                  systemPostNotification(
+                    roomid, eventid, room_name, formatNotification, iconPath, imgPath);
           });
     } else {
-        systemPostNotification(room_name, formatNotification, iconPath, "");
+        systemPostNotification(roomid, eventid, room_name, formatNotification, iconPath, "");
     }
 }
 
 void
-NotificationsManager::systemPostNotification(const QString &line1,
+NotificationsManager::systemPostNotification(const QString &roomid,
+                                             const QString &eventid,
+                                             const QString &line1,
                                              const QString &line2,
                                              const QString &iconPath,
                                              const QString &bodyImagePath)
@@ -106,7 +124,7 @@ NotificationsManager::systemPostNotification(const QString &line1,
 
     templ.setAudioPath(WinToastTemplate::IM);
 
-    WinToast::instance()->showToast(templ, new CustomHandler());
+    WinToast::instance()->showToast(templ, new CustomHandler(this, roomid, eventid));
 }
 
 // clang-format off

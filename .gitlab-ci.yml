@@ -16,6 +16,7 @@ build-windows:
   variables:
     APPVEYOR_REPO_BRANCH: "${CI_COMMIT_REF_NAME}"
     APPVEYOR_REPO_COMMIT: "${CI_COMMIT_SHORT_SHA}"
+    CMAKE_BUILD_PARALLEL_LEVEL: 8
   before_script:
     - mkdir -p hunter
     - Move-Item -Path hunter -Destination C:/hunter
