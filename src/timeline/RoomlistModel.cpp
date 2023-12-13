@@ -271,11 +271,13 @@ RoomlistModel::addRoom(const QString &room_id, bool suppressInsertNotification)
 {
     if (!models.contains(room_id)) {
         // ensure we get read status updates and are only connected once
+        // WORKAROUND(Nico): This is not a lambda, but clazy on alpine currently doesn't
+        // believe us...
         connect(cache::client(),
                 &Cache::roomReadStatus,
                 this,
                 &RoomlistModel::updateReadStatus,
-                Qt::UniqueConnection);
+                Qt::UniqueConnection); // clazy:exclude=lambda-unique-connection
 
         QSharedPointer<TimelineModel> newRoom(new TimelineModel(manager, room_id));
         newRoom->setDecryptDescription(ChatPage::instance()->userSettings()->decryptSidebar());
@@ -529,11 +531,13 @@ RoomlistModel::sync(const mtx::responses::Sync &sync_)
         addRoom(qroomid);
         const auto &room_model = models.value(qroomid);
 
+        // WORKAROUND(Nico): This is not a lambda, but clazy on alpine currently doesn't
+        // believe us
         connect(room_model.data(),
                 &TimelineModel::newCallEvent,
                 ChatPage::instance()->callManager(),
                 &CallManager::syncEvent,
-                Qt::UniqueConnection);
+                Qt::UniqueConnection); // clazy:exclude=lambda-unique-connection
 
         room_model->sync(room);
 

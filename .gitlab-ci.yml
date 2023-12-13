@@ -46,7 +46,7 @@ build-clazy:
     TRAVIS_OS_NAME: linux
   before_script:
     - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apk dependencies"
-    - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qtmultimedia-dev qt6-qtsvg-dev qt6-qttools-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang16 gcc musl-dev git re2-dev libsecret-dev clang16
+    - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qtmultimedia-dev qt6-qtsvg-dev qt6-qttools-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang16 gcc musl-dev git re2-dev libsecret-dev
     - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib/ccache:${PATH}"

@@ -24,11 +24,12 @@ SelfVerificationStatus::SelfVerificationStatus(QObject *o)
   : QObject(o)
 {
     connect(ChatPage::instance(), &ChatPage::contentLoaded, this, [this] {
+        // We connect INSIDE a lambda, not A lambda...
         connect(cache::client(),
                 &Cache::selfVerificationStatusChanged,
                 this,
                 &SelfVerificationStatus::invalidate,
-                Qt::UniqueConnection);
+                Qt::UniqueConnection); // clazy:exclude=lambda-unique-connection
         cache::client()->markUserKeysOutOfDate({http::client()->user_id().to_string()});
     });
 
