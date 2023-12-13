@@ -18,7 +18,7 @@ build-windows:
     APPVEYOR_REPO_COMMIT: "${CI_COMMIT_SHORT_SHA}"
     CMAKE_BUILD_PARALLEL_LEVEL: 8
   before_script:
-    - mkdir -p hunter
+    - mkdir -p hunter -f
     - Move-Item -Path hunter -Destination C:/hunter
   script:
     - ./.ci/windows/build.bat
