@@ -15,6 +15,8 @@ build-windows:
   stage: build
   image: win10-base
   tags: [libvirt,powershell]
+  rules:
+    - if : '$CI_PIPELINE_TRIGGERED == null'
   variables:
     APPVEYOR_REPO_BRANCH: "${CI_COMMIT_REF_NAME}"
     APPVEYOR_REPO_COMMIT: "${CI_COMMIT_SHORT_SHA}"
