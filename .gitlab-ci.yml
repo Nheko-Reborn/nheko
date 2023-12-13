@@ -8,6 +8,8 @@ variables:
   CCACHE_DIR: "${CI_PROJECT_DIR}/.ccache"
   # prevent configure tzdata hanging apt install commands
   DEBIAN_FRONTEND: noninteractive
+  FF_SCRIPT_SECTIONS: 1
+  FF_USE_FASTZIP: 1
 
 build-windows:
   stage: build
@@ -45,9 +47,7 @@ build-clazy:
     CLAZY_CHECKS: level0,level1,no-non-pod-global-static
     TRAVIS_OS_NAME: linux
   before_script:
-    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apk dependencies"
     - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qtmultimedia-dev qt6-qtsvg-dev qt6-qttools-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang16 gcc musl-dev git re2-dev libsecret-dev
-    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib/ccache:${PATH}"
     - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
@@ -74,7 +74,6 @@ build-clazy:
   variables:
     TRAVIS_OS_NAME: linux
   before_script:
-    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - apt-get update
     - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
@@ -85,7 +84,6 @@ build-clazy:
     - apt-get -y install wget
     - /usr/sbin/update-ccache-symlinks
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
-    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib/ccache:${PATH}"
     - cmake -GNinja -H. -Bbuild
@@ -114,7 +112,6 @@ build-tw:
   variables:
     TRAVIS_OS_NAME: linux
   before_script:
-    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - >
         zypper --non-interactive install
         "appstream-glib"
@@ -153,7 +150,6 @@ build-tw:
         "pkgconfig(xcb)"
         "pkgconfig(xcb-ewmh)"
         "time"
-    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
   script:
     - export PATH="/usr/lib64/ccache:${PATH}"
     - cmake -GNinja -H. -Bbuild
@@ -236,9 +232,7 @@ build-flatpak:
       - ARCH: arm64
         JOBS: 3
   before_script:
-    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
     - apt-get update && apt-get -y install flatpak-builder git python3 curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
-    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
     - flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
       # see https://github.com/flatpak/flatpak-builder/issues/495
     - git config --global protocol.file.allow always
@@ -246,15 +240,11 @@ build-flatpak:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
     - cd build-flatpak
-    - echo -e "\e[0Ksection_start:`date +%s`:build_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mBuilding flatpak"
     - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../im.nheko.Nheko.yaml --jobs=$JOBS
-    - echo -e "\e[0Ksection_end:`date +%s`:build_flatpak\r\e[0K"
     - flatpak build-bundle repo nheko-${ARCH}.flatpak im.nheko.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
-    - echo -e "\e[0Ksection_start:`date +%s`:upload_flatpak[collapsed=true]\r\e[0K\e[1m\e[95mUploading flatpak"
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-${ARCH}.flatpak
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || exit_code=$?
-    - echo -e "\e[0Ksection_end:`date +%s`:upload_flatpak\r\e[0K"
   rules:
     - if : '$CI_PIPELINE_TRIGGERED == null'
   cache:
@@ -274,7 +264,6 @@ build-flatpak:
   tags: [docker]
   allow_failure: true
   before_script:
-    - echo -e "\e[0Ksection_start:`date +%s`:install_deps[collapsed=true]\r\e[0K\e[1m\e[95mInstalling apt dependencies"
 
     # Installing the packages needed to download and install third-party tools
     - apt-get update && apt-get install -y software-properties-common git wget curl python3 python3-pip python3-setuptools
@@ -306,7 +295,6 @@ build-flatpak:
     - /usr/sbin/update-ccache-symlinks
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
 
-    - echo -e "\e[0Ksection_end:`date +%s`:install_deps\r\e[0K"
     
   script:
     - export PATH="/usr/local/bin/:/usr/lib/ccache:${PATH}"
