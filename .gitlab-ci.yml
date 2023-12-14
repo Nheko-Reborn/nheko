@@ -38,6 +38,28 @@ build-windows:
     paths:
       - nheko.msix
       - nheko_win_64.zip
+    name: nheko-${CI_COMMIT_SHORT_SHA}-windows-unsigned
+    expose_as: 'windows-app-unsigned'
+
+codesign-windows:
+  stage: sign
+  image: win10-base
+  tags: [libvirt,powershell]
+  resource_group: windows_signingA
+  environment: 
+    name: windows_signing
+  #variables:
+  #  GIT_STRATEGY: none
+  script:
+    - Get-ChildItem -Path Cert:CurrentUser\My
+    - ./.ci/windows/sign.bat
+  needs:
+    - job: build-windows
+  rules:
+    - if : '$CI_COMMIT_REF_PROTECTED == "true"'
+  artifacts:
+    paths:
+      - nheko.msix
     name: nheko-${CI_COMMIT_SHORT_SHA}-windows
     expose_as: 'windows-app'
 
