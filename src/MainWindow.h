@@ -45,6 +45,9 @@ public:
     }
 
     bool eventFilter(QObject *obj, QEvent *event) override;
+
+private:
+    QSet<QWindow *> m_postedWindows;
 };
 
 class MainWindow : public QQuickView
