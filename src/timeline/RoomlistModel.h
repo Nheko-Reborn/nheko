@@ -197,6 +197,8 @@ public:
         return instance_;
     }
 
+    static FilteredRoomlistModel *instance() { return instance_; }
+
     bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
     bool filterAcceptsRow(int sourceRow, const QModelIndex &) const override;
 

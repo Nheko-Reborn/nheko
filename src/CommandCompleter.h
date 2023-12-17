@@ -52,6 +52,7 @@ public:
         ConvertToDm,
         ConvertToRoom,
         Ignore,
+        Unignore,
         COUNT,
     };
 

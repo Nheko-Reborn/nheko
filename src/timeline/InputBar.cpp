@@ -241,7 +241,8 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
                                              QStringLiteral("converttoroom"),
-                                             QStringLiteral("ignore")};
+                                             QStringLiteral("ignore"),
+                                             QStringLiteral("unignore")};
     bool hasInvalidCommand    = !commandName.isNull() && !validCommands.contains(commandName);
     bool hasIncompleteCommand = hasInvalidCommand && '/' + commandName == t;
 
@@ -940,20 +941,31 @@ InputBar::command(const QString &command, QString args)
     } else if (command == QLatin1String("converttoroom")) {
         utils::removeDirectFromRoom(this->room->roomId());
     } else if (command == QLatin1String("ignore")) {
-        QSharedPointer<UserProfile> user(
-          new UserProfile(QString(), args, TimelineViewManager::instance()));
-        connect(user.get(), &UserProfile::failedToFetchProfile, [args] {
-            MainWindow::instance()->showNotification(tr("Failed to fetch user %1").arg(args));
-        });
-        connect(user.get(), &UserProfile::globalUsernameRetrieved, [user](const QString &user_id) {
-            Q_UNUSED(user_id)
-            user->setIgnored(true);
-        });
+        this->setArgIgnored(args, true);
+    } else if (command == QLatin1String("unignore")) {
+        this->setArgIgnored(args, false);
     } else {
         return false;
     }
 
     return true;
+}
+
+void
+InputBar::setArgIgnored(const QString &user, const bool ignored)
+{
+    QSharedPointer<UserProfile> profile(
+      new UserProfile(QString(), user, TimelineViewManager::instance()));
+    connect(profile.get(), &UserProfile::failedToFetchProfile, [user] {
+        MainWindow::instance()->showNotification(tr("Failed to fetch user %1").arg(user));
+    });
+
+    connect(profile.get(),
+            &UserProfile::globalUsernameRetrieved,
+            [profile, ignored](const QString &user_id) {
+                Q_UNUSED(user_id)
+                profile->setIgnored(ignored);
+            });
 }
 
 MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,

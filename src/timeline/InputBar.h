@@ -283,6 +283,8 @@ private:
 
     void updateTextContentProperties(const QString &t);
 
+    void setArgIgnored(const QString &user, const bool ignored);
+
     QTimer typingRefresh_;
     QTimer typingTimeout_;
     TimelineModel *room;

@@ -278,6 +278,14 @@ UserProfile::setIgnored(bool ignore)
                 .arg(userid, QString::fromStdString(e->matrix_error.error)));
         }
     });
+
+    if (ignore) {
+        const QHash<QString, RoomInfo> invites = cache::invites();
+
+        for (auto room = invites.keyBegin(), end = invites.keyEnd(); room != end; room++) {
+            FilteredRoomlistModel::instance()->declineInvite(*room);
+        }
+    }
 }
 
 void
