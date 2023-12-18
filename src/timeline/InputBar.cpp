@@ -461,11 +461,11 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         text.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
 
         // Don't send formatted_body, when we don't need to
-        // Specifically, if it includes no html tag and no newlines (which behave differently in
-        // formatted bodies). Probably we forgot something, so this might need to expand at some
-        // point.
+        // Specifically, if it includes no html tag and no newlines or
+        // backslashes (which behave differently in formatted bodies). Probably
+        // we forgot something, so this might need to expand at some point.
         if (text.formatted_body.find('<') == std::string::npos &&
-            text.body.find('\n') == std::string::npos)
+            text.body.find('\n') == std::string::npos && text.body.find('\\') == std::string::npos)
             text.formatted_body = "";
         else
             text.format = "org.matrix.custom.html";
@@ -880,7 +880,7 @@ InputBar::command(const QString &command, QString args)
                                       err->matrix_error.error);
           });
     } else if (command == QLatin1String("shrug")) {
-        message("¯\\_(ツ)_/¯" + (args.isEmpty() ? QLatin1String("") : " " + args));
+        message("¯\\\\\\_(ツ)\\_/¯" + (args.isEmpty() ? QLatin1String("") : " " + args));
     } else if (command == QLatin1String("fliptable")) {
         message(QStringLiteral("(╯°□°)╯︵ ┻━┻"));
     } else if (command == QLatin1String("unfliptable")) {
