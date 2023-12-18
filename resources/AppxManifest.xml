@@ -4,7 +4,7 @@
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities">
-  <Identity Name="im.nheko.Nheko" Version="0.11.3.4" Publisher="CN=NhekoReborn, O=NhekoReborn, L=Munich, S=Bavaria, C=Germany" ProcessorArchitecture="x64"/>
+  <Identity Name="im.nheko.Nheko" Version="0.11.3.4" Publisher="CN=Nicolas Werner, O=Nicolas Werner, L=Munich, S=Bavaria, C=DE" ProcessorArchitecture="x64"/>
   <Properties>
     <DisplayName>Nheko</DisplayName>
     <PublisherDisplayName>Nheko-Reborn</PublisherDisplayName>
@@ -26,7 +26,7 @@
       uap10:RuntimeBehavior="packagedClassicApp"
       uap10:TrustLevel="mediumIL">
 				<uap:VisualElements DisplayName="Nheko" Description="Matrix client written in Qt"	Square150x150Logo="nheko.png"
-					Square44x44Logo="nheko.png" BackgroundColor="#ffffff" />
+					Square44x44Logo="nheko.png" BackgroundColor="transparent" />
 				<Extensions>
 					<uap:Extension Category="windows.protocol">
 						<uap:Protocol Name="matrix">

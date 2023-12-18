@@ -114,7 +114,8 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 
     if (hasMarkup_) {
         if (hasImages_ &&
-            mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image) {
+            (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image ||
+             mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)) {
             MxcImageProvider::download(
               QString::fromStdString(mtx::accessors::url(notification.event))
                 .remove(QStringLiteral("mxc://")),
