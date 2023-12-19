@@ -19,6 +19,5 @@ P.MessageDialog {
     onAccepted: {
         console.info("deleting image pack " + imagePack.packname);
         imagePack.remove()
-        timelineRoot.destroyOnClose(dialog);
     }
 }
