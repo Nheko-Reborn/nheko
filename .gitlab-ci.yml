@@ -46,7 +46,7 @@ codesign-windows:
   image: win10-base
   tags: [libvirt,powershell]
   rules:
-    - if : '$CI_PIPELINE_TRIGGERED == null'
+    - if : '$CI_PIPELINE_TRIGGERED == null && $CI_COMMIT_REF_PROTECTED == "true"'
   resource_group: windows_signing
   environment: 
     name: windows_signing
@@ -55,15 +55,31 @@ codesign-windows:
   script:
     - Get-ChildItem -Path Cert:CurrentUser\My
     - ./.ci/windows/sign.bat
+    - mkdir -p artifacts
+    - mv nheko.msix artifacts/nheko.msix
   needs:
     - job: build-windows
-  rules:
-    - if : '$CI_COMMIT_REF_PROTECTED == "true"'
   artifacts:
     paths:
-      - nheko.msix
+      - artifacts/nheko.msix
     name: nheko-${CI_COMMIT_SHORT_SHA}-windows
     expose_as: 'windows-app'
+
+upload-windows:
+  stage: deploy
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:latest
+  tags: [docker]
+  rules:
+    - if : '$CI_PIPELINE_TRIGGERED == null && $CI_COMMIT_REF_PROTECTED == "true"'
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - apk add curl unzip
+  script:
+    - export VERSION=$(unzip -p artifacts/nheko.msix AppxManifest.xml | sed -n 's/.* Version="\([0-9.]*\)".*/\1/p')
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file artifacts/nheko.msix "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/windows-nightly/${VERSION}/nheko.msix"'
+  needs:
+    - job: codesign-windows
 
 build-clazy:
   stage: build
@@ -377,6 +393,7 @@ github-release:
     #- appimage-amd64 <- disabled because of missing packages
     - build-flatpak
     - codesign-macos
+    - codesign-windows
   before_script:
     - apk update && apk add jq curl perl
   script:
