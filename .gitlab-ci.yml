@@ -45,7 +45,9 @@ codesign-windows:
   stage: sign
   image: win10-base
   tags: [libvirt,powershell]
-  resource_group: windows_signingA
+  rules:
+    - if : '$CI_PIPELINE_TRIGGERED == null'
+  resource_group: windows_signing
   environment: 
     name: windows_signing
   #variables:
