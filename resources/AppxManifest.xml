@@ -16,7 +16,7 @@
     <Resource Language="de-de" />
   </Resources>
   <Dependencies>
-    <TargetDeviceFamily Name="Windows.Desktop"  MinVersion="10.0.14316.0" MaxVersionTested="10.0.15063.0"  />
+    <TargetDeviceFamily Name="Windows.Desktop"  MinVersion="10.0.19044.0" MaxVersionTested="10.0.19045.0"  />
   </Dependencies>
   <Capabilities>
     <rescap:Capability Name="runFullTrust"/>
