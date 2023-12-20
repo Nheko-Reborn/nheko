@@ -941,9 +941,9 @@ InputBar::command(const QString &command, QString args)
     } else if (command == QLatin1String("converttoroom")) {
         utils::removeDirectFromRoom(this->room->roomId());
     } else if (command == QLatin1String("ignore")) {
-        this->setArgIgnored(args, true);
+        this->toggleIgnore(args, true);
     } else if (command == QLatin1String("unignore")) {
-        this->setArgIgnored(args, false);
+        this->toggleIgnore(args, false);
     } else {
         return false;
     }
