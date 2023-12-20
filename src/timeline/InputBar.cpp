@@ -952,7 +952,7 @@ InputBar::command(const QString &command, QString args)
 }
 
 void
-InputBar::setArgIgnored(const QString &user, const bool ignored)
+InputBar::toggleIgnore(const QString &user, const bool ignored)
 {
     QSharedPointer<UserProfile> profile(
       new UserProfile(QString(), user, TimelineViewManager::instance()));
