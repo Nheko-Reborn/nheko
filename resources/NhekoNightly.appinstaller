@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppInstaller Uri="https://nheko-reborn.pages.nheko.im/nheko/NhekoNightly.appinstaller" Version="0.0.0.1" xmlns="http://schemas.microsoft.com/appx/appinstaller/2018">
+  <MainPackage Name="im.nheko.Nheko" Version="0.11.3.4" Publisher="CN=Nicolas Werner, O=Nicolas Werner, L=Munich, S=Bavaria, C=DE" Uri="https://nheko.im/api/v4/projects/2/packages/generic/windows-nightly/0.11.3.4/nheko.msix" ProcessorArchitecture="x64" />
+  <UpdateSettings>
+    <!-- We can't set this to check only once a month, so just check once a week. If the user doesn't want that ping, they should install the msix directly. -->
+    <OnLaunch HoursBetweenUpdateChecks="168" ShowPrompt="true" />
+    <ForceUpdateFromAnyVersion>true</ForceUpdateFromAnyVersion>
+  </UpdateSettings>
+</AppInstaller>
+
