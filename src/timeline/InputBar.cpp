@@ -954,18 +954,17 @@ InputBar::command(const QString &command, QString args)
 void
 InputBar::toggleIgnore(const QString &user, const bool ignored)
 {
-    QSharedPointer<UserProfile> profile(
-      new UserProfile(QString(), user, TimelineViewManager::instance()));
-    connect(profile.get(), &UserProfile::failedToFetchProfile, [user] {
+    UserProfile *profile = new UserProfile(QString(), user, TimelineViewManager::instance());
+    connect(profile, &UserProfile::failedToFetchProfile, [user] {
         MainWindow::instance()->showNotification(tr("Failed to fetch user %1").arg(user));
     });
 
-    connect(profile.get(),
-            &UserProfile::globalUsernameRetrieved,
-            [profile, ignored](const QString &user_id) {
-                Q_UNUSED(user_id)
-                profile->setIgnored(ignored);
-            });
+    connect(
+      profile, &UserProfile::globalUsernameRetrieved, [profile, ignored](const QString &user_id) {
+          Q_UNUSED(user_id)
+          profile->setIgnored(ignored);
+          profile->deleteLater();
+      });
 }
 
 MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,

@@ -281,9 +281,12 @@ UserProfile::setIgnored(bool ignore)
 
     if (ignore) {
         const QHash<QString, RoomInfo> invites = cache::invites();
+        FilteredRoomlistModel *room_model      = FilteredRoomlistModel::instance();
 
         for (auto room = invites.keyBegin(), end = invites.keyEnd(); room != end; room++) {
-            FilteredRoomlistModel::instance()->declineInvite(*room);
+            if (room_model->getRoomPreviewById(*room).inviterUserId() == userid) {
+                room_model->declineInvite(*room);
+            }
         }
     }
 }
