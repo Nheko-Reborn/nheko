@@ -45,7 +45,9 @@ codesign-windows:
   stage: sign
   image: win10-base
   tags: [libvirt,powershell]
-  resource_group: windows_signingA
+  rules:
+    - if : '$CI_PIPELINE_TRIGGERED == null && $CI_COMMIT_REF_PROTECTED == "true"'
+  resource_group: windows_signing
   environment: 
     name: windows_signing
   #variables:
@@ -53,15 +55,57 @@ codesign-windows:
   script:
     - Get-ChildItem -Path Cert:CurrentUser\My
     - ./.ci/windows/sign.bat
+    - mkdir -p artifacts
+    - mv nheko.msix artifacts/nheko.msix
   needs:
     - job: build-windows
-  rules:
-    - if : '$CI_COMMIT_REF_PROTECTED == "true"'
   artifacts:
     paths:
-      - nheko.msix
+      - artifacts/nheko.msix
     name: nheko-${CI_COMMIT_SHORT_SHA}-windows
     expose_as: 'windows-app'
+
+upload-windows:
+  stage: deploy
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:latest
+  tags: [docker]
+  rules:
+    - if: '$CI_PIPELINE_TRIGGERED == null && $CI_COMMIT_REF_PROTECTED == "true" && $CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+$/'
+      variables:
+        PACKAGE_NAME: "windows"
+    - if: '$CI_PIPELINE_TRIGGERED == null && $CI_COMMIT_REF_PROTECTED == "true"'
+  variables:
+    GIT_STRATEGY: none
+    PACKAGE_NAME: "windows-nightly"
+  before_script:
+    - apk add curl unzip
+  script:
+    - export VERSION=$(unzip -p artifacts/nheko.msix AppxManifest.xml | sed -n 's/.* Version="\([0-9.]*\)".*/\1/p')
+    - 'curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file artifacts/nheko.msix "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGE_NAME}/${VERSION}/nheko.msix"'
+  needs:
+    - job: codesign-windows
+
+pages:
+  stage: deploy
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/alpine:latest
+  tags: [docker]
+  rules:
+    - if: '$CI_PIPELINE_TRIGGERED == null && $CI_COMMIT_REF_PROTECTED == "true"'
+  interruptible: true
+  before_script:
+    - apk add curl jq
+  script:
+    - export LATEST_WINDOWS_NIGHTLY=$(curl "https://nheko.im/api/v4/projects/2/packages?package_name=windows-nightly&order_by=version&sort=desc" | jq -r '.[0].version')
+    - sed "s/0.11.3.4/${LATEST_WINDOWS_NIGHTLY}/g" -i resources/NhekoNightly.appinstaller
+    - mkdir public
+    - mv resources/NhekoNightly.appinstaller public
+  needs:
+    - job: upload-windows
+      optional: true
+      artifacts: false
+  artifacts:
+    paths:
+      - public
 
 build-clazy:
   stage: build
@@ -375,6 +419,7 @@ github-release:
     #- appimage-amd64 <- disabled because of missing packages
     - build-flatpak
     - codesign-macos
+    - codesign-windows
   before_script:
     - apk update && apk add jq curl perl
   script:
