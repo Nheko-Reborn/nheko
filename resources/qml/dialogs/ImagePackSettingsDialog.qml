@@ -32,7 +32,11 @@ ApplicationWindow {
 
         ImagePackEditorDialog {
         }
+    }
 
+    Component {
+        id: packDeleteDialog
+        ImagePackDeleteDialog {}
     }
 
     AdaptiveLayout {
@@ -189,16 +193,30 @@ ApplicationWindow {
 
                     }
 
-                    Button {
+                    RowLayout {
                         Layout.alignment: Qt.AlignHCenter
-                        text: qsTr("Edit")
-                        enabled: currentPack.canEdit
-                        onClicked: {
-                            var dialog = packEditor.createObject(timelineRoot, {
-                                "imagePack": currentPack
-                            });
-                            dialog.show();
-                            timelineRoot.destroyOnClose(dialog);
+
+                        Button {
+                            text: qsTr("Edit")
+                            enabled: currentPack.canEdit
+                            onClicked: {
+                                var dialog = packEditor.createObject(timelineRoot, {
+                                    "imagePack": currentPack
+                                });
+                                dialog.show();
+                                timelineRoot.destroyOnClose(dialog);
+                            }
+                        }
+                        Button {
+                            text: qsTr("Remove")
+                            enabled: currentPack.canEdit
+                            onClicked: {
+                                var dialog = packDeleteDialog.createObject(timelineRoot, {
+                                    "imagePack": currentPack
+                                });
+                                dialog.open();
+                                timelineRoot.destroyOnClose(dialog);
+                            }
                         }
                     }
 

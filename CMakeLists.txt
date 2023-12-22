@@ -766,6 +766,7 @@ set(QML_SOURCES
     resources/qml/dialogs/EventExpirationDialog.qml
     resources/qml/dialogs/ImageOverlay.qml
     resources/qml/dialogs/ImagePackEditorDialog.qml
+    resources/qml/dialogs/ImagePackDeleteDialog.qml
     resources/qml/dialogs/ImagePackSettingsDialog.qml
     resources/qml/dialogs/InputDialog.qml
     resources/qml/dialogs/InviteDialog.qml
