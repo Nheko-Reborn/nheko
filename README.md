@@ -1,16 +1,28 @@
 nheko
 ----
+
+[![#nheko-reborn:matrix.org](https://img.shields.io/matrix/nheko-reborn:matrix.org.svg?label=%23nheko-reborn:matrix.org)](https://matrix.to/#/#nheko-reborn:matrix.org)
 [![Build Status](https://nheko.im/nheko-reborn/nheko/badges/master/pipeline.svg)](https://nheko.im/nheko-reborn/nheko/-/pipelines/latest)
 [![Build status](https://ci.appveyor.com/api/projects/status/07qrqbfylsg4hw2h/branch/master?svg=true)](https://ci.appveyor.com/project/redsky17/nheko/branch/master)
-[![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/latest)
-[![Nightly](https://img.shields.io/badge/download-nightly-green.svg)](https://matrix-static.neko.dev/room/!TshDrgpBNBDmfDeEGN:neko.dev/)
-<a href='https://flatpak.neko.dev/repo/nightly/appstream/im.nheko.Nheko.flatpakref' download='nheko-nightly.flatpakref'><img alt='Download Nightly Flatpak' src='https://img.shields.io/badge/download-flatpak--nightly-green'/></a>
-[![#nheko-reborn:matrix.org](https://img.shields.io/matrix/nheko-reborn:matrix.org.svg?label=%23nheko-reborn:matrix.org)](https://matrix.to/#/#nheko-reborn:matrix.org)
-[![Arch package](https://repology.org/badge/version-for-repo/arch/nheko.svg)](https://archlinux.org/packages/extra/x86_64/nheko/)
-<a href='https://flathub.org/apps/details/io.github.NhekoReborn.Nheko'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
 The motivation behind the project is to provide a native desktop app for [Matrix] that
 feels more like a mainstream chat app ([Element], Telegram etc) and less like an IRC client.
+
+## Installation Quicklinks
+
+### Stable
+
+[![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/latest)
+<a href='https://flathub.org/apps/details/io.github.NhekoReborn.Nheko'><img height='32' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+[![Packaging status](https://repology.org/badge/tiny-repos/nheko.svg)](https://repology.org/project/nheko/versions)
+
+For other options and details see the [Installation](#installation) section.
+
+### Unstable
+
+[![Nightlies](https://img.shields.io/badge/download-nightly-green.svg)](https://nheko.im/nheko-reborn/nheko/-/pipelines?page=1&scope=all&ref=master)
+<a href='https://flatpak.neko.dev/repo/nightly/appstream/im.nheko.Nheko.flatpakref' download='nheko-nightly.flatpakref'><img alt='Download Nightly Flatpak' src='https://img.shields.io/badge/download-flatpak--nightly-green'/></a>
+<a href='https://nheko-reborn.pages.nheko.im/nheko/NhekoNightly.appinstaller' download='NhekoNightly.appinstaller'><img alt='Windows Nightly Automatic Updates' src='https://img.shields.io/badge/download-windows--nightly-green'/></a>
 
 ### Translations ###
 [![Translation status](http://weblate.nheko.im/widgets/nheko/-/nheko-master/svg-badge.svg)](http://weblate.nheko.im/engage/nheko/?utm_source=widget)
