@@ -955,8 +955,9 @@ void
 InputBar::toggleIgnore(const QString &user, const bool ignored)
 {
     UserProfile *profile = new UserProfile(QString(), user, TimelineViewManager::instance());
-    connect(profile, &UserProfile::failedToFetchProfile, [user] {
+    connect(profile, &UserProfile::failedToFetchProfile, [user, profile] {
         MainWindow::instance()->showNotification(tr("Failed to fetch user %1").arg(user));
+        profile->deleteLater();
     });
 
     connect(
