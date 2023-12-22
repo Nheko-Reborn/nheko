@@ -793,7 +793,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Rooms you have favourited.</source>
-        <translation>你收藏的聊天室。</translation>
+        <translation>收藏的聊天室。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1984,12 +1984,12 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+14"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify an unverified device now? (Please make sure you have one of those devices available.)</source>
-        <translation>为了允许其他用户查看你的哪些设备实际上属于你，你可以对其进行验证。这也允许密钥备份自动工作。立即验证未验证的设备？（请确保你有其中一个可用的设备。）</translation>
+        <translation>为了让其他用户看到哪些设备真正属于你，可以对这些设备进行验证。这样还可以自动进行密钥备份。要现在就验证未验证的设备吗？（请确保你有其中一个设备可用）</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>To allow other users to see which of your devices actually belong to you, you can verify them. This also allows key backup to work automatically. Verify %1 now?</source>
-        <translation>为了允许其他用户查看你的哪些设备实际上属于你，你可以对其进行验证。这也允许密钥备份自动工作。现在验证 %1 ？</translation>
+        <translation>为了让其他用户看到哪些设备真正属于你，可以对这些设备进行验证。这样还可以自动进行密钥备份。要现在就验证 %1 吗？</translation>
     </message>
     <message>
         <location line="+2"/>
