@@ -133,7 +133,7 @@
         <location filename="../../src/Cache.cpp" line="+3143"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 e %2</translation>
     </message>
     <message numerus="yes">
         <location line="+2"/>
@@ -216,12 +216,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+878"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -246,9 +246,13 @@
         <location line="-687"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n mensagem não lida na sala %1
+</numerusform>
+            <numerusform>%n mensagens não lidas na sala %
+</numerusform>
+            <numerusform>%n mensagens não lidas na sala %1
+</numerusform>
         </translation>
     </message>
     <message>
