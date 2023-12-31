@@ -94,7 +94,7 @@ UserSettings::load(std::optional<QString> profile)
     expireEvents_ = settings.value("user/expired_events_background_maintenance", false).toBool();
 
     mobileMode_        = settings.value("user/mobile_mode", false).toBool();
-    disableSwipe_        = settings.value("user/disable_swipe", false).toBool();
+    disableSwipe_      = settings.value("user/disable_swipe", false).toBool();
     emojiFont_         = settings.value("user/emoji_font_family", "emoji").toString();
     baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
     auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
@@ -1417,8 +1417,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr(
               "Will prevent text selection in the timeline to make touch scrolling easier.");
         case DisableSwipe:
-            return tr(
-              "Will prevent swipe motions like swiping left/right between Rooms and Timeline, or swiping a message to reply.");
+            return tr("Will prevent swipe motions like swiping left/right between Rooms and "
+                      "Timeline, or swiping a message to reply.");
         case ScaleFactor:
             return tr("Change the scale factor of the whole user interface.");
         case UseStunServer:
