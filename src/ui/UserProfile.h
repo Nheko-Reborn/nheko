@@ -45,6 +45,7 @@ public:
 
 signals:
     void profileFetched(mtx::responses::Profile);
+    void failedToFetchProfile();
 };
 
 class DeviceInfo
@@ -205,6 +206,7 @@ signals:
     void globalUsernameRetrieved(const QString &globalUser);
     void devicesChanged();
     void ignoredChanged();
+    void failedToFetchProfile();
 
     // internal
     void verificationStatiChanged();

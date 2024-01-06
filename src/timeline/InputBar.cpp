@@ -30,6 +30,7 @@
 #include "ChatPage.h"
 #include "EventAccessors.h"
 #include "Logging.h"
+#include "MainWindow.h"
 #include "MatrixClient.h"
 #include "TimelineModel.h"
 #include "TimelineViewManager.h"
@@ -239,7 +240,9 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("msgtype"),
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
-                                             QStringLiteral("converttoroom")};
+                                             QStringLiteral("converttoroom"),
+                                             QStringLiteral("ignore"),
+                                             QStringLiteral("unignore")};
     bool hasInvalidCommand    = !commandName.isNull() && !validCommands.contains(commandName);
     bool hasIncompleteCommand = hasInvalidCommand && '/' + commandName == t;
 
@@ -937,11 +940,32 @@ InputBar::command(const QString &command, QString args)
                                 cache::getMembers(this->room->roomId().toStdString(), 0, -1));
     } else if (command == QLatin1String("converttoroom")) {
         utils::removeDirectFromRoom(this->room->roomId());
+    } else if (command == QLatin1String("ignore")) {
+        this->toggleIgnore(args, true);
+    } else if (command == QLatin1String("unignore")) {
+        this->toggleIgnore(args, false);
     } else {
         return false;
     }
 
     return true;
+}
+
+void
+InputBar::toggleIgnore(const QString &user, const bool ignored)
+{
+    UserProfile *profile = new UserProfile(QString(), user, TimelineViewManager::instance());
+    connect(profile, &UserProfile::failedToFetchProfile, [user, profile] {
+        MainWindow::instance()->showNotification(tr("Failed to fetch user %1").arg(user));
+        profile->deleteLater();
+    });
+
+    connect(
+      profile, &UserProfile::globalUsernameRetrieved, [profile, ignored](const QString &user_id) {
+          Q_UNUSED(user_id)
+          profile->setIgnored(ignored);
+          profile->deleteLater();
+      });
 }
 
 MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,

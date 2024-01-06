@@ -279,6 +279,16 @@ Item {
         }
         FlatButton {
             Layout.alignment: Qt.AlignHCenter
+            text: qsTr("decline invite and ignore user")
+            visible: roomPreview && roomPreview.isInvite
+
+            onClicked: {
+                var inviter = TimelineManager.getGlobalUserProfile(roomPreview.inviterUserId)
+                inviter.ignored = true
+            }
+        }
+        FlatButton {
+            Layout.alignment: Qt.AlignHCenter
             text: qsTr("leave")
             visible: !!room
 

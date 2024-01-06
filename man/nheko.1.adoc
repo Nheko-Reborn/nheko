@@ -229,6 +229,14 @@ Inserts `┯━┯╭( º _ º╭)`
 */sovietflip*::
 Inserts `ノ┬─┬ノ ︵ ( \\o°o)\\`
 
+=== User management
+
+*/ignore* _<username>_::
+Ignore a user, invites from them are also rejected.
+
+*/unignore* _<username>_::
+Stops ignoring a user.
+
 === Advanced
 
 */clear-timeline*::

@@ -278,6 +278,17 @@ UserProfile::setIgnored(bool ignore)
                 .arg(userid, QString::fromStdString(e->matrix_error.error)));
         }
     });
+
+    if (ignore) {
+        const QHash<QString, RoomInfo> invites = cache::invites();
+        FilteredRoomlistModel *room_model      = FilteredRoomlistModel::instance();
+
+        for (auto room = invites.keyBegin(), end = invites.keyEnd(); room != end; room++) {
+            if (room_model->getRoomPreviewById(*room).inviterUserId() == userid) {
+                room_model->declineInvite(*room);
+            }
+        }
+    }
 }
 
 void
@@ -592,12 +603,18 @@ UserProfile::getGlobalProfileData()
                 emit avatarUrlChanged();
             });
 
+    connect(profProx.get(),
+            &UserProfileFetchProxy::failedToFetchProfile,
+            this,
+            &UserProfile::failedToFetchProfile);
+
     http::client()->get_profile(userid_.toStdString(),
                                 [prox = std::move(profProx), user = userid_.toStdString()](
                                   const mtx::responses::Profile &res, mtx::http::RequestErr err) {
                                     if (err) {
                                         nhlog::net()->warn("failed to retrieve profile info for {}",
                                                            user);
+                                        emit prox->failedToFetchProfile();
                                         return;
                                     }
 
