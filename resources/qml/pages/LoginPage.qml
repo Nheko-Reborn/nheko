@@ -82,15 +82,36 @@ Item {
                 visible: text
                 wrapMode: TextEdit.Wrap
             }
+            RowLayout {
 
-            MatrixTextField {
-                id: passwordLabel
-                Layout.fillWidth: true
-                label: qsTr("Password")
-                echoMode: TextInput.Password
-                ToolTip.text: qsTr("Your password.")
-                visible: login.passwordSupported
-                Keys.forwardTo: [pwBtn, ssoRepeater]
+                MatrixTextField {
+                    id: passwordLabel
+                    Layout.fillWidth: true
+                    label: qsTr("Password")
+                    echoMode: TextInput.Password
+                    ToolTip.text: qsTr("Your password.")
+                    visible: login.passwordSupported
+                    Keys.forwardTo: [pwBtn, ssoRepeater]
+                }
+
+                ImageButton {
+                    id: showPwButton
+                    Layout.preferredWidth: 30
+                    Layout.preferredHeight: 30
+                    visible: login.passwordSupported
+                    Layout.alignment: Qt.AlignBottom
+                    image: passwordLabel.echoMode === TextInput.Password ? ":/icons/icons/ui/eye-show.svg" : ":/icons/icons/ui/eye-hide.svg"
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Show/Hide Password")
+                    onClicked: {
+                        if (passwordLabel.echoMode === TextInput.Normal) {
+                            passwordLabel.echoMode = TextInput.Password
+                        }
+                        else {
+                            passwordLabel.echoMode = TextInput.Normal
+                        }
+                    }
+                }
             }
 
             MatrixTextField {
