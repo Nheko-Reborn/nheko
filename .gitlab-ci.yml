@@ -289,15 +289,20 @@ codesign-macos:
 
 build-flatpak:
   stage: build
-  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:latest
+  image:
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:latest
+    #docker:
+    #  platform: ${ARCH}
   #image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
   tags: 
-    - docker-${ARCH}
+    - docker-amd64
   parallel:
     matrix:
       - ARCH: amd64
+        AARCH: x86_64
         JOBS: 0
       - ARCH: arm64
+        AARCH: aarch64
         JOBS: 3
   before_script:
     - apt-get update && apt-get -y install flatpak-builder git python3 curl python3-aiohttp python3-tenacity gir1.2-ostree-1.0
@@ -308,8 +313,8 @@ build-flatpak:
     - export VERSION=$(git describe)
     - mkdir -p build-flatpak
     - cd build-flatpak
-    - flatpak-builder --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../im.nheko.Nheko.yaml --jobs=$JOBS
-    - flatpak build-bundle repo nheko-${ARCH}.flatpak im.nheko.Nheko ${CI_COMMIT_REF_NAME//\//_}
+    - flatpak-builder --arch=${AARCH} --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../im.nheko.Nheko.yaml --jobs=$JOBS
+    - flatpak --arch=${AARCH} build-bundle repo nheko-${ARCH}.flatpak im.nheko.Nheko ${CI_COMMIT_REF_NAME//\//_}
   after_script:
     - bash ./.ci/upload-nightly-gitlab.sh build-flatpak/nheko-${ARCH}.flatpak
     - (cd ./scripts && ./upload-to-flatpak-repo.sh ../build-flatpak/repo) || exit_code=$?
@@ -324,6 +329,7 @@ build-flatpak:
     expose_as: 'flatpak'
     paths: ['build-flatpak/nheko-${ARCH}.flatpak']
     name: flatpak-${CI_COMMIT_REF_NAME}-${VERSION}-${ARCH}
+
 
 # disabled until I find a qt6.5 ppa for Ubuntu
 .appimage-amd64:
