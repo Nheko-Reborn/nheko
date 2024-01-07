@@ -70,6 +70,7 @@ class UserSettings final : public QObject
     Q_PROPERTY(int communityListWidth READ communityListWidth WRITE setCommunityListWidth NOTIFY
                  communityListWidthChanged)
     Q_PROPERTY(bool mobileMode READ mobileMode WRITE setMobileMode NOTIFY mobileModeChanged)
+    Q_PROPERTY(bool disableSwipe READ disableSwipe WRITE setDisableSwipe NOTIFY disableSwipeChanged)
     Q_PROPERTY(double fontSize READ fontSize WRITE setFontSize NOTIFY fontSizeChanged)
     Q_PROPERTY(QString font READ font WRITE setFontFamily NOTIFY fontChanged)
     Q_PROPERTY(QString emojiFont READ emojiFont WRITE setEmojiFontFamily NOTIFY emojiFontChanged)
@@ -165,6 +166,7 @@ public:
     void setTray(bool state);
     void setStartInTray(bool state);
     void setMobileMode(bool mode);
+    void setDisableSwipe(bool mode);
     void setFontSize(double size);
     void setFontFamily(QString family);
     void setEmojiFontFamily(QString family);
@@ -252,6 +254,7 @@ public:
     bool sortByAlphabet() const { return sortByAlphabet_; }
     bool buttonsInTimeline() const { return buttonsInTimeline_; }
     bool mobileMode() const { return mobileMode_; }
+    bool disableSwipe() const { return disableSwipe_; }
     bool readReceipts() const { return readReceipts_; }
     bool hasDesktopNotifications() const { return hasDesktopNotifications_; }
     bool hasAlertOnNotification() const { return hasAlertOnNotification_; }
@@ -335,6 +338,7 @@ signals:
     void roomListWidthChanged(int state);
     void communityListWidthChanged(int state);
     void mobileModeChanged(bool mode);
+    void disableSwipeChanged(bool state);
     void fontSizeChanged(double state);
     void fontChanged(QString state);
     void emojiFontChanged(QString state);
@@ -406,6 +410,7 @@ private:
     bool onlyShareKeysWithVerifiedUsers_;
     bool useOnlineKeyBackup_;
     bool mobileMode_;
+    bool disableSwipe_;
     int timelineMaxWidth_;
     int roomListWidth_;
     int communityListWidth_;
@@ -459,6 +464,7 @@ class UserSettingsModel : public QAbstractListModel
         GeneralSection,
         Theme,
         MobileMode,
+        DisableSwipe,
 #ifndef Q_OS_MAC
         ScaleFactor,
 #endif

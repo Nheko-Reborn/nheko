@@ -94,6 +94,7 @@ UserSettings::load(std::optional<QString> profile)
     expireEvents_ = settings.value("user/expired_events_background_maintenance", false).toBool();
 
     mobileMode_        = settings.value("user/mobile_mode", false).toBool();
+    disableSwipe_      = settings.value("user/disable_swipe", false).toBool();
     emojiFont_         = settings.value("user/emoji_font_family", "emoji").toString();
     baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
     auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
@@ -203,6 +204,16 @@ UserSettings::setMobileMode(bool state)
         return;
     mobileMode_ = state;
     emit mobileModeChanged(state);
+    save();
+}
+
+void
+UserSettings::setDisableSwipe(bool state)
+{
+    if (state == disableSwipe_)
+        return;
+    disableSwipe_ = state;
+    emit disableSwipeChanged(state);
     save();
 }
 
@@ -884,6 +895,7 @@ UserSettings::save()
     settings.setValue("privacy_screen", privacyScreen_);
     settings.setValue("privacy_screen_timeout", privacyScreenTimeout_);
     settings.setValue("mobile_mode", mobileMode_);
+    settings.setValue("disable_swipe", disableSwipe_);
     settings.setValue("font_size", baseFontSize_);
     settings.setValue("typing_notifications", typingNotifications_);
     settings.setValue("sort_by_unread", sortByImportance_);
@@ -1056,6 +1068,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Privacy screen timeout (in seconds [0 - 3600])");
         case MobileMode:
             return tr("Touchscreen mode");
+        case DisableSwipe:
+            return tr("Disable swipe motions");
         case FontSize:
             return tr("Font size");
         case Font:
@@ -1208,6 +1222,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->privacyScreenTimeout();
         case MobileMode:
             return i->mobileMode();
+        case DisableSwipe:
+            return i->disableSwipe();
         case FontSize:
             return i->fontSize();
         case Font: {
@@ -1400,6 +1416,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case MobileMode:
             return tr(
               "Will prevent text selection in the timeline to make touch scrolling easier.");
+        case DisableSwipe:
+            return tr("Will prevent swipe motions like swiping left/right between Rooms and "
+                      "Timeline, or swiping a message to reply.");
         case ScaleFactor:
             return tr("Change the scale factor of the whole user interface.");
         case UseStunServer:
@@ -1517,6 +1536,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case DecryptNotifications:
         case PrivacyScreen:
         case MobileMode:
+        case DisableSwipe:
         case UseStunServer:
         case OnlyShareKeysWithVerifiedUsers:
         case ShareKeysWithTrustedUsers:
@@ -1913,6 +1933,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
+        case DisableSwipe: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setDisableSwipe(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         case FontSize: {
             if (value.canConvert(QMetaType::fromType<double>())) {
                 i->setFontSize(value.toDouble());
@@ -2153,6 +2180,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::mobileModeChanged, this, [this]() {
         emit dataChanged(index(MobileMode), index(MobileMode), {Value});
+    });
+    connect(s.get(), &UserSettings::disableSwipeChanged, this, [this]() {
+        emit dataChanged(index(DisableSwipe), index(DisableSwipe), {Value});
     });
 
     connect(s.get(), &UserSettings::fontChanged, this, [this]() {

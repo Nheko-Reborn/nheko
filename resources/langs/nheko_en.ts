@@ -4788,6 +4788,11 @@ Reason: %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Disable swipe motions</source>
+        <translation>Disable swipe motions</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Font size</source>
         <translation>Font size</translation>
     </message>
