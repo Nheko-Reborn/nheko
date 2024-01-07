@@ -22,9 +22,14 @@ BlurhashRunnable::run()
         return;
     }
 
+    auto blurhashDecodeSize = m_requestedSize;
+    if (blurhashDecodeSize.height() > 100 && blurhashDecodeSize.width() > 100) {
+        blurhashDecodeSize.scale(100, 100, Qt::AspectRatioMode::KeepAspectRatio);
+    }
+
     auto decoded = blurhash::decode(QUrl::fromPercentEncoding(m_id.toUtf8()).toStdString(),
-                                    m_requestedSize.width(),
-                                    m_requestedSize.height());
+                                    blurhashDecodeSize.width(),
+                                    blurhashDecodeSize.height());
     if (decoded.image.empty()) {
         emit error(QStringLiteral("Failed decode!"));
         return;
@@ -35,6 +40,8 @@ BlurhashRunnable::run()
                  (int)decoded.height,
                  (int)decoded.width * 3,
                  QImage::Format_RGB888);
+
+    image = image.scaled(m_requestedSize);
 
     emit done(image.convertToFormat(QImage::Format_RGB32));
 }
