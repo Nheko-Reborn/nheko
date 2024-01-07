@@ -4,7 +4,6 @@ option(APPVEYOR_BUILD "Build on appveyor" OFF)
 option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
 option(ASAN "Compile with address sanitizers" OFF)
 option(QML_DEBUGGING "Enable qml debugging" OFF)
-option(COMPILE_QML "Compile Qml. It will make Nheko faster, but you will need to recompile it, when you update Qt." OFF)
 if(UNIX AND NOT APPLE)
     option(MAN "Build man page" ON)
 else()
@@ -241,7 +240,6 @@ endif()
 # Discover Qt dependencies.
 #
 find_package(Qt6 6.5 COMPONENTS Core Widgets Gui LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
-#find_package(Qt6QuickCompiler)
 find_package(Qt6DBus)
 
 if(USE_BUNDLED_QTKEYCHAIN)
@@ -633,11 +631,7 @@ endif()
 #
 # Bundle resources
 #
-if(Qt6QuickCompiler_FOUND AND COMPILE_QML)
-    qtquick_compiler_add_resources(QRC resources/res.qrc)
-else()
-    qt_add_resources(QRC resources/res.qrc)
-endif()
+qt_add_resources(QRC resources/res.qrc)
 
 if(APPLE)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -framework Foundation -framework Cocoa -framework UserNotifications")

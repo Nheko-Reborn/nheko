@@ -35,6 +35,7 @@ Item {
 
         // TODO: Show error in overlay or so?
         roomm: room
+        // FIXME: This takes 500ms on my device, why and how can we avoid that?
         audioOutput: AudioOutput {
             muted: mediaControls.muted
             volume: mediaControls.desiredVolume

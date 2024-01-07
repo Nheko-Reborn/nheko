@@ -997,6 +997,8 @@ TimelineModel::multiData(const QModelIndex &index, QModelRoleDataSpan roleDataSp
         return;
     }
 
+    // nhlog::db()->debug("MultiData called for {}", index.row());
+
     // HACK(Nico): fetchMore likes to break with dynamically sized delegates and reuseItems
     if (index.row() + 1 == rowCount() && !m_paginationInProgress)
         const_cast<TimelineModel *>(this)->fetchMore(index);
@@ -1024,6 +1026,8 @@ TimelineModel::multiData(const QString &id,
             roleData.clearData();
         return;
     }
+
+    // nhlog::db()->debug("MultiData called for {}", id.toStdString());
 
     auto event = events.get(id.toStdString(), relatedTo.toStdString());
 

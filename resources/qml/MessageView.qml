@@ -47,7 +47,7 @@ Item {
         anchors.rightMargin: scrollbar.interactive ? scrollbar.width : 0
         // reuseItems still has a few bugs, see https://bugreports.qt.io/browse/QTBUG-95105 https://bugreports.qt.io/browse/QTBUG-95107
         //onModelChanged: if (room) room.sendReset()
-        //reuseItems: true
+        reuseItems: true
         boundsBehavior: Flickable.StopAtBounds
         displayMarginBeginning: height / 4
         displayMarginEnd: height / 4

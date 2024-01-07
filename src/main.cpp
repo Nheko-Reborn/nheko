@@ -47,7 +47,7 @@
 
 #ifdef QML_DEBUGGING
 #include <QQmlDebuggingEnabler>
-QQmlDebuggingEnabler enabler;
+QQmlTriviallyDestructibleDebuggingEnabler enabler;
 #endif
 
 #if HAVE_BACKTRACE_SYMBOLS_FD
