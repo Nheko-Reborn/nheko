@@ -29,22 +29,24 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
                              static_cast<int>(error),
                              errorString.toStdString());
       });
-    connect(this, &MxcMediaProxy::mediaStatusChanged, [this](QMediaPlayer::MediaStatus status) {
-        nhlog::ui()->info("Media player status {} and error {}",
-                          static_cast<int>(status),
-                          static_cast<int>(this->error()));
-    });
-    connect(this, &MxcMediaProxy::playbackStateChanged, [this](QMediaPlayer::PlaybackState status) {
-        // We only set the output when starting the playback because otherwise the audio device
-        // lookup takes about 500ms, which causes a lot of stutter...
-        if (status == QMediaPlayer::PlayingState && !audioOutput()) {
-            nhlog::ui()->debug("Set audio output");
-            auto newOut = new QAudioOutput(this);
-            newOut->setMuted(muted_);
-            newOut->setVolume(volume_);
-            setAudioOutput(newOut);
-        }
-    });
+    connect(
+      this, &MxcMediaProxy::mediaStatusChanged, this, [this](QMediaPlayer::MediaStatus status) {
+          nhlog::ui()->info("Media player status {} and error {}",
+                            static_cast<int>(status),
+                            static_cast<int>(this->error()));
+      });
+    connect(
+      this, &MxcMediaProxy::playbackStateChanged, this, [this](QMediaPlayer::PlaybackState status) {
+          // We only set the output when starting the playback because otherwise the audio device
+          // lookup takes about 500ms, which causes a lot of stutter...
+          if (status == QMediaPlayer::PlayingState && !audioOutput()) {
+              nhlog::ui()->debug("Set audio output");
+              auto newOut = new QAudioOutput(this);
+              newOut->setMuted(muted_);
+              newOut->setVolume(volume_);
+              setAudioOutput(newOut);
+          }
+      });
     connect(this, &MxcMediaProxy::metaDataChanged, [this]() { emit orientationChanged(); });
 
     connect(ChatPage::instance()->timelineManager()->rooms(),
