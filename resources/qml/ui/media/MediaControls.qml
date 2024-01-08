@@ -71,7 +71,7 @@ Rectangle {
         spacing: 0
         anchors.bottom: control.bottom
         anchors.left: control.left
-        anchors.right: control.right
+        width: Math.max(implicitWidth, control.width)
 
         NhekoSlider {
             Layout.fillWidth: true
@@ -134,8 +134,9 @@ Rectangle {
 
                 state: ""
                 Layout.alignment: Qt.AlignLeft
-                Layout.preferredWidth: 0
+                Layout.preferredWidth: 100
                 opacity: 0
+                enabled: false
                 orientation: Qt.Horizontal
                 value: 1
                 onDesiredVolumeChanged: {
@@ -158,12 +159,6 @@ Rectangle {
                             }
 
                         }
-
-                        NumberAnimation {
-                            properties: "Layout.preferredWidth"
-                            duration: 150
-                        }
-
                     },
                     Transition {
                         from: "shown"
@@ -181,10 +176,6 @@ Rectangle {
                                     easing.type: Easing.InQuad
                                 }
 
-                                NumberAnimation {
-                                    properties: "Layout.preferredWidth"
-                                    duration: 150
-                                }
 
                             }
 
@@ -198,25 +189,22 @@ Rectangle {
                     when: Settings.mobileMode || volumeButton.hovered || volumeSlider.hovered || volumeSlider.pressed
 
                     PropertyChanges {
-                        volumeSlider.implicitWidth: 100
-                    }
-
-                    PropertyChanges {
                         volumeSlider.opacity: 1
+                        volumeSlider.enabled: true
                     }
 
                 }
 
             }
 
+            Item {
+                Layout.fillWidth: true
+            }
+
             Label {
                 Layout.alignment: Qt.AlignRight
                 text: (!control.mediaLoaded ? "-- " : durationToString(control.positionValue)) + " / " + durationToString(control.duration)
                 color: palette.text
-            }
-
-            Item {
-                Layout.fillWidth: true
             }
 
         }

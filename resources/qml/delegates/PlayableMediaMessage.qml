@@ -24,23 +24,24 @@ Item {
     property int tempWidth: originalWidth < 1? 400: originalWidth
     implicitWidth: type == MtxEvent.VideoMessage ? Math.round(tempWidth*Math.min((timelineView.height/divisor)/(tempWidth*proportionalHeight), 1)) : 500
     width: Math.min(parent?.width ?? implicitWidth, implicitWidth)
-    height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : 80) + fileInfoLabel.height
+    height: (type == MtxEvent.VideoMessage ? width*proportionalHeight : mediaControls.height) + fileInfoLabel.height
     //implicitHeight: height
 
     property int metadataWidth
-    property bool fitsMetadata: (parent.width - fileInfoLabel.width) > metadataWidth+4
+    property bool fitsMetadata: parent != null ? ((parent.width - fileInfoLabel.width) > metadataWidth+4) : false
+
+    Component.onCompleted: mxcmedia.startDownload(true)
 
     MxcMedia {
         id: mxcmedia
 
         // TODO: Show error in overlay or so?
         roomm: room
-        // FIXME: This takes 500ms on my device, why and how can we avoid that?
-        audioOutput: AudioOutput {
-            muted: mediaControls.muted
-            volume: mediaControls.desiredVolume
-        }
+        eventId: content.eventId
         videoOutput: videoOutput
+
+        muted: mediaControls.muted
+        volume: mediaControls.desiredVolume
     }
 
     Rectangle {
@@ -56,6 +57,7 @@ Item {
 
         Image {
             anchors.fill: parent
+            visible: content.type == MtxEvent.VideoMessage
             source: content.thumbnailUrl ? thumbnailUrl.replace("mxc://", "image://MxcImage/") + "?scale" : "image://colorimage/:/icons/icons/ui/video-file.svg?" + palette.windowText
             asynchronous: true
             fillMode: Image.PreserveAspectFit
@@ -85,7 +87,7 @@ Item {
             mediaState: mxcmedia.playbackState
             onPositionChanged: mxcmedia.position = position
             onPlayPauseActivated: mxcmedia.playbackState == MediaPlayer.PlayingState ? mxcmedia.pause() : mxcmedia.play()
-            onLoadActivated: mxcmedia.eventId = eventId
+            onLoadActivated: mxcmedia.startDownload()
         }
     }
 

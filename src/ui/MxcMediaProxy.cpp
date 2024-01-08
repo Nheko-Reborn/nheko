@@ -23,8 +23,6 @@
 MxcMediaProxy::MxcMediaProxy(QObject *parent)
   : QMediaPlayer(parent)
 {
-    connect(this, &MxcMediaProxy::eventIdChanged, &MxcMediaProxy::startDownload);
-    connect(this, &MxcMediaProxy::roomChanged, &MxcMediaProxy::startDownload);
     connect(
       this, &QMediaPlayer::errorOccurred, this, [](QMediaPlayer::Error error, QString errorString) {
           nhlog::ui()->debug("Media player error {} and errorStr {}",
@@ -35,6 +33,17 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
         nhlog::ui()->info("Media player status {} and error {}",
                           static_cast<int>(status),
                           static_cast<int>(this->error()));
+    });
+    connect(this, &MxcMediaProxy::playbackStateChanged, [this](QMediaPlayer::PlaybackState status) {
+        // We only set the output when starting the playback because otherwise the audio device
+        // lookup takes about 500ms, which causes a lot of stutter...
+        if (status == QMediaPlayer::PlayingState && !audioOutput()) {
+            nhlog::ui()->debug("Set audio output");
+            auto newOut = new QAudioOutput(this);
+            newOut->setMuted(muted_);
+            newOut->setVolume(volume_);
+            setAudioOutput(newOut);
+        }
     });
     connect(this, &MxcMediaProxy::metaDataChanged, [this]() { emit orientationChanged(); });
 
@@ -55,7 +64,7 @@ MxcMediaProxy::orientation() const
 }
 
 void
-MxcMediaProxy::startDownload()
+MxcMediaProxy::startDownload(bool onlyCached)
 {
     if (!room_)
         return;
@@ -125,6 +134,9 @@ MxcMediaProxy::startDownload()
             return;
         }
     }
+
+    if (onlyCached)
+        return;
 
     http::client()->download(url,
                              [filename, url, processBuffer](const std::string &data,
