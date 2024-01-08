@@ -147,7 +147,7 @@
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Stanza Vuota</translation>
     </message>
 </context>
 <context>
@@ -333,7 +333,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserisci la ragione per espellere %1 (%2) o premi invio per non specificare alcuna ragione:</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -459,7 +459,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;testo&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -584,7 +584,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Invia &lt;testo&gt; come reazione quando stai rispondendo ad un messaggio.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -600,7 +600,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lascia una stanza. La motivazione è facoltativa.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -786,7 +786,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+67"/>
         <source>Favourites</source>
-        <translation type="unfinished"></translation>
+        <translation>Preferiti</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -796,12 +796,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Low Priority</source>
-        <translation type="unfinished">Tag matrix standard per stanze a bassa priorità</translation>
+        <translation>Bassa Priorità</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rooms with low priority.</source>
-        <translation type="unfinished"></translation>
+        <translation>Stanze con bassa priorità.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1516,7 +1516,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/timeline/InputBar.cpp" line="+374"/>
         <source>All Files (*)</source>
-        <translation type="unfinished">Tutti i File (*)</translation>
+        <translation>Tutti i File (*)</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -1642,7 +1642,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Continua con Facebook</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2462,7 +2462,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+2"/>
         <source>profile</source>
-        <translation type="unfinished"></translation>
+        <translation>profilo</translation>
     </message>
     <message>
         <location line="+1"/>
