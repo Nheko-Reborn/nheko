@@ -5311,6 +5311,11 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <source>File to save the exported session keys</source>
         <translation>File untuk menyimpan kunci sesi yang telah diekspor</translation>
     </message>
+    <message>
+        <location line="+2"/>
+        <source>Disable swipe motions</source>
+        <translation>Nonaktifkan gerakan usapan</translation>
+    </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
