@@ -5311,6 +5311,11 @@ This setting will take effect upon restart.</source>
         <source>File to save the exported session keys</source>
         <translation>保存导出的会话密钥的文件</translation>
     </message>
+    <message>
+        <location line="+2"/>
+        <source>Disable swipe motions</source>
+        <translation>禁用滑动操作</translation>
+    </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
