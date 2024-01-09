@@ -465,7 +465,7 @@ class UserSettingsModel : public QAbstractListModel
         Theme,
         MobileMode,
         DisableSwipe,
-#ifndef Q_OS_MAC
+#ifndef Q_OS_MACOS
         ScaleFactor,
 #endif
         Font,
@@ -551,7 +551,7 @@ class UserSettingsModel : public QAbstractListModel
         COUNT,
         // hidden for now
         AccessToken,
-#ifdef Q_OS_MAC
+#ifdef Q_OS_MACOS
         ScaleFactor,
 #endif
 #ifndef NHEKO_DBUS_SYS

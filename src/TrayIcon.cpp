@@ -98,7 +98,7 @@ MsgCountComposedIcon::pixmap(const QSize &size, QIcon::Mode mode, QIcon::State s
 TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
   : QSystemTrayIcon(parent)
 {
-#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
+#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
     setIcon(QIcon(filename));
 #else
     icon_ = new MsgCountComposedIcon(filename);
