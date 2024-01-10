@@ -127,12 +127,12 @@ Pane {
         onActivated: Rooms.nextRoomWithActivity()
     }
     Shortcut {
-        sequence: "Ctrl+Down"
+        sequences: ["Ctrl+Down", "Ctrl+PgDown"]
 
         onActivated: Rooms.nextRoom()
     }
     Shortcut {
-        sequence: "Ctrl+Up"
+        sequences: ["Ctrl+Up", "Ctrl+PgUp"]
 
         onActivated: Rooms.previousRoom()
     }

@@ -224,7 +224,7 @@ Rectangle {
                     } else if ((event.key == Qt.Key_Down || event.key == Qt.Key_Backtab) && popup.opened) {
                         event.accepted = true;
                         completer.down();
-                    } else if (event.key == Qt.Key_Up && event.modifiers == Qt.NoModifier) {
+                    } else if (event.key == Qt.Key_Up && (event.modifiers == Qt.NoModifier || event.modifiers == Qt.KeypadModifier)) {
                         if (cursorPosition == 0) {
                             event.accepted = true;
                             var idx = room.edit ? room.idToIndex(room.edit) + 1 : 0;
@@ -242,7 +242,7 @@ Rectangle {
                             event.accepted = true;
                             positionCursorAtStart();
                         }
-                    } else if (event.key == Qt.Key_Down && event.modifiers == Qt.NoModifier) {
+                    } else if (event.key == Qt.Key_Down && (event.modifiers == Qt.NoModifier || event.modifiers == Qt.KeypadModifier)) {
                         if (cursorPosition == messageInput.length && room.edit) {
                             event.accepted = true;
                             var idx = room.idToIndex(room.edit) - 1;

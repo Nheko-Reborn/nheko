@@ -39,7 +39,7 @@ Item {
         emoji: true
     }
     Shortcut {
-        sequence: StandardKey.Close
+        sequences: [StandardKey.Close]
 
         onActivated: Rooms.resetCurrentRoom()
     }

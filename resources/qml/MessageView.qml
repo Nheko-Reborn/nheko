@@ -283,7 +283,7 @@ Item {
             }
         }
         Shortcut {
-            sequence: StandardKey.MoveToPreviousPage
+            sequences: [StandardKey.MoveToPreviousPage]
 
             onActivated: {
                 chat.contentY = chat.contentY - chat.height * 0.9;
@@ -291,7 +291,7 @@ Item {
             }
         }
         Shortcut {
-            sequence: StandardKey.MoveToNextPage
+            sequences: [StandardKey.MoveToNextPage]
 
             onActivated: {
                 chat.contentY = chat.contentY + chat.height * 0.9;
@@ -299,7 +299,7 @@ Item {
             }
         }
         Shortcut {
-            sequence: StandardKey.Cancel
+            sequences: [StandardKey.Cancel]
 
             onActivated: {
                 if (room.input.uploads.length > 0)
