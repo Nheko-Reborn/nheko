@@ -15,7 +15,7 @@
         <translation>Connecting…</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+73"/>
         <source>You are screen sharing</source>
         <translation>You are screen sharing.</translation>
     </message>
@@ -38,7 +38,7 @@
 <context>
     <name>AliasEditingModel</name>
     <message>
-        <location filename="../../src/AliasEditModel.cpp" line="+128"/>
+        <location filename="../../src/AliasEditModel.cpp" line="+127"/>
         <location line="+47"/>
         <location line="+60"/>
         <location line="+13"/>
@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3143"/>
+        <location filename="../../src/Cache.cpp" line="+3399"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 and %2</translation>
@@ -214,7 +214,7 @@
 <context>
     <name>CallManager</name>
     <message>
-        <location filename="../../src/voip/CallManager.cpp" line="+878"/>
+        <location filename="../../src/voip/CallManager.cpp" line="+882"/>
         <source>X11</source>
         <translation>X11</translation>
     </message>
@@ -232,18 +232,18 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+114"/>
+        <location filename="../../src/ChatPage.cpp" line="+116"/>
         <source>Failed to invite user: %1</source>
         <translation>Failed to invite user: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+934"/>
+        <location line="+939"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-687"/>
+        <location line="-692"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation>
@@ -269,7 +269,7 @@
         <translation>Failed to open database, logging out!</translation>
     </message>
     <message>
-        <location line="+305"/>
+        <location line="+310"/>
         <source>Knock on room</source>
         <translation>Knock on room</translation>
     </message>
@@ -295,12 +295,12 @@
     </message>
     <message>
         <location line="+43"/>
-        <location line="+484"/>
+        <location line="+497"/>
         <source>Confirm invite</source>
         <translation>Confirm invite</translation>
     </message>
     <message>
-        <location line="-483"/>
+        <location line="-496"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Do you really want to invite %1 (%2)?</translation>
     </message>
@@ -345,12 +345,12 @@
         <translation>Unbanned user: %1</translation>
     </message>
     <message>
-        <location line="+389"/>
+        <location line="+402"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Do you really want to start a private chat with %1?</translation>
     </message>
     <message>
-        <location line="-984"/>
+        <location line="-1002"/>
         <source>Cache migration failed!</source>
         <translation>Cache migration failed!</translation>
     </message>
@@ -392,7 +392,7 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
     </message>
     <message>
         <location line="+35"/>
-        <location line="+151"/>
+        <location line="+156"/>
         <source>Please try to login again: %1</source>
         <translation>Please try to login again: %1</translation>
     </message>
@@ -457,7 +457,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+108"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+112"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;message&gt;</translation>
     </message>
@@ -582,7 +582,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>/goto &lt;message reference&gt;</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+16"/>
         <source>Send a message expressing an action.</source>
         <translation>Send a message expressing an action.</translation>
     </message>
@@ -742,6 +742,16 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <source>Convert this direct chat into a room.</source>
         <translation>Convert this direct chat into a room.</translation>
     </message>
+    <message>
+        <location line="+2"/>
+        <source>Ignore a user.</source>
+        <translation>Ignore a user.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Stop ignoring a user.</source>
+        <translation>Stop ignoring a user.</translation>
+    </message>
 </context>
 <context>
     <name>CommunitiesList</name>
@@ -819,7 +829,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>Messages from your server or administrator.</translation>
     </message>
     <message>
-        <location line="+667"/>
+        <location line="+678"/>
         <source>Failed to update community: %1</source>
         <translation>Failed to update community: %1</translation>
     </message>
@@ -979,7 +989,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+298"/>
+        <location filename="../../src/ChatPage.cpp" line="+311"/>
         <source>Decrypt secrets</source>
         <translation>Decrypt secrets</translation>
     </message>
@@ -1114,7 +1124,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+37"/>
         <source>This message is not encrypted!</source>
         <translation>This message is not encrypted!</translation>
     </message>
@@ -1130,8 +1140,13 @@ You may optionally provide a reason for others to accept your knock:</translatio
     </message>
     <message>
         <location line="+2"/>
-        <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</translation>
+        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <translation>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Encrypted by an unverified device.</source>
+        <translation>Encrypted by an unverified device.</translation>
     </message>
 </context>
 <context>
@@ -1200,7 +1215,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>EventExpiry</name>
     <message>
-        <location filename="../../src/ui/EventExpiry.cpp" line="+49"/>
+        <location filename="../../src/ui/EventExpiry.cpp" line="+50"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
         <translation>Failed to set hidden events: %1</translation>
@@ -1288,7 +1303,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>GridImagePackModel</name>
     <message>
-        <location filename="../../src/GridImagePackModel.cpp" line="+311"/>
+        <location filename="../../src/GridImagePackModel.cpp" line="+310"/>
         <source>Account Pack</source>
         <translation>Account Pack</translation>
     </message>
@@ -1296,7 +1311,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>HiddenEvents</name>
     <message>
-        <location filename="../../src/ui/HiddenEvents.cpp" line="+91"/>
+        <location filename="../../src/ui/HiddenEvents.cpp" line="+92"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
         <translation>Failed to set hidden events: %1</translation>
@@ -1366,6 +1381,14 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <location line="+31"/>
         <source>Stop Ignoring.</source>
         <translation>Stop Ignoring.</translation>
+    </message>
+</context>
+<context>
+    <name>ImagePackDeleteDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
+        <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
+        <translation>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</translation>
     </message>
 </context>
 <context>
@@ -1466,7 +1489,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>Image pack settings</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+52"/>
         <source>Create account pack</source>
         <translation>Create account pack</translation>
     </message>
@@ -1506,12 +1529,17 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>Enables this pack to be used in all rooms</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+11"/>
+        <source>Remove</source>
+        <translation>Remove</translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -1519,7 +1547,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+374"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+377"/>
         <source>Select file(s)</source>
         <translation>Select file(s)</translation>
     </message>
@@ -1529,7 +1557,12 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>All Files (*)</translation>
     </message>
     <message>
-        <location line="+901"/>
+        <location line="+582"/>
+        <source>Failed to fetch user %1</source>
+        <translation>Failed to fetch user %1</translation>
+    </message>
+    <message>
+        <location line="+340"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Upload of &apos;%1&apos; failed</translation>
     </message>
@@ -1602,7 +1635,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+79"/>
+        <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
         <location line="+127"/>
@@ -1701,7 +1734,7 @@ Example: @user:yourserver.example.com
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+28"/>
         <source>Password</source>
         <translation>Password</translation>
     </message>
@@ -1711,7 +1744,12 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <translation>Your password.</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+13"/>
+        <source>Show/Hide Password</source>
+        <translation>Show/Hide Password</translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Device name</source>
         <translation>Device name</translation>
     </message>
@@ -2039,7 +2077,7 @@ Example: https://yourserver.example.com:8787</translation>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+23"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+83"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 sent an encrypted message</translation>
@@ -2464,7 +2502,7 @@ Example: https://yourserver.example.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+239"/>
+        <location filename="../../src/main.cpp" line="+241"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</translation>
     </message>
@@ -2569,7 +2607,7 @@ Example: https://yourserver.example.com:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+82"/>
+        <location filename="../../src/RegisterPage.cpp" line="+81"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autodiscovery failed. Received malformed response.</translation>
     </message>
@@ -2693,7 +2731,7 @@ Example: https://yourserver.example.com:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+40"/>
+        <location filename="../qml/ReplyPopup.qml" line="+41"/>
         <source>Close</source>
         <translation>Close</translation>
     </message>
@@ -3043,7 +3081,7 @@ Example: https://yourserver.example.com:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+236"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+235"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Failed to enable encryption: %1</translation>
     </message>
@@ -3467,7 +3505,7 @@ Example: https://yourserver.example.com:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4930"/>
+        <location filename="../../src/Cache.cpp" line="-5145"/>
         <source>Failed to connect to secret storage</source>
         <translation>Failed to connect to secret storage</translation>
     </message>
@@ -3532,7 +3570,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+50"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+53"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation>Failed to create keys for cross-signing!</translation>
     </message>
@@ -3565,18 +3603,19 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+281"/>
-        <location line="+26"/>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+284"/>
+        <location line="+15"/>
+        <location line="+19"/>
         <source>Failed to update image pack: %1</source>
         <translation>Failed to update image pack: %1</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="+14"/>
         <source>Failed to delete old image pack: %1</source>
         <translation>Failed to delete old image pack: %1</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+13"/>
         <location line="+45"/>
         <source>Failed to open image: %1</source>
         <translation>Failed to open image: %1</translation>
@@ -3683,7 +3722,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+167"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
         <source>Part of a thread</source>
         <translation>Part of a thread</translation>
     </message>
@@ -3763,7 +3802,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1637"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1593"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Message redaction failed: %1</translation>
@@ -3804,7 +3843,7 @@ If you choose verify, you need to have the other device available. If you choose
         </translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+60"/>
         <source>%1 opened the room to the public.</source>
         <translation>%1 opened the room to the public.</translation>
     </message>
@@ -4124,7 +4163,7 @@ Reason: %4</translation>
         <translation>%1 redacted their knock.</translation>
     </message>
     <message>
-        <location line="-2345"/>
+        <location line="-2293"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 changed which servers are allowed in this room.</translation>
     </message>
@@ -4164,7 +4203,7 @@ Reason: %4</translation>
         <translation>%1 changed the pinned messages.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>%1 changed the addresses for this room.</source>
         <translation>%1 changed the addresses for this room.</translation>
     </message>
@@ -4184,12 +4223,12 @@ Reason: %4</translation>
         <translation>%1 changed unknown state event %2.</translation>
     </message>
     <message>
-        <location line="+603"/>
+        <location line="+556"/>
         <source>You joined this room.</source>
         <translation>You joined this room.</translation>
     </message>
     <message>
-        <location line="+1019"/>
+        <location line="+1012"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 made this room require an invitation to join.</translation>
     </message>
@@ -4256,7 +4295,7 @@ Reason: %4</translation>
         <translation>/%1 looks like an incomplete command. To send it anyway, add a space to the end of your message.</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+44"/>
         <source>No preview available</source>
         <translation>No preview available</translation>
     </message>
@@ -4266,7 +4305,7 @@ Reason: %4</translation>
         <translation>Settings</translation>
     </message>
     <message numerus="yes">
-        <location line="+15"/>
+        <location line="+17"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n member</numerusform>
@@ -4279,7 +4318,7 @@ Reason: %4</translation>
         <translation>View members of %1</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>This room is possibly inaccessible. If this room is private, you should remove it from this community.</translation>
     </message>
@@ -4300,11 +4339,16 @@ Reason: %4</translation>
     </message>
     <message>
         <location line="+7"/>
+        <source>decline invite and ignore user</source>
+        <translation>decline invite and ignore user</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>leave</source>
         <translation>leave</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Invited by %1 (%2)</source>
         <translation>Invited by %1 (%2)</translation>
     </message>
@@ -4474,7 +4518,7 @@ Reason: %4</translation>
         <translation>Failed to ignore &quot;%1&quot;: %2</translation>
     </message>
     <message>
-        <location line="+211"/>
+        <location line="+222"/>
         <source>Select an avatar</source>
         <translation>Select an avatar</translation>
     </message>
@@ -4613,8 +4657,8 @@ Reason: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+598"/>
-        <location filename="../../src/UserSettingsPage.h" line="+267"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
+        <location filename="../../src/UserSettingsPage.h" line="+270"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -4622,7 +4666,7 @@ Reason: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+408"/>
+        <location line="+407"/>
         <source>Theme</source>
         <translation>Theme</translation>
     </message>
@@ -4987,7 +5031,7 @@ Reason: %4</translation>
         <translation>Periodically delete expired events</translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+119"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -5125,7 +5169,12 @@ OFF - square, ON - circle.</translation>
         <translation>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+8"/>
+        <source>Will prevent swipe motions like swiping left/right between Rooms and Timeline, or swiping a message to reply.</source>
+        <translation>Will prevent swipe motions like swiping left/right between Rooms and Timeline, or swiping a message to reply.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</translation>
     </message>
@@ -5135,14 +5184,14 @@ OFF - square, ON - circle.</translation>
         <translation>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-80"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</translation>
     </message>
     <message>
-        <location line="-366"/>
+        <location line="-370"/>
         <source>Communities sidebar</source>
         <translation>Communities sidebar</translation>
     </message>
@@ -5152,7 +5201,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Show message counts for communities and tags</translation>
     </message>
     <message>
-        <location line="+251"/>
+        <location line="+255"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</translation>
     </message>
@@ -5209,7 +5258,7 @@ be blurred.</translation>
         <translation>Will prevent text selection in the timeline to make touch scrolling easier.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>Change the scale factor of the whole user interface.</source>
         <translation>Change the scale factor of the whole user interface.</translation>
     </message>
@@ -5268,7 +5317,7 @@ This setting will take effect upon restart.</translation>
         <translation>Manage your ignored users.</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+151"/>
         <source>System font</source>
         <translation>System font</translation>
     </message>
@@ -5278,7 +5327,7 @@ This setting will take effect upon restart.</translation>
         <translation>System emoji font</translation>
     </message>
     <message>
-        <location line="+323"/>
+        <location line="+330"/>
         <source>Select a file</source>
         <translation>Select a file</translation>
     </message>
@@ -5450,7 +5499,7 @@ This setting will take effect upon restart.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+208"/>
+        <location filename="../../src/Utils.cpp" line="+337"/>
         <source>Yesterday</source>
         <translation>Yesterday</translation>
     </message>
@@ -5501,7 +5550,7 @@ This setting will take effect upon restart.</translation>
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+115"/>
+        <location filename="../../src/Utils.cpp" line="-268"/>
         <source>You sent an audio clip</source>
         <translation>You sent an audio clip</translation>
     </message>

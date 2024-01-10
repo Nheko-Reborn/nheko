@@ -15,7 +15,7 @@
         <translation>Verbinden …</translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+73"/>
         <source>You are screen sharing</source>
         <translation>Bildschirm wird geteilt.</translation>
     </message>
@@ -38,7 +38,7 @@
 <context>
     <name>AliasEditingModel</name>
     <message>
-        <location filename="../../src/AliasEditModel.cpp" line="+128"/>
+        <location filename="../../src/AliasEditModel.cpp" line="+127"/>
         <location line="+47"/>
         <location line="+60"/>
         <location line="+13"/>
@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3143"/>
+        <location filename="../../src/Cache.cpp" line="+3399"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 und %2</translation>
@@ -214,7 +214,7 @@
 <context>
     <name>CallManager</name>
     <message>
-        <location filename="../../src/voip/CallManager.cpp" line="+878"/>
+        <location filename="../../src/voip/CallManager.cpp" line="+882"/>
         <source>X11</source>
         <translation>X11</translation>
     </message>
@@ -232,18 +232,18 @@
 <context>
     <name>ChatPage</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+114"/>
+        <location filename="../../src/ChatPage.cpp" line="+116"/>
         <source>Failed to invite user: %1</source>
         <translation>Nutzer konnte nicht eingeladen werden: %1</translation>
     </message>
     <message>
         <location line="+4"/>
-        <location line="+934"/>
+        <location line="+939"/>
         <source>Invited user: %1</source>
         <translation>Eingeladener Benutzer: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-687"/>
+        <location line="-692"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation>
@@ -267,7 +267,7 @@
         <translation>Öffnen der Datenbank fehlgeschlagen, du wirst ausgeloggt!</translation>
     </message>
     <message>
-        <location line="+305"/>
+        <location line="+310"/>
         <source>Knock on room</source>
         <translation>Raumbeitritt anfragen (anklopfen)</translation>
     </message>
@@ -293,12 +293,12 @@
     </message>
     <message>
         <location line="+43"/>
-        <location line="+484"/>
+        <location line="+497"/>
         <source>Confirm invite</source>
         <translation>Einladung bestätigen</translation>
     </message>
     <message>
-        <location line="-483"/>
+        <location line="-496"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Nutzer %1 (%2) wirklich einladen?</translation>
     </message>
@@ -343,12 +343,12 @@
         <translation>Verbannung aufgehoben: %1</translation>
     </message>
     <message>
-        <location line="+389"/>
+        <location line="+402"/>
         <source>Do you really want to start a private chat with %1?</source>
         <translation>Möchtest du wirklich eine private Konversation mit %1 beginnen?</translation>
     </message>
     <message>
-        <location line="-984"/>
+        <location line="-1002"/>
         <source>Cache migration failed!</source>
         <translation>Migration des Caches fehlgeschlagen!</translation>
     </message>
@@ -390,7 +390,7 @@ Wenn du glaubst, dass das ein Fehler ist, dann kannst du Nheko schließen und vi
     </message>
     <message>
         <location line="+35"/>
-        <location line="+151"/>
+        <location line="+156"/>
         <source>Please try to login again: %1</source>
         <translation>Bitte melde dich erneut an: %1</translation>
     </message>
@@ -455,7 +455,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+108"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+112"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;Nachricht&gt;</translation>
     </message>
@@ -580,7 +580,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>/goto &lt;Nachrichtenreferenz&gt;</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+16"/>
         <source>Send a message expressing an action.</source>
         <translation>Sende eine Nachricht, die eine Aktion ausdrückt.</translation>
     </message>
@@ -740,6 +740,16 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <source>Convert this direct chat into a room.</source>
         <translation>Verwandle diese Direktnachricht in einen normalen Chatraum.</translation>
     </message>
+    <message>
+        <location line="+2"/>
+        <source>Ignore a user.</source>
+        <translation>Einen Nutzer ignorieren.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Stop ignoring a user.</source>
+        <translation>Einen Nutzer nicht mehr ignorieren.</translation>
+    </message>
 </context>
 <context>
     <name>CommunitiesList</name>
@@ -817,7 +827,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>Nachrichten von deinem Server oder Administrator.</translation>
     </message>
     <message>
-        <location line="+667"/>
+        <location line="+678"/>
         <source>Failed to update community: %1</source>
         <translation>Konnte diese Gruppe nicht aktualisieren: %1</translation>
     </message>
@@ -977,7 +987,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+298"/>
+        <location filename="../../src/ChatPage.cpp" line="+311"/>
         <source>Decrypt secrets</source>
         <translation>Geheimnisse entschlüsseln</translation>
     </message>
@@ -1112,7 +1122,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>EncryptionIndicator</name>
     <message>
-        <location filename="../qml/EncryptionIndicator.qml" line="+36"/>
+        <location filename="../qml/EncryptionIndicator.qml" line="+37"/>
         <source>This message is not encrypted!</source>
         <translation>Diese Nachricht ist unverschlüsselt!</translation>
     </message>
@@ -1128,8 +1138,13 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     </message>
     <message>
         <location line="+2"/>
-        <source>Encrypted by an unverified device or the key is from an untrusted source like the key backup.</source>
-        <translation>Nachricht verschlüsselt bei einem unverifizierten Gerät oder der Schlüssel ist aus einer nicht vertrauenswürdigen Quelle wie der Onlineschlüsselsicherung.</translation>
+        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <translation>Der Schlüssel ist aus einer unverifizierten Quelle z.B. von einem anderen Nutzer geteilt oder aus dem Onlineschlüsselbackup. Aus diesem Grund kann nicht verifiziert werden, wer diese Nachricht geschickt hat.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Encrypted by an unverified device.</source>
+        <translation>Verschlüsselt bei einem nicht verifiziertem Gerät.</translation>
     </message>
 </context>
 <context>
@@ -1198,7 +1213,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>EventExpiry</name>
     <message>
-        <location filename="../../src/ui/EventExpiry.cpp" line="+49"/>
+        <location filename="../../src/ui/EventExpiry.cpp" line="+50"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
         <translation>Konnte die versteckten Events nicht ändern: %1</translation>
@@ -1286,7 +1301,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>GridImagePackModel</name>
     <message>
-        <location filename="../../src/GridImagePackModel.cpp" line="+311"/>
+        <location filename="../../src/GridImagePackModel.cpp" line="+310"/>
         <source>Account Pack</source>
         <translation>Account Packung</translation>
     </message>
@@ -1294,7 +1309,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>HiddenEvents</name>
     <message>
-        <location filename="../../src/ui/HiddenEvents.cpp" line="+91"/>
+        <location filename="../../src/ui/HiddenEvents.cpp" line="+92"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
         <translation>Konnte die versteckten Events nicht ändern: %1</translation>
@@ -1364,6 +1379,14 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <location line="+31"/>
         <source>Stop Ignoring.</source>
         <translation>Nicht mehr ignorieren.</translation>
+    </message>
+</context>
+<context>
+    <name>ImagePackDeleteDialog</name>
+    <message>
+        <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
+        <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
+        <translation>Bist du sicher, dass du die Packung %1 löschen willst?</translation>
     </message>
 </context>
 <context>
@@ -1464,7 +1487,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>Bilderpackungseinstellungen</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+52"/>
         <source>Create account pack</source>
         <translation>Neue private Packung</translation>
     </message>
@@ -1504,12 +1527,17 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>Macht diese Packung in allen Räumen verfügbar</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+11"/>
+        <source>Remove</source>
+        <translation>Entfernen</translation>
+    </message>
+    <message>
+        <location line="+61"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
@@ -1517,7 +1545,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+374"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+377"/>
         <source>All Files (*)</source>
         <translation>Alle Dateien (*)</translation>
     </message>
@@ -1527,7 +1555,12 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>Datei(en) auswählen</translation>
     </message>
     <message>
-        <location line="+901"/>
+        <location line="+582"/>
+        <source>Failed to fetch user %1</source>
+        <translation>Konnte Nutzer %1 nicht abfragen</translation>
+    </message>
+    <message>
+        <location line="+340"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Das Hochladen von &apos;%1&apos; ist fehlgeschlagen</translation>
     </message>
@@ -1600,7 +1633,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>LoginPage</name>
     <message>
-        <location filename="../../src/LoginPage.cpp" line="+79"/>
+        <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
         <location line="+127"/>
@@ -1699,7 +1732,7 @@ Beispiel: @nutzer:deinserver.example.com
 Wenn Nheko deinen Server nicht finden kann, wirst du danach gefragt.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+28"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
@@ -1709,7 +1742,12 @@ Wenn Nheko deinen Server nicht finden kann, wirst du danach gefragt.</translatio
         <translation>Dein Passwort.</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+13"/>
+        <source>Show/Hide Password</source>
+        <translation>Passwort anzeigen oder verstecken</translation>
+    </message>
+    <message>
+        <location line="+15"/>
         <source>Device name</source>
         <translation>Gerätename</translation>
     </message>
@@ -2037,7 +2075,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+23"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+83"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 hat eine verschlüsselte Nachricht gesendet</translation>
@@ -2462,7 +2500,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+239"/>
+        <location filename="../../src/main.cpp" line="+241"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Erstelle ein separates Profil, was mehrere Instanzen von Nheko mit verschiedenen Accounts zur gleichen Zeit ermöglicht.</translation>
     </message>
@@ -2567,7 +2605,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+82"/>
+        <location filename="../../src/RegisterPage.cpp" line="+81"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatische Erkennung fehlgeschlagen. Antwort war fehlerhaft.</translation>
     </message>
@@ -2691,7 +2729,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
 <context>
     <name>ReplyPopup</name>
     <message>
-        <location filename="../qml/ReplyPopup.qml" line="+40"/>
+        <location filename="../qml/ReplyPopup.qml" line="+41"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
@@ -3041,7 +3079,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+236"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+235"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Aktivierung der Verschlüsselung fehlgeschlagen: %1</translation>
     </message>
@@ -3465,7 +3503,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-4930"/>
+        <location filename="../../src/Cache.cpp" line="-5145"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbindung zum kryptografischen Speicher fehlgeschlagen</translation>
     </message>
@@ -3530,7 +3568,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>SelfVerificationStatus</name>
     <message>
-        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+50"/>
+        <location filename="../../src/encryption/SelfVerificationStatus.cpp" line="+53"/>
         <source>Failed to create keys for cross-signing!</source>
         <translation>Quersignaturschlüssel konnten nicht erzeugt werden!</translation>
     </message>
@@ -3563,18 +3601,19 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>SingleImagePackModel</name>
     <message>
-        <location filename="../../src/SingleImagePackModel.cpp" line="+281"/>
-        <location line="+26"/>
+        <location filename="../../src/SingleImagePackModel.cpp" line="+284"/>
+        <location line="+15"/>
+        <location line="+19"/>
         <source>Failed to update image pack: %1</source>
         <translation>Konnte die Bilderpackung nicht aktualisieren: %1</translation>
     </message>
     <message>
-        <location line="-13"/>
+        <location line="+14"/>
         <source>Failed to delete old image pack: %1</source>
         <translation>Konnte die alte Bilderpackung nicht löschen: %1</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+13"/>
         <location line="+45"/>
         <source>Failed to open image: %1</source>
         <translation>Konnte Bild nicht öffnen: %1</translation>
@@ -3681,7 +3720,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+167"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
         <source>Part of a thread</source>
         <translation>Teil eines Gesprächfadens</translation>
     </message>
@@ -3761,7 +3800,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1637"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1593"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Nachricht zurückziehen fehlgeschlagen: %1</translation>
@@ -3802,7 +3841,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         </translation>
     </message>
     <message>
-        <location line="+67"/>
+        <location line="+60"/>
         <source>%1 opened the room to the public.</source>
         <translation>%1 hat diesen Raum öffentlich gemacht.</translation>
     </message>
@@ -4122,7 +4161,7 @@ Grund: %4</translation>
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-2345"/>
+        <location line="-2293"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 hat die erlaubten Server in diesem Raum geändert.</translation>
     </message>
@@ -4162,7 +4201,7 @@ Grund: %4</translation>
         <translation>%1 hat die angehefteten Nachrichten geändert.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>%1 changed the addresses for this room.</source>
         <translation>%1 hat die Addressen dieses Raumes geändert.</translation>
     </message>
@@ -4182,12 +4221,12 @@ Grund: %4</translation>
         <translation>%1 hat ein unbekanntes Zustandsevent bearbeitet: %2</translation>
     </message>
     <message>
-        <location line="+603"/>
+        <location line="+556"/>
         <source>You joined this room.</source>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+1019"/>
+        <location line="+1012"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 hat diesen Raum nur eingeladenen Nutzern zugänglich gemacht.</translation>
     </message>
@@ -4254,7 +4293,7 @@ Grund: %4</translation>
         <translation>/%1 schein ein unvollständiger Befehl zu sein. Zum trotzdem senden kannst du ein Leerzeichen danach einfügen.</translation>
     </message>
     <message>
-        <location line="+41"/>
+        <location line="+44"/>
         <source>No preview available</source>
         <translation>Keine Vorschau verfügbar</translation>
     </message>
@@ -4264,7 +4303,7 @@ Grund: %4</translation>
         <translation>Einstellungen</translation>
     </message>
     <message numerus="yes">
-        <location line="+15"/>
+        <location line="+17"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n Mitglied</numerusform>
@@ -4277,7 +4316,7 @@ Grund: %4</translation>
         <translation>Zeige Mitglieder von %1 an</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>Dieser Raum kann nicht betreten werden. Wenn der Raum privat ist, solltest du ihn von der Gruppe entfernen.</translation>
     </message>
@@ -4298,11 +4337,16 @@ Grund: %4</translation>
     </message>
     <message>
         <location line="+7"/>
+        <source>decline invite and ignore user</source>
+        <translation>Einladung abweisen und Nutzer ignorieren</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>leave</source>
         <translation>verlassen</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Invited by %1 (%2)</source>
         <translation>Eingeladen durch %1 (%2)</translation>
     </message>
@@ -4472,7 +4516,7 @@ Grund: %4</translation>
         <translation>Konnte &quot;%1&quot; nicht ignorieren: %2</translation>
     </message>
     <message>
-        <location line="+211"/>
+        <location line="+222"/>
         <source>Select an avatar</source>
         <translation>Avatar wählen</translation>
     </message>
@@ -4611,8 +4655,8 @@ Grund: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+598"/>
-        <location filename="../../src/UserSettingsPage.h" line="+267"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
+        <location filename="../../src/UserSettingsPage.h" line="+270"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
@@ -4620,7 +4664,7 @@ Grund: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+408"/>
+        <location line="+407"/>
         <source>Theme</source>
         <translation>Erscheinungsbild</translation>
     </message>
@@ -4783,6 +4827,11 @@ Grund: %4</translation>
         <location line="+2"/>
         <source>Touchscreen mode</source>
         <translation>Touchscreenmodus</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Disable swipe motions</source>
+        <translation>Wischgesten deaktivieren</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4980,7 +5029,7 @@ Grund: %4</translation>
         <translation>Regelmäßig abgelaufene Nachrichten löschen</translation>
     </message>
     <message>
-        <location line="+117"/>
+        <location line="+119"/>
         <source>Default</source>
         <translation>Standard</translation>
     </message>
@@ -5118,7 +5167,12 @@ AUS - Quadratisch, AN - Kreisförmig.</translation>
         <translation>Für besseres Aussehen verwendet Nheko an verschiedenen Stellen Animationen. Diese Option erlaubt dir die Animationen zu deaktiveren, wenn diese bei dir Unwohlsein hervorrufen.</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+8"/>
+        <source>Will prevent swipe motions like swiping left/right between Rooms and Timeline, or swiping a message to reply.</source>
+        <translation>Verhindert bestimmte Gesten wie nach links oder rechts Wischen um zwischen Nachrichten- und Raumliste zu wechseln oder Ziehen um auf eine Nachricht zu antworten.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Teilt automatisch Schlüssel für Nachrichten mit verifizierten Nutzern (auf Anfrage), selbst wenn diese sonst keinen Zugriff darauf hätten.</translation>
     </message>
@@ -5128,14 +5182,14 @@ AUS - Quadratisch, AN - Kreisförmig.</translation>
         <translation>Der Schlüssel um deine eigenen Geräte zu verifizieren. Wenn dieser im Cache ist, dann werden alle deine Geräte als verifiziert für andere Nutzer erscheinen, wenn du diese verifiziert hast.</translation>
     </message>
     <message>
-        <location line="-77"/>
+        <location line="-80"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Hebe das Fenster hervor, wenn eine Nachricht empfangen wurde.
 Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</translation>
     </message>
     <message>
-        <location line="-366"/>
+        <location line="-370"/>
         <source>Communities sidebar</source>
         <translation>Gruppenseitenleiste</translation>
     </message>
@@ -5145,7 +5199,7 @@ Normalerweise animiert das den Taskbaricon oder färbt das Fenster orange ein.</
         <translation>Zeige Nachrichtenzahl für Gruppen und Tags</translation>
     </message>
     <message>
-        <location line="+251"/>
+        <location line="+255"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Setze eine maximale Breite für Nachrichten im Chat (in Pixeln). Das kann die Lesbarkeit auf breiten Bildschirmen erhöhen.</translation>
     </message>
@@ -5202,7 +5256,7 @@ den Fokus verliert.</translation>
         <translation>Deaktiviert Textselektion in Nachrichten, damit das nicht beim Scrollen mit den Fingern stört.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+6"/>
         <source>Change the scale factor of the whole user interface.</source>
         <translation>Ändere den Skalierungsfaktor für die gesamte Benutzeroberfläche.</translation>
     </message>
@@ -5261,7 +5315,7 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
         <translation>Ignorierte Nutzer verwalten.</translation>
     </message>
     <message>
-        <location line="+149"/>
+        <location line="+151"/>
         <source>System font</source>
         <translation>Systemschriftart</translation>
     </message>
@@ -5271,7 +5325,7 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
         <translation>Systemschriftart für Emoji</translation>
     </message>
     <message>
-        <location line="+323"/>
+        <location line="+330"/>
         <source>Select a file</source>
         <translation>Datei auswählen</translation>
     </message>
@@ -5443,7 +5497,7 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+208"/>
+        <location filename="../../src/Utils.cpp" line="+337"/>
         <source>Yesterday</source>
         <translation>Gestern</translation>
     </message>
@@ -5494,7 +5548,7 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.h" line="+115"/>
+        <location filename="../../src/Utils.cpp" line="-268"/>
         <source>You sent an audio clip</source>
         <translation>Du hast eine Audiodatei gesendet</translation>
     </message>
