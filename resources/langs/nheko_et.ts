@@ -5324,6 +5324,11 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
         <source>File to save the exported session keys</source>
         <translation>Fail, kuhu salvestad eksporditavad sessiooni krüptovõtmed</translation>
     </message>
+    <message>
+        <location line="+2"/>
+        <source>Disable swipe motions</source>
+        <translation>Ära kasuta viipeid</translation>
+    </message>
 </context>
 <context>
     <name>UserSettingsPage</name>
