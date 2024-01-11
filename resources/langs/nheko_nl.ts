@@ -1747,7 +1747,7 @@ Als Nheko je thuisserver niet kan ontdekken, zal het een veld tonen om handmatig
     <message>
         <location line="+13"/>
         <source>Show/Hide Password</source>
-        <translation>Toon/Verberg Wachtwoord</translation>
+        <translation>Toon/Verberg wachtwoord</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1767,7 +1767,7 @@ Als Nheko je thuisserver niet kan ontdekken, zal het een veld tonen om handmatig
     <message>
         <location line="+1"/>
         <source>yourserver.example.com:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>jouwserver.example.com:8787</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -2296,17 +2296,17 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location filename="../qml/components/PowerlevelIndicator.qml" line="+30"/>
         <source>Administrator: %1</source>
-        <translation type="unfinished">Beheerder: %1</translation>
+        <translation>Beheerder: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Moderator: %1</source>
-        <translation type="unfinished">Toezichthouder: %1</translation>
+        <translation>Toezichthouder: %1</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>User: %1</source>
-        <translation type="unfinished">Gebruiker: %1</translation>
+        <translation>Gebruiker: %1</translation>
     </message>
 </context>
 <context>
@@ -2571,22 +2571,22 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location filename="../qml/dialogs/ReCaptchaDialog.qml" line="+40"/>
         <source>Solve the reCAPTCHA and press the confirm button</source>
-        <translation type="unfinished">Los de reCAPTCHA op en klik op &apos;Bevestigen&apos;</translation>
+        <translation>Los de reCAPTCHA op en klik op &apos;Bevestigen&apos;</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Open reCAPTCHA</source>
-        <translation type="unfinished">Open reCAPTCHA</translation>
+        <translation>Open reCAPTCHA</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Confirm</source>
-        <translation type="unfinished">Bevestigen</translation>
+        <translation>Bevestigen</translation>
     </message>
 </context>
 <context>
@@ -2805,7 +2805,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+92"/>
         <source>Join</source>
-        <translation type="unfinished">Binnentreden</translation>
+        <translation>Binnentreden</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -2825,7 +2825,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+18"/>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
 </context>
 <context>
@@ -3118,22 +3118,22 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location filename="../qml/dialogs/RoomSettingsDialog.qml" line="+26"/>
         <source>Room Settings</source>
-        <translation type="unfinished">Kamerinstellingen</translation>
+        <translation>Kamerinstellingen</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Change room avatar.</source>
-        <translation type="unfinished">Verander kamerafbeelding.</translation>
+        <translation>Verander kamerafbeelding.</translation>
     </message>
     <message>
         <location line="+93"/>
         <source>Change name of this room</source>
-        <translation type="unfinished">Naam van deze kamer veranderen</translation>
+        <translation>Naam van deze kamer veranderen</translation>
     </message>
     <message numerus="yes">
         <location line="+22"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
+        <translation>
             <numerusform>%n deelnemer</numerusform>
             <numerusform>%n deelnemers</numerusform>
         </translation>
@@ -3141,42 +3141,42 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+8"/>
         <source>View members of %1</source>
-        <translation type="unfinished">Bekijk deelnemers aan %1</translation>
+        <translation>Bekijk deelnemers aan %1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>No topic set</source>
-        <translation type="unfinished">Geen onderwerp</translation>
+        <translation>Geen onderwerp</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Change topic of this room</source>
-        <translation type="unfinished">Verander onderwerp van deze kamer</translation>
+        <translation>Verander onderwerp van deze kamer</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished">NOTIFICATIES</translation>
+        <translation>MELDINGEN</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Notifications</source>
-        <translation type="unfinished">Meldingen</translation>
+        <translation>Meldingen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Muted</source>
-        <translation type="unfinished">Gedempt</translation>
+        <translation>Gedempt</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished">Alleen vermeldingen</translation>
+        <translation>Alleen vermeldingen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished">Alle berichten</translation>
+        <translation>Alle berichten</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3186,28 +3186,28 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+9"/>
         <source>Anyone can join</source>
-        <translation type="unfinished">Iedereen kan binnentreden</translation>
+        <translation>Iedereen kan binnentreden</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Allow knocking</source>
-        <translation type="unfinished">Sta aankloppen toe</translation>
+        <translation>Sta aankloppen toe</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Allow joining via other rooms</source>
-        <translation type="unfinished">Sta binnentreden via andere kamers toe</translation>
+        <translation>Sta binnentreden via andere kamers toe</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Rooms to join via</source>
-        <translation type="unfinished">Kamers die hier binnentreden toestaan</translation>
+        <translation>Kamers die het mogelijk maken om hier binnen te treden</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+242"/>
         <source>Change</source>
-        <translation type="unfinished">Bewerken</translation>
+        <translation>Bewerken</translation>
     </message>
     <message>
         <location line="-241"/>
