@@ -1375,12 +1375,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+20"/>
         <source>Ignoring a user hides their messages (they can still see yours!).</source>
-        <translation>Door een gebruiker te negeren verberg je diens berichten (zij kunnen nog wel de jouwe zien!).</translation>
+        <translation>Door een gebruiker te negeren verberg je hun berichten (ze kunnen nog wel de jouwe zien!).</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Stop Ignoring.</source>
-        <translation type="unfinished"></translation>
+        <translation>Stop met negeren.</translation>
     </message>
 </context>
 <context>
