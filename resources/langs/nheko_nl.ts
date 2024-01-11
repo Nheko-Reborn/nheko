@@ -1640,7 +1640,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <location line="+64"/>
         <location line="+127"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
-        <translation>Je hebt een ongeldige Matrix ID opgegeven, bv. @gebruiker:jouwserver.example.com</translation>
+        <translation>Je hebt een ongeldige Matrix ID opgegeven. Een voorbeeld van een geldige Matrix ID is: @gebruiker:jouwserver.example.com</translation>
     </message>
     <message>
         <location line="-157"/>
@@ -1720,7 +1720,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+1"/>
         <source>e.g @user:yourserver.example.com</source>
-        <translation type="unfinished"></translation>
+        <translation>bv. @gebruiker:jouwserver.example.com</translation>
     </message>
     <message>
         <location line="+3"/>
