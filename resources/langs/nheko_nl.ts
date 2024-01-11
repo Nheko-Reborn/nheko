@@ -1388,7 +1388,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
         <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
-        <translation>Ben je zeker dat je het stickerpack &apos;%1&apos; wil verwijderen?</translation>
+        <translation>Weet je zeker dat je het afbeeldingspakket &apos;%1&apos; wil verwijderen?</translation>
     </message>
 </context>
 <context>
@@ -1536,7 +1536,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+11"/>
         <source>Remove</source>
-        <translation type="unfinished">Verwijder</translation>
+        <translation>Verwijder</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -1554,12 +1554,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+0"/>
         <source>Select file(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecteer bestand(en)</translation>
     </message>
     <message>
         <location line="+582"/>
         <source>Failed to fetch user %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Ophalen van gebruiker %1 mislukt</translation>
     </message>
     <message>
         <location line="+340"/>
@@ -1583,7 +1583,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <location line="+13"/>
         <source>@user:yourserver.example.com</source>
         <comment>Example user id. The name &apos;user&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@gebruiker:jouwserver.example.com</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -1640,7 +1640,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <location line="+64"/>
         <location line="+127"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
-        <translation type="unfinished"></translation>
+        <translation>Je hebt een ongeldige Matrix ID opgegeven, bv. @gebruiker:jouwserver.example.com</translation>
     </message>
     <message>
         <location line="-157"/>
