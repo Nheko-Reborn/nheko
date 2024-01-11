@@ -1720,7 +1720,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+1"/>
         <source>e.g @user:yourserver.example.com</source>
-        <translation>bv. @gebruiker:jouwserver.example.com</translation>
+        <translation>bijv. @gebruiker:jouwserver.example.com</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1728,7 +1728,14 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:yourserver.example.com
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je loginnaam. Een mxid
+moet starten met @, gevolgd door de
+ID van de gebruiker. Na de ID van de
+gebruiker dien je de servernaam op
+te geven na een :.
+Je kan ook je thuisserveradres daar opgeven als je server geen .well-known opzoekingen ondersteunt.
+Bijvoorbeeld: @gebruiker:jouwserver.example.com
+Als Nheko je thuisserver niet kan ontdekken, zal het een veld tonen om manueel je server op te geven.</translation>
     </message>
     <message>
         <location line="+28"/>
