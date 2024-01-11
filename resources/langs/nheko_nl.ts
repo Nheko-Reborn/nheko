@@ -1380,7 +1380,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+31"/>
         <source>Stop Ignoring.</source>
-        <translation>Stop met negeren.</translation>
+        <translation>Hou op met negeren.</translation>
     </message>
 </context>
 <context>
@@ -1388,7 +1388,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
         <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ben je zeker dat je het stickerpack &apos;%1&apos; wil verwijderen?</translation>
     </message>
 </context>
 <context>
