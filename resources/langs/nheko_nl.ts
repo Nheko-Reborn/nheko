@@ -1169,12 +1169,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+3"/>
         <source>You can configure when your messages will be deleted in all rooms unless configured otherwise. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation>Je kan configureren wanneer je berichten worden verwijderd in alle ruimten, tenzij anders geconfigureerd. Dit werkt enkel als Nheko geopend is en de toelating heeft om berichten te verwijderen, totdat de Matrixserver deze functie zelf ondersteunen. In het algemeen betekent 0 uitschakelen.</translation>
+        <translation>Je kan configureren wanneer je berichten worden verwijderd in alle ruimten, tenzij anders geconfigureerd. Dit werkt alleen als Nheko actief is en toestemming heeft om berichten te verwijderen, totdat Matrixservers deze functie zelf ondersteunen. In het algemeen betekent 0 uitschakelen.</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Expire events after X days</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstrijk gebeurtenissen na X dagen</translation>
     </message>
     <message>
         <location line="+1"/>
