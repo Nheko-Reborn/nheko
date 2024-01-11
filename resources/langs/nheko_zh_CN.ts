@@ -1384,7 +1384,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
         <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>你确定要删除贴纸包 &apos;%1&apos; 吗？</translation>
     </message>
 </context>
 <context>
@@ -1532,7 +1532,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+11"/>
         <source>Remove</source>
-        <translation type="unfinished">移除</translation>
+        <translation>移除</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -1550,7 +1550,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+582"/>
         <source>Failed to fetch user %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法获取用户 %1</translation>
     </message>
     <message>
         <location line="+340"/>
@@ -1666,7 +1666,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本（v1.1 到 v1.5）。您无法登录。</translation>
+        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本（v1.1 到 v1.5）。你无法登录。</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1742,7 +1742,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+13"/>
         <source>Show/Hide Password</source>
-        <translation type="unfinished"></translation>
+        <translation>显示/隐藏密码</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -4328,7 +4328,7 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>decline invite and ignore user</source>
-        <translation type="unfinished"></translation>
+        <translation>拒绝邀请并忽略用户</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -5135,7 +5135,7 @@ OFF - 方形，ON - 圆形。</translation>
     <message>
         <location line="+8"/>
         <source>Will prevent swipe motions like swiping left/right between Rooms and Timeline, or swiping a message to reply.</source>
-        <translation type="unfinished"></translation>
+        <translation>将禁用滑动操作，例如在聊天室和时间线之间左右滑动，或是滑动消息进行回复。</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -5286,7 +5286,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+6"/>
         <source>To allow new users to join a community, the community needs to expose some information about what servers participate in a room to community members. Since the room participants can change over time, this needs to be updated from time to time. This setting enables a background job to do that automatically.</source>
-        <translation>为了允许新用户加入社区，社区需要向社区成员公开一些关于哪些服务器参与了某个房间的信息。由于聊天室参与者会随时间而改变，因此需要不时更新。此设置可让后台任务自动完成该操作。</translation>
+        <translation>为了允许新用户加入社区，社区需要向社区成员公开一些关于哪些服务器参与了某个聊天室的信息。由于聊天室参与者会随时间而改变，因此需要不时更新。此设置可让后台任务自动完成该操作。</translation>
     </message>
     <message>
         <location line="+6"/>
