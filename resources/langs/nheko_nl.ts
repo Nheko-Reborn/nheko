@@ -133,7 +133,7 @@
         <location filename="../../src/Cache.cpp" line="+3399"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 en %2</translation>
     </message>
     <message numerus="yes">
         <location line="+2"/>
@@ -745,12 +745,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Negeer een gebruiker.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hou op met een gebruiker te negeren.</translation>
     </message>
 </context>
 <context>
@@ -1118,7 +1118,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+9"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteling houdt je berichten veilig, door enkel de personen waarnaar je het bericht verstuurt toe te laten het te lezen. Voor extra veiligheid kan je hen in het echt verifiëren, als je jezelf ervan wilt verzekeren dat je met de juiste personen praat.</translation>
     </message>
 </context>
 <context>
