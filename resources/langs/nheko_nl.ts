@@ -1728,14 +1728,11 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:yourserver.example.com
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>Je loginnaam. Een mxid
-moet starten met @, gevolgd door de
-ID van de gebruiker. Na de ID van de
-gebruiker dien je de servernaam op
-te geven na een :.
-Je kan ook je thuisserveradres daar opgeven als je server geen .well-known opzoekingen ondersteunt.
+        <translation>Je loginnaam. Een mxid moet starten met @, gevolgd door de
+naam van de gebruiker. Daarna volgt een dubbele punt (:) en je thuisservernaam.
+Je kan ook je thuisserveradres gebruiken als je server geen .well-known opzoekingen ondersteunt.
 Bijvoorbeeld: @gebruiker:jouwserver.example.com
-Als Nheko je thuisserver niet kan ontdekken, zal het een veld tonen om manueel je server op te geven.</translation>
+Als Nheko je thuisserver niet kan ontdekken, zal het een veld tonen om handmatig je server op te geven.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1750,7 +1747,7 @@ Als Nheko je thuisserver niet kan ontdekken, zal het een veld tonen om manueel j
     <message>
         <location line="+13"/>
         <source>Show/Hide Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Toon/Verberg Wachtwoord</translation>
     </message>
     <message>
         <location line="+15"/>
