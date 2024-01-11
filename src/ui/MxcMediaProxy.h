@@ -59,7 +59,8 @@ public:
     {
         volume_ = val;
         if (auto output = audioOutput()) {
-            output->setVolume(val);
+            output->setVolume(QAudio::convertVolume(
+              val, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale));
         }
         emit volumeChanged();
     }

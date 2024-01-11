@@ -43,7 +43,8 @@ MxcMediaProxy::MxcMediaProxy(QObject *parent)
               nhlog::ui()->debug("Set audio output");
               auto newOut = new QAudioOutput(this);
               newOut->setMuted(muted_);
-              newOut->setVolume(volume_);
+              newOut->setVolume(QAudio::convertVolume(
+                volume_, QAudio::LogarithmicVolumeScale, QAudio::LinearVolumeScale));
               setAudioOutput(newOut);
           }
       });
