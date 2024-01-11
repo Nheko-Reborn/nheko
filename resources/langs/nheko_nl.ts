@@ -1204,12 +1204,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+21"/>
         <source>Include state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Betrek staatgebeurtenissen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>If this is turned on, old state events also get redacted. The latest state event of any type+key combination is excluded from redaction to not remove the room name and similar state by accident.</source>
-        <translation type="unfinished"></translation>
+        <translation>Als dit is ingeschakeld, worden oude staatsgebeurtenissen ook geredigeerd. De laatste staatsgebeurtenis van een type+key combinatie wordt uitgesloten van redactie, opdat de ruimtenaam en dergelijke niet per ongeluk zouden worden verwijderd.</translation>
     </message>
 </context>
 <context>
@@ -1769,7 +1769,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <location line="+3"/>
         <source>The address that can be used to contact your homeserver&apos;s client API.
 Example: https://yourserver.example.com:8787</source>
-        <translation>Het adres waarmee je de API van je thuisserver raadpleegt.
+        <translation>Het adres waarmee je de API van je thuisserver kan bereiken.
 Voorbeeld: https://jouwserver.example.com:8787</translation>
     </message>
     <message>
@@ -1888,7 +1888,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+11"/>
         <source>Go to message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ga naar bericht</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1908,7 +1908,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+15"/>
         <source>Go to &amp;message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ga naar &amp;bericht</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1985,7 +1985,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+12"/>
         <source>Report message</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapporteer bericht</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2544,7 +2544,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+4"/>
         <source>Recompacts the database which might improve performance.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hercompacteert de databank, waardoor prestaties kunnen verbeteren.</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-58"/>
@@ -2748,47 +2748,47 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location filename="../qml/dialogs/ReportMessage.qml" line="+15"/>
         <source>Report message</source>
-        <translation type="unfinished"></translation>
+        <translation>Rapporteer bericht</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>This message you are reporting will be sent to your server administrator for review. Please note that not all server administrators review reported content. You should also ask a room moderator to remove the content if necessary.</source>
-        <translation type="unfinished"></translation>
+        <translation>Het bericht dat je rapporteert zal naar de beheerder van je thuisserver worden gestuurd voor beoordeling. Niet alle beheerders bekijken gerapporteerde berichten. Je dient ook een moderator van de ruimte te vragen de inhoud te verwijderen, indien noodzakelijk.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enter your reason for reporting:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geef de reden voor het rapporteren:</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>How bad is the message?</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoe erg is het bericht?</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Not bad</source>
-        <translation type="unfinished"></translation>
+        <translation>Niet erg</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Mild</source>
-        <translation type="unfinished"></translation>
+        <translation>Mild</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Bad</source>
-        <translation type="unfinished"></translation>
+        <translation>Erg</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Serious</source>
-        <translation type="unfinished"></translation>
+        <translation>Serieus</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Extremely serious</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeer serieus</translation>
     </message>
 </context>
 <context>
@@ -2806,7 +2806,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+0"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Open</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -2902,22 +2902,22 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+11"/>
         <source>Automatic online status</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatische onlinestatus</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>Online</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Afwezig</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Offline</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -2960,7 +2960,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+12"/>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Markeer als gelezen</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3177,7 +3177,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+10"/>
         <source>ENTRY PERMISSIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>TOEGANGSRECHTEN</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -3223,67 +3223,67 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+7"/>
         <source>MESSAGE VISIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>BERICHTZICHTBAARHEID</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Allow viewing history without joining</source>
-        <translation type="unfinished"></translation>
+        <translation>Sta toe geschiedenis te lezen zonder binnen te treden</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>This is useful to see previews of the room or view it on public websites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit is nuttig om een voorweergave van de kamer mogelijk te maken of hem op publieke websites te kunnen bekijken.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Members can see messages since</source>
-        <translation type="unfinished"></translation>
+        <translation>Leden kunnen berichten zien sinds</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>How much of the history is visible to joined members. Changing this won&apos;t affect the visibility of already sent messages. It only applies to new messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hoeveel van de geschiedenis zichtbaar is voor deelnemers. Dit veranderen heeft geen effect op reeds verstuurde berichten en is alleen van toepassing op nieuwe berichten.</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Everything</source>
-        <translation type="unfinished"></translation>
+        <translation>het begin</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>As long as the user joined, they can see all previous messages.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eenmaal deelnemer, kan de volledige geschiedenis worden bekeken.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>They got invited</source>
-        <translation type="unfinished"></translation>
+        <translation>ze zijn uitgenodigd</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Members can only see messages from when they got invited going forward.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deelnemers kunnen alleen berichten zien vanaf het moment dat ze uitgenodigd zijn.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>They joined</source>
-        <translation type="unfinished"></translation>
+        <translation>ze binnenkwamen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Members can only see messages since after they joined.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deelnemers kunnen alleen berichten zien vanaf het moment dat ze de kamer binnentreden.</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Apply visibility changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Zichtbaarheidsinstellingsveranderingen toepassen</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Locally hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokaal verborgen gebeurtenissen</translation>
     </message>
     <message>
         <location line="+11"/>
