@@ -1209,7 +1209,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+1"/>
         <source>If this is turned on, old state events also get redacted. The latest state event of any type+key combination is excluded from redaction to not remove the room name and similar state by accident.</source>
-        <translation>Als dit is ingeschakeld, worden oude staatsgebeurtenissen ook geredigeerd. De laatste staatsgebeurtenis van een type+key combinatie wordt uitgesloten van redactie, opdat de ruimtenaam en dergelijke niet per ongeluk zouden worden verwijderd.</translation>
+        <translation>Als dit is ingeschakeld, worden oude staatsgebeurtenissen ook geredigeerd. De laatste staatsgebeurtenis van een soort+sleutel combinatie wordt uitgesloten van redactie, zodat de ruimtenaam en dergelijke niet per ongeluk worden verwijderd.</translation>
     </message>
 </context>
 <context>
@@ -1218,7 +1218,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <location filename="../../src/ui/EventExpiry.cpp" line="+50"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished">Kon verborgen gebeurtenissen niet instellen: %1</translation>
+        <translation>Kon verborgen gebeurtenissen niet instellen: %1</translation>
     </message>
 </context>
 <context>
@@ -1269,27 +1269,27 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/FallbackAuthDialog.qml" line="+25"/>
         <source>Fallback authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Webpagina inlog</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation type="unfinished">Open de webpagina, doorloop de stappen, en bevestig nadat je ze hebt voltooid.</translation>
+        <translation>Open de webpagina, doorloop de stappen, en bevestig nadat je ze hebt voltooid.</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished">Open fallback in browser</translation>
+        <translation>Open website in browser</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Cancel</source>
-        <translation type="unfinished">Annuleren</translation>
+        <translation>Annuleren</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Confirm</source>
-        <translation type="unfinished">Bevestigen</translation>
+        <translation>Bevestigen</translation>
     </message>
 </context>
 <context>
@@ -1305,7 +1305,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="+310"/>
         <source>Account Pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebruikersgebonden afbeeldingspakket</translation>
     </message>
 </context>
 <context>
@@ -1370,12 +1370,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/IgnoredUsers.qml" line="+16"/>
         <source>Ignored users</source>
-        <translation type="unfinished"></translation>
+        <translation>Genegeerde gebruikers</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Ignoring a user hides their messages (they can still see yours!).</source>
-        <translation type="unfinished"></translation>
+        <translation>Door een gebruiker te negeren verberg je diens berichten (zij kunnen nog wel de jouwe zien!).</translation>
     </message>
     <message>
         <location line="+31"/>
