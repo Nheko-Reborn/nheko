@@ -1189,17 +1189,17 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+1"/>
         <source>Deletes your events in this room if there are more than X newer messages unless otherwise protected. Set to 0 to disable.</source>
-        <translation>Verwijdert je gebeurtenissen in deze ruimte als er meer dan X nieuwere berichten zijn, tenzij anders beschermd. Zet op 0 om uit te schakelen.</translation>
+        <translation>Verwijdert je gebeurtenissen in deze ruimte als er meer dan X nieuwere berichten zijn, tenzij anders beschermd. Zet op 0 om deze functionaliteit uit te schakelen.</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Always keep latest X events</source>
-        <translation type="unfinished"></translation>
+        <translation>Behou altijd de laatste X gebeurtenissen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>This prevents events to be deleted by the above 2 settings if they are the latest X messages from you in the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dit verhindert gebeurtenissen te verwijderen door de bovenstaande twee instellingen, als ze de laatste X berichten zijn van jou in die ruimte.</translation>
     </message>
     <message>
         <location line="+21"/>
