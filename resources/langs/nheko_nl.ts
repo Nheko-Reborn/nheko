@@ -1174,22 +1174,22 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+15"/>
         <source>Expire events after X days</source>
-        <translation>Verstrijk gebeurtenissen na X dagen</translation>
+        <translation>Laat gebeurtenissen vervallen na X dagen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Automatically redacts messages after X days, unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijder berichten automatisch na X dagen, tenzij op een andere manier beschermd. Zet op 0 om deze functionaliteit uit te schakelen.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Only keep latest X events</source>
-        <translation type="unfinished"></translation>
+        <translation>Behou enkel de laatste X gebeurtenissen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Deletes your events in this room if there are more than X newer messages unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwijdert je gebeurtenissen in deze ruimte als er meer dan X nieuwere berichten zijn, tenzij anders beschermd. Zet op 0 om uit te schakelen.</translation>
     </message>
     <message>
         <location line="+21"/>
