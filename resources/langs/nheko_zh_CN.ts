@@ -742,12 +742,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>忽略用户。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>停止忽略用户。</translation>
     </message>
 </context>
 <context>
@@ -1137,12 +1137,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>密钥来自一个不受信任的来源，比如从另一个用户转发或在线密钥备份。因此，我们无法验证发送消息的人是谁。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
-        <translation type="unfinished"></translation>
+        <translation>由未经验证的设备加密。</translation>
     </message>
 </context>
 <context>
@@ -1666,7 +1666,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本 (v1.1 到 v1.5) 。您无法登录。</translation>
+        <translation>所选服务器不支持此客户端兼容的 Matrix 协议版本（v1.1 到 v1.5）。您无法登录。</translation>
     </message>
     <message>
         <location line="+20"/>
