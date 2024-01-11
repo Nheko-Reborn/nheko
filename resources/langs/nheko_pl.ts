@@ -268,7 +268,7 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Migracja pamięci podręcznej do najnowszej wersji nie powiodła się. Przyczyny mogą być różne. Zgłoś problem na https://github.com/Nheko-Reborn/nheko i spróbuj użyć starszej wersji w międzyczasie. Ewentualnie możesz spróbować ręcznie skasować pamięć podręczną.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -289,7 +289,8 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się dołączyć do %1. Możesz spróbować zapukać, aby inni członkowie zaprosili cię do tego pokoju. Czy chcesz to zrobić?
+Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -662,7 +663,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Refetch the state in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wczytaj ponownie stan w tym pokoju.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -838,7 +839,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie udało się zaktualizować społeczności dla pokoju: %1</translation>
     </message>
     <message>
         <location line="+18"/>
