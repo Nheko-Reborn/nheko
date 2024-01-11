@@ -1199,7 +1199,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+1"/>
         <source>This prevents events to be deleted by the above 2 settings if they are the latest X messages from you in the room.</source>
-        <translation>Dit verhindert gebeurtenissen te verwijderen door de bovenstaande twee instellingen, als ze de laatste X berichten zijn van jou in die ruimte.</translation>
+        <translation>Dit voorkomt verwijdering van gebeurtenissen door de bovenstaande twee instellingen, als ze de laatste X berichten van jou zijn in die ruimte.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1769,7 +1769,8 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
         <location line="+3"/>
         <source>The address that can be used to contact your homeserver&apos;s client API.
 Example: https://yourserver.example.com:8787</source>
-        <translation type="unfinished"></translation>
+        <translation>Het adres waarmee je de API van je thuisserver raadpleegt.
+Voorbeeld: https://jouwserver.example.com:8787</translation>
     </message>
     <message>
         <location line="+32"/>
