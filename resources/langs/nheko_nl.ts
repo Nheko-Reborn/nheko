@@ -1118,7 +1118,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+9"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation>Versleuteling houdt je berichten veilig, door enkel de personen waarnaar je het bericht verstuurt toe te laten het te lezen. Voor extra veiligheid kan je hen in het echt verifiëren, als je jezelf ervan wilt verzekeren dat je met de juiste personen praat.</translation>
+        <translation>Versleuteling houdt je berichten veilig, door enkel de personen waarnaar je het bericht verstuurt toe te staan het te lezen. Voor extra veiligheid kan je hen in het echt verifiëren, als je jezelf ervan wilt verzekeren dat je met de juiste personen praat.</translation>
     </message>
 </context>
 <context>
@@ -1141,12 +1141,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sleutel is van een onvertrouwde bron, zoals doorgestuurd vanaf een andere gebruiker of van de online sleutelveiligheidskopie. Hierom kunnen we niet verifiëren wie het bericht verstuurde.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Versleuteld door een ongeverifiëerd apparaat.</translation>
     </message>
 </context>
 <context>
@@ -1154,17 +1154,17 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location filename="../qml/dialogs/EventExpirationDialog.qml" line="+33"/>
         <source>Event expiration for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebeurtenisverval voor %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Event expiration</source>
-        <translation type="unfinished"></translation>
+        <translation>Gebeurtenisverval</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>You can configure when your messages will be deleted in %1. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Je kan configureren wanneer je berichten worden verwijderd in %1. Dit werkt enkel als Nheko geopend is en de toelating heeft om berichten te verwijderen, totdat de Matrixserver deze functie zelf ondersteunen. In het algemeen betekent 0 uitschakelen.</translation>
     </message>
     <message>
         <location line="+3"/>
