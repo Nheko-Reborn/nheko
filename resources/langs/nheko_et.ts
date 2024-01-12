@@ -745,12 +745,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eira kasutajat.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lõpeta kasutaja eiramine.</translation>
     </message>
 </context>
 <context>
@@ -1141,12 +1141,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptovõti on pärist mitteusaldusväärsest allikast nagu näiteks mõnelt teiselt kasutajalt või valest varukoopiast. Sellel põhjusel me ei saa kinnitada, kes oli selle sõnumi saatja.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptitud verifitseerimata seadmes.</translation>
     </message>
 </context>
 <context>
@@ -1388,7 +1388,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
         <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas sa oled kindel, et soovid eemaldada „%1“ kleepsupaki?</translation>
     </message>
 </context>
 <context>
@@ -1536,7 +1536,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+11"/>
         <source>Remove</source>
-        <translation type="unfinished">Eemalda</translation>
+        <translation>Eemalda</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -1554,7 +1554,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+582"/>
         <source>Failed to fetch user %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja %1 andmete laadimine ei õnnestunud</translation>
     </message>
     <message>
         <location line="+340"/>
@@ -1746,7 +1746,7 @@ Kui Nheko ei suuda tuvastada sinu koduserverit, siis kuvab ta välja, kuhu saad 
     <message>
         <location line="+13"/>
         <source>Show/Hide Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita või peida salasõna</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -4340,7 +4340,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+7"/>
         <source>decline invite and ignore user</source>
-        <translation type="unfinished"></translation>
+        <translation>keeldu kutsest ja eira kasutajat</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -5148,7 +5148,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+8"/>
         <source>Will prevent swipe motions like swiping left/right between Rooms and Timeline, or swiping a message to reply.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sellega mitmed rakenduses kasutatavad viiped ei ole kasutusel, nagu näiteks vasakule/paremale viipamine jututubade ja ajajoone vahel liikumisel või viipamisega sõnumile vastamine.</translation>
     </message>
     <message>
         <location line="+11"/>
