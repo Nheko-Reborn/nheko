@@ -109,7 +109,7 @@
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation>Lista pokoi które pozwalają na dostęp do tego pokoju. Każdy kto ma dostęp do któregokolwiek z tych pokoi może dołączyć do tego pokoju.</translation>
+        <translation>Lista pokoi które pozwalają na dostęp do tego pokoju. Każdy, kto jest w dowolnym z poniższych pokoi, może dołączyć do tego pokoju.</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -266,7 +266,9 @@
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
+        <translation>Z następującej przyczyny Nheko chce cię przenieść do strony logowania:
+%1
+Jeżeli uważasz, że jest to błąd, możesz zamknąć Nheko i spróbować odzyskać klucze szyfrowania. Po przeniesieniu na stronę logowania, będzie można zalogować się ponownie używając standardowych metod.</translation>
     </message>
     <message>
         <location line="+88"/>
@@ -681,7 +683,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyślij wiadomość w formacie commonmark, wyłączając większość wtyczek w porównaniu do /md.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1115,12 +1117,12 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+38"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation>%1 włączył(a) szyfrowanie end-to-end.</translation>
+        <translation>%1 włączył(a) szyfrowanie end-to-end</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Szyfrowanie zapewnia, że twoje wiadomości są bezpieczne, sprawiając, że tylko osoby, do których wysłano wiadomość mogą ją przeczytać. Dla dodatkowego bezpieczeństwa, jeżeli chcesz się upewnić, że rozmawiasz z odpowiednimi osobami, możesz zweryfikować je w prawdziwym życiu.</translation>
     </message>
 </context>
 <context>
@@ -1143,12 +1145,12 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Klucz pochodzi z niezaufanego źródła, na przykład innego użytkownika lub kopii zapasowej. Z tego powodu nie można zweryfikować, kto wysłał tę wiadomość.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zaszyfrowane przez niezweryfikowane urządzenie.</translation>
     </message>
 </context>
 <context>
