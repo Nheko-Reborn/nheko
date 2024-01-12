@@ -731,7 +731,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation>Idź do specyficznej wiadomości używając id wydarzenia, indeksu lub linku matrixa.</translation>
+        <translation>Przejdź do wiadomości używając id wydarzenia, indeksu lub linku matrix:</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -746,12 +746,12 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Zignoruj użytkownika.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Przestań ignorować użytkownika.</translation>
     </message>
 </context>
 <context>
@@ -774,7 +774,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ukryj wszystkie pokoje z tym tagiem lub z tej społeczności.</translation>
     </message>
 </context>
 <context>
