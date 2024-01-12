@@ -631,7 +631,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation>Cofnij jakieś wydarzenie lub wszystkie zapisane lokalnie wiadomości użytkownika.</translation>
+        <translation>Zredaguj wydarzenie lub wszystkie wiadomości danego użytkownika dostępne w pamięci lokalnej.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -671,7 +671,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Obróć obecny symetryczny klucz szyfrowania.</translation>
     </message>
     <message>
         <location line="+2"/>
