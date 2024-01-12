@@ -742,12 +742,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Abaikan pengguna.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Berhenti mengabaikan pengguna.</translation>
     </message>
 </context>
 <context>
@@ -1137,12 +1137,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci dari sumber yang tidak terpercaya seperti diteruskan dari pengguna lain atau cadangan kunci daring. Karena alasan ini, kami tidak dapat memverifikasi siapa yang mengirim pesan tersebut.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Terenkripsi oleh perangkat yang belum diverifikasi.</translation>
     </message>
 </context>
 <context>
@@ -1384,7 +1384,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
         <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Apakah kamu yakin ingin menghapus paket stiker &apos;%1&apos;?</translation>
     </message>
 </context>
 <context>
@@ -1532,7 +1532,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+11"/>
         <source>Remove</source>
-        <translation type="unfinished">Hapus</translation>
+        <translation>Hapus</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -1550,7 +1550,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+582"/>
         <source>Failed to fetch user %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Gagal mendapatkan pengguna %1</translation>
     </message>
     <message>
         <location line="+340"/>
@@ -1742,7 +1742,7 @@ Jika Nheko gagal menjelajahi homeserver Anda, maka akan ditampilkan kolom untuk 
     <message>
         <location line="+13"/>
         <source>Show/Hide Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan/Sembunyikan Kata Sandi</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -4328,7 +4328,7 @@ Alasan: %4</translation>
     <message>
         <location line="+7"/>
         <source>decline invite and ignore user</source>
-        <translation type="unfinished"></translation>
+        <translation>tolak undangan dan abaikan pengguna</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -5153,7 +5153,7 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+8"/>
         <source>Will prevent swipe motions like swiping left/right between Rooms and Timeline, or swiping a message to reply.</source>
-        <translation type="unfinished"></translation>
+        <translation>Akan mencegah gerakan usap seperti mengusap ke kiri/kanan antara Ruangan dan Lini Masa, atau mengusap pesan untuk membalas.</translation>
     </message>
     <message>
         <location line="+11"/>
