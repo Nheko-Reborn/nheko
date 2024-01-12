@@ -683,7 +683,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation>Wyślij wiadomość w formacie commonmark, wyłączając większość wtyczek w porównaniu do /md.</translation>
+        <translation>Wyślij wiadomość w formacie commonmark, wyłączając większość rozszerzeń względem /md.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -881,7 +881,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+0"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można bezpośrednio dołączyć do tego pokoju. Możesz zapukać, wtedy członkowie pokoju mogą przyjąć lub odrzucić twój wniosek o dołączenie. Czy chcesz dołączyć do tego pokoju? Możesz podać powód, dla którego członkowie mieliby cię&#xa0;przyjąć:</translation>
     </message>
     <message>
         <location line="+32"/>
