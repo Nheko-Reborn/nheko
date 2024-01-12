@@ -109,7 +109,7 @@
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista pokoi które pozwalają na dostęp do tego pokoju. Każdy kto ma dostęp do któregokolwiek z tych pokoi może dołączyć do tego pokoju.</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -133,7 +133,7 @@
         <location filename="../../src/Cache.cpp" line="+3399"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 i %2</translation>
     </message>
     <message numerus="yes">
         <location line="+2"/>
@@ -217,12 +217,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+882"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -247,10 +247,13 @@
         <location line="-692"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n nieprzeczytana wiadomość w pokoju %1
+</numerusform>
+            <numerusform>%n nieprzeczytane wiadomości w pokoju %1
+</numerusform>
+            <numerusform>%n nieprzeczytanych wiadomości w pokoju %1
+</numerusform>
         </translation>
     </message>
     <message>
@@ -527,7 +530,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;wiadomość&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -567,22 +570,22 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [wiadomość]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;typ&gt; [wiadomość]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;odnośnik do wiadomości&gt;</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyślij wiadomość wyrażającą jakąś akcję.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -628,7 +631,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Cofnij jakieś wydarzenie lub wszystkie zapisane lokalnie wiadomości użytkownika.</translation>
     </message>
     <message>
         <location line="+2"/>
