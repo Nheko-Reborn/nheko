@@ -671,7 +671,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation>Obróć obecny symetryczny klucz szyfrowania.</translation>
+        <translation>Wymień obecny klucz szyfrowania symetrycznego.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -721,17 +721,17 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyślij wiadomość z deszczem.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wyślij wiadomość innego typu.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Idź do specyficznej wiadomości używając id wydarzenia, indeksu lub linku matrixa.</translation>
     </message>
     <message>
         <location line="+2"/>
