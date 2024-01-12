@@ -774,7 +774,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation>Ukryj wszystkie pokoje z tym tagiem lub z tej społeczności.</translation>
+        <translation>Domyślnie ukryj pokoje z tym tagiem lub należące do tej społeczności.</translation>
     </message>
 </context>
 <context>
@@ -1115,7 +1115,7 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+38"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 włączył(a) szyfrowanie end-to-end.</translation>
     </message>
     <message>
         <location line="+9"/>
