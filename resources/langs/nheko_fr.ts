@@ -43,7 +43,7 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation>Impossible de dépublier l’alias %1&#xa0;: %2</translation>
+        <translation>Impossible de dépublier l&apos;alias %1: %2</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -549,7 +549,7 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+2"/>
         <source>/notice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice &lt;message&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
