@@ -133,7 +133,7 @@
         <location filename="../../src/Cache.cpp" line="+3399"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 kaj %2</translation>
     </message>
     <message numerus="yes">
         <location line="+2"/>
@@ -216,12 +216,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+882"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -246,9 +246,11 @@
         <location line="-692"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n nelegita mesaĝo en ĉambro %1
+</numerusform>
+            <numerusform>%n nelegitaj mesaĝoj en ĉambro %1
+</numerusform>
         </translation>
     </message>
     <message>
@@ -568,12 +570,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+16"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [mesaĝo]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;msgtype&gt; [mesaĝo]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -719,12 +721,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendas mesaĝon kun pluvo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendas mesaĝon kun propra speco de mesaĝo.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -744,12 +746,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Malatenti uzanton.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Reatenti uzanton.</translation>
     </message>
 </context>
 <context>
@@ -1117,7 +1119,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+9"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉifrado sekurigas viajn mesaĝojn tiel, ke nur iliaj ricevantoj povas ilin legi. Por eĉ pli da sekureco, se vi volas certiĝi, ke vi parolas al la ĝustaj homoj, vi povas kontroli ilian identecon fizike.</translation>
     </message>
 </context>
 <context>
@@ -1140,12 +1142,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ŝlosilo venas de nefidata fonto, kiel plusendo de alia uzanto aŭ reta savkopio de ŝlosiloj. Tial ni ne povas kontroli, kiu sendis la mesaĝon.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉifrita de nefidata aparato.</translation>
     </message>
 </context>
 <context>
@@ -1153,12 +1155,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location filename="../qml/dialogs/EventExpirationDialog.qml" line="+33"/>
         <source>Event expiration for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempolimo de evento por %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Event expiration</source>
-        <translation type="unfinished"></translation>
+        <translation>Tempolimo de evento</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1217,7 +1219,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <location filename="../../src/ui/EventExpiry.cpp" line="+50"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished">Malsukcesis agordi kaŝitajn okazojn: %1</translation>
+        <translation>Malsukcesis agordi kaŝitajn okazojn: %1</translation>
     </message>
 </context>
 <context>
