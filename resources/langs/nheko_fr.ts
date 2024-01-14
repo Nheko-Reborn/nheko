@@ -872,17 +872,17 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation>Ce salon ne peut être rejoint directement. Vous pouvez frapper à la porte du salon et les membres peuvent accepter ou non votre requête. Optionnellement vous pouvez fournir une motivation:</translation>
+        <translation>Ce salon ne peut être rejoint directement. Vous pouvez frapper à la porte du salon et les membres peuvent accepter ou non votre requête. Optionnellement vous pouvez fournir une motivation&#xa0;:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous rejoindre ce salon&#xa0;? Optionnellement vous pouvez fournir une motivation&#xa0;:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation>Frapper à la porte</translation>
+        <translation>Frapper</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -958,7 +958,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Un salon public est libre d&apos;accès&#xa0;; un salon privé nécessite une invitation explicite.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -1052,7 +1052,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Les émojis présentés peuvent avoir l&apos;air différents en fonction des polices ou clients utilisés. Ils peuvent être traduit de façon similaire dans d&apos;autres langues. Néanmoins, ils doivent présenter l&apos;un des 64 différents objets ou animaux. Par exemple, un lion et un chat sont différents, mais un chat est le même que l&apos;on présente sa tête sur un client ou son corps entier sur un autre.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1113,7 +1113,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+38"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a activé le chiffrement de bout en bout</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1146,7 +1146,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chiffré par un appareil non vérifié.</translation>
     </message>
 </context>
 <context>
