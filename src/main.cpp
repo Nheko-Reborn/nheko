@@ -28,6 +28,7 @@
 #include <kdsingleapplication.h>
 
 #include "Cache.h"
+#include "CallManager.h"
 #include "ChatPage.h"
 #include "Logging.h"
 #include "MainWindow.h"
@@ -430,6 +431,9 @@ main(int argc, char *argv[])
             http::client()->close(true);
             nhlog::net()->debug("bye");
         }
+        // This is required in order to destroy CallManager's QMediaPlayer, in turn allowing it
+        // to destroy its GstPipeline so that gst_deinit() can return.
+        ChatPage::instance()->callManager()->deleteLater();
     });
 
     // It seems like handling the message in a blocking manner is a no-go. I have no idea how to
