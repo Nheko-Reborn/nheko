@@ -1279,7 +1279,7 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+8"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished">Ouvrir la solution de remplacement dans le navigateur</translation>
+        <translation>Ouvrir la solution alternative dans le navigateur</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1536,7 +1536,7 @@ Vous pouvez éventuellement fournir une raison afin que les membres acceptent vo
     <message>
         <location line="+11"/>
         <source>Remove</source>
-        <translation type="unfinished">Retirer</translation>
+        <translation>Retirer</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -3172,7 +3172,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+0"/>
         <source>All messages</source>
-        <translation type="unfinished">Tous les messages</translation>
+        <translation>Tous les messages</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3203,7 +3203,7 @@ Example: https://yourserver.example.com:8787</source>
         <location line="+12"/>
         <location line="+242"/>
         <source>Change</source>
-        <translation type="unfinished">Modifier</translation>
+        <translation>Modifier</translation>
     </message>
     <message>
         <location line="-241"/>
@@ -3291,12 +3291,12 @@ Example: https://yourserver.example.com:8787</source>
         <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
-        <translation type="unfinished">Configurer</translation>
+        <translation>Configurer</translation>
     </message>
     <message>
         <location line="-89"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished">Sélectionner les évènements à cacher dans ce salon</translation>
+        <translation>Sélectionner les évènements à cacher dans ce salon</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3346,7 +3346,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+6"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished">Paramètres des autocollants &amp; emotes</translation>
+        <translation>Paramètres des autocollants &amp; emotes</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -3361,27 +3361,27 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+9"/>
         <source>Internal ID</source>
-        <translation type="unfinished">Identifiant interne</translation>
+        <translation>Identifiant interne</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished">Copié dans le presse-papiers</translation>
+        <translation>Copié dans le presse-papiers</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished">Version du salon</translation>
+        <translation>Version du salon</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished">montrer moins</translation>
+        <translation>montrer moins</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished">montrer plus</translation>
+        <translation>montrer plus</translation>
     </message>
 </context>
 <context>
@@ -3729,22 +3729,22 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
     <message>
         <location filename="../qml/TimelineEvent.qml" line="+87"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished">%1 a effectué un appel vocal.</translation>
+        <translation>%1 a effectué un appel vocal.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished">%1 a effectué un appel vidéo.</translation>
+        <translation>%1 a effectué un appel vidéo.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation>%1 a appelé</translation>
+        <translation>%1 a appelé.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished">%1 a répondu à l&apos;appel.</translation>
+        <translation>%1 a répondu à l&apos;appel.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3759,18 +3759,18 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
     <message>
         <location line="+2"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished">%1 a terminé l&apos;appel.</translation>
+        <translation>%1 a mis fin à l&apos;appel.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished">%1 est en train de négocier l&apos;appel...</translation>
+        <translation>%1 est en train de négocier l&apos;appel...</translation>
     </message>
     <message>
         <location line="+91"/>
         <source>Allow them in</source>
-        <translation type="unfinished">Les laisser entrer</translation>
+        <translation>L&apos;autoriser à entrer</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -3961,8 +3961,8 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
         <location line="+15"/>
         <source>%n member(s) can now send state events.</source>
         <translation>
-            <numerusform>%n membre peut maintenant envoyer des évènements d&apos;états.</numerusform>
-            <numerusform>%n membres peuvent maintenant envoyer des évènements d&apos;états.</numerusform>
+            <numerusform>%n membre peut maintenant envoyer des évènements d&apos;état.</numerusform>
+            <numerusform>%n membres peuvent maintenant envoyer des évènements d&apos;état.</numerusform>
             <numerusform></numerusform>
         </translation>
     </message>
