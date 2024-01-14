@@ -400,8 +400,8 @@ Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, vous pouvez plutôt fer
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation>Vous n&apos;avez pas pu rejoindre %1. Vous pouvez essayer de frapper au salon afin que les autres membres vous invitent. Voulez-vous le faire ?
-Vous pouvez éventuellement fournir une raison afin que les membres acceptent votre requête&#xa0;:</translation>
+        <translation>Vous avez échoué de joindre %1. Vous pouvez essayer de toquer afin que d&apos;autres membres vous invitent. Voulez-vous le faire ?
+Eventuellement, vous pouvez fournir une explication de votre demande aux autres membres :</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -3770,7 +3770,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
     <message>
         <location line="+91"/>
         <source>Allow them in</source>
-        <translation>L&apos;autoriser à entrer</translation>
+        <translation>Les autoriser à entrer</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -3788,7 +3788,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
     <message>
         <location filename="../qml/TimelineMetadata.qml" line="+40"/>
         <source>Edited</source>
-        <translation type="unfinished">Modifié</translation>
+        <translation>Modifié</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4206,7 +4206,7 @@ Raison : %4</translation>
     <message>
         <location line="+3"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished">%1 a changé les messages épinglés.</translation>
+        <translation>%1 a changé les messages épinglés.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4221,7 +4221,7 @@ Raison : %4</translation>
     <message>
         <location line="+3"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished">%1 a créé et configuré le salon&#xa0;: %2</translation>
+        <translation>%1 a créé et configuré le salon&#xa0;: %2</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -4283,7 +4283,7 @@ Raison : %4</translation>
     <message>
         <location line="+102"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished">Vous allez envoyer une notification à tous les membres du salon</translation>
+        <translation>Vous allez envoyer une notification à tous les membres du salon</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -4303,7 +4303,7 @@ Raison : %4</translation>
     <message>
         <location line="+3"/>
         <source>Settings</source>
-        <translation type="unfinished">Paramètres</translation>
+        <translation>Paramètres</translation>
     </message>
     <message numerus="yes">
         <location line="+17"/>
@@ -4628,7 +4628,7 @@ Raison : %4</translation>
     <message>
         <location line="+14"/>
         <source>Devices</source>
-        <translation type="unfinished">Appareils</translation>
+        <translation>Appareils</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5501,42 +5501,42 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="-290"/>
         <source>People</source>
-        <translation type="unfinished">Personnes</translation>
+        <translation>Personnes</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished">Nature</translation>
+        <translation>Nature</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished">Nourriture</translation>
+        <translation>Nourriture</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Activités</translation>
+        <translation>Activités</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished">Voyage</translation>
+        <translation>Voyage</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Objets</translation>
+        <translation>Objets</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Symboles</translation>
+        <translation>Symboles</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Drapeaux</translation>
+        <translation>Drapeaux</translation>
     </message>
 </context>
 <context>
