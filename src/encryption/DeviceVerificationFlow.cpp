@@ -20,6 +20,8 @@
 
 static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
+static constexpr std::string_view mac_method_alg_v1 = "hkdf-hmac-sha256";
+
 static mtx::events::msg::KeyVerificationMac
 key_verification_mac(mtx::crypto::SAS *sas,
                      mtx::identifiers::User sender,
@@ -121,7 +123,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                 }
                 if ((msg.key_agreement_protocol == "curve25519-hkdf-sha256") &&
                     (msg.hash == "sha256") &&
-                    (msg.message_authentication_code == "hkdf-hmac-sha256")) {
+                    (msg.message_authentication_code == mac_method_alg_v1)) {
                     this->commitment = msg.commitment;
                     if (std::find(msg.short_authentication_string.begin(),
                                   msg.short_authentication_string.end(),
@@ -572,22 +574,15 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         return;
     }
 
-    if ((std::find(msg.key_agreement_protocols.begin(),
-                   msg.key_agreement_protocols.end(),
-                   "curve25519-hkdf-sha256") != msg.key_agreement_protocols.end()) &&
-        (std::find(msg.hashes.begin(), msg.hashes.end(), "sha256") != msg.hashes.end()) &&
-        (std::find(msg.message_authentication_codes.begin(),
-                   msg.message_authentication_codes.end(),
-                   "hkdf-hmac-sha256") != msg.message_authentication_codes.end())) {
-        if (std::find(msg.short_authentication_string.begin(),
-                      msg.short_authentication_string.end(),
-                      mtx::events::msg::SASMethods::Emoji) !=
-            msg.short_authentication_string.end()) {
+    // TODO(Nico): Replace with contains once we use C++23
+    if (std::ranges::count(msg.key_agreement_protocols, "curve25519-hkdf-sha256") &&
+        std::ranges::count(msg.hashes, "sha256") &&
+        std::ranges::count(msg.message_authentication_codes, mac_method_alg_v1)) {
+        if (std::ranges::count(msg.short_authentication_string,
+                               mtx::events::msg::SASMethods::Emoji)) {
             this->method = mtx::events::msg::SASMethods::Emoji;
-        } else if (std::find(msg.short_authentication_string.begin(),
-                             msg.short_authentication_string.end(),
-                             mtx::events::msg::SASMethods::Decimal) !=
-                   msg.short_authentication_string.end()) {
+        } else if (std::ranges::count(msg.short_authentication_string,
+                                      mtx::events::msg::SASMethods::Decimal)) {
             this->method = mtx::events::msg::SASMethods::Decimal;
         } else {
             this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
@@ -633,7 +628,7 @@ DeviceVerificationFlow::acceptVerificationRequest()
     req.method                      = mtx::events::msg::VerificationMethods::SASv1;
     req.key_agreement_protocol      = "curve25519-hkdf-sha256";
     req.hash                        = "sha256";
-    req.message_authentication_code = "hkdf-hmac-sha256";
+    req.message_authentication_code = mac_method_alg_v1;
     if (this->method == mtx::events::msg::SASMethods::Emoji)
         req.short_authentication_string = {mtx::events::msg::SASMethods::Emoji};
     else if (this->method == mtx::events::msg::SASMethods::Decimal)
@@ -678,7 +673,7 @@ DeviceVerificationFlow::startVerificationRequest()
     req.method                       = mtx::events::msg::VerificationMethods::SASv1;
     req.key_agreement_protocols      = {"curve25519-hkdf-sha256"};
     req.hashes                       = {"sha256"};
-    req.message_authentication_codes = {"hkdf-hmac-sha256"};
+    req.message_authentication_codes = {std::string(mac_method_alg_v1)};
     req.short_authentication_string  = {mtx::events::msg::SASMethods::Decimal,
                                         mtx::events::msg::SASMethods::Emoji};
 
