@@ -841,12 +841,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation>Échec de la mise à jour de la communauté pour le salon : %1</translation>
+        <translation>Échec de la mise à jour de la communauté du salon&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation>Echec de la suppression de la communauté du salon : %1</translation>
+        <translation>Échec de la suppression de la communauté du salon : %1</translation>
     </message>
 </context>
 <context>
@@ -872,7 +872,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ce salon ne peut être rejoint directement. Vous pouvez frapper à la porte du salon et les membres peuvent accepter ou non votre requête. Optionnellement vous pouvez fournir une motivation:</translation>
     </message>
     <message>
         <location line="+0"/>
