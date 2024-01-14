@@ -1274,7 +1274,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+15"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation>Ouvrir l&apos;alternative, suivre les étapes et confirmer après avec terminé.</translation>
+        <translation>Ouvrir l&apos;alternative, suivre les étapes, et confirmer après avoir terminé.</translation>
     </message>
     <message>
         <location line="+8"/>
