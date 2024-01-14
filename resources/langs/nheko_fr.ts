@@ -1189,7 +1189,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+1"/>
         <source>Deletes your events in this room if there are more than X newer messages unless otherwise protected. Set to 0 to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si possible, efface vos évènements dans ce salon s&apos;il y a plus de X nouveaux messages. Choisir 0 pour désactiver.</translation>
     </message>
     <message>
         <location line="+21"/>
