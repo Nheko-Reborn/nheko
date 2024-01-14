@@ -730,7 +730,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation>Aller à un message spécifique grâce à un identifiant événement, un index ou un lien matrix:</translation>
+        <translation>Aller à un message spécifique grâce à un identifiant événement, un indice, ou un lien matrix:</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -745,7 +745,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorer un(e) utilisateur</translation>
     </message>
     <message>
         <location line="+2"/>
