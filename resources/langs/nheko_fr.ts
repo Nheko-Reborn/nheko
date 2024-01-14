@@ -750,7 +750,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation>Arrêter d&apos;ignorer un(e) utilisateur</translation>
+        <translation>Arrêter d&apos;ignorer un(e) utilisateur(rice).</translation>
     </message>
 </context>
 <context>
@@ -831,17 +831,17 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+678"/>
         <source>Failed to update community: %1</source>
-        <translation>Erreur lors de la mise à jour de cette communauté&#xa0;: %1</translation>
+        <translation>Erreur lors du raffraîchissement de la communauté&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation>Echec de l&apos;effacement du salon de la communauté : %1</translation>
+        <translation>Echec de la suppression du salon de la communauté&#xa0;: %1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Échec de la mise à jour de la communauté pour le salon : %1</translation>
     </message>
     <message>
         <location line="+18"/>
