@@ -1209,7 +1209,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+1"/>
         <source>If this is turned on, old state events also get redacted. The latest state event of any type+key combination is excluded from redaction to not remove the room name and similar state by accident.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si ceci est activé, les vieux évènements d&apos;états seront effacés. Le dernier évènement d&apos;état de n&apos;importe quel combinaison type+clé sera exclu de la suppression pour ne pas perdre le nom du salon ou un évènement similaire par accident.</translation>
     </message>
 </context>
 <context>
@@ -1274,7 +1274,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+15"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir l&apos;alternative, suivre les étapes et confirmer après avec terminé.</translation>
     </message>
     <message>
         <location line="+8"/>
