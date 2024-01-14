@@ -21,15 +21,7 @@
 static constexpr int TIMEOUT = 2 * 60 * 1000; // 2 minutes
 
 static constexpr std::string_view mac_method_alg_v1 = "hkdf-hmac-sha256";
-
-static mtx::events::msg::KeyVerificationMac
-key_verification_mac(mtx::crypto::SAS *sas,
-                     mtx::identifiers::User sender,
-                     const std::string &senderDevice,
-                     mtx::identifiers::User receiver,
-                     const std::string &receiverDevice,
-                     const std::string &transactionId,
-                     std::map<std::string, std::string> keys);
+static constexpr std::string_view mac_method_alg_v2 = "hkdf-hmac-sha256.v2";
 
 DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                                                DeviceVerificationFlow::Type flow_type,
@@ -113,7 +105,8 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
             &ChatPage::receivedDeviceVerificationAccept,
             this,
             [this](const mtx::events::msg::KeyVerificationAccept &msg) {
-                nhlog::crypto()->info("verification: received accept");
+                nhlog::crypto()->info("verification: received accept with mac methods {}",
+                                      fmt::join(msg.message_authentication_code, ", "));
                 if (msg.transaction_id.has_value()) {
                     if (msg.transaction_id.value() != this->transaction_id)
                         return;
@@ -121,9 +114,10 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                     if (msg.relations.references() != this->relation.event_id)
                         return;
                 }
-                if ((msg.key_agreement_protocol == "curve25519-hkdf-sha256") &&
-                    (msg.hash == "sha256") &&
-                    (msg.message_authentication_code == mac_method_alg_v1)) {
+                if (msg.key_agreement_protocol == "curve25519-hkdf-sha256" &&
+                    msg.hash == "sha256" &&
+                    (msg.message_authentication_code == mac_method_alg_v1 ||
+                     msg.message_authentication_code == mac_method_alg_v2)) {
                     this->commitment = msg.commitment;
                     if (std::find(msg.short_authentication_string.begin(),
                                   msg.short_authentication_string.end(),
@@ -250,13 +244,13 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
               if (their_keys.self_signing_keys.keys.count(mac.first))
                   key_list[mac.first] = their_keys.self_signing_keys.keys[mac.first];
           }
-          auto macs = key_verification_mac(sas.get(),
-                                           toClient,
-                                           this->deviceId.toStdString(),
-                                           http::client()->user_id(),
-                                           http::client()->device_id(),
-                                           this->transaction_id,
-                                           key_list);
+          auto macs = sas->calculate_mac(mac_method,
+                                         toClient,
+                                         this->deviceId.toStdString(),
+                                         http::client()->user_id(),
+                                         http::client()->device_id(),
+                                         this->transaction_id,
+                                         key_list);
 
           for (const auto &[key, mac] : macs.mac) {
               if (mac != msg.mac.at(key)) {
@@ -574,10 +568,21 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         return;
     }
 
+    nhlog::crypto()->info("verification: received start with mac methods {}",
+                          fmt::join(msg.message_authentication_codes, ", "));
+
     // TODO(Nico): Replace with contains once we use C++23
     if (std::ranges::count(msg.key_agreement_protocols, "curve25519-hkdf-sha256") &&
-        std::ranges::count(msg.hashes, "sha256") &&
-        std::ranges::count(msg.message_authentication_codes, mac_method_alg_v1)) {
+        std::ranges::count(msg.hashes, "sha256")) {
+        if (std::ranges::count(msg.message_authentication_codes, mac_method_alg_v2)) {
+            this->mac_method = mac_method_alg_v2;
+        } else if (std::ranges::count(msg.message_authentication_codes, mac_method_alg_v1)) {
+            this->mac_method = mac_method_alg_v1;
+        } else {
+            this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
+            return;
+        }
+
         if (std::ranges::count(msg.short_authentication_string,
                                mtx::events::msg::SASMethods::Emoji)) {
             this->method = mtx::events::msg::SASMethods::Emoji;
@@ -588,6 +593,7 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
             this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
             return;
         }
+
         if (!sender)
             this->canonical_json = nlohmann::json(msg).dump();
         else {
@@ -621,6 +627,14 @@ DeviceVerificationFlow::acceptVerificationRequest()
 {
     if (acceptSent)
         return;
+
+    if (mac_method.empty()) {
+        nhlog::crypto()->critical("Ignoring start without mac method set!");
+        return;
+    } else {
+        nhlog::crypto()->debug("Accepted verification using mac_method {}", mac_method);
+    }
+
     acceptSent = true;
 
     mtx::events::msg::KeyVerificationAccept req;
@@ -628,7 +642,7 @@ DeviceVerificationFlow::acceptVerificationRequest()
     req.method                      = mtx::events::msg::VerificationMethods::SASv1;
     req.key_agreement_protocol      = "curve25519-hkdf-sha256";
     req.hash                        = "sha256";
-    req.message_authentication_code = mac_method_alg_v1;
+    req.message_authentication_code = this->mac_method;
     if (this->method == mtx::events::msg::SASMethods::Emoji)
         req.short_authentication_string = {mtx::events::msg::SASMethods::Emoji};
     else if (this->method == mtx::events::msg::SASMethods::Decimal)
@@ -673,7 +687,8 @@ DeviceVerificationFlow::startVerificationRequest()
     req.method                       = mtx::events::msg::VerificationMethods::SASv1;
     req.key_agreement_protocols      = {"curve25519-hkdf-sha256"};
     req.hashes                       = {"sha256"};
-    req.message_authentication_codes = {std::string(mac_method_alg_v1)};
+    req.message_authentication_codes = {std::string(mac_method_alg_v1),
+                                        std::string(mac_method_alg_v2)};
     req.short_authentication_string  = {mtx::events::msg::SASMethods::Decimal,
                                         mtx::events::msg::SASMethods::Emoji};
 
@@ -771,36 +786,6 @@ DeviceVerificationFlow::sendVerificationKey()
     send(req);
 }
 
-mtx::events::msg::KeyVerificationMac
-key_verification_mac(mtx::crypto::SAS *sas,
-                     mtx::identifiers::User sender,
-                     const std::string &senderDevice,
-                     mtx::identifiers::User receiver,
-                     const std::string &receiverDevice,
-                     const std::string &transactionId,
-                     std::map<std::string, std::string> keys)
-{
-    mtx::events::msg::KeyVerificationMac req;
-
-    std::string info = "MATRIX_KEY_VERIFICATION_MAC" + sender.to_string() + senderDevice +
-                       receiver.to_string() + receiverDevice + transactionId;
-
-    std::string key_list;
-    bool first = true;
-    for (const auto &[key_id, key] : keys) {
-        req.mac[key_id] = sas->calculate_mac(key, info + key_id);
-
-        if (!first)
-            key_list += ",";
-        key_list += key_id;
-        first = false;
-    }
-
-    req.keys = sas->calculate_mac(key_list, info + "KEY_IDS");
-
-    return req;
-}
-
 //! sends the mac of the keys
 void
 DeviceVerificationFlow::sendVerificationMac()
@@ -809,6 +794,8 @@ DeviceVerificationFlow::sendVerificationMac()
         return;
     macSent = true;
 
+    nhlog::crypto()->debug("Sending mac using mac_method {}", mac_method);
+
     std::map<std::string, std::string> key_list;
     key_list["ed25519:" + http::client()->device_id()] = olm::client()->identity_keys().ed25519;
 
@@ -816,13 +803,13 @@ DeviceVerificationFlow::sendVerificationMac()
     if (!this->our_trusted_master_key.empty())
         key_list["ed25519:" + our_trusted_master_key] = our_trusted_master_key;
 
-    mtx::events::msg::KeyVerificationMac req = key_verification_mac(sas.get(),
-                                                                    http::client()->user_id(),
-                                                                    http::client()->device_id(),
-                                                                    this->toClient,
-                                                                    this->deviceId.toStdString(),
-                                                                    this->transaction_id,
-                                                                    key_list);
+    mtx::events::msg::KeyVerificationMac req = sas->calculate_mac(mac_method,
+                                                                  http::client()->user_id(),
+                                                                  http::client()->device_id(),
+                                                                  this->toClient,
+                                                                  this->deviceId.toStdString(),
+                                                                  this->transaction_id,
+                                                                  key_list);
 
     send(req);
 
