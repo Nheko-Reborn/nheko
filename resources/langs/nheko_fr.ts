@@ -400,8 +400,8 @@ Si vous pensez qu&apos;il s&apos;agit d&apos;une erreur, vous pouvez plutôt fer
         <location line="+34"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation>Vous avez échoué de joindre %1. Vous pouvez essayer de toquer afin que d&apos;autres membres vous invitent. Voulez-vous le faire ?
-Eventuellement, vous pouvez fournir une explication de votre demande aux autres membres :</translation>
+        <translation>Vous avez échoué à rejoindre %1. Vous pouvez essayer de toquer afin que d&apos;autres membres vous invitent. Souhaitez-vous le faire&#xa0;?
+Eventuellement, vous pouvez fournir une explication de votre demande aux autres membres&#xa0;:</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -509,7 +509,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>/redact &lt;$eventid|@userid&gt;</source>
-        <translation>/redact &lt;$idevenement|@idutilisateur&gt;</translation>
+        <translation>/redact &lt;$idévènement|@idutilisateur&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -544,7 +544,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>/rainbowme &lt;message&gt;</source>
-        <translation>/rainbowmoi &lt;message&gt;</translation>
+        <translation>/rainbowme &lt;message&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -670,7 +670,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pivoter les clés de chiffrements symétriques actuelles.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -680,7 +680,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer un message au format commonmark désactivant la majorités des extensions comparativement à /md.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -730,7 +730,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Aller à un message spécifique grâce à un identifiant événement, un index ou un lien matrix:</translation>
     </message>
     <message>
         <location line="+2"/>
