@@ -1199,7 +1199,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+1"/>
         <source>This prevents events to be deleted by the above 2 settings if they are the latest X messages from you in the room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ceci empêche les évènements d&apos;être effacés par les deux configurations ci-dessus s&apos;il sont vos X derniers messages dans ce salon.</translation>
     </message>
     <message>
         <location line="+21"/>
