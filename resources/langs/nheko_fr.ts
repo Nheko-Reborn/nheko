@@ -745,12 +745,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation>Ignorer un(e) utilisateur</translation>
+        <translation>Ignorer un(e) utilisateur(rice).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêter d&apos;ignorer un(e) utilisateur</translation>
     </message>
 </context>
 <context>
