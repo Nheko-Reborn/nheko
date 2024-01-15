@@ -29,6 +29,8 @@ ColumnLayout {
                 return qsTr("Device verification timed out.");
                 case DeviceVerificationFlow.User:
                 return qsTr("Other party canceled the verification.");
+                case DeviceVerificationFlow.AcceptedOnOtherDevice:
+                return qsTr("The verification was accepted by a different device.");
                 case DeviceVerificationFlow.OutOfOrder:
                 return qsTr("Verification messages received out of order!");
                 default:

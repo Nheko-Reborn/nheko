@@ -105,6 +105,9 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
             &ChatPage::receivedDeviceVerificationAccept,
             this,
             [this](const mtx::events::msg::KeyVerificationAccept &msg) {
+                if (state_ == Failed || state_ == Success)
+                    return;
+
                 nhlog::crypto()->info("verification: received accept with mac methods {}",
                                       fmt::join(msg.message_authentication_code, ", "));
                 if (msg.transaction_id.has_value()) {
@@ -114,6 +117,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
                     if (msg.relations.references() != this->relation.event_id)
                         return;
                 }
+
                 if (msg.key_agreement_protocol == "curve25519-hkdf-sha256" &&
                     msg.hash == "sha256" &&
                     (msg.message_authentication_code == mac_method_alg_v1 ||
@@ -157,6 +161,9 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
       &ChatPage::receivedDeviceVerificationKey,
       this,
       [this](const mtx::events::msg::KeyVerificationKey &msg) {
+          if (state_ == Failed || state_ == Success)
+              return;
+
           nhlog::crypto()->info(
             "verification: received key, sender {}, state {}", sender, state().toStdString());
           if (msg.transaction_id.has_value()) {
@@ -219,6 +226,9 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
       &ChatPage::receivedDeviceVerificationMac,
       this,
       [this](const mtx::events::msg::KeyVerificationMac &msg) {
+          if (state_ == Failed || state_ == Success)
+              return;
+
           nhlog::crypto()->info("verification: received mac");
           if (msg.transaction_id.has_value()) {
               if (msg.transaction_id.value() != this->transaction_id)
@@ -326,6 +336,7 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
               }
 
               if (!req.signatures.empty()) {
+                  nhlog::crypto()->debug("Signatures to send: {}", nlohmann::json(req).dump(2));
                   http::client()->keys_signatures_upload(
                     req,
                     [](const mtx::responses::KeySignaturesUpload &res, mtx::http::RequestErr err) {
@@ -374,12 +385,16 @@ DeviceVerificationFlow::DeviceVerificationFlow(QObject *,
       &ChatPage::receivedDeviceVerificationReady,
       this,
       [this](const mtx::events::msg::KeyVerificationReady &msg) {
+          if (state_ == Failed || state_ == Success)
+              return;
+
           nhlog::crypto()->info("verification: received ready {}", (void *)this);
           if (!sender) {
-              if (msg.from_device != http::client()->device_id()) {
-                  error_ = User;
-                  emit errorChanged();
-                  setState(Failed);
+              if (msg.from_device != this->deviceId.toStdString()) {
+                  nhlog::crypto()->debug("Accepted by {}, we are communicating with {}",
+                                         msg.from_device,
+                                         this->deviceId.toStdString());
+                  cancelVerification(AcceptedOnOtherDevice);
               }
 
               return;
@@ -558,6 +573,9 @@ void
 DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificationStart &msg,
                                            std::string)
 {
+    if (state_ == Failed || state_ == Success)
+        return;
+
     if (msg.transaction_id.has_value()) {
         if (msg.transaction_id.value() != this->transaction_id)
             return;
@@ -565,6 +583,14 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         if (msg.relations.references() != this->relation.event_id)
             return;
     } else {
+        return;
+    }
+
+    if (state_ == Failed)
+        return;
+
+    if (msg.from_device != this->deviceId.toStdString()) {
+        cancelVerification(AcceptedOnOtherDevice);
         return;
     }
 
@@ -625,6 +651,9 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
 void
 DeviceVerificationFlow::acceptVerificationRequest()
 {
+    if (state_ == Failed || state_ == Success)
+        return;
+
     if (acceptSent)
         return;
 
@@ -769,7 +798,9 @@ DeviceVerificationFlow::cancelVerification(DeviceVerificationFlow::Error error_c
     this->setState(Failed);
     emit errorChanged();
 
-    send(req);
+    // Don't cancel if the user accepted the request elsewhere, instead just silently stop
+    if (error_code != AcceptedOnOtherDevice)
+        send(req);
 }
 //! sends the verification key
 void

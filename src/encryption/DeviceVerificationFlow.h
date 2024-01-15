@@ -104,6 +104,7 @@ public:
         KeyMismatch,
         Timeout,
         User,
+        AcceptedOnOtherDevice,
         OutOfOrder,
     };
     Q_ENUM(Error)
