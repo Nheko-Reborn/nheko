@@ -34,5 +34,16 @@
     <string>NSApplication</string>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleURLName</key>
+            <string>Matrix URL</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>matrix</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>
