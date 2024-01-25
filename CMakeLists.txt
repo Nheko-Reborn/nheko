@@ -676,6 +676,11 @@ if(WIN32)
 else()
     qt_add_executable(nheko ${OS_BUNDLE} ${NHEKO_DEPS})
 
+    if(APPLE)
+        set_target_properties(nheko PROPERTIES MACOSX_BUNDLE_INFO_PLIST
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake/MacOSXBundleInfo.plist.in")
+    endif()
+
     if(HAVE_BACKTRACE_SYMBOLS_FD AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
         set_target_properties(nheko PROPERTIES ENABLE_EXPORTS ON)
     endif()
