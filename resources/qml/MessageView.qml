@@ -526,7 +526,7 @@ Item {
             text: qsTr("Report message")
             enabled: visible
             onTriggered: function () {
-                var dialog = reportDialog.createObject(timelineRoot, {"eventId": messageContextMenu.eventId});
+                var dialog = reportDialog.createObject(timelineRoot, {"eventId": messageContextMenuC.eventId});
                 dialog.show();
                 dialog.forceActiveFocus();
                 timelineRoot.destroyOnClose(dialog);
