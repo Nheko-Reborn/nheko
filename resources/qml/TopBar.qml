@@ -271,6 +271,7 @@ Pane {
                 ScrollBar.horizontal.visible: false
                 clip: true
                 visible: !!room && room.pinnedMessages.length > 0 && !Settings.hiddenPins.includes(roomId)
+                contentWidth: availableWidth
 
                 ListView {
                     model: room ? room.pinnedMessages : undefined
@@ -287,8 +288,7 @@ Pane {
 
                             property var e: room ? room.getDump(modelData, "pins") : {}
 
-                            maxWidth: pinnedMessages.width
-                            //Layout.preferredHeight: height
+                            maxWidth: pinnedMessages.width - 16
                             eventId: e.eventId ?? ""
                             userColor: TimelineManager.userColor(e.userId, palette.window)
 
@@ -328,12 +328,14 @@ Pane {
                 ScrollBar.horizontal.visible: false
                 clip: true
                 visible: !!room && room.widgetLinks.length > 0 && !Settings.hiddenWidgets.includes(roomId)
+                contentWidth: availableWidth
 
                 ListView {
                     model: room ? room.widgetLinks : undefined
                     spacing: Nheko.paddingSmall
 
                     delegate: MatrixText {
+                        width: widgets.width
                         required property var modelData
 
                         color: palette.text
