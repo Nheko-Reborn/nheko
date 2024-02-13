@@ -32,6 +32,18 @@ Popup {
         roomTextInput.forceActiveFocus();
     }
 
+    Shortcut {
+        id: closeShortcut
+
+        sequence: "Ctrl+K"
+        onActivated: {
+            // It seems that QML takes a second or so to clean up destroyed shortcuts, so instead we'll just disable this shortcut
+            // so it doesn't prevent the quick switcher from opening again
+            closeShortcut.enabled = false;
+            quickSwitcher.close();
+        }
+    }
+
     Column {
         anchors.fill: parent
         spacing: 1
