@@ -316,8 +316,22 @@ sudo pacman -S qt5-base \
     qtkeychain-qt5
 ```
 
-#### Debian 11+ / Ubuntu 22.04 
-*Older OS versions require a newer version of Qt5 than offered in official repositories.* 
+#### Debian 13 [Testing/Sid] (Nheko QT6 Version)
+*As of February 2024, Nheko from git master requires QT 6.5 whereas Trixie has 6.4.2, so you must enable Debian's [Experimental Repository](https://wiki.debian.org/DebianExperimental) to install newer QT6.  This may not be necessary in the future and the `-t experimental` can be removed for the second set of build requirements.*  
+
+```bash
+# Install build requirements
+sudo apt install -y cmake asciidoc-base libevent-dev libspdlog-dev libre2-dev liblmdb++-dev libcurl4-openssl-dev libssl-dev libolm-dev libcmark-dev nlohmann-json3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev libkdsingleapplication-qt6-dev
+sudo apt install -y -t experimental qt6-base-dev qt6-tools-dev qt6-svg-dev qt6-multimedia-dev qt6-declarative-dev qtkeychain-qt6-dev qt6-base-private-dev qt6-declarative-private-dev
+# Clone nheko repository from github
+sudo apt install -y git
+git clone https://github.com/Nheko-Reborn/nheko && cd nheko
+# Build
+cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DUSE_BUNDLED_COEURL=1 -DUSE_BUNDLED_MTXCLIENT=1 -DUSE_BUNDLED_LMDBXX=1
+cmake --build build
+```
+
+#### Debian 11-12 / Ubuntu 22.04 (Nheko QT5 11.3 Release Version) 
 *Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):*
 ```bash
 sudo apt install --no-install-recommends g++ cmake make zlib1g-dev libssl-dev libolm-dev liblmdb-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libevent-dev libcurl4-openssl-dev libre2-dev libxcb-ewmh-dev asciidoc-base \
