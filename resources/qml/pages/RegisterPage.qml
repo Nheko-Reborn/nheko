@@ -112,8 +112,8 @@ Item {
                     visible: regis.usernameAvailable || regis.usernameUnavailable
                     ToolTip.visible: ma.hovered
                     ToolTip.text: qsTr("Back")
-                    sourceSize.height: height * Screen.devicePixelRatio
-                    sourceSize.width: width * Screen.devicePixelRatio
+                    sourceSize.height: height
+                    sourceSize.width: width
                     HoverHandler {
                         id: ma
                     }

@@ -92,8 +92,8 @@ Column {
                 height: fontMetrics.ascent
                 width: height
 
-                sourceSize.width: fontMetrics.lineSpacing
-                sourceSize.height: fontMetrics.lineSpacing
+                sourceSize.width: width
+                sourceSize.height: height
 
                 permissions: room ? room.permissions : null
                 visible: isAdmin || isModerator
