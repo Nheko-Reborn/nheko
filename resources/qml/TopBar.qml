@@ -160,6 +160,7 @@ Pane {
                 }
             }
             AbstractButton {
+                id: memberButton
                 Layout.column: 4
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
@@ -188,6 +189,8 @@ Pane {
                     unencryptedColor: palette.buttonText
                     unencryptedHoverColor: palette.highlight
                     unencryptedIcon: ":/icons/icons/ui/people.svg"
+                    sourceSize.height: memberButton.height
+                    sourceSize.width: memberButton.width
                 }
 
                 onClicked: TimelineManager.openRoomMembers(room)
