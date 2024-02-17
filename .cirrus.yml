@@ -12,7 +12,7 @@ task:
   aqt_script:
     - pip3 install aqtinstall
     - mkdir $HOME/Qt
-    - aqt install-qt --outputdir $HOME/qt mac desktop 6 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
+    - aqt install-qt --outputdir $HOME/qt mac desktop 6.6 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
   build_script:
     - export QTPATH=($HOME/qt/6.*/macos/bin)
     - export PATH="$QTPATH:${PATH}"

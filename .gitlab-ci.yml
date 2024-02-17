@@ -259,6 +259,23 @@ build-macos:
       - .hunter/
       - "${CCACHE_DIR}"
 
+build-macos-as:
+  extends: build-macos
+  image: ghcr.io/cirruslabs/macos-ventura-xcode:14.3
+  tags: [macos-tart]
+  before_script:
+    # The following update-reset is a workaround for this issue: https://github.com/Homebrew/homebrew-bundle/issues/1179
+    - brew update-reset
+    - unset HOMEBREW_NO_AUTO_UPDATE
+    - brew bundle --file .ci/macos/Brewfile
+    - pip3 install aqtinstall
+    - mkdir $HOME/Qt
+    - aqt install-qt --outputdir $HOME/qt mac desktop 6.6 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
+  script:
+    - export QTPATH=($HOME/qt/6.*/macos/bin)
+    - export PATH="$QTPATH:${PATH}"
+    - ./.ci/macos/build.sh
+
 codesign-macos:
   stage: sign
   tags: [macos]
