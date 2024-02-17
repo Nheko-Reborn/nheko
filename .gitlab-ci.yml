@@ -278,7 +278,7 @@ build-macos-as:
 
 codesign-macos:
   stage: sign
-  tags: [macos, macos-tart]
+  tags: [macos]
   variables:
     PLAT: "intel"
   before_script:
