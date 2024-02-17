@@ -232,6 +232,8 @@ ApplicationWindow {
             EncryptionIndicator {
                 Layout.preferredHeight: 32
                 Layout.preferredWidth: 32
+                sourceSize.width: width
+                sourceSize.height: height
                 encrypted: profile.userVerificationEnabled
                 trust: profile.userVerified
                 Layout.alignment: Qt.AlignHCenter
@@ -364,8 +366,8 @@ ApplicationWindow {
                             Layout.preferredHeight: 16
                             Layout.preferredWidth: 16
                             visible: profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
-                            sourceSize.height: 16 * Screen.devicePixelRatio
-                            sourceSize.width: 16 * Screen.devicePixelRatio
+                            sourceSize.height: height
+                            sourceSize.width: width
                             source: {
                                 switch (verificationStatus) {
                                     case VerificationStatus.VERIFIED:
@@ -446,6 +448,8 @@ ApplicationWindow {
                 Image {
                     Layout.preferredHeight: 16
                     Layout.preferredWidth: 16
+                    sourceSize.height: height
+                    sourceSize.width: width
                     visible: !profile.isSelf && verificationStatus != VerificationStatus.NOT_APPLICABLE
                     source: {
                         switch (verificationStatus) {

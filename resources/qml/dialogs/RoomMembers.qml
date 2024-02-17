@@ -162,6 +162,10 @@ ApplicationWindow {
                         }
 
                         PowerlevelIndicator {
+                            Layout.preferredWidth: fontMetrics.lineSpacing * 2
+                            Layout.preferredHeight: fontMetrics.lineSpacing * 2
+                            sourceSize.width: width
+                            sourceSize.height: height
                             powerlevel: model.powerlevel
                             permissions: room.permissions
                         }
@@ -169,8 +173,10 @@ ApplicationWindow {
                         EncryptionIndicator {
                             id: encryptInd
 
-                            Layout.preferredWidth: 16
-                            Layout.preferredHeight: 16
+                            Layout.preferredWidth: fontMetrics.lineSpacing * 2
+                            Layout.preferredHeight: fontMetrics.lineSpacing * 2
+                            sourceSize.width: width
+                            sourceSize.height: height
                             Layout.alignment: Qt.AlignRight
                             visible: room.isEncrypted
                             encrypted: room.isEncrypted

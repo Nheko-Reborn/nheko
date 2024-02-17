@@ -64,8 +64,16 @@ AbstractButton {
         } else {
             return "";
         }
-        sourceSize.height: avatar.height * Screen.devicePixelRatio
-        sourceSize.width: avatar.width * Screen.devicePixelRatio
+        sourceSize.height: if (!avatar.url.startsWith('image://MxcImage/') && avatar.url.endsWith('.svg')){
+            return avatar.height
+        } else {
+            return avatar.height * Screen.devicePixelRatio
+        }
+        sourceSize.width: if (!avatar.url.startsWith('image://MxcImage/') && avatar.url.endsWith('.svg')){
+            return avatar.width
+        } else {
+            return avatar.width * Screen.devicePixelRatio
+        }
     }
     Rectangle {
         id: onlineIndicator

@@ -40,8 +40,8 @@ RowLayout {
         ToolTip.text: qsTr("Edited")
         ToolTip.visible: editHovered.hovered
         source: "image://colorimage/:/icons/icons/ui/edit.svg?" + ((metadata.eventId == metadata.room.edit) ? palette.highlight : palette.buttonText)
-        sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-        sourceSize.width: parent.iconSize * Screen.devicePixelRatio
+        sourceSize.height: parent.iconSize
+        sourceSize.width: parent.iconSize
         visible: metadata.isEdited || metadata.eventId == metadata.room.edit
         HoverHandler {
             id: editHovered
@@ -66,8 +66,8 @@ RowLayout {
         Layout.preferredHeight: parent.iconSize
         Layout.preferredWidth: parent.iconSize
         encrypted: metadata.isEncrypted
-        sourceSize.height: parent.iconSize * Screen.devicePixelRatio
-        sourceSize.width: parent.iconSize * Screen.devicePixelRatio
+        sourceSize.height: parent.iconSize
+        sourceSize.width: parent.iconSize
         trust: metadata.trustlevel
         visible: metadata.room.isEncrypted
     }
