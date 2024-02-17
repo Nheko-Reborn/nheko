@@ -298,7 +298,7 @@ codesign-macos:
     - if : '$CI_PIPELINE_TRIGGERED && $CI_COMMIT_REF_PROTECTED == "true"'
       variables:
         PLAT: "apple_silicon"
-    - if: '$CI_RUNNER_TAGS ~= /^mac-tart/'
+    - if : '$CI_RUNNER_TAGS =~ /^mac-tart/'
       variables:
         PLAT: "apple_silicon"
     - if : '$CI_COMMIT_BRANCH == "master"'
