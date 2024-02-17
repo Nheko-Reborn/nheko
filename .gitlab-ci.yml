@@ -278,7 +278,7 @@ build-macos-as:
 
 codesign-macos:
   stage: sign
-  tags: [macos]
+  tags: [macos, macos-tart]
   variables:
     PLAT: "intel"
   before_script:
@@ -292,8 +292,13 @@ codesign-macos:
   needs:
     - job: build-macos
       optional: true # optional since we want to be able to also trigger this job from cirrus ci for apple silicon builds.
+    - job: build-macos-as
+      optional: true
   rules:
     - if : '$CI_PIPELINE_TRIGGERED && $CI_COMMIT_REF_PROTECTED == "true"'
+      variables:
+        PLAT: "apple_silicon"
+    - if: '$CI_RUNNER_TAGS ~= /^mac-tart/'
       variables:
         PLAT: "apple_silicon"
     - if : '$CI_COMMIT_BRANCH == "master"'
