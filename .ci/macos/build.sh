@@ -8,6 +8,8 @@ set -ue
 # Add Qt binaries to path
 QT_BASEPATH=(${HOME}/Qt/6.*/macos/)
 PATH="${QT_BASEPATH}/bin/:${PATH}"
+pipx ensurepath
+. ~/.zshrc
 export PATH
 
 CMAKE_PREFIX_PATH="${QT_BASEPATH}/lib/cmake"

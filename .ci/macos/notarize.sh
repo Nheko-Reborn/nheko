@@ -7,6 +7,8 @@ set -u
 
 # Add Qt binaries to path
 export QTPATH=(${PATH}/Qt/6.*/macos/bin)
+pipx ensurepath
+. ~/.zshrc
 export PATH=${QTPATH}:${PATH}
 
 security unlock-keychain -p "${RUNNER_USER_PW}" login.keychain

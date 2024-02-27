@@ -268,7 +268,9 @@ build-macos-as:
     - brew update-reset
     - unset HOMEBREW_NO_AUTO_UPDATE
     - brew bundle --file .ci/macos/Brewfile
-    - pip3 install aqtinstall
+    - pipx install aqtinstall
+    - pipx ensurepath
+    - . ~/.zshrc
     - mkdir $HOME/Qt
     - aqt install-qt --outputdir $HOME/qt mac desktop 6.6 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
   script:
@@ -276,38 +278,48 @@ build-macos-as:
     - export PATH="$QTPATH:${PATH}"
     - ./.ci/macos/build.sh
 
-codesign-macos:
+.codesign-macos: &codesign_macos
   stage: sign
-  tags: [macos, macos-tart]
-  variables:
-    PLAT: "intel"
   before_script:
-    - pip3 install dmgbuild
+    - pipx install dmgbuild
+    - pipx ensurepath
+  tags: [macos]
   script:
     - export QTPATH=(/Users/jdonof/Qt/6.*/macos/bin)
     - export PATH=${QTPATH}:${PATH}
     - ./.ci/macos/notarize.sh
   after_script:
     - ./.ci/upload-nightly-gitlab.sh artifacts/nheko-${CI_COMMIT_SHORT_SHA}-${PLAT}.dmg
-  needs:
-    - job: build-macos
-      optional: true # optional since we want to be able to also trigger this job from cirrus ci for apple silicon builds.
-    - job: build-macos-as
-      optional: true
-  rules:
-    - if : '$CI_PIPELINE_TRIGGERED && $CI_COMMIT_REF_PROTECTED == "true"'
-      variables:
-        PLAT: "apple_silicon"
-    - if : '$CI_RUNNER_TAGS =~ /^mac-tart/'
-      variables:
-        PLAT: "apple_silicon"
-    - if : '$CI_COMMIT_BRANCH == "master"'
-    - if : $CI_COMMIT_TAG
   artifacts:
     paths:
       - artifacts/nheko-${CI_COMMIT_SHORT_SHA}-${PLAT}.dmg
       - /tmp/notarize*
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos
+
+codesign-macos-intel:
+  <<: *codesign_macos
+  variables:
+    PLAT: "intel"
+  needs:
+    - job: build-macos
+  rules:
+    - if : '$CI_COMMIT_BRANCH == "master"'
+    - if : $CI_COMMIT_TAG
+
+codesign-macos-as:
+  <<: *codesign_macos
+  tags: [macos]
+  variables:
+    PLAT: "apple_silicon"
+  needs:
+    - job: build-macos-as
+      optional: true # optional since we want to be able to also trigger this job from cirrus ci for apple silicon builds.
+  rules:
+    - if : '$CI_PIPELINE_TRIGGERED && $CI_COMMIT_REF_PROTECTED == "true"'
+      variables:
+        PLAT: "apple_silicon"
+    - if : '$CI_COMMIT_BRANCH == "master"'
+    - if : $CI_COMMIT_TAG
 
 build-flatpak:
   stage: build
@@ -446,7 +458,8 @@ github-release:
   dependencies:
     #- appimage-amd64 <- disabled because of missing packages
     - build-flatpak
-    - codesign-macos
+    - codesign-macos-intel
+    - codesign-macos-as
     - codesign-windows
   before_script:
     - apk update && apk add jq curl perl
