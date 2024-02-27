@@ -205,4 +205,7 @@ updateSpaceVias();
 
 void
 removeExpiredEvents();
+
+QString
+glitchText(const QString &text);
 }

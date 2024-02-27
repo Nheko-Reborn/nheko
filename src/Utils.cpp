@@ -16,6 +16,7 @@
 #include <QGuiApplication>
 #include <QImageReader>
 #include <QProcessEnvironment>
+#include <QRandomGenerator64>
 #include <QScreen>
 #include <QSettings>
 #include <QStringBuilder>
@@ -2011,4 +2012,26 @@ utils::removeExpiredEvents()
     nhlog::db()->info("Running expiration in {} rooms", asus->roomsToUpdate.size());
 
     ApplyEventExpiration::next(std::move(asus));
+}
+
+QString
+utils::glitchText(const QString &text)
+{
+    static const QList<QChar> diacritics = []() {
+        QList<QChar> ret;
+        for (wchar_t c = u'\u0300'; c <= u'\u036f'; ++c)
+            ret.append(QChar(c));
+        return ret;
+    }();
+
+    QString result;
+
+    for (int i = 0; i < text.size(); ++i) {
+        result.append(text.at(i));
+        if (QRandomGenerator64::global()->bounded(0, 100) >= 25)
+            result.append(
+              diacritics.at(QRandomGenerator64::global()->bounded(0, diacritics.size())));
+    }
+
+    return result;
 }
