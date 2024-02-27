@@ -2014,23 +2014,59 @@ utils::removeExpiredEvents()
     ApplyEventExpiration::next(std::move(asus));
 }
 
+namespace {
+static const QList<QChar> diacritics = []() {
+    QList<QChar> ret;
+    for (wchar_t c = u'\u0300'; c <= u'\u036f'; ++c)
+        ret.append(QChar(c));
+    return ret;
+}();
+}
+
 QString
 utils::glitchText(const QString &text)
 {
-    static const QList<QChar> diacritics = []() {
-        QList<QChar> ret;
-        for (wchar_t c = u'\u0300'; c <= u'\u036f'; ++c)
-            ret.append(QChar(c));
-        return ret;
-    }();
-
     QString result;
-
     for (int i = 0; i < text.size(); ++i) {
         result.append(text.at(i));
         if (QRandomGenerator64::global()->bounded(0, 100) >= 25)
             result.append(
               diacritics.at(QRandomGenerator64::global()->bounded(0, diacritics.size())));
+    }
+    return result;
+}
+
+QString
+utils::graduallyGlitchText(const QString &text)
+{
+    QString result;
+
+    const int noGlitch     = text.size() * 0.5;
+    const int someGlitch   = text.size() * 0.8;
+    const int lotsOfGlitch = text.size() * 0.95;
+
+    for (int i = 0; i < text.size(); ++i) {
+        result.append(text.at(i));
+
+        if (i < noGlitch) // first 40% of text is normal
+            continue;
+        else if (i < someGlitch) // next 25% is progressively glitchier
+        {
+            if (QRandomGenerator64::global()->bounded(noGlitch, someGlitch) <
+                noGlitch + (i - noGlitch) * 0.05)
+                result.append(
+                  diacritics.at(QRandomGenerator64::global()->bounded(0, diacritics.size())));
+        } else if (i < lotsOfGlitch) { // oh no, it's spreading!
+            if (QRandomGenerator64::global()->bounded(someGlitch, lotsOfGlitch) < i)
+                result.append(
+                  diacritics.at(QRandomGenerator64::global()->bounded(0, diacritics.size())));
+        } else { // just give up, your computer is cursed now
+            do {
+                if (QRandomGenerator64::global()->bounded(text.size() / 5, text.size()) < i)
+                    result.append(
+                      diacritics.at(QRandomGenerator64::global()->bounded(0, diacritics.size())));
+            } while (QRandomGenerator64::global()->bounded(0, 100) < 35);
+        }
     }
 
     return result;

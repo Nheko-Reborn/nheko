@@ -49,6 +49,7 @@ public:
         Rainfall,
         Msgtype,
         Glitch,
+        GradualGlitch,
         Goto,
         ConvertToDm,
         ConvertToRoom,
