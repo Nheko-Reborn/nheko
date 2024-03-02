@@ -86,8 +86,7 @@ Item {
 
         delegate: Settings.bubbles ? bubbleMessageStyle : defaultMessageStyle
         footer: Item {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.margins: Nheko.paddingLarge
+            width: chat.delegateMaxWidth
             // hacky, but works
             height: loadingSpinner.height + 2 * Nheko.paddingLarge
             visible: (room && room.paginationInProgress) || chat.filteringInProgress
