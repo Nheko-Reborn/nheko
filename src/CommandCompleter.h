@@ -48,6 +48,8 @@ public:
         RainbowConfetti,
         Rainfall,
         Msgtype,
+        Glitch,
+        GradualGlitch,
         Goto,
         ConvertToDm,
         ConvertToRoom,

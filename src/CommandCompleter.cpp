@@ -91,6 +91,10 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QStringLiteral("/rainfall ");
             case Msgtype:
                 return QStringLiteral("/msgtype ");
+            case Glitch:
+                return QStringLiteral("/glitch ");
+            case GradualGlitch:
+                return QStringLiteral("/gradualglitch ");
             case Goto:
                 return QStringLiteral("/goto ");
             case ConvertToDm:
@@ -170,6 +174,10 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("/msgtype <msgtype> [message]");
             case Goto:
                 return tr("/goto <message reference>");
+            case Glitch:
+                return tr("/glitch <message>");
+            case GradualGlitch:
+                return tr("/gradualglitch <message>");
             case ConvertToDm:
                 return QStringLiteral("/converttodm");
             case ConvertToRoom:
@@ -245,6 +253,10 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("Send a message with rain.");
             case Msgtype:
                 return tr("Send a message with a custom message type.");
+            case Glitch:
+                return tr("Send a message with a glitch effect.");
+            case GradualGlitch:
+                return tr("Send a message that gradually glitches.");
             case Goto:
                 return tr("Go to a specific message using an event id, index or matrix: link");
             case ConvertToDm:

@@ -215,6 +215,12 @@ Redacts a specific event.
 */roomnick* _<roomname>_::
 Change your nickname in a single room.
 
+*/glitch* _<message>_::
+Applies a glitch effect to the given _message_. Beware that this will break mentions, HTML, and some Markdown in your message.
+
+*/gradualglitch* _<message>_::
+Applies a progressively more severe glitch effect to the _message_. Again, this will break mentions, HTML, and some Markdown.
+
 === Emoticons
 
 */shrug* _[message]_::

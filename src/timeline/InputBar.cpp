@@ -238,6 +238,8 @@ InputBar::updateTextContentProperties(const QString &t)
                                              QStringLiteral("rainbowconfetti"),
                                              QStringLiteral("rainfall"),
                                              QStringLiteral("msgtype"),
+                                             QStringLiteral("glitch"),
+                                             QStringLiteral("gradualglitch"),
                                              QStringLiteral("goto"),
                                              QStringLiteral("converttodm"),
                                              QStringLiteral("converttoroom"),
@@ -918,6 +920,10 @@ InputBar::command(const QString &command, QString args)
         rainfall(args);
     } else if (command == QLatin1String("msgtype")) {
         customMsgtype(args.section(' ', 0, 0), args.section(' ', 1, -1));
+    } else if (command == QLatin1String("glitch")) {
+        message(utils::glitchText(args));
+    } else if (command == QLatin1String("gradualglitch")) {
+        message(utils::graduallyGlitchText(args));
     } else if (command == QLatin1String("goto")) {
         // Goto has three different modes:
         // 1 - Going directly to a given event ID
