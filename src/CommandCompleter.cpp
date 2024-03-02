@@ -172,12 +172,12 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("/rainfall [message]");
             case Msgtype:
                 return tr("/msgtype <msgtype> [message]");
-            case Goto:
-                return tr("/goto <message reference>");
             case Glitch:
                 return tr("/glitch <message>");
             case GradualGlitch:
                 return tr("/gradualglitch <message>");
+            case Goto:
+                return tr("/goto <message reference>");
             case ConvertToDm:
                 return QStringLiteral("/converttodm");
             case ConvertToRoom:
