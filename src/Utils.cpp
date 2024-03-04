@@ -257,7 +257,7 @@ utils::codepointIsEmoji(uint code)
     return (code >= 0x2600 && code <= 0x27bf) || (code >= 0x2b00 && code <= 0x2bff) ||
            (code >= 0x1f000 && code <= 0x1faff) || code == 0x200d || code == 0xfe0f ||
            code == 0x231a || code == 0x231b || (code >= 0x23e9 && code <= 0x23ff) ||
-           code >= 0x25aa || code == 0x25ab || code == 0x25b6 || code == 0x25c0 ||
+           code == 0x25aa || code == 0x25ab || code == 0x25b6 || code == 0x25c0 ||
            (code >= 0x25fb && code <= 0x25fe) || (code >= 0x2460 && code <= 0x24ff);
 }
 
