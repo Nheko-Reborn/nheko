@@ -51,8 +51,8 @@ Window {
         property int imgSrcWidth: (imageOverlay.originalWidth && imageOverlay.originalWidth > 100) ? imageOverlay.originalWidth : Screen.width
         property int imgSrcHeight: imageOverlay.proportionalHeight ? imgSrcWidth * imageOverlay.proportionalHeight : Screen.height
 
-        height: Math.min(parent.height || Screen.height, imgSrcHeight)
-        width: Math.min(parent.width || Screen.width, imgSrcWidth)
+        height: imgSrcHeight
+        width: imgSrcWidth
 
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
