@@ -32,8 +32,7 @@ Popup {
         roomTextInput.forceActiveFocus();
     }
 
-    Column {
-        anchors.fill: parent
+    contentItem: Column {
         spacing: 1
 
         MatrixTextField {

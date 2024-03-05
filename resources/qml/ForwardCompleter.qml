@@ -38,7 +38,7 @@ Popup {
         roomTextInput.forceActiveFocus();
     }
 
-    Column {
+    contentItem: Column {
         id: forwardColumn
 
         spacing: 5

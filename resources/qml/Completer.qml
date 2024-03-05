@@ -112,7 +112,7 @@ Control {
             ListView.delayRemove: true
             color: model.index == popup.currentIndex ? palette.highlight : palette.base
             height: (chooser.child?.implicitHeight ?? 0) + 2 * popup.rowMargin
-            implicitWidth: fullWidth ? ListView.view.width : chooser.child.implicitWidth + 4
+            implicitWidth: popup.fullWidth ? ListView.view.width : chooser.child.implicitWidth + 4
 
             MouseArea {
                 id: mouseArea

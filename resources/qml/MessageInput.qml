@@ -340,10 +340,9 @@ Rectangle {
                         }
                     }
 
-                    Completer {
+                    contentItem: Completer {
                         id: completer
 
-                        anchors.fill: parent
                         rowMargin: 2
                         rowSpacing: 0
                     }
