@@ -47,6 +47,7 @@ Control {
                 text: qsTr("Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.")
                 textFormat: Text.PlainText
                 wrapMode: Label.WordWrap
+                color: palette.text
                 Layout.fillWidth: true
                 Layout.maximumWidth: implicitWidth + 1
             }

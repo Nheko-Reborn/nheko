@@ -47,6 +47,7 @@ Item {
         anchors.centerIn: parent
         font.pointSize: 24
         text: qsTr("No room open")
+        color: palette.text
         visible: !room && !TimelineManager.isInitialSync && (!roomPreview || !roomPreview.roomid)
     }
     Spinner {
