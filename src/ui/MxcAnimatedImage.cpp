@@ -175,7 +175,9 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
     if (!imageDirty)
         return oldNode;
 
-    if (clipRect().isEmpty())
+    // If the image is offscreen, just return the old node (if it exists) to save on animation CPU
+    // use. Don't return null here, or you will never be called again.
+    if (clipRect().isEmpty() && oldNode)
         return oldNode;
 
     imageDirty      = false;
