@@ -3751,7 +3751,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
     <message>
         <location line="+2"/>
         <source>%1 selected answer.</source>
-        <translation> </translation>
+        <translation>%1 memilih untuk menjawab.</translation>
     </message>
     <message>
         <location line="+2"/>
