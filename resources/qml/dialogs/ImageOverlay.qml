@@ -81,11 +81,6 @@ Window {
             play: !Settings.animateImagesOnHover || mouseArea.hovered
             eventId: imageOverlay.eventId
         }
-        Text {
-            anchors.centerIn: parent
-            text: "Orig width: " + imageOverlay.proportionalHeight
-        }
-
 
         onScaleChanged: {
             if (scale > 10) scale = 10;
