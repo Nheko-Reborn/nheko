@@ -71,7 +71,7 @@
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать основной псевдоним</translation>
     </message>
     <message>
         <location line="+14"/>
