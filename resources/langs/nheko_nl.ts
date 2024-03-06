@@ -1184,7 +1184,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+20"/>
         <source>Only keep latest X events</source>
-        <translation>Behou enkel de laatste X gebeurtenissen</translation>
+        <translation>Behoudt enkel de laatste X gebeurtenissen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1463,7 +1463,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="-37"/>
         <source>Shortcode</source>
-        <translation>Shortcode</translation>
+        <translation>Korte code</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3212,17 +3212,17 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
-        <translation type="unfinished">Verander de lijst van kamers waarlangs gebruikers kunnen binnentreden. Meestal is dit de officiële groep van deze kamer.</translation>
+        <translation>Verander de lijst van kamers waarlangs gebruikers kunnen binnentreden. Meestal is dit de officiële groep van deze kamer.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Allow guests to join</source>
-        <translation type="unfinished">Sta gasten toe om binnen te treden</translation>
+        <translation>Sta gasten toe om binnen te treden</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Apply access rules</source>
-        <translation type="unfinished">Toegangsregels doorvoeren</translation>
+        <translation>Toegangsregels doorvoeren</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3295,97 +3295,97 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
-        <translation type="unfinished">Instellen</translation>
+        <translation>Instellen</translation>
     </message>
     <message>
         <location line="-89"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished">Selecteer gebeurtenissen die verborgen dienen te worden in deze kamer</translation>
+        <translation>Selecteer gebeurtenissen die verborgen dienen te worden in deze kamer</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Automatic event deletion</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch berichten wissen</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Select if your events get automatically deleted in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kies of je berichten automatisch gewist worden in deze kamer.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>GENERAL SETTINGS</source>
-        <translation type="unfinished"></translation>
+        <translation>ALGEMENE INSTELLINGEN</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Encryption</source>
-        <translation type="unfinished">Versleuteling</translation>
+        <translation>Versleuteling</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>End-to-End Encryption</source>
-        <translation type="unfinished">Eind-tot-eind versleuteling</translation>
+        <translation>Eind-tot-eind versleuteling</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Permission</source>
-        <translation type="unfinished">Toestemmingen</translation>
+        <translation>Toestemmingen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the permissions in this room</source>
-        <translation type="unfinished">Bekijken en aanpassen van toestemmingen in deze kamer</translation>
+        <translation>Bekijken en aanpassen van toestemmingen in deze kamer</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Aliases</source>
-        <translation type="unfinished">Aliassen</translation>
+        <translation>Aliassen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>View and change the addresses/aliases of this room</source>
-        <translation type="unfinished">Bekijken en aanpassen van adressen/aliassen van deze kamer</translation>
+        <translation>Bekijken en aanpassen van adressen/aliassen van deze kamer</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Sticker &amp; Emote Settings</source>
-        <translation type="unfinished">Sticker &amp; Emoji instellingen</translation>
+        <translation>Sticker &amp; Emoji instellingen</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished">Verander welke pakketten ingeschakeld zijn, verwijder ze, of maak nieuwe</translation>
+        <translation>Verander welke pakketten ingeschakeld zijn, verwijder ze, of maak nieuwe</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>INFO</source>
-        <translation type="unfinished">INFO</translation>
+        <translation>INFO</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Internal ID</source>
-        <translation type="unfinished">Interne ID</translation>
+        <translation>Interne ID</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Copied to clipboard</source>
-        <translation type="unfinished">Gekopieerd naar klembord</translation>
+        <translation>Gekopieerd naar klembord</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>Room Version</source>
-        <translation type="unfinished">Kamerversie</translation>
+        <translation>Kamerversie</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>show less</source>
-        <translation type="unfinished">minder tonen</translation>
+        <translation>minder tonen</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>show more</source>
-        <translation type="unfinished">meer tonen</translation>
+        <translation>meer tonen</translation>
     </message>
 </context>
 <context>
@@ -3408,7 +3408,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+2"/>
         <source>This room is possibly inaccessible</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer is mogelijk niet toegankelijk</translation>
     </message>
 </context>
 <context>
@@ -3449,7 +3449,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+11"/>
         <source>Method:</source>
-        <translation type="unfinished"></translation>
+        <translation>Methode:</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -3459,7 +3459,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+15"/>
         <source>Request screencast</source>
-        <translation type="unfinished"></translation>
+        <translation>Scherm uitzenden</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3699,7 +3699,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location line="+188"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
-        <translation type="unfinished">Verander welke pakketten ingeschakeld zijn, verwijder ze, of maak nieuwe</translation>
+        <translation>Verander welke pakketten ingeschakeld zijn, verwijder ze, of maak nieuwe</translation>
     </message>
 </context>
 <context>
@@ -3725,7 +3725,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
         <source>Part of a thread</source>
-        <translation type="unfinished">Deel van een gespreksdraad</translation>
+        <translation>Deel van een gespreksdraad</translation>
     </message>
 </context>
 <context>
@@ -3733,58 +3733,58 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location filename="../qml/TimelineEvent.qml" line="+87"/>
         <source>%1 placed a voice call.</source>
-        <translation type="unfinished">%1 plaatste een spraakoproep.</translation>
+        <translation>%1 plaatste een spraakoproep.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a video call.</source>
-        <translation type="unfinished">%1 plaatste een video oproep.</translation>
+        <translation>%1 plaatste een video-oproep.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 placed a call.</source>
-        <translation type="unfinished">%1 plaatste een oproep.</translation>
+        <translation>%1 plaatste een oproep.</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>%1 answered the call.</source>
-        <translation type="unfinished">%1 beantwoordde de oproep.</translation>
+        <translation>%1 beantwoordde de oproep.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 rejected the call.</source>
-        <translation type="unfinished">%1 heeft het gesprek afgewezen.</translation>
+        <translation>%1 heeft het gesprek afgewezen.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 selected answer.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft opgenomen.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 ended the call.</source>
-        <translation type="unfinished">%1 beëindigde de oproep.</translation>
+        <translation>%1 beëindigde de oproep.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>%1 is negotiating the call...</source>
-        <translation type="unfinished">%1 is het gesprek aan het opzetten...</translation>
+        <translation>%1 is het gesprek aan het opzetten...</translation>
     </message>
     <message>
         <location line="+91"/>
         <source>Allow them in</source>
-        <translation type="unfinished">Binnenlaten</translation>
+        <translation>Binnenlaten</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>This room was replaced for the following reason: %1</source>
-        <translation type="unfinished">Deze kamer is vervangen wegens de volgende reden: %1</translation>
+        <translation>Deze kamer is vervangen wegens de volgende reden: %1</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Go to replacement room</source>
-        <translation type="unfinished">Ga naar de vervangende kamer</translation>
+        <translation>Ga naar de vervangende kamer</translation>
     </message>
 </context>
 <context>
@@ -3792,12 +3792,12 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
     <message>
         <location filename="../qml/TimelineMetadata.qml" line="+40"/>
         <source>Edited</source>
-        <translation type="unfinished">Bewerkt</translation>
+        <translation>Bewerkt</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Part of a thread</source>
-        <translation type="unfinished">Deel van een gespreksdraad</translation>
+        <translation>Deel van een gespreksdraad</translation>
     </message>
 </context>
 <context>
@@ -4166,62 +4166,62 @@ Reden: %4</translation>
     <message>
         <location line="-2293"/>
         <source>%1 changed which servers are allowed in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft veranderd welke servers de kamer in mogen.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 removed the room name.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de kamernaam verwijderd.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 changed the room name to: %2</source>
-        <translation type="unfinished">%2 heeft de naam van de kamer veranderd in: %2 {1 ?}</translation>
+        <translation>%1 heeft de naam van de kamer veranderd in: %2</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 removed the topic.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft het onderwerp verwijderd.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 changed the topic to: %2</source>
-        <translation type="unfinished">%2 heeft het onderwerp veranderd in: %2 {1 ?}</translation>
+        <translation>%1 heeft het onderwerp veranderd in: %2</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>%1 changed the room avatar to: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de kamerafbeelding veranderd in: %2</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>%1 removed the room avatar.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft de kamerafbeelding verwijderd.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 changed the pinned messages.</source>
-        <translation type="unfinished">%1 heeft de vastgeprikte berichten aangepast.</translation>
+        <translation>%1 heeft de vastgeprikte berichten aangepast.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>%1 changed the addresses for this room.</source>
-        <translation type="unfinished">%1 heeft de adressen voor deze kamer aangepast.</translation>
+        <translation>%1 heeft de adressen voor deze kamer aangepast.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 changed the parent communities for this room.</source>
-        <translation type="unfinished">%1 heeft de moedergroep voor deze kamer bijgewerkt.</translation>
+        <translation>%1 heeft de moedergroep voor deze kamer bijgewerkt.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 created and configured room: %2</source>
-        <translation type="unfinished">%1 maakte en configureerde de kamer: %2</translation>
+        <translation>%1 maakte en configureerde kamer: %2</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>%1 changed unknown state event %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 veranderde onbekend kamerstaatevenement %2.</translation>
     </message>
     <message>
         <location line="+556"/>
@@ -4270,7 +4270,7 @@ Reden: %4</translation>
     <message>
         <location filename="../qml/TimelineSectionHeader.qml" line="+138"/>
         <source>%1&apos;s status message</source>
-        <translation type="unfinished"></translation>
+        <translation>%1&apos;s statusbericht</translation>
     </message>
 </context>
 <context>
@@ -4283,17 +4283,17 @@ Reden: %4</translation>
     <message>
         <location line="+102"/>
         <source>You are about to notify the whole room</source>
-        <translation type="unfinished">Je staat op het punt de hele kamer een notificatie te sturen</translation>
+        <translation>Je staat op het punt de hele kamer een notificatie te sturen</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
-        <translation type="unfinished"></translation>
+        <translation>Het commando /%1 is niet herkend en zal als deel van je bericht worden verstuurd</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>/%1 looks like an incomplete command. To send it anyway, add a space to the end of your message.</source>
-        <translation type="unfinished"></translation>
+        <translation>/%1 ziet eruit als een onvolledig commando. Om het toch te versturen, voeg een spatie toe aan het eind van je bericht.</translation>
     </message>
     <message>
         <location line="+44"/>
@@ -4321,7 +4321,7 @@ Reden: %4</translation>
     <message>
         <location line="+20"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deze kamer is mogelijk niet toegankelijk. Als de kamer privé is, wil je hem waarschijnlijk uit de moedergroep weghalen.</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4341,17 +4341,17 @@ Reden: %4</translation>
     <message>
         <location line="+7"/>
         <source>decline invite and ignore user</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitnodiging afwijzen en gebruiker negeren</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>leave</source>
-        <translation type="unfinished"></translation>
+        <translation>verlaten</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Invited by %1 (%2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Uitgenodigd door %1 (%2)</translation>
     </message>
     <message>
         <location line="+45"/>
@@ -4516,7 +4516,7 @@ Reden: %4</translation>
     <message>
         <location line="+50"/>
         <source>Failed to ignore &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Kon &quot;%1&quot; niet negeren: %2</translation>
     </message>
     <message>
         <location line="+222"/>
@@ -4571,7 +4571,7 @@ Reden: %4</translation>
     <message>
         <location line="+23"/>
         <source>&lt;i&gt;&lt;b&gt;Status:&lt;/b&gt; %1&lt;/i&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;&lt;b&gt;Status:&lt;/b&gt; %1&lt;/i&gt;</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -4612,12 +4612,12 @@ Reden: %4</translation>
     <message>
         <location line="+11"/>
         <source>Unignore the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Hou op met de gebruiker te negeren.</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Ignore the user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Negeer de gebruiker.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4627,12 +4627,12 @@ Reden: %4</translation>
     <message>
         <location line="+14"/>
         <source>Devices</source>
-        <translation type="unfinished">Apparaten</translation>
+        <translation>Apparaten</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Shared Rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Gedeelde kamers</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -4699,7 +4699,7 @@ Reden: %4</translation>
     <message>
         <location line="+4"/>
         <source>Scrollbars in room list</source>
-        <translation type="unfinished"></translation>
+        <translation>Scrollbalk in kamerlijst</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4739,7 +4739,7 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>Sort rooms alphabetically</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteer kamers alfabetisch</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4759,12 +4759,12 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>Hidden events</source>
-        <translation type="unfinished">Verborgen gebeurtenissen</translation>
+        <translation>Verborgen gebeurtenissen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ignored users</source>
-        <translation type="unfinished"></translation>
+        <translation>Genegeerde gebruikers</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4834,7 +4834,7 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>Disable swipe motions</source>
-        <translation type="unfinished"></translation>
+        <translation>Schakel veegbewegingen uit</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4964,7 +4964,7 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>GLOBAL MESSAGE VISIBILITY</source>
-        <translation type="unfinished"></translation>
+        <translation>GLOBALE BERICHTZICHTBAARHEID</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5024,12 +5024,12 @@ Reden: %4</translation>
     <message>
         <location line="+2"/>
         <source>Periodically update community routing information</source>
-        <translation type="unfinished"></translation>
+        <translation>Regelmatig bijwerken van groeptoegangsinformatie</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Periodically delete expired events</source>
-        <translation type="unfinished"></translation>
+        <translation>Regelmatig verlopen gebeurtenissen wissen</translation>
     </message>
     <message>
         <location line="+119"/>
@@ -5073,7 +5073,7 @@ Kies 0 om direct te blurren. Maximale waarde is 1 uur (3600 seconden)</translati
     <message>
         <location line="+4"/>
         <source>Shows scrollbars in the room list and communities list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat scrollbalken zien in de kamerlijst en groepenlijst.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5117,7 +5117,7 @@ Dit schakelt ook het versturen van je eigen typnotificaties naar anderen in of u
     <message>
         <location line="+8"/>
         <source>Configure whether to show or hide certain events like room joins.</source>
-        <translation type="unfinished"></translation>
+        <translation>Stelt in of gebeurtenissen zoals binnentreden en verlaten weergegeven worden.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5154,7 +5154,7 @@ UIT - vierkant, AAN - cirkel.</translation>
     <message>
         <location line="+8"/>
         <source>Will prevent swipe motions like swiping left/right between Rooms and Timeline, or swiping a message to reply.</source>
-        <translation type="unfinished"></translation>
+        <translation>Schakelt veegbewegingen uit zoals naar links/rechts vegen om tussen kamers en de tijdlijn te wisselen, of op een bericht vegen om te beantwoorden.</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -5198,14 +5198,18 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laat kamers met nieuwe berichten eerst zien.
+Als dit uit staat, zullen kamers alleen gesorteerd worden op de voorkeurssortering.
+Als dit aan staat, worden kamers met notificaties (het kleine rondje met getal erin) bovenaan gesorteerd. Kamers die je hebt gedempt zullen nog steeds normaal worden gesorteerd, want die vond je blijkbaar minder belangrijk dan andere kamers.</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Sort rooms alphabetically.
 If this is off, the list of rooms will be sorted by the timestamp of the last message in a room.
 If this is on, rooms that come first alphabetically will be sorted earlier than ones that come later.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sorteer kamers op alfabet.
+Als dit uit staat worden kamers op tijdstip van laatste bericht gesorteerd.
+Als dit aan staat worden kamers op alfabet gesorteerd.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -5301,27 +5305,27 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
     <message>
         <location line="+6"/>
         <source>To allow new users to join a community, the community needs to expose some information about what servers participate in a room to community members. Since the room participants can change over time, this needs to be updated from time to time. This setting enables a background job to do that automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>Om nieuwe gebruikers toe te staan bij een groep te komen, moet de groep wat informatie vrijgeven over welke servers in een kamer deelnemen. Aangezien de deelnemers kunnen veranderen, moet deze informatie af en toe worden bijgewerkt. Deze instelling zorgt dat dat automatisch op de achtergrond af en toe gebeurd.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Regularly redact expired events as specified in the event expiration configuration. Since this is currently not executed server side, you need to have one client running this regularly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Haalt regelmatig verlopen gebeurtenissen weg, zoals in de gebeurtenisconfiguratie staat. Dit gebeurd niet aan de server kant, dus je moet minimaal 1 client hebben die dit regelmatig doet.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Manage your ignored users.</source>
-        <translation type="unfinished"></translation>
+        <translation>Beheer genegeerde gebruikers.</translation>
     </message>
     <message>
         <location line="+151"/>
         <source>System font</source>
-        <translation type="unfinished"></translation>
+        <translation>Systeemlettertype</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>System emoji font</source>
-        <translation type="unfinished"></translation>
+        <translation>Systeemlettertype voor emoji</translation>
     </message>
     <message>
         <location line="+330"/>
@@ -5411,12 +5415,12 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
     <message>
         <location line="+8"/>
         <source>CONFIGURE</source>
-        <translation type="unfinished"></translation>
+        <translation>CONFIGUREREN</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>MANAGE</source>
-        <translation type="unfinished"></translation>
+        <translation>BEHEREN</translation>
     </message>
     <message>
         <location line="+35"/>
@@ -5506,42 +5510,42 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="-290"/>
         <source>People</source>
-        <translation type="unfinished">Mensen</translation>
+        <translation>Mensen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished">Natuur</translation>
+        <translation>Natuur</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished">Eten</translation>
+        <translation>Eten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Activiteiten</translation>
+        <translation>Activiteiten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Travel</source>
-        <translation type="unfinished">Reizen</translation>
+        <translation>Reizen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Objecten</translation>
+        <translation>Objecten</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Symbolen</translation>
+        <translation>Symbolen</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Vlaggen</translation>
+        <translation>Vlaggen</translation>
     </message>
 </context>
 <context>
@@ -5621,12 +5625,12 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
     <message>
         <location line="-11"/>
         <source>You sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>Je hebt een chateffect verstuurd</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>%1 sent a chat effect</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 heeft een chateffect gestuurd</translation>
     </message>
     <message>
         <location line="+15"/>
