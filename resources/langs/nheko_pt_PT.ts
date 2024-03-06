@@ -448,7 +448,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/ChatPage.qml" line="+36"/>
         <source>No network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem ligação à rede</translation>
     </message>
 </context>
 <context>
@@ -581,173 +581,173 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>Send a message expressing an action.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar a mensagem expressando uma ação.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send &lt;text&gt; as a reaction when you’re replying to a message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar &lt;texto&gt; como uma reação ao responder a uma mensagem.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrar numa sala. Razão opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ask to join a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pedir para entrar numa sala. Razão opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+2"/>
         <source>Leave a room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sair duma sala. Razão opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Invite a user into the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Convidar um utilizador para a sala atual. Razão opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Expulsar um utilizador da sala atual. Razão opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ban a user from the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Banir um utilizador da sala atual. Razão opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unban a user in the current room. Reason is optional.</source>
-        <translation type="unfinished"></translation>
+        <translation>Desbanir um utilizador da sala atual. Razão opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Redact an event or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eliminar um evento ou todas as mensagens de um utilizador guardadas localmente.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Change your displayname in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar o teu nome de exibição nesta sala.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>¯\_(ツ)_/¯ with an optional message.</source>
-        <translation type="unfinished"></translation>
+        <translation>¯\_(ツ)_/¯ com uma mensagem opcional.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>(╯°□°)╯︵ ┻━┻</source>
-        <translation type="unfinished"></translation>
+        <translation>(╯°□°)╯︵ ┻━┻</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>┯━┯╭( º _ º╭)</source>
-        <translation type="unfinished"></translation>
+        <translation>┯━┯╭( º _ º╭)</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>ノ┬─┬ノ ︵ ( \o°o)\</source>
-        <translation type="unfinished"></translation>
+        <translation>ノ┬─┬ノ ︵ ( \o°o)\</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Clear the currently cached messages in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Limpar as mensagens guardadas desta sala.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Refetch the state in this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Voltar a pedir o estado desta sala.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Rotate the current symmetric encryption key.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rodar a chave de encriptação cifragem simétrica atual.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a markdown formatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem formatada com Markdown (ignorando a configuração global).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a commonmark formatted message disabling most extensions compared to /md.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem formatada com CommonMark, desativando a maioria das extensões do /md.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Send an unformatted message (ignoring the global setting).</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem não formatada (ignorando a configuração global).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem colorida com o arco-íris.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send /me in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar /me colorida com o arco-íris.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem robô.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a bot message in rainbow colors.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem robô colorida com o arco-íris.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem com confetes.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message in rainbow colors with confetti.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem colorida com arco-íris e com confetes.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem com chuva.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviar uma mensagem com um tipo personalizado.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Ir para uma mensagem específica utilizando um ID/índice de evento ou uma ligação matrix:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Converter esta sala numa conversa direta.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Converter esta conversa direta numa sala.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorar um utilizador.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deixar de ignorar um utilizador.</translation>
     </message>
 </context>
 <context>
@@ -755,22 +755,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/CommunitiesList.qml" line="+125"/>
         <source>Expand</source>
-        <translation type="unfinished"></translation>
+        <translation>Expandir</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Collapse</source>
-        <translation type="unfinished"></translation>
+        <translation>Colapsar</translation>
     </message>
     <message>
         <location line="+85"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Não mostrar contadores de notificação para esta comunidade ou etiqueta.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Hide rooms with this tag or from this community by default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Esconder salas com esta etiqueta ou desta comunidade, por omissão.</translation>
     </message>
 </context>
 <context>
@@ -788,12 +788,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+23"/>
         <source>Direct Chats</source>
-        <translation type="unfinished"></translation>
+        <translation>Conversas diretas</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show direct chats.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar conversas diretas.</translation>
     </message>
     <message>
         <location line="+67"/>
@@ -828,22 +828,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+678"/>
         <source>Failed to update community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao atualizar comunidade: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao eliminar sala da comunidade: %1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao atualizar comunidade da sala: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao remover comunidade da sala: %1</translation>
     </message>
 </context>
 <context>
@@ -851,40 +851,41 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ConfirmJoinRoomDialog.qml" line="+18"/>
         <source>Confirm community join</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar entrada na comunidade</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Confirm room join</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirmar entrada na sala</translation>
     </message>
     <message numerus="yes">
         <location line="+66"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n membro</numerusform>
+            <numerusform>%n membros</numerusform>
+            <numerusform>%n membros</numerusform>
         </translation>
     </message>
     <message>
         <location line="+25"/>
         <source>This room can&apos;t be joined directly. You can, however, knock on the room and room members can accept or decline this join request. You can additionally provide a reason for them to let you in below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Não é possível entrar nesta sala diretamente. Podes, no entanto, bater à porta e deixar que os seus membros aceitem ou rejeitem o teu pedido. Opcionalmente, podes deixar uma razão de entrar abaixo:</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Queres juntar-te a esta sala? Opcionalmente, podes adicionar uma razão abaixo:</translation>
     </message>
     <message>
         <location line="+32"/>
         <source>Knock</source>
-        <translation type="unfinished"></translation>
+        <translation>Bater à porta</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrar</translation>
     </message>
 </context>
 <context>
@@ -892,17 +893,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+14"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Criar conversa direta</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizador a convidar</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@utilizador:servidor.tld</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -915,32 +916,32 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+17"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Nova comunidade</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Nova sala</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Name</source>
-        <translation type="unfinished">Nome</translation>
+        <translation>Nome</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No name</source>
-        <translation type="unfinished"></translation>
+        <translation>Sem nome</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Topic</source>
-        <translation type="unfinished">Tópico</translation>
+        <translation type="unfinished">Assunto</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No topic</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Sem assunto</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -950,22 +951,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Public</source>
-        <translation type="unfinished"></translation>
+        <translation>Pública</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Public rooms can be joined by anyone; private rooms need explicit invites.</source>
-        <translation type="unfinished"></translation>
+        <translation>Qualquer pessoa pode entrar em salas públicas; é necessário convites explícitos para entrar em salas privadas.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Trusted</source>
-        <translation type="unfinished"></translation>
+        <translation>De confiança</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>All invitees are given the same power level as the creator</source>
-        <translation type="unfinished"></translation>
+        <translation>Todos os convidados recebem o mesmo nível de poder que o criador</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -975,12 +976,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Atenção: Não é possível desativar a encriptação</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Criar sala</translation>
     </message>
 </context>
 <context>
@@ -1049,7 +1050,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+379"/>
         <source>The displayed emoji might look different in different clients if a different font is used. Similarly they might be translated into different languages. Nonetheless they should depict one of 64 different objects or animals. For example a lion and a cat are different, but a cat is the same even if one client just shows a cat face, while another client shows a full cat body.</source>
-        <translation type="unfinished"></translation>
+        <translation>Os emojis exibidos podem ter diferentes apresentações em diferentes clientes, se usarem tipos de letra diferentes. De forma semelhante, podem ser traduzidos para diferentes idiomas. De qualquer forma, devem sempre representar um de 64 objetos e animais distintos. Por exemplo, um leão e um gato são diferentes, mas um gato é igual a outro, mesmo se num sítio aparecer só o focinho e no outro o corpo todo.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1110,7 +1111,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+38"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">%1 ativou a encriptação ponta-a-ponta</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1161,7 +1162,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>You can configure when your messages will be deleted in %1. This only happens when Nheko is open and has permissions to delete messages until Matrix servers support this feature natively. In general 0 means disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Em %1, podes configurar quando é que as tuas mensagens são eliminadas. Isto só acontece quando o Nheko está aberto e tem permissões para eliminar as tuas mensagens, até que os servidores Matrix suportem esta funcionalidade nativamente. De uma maneira geral, 0 é o mesmo que desativar.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1201,7 +1202,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+21"/>
         <source>Include state events</source>
-        <translation type="unfinished"></translation>
+        <translation>Incluir eventos de estado</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1215,7 +1216,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/ui/EventExpiry.cpp" line="+50"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao definir eventos ocultados: %1</translation>
     </message>
 </context>
 <context>
@@ -1281,12 +1282,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+5"/>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Confirm</source>
-        <translation type="unfinished">Confirmar</translation>
+        <translation>Confirmar</translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1303,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="+310"/>
         <source>Account Pack</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Pacote de conta</translation>
     </message>
 </context>
 <context>
@@ -1311,7 +1312,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/ui/HiddenEvents.cpp" line="+92"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao definir eventos ocultados: %1</translation>
     </message>
 </context>
 <context>
@@ -1319,47 +1320,47 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/HiddenEventsDialog.qml" line="+33"/>
         <source>Hidden events for %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Eventos ocultados de %1</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Eventos ocultados</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Estes eventos serão &lt;b&gt;exibidos&lt;/b&gt; em %1:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Estes eventos serão &lt;b&gt;exibidos&lt;/b&gt; em todas as salas:</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>Eventos de utilizador</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Joins, leaves, avatar and name changes, bans, …</source>
-        <translation type="unfinished"></translation>
+        <translation>Entradas, saídas, alterações de avatar e nome, banimentos, …</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Power level changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterações de nível de poder</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enviado quando um moderador é adicionado/removido ou as permissões de uma sala são alteradas.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished">Autocolantes</translation>
+        <translation>Autocolantes</translation>
     </message>
 </context>
 <context>
@@ -1367,7 +1368,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/IgnoredUsers.qml" line="+16"/>
         <source>Ignored users</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizadores ignorados</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -1377,7 +1378,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+31"/>
         <source>Stop Ignoring.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deixar de ignorar.</translation>
     </message>
 </context>
 <context>
@@ -1403,32 +1404,32 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Imagens (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecionar imagens para o pacote</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar ao pacote</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Alterar imagem de capa para este pacote</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Overview Image (*.png *.webp *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Imagem de capa (*.png *.webp *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select overview image for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecionar imagem de capa para o pacote</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1533,7 +1534,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+11"/>
         <source>Remove</source>
-        <translation type="unfinished">Remover</translation>
+        <translation>Remover</translation>
     </message>
     <message>
         <location line="+61"/>
@@ -1551,17 +1552,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>Select file(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Selecionar ficheiro(s)</translation>
     </message>
     <message>
         <location line="+582"/>
         <source>Failed to fetch user %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao pedir utilizador %1</translation>
     </message>
     <message>
         <location line="+340"/>
         <source>Upload of &apos;%1&apos; failed</source>
-        <translation type="unfinished"></translation>
+        <translation>O carregamento de &apos;%1&apos; falhou</translation>
     </message>
 </context>
 <context>
@@ -1574,18 +1575,18 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+50"/>
         <source>Search user</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesquisar utilizador</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>@user:yourserver.example.com</source>
         <comment>Example user id. The name &apos;user&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">@utilizador:oteuservidor.exemplo.com</translation>
     </message>
     <message>
         <location line="+42"/>
         <source>Search on Server</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesquisar no servidor</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1613,7 +1614,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+31"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation>Entrar</translation>
     </message>
 </context>
 <context>
@@ -1667,32 +1668,32 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>O servidor selecionado não suporta a versão do protocolo Matrix que este cliente percebe (v1.1 a v1.5). Não é possível iniciar sessão.</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar sessão com a Apple</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar sessão com o Facebook</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar sessão com o Google</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar sessão com o Twitter</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Iniciar sessão com %1</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -1717,7 +1718,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>e.g @user:yourserver.example.com</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">p.ex. @utilizador:oteuservidor.exemplo.com</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1740,7 +1741,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+13"/>
         <source>Show/Hide Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Mostrar/esconder senha</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1776,7 +1777,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+42"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Voltar</translation>
     </message>
 </context>
 <context>
@@ -1821,7 +1822,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+0"/>
         <source>Already on a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Já em chamada</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1869,12 +1870,12 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+15"/>
         <source>Reply in thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Responder em tópico</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New thread</source>
-        <translation type="unfinished"></translation>
+        <translation>Novo tópico</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1884,7 +1885,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+11"/>
         <source>Go to message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ir para mensagem</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1894,17 +1895,17 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+130"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Inserir razão para eliminação (vazio para não incluir razão):</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reason for removal</source>
-        <translation type="unfinished"></translation>
+        <translation>Razão para eliminação</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Go to &amp;message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ir para &amp;mensagem</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -1936,22 +1937,22 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+7"/>
         <source>&amp;Thread</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Tópico</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Un&amp;pin</source>
-        <translation type="unfinished"></translation>
+        <translation>Des&amp;afixar</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&amp;Pin</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Afixar</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>&amp;Read receipts</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Recibos de leitura</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1981,7 +1982,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+12"/>
         <source>Report message</source>
-        <translation type="unfinished"></translation>
+        <translation>Denunciar mensagem</translation>
     </message>
     <message>
         <location line="+11"/>
