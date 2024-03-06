@@ -3757,7 +3757,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>%1 selected answer.</source>
-        <translation></translation>
+        <translation>%1 selected answer.</translation>
     </message>
     <message>
         <location line="+2"/>
