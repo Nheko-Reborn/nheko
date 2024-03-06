@@ -104,7 +104,7 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+24"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Ustawienia pokoi zezwalających</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -3302,7 +3302,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="-89"/>
         <source>Select events to hide in this room</source>
-        <translation type="unfinished">Wybierz zdarzenia do ukrycia w tym pokoju</translation>
+        <translation>Wybierz zdarzenia do ukrywania w tym pokoju</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -4198,7 +4198,7 @@ Powód: %4</translation>
     <message>
         <location line="+3"/>
         <source>%1 changed the topic to: %2</source>
-        <translation>%2 zmienił(a) temat pokoju na: %2</translation>
+        <translation>%1 zmienił(a) temat pokoju na: %2</translation>
     </message>
     <message>
         <location line="+5"/>
