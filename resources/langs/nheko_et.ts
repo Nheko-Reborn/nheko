@@ -1958,7 +1958,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     <message>
         <location line="+6"/>
         <source>&amp;Read receipts</source>
-        <translation>Lugemisteatised</translation>
+        <translation>&amp;Lugemisteatised</translation>
     </message>
     <message>
         <location line="+5"/>
