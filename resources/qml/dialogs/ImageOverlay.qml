@@ -51,8 +51,10 @@ Window {
         property int imgSrcWidth: (imageOverlay.originalWidth && imageOverlay.originalWidth > 100) ? imageOverlay.originalWidth : Screen.width
         property int imgSrcHeight: imageOverlay.proportionalHeight ? imgSrcWidth * imageOverlay.proportionalHeight : Screen.height
 
-        height: imgSrcHeight
-        width: imgSrcWidth
+        property double initialScale: Math.min(Window.height/imgSrcHeight, Window.width/imgSrcWidth, 1.0)
+
+        height: imgSrcHeight * initialScale
+        width: imgSrcWidth * initialScale
 
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
@@ -79,6 +81,11 @@ Window {
             play: !Settings.animateImagesOnHover || mouseArea.hovered
             eventId: imageOverlay.eventId
         }
+        Text {
+            anchors.centerIn: parent
+            text: "Orig width: " + imageOverlay.proportionalHeight
+        }
+
 
         onScaleChanged: {
             if (scale > 10) scale = 10;
