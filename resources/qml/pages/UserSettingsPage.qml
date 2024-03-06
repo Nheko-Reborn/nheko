@@ -43,7 +43,7 @@ Rectangle {
                 model: UserSettingsModel
 
                 delegate: GridLayout {
-                    width: scroll.availableWidth
+                    Layout.preferredWidth: scroll.availableWidth
                     columns: collapsed? 1 : 2
                     rows: collapsed? 2: 1
                     required property var model
