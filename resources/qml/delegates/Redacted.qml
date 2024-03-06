@@ -35,6 +35,7 @@ Control {
             Layout.fillWidth: true
             property var redactedPair: msgRoot.room.formatRedactedEvent(msgRoot.eventId)
             text: redactedPair["first"]
+            color: palette.text
             wrapMode: Label.WordWrap
 
             ToolTip.text: redactedPair["second"]
