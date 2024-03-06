@@ -22,7 +22,7 @@
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>Resim İçinde Resim Gizle/Göster</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -61,7 +61,7 @@
     <message>
         <location line="+14"/>
         <source>List of aliases to this room. Usually you can only add aliases on your server. You can have one canonical alias and many alternate aliases.</source>
-        <translation>Bu odaya ait adresler Genellikle adresleri sadece kendi sunucunuza ekleyebilirsiniz. Bir standart adres ve birden çok alternatif adres alabilirsiniz.</translation>
+        <translation>Bu odaya ait adresler. Genellikle adresleri sadece kendi sunucunuza ekleyebilirsiniz. Bir standart adres ve birden çok alternatif adres alabilirsiniz.</translation>
     </message>
     <message>
         <location line="+41"/>
@@ -71,7 +71,7 @@
     <message>
         <location line="+0"/>
         <source>Make primary alias</source>
-        <translation>Ana adrese çevir</translation>
+        <translation>Ana adres yap</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -81,17 +81,17 @@
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation>Oda sunucusunda yayınla</translation>
+        <translation>Oda dizininde yayınla</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation>Adı kaldır</translation>
+        <translation>Adresi kaldır</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation>#yeni-ad:sunucu.tld</translation>
+        <translation>#yeni-adres:sunucu.tld</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -109,17 +109,17 @@
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation>Bu odaya erişimi olan odaların listesi. Bu odalardan herhangi birinde olan kişi, bu odaya da katılabilir.</translation>
+        <translation>Bu odaya erişimi olan odaların listesi. Bu odalardan herhangi birinde olan kişiler bu odaya da katılabilir.</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Parent community</source>
-        <translation>Ana Topluluk</translation>
+        <translation>Ana topluluk</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Other room</source>
-        <translation type="unfinished"></translation>
+        <translation>Diğer oda</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -133,13 +133,14 @@
         <location filename="../../src/Cache.cpp" line="+3399"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 ve %2</translation>
     </message>
     <message numerus="yes">
         <location line="+2"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 ve %n diğer</numerusform>
+            <numerusform>%1 ve %n diğerleri</numerusform>
         </translation>
     </message>
     <message>
@@ -154,7 +155,7 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+75"/>
         <source>Video Call</source>
-        <translation>Videolu Arama</translation>
+        <translation>Görüntülü Görüşme</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -172,7 +173,7 @@
     <message>
         <location filename="../qml/voip/CallInviteBar.qml" line="+65"/>
         <source>Video Call</source>
-        <translation>Videolu Arama</translation>
+        <translation>Görüntülü Görüşme</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -215,12 +216,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+882"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -246,7 +247,10 @@
         <source>%n unread message(s) in room %1
 </source>
         <translation type="unfinished">
-            <numerusform></numerusform>
+            <numerusform>%1 odasında %n okunmamış mesaj
+</numerusform>
+            <numerusform>%1 odasında %n okunmamış mesajlar
+</numerusform>
         </translation>
     </message>
     <message>
@@ -267,12 +271,12 @@
     <message>
         <location line="+310"/>
         <source>Knock on room</source>
-        <translation>Kapıyı tıklat</translation>
+        <translation>Oda kapısını tıklat</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation>%1&apos;in kapısını tıklatmak istediğine emin misiniz? İsterseniz diğerlerinin tıklatmanızı kabul etmeleri için bir sebep de yazabilirsiniz:</translation>
+        <translation>%1&apos;in kapısını tıklatmak istediğinize emin misiniz? İsterseniz diğerlerinin tıklatmanızı kabul etmeleri için bir sebep de yazabilirsiniz:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -287,7 +291,7 @@
     <message>
         <location line="+18"/>
         <source>Room %1 created.</source>
-        <translation>%1 adlı oda oluşturuldu.</translation>
+        <translation>%1 odası oluşturuldu.</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -362,7 +366,7 @@ Eğer bunun bir hata olduğunu düşünüyorsanız Nheko&apos;yu kapatabilir ve 
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation>Önbelleği şu anki sürüme taşıma işlemi başarısız oldu. Bunun birden çok sebebi olabilir. Lütfen https://github.com/Nheko-Reborn/nheko linkinden bir issue oluşturun ve geçici bir süreliğine eski bir versiyonu kullanmayı deneyin. Alternatif olarak önbelleği manuel olarak silmeyi deneyebilirsiniz.</translation>
+        <translation>Önbelleği şu anki sürüme taşıma işlemi başarısız oldu. Bunun birden çok sebebi olabilir. Lütfen https://github.com/Nheko-Reborn/nheko linkinden bir hata kaydı oluşturun ve geçici bir süreliğine eski bir versiyonu kullanmayı deneyin. Alternatif olarak önbelleği manuel olarak silmeyi deneyebilirsiniz.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -372,7 +376,7 @@ Eğer bunun bir hata olduğunu düşünüyorsanız Nheko&apos;yu kapatabilir ve 
     <message>
         <location line="+64"/>
         <source>Failed to restore OLM account. Please login again.</source>
-        <translation>OLM hesabınız alınamadı. Lütfen tekrar giriş yapın.</translation>
+        <translation>OLM hesabınız yüklenemedi. Lütfen tekrar giriş yapın.</translation>
     </message>
     <message>
         <location line="+4"/>
