@@ -238,7 +238,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+939"/>
+        <location line="+940"/>
         <source>Invited user: %1</source>
         <translation>Kutsutud kasutaja: %1</translation>
     </message>
@@ -457,7 +457,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+112"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+116"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;sõnum&gt;</translation>
     </message>
@@ -575,6 +575,16 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
         <translation>/msgtype &lt;sõnumi tüüp&gt; [sõnum]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/glitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/gradualglitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -726,6 +736,16 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
         <translation>Saada kohandatud sõnumitüübiga sõnum.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message with a glitch effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message that gradually glitches.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1250,6 +1270,11 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     </message>
     <message>
         <location line="+2"/>
+        <source>The verification was accepted by a different device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Verification messages received out of order!</source>
         <translation>Saabunud verifitseerimissõnumid on vales järjekorras!</translation>
     </message>
@@ -1547,12 +1572,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+377"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+423"/>
         <source>All Files (*)</source>
         <translation>Kõik failid (*)</translation>
     </message>
     <message>
-        <location line="+582"/>
+        <location line="+615"/>
         <source>Failed to fetch user %1</source>
         <translation>Kasutaja %1 andmete laadimine ei õnnestunud</translation>
     </message>
@@ -1562,7 +1587,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <translation>„%1“ üleslaadimine ei õnnestunud</translation>
     </message>
     <message>
-        <location line="-922"/>
+        <location line="-955"/>
         <source>Select file(s)</source>
         <translation>Vali fail(id)</translation>
     </message>
@@ -1638,12 +1663,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+127"/>
+        <location line="+132"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>Sa oled sisestanud vale või vigase Matrixi kasutajatunnuse, näiteks @kasutaja:sinuserver.domeen.com</translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-162"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Koduserveri automaatne tuvastamine ei õnnestunud: päringuvastus oli vigane.</translation>
     </message>
@@ -1668,12 +1693,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <translation>Tekkis teadmata viga. Palun kontrolli, et koduserveri domeen on õige.</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>Valitud server ei mõista Matrixi protokolli versioone, mida see klient oskab (versioonid 1.1 kuni 1.5). Sisselogimine pole võimalik.</translation>
+        <location line="+20"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Sign in with Apple</source>
         <translation>Logi sisse Apple&apos;i kontoga</translation>
     </message>
@@ -1807,7 +1832,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
 <context>
     <name>MediaUpload</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+768"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+801"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
@@ -1836,12 +1861,12 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>Saada fail</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+68"/>
         <source>Write a message...</source>
         <translation>Kirjuta sõnum…</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+263"/>
         <source>Stickers</source>
         <translation>Kleepsud</translation>
     </message>
@@ -1862,9 +1887,17 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     </message>
 </context>
 <context>
+    <name>MessageInputWarning</name>
+    <message>
+        <location filename="../qml/MessageInputWarning.qml" line="+61"/>
+        <source>Don&apos;t mention them in this message</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+204"/>
+        <location filename="../qml/MessageView.qml" line="+203"/>
         <source>Edit</source>
         <translation>Muuda</translation>
     </message>
@@ -2502,7 +2535,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+241"/>
+        <location filename="../../src/main.cpp" line="+242"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Loo unikaalne kasutajaprofiil, mis võimaldab samaaegselt sisse logide mitmele Matrixi kontole ja avada vastavalt mitu nheko rakenduse akent.</translation>
     </message>
@@ -2632,12 +2665,12 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>Tekkis teadmata viga. Palun kontrolli, et koduserveri domeen on õige.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
-        <translation>Valitud server ei mõista Matrixi protokolli versioone, mida see klient oskab (versioonid 1.1 kuni 1.5). Registreerumine pole võimalik.</translation>
+        <location line="+21"/>
+        <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Server does not support querying registration flows!</source>
         <translation>Koduserver ei toeta registreerimisega seotud lisapäringuid!</translation>
     </message>
@@ -3058,7 +3091,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>Kasutaja õigused</translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+98"/>
         <source>This room is not encrypted!</source>
         <translation>See jututuba on krüptimata!</translation>
     </message>
@@ -3722,7 +3755,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+157"/>
         <source>Part of a thread</source>
         <translation>Osa jutulõngast</translation>
     </message>
@@ -4280,12 +4313,17 @@ Põhjus: %4</translation>
         <translation>Ühtegi jututuba pole avatud</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+108"/>
         <source>You are about to notify the whole room</source>
         <translation>Sa oled saatmas teavitust kogu jututoale</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+0"/>
+        <source>You will be mentioning %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
         <translation>/%1 käsku ei ole olemas ning seega kuulub sõnumi sisusse</translation>
     </message>
@@ -4391,7 +4429,7 @@ Põhjus: %4</translation>
         <translation>Näita klammerdatud sõnumeid või peida nad</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Show room members.</source>
         <translation>Näita jututoas osalejaid.</translation>
     </message>
@@ -4411,7 +4449,7 @@ Põhjus: %4</translation>
         <translation>Selles jututoas leidub verifitseerimata seadmeid!</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+27"/>
         <source>Search this room</source>
         <translation>Otsi siit jututoast</translation>
     </message>
@@ -4446,7 +4484,7 @@ Põhjus: %4</translation>
         <translation>Võta lahti</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+46"/>
         <source>Enter search query</source>
         <translation>Sisesta otsing</translation>
     </message>
@@ -4589,12 +4627,12 @@ Põhjus: %4</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+243"/>
+        <location line="+247"/>
         <source>Verify</source>
         <translation>Verifitseeri</translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-205"/>
         <source>Start a private chat.</source>
         <translation>Alusta privaatset vestlust.</translation>
     </message>
@@ -4649,7 +4687,7 @@ Põhjus: %4</translation>
         <translation>Viimati oli võrgus %1 %2 aadressil</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>Unverify</source>
         <translation>Võta verifitseerimine tagasi</translation>
     </message>
@@ -5499,7 +5537,7 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+337"/>
+        <location filename="../../src/Utils.cpp" line="+341"/>
         <source>Yesterday</source>
         <translation>Eile</translation>
     </message>
@@ -5550,7 +5588,7 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="-268"/>
+        <location filename="../../src/Utils.cpp" line="-271"/>
         <source>You sent an audio clip</source>
         <translation>Sa saatsid helifaili</translation>
     </message>

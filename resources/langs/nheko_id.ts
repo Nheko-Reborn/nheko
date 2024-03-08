@@ -237,7 +237,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+939"/>
+        <location line="+940"/>
         <source>Invited user: %1</source>
         <translation>Pengguna yang diundang: %1</translation>
     </message>
@@ -454,7 +454,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+112"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+116"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;pesan&gt;</translation>
     </message>
@@ -572,6 +572,16 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
         <translation>/msgtype &lt;jenis pesan&gt; [pesan]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/glitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/gradualglitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -723,6 +733,16 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
         <translation>Kirim pesan dengan jenis pesan khusus.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message with a glitch effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message that gradually glitches.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1246,6 +1266,11 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
     <message>
         <location line="+2"/>
+        <source>The verification was accepted by a different device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Verification messages received out of order!</source>
         <translation>Pesan verifikasi diterima secara tidak berurutan!</translation>
     </message>
@@ -1543,12 +1568,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+377"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+423"/>
         <source>All Files (*)</source>
         <translation>Semua File (*)</translation>
     </message>
     <message>
-        <location line="+582"/>
+        <location line="+615"/>
         <source>Failed to fetch user %1</source>
         <translation>Gagal mendapatkan pengguna %1</translation>
     </message>
@@ -1558,7 +1583,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <translation>Pengunggahan &apos;%1&apos; gagal</translation>
     </message>
     <message>
-        <location line="-922"/>
+        <location line="-955"/>
         <source>Select file(s)</source>
         <translation>Pilih berkas</translation>
     </message>
@@ -1634,12 +1659,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+127"/>
+        <location line="+132"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>Anda telah memasukkan ID Matrix yang tidak valid, misalnya @pengguna:serveranda.contoh.id</translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-162"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Penemuan otomatis gagal. Menerima respons cacat.</translation>
     </message>
@@ -1664,12 +1689,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <translation>Terjadi kesalahan yang tidak diketahui. Pastikan domain homeservernya valid.</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>Server yang dipilih tidak mendukung sebuah versi protokol Matrix yang klien ini mengerti (v1.1 sampai v1.5). Kamu tidak bisa masuk.</translation>
+        <location line="+20"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Sign in with Apple</source>
         <translation>Masuk dengan Apple</translation>
     </message>
@@ -1803,7 +1828,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>MediaUpload</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+768"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+801"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Gagal untuk mengunggah media. Silakan coba lagi.</translation>
@@ -1832,12 +1857,12 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Kirim sebuah file</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+68"/>
         <source>Write a message...</source>
         <translation>Ketik pesan…</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+263"/>
         <source>Stickers</source>
         <translation>Stiker</translation>
     </message>
@@ -1858,9 +1883,17 @@ Contoh: https://serveranda.contoh.id:8787</translation>
     </message>
 </context>
 <context>
+    <name>MessageInputWarning</name>
+    <message>
+        <location filename="../qml/MessageInputWarning.qml" line="+61"/>
+        <source>Don&apos;t mention them in this message</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+204"/>
+        <location filename="../qml/MessageView.qml" line="+203"/>
         <source>Edit</source>
         <translation>Sunting</translation>
     </message>
@@ -2498,7 +2531,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+241"/>
+        <location filename="../../src/main.cpp" line="+242"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Buat sebuah profil unik yang memungkinkan kamu untuk masuk ke beberapa akun secara bersamaan dan mulai beberapa instansi Nheko.</translation>
     </message>
@@ -2628,12 +2661,12 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Terjadi kesalahan yang tidak diketahui. Pastikan domain homeservernya valid.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
-        <translation>Server yang dipilih tidak mendukung sebuah versi protokol Matrix yang klien ini mengerti (v1.1 ke v1.5). Kamu tidak bisa mendaftar.</translation>
+        <location line="+21"/>
+        <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Server does not support querying registration flows!</source>
         <translation>Server tidak mendukung kueri alur pendaftaran!</translation>
     </message>
@@ -3053,7 +3086,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Tingkat daya</translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+98"/>
         <source>This room is not encrypted!</source>
         <translation>Ruangan ini tidak terenkripsi!</translation>
     </message>
@@ -3716,7 +3749,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+157"/>
         <source>Part of a thread</source>
         <translation>Bagian dari sebuah utas</translation>
     </message>
@@ -4269,12 +4302,17 @@ Alasan: %4</translation>
         <translation>Tidak ada ruangan yang dibuka</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+108"/>
         <source>You are about to notify the whole room</source>
         <translation>Kamu akan memberi tahu seluruh ruangan</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+0"/>
+        <source>You will be mentioning %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
         <translation>Perintah /%1 tidak dikenali dan akan dikirim sebagai bagian dari pesan kamu</translation>
     </message>
@@ -4379,7 +4417,7 @@ Alasan: %4</translation>
         <translation>Tampilkan atau sembunyikan pesan yang dipasangi pin</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Show room members.</source>
         <translation>Tampilkan anggota ruangan.</translation>
     </message>
@@ -4399,7 +4437,7 @@ Alasan: %4</translation>
         <translation>Ruangan ini berisi perangkat yang belum diverifikasi!</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+27"/>
         <source>Search this room</source>
         <translation>Cari ruangan ini</translation>
     </message>
@@ -4434,7 +4472,7 @@ Alasan: %4</translation>
         <translation>Lepaskan pin</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+46"/>
         <source>Enter search query</source>
         <translation>Masukkan kueri pencarian</translation>
     </message>
@@ -4576,12 +4614,12 @@ Alasan: %4</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+243"/>
+        <location line="+247"/>
         <source>Verify</source>
         <translation>Lakukan verifikasi</translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-205"/>
         <source>Start a private chat.</source>
         <translation>Mulai chat privat.</translation>
     </message>
@@ -4636,7 +4674,7 @@ Alasan: %4</translation>
         <translation>Terakhir dilihat %1 dari %2</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>Unverify</source>
         <translation>Hapus verifikasi</translation>
     </message>
@@ -5486,7 +5524,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+337"/>
+        <location filename="../../src/Utils.cpp" line="+341"/>
         <source>Yesterday</source>
         <translation>Kemarin</translation>
     </message>
@@ -5537,7 +5575,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="-268"/>
+        <location filename="../../src/Utils.cpp" line="-271"/>
         <source>You sent an audio clip</source>
         <translation>Kamu mengirim klip audio</translation>
     </message>

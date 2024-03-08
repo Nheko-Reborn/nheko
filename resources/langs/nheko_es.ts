@@ -238,7 +238,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+939"/>
+        <location line="+940"/>
         <source>Invited user: %1</source>
         <translation>Se invitó al usuario: %1</translation>
     </message>
@@ -458,7 +458,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+112"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+116"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;mensaje&gt;</translation>
     </message>
@@ -576,6 +576,16 @@ Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
         <translation>/msgtype &lt;tipomensaje&gt; [mensaje]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/glitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/gradualglitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -727,6 +737,16 @@ Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
         <translation>Enviar un mensaje con un tipo de mensaje personalizado.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message with a glitch effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message that gradually glitches.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1252,6 +1272,11 @@ Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>The verification was accepted by a different device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Verification messages received out of order!</source>
         <translation>¡Los mensajes de verificación fueron recibidos en desorden!</translation>
     </message>
@@ -1552,7 +1577,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+377"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+423"/>
         <source>All Files (*)</source>
         <translation>Todos los archivos (*)</translation>
     </message>
@@ -1562,7 +1587,7 @@ Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
         <translation>Seleccionar archivo(s)</translation>
     </message>
     <message>
-        <location line="+582"/>
+        <location line="+615"/>
         <source>Failed to fetch user %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1643,12 +1668,12 @@ Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+127"/>
+        <location line="+132"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>Ha introducido un ID de matrix no válido, por ejemplo @usuario:suservidor.ejemplo.com</translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-162"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Error en la detección automática. Se ha recibido una respuesta malformada.</translation>
     </message>
@@ -1673,12 +1698,12 @@ Opcionalmente puedes dar una razón para que otros acepten tu toc:</translation>
         <translation>Se ha producido un error desconocido. Asegúrese de que el dominio del homeserver es válido.</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>El servidor seleccionado no soporta una versión del protocolo Matrix, que este cliente entiende (v1.1 a v1.5). No se puede iniciar sesión.</translation>
+        <location line="+20"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Sign in with Apple</source>
         <translation>Inicia sesión con Apple</translation>
     </message>
@@ -1841,12 +1866,12 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
         <translation>Enviar un archivo</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+68"/>
         <source>Write a message...</source>
         <translation>Escribe un mensaje...</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+263"/>
         <source>Stickers</source>
         <translation>Pegatinas</translation>
     </message>
@@ -1867,9 +1892,17 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
     </message>
 </context>
 <context>
+    <name>MessageInputWarning</name>
+    <message>
+        <location filename="../qml/MessageInputWarning.qml" line="+61"/>
+        <source>Don&apos;t mention them in this message</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+204"/>
+        <location filename="../qml/MessageView.qml" line="+203"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
@@ -2508,7 +2541,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+241"/>
+        <location filename="../../src/main.cpp" line="+242"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Cree un perfil único que le permita iniciar sesión en varias cuentas al mismo tiempo e iniciar varias instancias de nheko.</translation>
     </message>
@@ -2638,12 +2671,12 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
         <translation>Se ha producido un error desconocido. Asegúrese de que el dominio del homeserver es válido.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
-        <translation>El servidor seleccionado no admite una versión del protocolo Matrix que este cliente entienda (v1.1 a v1.5). No se puede registrar.</translation>
+        <location line="+21"/>
+        <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Server does not support querying registration flows!</source>
         <translation>¡El servidor no admite la consulta de flujos de registro!</translation>
     </message>
@@ -3064,7 +3097,7 @@ Ejemplo: https://suservidor.ejemplo.com:8787</translation>
         <translation>Power level</translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+98"/>
         <source>This room is not encrypted!</source>
         <translation>¡Esta sala no está cifrada!</translation>
     </message>
@@ -3728,7 +3761,7 @@ Si escoges verificar, necesitas tener otro dispositivo disponible. Si escoges &q
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+157"/>
         <source>Part of a thread</source>
         <translation>Parte de un hilo</translation>
     </message>
@@ -4286,12 +4319,17 @@ Motivo: %4</translation>
         <translation>Ninguna sala abierta</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+108"/>
         <source>You are about to notify the whole room</source>
         <translation>Estás a punto de notificar a toda la sala</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+0"/>
+        <source>You will be mentioning %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
         <translation>El comando /%1 no es reconocido y será enviado como parte de su mensaje</translation>
     </message>
@@ -4397,7 +4435,7 @@ Motivo: %4</translation>
         <translation>Mostrar u ocultar mensajes fijados</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Show room members.</source>
         <translation>Mostrar miembros de la sala.</translation>
     </message>
@@ -4417,7 +4455,7 @@ Motivo: %4</translation>
         <translation>¡Esta sala contiene dispositivos sin verificar!</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+27"/>
         <source>Search this room</source>
         <translation>Buscar en esta sala</translation>
     </message>
@@ -4452,7 +4490,7 @@ Motivo: %4</translation>
         <translation>Desfijar</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+46"/>
         <source>Enter search query</source>
         <translation>Introducir consulta de búsqueda</translation>
     </message>
@@ -4595,12 +4633,12 @@ Motivo: %4</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+243"/>
+        <location line="+247"/>
         <source>Verify</source>
         <translation>Verificar</translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-205"/>
         <source>Start a private chat.</source>
         <translation>Empezar un chat privado.</translation>
     </message>
@@ -4655,7 +4693,7 @@ Motivo: %4</translation>
         <translation>Última vez visto %1 a las %2</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>Unverify</source>
         <translation>Sin verificar</translation>
     </message>
@@ -5504,7 +5542,7 @@ Esta configuración tendrá efecto al reiniciar.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+337"/>
+        <location filename="../../src/Utils.cpp" line="+341"/>
         <source>Yesterday</source>
         <translation>Ayer</translation>
     </message>
@@ -5555,7 +5593,7 @@ Esta configuración tendrá efecto al reiniciar.</translation>
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="-268"/>
+        <location filename="../../src/Utils.cpp" line="-271"/>
         <source>You sent an audio clip</source>
         <translation>Enviaste un clip de audio</translation>
     </message>

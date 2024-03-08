@@ -238,7 +238,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+939"/>
+        <location line="+940"/>
         <source>Invited user: %1</source>
         <translation>Invited user: %1</translation>
     </message>
@@ -457,7 +457,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+112"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+116"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;message&gt;</translation>
     </message>
@@ -575,6 +575,16 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
         <translation>/msgtype &lt;msgtype&gt; [message]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/glitch &lt;message&gt;</source>
+        <translation>/glitch &lt;message&gt;</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/gradualglitch &lt;message&gt;</source>
+        <translation>/gradualglitch &lt;message&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -726,6 +736,16 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
         <translation>Send a message with a custom message type.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message with a glitch effect.</source>
+        <translation>Send a message with a glitch effect.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message that gradually glitches.</source>
+        <translation>Send a message that gradually glitches.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1250,6 +1270,11 @@ You may optionally provide a reason for others to accept your knock:</translatio
     </message>
     <message>
         <location line="+2"/>
+        <source>The verification was accepted by a different device.</source>
+        <translation>The verification was accepted by a different device.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Verification messages received out of order!</source>
         <translation>Verification messages received out of order!</translation>
     </message>
@@ -1547,7 +1572,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+377"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+423"/>
         <source>Select file(s)</source>
         <translation>Select file(s)</translation>
     </message>
@@ -1557,7 +1582,7 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>All Files (*)</translation>
     </message>
     <message>
-        <location line="+582"/>
+        <location line="+615"/>
         <source>Failed to fetch user %1</source>
         <translation>Failed to fetch user %1</translation>
     </message>
@@ -1638,12 +1663,12 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+127"/>
+        <location line="+132"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-162"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Autodiscovery failed. Received malformed response.</translation>
     </message>
@@ -1668,12 +1693,12 @@ You may optionally provide a reason for others to accept your knock:</translatio
         <translation>An unknown error occured. Make sure the homeserver domain is valid.</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</translation>
+        <location line="+20"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
+        <translation>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Sign in with Apple</source>
         <translation>Sign in with Apple</translation>
     </message>
@@ -1836,12 +1861,12 @@ Example: https://yourserver.example.com:8787</translation>
         <translation>Send a file</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+68"/>
         <source>Write a message...</source>
         <translation>Write a message…</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+263"/>
         <source>Stickers</source>
         <translation>Stickers</translation>
     </message>
@@ -1862,9 +1887,17 @@ Example: https://yourserver.example.com:8787</translation>
     </message>
 </context>
 <context>
+    <name>MessageInputWarning</name>
+    <message>
+        <location filename="../qml/MessageInputWarning.qml" line="+61"/>
+        <source>Don&apos;t mention them in this message</source>
+        <translation>Don&apos;t mention them in this message</translation>
+    </message>
+</context>
+<context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+204"/>
+        <location filename="../qml/MessageView.qml" line="+203"/>
         <source>Edit</source>
         <translation>Edit</translation>
     </message>
@@ -2502,7 +2535,7 @@ Example: https://yourserver.example.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+241"/>
+        <location filename="../../src/main.cpp" line="+242"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</translation>
     </message>
@@ -2632,12 +2665,12 @@ Example: https://yourserver.example.com:8787</translation>
         <translation>An unknown error occured. Make sure the homeserver domain is valid.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
-        <translation>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</translation>
+        <location line="+21"/>
+        <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
+        <translation>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Server does not support querying registration flows!</source>
         <translation>Server does not support querying registration flows!</translation>
     </message>
@@ -3058,7 +3091,7 @@ Example: https://yourserver.example.com:8787</translation>
         <translation>Power level</translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+98"/>
         <source>This room is not encrypted!</source>
         <translation>This room is not encrypted!</translation>
     </message>
@@ -3722,7 +3755,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+157"/>
         <source>Part of a thread</source>
         <translation>Part of a thread</translation>
     </message>
@@ -4280,12 +4313,17 @@ Reason: %4</translation>
         <translation>No room open</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+108"/>
         <source>You are about to notify the whole room</source>
         <translation>You are about to notify the whole room</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+0"/>
+        <source>You will be mentioning %1</source>
+        <translation>You will be mentioning %1</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
         <translation>The command /%1 is not recognized and will be sent as part of your message</translation>
     </message>
@@ -4391,7 +4429,7 @@ Reason: %4</translation>
         <translation>Show or hide pinned messages</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Show room members.</source>
         <translation>Show room members.</translation>
     </message>
@@ -4411,7 +4449,7 @@ Reason: %4</translation>
         <translation>This room contains unverified devices!</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+27"/>
         <source>Search this room</source>
         <translation>Search this room</translation>
     </message>
@@ -4446,7 +4484,7 @@ Reason: %4</translation>
         <translation>Unpin</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+46"/>
         <source>Enter search query</source>
         <translation>Enter search query</translation>
     </message>
@@ -4589,12 +4627,12 @@ Reason: %4</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+243"/>
+        <location line="+247"/>
         <source>Verify</source>
         <translation>Verify</translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-205"/>
         <source>Start a private chat.</source>
         <translation>Start a private chat.</translation>
     </message>
@@ -4649,7 +4687,7 @@ Reason: %4</translation>
         <translation>Last seen %1 from %2</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>Unverify</source>
         <translation>Unverify</translation>
     </message>
@@ -5499,7 +5537,7 @@ This setting will take effect upon restart.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+337"/>
+        <location filename="../../src/Utils.cpp" line="+341"/>
         <source>Yesterday</source>
         <translation>Yesterday</translation>
     </message>
@@ -5550,7 +5588,7 @@ This setting will take effect upon restart.</translation>
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="-268"/>
+        <location filename="../../src/Utils.cpp" line="-271"/>
         <source>You sent an audio clip</source>
         <translation>You sent an audio clip</translation>
     </message>

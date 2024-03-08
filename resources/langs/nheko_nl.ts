@@ -238,7 +238,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+939"/>
+        <location line="+940"/>
         <source>Invited user: %1</source>
         <translation>Gebruiker uitgenodigd: %1</translation>
     </message>
@@ -457,7 +457,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+112"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+116"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;bericht&gt;</translation>
     </message>
@@ -575,6 +575,16 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
         <translation>/msgtype &lt;berichttype&gt; [bericht]</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/glitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/gradualglitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -726,6 +736,16 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
         <translation>Verstuur een bericht met een gebruikergedefinieerd berichtentype.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message with a glitch effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message that gradually glitches.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1250,6 +1270,11 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>The verification was accepted by a different device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Verification messages received out of order!</source>
         <translation>Verificatieberichten in verkeerde volgorde ontvangen!</translation>
     </message>
@@ -1547,7 +1572,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+377"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+423"/>
         <source>All Files (*)</source>
         <translation>Alle bestanden (*)</translation>
     </message>
@@ -1557,7 +1582,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>Selecteer bestand(en)</translation>
     </message>
     <message>
-        <location line="+582"/>
+        <location line="+615"/>
         <source>Failed to fetch user %1</source>
         <translation>Ophalen van gebruiker %1 mislukt</translation>
     </message>
@@ -1638,12 +1663,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+127"/>
+        <location line="+132"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>Je hebt een ongeldige Matrix ID opgegeven. Een voorbeeld van een geldige Matrix ID is: @gebruiker:jouwserver.example.com</translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-162"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatische herkenning mislukt. Ongeldig antwoord ontvangen.</translation>
     </message>
@@ -1668,12 +1693,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>Een onbekende fout trad op. Zorg dat de thuisserver geldig is.</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>De gekozen server ondersteund geen Matrix, of ieder geval geen versie die Nheko begrijpt (v1.1 tot v1.5). Je kan dus niet inloggen.</translation>
+        <location line="+20"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Sign in with Apple</source>
         <translation>Inloggen met Apple</translation>
     </message>
@@ -1837,12 +1862,12 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Verstuur een bestand</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+68"/>
         <source>Write a message...</source>
         <translation>Typ een bericht…</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+263"/>
         <source>Stickers</source>
         <translation>Stickers</translation>
     </message>
@@ -1863,9 +1888,17 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     </message>
 </context>
 <context>
+    <name>MessageInputWarning</name>
+    <message>
+        <location filename="../qml/MessageInputWarning.qml" line="+61"/>
+        <source>Don&apos;t mention them in this message</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+204"/>
+        <location filename="../qml/MessageView.qml" line="+203"/>
         <source>Edit</source>
         <translation>Bewerken</translation>
     </message>
@@ -2503,7 +2536,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+241"/>
+        <location filename="../../src/main.cpp" line="+242"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Maak een uniek profiel, waardoor je tegelijk meerdere kopieën van Nheko kan draaien en zo op meerdere gebruikers tegelijk ingelogd kan zijn.</translation>
     </message>
@@ -2633,12 +2666,12 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Een onbekende fout trad op. Zorg dat de thuisserver geldig is.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
-        <translation>De gekozen server ondersteunt geen Matrixversie die Nheko begrijpt (v1.1 tot v1.5). Je kan dus niet registeren.</translation>
+        <location line="+21"/>
+        <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Server does not support querying registration flows!</source>
         <translation>De server ondersteund het opvragen van registratiemethodes niet!</translation>
     </message>
@@ -3059,7 +3092,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Machtsniveau</translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+98"/>
         <source>This room is not encrypted!</source>
         <translation>Deze kamer is niet versleuteld!</translation>
     </message>
@@ -3723,7 +3756,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+157"/>
         <source>Part of a thread</source>
         <translation>Deel van een gespreksdraad</translation>
     </message>
@@ -4281,12 +4314,17 @@ Reden: %4</translation>
         <translation>Geen kamer open</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+108"/>
         <source>You are about to notify the whole room</source>
         <translation>Je staat op het punt de hele kamer een notificatie te sturen</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+0"/>
+        <source>You will be mentioning %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
         <translation>Het commando /%1 is niet herkend en zal als deel van je bericht worden verstuurd</translation>
     </message>
@@ -4392,7 +4430,7 @@ Reden: %4</translation>
         <translation>Toon of verberg vastgeprikte berichten</translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Show room members.</source>
         <translation>Laat kamerdeelnemers zien.</translation>
     </message>
@@ -4412,7 +4450,7 @@ Reden: %4</translation>
         <translation>Deze kamer bevat ongeverifieerde apparaten!</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+27"/>
         <source>Search this room</source>
         <translation>Doorzoek deze kamer</translation>
     </message>
@@ -4447,7 +4485,7 @@ Reden: %4</translation>
         <translation>Vastprikken ongedaan maken</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+46"/>
         <source>Enter search query</source>
         <translation>Voer zoekopdracht in</translation>
     </message>
@@ -4590,12 +4628,12 @@ Reden: %4</translation>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+243"/>
+        <location line="+247"/>
         <source>Verify</source>
         <translation>Verifiëren</translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-205"/>
         <source>Start a private chat.</source>
         <translation>Begin een privéchat.</translation>
     </message>
@@ -4650,7 +4688,7 @@ Reden: %4</translation>
         <translation>Laatst gezien %1 via %2</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>Unverify</source>
         <translation>On-verifiëren</translation>
     </message>
@@ -5500,7 +5538,7 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+337"/>
+        <location filename="../../src/Utils.cpp" line="+341"/>
         <source>Yesterday</source>
         <translation>Gisteren</translation>
     </message>
@@ -5551,7 +5589,7 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="-268"/>
+        <location filename="../../src/Utils.cpp" line="-271"/>
         <source>You sent an audio clip</source>
         <translation>Je verstuurde een audio clip</translation>
     </message>

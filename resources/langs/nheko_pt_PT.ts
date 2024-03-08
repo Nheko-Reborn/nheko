@@ -238,7 +238,7 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+939"/>
+        <location line="+940"/>
         <source>Invited user: %1</source>
         <translation>Utilizador convidado: %1</translation>
     </message>
@@ -454,7 +454,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+112"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+116"/>
         <source>/me &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -571,6 +571,16 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/glitch &lt;message&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>/gradualglitch &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -726,6 +736,16 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
+        <source>Send a message with a glitch effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Send a message that gradually glitches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
         <translation>Ir para uma mensagem específica utilizando um ID/índice de evento ou uma ligação matrix:</translation>
     </message>
@@ -863,7 +883,6 @@ You may optionally provide a reason for others to accept your knock:</source>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n membro</numerusform>
-            <numerusform>%n membros</numerusform>
             <numerusform>%n membros</numerusform>
         </translation>
     </message>
@@ -1248,6 +1267,11 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
+        <source>The verification was accepted by a different device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Verification messages received out of order!</source>
         <translation>Mensagens de verificação recebidas fora de ordem!</translation>
     </message>
@@ -1545,7 +1569,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+377"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+423"/>
         <source>All Files (*)</source>
         <translation>Todos os ficheiros (*)</translation>
     </message>
@@ -1555,7 +1579,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Selecionar ficheiro(s)</translation>
     </message>
     <message>
-        <location line="+582"/>
+        <location line="+615"/>
         <source>Failed to fetch user %1</source>
         <translation>Falha ao pedir utilizador %1</translation>
     </message>
@@ -1636,12 +1660,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+127"/>
+        <location line="+132"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-157"/>
+        <location line="-162"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Falha na descoberta automática. Reposta mal formatada recebida.</translation>
     </message>
@@ -1666,12 +1690,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Erro desconhecido. Certifique-se que o domínio do servidor é válido.</translation>
     </message>
     <message>
-        <location line="+16"/>
-        <source>The selected server does not support a version of the Matrix protocol, that this client understands (v1.1 to v1.5). You can&apos;t sign in.</source>
-        <translation>O servidor selecionado não suporta a versão do protocolo Matrix que este cliente percebe (v1.1 a v1.5). Não é possível iniciar sessão.</translation>
+        <location line="+20"/>
+        <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>Sign in with Apple</source>
         <translation>Iniciar sessão com a Apple</translation>
     </message>
@@ -1830,12 +1854,12 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Enviar um ficheiro</translation>
     </message>
     <message>
-        <location line="+64"/>
+        <location line="+68"/>
         <source>Write a message...</source>
         <translation>Escreva uma mensagem…</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+263"/>
         <source>Stickers</source>
         <translation>Autocolantes</translation>
     </message>
@@ -1856,9 +1880,17 @@ Example: https://yourserver.example.com:8787</source>
     </message>
 </context>
 <context>
+    <name>MessageInputWarning</name>
+    <message>
+        <location filename="../qml/MessageInputWarning.qml" line="+61"/>
+        <source>Don&apos;t mention them in this message</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+204"/>
+        <location filename="../qml/MessageView.qml" line="+203"/>
         <source>Edit</source>
         <translation>Editar</translation>
     </message>
@@ -2496,7 +2528,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+241"/>
+        <location filename="../../src/main.cpp" line="+242"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2626,12 +2658,12 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Erro desconhecido. Certifique-se que o domínio do servidor é válido.</translation>
     </message>
     <message>
-        <location line="+17"/>
-        <source>The selected server does not support a version of the Matrix protocol that this client understands (v1.1 to v1.5). You can&apos;t register.</source>
+        <location line="+21"/>
+        <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Server does not support querying registration flows!</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2684,7 +2716,7 @@ Example: https://yourserver.example.com:8787</source>
         <location line="+19"/>
         <location line="+102"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Voltar</translation>
     </message>
     <message>
         <location line="-79"/>
@@ -2745,7 +2777,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location filename="../qml/dialogs/ReportMessage.qml" line="+15"/>
         <source>Report message</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Denunciar mensagem</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -2798,7 +2830,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+92"/>
         <source>Join</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Entrar</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -3052,7 +3084,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+92"/>
+        <location line="+98"/>
         <source>This room is not encrypted!</source>
         <translation>Esta sala não está encriptada!</translation>
     </message>
@@ -3127,8 +3159,8 @@ Example: https://yourserver.example.com:8787</source>
         <location line="+22"/>
         <source>%n member(s)</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>%n membro</numerusform>
+            <numerusform>%n membros</numerusform>
         </translation>
     </message>
     <message>
@@ -3716,7 +3748,7 @@ Se escolher a verificação, terá que ter o outro dispositivo disponível. Se e
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+169"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+157"/>
         <source>Part of a thread</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4273,12 +4305,17 @@ Reason: %4</source>
         <translation>Nenhuma sala aberta</translation>
     </message>
     <message>
-        <location line="+102"/>
+        <location line="+108"/>
         <source>You are about to notify the whole room</source>
         <translation type="unfinished">Está prestes a notificar toda a sala</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+0"/>
+        <source>You will be mentioning %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>The command /%1 is not recognized and will be sent as part of your message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4301,8 +4338,8 @@ Reason: %4</source>
         <location line="+17"/>
         <source>%n member(s)</source>
         <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+            <numerusform>%n membro</numerusform>
+            <numerusform>%n membros</numerusform>
         </translation>
     </message>
     <message>
@@ -4384,7 +4421,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+30"/>
+        <location line="+31"/>
         <source>Show room members.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4404,7 +4441,7 @@ Reason: %4</source>
         <translation>Esta sala contém dispositivos não verificados!</translation>
     </message>
     <message>
-        <location line="+25"/>
+        <location line="+27"/>
         <source>Search this room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4439,7 +4476,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+46"/>
         <source>Enter search query</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4582,12 +4619,12 @@ Reason: %4</source>
     </message>
     <message>
         <location line="+9"/>
-        <location line="+243"/>
+        <location line="+247"/>
         <source>Verify</source>
         <translation>Verificar</translation>
     </message>
     <message>
-        <location line="-203"/>
+        <location line="-205"/>
         <source>Start a private chat.</source>
         <translation>Iniciar uma conversa privada.</translation>
     </message>
@@ -4642,7 +4679,7 @@ Reason: %4</source>
         <translation>Ativo pela última vez a %1 em %2</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+29"/>
         <source>Unverify</source>
         <translation>Anular verificação</translation>
     </message>
@@ -4756,12 +4793,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Eventos ocultados</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ignored users</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Utilizadores ignorados</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5405,7 +5442,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+35"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Voltar</translation>
     </message>
 </context>
 <context>
@@ -5480,7 +5517,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+337"/>
+        <location filename="../../src/Utils.cpp" line="+341"/>
         <source>Yesterday</source>
         <translation>Ontem</translation>
     </message>
@@ -5531,7 +5568,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="-268"/>
+        <location filename="../../src/Utils.cpp" line="-271"/>
         <source>You sent an audio clip</source>
         <translation>Enviou uma mensagem áudio</translation>
     </message>
