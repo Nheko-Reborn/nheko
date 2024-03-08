@@ -158,12 +158,12 @@ class InputBar final : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool uploading READ uploading NOTIFY uploadingChanged)
-    Q_PROPERTY(bool containsAtRoom READ containsAtRoom NOTIFY containsAtRoomChanged)
     Q_PROPERTY(
       bool containsInvalidCommand READ containsInvalidCommand NOTIFY containsInvalidCommandChanged)
     Q_PROPERTY(bool containsIncompleteCommand READ containsIncompleteCommand NOTIFY
                  containsIncompleteCommandChanged)
     Q_PROPERTY(QString currentCommand READ currentCommand NOTIFY currentCommandChanged)
+    Q_PROPERTY(QStringList mentions READ mentions NOTIFY mentionsChanged)
     Q_PROPERTY(QString text READ text NOTIFY textChanged)
     Q_PROPERTY(QVariantList uploads READ uploads NOTIFY uploadsChanged)
 
@@ -188,7 +188,37 @@ public slots:
     QString nextText();
     void setText(const QString &newText);
 
-    [[nodiscard]] bool containsAtRoom() const { return containsAtRoom_; }
+    [[nodiscard]] QStringList mentions() const { return mentions_; }
+    void addMention(QString m, QString text);
+    void removeMention(QString m);
+
+    void storeForEdit()
+    {
+        textBeforeEdit     = text();
+        mentionsBefore     = mentions_;
+        mentionTextsBefore = mentionTexts_;
+        emit mentionsChanged();
+    }
+    void restoreAfterEdit()
+    {
+        mentions_     = mentionsBefore;
+        mentionTexts_ = mentionTextsBefore;
+        mentionsBefore.clear();
+        mentionTextsBefore.clear();
+        setText(textBeforeEdit);
+        textBeforeEdit.clear();
+        emit mentionsChanged();
+    }
+    void replaceMentions(QStringList newMentions, QStringList newMentionTexts)
+    {
+        if (newMentions.size() != newMentionTexts.size())
+            return;
+
+        mentions_     = newMentions;
+        mentionTexts_ = newMentionTexts;
+        emit mentionsChanged();
+    }
+
     bool containsInvalidCommand() const { return containsInvalidCommand_; }
     bool containsIncompleteCommand() const { return containsIncompleteCommand_; }
     QString currentCommand() const { return currentCommand_; }
@@ -218,8 +248,8 @@ private slots:
 signals:
     void textChanged(QString newText);
     void uploadingChanged(bool value);
-    void containsAtRoomChanged();
     void containsInvalidCommandChanged();
+    void mentionsChanged();
     void containsIncompleteCommandChanged();
     void currentCommandChanged();
     void uploadsChanged();
@@ -269,6 +299,7 @@ private:
     QPair<QString, QString> getCommandAndArgs() const { return getCommandAndArgs(text()); }
     QPair<QString, QString> getCommandAndArgs(const QString &currentText) const;
     mtx::common::Relations generateRelations() const;
+    mtx::common::Mentions generateMentions();
 
     void startUploadFromPath(const QString &path);
     void startUploadFromMimeData(const QMimeData &source, const QString &format);
@@ -281,7 +312,7 @@ private:
         }
     }
 
-    void updateTextContentProperties(const QString &t);
+    void updateTextContentProperties(const QString &t, bool textDeleted = false);
 
     void toggleIgnore(const QString &user, const bool ignored);
 
@@ -296,6 +327,10 @@ private:
     bool containsInvalidCommand_    = false;
     bool containsIncompleteCommand_ = false;
     QString currentCommand_;
+    QStringList mentions_, mentionTexts_;
+    // store stuff during edits
+    QStringList mentionsBefore, mentionTextsBefore;
+    QString textBeforeEdit;
 
     using UploadHandle = std::unique_ptr<MediaUpload, DeleteLaterDeleter>;
     std::vector<UploadHandle> unconfirmedUploads;

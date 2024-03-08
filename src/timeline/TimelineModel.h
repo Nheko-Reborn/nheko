@@ -529,7 +529,7 @@ private:
 
     QString currentId, currentReadId;
     QString reply_, edit_, thread_;
-    QString textBeforeEdit, replyBeforeEdit;
+    QString replyBeforeEdit;
     QStringList typingUsers_;
 
     TimelineViewManager *manager_;

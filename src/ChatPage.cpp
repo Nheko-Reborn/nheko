@@ -198,9 +198,10 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
             if (eventInDb) {
                 if (auto newRules =
                       std::get_if<mtx::events::AccountDataEvent<mtx::pushrules::GlobalRuleset>>(
-                        &*eventInDb))
+                        &*eventInDb)) {
                     pushrules =
                       std::make_unique<mtx::pushrules::PushRuleEvaluator>(newRules->content.global);
+                }
             }
         }
         if (pushrules) {

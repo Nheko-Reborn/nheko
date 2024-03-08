@@ -273,7 +273,7 @@ ApplicationWindow {
                 ComboBox {
                     model: [qsTr("Muted"), qsTr("Mentions only"), qsTr("All messages")]
                     currentIndex: roomSettings.notifications
-                    onActivated: {
+                    onActivated: (index) => {
                         roomSettings.changeNotifications(index);
                     }
                     Layout.fillWidth: true

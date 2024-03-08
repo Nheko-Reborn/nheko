@@ -107,6 +107,8 @@ std::string
 mimetype(const mtx::events::collections::TimelineEvents &event);
 const mtx::common::Relations &
 relations(const mtx::events::collections::TimelineEvents &event);
+std::optional<mtx::common::Mentions>
+mentions(const mtx::events::collections::TimelineEvents &event);
 void
 set_relations(mtx::events::collections::TimelineEvents &event, mtx::common::Relations relations);
 std::string

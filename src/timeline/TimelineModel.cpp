@@ -3069,9 +3069,7 @@ TimelineModel::setEdit(const QString &newEdit)
     }
 
     if (edit_.isEmpty()) {
-        this->textBeforeEdit  = input()->text();
-        this->replyBeforeEdit = reply_;
-        nhlog::ui()->debug("Stored: {}", textBeforeEdit.toStdString());
+        input()->storeForEdit();
     }
 
     auto quoted = [](QString in) { return in.replace("[", "\\[").replace("]", "\\]"); };
@@ -3082,6 +3080,24 @@ TimelineModel::setEdit(const QString &newEdit)
             auto e = *ev;
             setReply(QString::fromStdString(mtx::accessors::relations(e).reply_to().value_or("")));
             setThread(QString::fromStdString(mtx::accessors::relations(e).thread().value_or("")));
+
+            auto mentionsList = mtx::accessors::mentions(e);
+            QStringList mentions, mentionTexts;
+            if (mentionsList) {
+                if (mentionsList->room) {
+                    mentions.append(QStringLiteral(u"@room"));
+                    mentionTexts.append(QStringLiteral(u"@room"));
+                }
+
+                for (const auto &user : mentionsList->user_ids) {
+                    auto userid = QString::fromStdString(user);
+                    mentions.append(userid);
+                    mentionTexts.append(
+                      QStringLiteral("[%1](https://matrix.to/#/%2)")
+                        .arg(displayName(userid).replace("[", "\\[").replace("]", "\\]"),
+                             QString(QUrl::toPercentEncoding(userid))));
+                }
+            }
 
             auto msgType = mtx::accessors::msg_type(e);
             if (msgType == mtx::events::MessageType::Text ||
@@ -3130,6 +3146,7 @@ TimelineModel::setEdit(const QString &newEdit)
             } else {
                 input()->setText(QLatin1String(""));
             }
+            input()->replaceMentions(std::move(mentions), std::move(mentionTexts));
 
             edit_ = newEdit;
         } else {
@@ -3148,9 +3165,7 @@ TimelineModel::resetEdit()
     if (!edit_.isEmpty()) {
         edit_ = QLatin1String("");
         emit editChanged(edit_);
-        nhlog::ui()->debug("Restoring: {}", textBeforeEdit.toStdString());
-        input()->setText(textBeforeEdit);
-        textBeforeEdit.clear();
+        input()->restoreAfterEdit();
         if (replyBeforeEdit.isEmpty())
             resetReply();
         else

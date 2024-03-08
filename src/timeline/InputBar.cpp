@@ -179,31 +179,74 @@ InputBar::insertMimeData(const QMimeData *md)
 }
 
 void
-InputBar::updateTextContentProperties(const QString &t)
+InputBar::addMention(QString mention, QString text)
 {
-    // check for @room
-    bool roomMention = false;
+    if (!mentions_.contains(mention)) {
+        mentions_.push_back(mention);
+        mentionTexts_.push_back(text);
 
-    if (t.size() > 4) {
-        QTextBoundaryFinder finder(QTextBoundaryFinder::BoundaryType::Word, t);
+        emit mentionsChanged();
+        if (mention == u"@room") {
+            this->containsAtRoom_ = true;
+        }
+    }
+}
 
-        finder.toStart();
-        do {
-            auto start = finder.position();
-            finder.toNextBoundary();
-            auto end = finder.position();
-            if (start > 0 && end - start >= 4 &&
-                t.mid(start, end - start) == QLatin1String("room") &&
-                t.at(start - 1) == QChar('@')) {
-                roomMention = true;
-                break;
+void
+InputBar::removeMention(QString mention)
+{
+    if (auto idx = mentions_.indexOf(mention); idx != -1) {
+        mentions_.removeAt(idx);
+        mentionTexts_.removeAt(idx);
+        emit mentionsChanged();
+        if (mention == u"@room") {
+            this->containsAtRoom_ = false;
+        }
+    }
+}
+
+void
+InputBar::updateTextContentProperties(const QString &t, bool charDeleted)
+{
+    auto containsRoomMention = [](QStringView text) {
+        // check for @room
+        bool roomMention = false;
+        if (text.size() > 4) {
+            QTextBoundaryFinder finder(QTextBoundaryFinder::BoundaryType::Word, text);
+
+            finder.toStart();
+            do {
+                auto start = finder.position();
+                finder.toNextBoundary();
+                auto end = finder.position();
+                if (start > 0 && end - start >= 4 &&
+                    text.mid(start, end - start) == QStringView(u"room") &&
+                    text.at(start - 1) == QChar('@')) {
+                    roomMention = true;
+                    break;
+                }
+            } while (finder.position() < text.size());
+        }
+        return roomMention;
+    };
+
+    if (charDeleted) {
+        for (qsizetype idx = 0; idx < mentions_.size();) {
+            if (!t.contains(mentionTexts_.at(idx))) {
+                removeMention(mentions_.at(idx));
+            } else {
+                idx++;
             }
-        } while (finder.position() < t.size());
+        }
     }
 
+    auto roomMention = containsRoomMention(t);
+
     if (roomMention != this->containsAtRoom_) {
-        this->containsAtRoom_ = roomMention;
-        emit containsAtRoomChanged();
+        if (roomMention)
+            addMention(QStringLiteral(u"@room"), QStringLiteral(u"@room"));
+        else
+            removeMention(QStringLiteral(u"@room"));
     }
 
     // check for invalid commands
@@ -280,7 +323,7 @@ InputBar::setText(const QString &newText)
     if (history_.size() == INPUT_HISTORY_SIZE)
         history_.pop_back();
 
-    updateTextContentProperties(QLatin1String(""));
+    updateTextContentProperties(newText, true);
     emit textChanged(newText);
 }
 void
@@ -294,14 +337,15 @@ InputBar::updateState(int selectionStart_,
     else
         startTyping();
 
-    if (text_ != text()) {
+    auto oldText = text();
+    if (text_ != oldText) {
         if (history_.empty())
             history_.push_front(text_);
         else
             history_.front() = text_;
         history_index_ = 0;
 
-        updateTextContentProperties(text_);
+        updateTextContentProperties(text_, text_.size() < oldText.size());
         // disabled, as it moves the cursor to the end
         // emit textChanged(text_);
     }
@@ -452,6 +496,24 @@ InputBar::generateRelations() const
     return relations;
 }
 
+mtx::common::Mentions
+InputBar::generateMentions()
+{
+    std::vector<std::string> userMentions;
+    for (const auto &m : mentions_)
+        if (m != u"@room")
+            userMentions.push_back(m.toStdString());
+    auto mention = mtx::common::Mentions{
+      .user_ids = userMentions,
+      .room     = containsAtRoom_,
+    };
+
+    // this->containsAtRoom_ = false;
+    // this->mentions_.clear();
+    // this->mentionTexts_.clear();
+    return mention;
+}
+
 void
 InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbowify)
 {
@@ -484,6 +546,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
         text.format = "org.matrix.custom.html";
     }
 
+    text.mentions  = generateMentions();
     text.relations = generateRelations();
     if (!room->reply().isEmpty() && room->thread().isEmpty() && room->edit().isEmpty()) {
         auto related = room->relatedInfo(room->reply());
@@ -540,6 +603,7 @@ InputBar::emote(const QString &msg, bool rainbowify)
         emote.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
     }
 
+    emote.mentions  = generateMentions();
     emote.relations = generateRelations();
 
     room->sendMessageEvent(emote, mtx::events::EventType::RoomMessage);
@@ -560,6 +624,7 @@ InputBar::notice(const QString &msg, bool rainbowify)
         notice.body = replaceMatrixToMarkdownLink(msg.trimmed()).toStdString();
     }
 
+    notice.mentions  = generateMentions();
     notice.relations = generateRelations();
 
     room->sendMessageEvent(notice, mtx::events::EventType::RoomMessage);
@@ -582,6 +647,7 @@ InputBar::confetti(const QString &body, bool rainbowify)
         confetti.body = replaceMatrixToMarkdownLink(body.trimmed()).toStdString();
     }
 
+    confetti.mentions  = generateMentions();
     confetti.relations = generateRelations();
 
     room->sendMessageEvent(confetti, mtx::events::EventType::RoomMessage);
@@ -606,6 +672,7 @@ InputBar::rainfall(const QString &body)
         rain.body = replaceMatrixToMarkdownLink(body.trimmed()).toStdString();
     }
 
+    rain.mentions  = generateMentions();
     rain.relations = generateRelations();
 
     room->sendMessageEvent(rain, mtx::events::EventType::RoomMessage);
@@ -630,6 +697,7 @@ InputBar::customMsgtype(const QString &msgtype, const QString &body)
         msg.body = replaceMatrixToMarkdownLink(body.trimmed()).toStdString();
     }
 
+    msg.mentions  = generateMentions();
     msg.relations = generateRelations();
 
     room->sendMessageEvent(msg, mtx::events::EventType::RoomMessage);
@@ -673,6 +741,7 @@ InputBar::image(const QString &filename,
         image.info.thumbnail_info.mimetype = "image/png";
     }
 
+    image.mentions  = generateMentions();
     image.relations = generateRelations();
 
     room->sendMessageEvent(image, mtx::events::EventType::RoomMessage);
@@ -695,6 +764,7 @@ InputBar::file(const QString &filename,
     else
         file.url = url.toStdString();
 
+    file.mentions  = generateMentions();
     file.relations = generateRelations();
 
     room->sendMessageEvent(file, mtx::events::EventType::RoomMessage);
@@ -722,6 +792,7 @@ InputBar::audio(const QString &filename,
     else
         audio.url = url.toStdString();
 
+    audio.mentions  = generateMentions();
     audio.relations = generateRelations();
 
     room->sendMessageEvent(audio, mtx::events::EventType::RoomMessage);
@@ -771,6 +842,7 @@ InputBar::video(const QString &filename,
         video.info.thumbnail_info.mimetype = "image/png";
     }
 
+    video.mentions  = generateMentions();
     video.relations = generateRelations();
 
     room->sendMessageEvent(video, mtx::events::EventType::RoomMessage);
@@ -825,6 +897,7 @@ InputBar::sticker(QStringList descriptor)
             sticker.info.thumbnail_info.h        = sticker.info.h;
             sticker.info.thumbnail_info.w        = sticker.info.w;
 
+            sticker.mentions  = generateMentions();
             sticker.relations = generateRelations();
 
             room->sendMessageEvent(sticker, mtx::events::EventType::Sticker);

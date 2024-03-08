@@ -42,6 +42,13 @@ Control {
         else
             return null;
     }
+    function currentUserid() {
+        if (popup.completerName == "user") {
+            return listView.itemAtIndex(currentIndex).modelData.userid;
+        } else {
+            return "";
+        }
+    }
     function down() {
         if (bottomToTop)
             up_();

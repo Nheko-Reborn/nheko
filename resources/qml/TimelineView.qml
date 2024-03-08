@@ -148,9 +148,16 @@ Item {
         }
         UploadBox {
         }
-        MessageInputWarning {
-            text: qsTr("You are about to notify the whole room")
-            visible: (room && room.permissions.canPingRoom() && room.input.containsAtRoom)
+        Repeater {
+            model: room ? room.input.mentions : null
+
+            MessageInputWarning {
+                required property string modelData
+                bubbleColor: modelData == "@room" ? Nheko.theme.error : Nheko.theme.orange
+                text: modelData == "@room" ? qsTr("You are about to notify the whole room") : qsTr("You will be mentioning %1").arg(modelData)
+                showRemove: true
+                onRemoveClicked: room.input.removeMention(modelData);
+            }
         }
         MessageInputWarning {
             text: qsTr("The command /%1 is not recognized and will be sent as part of your message").arg(room ? room.input.currentCommand : "")

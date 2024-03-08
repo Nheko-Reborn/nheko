@@ -241,6 +241,18 @@ struct EventRelations
     }
 };
 
+struct EventMentions
+{
+    template<class T>
+    std::optional<mtx::common::Mentions> operator()(const mtx::events::Event<T> &e)
+    {
+        if constexpr (requires { T::mentions; }) {
+            return e.content.mentions;
+        }
+        return std::nullopt;
+    }
+};
+
 struct SetEventRelations
 {
     mtx::common::Relations new_relations;
@@ -446,6 +458,11 @@ const mtx::common::Relations &
 mtx::accessors::relations(const mtx::events::collections::TimelineEvents &event)
 {
     return std::visit(EventRelations{}, event);
+}
+std::optional<mtx::common::Mentions>
+mtx::accessors::mentions(const mtx::events::collections::TimelineEvents &event)
+{
+    return std::visit(EventMentions{}, event);
 }
 
 void

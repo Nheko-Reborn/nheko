@@ -114,6 +114,10 @@ Rectangle {
                 function insertCompletion(completion) {
                     messageInput.remove(completerTriggeredAt, cursorPosition);
                     messageInput.insert(cursorPosition, completion);
+                    let userid = completer.currentUserid();
+                    if (userid) {
+                        room.input.addMention(userid, completion);
+                    }
                 }
                 function openCompleter(pos, type) {
                     if (popup.opened)
@@ -176,10 +180,17 @@ Rectangle {
                     } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
                         if (popup.opened) {
                             var currentCompletion = completer.currentCompletion();
+                            let userid = completer.currentUserid();
+
                             completer.completerName = "";
                             popup.close();
+
                             if (currentCompletion) {
                                 messageInput.insertCompletion(currentCompletion);
+                                if (userid) {
+                                    console.log(userid);
+                                    room.input.addMention(userid, currentCompletion);
+                                }
                                 event.accepted = true;
                                 return;
                             }

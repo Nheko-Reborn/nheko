@@ -128,18 +128,6 @@ TimelineEvent {
                 }
             }
         },
-        Rectangle {
-            anchors.top: gridContainer.top
-            anchors.left: gridContainer.left 
-            anchors.topMargin: -2
-            anchors.leftMargin: -2 + (stateEventSpacing.visible ? (stateEventSpacing.width + gridContainer.spacing) : 0)
-            color: "transparent"
-            border.color: Nheko.theme.red
-            border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
-            radius: 4
-            height: contentColumn.implicitHeight + 4
-            width: contentColumn.implicitWidth + 4 + (wrapper.threadId ? (4 + gridContainer.spacing) : 0)
-        },
         Row {
             id: gridContainer
 
@@ -292,6 +280,18 @@ TimelineEvent {
             TapHandler {
                 onDoubleTapped: wrapper.room.reply = wrapper.eventId
             }
+        },
+        Rectangle {
+            anchors.top: gridContainer.top
+            anchors.left: gridContainer.left 
+            anchors.topMargin: -2
+            anchors.leftMargin: -2 + (stateEventSpacing.visible ? (stateEventSpacing.width + gridContainer.spacing) : 0)
+            color: "transparent"
+            border.color: Nheko.theme.red
+            border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
+            radius: 4
+            height: contentColumn.implicitHeight + 4
+            width: contentColumn.implicitWidth + 4 + (wrapper.threadId ? (4 + gridContainer.spacing) : 0)
         },
             TimelineMetadata {
                 id: metadata
