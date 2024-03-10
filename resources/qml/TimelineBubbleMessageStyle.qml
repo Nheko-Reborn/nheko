@@ -317,6 +317,23 @@ TimelineEvent {
             }
 
         },
+        Item {
+            // We need this item to grab events, that otherwise would go to the TextArea in the main item. If we don't have this, it would trigger a right click menu on KDE...
+            // https://invent.kde.org/frameworks/qqc2-desktop-style/-/blob/9d71fe874186009f76d392e203d9fa25a49f8be7/org.kde.desktop/TextArea.qml#L55
+            
+            anchors.fill: gridContainer
+            anchors.topMargin: replyRow.height
+            TapHandler {
+
+                acceptedButtons: Qt.RightButton
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
+                gesturePolicy: TapHandler.ReleaseWithinBounds
+
+                onSingleTapped: (event) => {
+                    messageContextMenu.show(wrapper.eventId, wrapper.threadId, wrapper.type, wrapper.isSender, wrapper.isEncrypted, wrapper.isEditable, wrapper.main.hoveredLink, wrapper.main.copyText);
+                }
+            }
+        },
         Reactions {
             id: reactionRow
 
