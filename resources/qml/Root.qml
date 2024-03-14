@@ -348,7 +348,9 @@ Pane {
         buttons: Platform.MessageDialog.Ok
         text: qsTr("Wait for the confirmation link to arrive, then continue.")
 
-        onAccepted: UIA.continue3pidReceived()
+        // Broken on macos, see https://bugreports.qt.io/browse/QTBUG-102078
+        //onAccepted: UIA.continue3pidReceived()
+        onOkClicked: UIA.continue3pidReceived()
     }
     Connections {
         function onConfirm3pidToken() {

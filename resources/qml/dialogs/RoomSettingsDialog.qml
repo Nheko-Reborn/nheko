@@ -554,13 +554,16 @@ ApplicationWindow {
                     text: qsTr(`Encryption is currently experimental and things might break unexpectedly. <br>
                                 Please take note that it can't be disabled afterwards.`)
                     modality: Qt.NonModal
-                    onAccepted: {
+                    // Broken on macos, see https://bugreports.qt.io/browse/QTBUG-102078
+                    //onAccepted: {
+                    onOkClicked: {
                         if (roomSettings.isEncryptionEnabled)
                             return ;
 
                         roomSettings.enableEncryption();
                     }
-                    onRejected: {
+                    //onRejected: {
+                    onCancelClicked: {
                         encryptionToggle.checked = false;
                     }
                     buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel

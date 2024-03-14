@@ -14,5 +14,7 @@ P.MessageDialog {
     modality: Qt.WindowModal
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
-    onAccepted: Nheko.logout()
+    // Broken on macos, see https://bugreports.qt.io/browse/QTBUG-102078
+    //onAccepted: Nheko.logout()
+    onOkClicked: Nheko.logout()
 }

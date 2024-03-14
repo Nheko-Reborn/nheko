@@ -16,7 +16,9 @@ P.MessageDialog {
     flags: Qt.Tool | Qt.WindowStaysOnTopHint | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
     buttons: P.MessageDialog.Yes | P.MessageDialog.No
         
-    onAccepted: {
+    // Broken on macos, see https://bugreports.qt.io/browse/QTBUG-102078
+    //onAccepted: {
+    onOkClicked: {
         console.info("deleting image pack " + imagePack.packname);
         imagePack.remove()
     }

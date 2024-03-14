@@ -16,7 +16,10 @@ P.MessageDialog {
     text: qsTr("Are you sure you want to leave?")
     modality: Qt.ApplicationModal
     buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
-    onAccepted: {
+
+    // Broken on macos, see https://bugreports.qt.io/browse/QTBUG-102078
+    //onAccepted: {
+    onOkClicked: {
 
         if (CallManager.haveCallInvite) {
             callManager.rejectInvite();
