@@ -76,7 +76,7 @@ sudo pacman -Syu nheko
 The development version is available in the AUR:
 
 ```bash
-pacaur -S nheko-git
+yay -S nheko-git # Or your favorite way of installing AUR packages
 ```
 
 Nheko requires a secret server to run, so you'll need to install and configure a service such as [KDE Wallet](https://wiki.archlinux.org/title/KDE_Wallet) or [GNOME Keyring](https://wiki.archlinux.org/title/GNOME/Keyring) if not provided by your desktop environment.
