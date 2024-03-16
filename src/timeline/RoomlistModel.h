@@ -15,12 +15,11 @@
 
 #include <mtx/responses/sync.hpp>
 
-#include "TimelineModel.h"
-
 #ifdef NHEKO_DBUS_SYS
 #include "dbus/NhekoDBusBackend.h"
 #endif
 
+class TimelineModel;
 class TimelineViewManager;
 
 class RoomPreview
@@ -178,24 +177,7 @@ class FilteredRoomlistModel final : public QSortFilterProxyModel
 public:
     FilteredRoomlistModel(RoomlistModel *model, QObject *parent = nullptr);
 
-    static FilteredRoomlistModel *create(QQmlEngine *qmlEngine, QJSEngine *)
-    {
-        // The instance has to exist before it is used. We cannot replace it.
-        Q_ASSERT(instance_);
-
-        // The engine has to have the same thread affinity as the singleton.
-        Q_ASSERT(qmlEngine->thread() == instance_->thread());
-
-        // There can only be one engine accessing the singleton.
-        static QJSEngine *s_engine = nullptr;
-        if (s_engine)
-            Q_ASSERT(qmlEngine == s_engine);
-        else
-            s_engine = qmlEngine;
-
-        QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
-        return instance_;
-    }
+    static FilteredRoomlistModel *create(QQmlEngine *qmlEngine, QJSEngine *);
 
     static FilteredRoomlistModel *instance() { return instance_; }
 
@@ -218,12 +200,7 @@ public slots:
     RoomPreview currentRoomPreview() const { return roomlistmodel->currentRoomPreview(); }
     void setCurrentRoom(QString roomid) { roomlistmodel->setCurrentRoom(std::move(roomid)); }
     void resetCurrentRoom() { roomlistmodel->resetCurrentRoom(); }
-    TimelineModel *getRoomById(const QString &id) const
-    {
-        auto r = roomlistmodel->getRoomById(id).data();
-        QQmlEngine::setObjectOwnership(r, QQmlEngine::CppOwnership);
-        return r;
-    }
+    TimelineModel *getRoomById(const QString &id) const;
     RoomPreview getRoomPreviewById(QString roomid) const
     {
         return roomlistmodel->getRoomPreviewById(roomid);

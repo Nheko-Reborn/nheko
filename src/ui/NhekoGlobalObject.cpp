@@ -11,12 +11,13 @@
 #include <QUrl>
 #include <QWindow>
 
+#include <mtx/requests.hpp>
+
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
-#include "voip/WebRTCSession.h"
 
 #if XCB_AVAILABLE
 #include <xcb/xproto.h>

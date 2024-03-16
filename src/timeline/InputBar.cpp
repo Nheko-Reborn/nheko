@@ -36,6 +36,7 @@
 #include "TimelineViewManager.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
+#include "ui/UserProfile.h"
 
 #include "blurhash.hpp"
 

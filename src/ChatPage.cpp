@@ -31,6 +31,8 @@
 
 #include "notifications/Manager.h"
 
+#include "timeline/RoomlistModel.h"
+#include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 
 ChatPage *ChatPage::instance_                    = nullptr;

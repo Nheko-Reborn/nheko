@@ -444,6 +444,7 @@ set(SRC_FILES
     src/BlurhashProvider.h
     src/Cache.cpp
     src/Cache.h
+    src/CacheCryptoStructs.cpp
     src/CacheCryptoStructs.h
     src/CacheStructs.h
     src/Cache_p.h
@@ -603,7 +604,7 @@ if(USE_BUNDLED_MTXCLIENT)
     FetchContent_Declare(
         MatrixClient
             GIT_REPOSITORY https://github.com/Nheko-Reborn/mtxclient.git
-            GIT_TAG        188ecb899744e55842c1debaa4597cdc5184be8a
+            GIT_TAG        4fb7d678aeea197d16b52bfb1dc35b506673bb52
     )
     set(BUILD_LIB_EXAMPLES OFF CACHE INTERNAL "")
     set(BUILD_LIB_TESTS OFF CACHE INTERNAL "")

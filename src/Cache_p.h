@@ -19,13 +19,14 @@
 #include <mtx/responses/notifications.hpp>
 #include <mtx/responses/sync.hpp>
 #include <mtxclient/crypto/types.hpp>
-#include <mtxclient/http/client.hpp>
+#include <mtxclient/http/errors.hpp>
 
 #include "CacheCryptoStructs.h"
 #include "CacheStructs.h"
 
 namespace mtx::responses {
 struct Messages;
+struct StateEvents;
 }
 
 class Cache final : public QObject
@@ -51,8 +52,9 @@ public:
                                lmdb::dbi &db,
                                const std::vector<std::string> &user_ids,
                                const std::string &sync_token);
-    void query_keys(const std::string &user_id,
-                    std::function<void(const UserKeyCache &, mtx::http::RequestErr)> cb);
+    void query_keys(
+      const std::string &user_id,
+      std::function<void(const UserKeyCache &, const std::optional<mtx::http::ClientError> &)> cb);
 
     // device & user verification cache
     std::optional<UserKeyCache> userKeys(const std::string &user_id);

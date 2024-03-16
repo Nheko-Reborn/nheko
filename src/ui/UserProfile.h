@@ -13,7 +13,9 @@
 #include <mtx/responses/common.hpp>
 
 #include "CacheCryptoStructs.h"
-#include "timeline/TimelineModel.h"
+#include "CacheStructs.h"
+
+class TimelineModel;
 
 namespace verification {
 Q_NAMESPACE

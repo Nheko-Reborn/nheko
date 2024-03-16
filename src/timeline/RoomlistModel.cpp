@@ -945,6 +945,34 @@ FilteredRoomlistModel::FilteredRoomlistModel(RoomlistModel *model, QObject *pare
     sort(0);
 }
 
+FilteredRoomlistModel *
+FilteredRoomlistModel::create(QQmlEngine *qmlEngine, QJSEngine *)
+{
+    // The instance has to exist before it is used. We cannot replace it.
+    Q_ASSERT(instance_);
+
+    // The engine has to have the same thread affinity as the singleton.
+    Q_ASSERT(qmlEngine->thread() == instance_->thread());
+
+    // There can only be one engine accessing the singleton.
+    static QJSEngine *s_engine = nullptr;
+    if (s_engine)
+        Q_ASSERT(qmlEngine == s_engine);
+    else
+        s_engine = qmlEngine;
+
+    QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
+    return instance_;
+}
+
+TimelineModel *
+FilteredRoomlistModel::getRoomById(const QString &id) const
+{
+    auto r = roomlistmodel->getRoomById(id).data();
+    QQmlEngine::setObjectOwnership(r, QQmlEngine::CppOwnership);
+    return r;
+}
+
 void
 FilteredRoomlistModel::updateHiddenTagsAndSpaces()
 {

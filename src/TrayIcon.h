@@ -47,5 +47,7 @@ private:
     QAction *viewAction_;
     QAction *quitAction_;
 
+#if !defined(Q_OS_MACOS) && !defined(Q_OS_WIN)
     MsgCountComposedIcon *icon_;
+#endif
 };

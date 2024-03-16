@@ -5,19 +5,12 @@
 #pragma once
 
 #include <QHash>
-#include <QQuickItem>
-#include <QQuickTextDocument>
+#include <QQmlEngine>
 
-#include <mtx/common.hpp>
-#include <mtx/responses/messages.hpp>
+#include <unordered_map>
 
-#include "InviteesModel.h"
-#include "MemberList.h"
-#include "timeline/CommunitiesModel.h"
-#include "timeline/PresenceEmitter.h"
-#include "timeline/RoomlistModel.h"
-#include "ui/RoomSettings.h"
-#include "ui/UserProfile.h"
+class QQuickItem;
+class QQuickTextDocument;
 
 class UserSettings;
 class ChatPage;
@@ -25,9 +18,32 @@ class ImagePackListModel;
 class TimelineModel;
 class CallManager;
 class VerificationManager;
+class InviteesModel;
+class MemberList;
+class CommunitiesModel;
+class RoomlistModel;
+class PresenceEmitter;
+class UserProfile;
+class RoomSettings;
+class FilteredRoomlistModel;
+class QAbstractItemModel;
 
 namespace mtx::responses {
 struct Sync;
+struct AccountData;
+}
+
+namespace mtx::events::voip {
+struct CallInvite;
+struct CallCandidates;
+struct CallAnswer;
+struct CallHangUp;
+struct CallSelectAnswer;
+struct CallReject;
+struct CallNegotiate;
+}
+namespace mtx::events::collections {
+struct TimelineEvents;
 }
 
 class TimelineViewManager final : public QObject
@@ -45,24 +61,7 @@ class TimelineViewManager final : public QObject
 public:
     TimelineViewManager(CallManager *callManager, ChatPage *parent = nullptr);
 
-    static TimelineViewManager *create(QQmlEngine *qmlEngine, QJSEngine *)
-    {
-        // The instance has to exist before it is used. We cannot replace it.
-        Q_ASSERT(instance_);
-
-        // The engine has to have the same thread affinity as the singleton.
-        Q_ASSERT(qmlEngine->thread() == instance_->thread());
-
-        // There can only be one engine accessing the singleton.
-        static QJSEngine *s_engine = nullptr;
-        if (s_engine)
-            Q_ASSERT(qmlEngine == s_engine);
-        else
-            s_engine = qmlEngine;
-
-        QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
-        return instance_;
-    }
+    static TimelineViewManager *create(QQmlEngine *qmlEngine, QJSEngine *);
 
     static TimelineViewManager *instance() { return TimelineViewManager::instance_; }
 
@@ -72,7 +71,7 @@ public:
 
     VerificationManager *verificationManager() { return verificationManager_; }
 
-    void clearAll() { rooms_->clear(); }
+    void clearAll();
 
     Q_INVOKABLE bool isInitialSync() const { return isInitialSync_; }
     bool isConnected() const { return isConnected_; }
@@ -158,7 +157,7 @@ private:
     VerificationManager *verificationManager_ = nullptr;
     PresenceEmitter *presenceEmitter          = nullptr;
 
-    QHash<QPair<QString, quint64>, QColor> userColors;
+    QHash<std::pair<QString, quint64>, QColor> userColors;
 
     inline static TimelineViewManager *instance_ = nullptr;
 

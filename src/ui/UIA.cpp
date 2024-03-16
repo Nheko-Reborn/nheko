@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include <QTimer>
 
+#include <mtx/requests.hpp>
 #include <mtx/responses/common.hpp>
 
 #include "Logging.h"

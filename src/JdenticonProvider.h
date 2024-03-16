@@ -9,8 +9,6 @@
 #include <QQuickImageResponse>
 #include <QThreadPool>
 
-#include <mtx/common.hpp>
-
 class JdenticonRunnable final
   : public QObject
   , public QRunnable

@@ -20,7 +20,6 @@
 #include "InputBar.h"
 #include "Permissions.h"
 #include "Reaction.h"
-#include "ReadReceiptsModel.h"
 #include "ui/RoomSummary.h"
 
 namespace mtx::http {
@@ -33,6 +32,7 @@ struct ClaimKeys;
 struct StateEvents;
 }
 struct RelatedInfo;
+class ReadReceiptsProxy;
 
 namespace qml_mtx_events {
 Q_NAMESPACE
@@ -516,7 +516,8 @@ signals:
 
 private:
     template<typename T>
-    void sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType);
+    void
+    sendEncryptedMessage(const mtx::events::RoomEvent<T> &msg, mtx::events::EventType eventType);
     void readEvent(const std::string &id);
 
     void setPaginationInProgress(const bool paginationInProgress);

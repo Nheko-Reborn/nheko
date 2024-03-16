@@ -9,7 +9,7 @@
 #include <QObject>
 #include <QQuickItem>
 
-#include "timeline/TimelineModel.h"
+class TimelineModel;
 
 // This is an AnimatedImage, that can draw encrypted images
 class MxcAnimatedImage : public QQuickItem

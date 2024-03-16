@@ -8,6 +8,7 @@
 
 #include "ChatPage.h"
 #include "timeline/InputBar.h"
+#include "timeline/RoomlistModel.h"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 

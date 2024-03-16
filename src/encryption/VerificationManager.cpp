@@ -9,6 +9,9 @@
 #include "Cache.h"
 #include "ChatPage.h"
 #include "DeviceVerificationFlow.h"
+#include "Logging.h"
+#include "timeline/RoomlistModel.h"
+#include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 
 VerificationManager::VerificationManager(TimelineViewManager *o)

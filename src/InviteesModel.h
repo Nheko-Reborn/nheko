@@ -8,7 +8,7 @@
 #include <QQmlEngine>
 #include <QVector>
 
-#include "timeline/TimelineModel.h"
+class TimelineModel;
 
 class Invitee final : public QObject
 {

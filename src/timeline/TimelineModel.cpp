@@ -29,9 +29,12 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "ReadReceiptsModel.h"
+#include "RoomlistModel.h"
 #include "TimelineViewManager.h"
 #include "Utils.h"
 #include "encryption/Olm.h"
+#include "ui/UserProfile.h"
 
 namespace std {
 inline uint // clazy:exclude=qhash-namespace
@@ -1703,7 +1706,8 @@ TimelineModel::checkAfterFetch()
 
 template<typename T>
 void
-TimelineModel::sendEncryptedMessage(mtx::events::RoomEvent<T> msg, mtx::events::EventType eventType)
+TimelineModel::sendEncryptedMessage(const mtx::events::RoomEvent<T> &msg,
+                                    mtx::events::EventType eventType)
 {
     const auto room_id = room_id_.toStdString();
 
