@@ -212,3 +212,5 @@ Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString new
                         role.data());
 #endif
 }
+
+#include "moc_NhekoGlobalObject.cpp"

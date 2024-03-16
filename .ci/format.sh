@@ -17,6 +17,8 @@ done;
 
 git diff --exit-code
 
+./scripts/includemocs.py --insert-at-end -n src
+
 if command -v /usr/lib64/qt6/bin/qmllint &> /dev/null; then
     /usr/lib64/qt6/bin/qmllint $QML_FILES
 elif command -v /usr/lib/qt6/bin/qmllint &> /dev/null; then

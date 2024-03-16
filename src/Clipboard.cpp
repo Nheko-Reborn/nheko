@@ -24,3 +24,5 @@ Clipboard::text() const
 {
     return QGuiApplication::clipboard()->text();
 }
+
+#include "moc_Clipboard.cpp"

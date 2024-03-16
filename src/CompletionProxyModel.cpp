@@ -169,3 +169,5 @@ CompletionProxyModel::setSearchString(const QString &s)
 {
     emit newSearchString(s);
 }
+
+#include "moc_CompletionProxyModel.cpp"

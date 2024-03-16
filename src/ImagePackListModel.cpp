@@ -97,3 +97,5 @@ ImagePackListModel::containsAccountPack() const
             return true;
     return false;
 }
+
+#include "moc_ImagePackListModel.cpp"

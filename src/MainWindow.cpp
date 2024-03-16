@@ -322,3 +322,5 @@ MainWindow::focusedRoom() const
 
     return nullptr;
 }
+
+#include "moc_MainWindow.cpp"

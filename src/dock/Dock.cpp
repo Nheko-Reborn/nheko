@@ -90,3 +90,5 @@ Dock::setUnreadCount(const int count)
     qGuiApp->setBadgeNumber(count);
 }
 #endif
+
+#include "moc_Dock.cpp"

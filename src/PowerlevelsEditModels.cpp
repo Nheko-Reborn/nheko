@@ -827,3 +827,5 @@ PowerlevelsSpacesListModel::roleNames() const
       {ApplyPermissions, "applyPermissions"},
     };
 }
+
+#include "moc_PowerlevelsEditModels.cpp"

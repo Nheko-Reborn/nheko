@@ -1288,3 +1288,5 @@ RoomPreview::inviterUserId() const
 
     return QString();
 }
+
+#include "moc_RoomlistModel.cpp"

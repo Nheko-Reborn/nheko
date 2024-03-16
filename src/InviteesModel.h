@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef INVITEESMODEL_H
-#define INVITEESMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QQmlEngine>
@@ -73,5 +72,3 @@ private:
     QVector<Invitee *> invitees_;
     TimelineModel *room_;
 };
-
-#endif // INVITEESMODEL_H

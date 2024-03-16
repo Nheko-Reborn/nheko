@@ -252,3 +252,5 @@ TimelineFilter::filterAcceptsRow(int source_row, const QModelIndex &) const
         return true;
     }
 }
+
+#include "moc_TimelineFilter.cpp"

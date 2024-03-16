@@ -123,3 +123,5 @@ TrayIcon::setUnreadCount(int count)
 {
     qGuiApp->setBadgeNumber(count);
 }
+
+#include "moc_TrayIcon.cpp"

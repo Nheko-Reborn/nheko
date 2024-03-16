@@ -123,3 +123,5 @@ EventExpiry::setExpireStateEvents(bool val)
     this->event.exclude_state_events = !val;
     emit expireEventsAfterCountChanged();
 }
+
+#include "moc_EventExpiry.cpp"

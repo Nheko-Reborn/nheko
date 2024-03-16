@@ -936,3 +936,5 @@ CommunitiesModel::updateSpaceStatus(QString space,
         }
     }
 }
+
+#include "moc_CommunitiesModel.cpp"

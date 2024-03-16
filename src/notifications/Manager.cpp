@@ -53,3 +53,5 @@ NotificationsManager::removeNotifications(const QString &roomId_,
         }
     }
 }
+
+#include "moc_Manager.cpp"

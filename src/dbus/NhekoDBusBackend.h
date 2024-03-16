@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef NHEKODBUSBACKEND_H
-#define NHEKODBUSBACKEND_H
+#pragma once
 
 #include <QDBusMessage>
 #include <QObject>
@@ -47,5 +46,3 @@ private:
 
     RoomlistModel *m_parent;
 };
-
-#endif // NHEKODBUSBACKEND_H

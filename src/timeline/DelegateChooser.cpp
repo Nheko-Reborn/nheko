@@ -138,3 +138,5 @@ DelegateChooser::DelegateIncubator::statusChanged(QQmlIncubator::Status status)
             nhlog::ui()->error("Error instantiating delegate: {}", e.toString().toStdString());
     }
 }
+
+#include "moc_DelegateChooser.cpp"

@@ -1770,3 +1770,5 @@ download_cross_signing_keys()
 }
 
 } // namespace olm
+
+#include "moc_Olm.cpp"

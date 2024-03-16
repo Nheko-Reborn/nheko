@@ -117,3 +117,5 @@ NhekoDBusBackend::bringWindowToTop() const
     MainWindow::instance()->show();
     MainWindow::instance()->raise();
 }
+
+#include "moc_NhekoDBusBackend.cpp"

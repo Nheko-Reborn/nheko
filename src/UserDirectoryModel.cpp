@@ -103,3 +103,5 @@ UserDirectoryModel::displaySearchResults(std::vector<mtx::responses::User> resul
     endInsertRows();
     canFetchMore_ = false;
 }
+
+#include "moc_UserDirectoryModel.cpp"

@@ -627,3 +627,5 @@ UserProfile::openGlobalProfile()
 {
     emit manager->openGlobalUserProfile(userid_);
 }
+
+#include "moc_UserProfile.cpp"

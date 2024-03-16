@@ -228,3 +228,5 @@ RoomDirectoryModel::displayRooms(std::vector<mtx::responses::PublicRoomsChunk> f
 
     nhlog::ui()->debug("Finished loading rooms");
 }
+
+#include "moc_RoomDirectoryModel.cpp"

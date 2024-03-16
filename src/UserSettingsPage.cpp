@@ -2332,3 +2332,5 @@ UserSettingsModel::UserSettingsModel(QObject *p)
         emit dataChanged(index(ExpireEvents), index(ExpireEvents), {Value});
     });
 }
+
+#include "moc_UserSettingsPage.cpp"

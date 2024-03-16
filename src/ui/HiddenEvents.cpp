@@ -104,3 +104,5 @@ HiddenEvents::save()
               }
           });
 }
+
+#include "moc_HiddenEvents.cpp"

@@ -27,3 +27,5 @@ FallbackAuth::openFallbackAuth()
 
     QDesktopServices::openUrl(url);
 }
+
+#include "moc_FallbackAuth.cpp"

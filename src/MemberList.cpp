@@ -169,3 +169,5 @@ MemberList::filterAcceptsRow(int source_row, const QModelIndex &) const
            m_model.m_memberList[source_row].first.display_name.contains(filterString,
                                                                         Qt::CaseInsensitive);
 }
+
+#include "moc_MemberList.cpp"

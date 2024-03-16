@@ -40,3 +40,5 @@ NhekoDropArea::dropEvent(QDropEvent *event)
         }
     }
 }
+
+#include "moc_NhekoDropArea.cpp"

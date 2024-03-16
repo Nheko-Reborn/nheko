@@ -69,3 +69,5 @@ resolve(const QString &room_id,
     resolve(std::move(avatarUrl), size, receiver, callback);
 }
 }
+
+#include "moc_AvatarProvider.cpp"

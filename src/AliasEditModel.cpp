@@ -333,3 +333,5 @@ AliasEditingModel::commit()
           }
       });
 }
+
+#include "moc_AliasEditModel.cpp"

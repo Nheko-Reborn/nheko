@@ -55,3 +55,5 @@ SSOHandler::url() const
 {
     return "http://localhost:" + std::to_string(port) + "/sso";
 }
+
+#include "moc_SSOHandler.cpp"

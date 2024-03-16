@@ -91,3 +91,5 @@ Permissions::canPingRoom()
     return pl.user_level(http::client()->user_id().to_string()) >=
            pl.notification_level(mtx::events::state::notification_keys::room);
 }
+
+#include "moc_Permissions.cpp"

@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef NHEKODBUSAPI_H
-#define NHEKODBUSAPI_H
+#pragma once
 
 #include <QDBusArgument>
 #include <QIcon>
@@ -99,5 +98,3 @@ const QDBusArgument &
 operator>>(const QDBusArgument &arg, QImage &);
 
 #define NHEKO_DBUS_SERVICE_NAME "im.nheko.Nheko"
-
-#endif // NHEKODBUSAPI_H

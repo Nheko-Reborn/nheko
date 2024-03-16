@@ -355,3 +355,5 @@ SelfVerificationStatus::invalidate()
         return;
     }
 }
+
+#include "moc_SelfVerificationStatus.cpp"

@@ -987,3 +987,5 @@ DeviceVerificationFlow::send(T msg)
                         mtx::events::to_string(mtx::events::to_device_content_to_type<T>),
                         state().toStdString());
 }
+
+#include "moc_DeviceVerificationFlow.cpp"

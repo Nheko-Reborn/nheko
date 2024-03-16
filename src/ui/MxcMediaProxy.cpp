@@ -172,3 +172,5 @@ MxcMediaProxy::startDownload(bool onlyCached)
                                  }
                              });
 }
+
+#include "moc_MxcMediaProxy.cpp"

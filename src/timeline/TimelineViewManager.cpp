@@ -600,3 +600,4 @@ TimelineViewManager::processIgnoredUsers(const mtx::responses::AccountData &data
         break;
     }
 }
+#include "moc_TimelineViewManager.cpp"

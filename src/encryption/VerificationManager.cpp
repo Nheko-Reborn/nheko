@@ -169,3 +169,5 @@ VerificationManager::verifyOneOfDevices(QString userid, std::vector<QString> dev
     this->dvList[flow->transactionId()] = flow;
     emit newDeviceVerificationRequest(flow.data());
 }
+
+#include "moc_VerificationManager.cpp"

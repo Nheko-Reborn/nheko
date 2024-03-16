@@ -352,3 +352,5 @@ LoginPage::onLoginButtonClicked(LoginMethod loginMethod,
     loggingIn_ = true;
     emit loggingInChanged();
 }
+
+#include "moc_LoginPage.cpp"

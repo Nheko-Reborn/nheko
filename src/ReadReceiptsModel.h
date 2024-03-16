@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-#ifndef READRECEIPTSMODEL_H
-#define READRECEIPTSMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <QDateTime>
@@ -73,5 +72,3 @@ private:
 
     ReadReceiptsModel model_;
 };
-
-#endif // READRECEIPTSMODEL_H

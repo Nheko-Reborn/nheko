@@ -3373,3 +3373,5 @@ TimelineModel::parentSpace()
 
     return parentSummary.get();
 }
+
+#include "moc_TimelineModel.cpp"

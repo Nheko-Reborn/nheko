@@ -1773,3 +1773,5 @@ ChatPage::removeAllNotifications()
     notificationsManager->closeAllNotifications();
 #endif
 }
+
+#include "moc_ChatPage.cpp"

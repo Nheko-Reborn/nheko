@@ -28,3 +28,5 @@ NhekoCursorShape::setCursorShape(Qt::CursorShape cursorShape)
     setCursor(cursorShape);
     emit cursorShapeChanged();
 }
+
+#include "moc_NhekoCursorShape.cpp"

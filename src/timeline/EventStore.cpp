@@ -941,3 +941,5 @@ EventStore::fetchMore()
           emit oldMessagesRetrieved(std::move(res));
       });
 }
+
+#include "moc_EventStore.cpp"

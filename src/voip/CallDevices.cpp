@@ -393,3 +393,5 @@ CallDevices::frameRates(const std::string &, const std::string &) const
 }
 
 #endif
+
+#include "moc_CallDevices.cpp"

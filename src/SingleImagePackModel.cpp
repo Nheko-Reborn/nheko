@@ -488,3 +488,5 @@ SingleImagePackModel::addImageCb(std::string uri, std::string filename, mtx::com
     if (this->pack.pack->avatar_url.empty())
         this->setAvatarUrl(QString::fromStdString(uri));
 }
+
+#include "moc_SingleImagePackModel.cpp"

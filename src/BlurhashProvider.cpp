@@ -45,3 +45,5 @@ BlurhashRunnable::run()
 
     emit done(image.convertToFormat(QImage::Format_RGB32));
 }
+
+#include "moc_BlurhashProvider.cpp"

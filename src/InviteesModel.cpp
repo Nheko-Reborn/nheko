@@ -110,3 +110,5 @@ Invitee::Invitee(QString mxid, QString displayName, QString avatarUrl, QObject *
         emit userInfoLoaded();
     }
 }
+
+#include "moc_InviteesModel.cpp"

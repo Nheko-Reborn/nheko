@@ -84,3 +84,5 @@ Theme::Theme(QStringView theme)
         error_             = QColor(0xdd, 0x3d, 0x3d);
     }
 }
+
+#include "moc_Theme.cpp"

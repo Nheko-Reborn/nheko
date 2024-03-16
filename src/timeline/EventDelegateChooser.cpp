@@ -369,3 +369,5 @@ EventDelegateChooserAttachedType::polishChooser()
         }
     }
 }
+
+#include "moc_EventDelegateChooser.cpp"

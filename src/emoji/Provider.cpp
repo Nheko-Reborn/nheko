@@ -15287,3 +15287,5 @@ constexpr
             std::u16string_view(u"flag: Wales"),
             emoji::Emoji::Category::Flags},
 };
+
+#include "moc_Provider.cpp"

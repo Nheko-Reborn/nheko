@@ -255,3 +255,5 @@ RegisterPage::startRegistration(const QString &username,
           devicename.isEmpty() ? LoginPage::initialDeviceName_() : devicename.toStdString());
     }
 }
+
+#include "moc_RegisterPage.cpp"

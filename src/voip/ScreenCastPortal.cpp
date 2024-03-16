@@ -511,3 +511,5 @@ ScreenCastPortal::openPipeWireRemote()
 }
 
 #endif
+
+#include "moc_ScreenCastPortal.cpp"

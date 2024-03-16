@@ -1172,3 +1172,5 @@ getTurnURIs(const mtx::responses::TurnServer &turnServer)
     return ret;
 }
 }
+
+#include "moc_CallManager.cpp"

@@ -27,3 +27,5 @@ ReCaptcha::openReCaptcha()
 
     QDesktopServices::openUrl(url);
 }
+
+#include "moc_ReCaptcha.cpp"

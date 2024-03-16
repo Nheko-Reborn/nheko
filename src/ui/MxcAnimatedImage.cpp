@@ -208,3 +208,5 @@ MxcAnimatedImage::updatePaintNode(QSGNode *oldNode, QQuickItem::UpdatePaintNodeD
 
     return n;
 }
+
+#include "moc_MxcAnimatedImage.cpp"

@@ -75,3 +75,5 @@ PresenceEmitter::userStatus(QString id) const
     else
         return pullPresence(id)->status;
 }
+
+#include "moc_PresenceEmitter.cpp"

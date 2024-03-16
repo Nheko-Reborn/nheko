@@ -285,3 +285,5 @@ UIA::submit3pidToken(const QString &token)
           this->submit_url.clear();
       });
 }
+
+#include "moc_UIA.cpp"

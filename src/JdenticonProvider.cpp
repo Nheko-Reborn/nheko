@@ -120,3 +120,5 @@ JdenticonProvider::isAvailable()
 {
     return Jdenticon::getJdenticonInterface() != nullptr;
 }
+
+#include "moc_JdenticonProvider.cpp"

@@ -95,3 +95,5 @@ RoomSummary::promptJoin()
     else
         ChatPage::instance()->joinRoomVia(roomIdOrAlias, vias, true, reason_);
 }
+
+#include "moc_RoomSummary.cpp"

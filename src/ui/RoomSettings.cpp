@@ -811,3 +811,5 @@ RoomSettings::applyAllowedFromModel()
     this->allowedRoomsModified_ = true;
     emit allowedRoomsModifiedChanged();
 }
+
+#include "moc_RoomSettings.cpp"

@@ -1495,3 +1495,5 @@ InputBar::reaction(const QString &reactedEvent, const QString &reactionKey)
         room->redactEvent(selfReactedEvent);
     }
 }
+
+#include "moc_InputBar.cpp"

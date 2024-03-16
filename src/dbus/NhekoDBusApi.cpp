@@ -228,3 +228,5 @@ operator>>(const QDBusArgument &arg, QImage &image)
 
     return arg;
 }
+
+#include "moc_NhekoDBusApi.cpp"

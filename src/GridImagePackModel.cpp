@@ -400,3 +400,5 @@ GridImagePackModel::setSearchString(QString key)
     endResetModel();
     emit newSearchString();
 }
+
+#include "moc_GridImagePackModel.cpp"

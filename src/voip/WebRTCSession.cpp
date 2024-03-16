@@ -1305,3 +1305,5 @@ WebRTCSession::end()
 }
 
 #endif
+
+#include "moc_WebRTCSession.cpp"

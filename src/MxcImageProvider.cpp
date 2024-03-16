@@ -370,3 +370,5 @@ MxcImageProvider::download(const QString &id,
         }
     }
 }
+
+#include "moc_MxcImageProvider.cpp"

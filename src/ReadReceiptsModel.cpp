@@ -129,3 +129,5 @@ ReadReceiptsProxy::ReadReceiptsProxy(QString event_id, QString room_id, QObject 
     sort(0, Qt::DescendingOrder);
     setDynamicSortFilter(true);
 }
+
+#include "moc_ReadReceiptsModel.cpp"
