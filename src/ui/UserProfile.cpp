@@ -16,6 +16,7 @@
 #include "UserProfile.h"
 #include "Utils.h"
 #include "encryption/VerificationManager.h"
+#include "timeline/RoomlistModel.h"
 #include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 #include "ui/UIA.h"

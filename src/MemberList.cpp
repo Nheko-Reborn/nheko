@@ -8,6 +8,8 @@
 #include "Cache_p.h"
 #include "ChatPage.h"
 #include "Logging.h"
+#include "timeline/RoomlistModel.h"
+#include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 
 MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)

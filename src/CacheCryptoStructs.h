@@ -11,9 +11,12 @@
 #include <mutex>
 #include <set>
 
-#include <mtx/events/encrypted.hpp>
 #include <mtx/responses/crypto.hpp>
 #include <mtxclient/crypto/objects.hpp>
+
+namespace mtx::events::msg {
+struct Encrypted;
+}
 
 namespace crypto {
 Q_NAMESPACE
@@ -96,11 +99,7 @@ from_json(const nlohmann::json &obj, DevicePublicKeys &msg);
 struct MegolmSessionIndex
 {
     MegolmSessionIndex() = default;
-    MegolmSessionIndex(std::string room_id_, const mtx::events::msg::Encrypted &e)
-      : room_id(std::move(room_id_))
-      , session_id(e.session_id)
-    {
-    }
+    MegolmSessionIndex(std::string room_id_, const mtx::events::msg::Encrypted &e);
 
     //! The room in which this session exists.
     std::string room_id;

@@ -7,6 +7,7 @@
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "mtx/responses/profile.hpp"
+#include "timeline/TimelineModel.h"
 
 InviteesModel::InviteesModel(TimelineModel *room, QObject *parent)
   : QAbstractListModel{parent}

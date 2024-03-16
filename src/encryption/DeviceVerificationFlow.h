@@ -5,13 +5,11 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 
-#include <mtx/responses/crypto.hpp>
 #include <mtxclient/crypto/client.hpp>
 
 #include "CacheCryptoStructs.h"
-#include "Logging.h"
-#include "MatrixClient.h"
 
 class QTimer;
 class TimelineModel;
@@ -151,8 +149,6 @@ public:
     }
     bool isSelfVerification() const;
     bool isMultiDeviceVerification() const { return deviceIds.size() > 1; }
-
-    void callback_fn(const UserKeyCache &res, mtx::http::RequestErr err, std::string user_id);
 
 public slots:
     //! unverifies a device

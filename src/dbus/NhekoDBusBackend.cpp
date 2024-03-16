@@ -12,6 +12,7 @@
 #include "MainWindow.h"
 #include "MxcImageProvider.h"
 #include "timeline/RoomlistModel.h"
+#include "timeline/TimelineModel.h"
 
 #include <QDBusConnection>
 

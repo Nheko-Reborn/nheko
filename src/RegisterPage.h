@@ -8,9 +8,6 @@
 #include <QQmlEngine>
 #include <QString>
 
-#include <mtx/user_interactive.hpp>
-#include <mtxclient/http/client.hpp>
-
 class RegisterPage : public QObject
 {
     Q_OBJECT

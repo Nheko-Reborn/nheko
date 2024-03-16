@@ -6296,3 +6296,5 @@ NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::policy_rule::ServerRu
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::space::Child)
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::space::Parent)
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::msc2545::ImagePack)
+
+#include "moc_Cache_p.cpp"

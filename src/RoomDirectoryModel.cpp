@@ -6,6 +6,8 @@
 
 #include <algorithm>
 
+#include <mtx/requests.hpp>
+
 #include "Cache.h"
 #include "ChatPage.h"
 #include "Logging.h"

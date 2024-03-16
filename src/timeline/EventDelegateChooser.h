@@ -12,7 +12,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 
-#include "TimelineModel.h"
+class TimelineModel;
 
 class EventDelegateChooserAttachedType : public QObject
 {

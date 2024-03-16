@@ -17,32 +17,6 @@ struct TimelineEvents;
 struct StateEvents;
 }
 
-namespace nheko {
-struct nonesuch
-{
-    ~nonesuch()                      = delete;
-    nonesuch(nonesuch const &)       = delete;
-    void operator=(nonesuch const &) = delete;
-};
-
-namespace detail {
-template<class Default, class AlwaysVoid, template<class...> class Op, class... Args>
-struct detector
-{
-    using value_t = std::false_type;
-    using type    = Default;
-};
-
-template<class Default, template<class...> class Op, class... Args>
-struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
-{
-    using value_t = std::true_type;
-    using type    = Op<Args...>;
-};
-
-} // namespace detail
-}
-
 namespace mtx::accessors {
 const std::string &
 event_id(const mtx::events::collections::TimelineEvents &event);

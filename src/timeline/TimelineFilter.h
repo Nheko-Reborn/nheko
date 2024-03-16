@@ -10,7 +10,7 @@
 
 #include <mtx/events/power_levels.hpp>
 
-#include "TimelineModel.h"
+class TimelineModel;
 
 class TimelineFilter : public QSortFilterProxyModel
 {

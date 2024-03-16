@@ -8,6 +8,8 @@
 #include <QClipboard>
 #include <QFileDialog>
 #include <QMimeData>
+#include <QQuickItem>
+#include <QQuickTextDocument>
 #include <QStandardPaths>
 #include <QString>
 
@@ -24,17 +26,48 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MatrixClient.h"
+#include "MemberList.h"
 #include "RoomsModel.h"
+#include "TimelineModel.h"
 #include "UserSettingsPage.h"
 #include "UsersModel.h"
 #include "Utils.h"
 #include "encryption/VerificationManager.h"
+#include "timeline/CommunitiesModel.h"
+#include "timeline/PresenceEmitter.h"
+#include "timeline/RoomlistModel.h"
+#include "ui/RoomSettings.h"
+#include "ui/UserProfile.h"
 #include "voip/CallManager.h"
 #include "voip/WebRTCSession.h"
 
 namespace {
+struct nonesuch
+{
+    ~nonesuch()                      = delete;
+    nonesuch(nonesuch const &)       = delete;
+    void operator=(nonesuch const &) = delete;
+};
+
+namespace detail {
+template<class Default, class AlwaysVoid, template<class...> class Op, class... Args>
+struct detector
+{
+    using value_t = std::false_type;
+    using type    = Default;
+};
+
+template<class Default, template<class...> class Op, class... Args>
+struct detector<Default, std::void_t<Op<Args...>>, Op, Args...>
+{
+    using value_t = std::true_type;
+    using type    = Op<Args...>;
+};
+
+} // namespace detail
+
 template<template<class...> class Op, class... Args>
-using is_detected = typename nheko::detail::detector<nheko::nonesuch, void, Op, Args...>::value_t;
+using is_detected = typename detail::detector<nonesuch, void, Op, Args...>::value_t;
 
 template<class Content>
 using file_t = decltype(Content::file);
@@ -88,7 +121,7 @@ TimelineViewManager::updateColorPalette()
 QColor
 TimelineViewManager::userColor(QString id, QColor background)
 {
-    QPair<QString, quint64> idx{id, background.rgba64()};
+    std::pair<QString, quint64> idx{id, background.rgba64()};
     if (!userColors.contains(idx))
         userColors.insert(idx, QColor(utils::generateContrastingHexColor(id, background)));
     return userColors.value(idx);
@@ -146,6 +179,32 @@ TimelineViewManager::TimelineViewManager(CallManager *, ChatPage *parent)
     connect(rooms_, &RoomlistModel::spaceSelected, communities_, [this](QString roomId) {
         communities_->setCurrentTagId("space:" + roomId);
     });
+}
+
+TimelineViewManager *
+TimelineViewManager::create(QQmlEngine *qmlEngine, QJSEngine *)
+{
+    // The instance has to exist before it is used. We cannot replace it.
+    Q_ASSERT(instance_);
+
+    // The engine has to have the same thread affinity as the singleton.
+    Q_ASSERT(qmlEngine->thread() == instance_->thread());
+
+    // There can only be one engine accessing the singleton.
+    static QJSEngine *s_engine = nullptr;
+    if (s_engine)
+        Q_ASSERT(qmlEngine == s_engine);
+    else
+        s_engine = qmlEngine;
+
+    QJSEngine::setObjectOwnership(instance_, QJSEngine::CppOwnership);
+    return instance_;
+}
+
+void
+TimelineViewManager::clearAll()
+{
+    rooms_->clear();
 }
 
 void

@@ -6,6 +6,7 @@
 
 #include <optional>
 
+#include <mtx/common.hpp>
 #include <mtxclient/crypto/client.hpp>
 
 #include <QByteArray>
@@ -87,7 +88,7 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
 }
 
 void
-MxcImageProvider::addEncryptionInfo(mtx::crypto::EncryptedFile info)
+MxcImageProvider::addEncryptionInfo(const mtx::crypto::EncryptedFile &info)
 {
     infos.insert(QString::fromStdString(info.url), info);
 }

@@ -24,6 +24,8 @@
 #include "Utils.h"
 #include "dock/Dock.h"
 #include "encryption/DeviceVerificationFlow.h"
+#include "timeline/RoomlistModel.h"
+#include "timeline/TimelineModel.h"
 #include "timeline/TimelineViewManager.h"
 #include "ui/Theme.h"
 #include "voip/CallManager.h"
