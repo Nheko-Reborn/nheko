@@ -93,15 +93,10 @@ UserSettings::load(std::optional<QString> profile)
     updateSpaceVias_      = settings.value("user/space_background_maintenance", true).toBool();
     expireEvents_ = settings.value("user/expired_events_background_maintenance", false).toBool();
 
-    mobileMode_        = settings.value("user/mobile_mode", false).toBool();
-    disableSwipe_      = settings.value("user/disable_swipe", false).toBool();
-    emojiFont_         = settings.value("user/emoji_font_family", "emoji").toString();
-    baseFontSize_      = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
-    auto tempPresence  = settings.value("user/presence", "").toString().toStdString();
-    auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
-    if (presenceValue < 0)
-        presenceValue = 0;
-    presence_               = static_cast<Presence>(presenceValue);
+    mobileMode_             = settings.value("user/mobile_mode", false).toBool();
+    disableSwipe_           = settings.value("user/disable_swipe", false).toBool();
+    emojiFont_              = settings.value("user/emoji_font_family", "emoji").toString();
+    baseFontSize_           = settings.value("user/font_size", QFont().pointSizeF()).toDouble();
     ringtone_               = settings.value("user/ringtone", "Default").toString();
     microphone_             = settings.value("user/microphone", QString()).toString();
     camera_                 = settings.value("user/camera", QString()).toString();
@@ -132,6 +127,11 @@ UserSettings::load(std::optional<QString> profile)
     hiddenWidgets_ = settings.value(prefix + "user/hidden_widgets", QStringList{}).toStringList();
     recentReactions_ =
       settings.value(prefix + "user/recent_reactions", QStringList{}).toStringList();
+    auto tempPresence  = settings.value(prefix + "user/presence", "").toString().toStdString();
+    auto presenceValue = QMetaEnum::fromType<Presence>().keyToValue(tempPresence.c_str());
+    if (presenceValue < 0)
+        presenceValue = 0;
+    presence_ = static_cast<Presence>(presenceValue);
 
     collapsedSpaces_.clear();
     auto tempSpaces = settings.value(prefix + "user/collapsed_spaces", QList<QVariant>{}).toList();
@@ -914,9 +914,6 @@ UserSettings::save()
     settings.setValue("theme", theme());
     settings.setValue("font_family", font_);
     settings.setValue("emoji_font_family", emojiFont_);
-    settings.setValue(
-      "presence",
-      QString::fromUtf8(QMetaEnum::fromType<Presence>().valueToKey(static_cast<int>(presence_))));
     settings.setValue("ringtone", ringtone_);
     settings.setValue("microphone", microphone_);
     settings.setValue("camera", camera_);
@@ -955,6 +952,9 @@ UserSettings::save()
     settings.setValue(prefix + "user/hidden_pins", hiddenPins_);
     settings.setValue(prefix + "user/hidden_widgets", hiddenWidgets_);
     settings.setValue(prefix + "user/recent_reactions", recentReactions_);
+    settings.setValue(
+      prefix + "user/presence",
+      QString::fromUtf8(QMetaEnum::fromType<Presence>().valueToKey(static_cast<int>(presence_))));
 
     QVariantList v;
     v.reserve(collapsedSpaces_.size());
