@@ -582,9 +582,10 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
         const auto tagNameEnd =
           std::find_first_of(tagNameStart, end, tagNameEnds.begin(), tagNameEnds.end());
 
-        if (allowedTags.find(
-              QByteArray(tagNameStart, static_cast<int>(tagNameEnd - tagNameStart)).toLower()) ==
-            allowedTags.end()) {
+        const auto tagName =
+          QByteArray(tagNameStart, static_cast<int>(tagNameEnd - tagNameStart)).toLower();
+
+        if (allowedTags.find(tagName) == allowedTags.end()) {
             // not allowed -> escape
             buffer.append("&lt;");
             pos = tagNameStart;
@@ -620,8 +621,9 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                     auto attrName =
                       QByteArray(attrStart, static_cast<int>(attrEnd - attrStart)).toLower();
 
-                    auto sanitizeValue = [&attrName](QByteArray val) {
-                        if (attrName == QByteArrayLiteral("src") && !val.startsWith("mxc://"))
+                    auto sanitizeValue = [&attrName, tagName](QByteArray val) {
+                        if (tagName == QByteArrayLiteral("del") ||
+                            (attrName == QByteArrayLiteral("src") && !val.startsWith("mxc://")))
                             return QByteArray();
                         else
                             return val;
@@ -697,8 +699,12 @@ utils::escapeBlacklistedHtml(const QString &rawStr)
                         }
                     }
 
-                    buffer.append(' ');
-                    buffer.append(attrName);
+                    // We don't really want tags on del tags and they make replacement in the
+                    // frontend more expansive
+                    if (tagName != QByteArrayLiteral("del")) {
+                        buffer.append(' ');
+                        buffer.append(attrName);
+                    }
                 }
             }
         }
