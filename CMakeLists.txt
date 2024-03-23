@@ -25,8 +25,8 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "macos deployment target")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.25.2.tar.gz"
-    SHA1 "560c000d5b6c972d41c2caf44f24189c868cc404"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.25.5.tar.gz"
+    SHA1 "a20151e4c0740ee7d0f9994476856d813cdead29"
     LOCAL
 )
 
@@ -618,6 +618,9 @@ endif()
 if(VOIP)
     include(FindPkgConfig)
     pkg_check_modules(GSTREAMER REQUIRED IMPORTED_TARGET gstreamer-sdp-1.0>=1.18 gstreamer-webrtc-1.0>=1.18 gstreamer-gl-1.0)
+    if (WIN32)
+        pkg_check_modules(GSTREAMER REQUIRED IMPORTED_TARGET gstreamer-d3d11-1.0)
+    endif()
 endif()
 
 if(X11 AND NOT WIN32 AND NOT APPLE AND NOT HAIKU)
@@ -839,6 +842,7 @@ qt_add_translations(nheko RESOURCE_PREFIX "/translations" TS_FILES
 
 if(WIN32)
     target_compile_definitions(nheko PRIVATE WIN32_LEAN_AND_MEAN)
+    target_link_libraries(nheko PRIVATE Qt6::DBus)
     if(MSVC)
         target_compile_options(nheko PUBLIC "/Zc:__cplusplus")
     endif()
