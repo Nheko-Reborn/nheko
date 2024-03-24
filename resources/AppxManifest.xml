@@ -25,8 +25,8 @@
     <Application Id="im.nheko.nheko" Executable="nheko.exe" EntryPoint="Windows.FullTrustApplication"
       uap10:RuntimeBehavior="packagedClassicApp"
       uap10:TrustLevel="mediumIL">
-				<uap:VisualElements DisplayName="Nheko" Description="Matrix client written in Qt"	Square150x150Logo="nheko.png"
-					Square44x44Logo="nheko.png" BackgroundColor="transparent" />
+				<uap:VisualElements DisplayName="Nheko" Description="Matrix client written in Qt"	Square150x150Logo="nheko-150.png"
+					Square44x44Logo="nheko-44.png" BackgroundColor="transparent" />
 				<Extensions>
 					<uap:Extension Category="windows.protocol">
 						<uap:Protocol Name="matrix">

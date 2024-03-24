@@ -40,6 +40,10 @@ mkdir msix
 xcopy .\NhekoRelease\*.* msix\*.* /s /e /c /y
 copy .\resources\nheko.png msix
 copy .\resources\nheko.png msix\nheko_altform-unplated.png
+copy .\resources\nheko-44.png msix\nheko-44.png
+copy .\resources\nheko-44.png msix\nheko-44.targetsize-44_altform-unplated.png
+copy .\resources\nheko-150.png msix\nheko-150.png
+copy .\resources\nheko-150.png msix\nheko-150.targetsize-150_altform-unplated.png
 copy .\resources\AppxManifest.xml msix
 del msix\vc_redist*
 ::sed -i "s/ Version=[^ ]*/ Version=\"%WINVERSION%\"/" msix\AppxManifest.xml
