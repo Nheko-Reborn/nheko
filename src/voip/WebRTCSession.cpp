@@ -533,6 +533,8 @@ linkNewPad(GstElement *decodebin, GstPad *newpad, GstElement *pipe)
         gst_object_unref(queuepad);
     }
     g_free(mediaType);
+
+    GST_DEBUG_BIN_TO_DOT_FILE_WITH_TS(GST_BIN(pipe), GST_DEBUG_GRAPH_SHOW_VERBOSE, "newpad");
 }
 
 void
@@ -763,6 +765,9 @@ WebRTCSession::acceptOffer(const std::string &sdp)
     GstPromise *promise = gst_promise_new_with_change_func(createAnswer, webrtc_, nullptr);
     g_signal_emit_by_name(webrtc_, "set-remote-description", offer, promise);
     gst_webrtc_session_description_free(offer);
+
+    GST_DEBUG_BIN_TO_DOT_FILE_WITH_TS(GST_BIN(pipe_), GST_DEBUG_GRAPH_SHOW_VERBOSE, "accept");
+
     return true;
 }
 
@@ -874,6 +879,8 @@ WebRTCSession::startPipeline(int opusPayloadType, int vp8PayloadType)
         return false;
     }
 
+    GST_DEBUG_BIN_TO_DOT_FILE_WITH_TS(GST_BIN(pipe_), GST_DEBUG_GRAPH_SHOW_VERBOSE, "start");
+
     GstBus *bus = gst_pipeline_get_bus(GST_PIPELINE(pipe_));
     busWatchId_ = gst_bus_add_watch(bus, newBusMessage, this);
     gst_object_unref(bus);
@@ -943,6 +950,8 @@ WebRTCSession::createPipeline(int opusPayloadType, int vp8PayloadType)
         nhlog::ui()->error("WebRTC: failed to link audio pipeline elements");
         return false;
     }
+
+    GST_DEBUG_BIN_TO_DOT_FILE_WITH_TS(GST_BIN(pipe_), GST_DEBUG_GRAPH_SHOW_VERBOSE, "created");
 
     return callType_ == CallType::VOICE || isRemoteVideoSendOnly_
              ? true
@@ -1133,6 +1142,8 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
     }
 
     gst_object_unref(webrtcbin);
+
+    GST_DEBUG_BIN_TO_DOT_FILE_WITH_TS(GST_BIN(pipe_), GST_DEBUG_GRAPH_SHOW_VERBOSE, "addvideo");
     return true;
 }
 
@@ -1179,6 +1190,9 @@ WebRTCSession::toggleMicMute()
     g_object_get(srclevel, "mute", &muted, nullptr);
     g_object_set(srclevel, "mute", !muted, nullptr);
     gst_object_unref(srclevel);
+
+    GST_DEBUG_BIN_TO_DOT_FILE_WITH_TS(GST_BIN(pipe_), GST_DEBUG_GRAPH_SHOW_VERBOSE, "togglemute");
+
     return !muted;
 }
 
@@ -1218,6 +1232,8 @@ WebRTCSession::end()
     nhlog::ui()->debug("WebRTC: ending session");
     keyFrameRequestData_ = KeyFrameRequestData{};
     if (pipe_) {
+        GST_DEBUG_BIN_TO_DOT_FILE_WITH_TS(GST_BIN(pipe_), GST_DEBUG_GRAPH_SHOW_VERBOSE, "end");
+
         gst_element_set_state(pipe_, GST_STATE_NULL);
         gst_object_unref(pipe_);
         pipe_ = nullptr;
