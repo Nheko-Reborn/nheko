@@ -28,6 +28,16 @@ Item {
 
         target: MainWindow
     }
+
+    Connections {
+        function onScrollToIndex(index) {
+            chat.positionViewAtIndex(index, ListView.Center);
+            chat.updateLastScroll();
+        }
+
+        target: room
+    }
+
     ScrollBar {
         id: scrollbar
 
@@ -59,8 +69,11 @@ Item {
         property int lastScrollPos: 0
 
         // Fixup the scroll position when the height changes. Without this, the view is kept around the center of the currently visible content, while we usually want to stick to the bottom.
-        onMovementEnded: lastScrollPos = (contentY+height)
-        onModelChanged: lastScrollPos = (contentY+height)
+        function updateLastScroll() {
+            lastScrollPos = (contentY+height);
+        }
+        onMovementEnded: updateLastScroll()
+        onModelChanged: updateLastScroll()
         onHeightChanged: contentY = (lastScrollPos-height)
 
         Component {
@@ -651,6 +664,7 @@ Item {
         onClicked: function () {
             chat.positionViewAtBeginning();
             TimelineManager.focusMessageInput();
+            chat.updateLastScroll();
         }
 
         anchors {

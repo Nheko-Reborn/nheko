@@ -73,10 +73,6 @@ Column {
             function onRoomAvatarUrlChanged() {
                 messageUserAvatar.url = room.avatarUrl(userId).replace("mxc://", "image://MxcImage/");
             }
-            function onScrollToIndex(index) {
-                chat.positionViewAtIndex(index, ListView.Center);
-            }
-
             target: room
         }
 
