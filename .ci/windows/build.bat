@@ -52,7 +52,7 @@ del msix\vc_redist*
 ::@PowerShell "Get-Content .\msix\AppxManifest.xml"
 
 :: Generate resource files to be able to use unplated icons
-makepri createconfig /cf msix\priconfig.xml /dg EN-US
+makepri createconfig /cf msix\priconfig.xml /dq EN-US
 makepri new /pr msix /cf msix\priconfig.xml
 
 :: Build the msix
