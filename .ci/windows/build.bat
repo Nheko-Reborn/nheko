@@ -51,5 +51,10 @@ del msix\vc_redist*
 
 ::@PowerShell "Get-Content .\msix\AppxManifest.xml"
 
+:: Generate resource files to be able to use unplated icons
+"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makepri.exe" createconfig /cf msix\priconfig.xml /dg EN-US
+"C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makepri.exe" new /pr msix /cf msix\priconfig.xml
+
+:: Build the msix
 "C:\Program Files (x86)\Windows Kits\10\App Certification Kit\makeappx.exe" pack -d msix -p nheko.msix
 
