@@ -330,11 +330,11 @@ GstElement *
 newVideoSinkChain(GstElement *pipe)
 {
     // use compositor for now; acceleration needs investigation
-    GstElement *queue          = gst_element_factory_make("queue", nullptr);
-    GstElement *compositor     = gst_element_factory_make("compositor", "compositor");
-    GstElement *glupload       = gst_element_factory_make("glupload", nullptr);
-    GstElement *qmlglsink      = gst_element_factory_make("qml6glsink", nullptr);
-    GstElement *glsinkbin      = gst_element_factory_make("glsinkbin", nullptr);
+    GstElement *queue      = gst_element_factory_make("queue", nullptr);
+    GstElement *compositor = gst_element_factory_make("compositor", "compositor");
+    GstElement *glupload   = gst_element_factory_make("glupload", nullptr);
+    GstElement *qmlglsink  = gst_element_factory_make("qml6glsink", nullptr);
+    GstElement *glsinkbin  = gst_element_factory_make("glsinkbin", nullptr);
     g_object_set(compositor, "background", 1, nullptr);
     g_object_set(qmlglsink, "widget", WebRTCSession::instance().getVideoItem(), nullptr);
     g_object_set(glsinkbin, "sink", qmlglsink, nullptr);
