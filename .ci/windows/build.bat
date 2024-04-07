@@ -16,7 +16,7 @@ echo %DATE%
 
 call "C:/Program Files (x86)/Microsoft Visual Studio/2022/BuildTools/VC/Auxiliary/Build/vcvarsall.bat" x64
 cmake -G "Visual Studio 17 2022" -A x64 -S. -Bbuild -DHUNTER_ROOT="C:\hunter" -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_KDSINGLEAPPLICATION=ON -DKDSingleApplication_STATIC=ON -DCMAKE_BUILD_TYPE=Release -DHUNTER_CONFIGURATION_TYPES=Release
-cmake --build build --config Release
+cmake --build build --config Release -j %NUMBER_OF_PROCESSORS%
 
 
 git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
