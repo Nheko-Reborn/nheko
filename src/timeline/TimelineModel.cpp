@@ -2034,7 +2034,10 @@ TimelineModel::copyMedia(const QString &eventId) const
                   clipContents->setImageData(img);
               }
 
-              QGuiApplication::clipboard()->setMimeData(clipContents);
+              // Qt uses COM for clipboard management on windows and our HTTP threads do not initialize it, so run in the event loop
+              QTimer::singleShot(0, ChatPage::instance(), [clipContents] {
+                  QGuiApplication::clipboard()->setMimeData(clipContents);
+              });
 
               return;
           } catch (const std::exception &e) {
