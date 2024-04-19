@@ -13,7 +13,7 @@ ColumnLayout {
     spacing: 16
 
     Label {
-        Layout.preferredWidth: 400
+        Layout.preferredWidth: scroll.availableWidth
         Layout.fillWidth: true
         wrapMode: Text.Wrap
         text: qsTr("Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press 'They do not match!' to abort verification!")
