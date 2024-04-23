@@ -20,6 +20,7 @@ ApplicationWindow {
     minimumHeight: 450
     width: 450
     height: 680
+    Layout.preferredWidth: scroll.availableWidth
     color: palette.window
     modality: Qt.NonModal
     flags: Qt.Dialog | Qt.WindowCloseButtonHint | Qt.WindowTitleHint
