@@ -1162,11 +1162,11 @@ TimelineModel::syncState(const mtx::responses::State &s)
 void
 TimelineModel::addEvents(const mtx::responses::Timeline &timeline)
 {
-    if (timeline.events.empty())
-        return;
-
     if (timeline.limited)
         setPaginationInProgress(false);
+
+    if (timeline.events.empty())
+        return;
 
     events.handleSync(timeline);
 
