@@ -1110,10 +1110,10 @@ utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
         }
         }
     };
-    return QString("<mx-reply><blockquote><a "
-                   "href=\"https://matrix.to/#/%1/%2\">In reply "
-                   "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
-                   "/>%5</blockquote></mx-reply>")
+    return QStringLiteral("<mx-reply><blockquote><a "
+                          "href=\"https://matrix.to/#/%1/%2\">In reply "
+                          "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
+                          "/>%5</blockquote></mx-reply>")
              .arg(related.room,
                   QString::fromStdString(related.related_event),
                   related.quoted_user,

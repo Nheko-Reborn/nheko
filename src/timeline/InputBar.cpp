@@ -75,7 +75,7 @@ MediaUpload::thumbnailDataUrl() const
     buffer.open(QIODevice::WriteOnly);
     thumbnail_.save(&buffer, "PNG");
     QString base64 = QString::fromUtf8(byteArray.toBase64());
-    return QString("data:image/png;base64,") + base64;
+    return QStringLiteral("data:image/png;base64,") + base64;
 }
 
 bool
