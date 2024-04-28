@@ -19,8 +19,8 @@ ReCaptcha::ReCaptcha(const QString &session, const QString &context, QObject *pa
 void
 ReCaptcha::openReCaptcha()
 {
-    const auto url = QString("https://%1:%2/_matrix/client/r0/auth/m.login.recaptcha/"
-                             "fallback/web?session=%3")
+    const auto url = QStringLiteral("https://%1:%2/_matrix/client/r0/auth/m.login.recaptcha/"
+                                    "fallback/web?session=%3")
                        .arg(QString::fromStdString(http::client()->server()))
                        .arg(http::client()->port())
                        .arg(m_session);

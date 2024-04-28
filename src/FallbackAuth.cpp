@@ -19,8 +19,8 @@ FallbackAuth::FallbackAuth(const QString &session, const QString &authType, QObj
 void
 FallbackAuth::openFallbackAuth()
 {
-    const auto url = QString("https://%1:%2/_matrix/client/r0/auth/%4/"
-                             "fallback/web?session=%3")
+    const auto url = QStringLiteral("https://%1:%2/_matrix/client/r0/auth/%4/"
+                                    "fallback/web?session=%3")
                        .arg(QString::fromStdString(http::client()->server()))
                        .arg(http::client()->port())
                        .arg(m_session, m_authType);
