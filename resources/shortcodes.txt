@@ -20,7 +20,7 @@
 1F523:symbols 
 1F524:abc
 1F60D:heart_eyes
-1F927:cry_smile
+1F972:cry_smile
 1F608:smiling_imp 
 1F47F:imp
 1F261:rage

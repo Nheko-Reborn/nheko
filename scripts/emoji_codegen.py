@@ -12,10 +12,34 @@ class Emoji(object):
         self.shortname = shortname
         self.unicodename = unicodename
 
+def generate_provider_class(**kwargs):
+    entrycount = sum([len(c[1]) for c in kwargs.items()])
+    tmpl = Template('''\
+    // SPDX-FileCopyrightText: Nheko Contributors
+    //
+    // SPDX-License-Identifier: GPL-3.0-or-later
+
+    // DO NOT EDIT Provider.h DIRECTLY! EDIT IT IN scripts/emoji_codegen.py AND RUN scripts/codegen.sh!
+
+    #pragma once
+    #include <array>
+    #include "Emoji.h"
+
+    namespace emoji {
+    class Provider
+    {
+    public:
+        // all emoji for QML purposes
+        static const std::array<Emoji, {{ entrycount }}> emoji;
+    };
+    } // namespace emoji
+    ''')
+    d = dict(entrycount=entrycount)
+    print(tmpl.render(d))
 def generate_qml_list(**kwargs):
     entrycount = sum([len(c[1]) for c in kwargs.items()])
     tmpl = Template('''
-constexpr const std::array<Emoji, {{ entrycount }} > emoji::Provider::emoji = {
+    std::array<Emoji, {{ entrycount }} > emoji::Provider::emoji = {
     {%- for c in kwargs.items() %}
     // {{ c[0].capitalize() }}
     {%- for e in c[1] %}
@@ -26,13 +50,19 @@ constexpr const std::array<Emoji, {{ entrycount }} > emoji::Provider::emoji = {
     ''')
     d = dict(kwargs=kwargs, entrycount=entrycount)
     print(tmpl.render(d))
+def usage():
+    print('usage: emoji_codegen.py {impl|header} /path/to/emoji-test /path/to/shortcodes.txt')
 if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        print('usage: emoji_codegen.py /path/to/emoji-test.txt /path/to/shortcodes.txt')
+    if len(sys.argv) < 4:
+        usage()
         sys.exit(1)
 
-    filename = sys.argv[1]
-    shortcodefilename = sys.argv[2]
+    mode = sys.argv[1]
+    if mode != 'impl' and mode != 'header':
+        usage()
+        sys.exit(1)
+    filename = sys.argv[2]
+    shortcodefilename = sys.argv[3]
 
     people = []
     nature = []
@@ -99,7 +129,7 @@ if __name__ == '__main__':
             if shortname.endswith(': curly hair'):
                 shortname = "curly_haired_" + shortname[:-12]
             if shortname.endswith(': white hair'):
-                shortname = "white_haried_" + shortname[:-12]
+                shortname = "white_haired_" + shortname[:-12]
             if shortname.endswith(': bald'):
                 shortname = "bald_" + shortname[:-6]
             if shortname.endswith(': beard'):
@@ -134,4 +164,9 @@ if __name__ == '__main__':
     # Use xclip to pipe the output to clipboard.
     # e.g ./emoji_codegen.py emoji.json | xclip -sel clip
     # alternatively - delete the var from src/emoji/Provider.cpp, and do ./codegen.sh emojis shortcodes >> ../src/emoji/Provider.cpp
-    generate_qml_list(people=people, nature=nature, food=food, activity=activity, travel=travel, objects=objects, symbols=symbols, flags=flags)
+    func = None
+    if mode == 'impl':
+        func = generate_qml_list
+    else:
+        func = generate_provider_class
+    func(people=people, nature=nature, food=food, activity=activity, travel=travel, objects=objects, symbols=symbols, flags=flags)
