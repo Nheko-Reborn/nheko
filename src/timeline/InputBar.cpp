@@ -241,7 +241,7 @@ InputBar::updateTextContentProperties(const QString &t, bool charDeleted)
         }
     }
 
-    auto roomMention = containsRoomMention(t);
+    auto roomMention = containsRoomMention(t) && this->room->permissions()->canPingRoom();
 
     if (roomMention != this->containsAtRoom_) {
         if (roomMention)
