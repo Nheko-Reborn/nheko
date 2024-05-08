@@ -42,9 +42,9 @@ cleanup:
 modules:
   - name: lmdb
     sources:
-      - sha256: 8c5a93ac3cc97427c54571ad5a6140b7469389d01e6d2f43df39f96d3a4ccef7
+      - sha256: c0937223bba3c37c896809883a3c9b43049354578b239d6ed2476236a87f40c9
         type: archive
-        url: https://git.openldap.org/openldap/openldap/-/archive/LMDB_0.9.30/openldap-LMDB_0.9.30.tar.gz
+        url: https://git.openldap.org/openldap/openldap/-/archive/LMDB_0.9.32/openldap-LMDB_0.9.32.tar.gz
     make-install-args:
       - prefix=/app
     no-autogen: true
