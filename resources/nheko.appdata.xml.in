@@ -12,7 +12,6 @@
         desktop app for Matrix that feels more like a mainstream
         chat app.</p>
   </description>
-  <translation/>
   <languages>
     <lang>cs</lang>
     <lang>de</lang>
@@ -37,10 +36,6 @@
     <content_attribute id="social-chat">intense</content_attribute>
     <content_attribute id="social-audio">intense</content_attribute>
   </content_rating>
-  <custom>
-    <value key="Purism::form_factor">workstation</value>
-    <value key="Purism::form_factor">mobile</value>
-  </custom>
   <screenshots>
     <screenshot type="default">
       <image>https://nheko-reborn.github.io/images/screenshots/chat.png</image>
@@ -94,5 +89,4 @@
   <url type="translate">https://weblate.nheko.im/projects/nheko/</url>
 
   <!--FIXME: where to donate to the application-->
-  <url type="donation"/>
 </component>
