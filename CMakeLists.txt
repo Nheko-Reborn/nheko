@@ -357,6 +357,8 @@ set(SRC_FILES
     # Emoji
     src/emoji/Provider.cpp
     src/emoji/Provider.h
+    src/emoji/Emoji.cpp
+    src/emoji/Emoji.h
 
     # Timeline
     src/timeline/CommunitiesModel.cpp

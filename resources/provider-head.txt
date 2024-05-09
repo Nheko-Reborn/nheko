@@ -1,0 +1,11 @@
+// SPDX-FileCopyrightText: Nheko Contributors
+//
+// SPDX-License-Identifier: GPL-3.0-or-later
+
+// DO NOT EDIT PROVIDER.CPP DIRECTLY! EDIT resources/provider-head.txt AND RUN scripts/codegen.sh!
+
+#include "emoji/Provider.h"
+
+using namespace emoji;
+
+constexpr

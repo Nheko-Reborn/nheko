@@ -2,17 +2,15 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+// DO NOT EDIT PROVIDER.CPP DIRECTLY! EDIT resources/provider-head.txt AND RUN scripts/codegen.sh!
+
 #include "emoji/Provider.h"
 
 using namespace emoji;
 
-// GCC10 seems to remove the array otherwise, but later versions don't
-#if (defined(__GNUC__) && !defined(__clang__)) && __GNUC__ < 11
-constinit const
-#else
 constexpr
-#endif
-  std::array<Emoji, 3681>
+
+  std::array<Emoji, 3799>
     emoji::Provider::emoji = {
       // People
       Emoji{std::u16string_view(u"\U0001F600"),
@@ -104,7 +102,7 @@ constexpr
             std::u16string_view(u"kissing face with smiling eyes"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F972"),
-            std::u16string_view(u"smiling_face_with_tear"),
+            std::u16string_view(u"cry_smile"),
             std::u16string_view(u"smiling face with tear"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F60B"),
@@ -215,6 +213,14 @@ constexpr
             std::u16string_view(u"shaking"),
             std::u16string_view(u"shaking face"),
             emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F642\U0000200D\U00002194\U0000FE0F"),
+            std::u16string_view(u"head_shaking_horizontally"),
+            std::u16string_view(u"head shaking horizontally"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F642\U0000200D\U00002195\U0000FE0F"),
+            std::u16string_view(u"head_shaking_vertically"),
+            std::u16string_view(u"head shaking vertically"),
+            emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F60C"),
             std::u16string_view(u"relieved"),
             std::u16string_view(u"relieved face"),
@@ -256,7 +262,7 @@ constexpr
             std::u16string_view(u"face vomiting"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F927"),
-            std::u16string_view(u"cry_smile"),
+            std::u16string_view(u"sneezing"),
             std::u16string_view(u"sneezing face"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F975"),
@@ -2273,7 +2279,7 @@ constexpr
             std::u16string_view(u"man: dark skin tone, curly hair"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F468\U0000200D\U0001F9B3"),
-            std::u16string_view(u"white_haried_man"),
+            std::u16string_view(u"white_haired_man"),
             std::u16string_view(u"man: white hair"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F468\U0001F3FB\U0000200D\U0001F9B3"),
@@ -2441,7 +2447,7 @@ constexpr
             std::u16string_view(u"person: dark skin tone, curly hair"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F469\U0000200D\U0001F9B3"),
-            std::u16string_view(u"white_haried_woman"),
+            std::u16string_view(u"white_haired_woman"),
             std::u16string_view(u"woman: white hair"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U0001F9B3"),
@@ -2465,7 +2471,7 @@ constexpr
             std::u16string_view(u"woman: dark skin tone, white hair"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9B3"),
-            std::u16string_view(u"white_haried_person"),
+            std::u16string_view(u"white_haired_person"),
             std::u16string_view(u"person: white hair"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FB\U0000200D\U0001F9B3"),
@@ -6188,6 +6194,90 @@ constexpr
             std::u16string_view(u"woman_walking_dark_skin_tone"),
             std::u16string_view(u"woman walking: dark skin tone"),
             emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F6B6\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_walking_facing_right"),
+            std::u16string_view(u"person walking facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F6B6\U0001F3FB\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_walking_facing_right_light_skin_tone"),
+            std::u16string_view(u"person walking facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F6B6\U0001F3FC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_walking_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"person walking facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F6B6\U0001F3FD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_walking_facing_right_medium_skin_tone"),
+            std::u16string_view(u"person walking facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F6B6\U0001F3FE\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_walking_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"person walking facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F6B6\U0001F3FF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_walking_facing_right_dark_skin_tone"),
+            std::u16string_view(u"person walking facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_walking_facing_right"),
+            std::u16string_view(u"woman walking facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FB\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_walking_facing_right_light_skin_tone"),
+            std::u16string_view(u"woman walking facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FC\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_walking_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"woman walking facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FD\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_walking_facing_right_medium_skin_tone"),
+            std::u16string_view(u"woman walking facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FE\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_walking_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"woman walking facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FF\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_walking_facing_right_dark_skin_tone"),
+            std::u16string_view(u"woman walking facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_walking_facing_right"),
+            std::u16string_view(u"man walking facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FB\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_walking_facing_right_light_skin_tone"),
+            std::u16string_view(u"man walking facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FC\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_walking_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"man walking facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FD\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_walking_facing_right_medium_skin_tone"),
+            std::u16string_view(u"man walking facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FE\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_walking_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"man walking facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F6B6\U0001F3FF\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_walking_facing_right_dark_skin_tone"),
+            std::u16string_view(u"man walking facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F9CD"),
             std::u16string_view(u"person_standing"),
             std::u16string_view(u"person standing"),
@@ -6332,6 +6422,90 @@ constexpr
             std::u16string_view(u"woman_kneeling_dark_skin_tone"),
             std::u16string_view(u"woman kneeling: dark skin tone"),
             emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9CE\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_kneeling_facing_right"),
+            std::u16string_view(u"person kneeling facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9CE\U0001F3FB\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_kneeling_facing_right_light_skin_tone"),
+            std::u16string_view(u"person kneeling facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9CE\U0001F3FC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_kneeling_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"person kneeling facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9CE\U0001F3FD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_kneeling_facing_right_medium_skin_tone"),
+            std::u16string_view(u"person kneeling facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9CE\U0001F3FE\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_kneeling_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"person kneeling facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9CE\U0001F3FF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_kneeling_facing_right_dark_skin_tone"),
+            std::u16string_view(u"person kneeling facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_kneeling_facing_right"),
+            std::u16string_view(u"woman kneeling facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FB\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_kneeling_facing_right_light_skin_tone"),
+            std::u16string_view(u"woman kneeling facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FC\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_kneeling_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"woman kneeling facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FD\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_kneeling_facing_right_medium_skin_tone"),
+            std::u16string_view(u"woman kneeling facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FE\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_kneeling_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"woman kneeling facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FF\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_kneeling_facing_right_dark_skin_tone"),
+            std::u16string_view(u"woman kneeling facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_kneeling_facing_right"),
+            std::u16string_view(u"man kneeling facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FB\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_kneeling_facing_right_light_skin_tone"),
+            std::u16string_view(u"man kneeling facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FC\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_kneeling_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"man kneeling facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FD\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_kneeling_facing_right_medium_skin_tone"),
+            std::u16string_view(u"man kneeling facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FE\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_kneeling_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"man kneeling facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9CE\U0001F3FF\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_kneeling_facing_right_dark_skin_tone"),
+            std::u16string_view(u"man kneeling facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9AF"),
             std::u16string_view(u"person_with_white_cane"),
             std::u16string_view(u"person with white cane"),
@@ -6355,6 +6529,35 @@ constexpr
       Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FF\U0000200D\U0001F9AF"),
             std::u16string_view(u"person_with_white_cane_dark_skin_tone"),
             std::u16string_view(u"person with white cane: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_with_white_cane_facing_right"),
+            std::u16string_view(u"person with white cane facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FB\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_with_white_cane_facing_right_light_skin_tone"),
+            std::u16string_view(u"person with white cane facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FC\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_with_white_cane_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"person with white cane facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FD\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_with_white_cane_facing_right_medium_skin_tone"),
+            std::u16string_view(u"person with white cane facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FE\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_with_white_cane_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"person with white cane facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FF\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_with_white_cane_facing_right_dark_skin_tone"),
+            std::u16string_view(u"person with white cane facing right: dark skin tone"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F468\U0000200D\U0001F9AF"),
             std::u16string_view(u"man_with_white_cane"),
@@ -6380,6 +6583,35 @@ constexpr
             std::u16string_view(u"man_with_white_cane_dark_skin_tone"),
             std::u16string_view(u"man with white cane: dark skin tone"),
             emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F468\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_with_white_cane_facing_right"),
+            std::u16string_view(u"man with white cane facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FB\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_with_white_cane_facing_right_light_skin_tone"),
+            std::u16string_view(u"man with white cane facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FC\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_with_white_cane_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"man with white cane facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FD\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_with_white_cane_facing_right_medium_skin_tone"),
+            std::u16string_view(u"man with white cane facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FE\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_with_white_cane_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"man with white cane facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FF\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_with_white_cane_facing_right_dark_skin_tone"),
+            std::u16string_view(u"man with white cane facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F469\U0000200D\U0001F9AF"),
             std::u16string_view(u"woman_with_white_cane"),
             std::u16string_view(u"woman with white cane"),
@@ -6403,6 +6635,35 @@ constexpr
       Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U0001F9AF"),
             std::u16string_view(u"woman_with_white_cane_dark_skin_tone"),
             std::u16string_view(u"woman with white cane: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F469\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_with_white_cane_facing_right"),
+            std::u16string_view(u"woman with white cane facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FB\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_with_white_cane_facing_right_light_skin_tone"),
+            std::u16string_view(u"woman with white cane facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FC\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_with_white_cane_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"woman with white cane facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FD\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_with_white_cane_facing_right_medium_skin_tone"),
+            std::u16string_view(u"woman with white cane facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FE\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_with_white_cane_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"woman with white cane facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FF\U0000200D\U0001F9AF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_with_white_cane_facing_right_dark_skin_tone"),
+            std::u16string_view(u"woman with white cane facing right: dark skin tone"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9BC"),
             std::u16string_view(u"person_in_motorized_wheelchair"),
@@ -6428,6 +6689,37 @@ constexpr
             std::u16string_view(u"person_in_motorized_wheelchair_dark_skin_tone"),
             std::u16string_view(u"person in motorized wheelchair: dark skin tone"),
             emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_motorized_wheelchair_facing_right"),
+            std::u16string_view(u"person in motorized wheelchair facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FB\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_motorized_wheelchair_facing_right_light_skin_tone"),
+            std::u16string_view(u"person in motorized wheelchair facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{
+        std::u16string_view(
+          u"\U0001F9D1\U0001F3FC\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+        std::u16string_view(u"person_in_motorized_wheelchair_facing_right_medium_light_skin_tone"),
+        std::u16string_view(u"person in motorized wheelchair facing right: medium-light skin tone"),
+        emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FD\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_motorized_wheelchair_facing_right_medium_skin_tone"),
+            std::u16string_view(u"person in motorized wheelchair facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{
+        std::u16string_view(
+          u"\U0001F9D1\U0001F3FE\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+        std::u16string_view(u"person_in_motorized_wheelchair_facing_right_medium_dark_skin_tone"),
+        std::u16string_view(u"person in motorized wheelchair facing right: medium-dark skin tone"),
+        emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FF\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_motorized_wheelchair_facing_right_dark_skin_tone"),
+            std::u16string_view(u"person in motorized wheelchair facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F468\U0000200D\U0001F9BC"),
             std::u16string_view(u"man_in_motorized_wheelchair"),
             std::u16string_view(u"man in motorized wheelchair"),
@@ -6451,6 +6743,36 @@ constexpr
       Emoji{std::u16string_view(u"\U0001F468\U0001F3FF\U0000200D\U0001F9BC"),
             std::u16string_view(u"man_in_motorized_wheelchair_dark_skin_tone"),
             std::u16string_view(u"man in motorized wheelchair: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F468\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_motorized_wheelchair_facing_right"),
+            std::u16string_view(u"man in motorized wheelchair facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FB\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_motorized_wheelchair_facing_right_light_skin_tone"),
+            std::u16string_view(u"man in motorized wheelchair facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{
+        std::u16string_view(
+          u"\U0001F468\U0001F3FC\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+        std::u16string_view(u"man_in_motorized_wheelchair_facing_right_medium_light_skin_tone"),
+        std::u16string_view(u"man in motorized wheelchair facing right: medium-light skin tone"),
+        emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FD\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_motorized_wheelchair_facing_right_medium_skin_tone"),
+            std::u16string_view(u"man in motorized wheelchair facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FE\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_motorized_wheelchair_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"man in motorized wheelchair facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FF\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_motorized_wheelchair_facing_right_dark_skin_tone"),
+            std::u16string_view(u"man in motorized wheelchair facing right: dark skin tone"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F469\U0000200D\U0001F9BC"),
             std::u16string_view(u"woman_in_motorized_wheelchair"),
@@ -6476,6 +6798,37 @@ constexpr
             std::u16string_view(u"woman_in_motorized_wheelchair_dark_skin_tone"),
             std::u16string_view(u"woman in motorized wheelchair: dark skin tone"),
             emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F469\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_motorized_wheelchair_facing_right"),
+            std::u16string_view(u"woman in motorized wheelchair facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FB\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_motorized_wheelchair_facing_right_light_skin_tone"),
+            std::u16string_view(u"woman in motorized wheelchair facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{
+        std::u16string_view(
+          u"\U0001F469\U0001F3FC\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+        std::u16string_view(u"woman_in_motorized_wheelchair_facing_right_medium_light_skin_tone"),
+        std::u16string_view(u"woman in motorized wheelchair facing right: medium-light skin tone"),
+        emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FD\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_motorized_wheelchair_facing_right_medium_skin_tone"),
+            std::u16string_view(u"woman in motorized wheelchair facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{
+        std::u16string_view(
+          u"\U0001F469\U0001F3FE\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+        std::u16string_view(u"woman_in_motorized_wheelchair_facing_right_medium_dark_skin_tone"),
+        std::u16string_view(u"woman in motorized wheelchair facing right: medium-dark skin tone"),
+        emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FF\U0000200D\U0001F9BC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_motorized_wheelchair_facing_right_dark_skin_tone"),
+            std::u16string_view(u"woman in motorized wheelchair facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9BD"),
             std::u16string_view(u"person_in_manual_wheelchair"),
             std::u16string_view(u"person in manual wheelchair"),
@@ -6499,6 +6852,36 @@ constexpr
       Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FF\U0000200D\U0001F9BD"),
             std::u16string_view(u"person_in_manual_wheelchair_dark_skin_tone"),
             std::u16string_view(u"person in manual wheelchair: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_manual_wheelchair_facing_right"),
+            std::u16string_view(u"person in manual wheelchair facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FB\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_manual_wheelchair_facing_right_light_skin_tone"),
+            std::u16string_view(u"person in manual wheelchair facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{
+        std::u16string_view(
+          u"\U0001F9D1\U0001F3FC\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+        std::u16string_view(u"person_in_manual_wheelchair_facing_right_medium_light_skin_tone"),
+        std::u16string_view(u"person in manual wheelchair facing right: medium-light skin tone"),
+        emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FD\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_manual_wheelchair_facing_right_medium_skin_tone"),
+            std::u16string_view(u"person in manual wheelchair facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FE\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_manual_wheelchair_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"person in manual wheelchair facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0001F3FF\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_in_manual_wheelchair_facing_right_dark_skin_tone"),
+            std::u16string_view(u"person in manual wheelchair facing right: dark skin tone"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F468\U0000200D\U0001F9BD"),
             std::u16string_view(u"man_in_manual_wheelchair"),
@@ -6524,6 +6907,35 @@ constexpr
             std::u16string_view(u"man_in_manual_wheelchair_dark_skin_tone"),
             std::u16string_view(u"man in manual wheelchair: dark skin tone"),
             emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F468\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_manual_wheelchair_facing_right"),
+            std::u16string_view(u"man in manual wheelchair facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FB\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_manual_wheelchair_facing_right_light_skin_tone"),
+            std::u16string_view(u"man in manual wheelchair facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FC\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_manual_wheelchair_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"man in manual wheelchair facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FD\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_manual_wheelchair_facing_right_medium_skin_tone"),
+            std::u16string_view(u"man in manual wheelchair facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FE\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_manual_wheelchair_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"man in manual wheelchair facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F468\U0001F3FF\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_in_manual_wheelchair_facing_right_dark_skin_tone"),
+            std::u16string_view(u"man in manual wheelchair facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F469\U0000200D\U0001F9BD"),
             std::u16string_view(u"woman_in_manual_wheelchair"),
             std::u16string_view(u"woman in manual wheelchair"),
@@ -6547,6 +6959,35 @@ constexpr
       Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U0001F9BD"),
             std::u16string_view(u"woman_in_manual_wheelchair_dark_skin_tone"),
             std::u16string_view(u"woman in manual wheelchair: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F469\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_manual_wheelchair_facing_right"),
+            std::u16string_view(u"woman in manual wheelchair facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FB\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_manual_wheelchair_facing_right_light_skin_tone"),
+            std::u16string_view(u"woman in manual wheelchair facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FC\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_manual_wheelchair_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"woman in manual wheelchair facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FD\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_manual_wheelchair_facing_right_medium_skin_tone"),
+            std::u16string_view(u"woman in manual wheelchair facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FE\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_manual_wheelchair_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"woman in manual wheelchair facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F469\U0001F3FF\U0000200D\U0001F9BD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_in_manual_wheelchair_facing_right_dark_skin_tone"),
+            std::u16string_view(u"woman in manual wheelchair facing right: dark skin tone"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F3C3"),
             std::u16string_view(u"person_running"),
@@ -6619,6 +7060,90 @@ constexpr
       Emoji{std::u16string_view(u"\U0001F3C3\U0001F3FF\U0000200D\U00002640\U0000FE0F"),
             std::u16string_view(u"woman_running_dark_skin_tone"),
             std::u16string_view(u"woman running: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F3C3\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_running_facing_right"),
+            std::u16string_view(u"person running facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F3C3\U0001F3FB\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_running_facing_right_light_skin_tone"),
+            std::u16string_view(u"person running facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F3C3\U0001F3FC\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_running_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"person running facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F3C3\U0001F3FD\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_running_facing_right_medium_skin_tone"),
+            std::u16string_view(u"person running facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F3C3\U0001F3FE\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_running_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"person running facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F3C3\U0001F3FF\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"person_running_facing_right_dark_skin_tone"),
+            std::u16string_view(u"person running facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_running_facing_right"),
+            std::u16string_view(u"woman running facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FB\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_running_facing_right_light_skin_tone"),
+            std::u16string_view(u"woman running facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FC\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_running_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"woman running facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FD\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_running_facing_right_medium_skin_tone"),
+            std::u16string_view(u"woman running facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FE\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_running_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"woman running facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FF\U0000200D\U00002640\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"woman_running_facing_right_dark_skin_tone"),
+            std::u16string_view(u"woman running facing right: dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_running_facing_right"),
+            std::u16string_view(u"man running facing right"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FB\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_running_facing_right_light_skin_tone"),
+            std::u16string_view(u"man running facing right: light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FC\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_running_facing_right_medium_light_skin_tone"),
+            std::u16string_view(u"man running facing right: medium-light skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FD\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_running_facing_right_medium_skin_tone"),
+            std::u16string_view(u"man running facing right: medium skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FE\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_running_facing_right_medium_dark_skin_tone"),
+            std::u16string_view(u"man running facing right: medium-dark skin tone"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F3C3\U0001F3FF\U0000200D\U00002642\U0000FE0F\U0000200D\U000027A1\U0000FE0F"),
+            std::u16string_view(u"man_running_facing_right_dark_skin_tone"),
+            std::u16string_view(u"man running facing right: dark skin tone"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F483"),
             std::u16string_view(u"woman_dancing"),
@@ -8453,125 +8978,105 @@ constexpr
             std::u16string_view(u"kiss_dark_skin_tone"),
             std::u16string_view(u"kiss: dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FC"),
             std::u16string_view(u"kiss_person_person_light_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: person, person, light skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FD"),
             std::u16string_view(u"kiss_person_person_light_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: person, person, light skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FE"),
             std::u16string_view(u"kiss_person_person_light_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: person, person, light skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FF"),
             std::u16string_view(u"kiss_person_person_light_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: person, person, light skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FB"),
             std::u16string_view(u"kiss_person_person_medium_light_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium-light skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FD"),
             std::u16string_view(u"kiss_person_person_medium_light_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium-light skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
       Emoji{
-        std::u16string_view(
-          u"\U0001F9D1\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-          u"\U0000200D\U0001F9D1\U0001F3FE"),
+        std::u16string_view(u"\U0001F9D1\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                            u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FE"),
         std::u16string_view(u"kiss_person_person_medium_light_skin_tone_medium_dark_skin_tone"),
         std::u16string_view(u"kiss: person, person, medium-light skin tone, medium-dark skin tone"),
         emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FF"),
             std::u16string_view(u"kiss_person_person_medium_light_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium-light skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FB"),
             std::u16string_view(u"kiss_person_person_medium_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FC"),
             std::u16string_view(u"kiss_person_person_medium_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FE"),
             std::u16string_view(u"kiss_person_person_medium_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FF"),
             std::u16string_view(u"kiss_person_person_medium_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FB"),
             std::u16string_view(u"kiss_person_person_medium_dark_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium-dark skin tone, light skin tone"),
             emoji::Emoji::Category::People},
       Emoji{
-        std::u16string_view(
-          u"\U0001F9D1\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-          u"\U0000200D\U0001F9D1\U0001F3FC"),
+        std::u16string_view(u"\U0001F9D1\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                            u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FC"),
         std::u16string_view(u"kiss_person_person_medium_dark_skin_tone_medium_light_skin_tone"),
         std::u16string_view(u"kiss: person, person, medium-dark skin tone, medium-light skin tone"),
         emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FD"),
             std::u16string_view(u"kiss_person_person_medium_dark_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium-dark skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FF"),
             std::u16string_view(u"kiss_person_person_medium_dark_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: person, person, medium-dark skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FB"),
             std::u16string_view(u"kiss_person_person_dark_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: person, person, dark skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FC"),
             std::u16string_view(u"kiss_person_person_dark_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: person, person, dark skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FD"),
             std::u16string_view(u"kiss_person_person_dark_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: person, person, dark skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F9D1\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F9D1\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F9D1\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F9D1\U0001F3FE"),
             std::u16string_view(u"kiss_person_person_dark_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: person, person, dark skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
@@ -8580,153 +9085,128 @@ constexpr
             std::u16string_view(u"kiss_woman_man"),
             std::u16string_view(u"kiss: woman, man"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_woman_man_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_woman_man_light_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, light skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_woman_man_light_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, man, light skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_woman_man_light_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, light skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_woman_man_light_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, light skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_woman_man_medium_light_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-light skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_woman_man_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_woman_man_medium_light_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-light skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_woman_man_medium_light_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-light skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_woman_man_medium_light_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-light skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_woman_man_medium_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_woman_man_medium_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_woman_man_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_woman_man_medium_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_woman_man_medium_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_woman_man_medium_dark_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-dark skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_woman_man_medium_dark_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-dark skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_woman_man_medium_dark_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-dark skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_woman_man_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_woman_man_medium_dark_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, medium-dark skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_woman_man_dark_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, dark skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_woman_man_dark_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, man, dark skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_woman_man_dark_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, man, dark skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_woman_man_dark_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, dark skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_woman_man_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, man, dark skin tone"),
             emoji::Emoji::Category::People},
@@ -8735,153 +9215,128 @@ constexpr
             std::u16string_view(u"kiss_man_man"),
             std::u16string_view(u"kiss: man, man"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_man_man_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_man_man_light_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, light skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_man_man_light_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: man, man, light skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_man_man_light_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, light skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_man_man_light_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, light skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_man_man_medium_light_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-light skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_man_man_medium_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_man_man_medium_light_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-light skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_man_man_medium_light_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-light skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_man_man_medium_light_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-light skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_man_man_medium_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_man_man_medium_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_man_man_medium_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_man_man_medium_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_man_man_medium_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_man_man_medium_dark_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-dark skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_man_man_medium_dark_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-dark skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_man_man_medium_dark_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-dark skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_man_man_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_man_man_medium_dark_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, medium-dark skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FB"),
             std::u16string_view(u"kiss_man_man_dark_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, dark skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FC"),
             std::u16string_view(u"kiss_man_man_dark_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: man, man, dark skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FD"),
             std::u16string_view(u"kiss_man_man_dark_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: man, man, dark skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FE"),
             std::u16string_view(u"kiss_man_man_dark_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, dark skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F468\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F468\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F468\U0001F3FF"),
             std::u16string_view(u"kiss_man_man_dark_skin_tone"),
             std::u16string_view(u"kiss: man, man, dark skin tone"),
             emoji::Emoji::Category::People},
@@ -8890,155 +9345,130 @@ constexpr
             std::u16string_view(u"kiss_woman_woman"),
             std::u16string_view(u"kiss: woman, woman"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FB"),
             std::u16string_view(u"kiss_woman_woman_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FC"),
             std::u16string_view(u"kiss_woman_woman_light_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, light skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FD"),
             std::u16string_view(u"kiss_woman_woman_light_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, light skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FE"),
             std::u16string_view(u"kiss_woman_woman_light_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, light skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FB\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FF"),
             std::u16string_view(u"kiss_woman_woman_light_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, light skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FB"),
             std::u16string_view(u"kiss_woman_woman_medium_light_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium-light skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FC"),
             std::u16string_view(u"kiss_woman_woman_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FD"),
             std::u16string_view(u"kiss_woman_woman_medium_light_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium-light skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
       Emoji{
-        std::u16string_view(
-          u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-          u"\U0000200D\U0001F469\U0001F3FE"),
+        std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                            u"\U0001F48B\U0000200D\U0001F469\U0001F3FE"),
         std::u16string_view(u"kiss_woman_woman_medium_light_skin_tone_medium_dark_skin_tone"),
         std::u16string_view(u"kiss: woman, woman, medium-light skin tone, medium-dark skin tone"),
         emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FC\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FF"),
             std::u16string_view(u"kiss_woman_woman_medium_light_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium-light skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FB"),
             std::u16string_view(u"kiss_woman_woman_medium_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FC"),
             std::u16string_view(u"kiss_woman_woman_medium_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FD"),
             std::u16string_view(u"kiss_woman_woman_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FE"),
             std::u16string_view(u"kiss_woman_woman_medium_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FD\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FF"),
             std::u16string_view(u"kiss_woman_woman_medium_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FB"),
             std::u16string_view(u"kiss_woman_woman_medium_dark_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium-dark skin tone, light skin tone"),
             emoji::Emoji::Category::People},
       Emoji{
-        std::u16string_view(
-          u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-          u"\U0000200D\U0001F469\U0001F3FC"),
+        std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                            u"\U0001F48B\U0000200D\U0001F469\U0001F3FC"),
         std::u16string_view(u"kiss_woman_woman_medium_dark_skin_tone_medium_light_skin_tone"),
         std::u16string_view(u"kiss: woman, woman, medium-dark skin tone, medium-light skin tone"),
         emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FD"),
             std::u16string_view(u"kiss_woman_woman_medium_dark_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium-dark skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FE"),
             std::u16string_view(u"kiss_woman_woman_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FE\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FF"),
             std::u16string_view(u"kiss_woman_woman_medium_dark_skin_tone_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, medium-dark skin tone, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FB"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FB"),
             std::u16string_view(u"kiss_woman_woman_dark_skin_tone_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, dark skin tone, light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FC"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FC"),
             std::u16string_view(u"kiss_woman_woman_dark_skin_tone_medium_light_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, dark skin tone, medium-light skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FD"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FD"),
             std::u16string_view(u"kiss_woman_woman_dark_skin_tone_medium_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, dark skin tone, medium skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FE"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FE"),
             std::u16string_view(u"kiss_woman_woman_dark_skin_tone_medium_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, dark skin tone, medium-dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(
-              u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D\U0001F48B"
-              u"\U0000200D\U0001F469\U0001F3FF"),
+      Emoji{std::u16string_view(u"\U0001F469\U0001F3FF\U0000200D\U00002764\U0000FE0F\U0000200D"
+                                u"\U0001F48B\U0000200D\U0001F469\U0001F3FF"),
             std::u16string_view(u"kiss_woman_woman_dark_skin_tone"),
             std::u16string_view(u"kiss: woman, woman, dark skin tone"),
             emoji::Emoji::Category::People},
@@ -9675,10 +10105,6 @@ constexpr
             std::u16string_view(u"couple_with_heart_woman_woman_dark_skin_tone"),
             std::u16string_view(u"couple with heart: woman, woman, dark skin tone"),
             emoji::Emoji::Category::People},
-      Emoji{std::u16string_view(u"\U0001F46A"),
-            std::u16string_view(u"family"),
-            std::u16string_view(u"family"),
-            emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F468\U0000200D\U0001F469\U0000200D\U0001F466"),
             std::u16string_view(u"family_man_woman_boy"),
             std::u16string_view(u"family: man, woman, boy"),
@@ -9803,6 +10229,27 @@ constexpr
       Emoji{std::u16string_view(u"\U0001FAC2"),
             std::u16string_view(u"people_hugging"),
             std::u16string_view(u"people hugging"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F46A"),
+            std::u16string_view(u"family"),
+            std::u16string_view(u"family"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9D1\U0000200D\U0001F9D2"),
+            std::u16string_view(u"family_adult_adult_child"),
+            std::u16string_view(u"family: adult, adult, child"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(
+              u"\U0001F9D1\U0000200D\U0001F9D1\U0000200D\U0001F9D2\U0000200D\U0001F9D2"),
+            std::u16string_view(u"family_adult_adult_child_child"),
+            std::u16string_view(u"family: adult, adult, child, child"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9D2"),
+            std::u16string_view(u"family_adult_child"),
+            std::u16string_view(u"family: adult, child"),
+            emoji::Emoji::Category::People},
+      Emoji{std::u16string_view(u"\U0001F9D1\U0000200D\U0001F9D2\U0000200D\U0001F9D2"),
+            std::u16string_view(u"family_adult_child_child"),
+            std::u16string_view(u"family: adult, child, child"),
             emoji::Emoji::Category::People},
       Emoji{std::u16string_view(u"\U0001F463"),
             std::u16string_view(u"footprints"),
@@ -10157,6 +10604,10 @@ constexpr
             std::u16string_view(u"goose"),
             std::u16string_view(u"goose"),
             emoji::Emoji::Category::Nature},
+      Emoji{std::u16string_view(u"\U0001F426\U0000200D\U0001F525"),
+            std::u16string_view(u"phoenix"),
+            std::u16string_view(u"phoenix"),
+            emoji::Emoji::Category::Nature},
       Emoji{std::u16string_view(u"\U0001F438"),
             std::u16string_view(u"frog"),
             std::u16string_view(u"frog"),
@@ -10438,6 +10889,10 @@ constexpr
             std::u16string_view(u"lemon"),
             std::u16string_view(u"lemon"),
             emoji::Emoji::Category::Food},
+      Emoji{std::u16string_view(u"\U0001F34B\U0000200D\U0001F7E9"),
+            std::u16string_view(u"lime"),
+            std::u16string_view(u"lime"),
+            emoji::Emoji::Category::Food},
       Emoji{std::u16string_view(u"\U0001F34C"),
             std::u16string_view(u"banana"),
             std::u16string_view(u"banana"),
@@ -10561,6 +11016,10 @@ constexpr
       Emoji{std::u16string_view(u"\U0001FADB"),
             std::u16string_view(u"pea_pod"),
             std::u16string_view(u"pea pod"),
+            emoji::Emoji::Category::Food},
+      Emoji{std::u16string_view(u"\U0001F344\U0000200D\U0001F7EB"),
+            std::u16string_view(u"brown_mushroom"),
+            std::u16string_view(u"brown mushroom"),
             emoji::Emoji::Category::Food},
       Emoji{std::u16string_view(u"\U0001F35E"),
             std::u16string_view(u"bread"),
@@ -12997,6 +13456,10 @@ constexpr
             std::u16string_view(u"link"),
             std::u16string_view(u"link"),
             emoji::Emoji::Category::Objects},
+      Emoji{std::u16string_view(u"\U000026D3\U0000FE0F\U0000200D\U0001F4A5"),
+            std::u16string_view(u"broken_chain"),
+            std::u16string_view(u"broken chain"),
+            emoji::Emoji::Category::Objects},
       Emoji{std::u16string_view(u"\U000026D3\U0000FE0F"),
             std::u16string_view(u"chains"),
             std::u16string_view(u"chains"),
@@ -15164,8 +15627,8 @@ constexpr
             std::u16string_view(u"flag: Tonga"),
             emoji::Emoji::Category::Flags},
       Emoji{std::u16string_view(u"\U0001F1F9\U0001F1F7"),
-            std::u16string_view(u"turkey_flag"),
-            std::u16string_view(u"flag: Turkey"),
+            std::u16string_view(u"turkiye_flag"),
+            std::u16string_view(u"flag: Türkiye"),
             emoji::Emoji::Category::Flags},
       Emoji{std::u16string_view(u"\U0001F1F9\U0001F1F9"),
             std::u16string_view(u"trinidad_and_tobago_flag"),
@@ -15287,5 +15750,3 @@ constexpr
             std::u16string_view(u"flag: Wales"),
             emoji::Emoji::Category::Flags},
 };
-
-#include "moc_Provider.cpp"
