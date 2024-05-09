@@ -63,7 +63,7 @@ Popup {
             }
 
             ComboBox {
-                visible: CallManager.screenShareType == Voip.X11
+                visible: CallManager.screenShareType == Voip.X11 || CallManager.screenShareType == Voip.D3D11
                 id: windowCombo
 
                 Layout.fillWidth: true

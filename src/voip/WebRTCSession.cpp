@@ -724,6 +724,8 @@ WebRTCSession::havePlugins(bool isVideo,
         if (haveScreensharePlugins) {
             if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
                 haveScreensharePlugins = check_plugins({"waylandsink"});
+            } else if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
+                haveScreensharePlugins = check_plugins({"d3d11videosink"});
             } else {
                 haveScreensharePlugins = check_plugins({"ximagesink"});
             }
@@ -731,6 +733,8 @@ WebRTCSession::havePlugins(bool isVideo,
         if (haveScreensharePlugins) {
             if (screenShareType == ScreenShareType::X11) {
                 haveScreensharePlugins = check_plugins({"ximagesrc"});
+            } else if (screenShareType == ScreenShareType::D3D11) {
+                haveScreensharePlugins = check_plugins({"d3d11screencapturesrc"});
             } else {
                 haveScreensharePlugins = check_plugins({"pipewiresrc"});
             }
@@ -1096,6 +1100,36 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
 
             gst_bin_add(GST_BIN(pipe_), ximagesrc);
             screencastsrc = ximagesrc;
+        } else if (screenShareType_ == ScreenShareType::D3D11) {
+            GstElement *d3d11screensrc =
+              gst_element_factory_make("d3d11screencapturesrc", "screenshare");
+            if (!d3d11screensrc) {
+                nhlog::ui()->error("WebRTC: failed to create d3d11screencapturesrc");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return false;
+            }
+            g_object_set(
+              d3d11screensrc, "window-handle", static_cast<guint64>(shareWindowId_), nullptr);
+            g_object_set(
+              d3d11screensrc, "show-cursor", !settings->screenShareHideCursor(), nullptr);
+            g_object_set(d3d11screensrc, "do-timestamp", (gboolean)1, nullptr);
+            gst_bin_add(GST_BIN(pipe_), d3d11screensrc);
+
+            GstElement *d3d11convert = gst_element_factory_make("d3d11convert", nullptr);
+            gst_bin_add(GST_BIN(pipe_), d3d11convert);
+            if (!gst_element_link(d3d11screensrc, d3d11convert)) {
+                nhlog::ui()->error("WebRTC: failed to link d3d11screencapturesrc -> d3d11convert");
+                return false;
+            }
+
+            GstElement *d3d11download = gst_element_factory_make("d3d11download", nullptr);
+            gst_bin_add(GST_BIN(pipe_), d3d11download);
+            if (!gst_element_link(d3d11convert, d3d11download)) {
+                nhlog::ui()->error("WebRTC: failed to link d3d11convert -> d3d11download");
+                return false;
+            }
+            screencastsrc = d3d11download;
         } else {
             ScreenCastPortal &sc_portal = ScreenCastPortal::instance();
             GstElement *pipewiresrc     = gst_element_factory_make("pipewiresrc", "screenshare");

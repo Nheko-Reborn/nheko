@@ -34,6 +34,10 @@
 #include <xcb/xcb_ewmh.h>
 #endif
 
+#ifdef Q_OS_WINDOWS
+#include <Windows.h>
+#endif
+
 #ifdef GSTREAMER_AVAILABLE
 extern "C"
 {
@@ -87,7 +91,10 @@ CallManager::CallManager(QObject *parent)
         screenShareType_ = ScreenShareType::XDP;
     }
 
-    if (std::getenv("DISPLAY")) {
+    if (QGuiApplication::platformName() == QStringLiteral("windows")) {
+        screenShareType_ = ScreenShareType::D3D11;
+        screenShareTypes_.push_back(ScreenShareType::D3D11);
+    } else if (std::getenv("DISPLAY")) {
         screenShareTypes_.push_back(ScreenShareType::X11);
         if (QGuiApplication::platformName() != QStringLiteral("wayland")) {
             // Selected by default
@@ -117,8 +124,8 @@ CallManager::CallManager(QObject *parent)
           QTimer::singleShot(timeoutms_, this, [this, callid]() {
               if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
                   hangUp(CallHangUp::Reason::InviteTimeOut);
-                  emit ChatPage::instance()->showNotification(
-                    QStringLiteral("The remote side failed to pick up."));
+                  emit ChatPage::instance() -> showNotification(
+                                              QStringLiteral("The remote side failed to pick up."));
               }
           });
       });
@@ -173,7 +180,7 @@ CallManager::CallManager(QObject *parent)
             QString error(QStringLiteral("Call connection failed."));
             if (turnURIs_.empty())
                 error += QLatin1String(" Your homeserver has no configured TURN server.");
-            emit ChatPage::instance()->showNotification(error);
+            emit ChatPage::instance() -> showNotification(error);
             hangUp(CallHangUp::Reason::ICEFailed);
             break;
         }
@@ -228,8 +235,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
 {
     if (isOnCall() || isOnCallOnOtherDevice()) {
         if (isOnCallOnOtherDevice_ != "")
-            emit ChatPage::instance()->showNotification(
-              QStringLiteral("User is already in a call"));
+            emit ChatPage::instance() -> showNotification(
+                                        QStringLiteral("User is already in a call"));
         return;
     }
 
@@ -247,14 +254,15 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     else if (roomInfo.member_count == 2)
         callee = members.front().user_id == utils::localUser() ? &members.back() : &members.front();
     else {
-        emit ChatPage::instance()->showNotification(
-          QStringLiteral("Calls are limited to rooms with less than two members"));
+        emit ChatPage::instance() -> showNotification(QStringLiteral(
+                                    "Calls are limited to rooms with less than two members"));
         return;
     }
 
 #ifdef GSTREAMER_AVAILABLE
     if (callType == CallType::SCREEN) {
-        if (screenShareType_ == ScreenShareType::X11) {
+        if (screenShareType_ == ScreenShareType::X11 ||
+            screenShareType_ == ScreenShareType::D3D11) {
             if (windows_.empty() || windowIndex >= windows_.size()) {
                 nhlog::ui()->error("WebRTC: window index out of range");
                 return;
@@ -276,15 +284,15 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
             if (callType == callType_)
                 acceptInvite();
             else {
-                emit ChatPage::instance()->showNotification(
-                  QStringLiteral("Can't place call. Call types do not match"));
+                emit ChatPage::instance() -> showNotification(QStringLiteral(
+                                            "Can't place call. Call types do not match"));
                 emit newMessage(
                   roomid_,
                   CallHangUp{callid_, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
             }
         } else {
-            emit ChatPage::instance()->showNotification(
-              QStringLiteral("Already on a call with a different user"));
+            emit ChatPage::instance() -> showNotification(
+                                        QStringLiteral("Already on a call with a different user"));
             emit newMessage(
               roomid_,
               CallHangUp{callid_, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
@@ -305,11 +313,12 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     playRingtone(QUrl(QStringLiteral("qrc:/media/media/ringback.ogg")), true);
 
     uint32_t shareWindowId =
-      callType == CallType::SCREEN && screenShareType_ == ScreenShareType::X11
+      callType == CallType::SCREEN &&
+          (screenShareType_ == ScreenShareType::X11 || screenShareType_ == ScreenShareType::D3D11)
         ? windows_[windowIndex].second
         : 0;
     if (!session_.createOffer(callType, screenShareType_, shareWindowId)) {
-        emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
+        emit ChatPage::instance() -> showNotification(QStringLiteral("Problem setting up call."));
         endCall();
     }
 }
@@ -522,14 +531,14 @@ CallManager::acceptInvite()
                               callType_ == CallType::SCREEN,
                               screenShareType_,
                               &errorMessage)) {
-        emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
+        emit ChatPage::instance() -> showNotification(QString::fromStdString(errorMessage));
         hangUp(CallHangUp::Reason::UserMediaFailed);
         return;
     }
 
     session_.setTurnServers(turnURIs_);
     if (!session_.acceptOffer(inviteSDP_)) {
-        emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
+        emit ChatPage::instance() -> showNotification(QStringLiteral("Problem setting up call."));
         hangUp();
         return;
     }
@@ -593,8 +602,8 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
             return;
 
         if (!isOnCall()) {
-            emit ChatPage::instance()->showNotification(
-              QStringLiteral("Call answered on another device."));
+            emit ChatPage::instance() -> showNotification(
+                                        QStringLiteral("Call answered on another device."));
             stopRingtone();
             haveCallInvite_ = false;
             if (callPartyVersion_ != "1") {
@@ -610,7 +619,8 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
     if (isOnCall() && callid_ == callAnswerEvent.content.call_id) {
         stopRingtone();
         if (!session_.acceptAnswer(callAnswerEvent.content.answer.sdp)) {
-            emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
+            emit ChatPage::instance() -> showNotification(
+                                        QStringLiteral("Problem setting up call."));
             hangUp();
         }
     }
@@ -691,8 +701,8 @@ CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
     // check remote echo
     if (callRejectEvent.sender == utils::localUser().toStdString()) {
         if (callRejectEvent.content.party_id != partyid_ && callParty_ != utils::localUser())
-            emit ChatPage::instance()->showNotification(
-              QStringLiteral("Call rejected on another device."));
+            emit ChatPage::instance() -> showNotification(
+                                        QStringLiteral("Call rejected on another device."));
         endCall();
         return;
     }
@@ -719,7 +729,7 @@ CallManager::handleEvent(const RoomEvent<CallNegotiate> &callNegotiateEvent)
 
     std::string negotiationSDP_ = callNegotiateEvent.content.description.sdp;
     if (!session_.acceptNegotiation(negotiationSDP_)) {
-        emit ChatPage::instance()->showNotification(QStringLiteral("Problem accepting new SDP"));
+        emit ChatPage::instance() -> showNotification(QStringLiteral("Problem accepting new SDP"));
         hangUp();
         return;
     }
@@ -861,7 +871,7 @@ bool
 CallManager::screenShareReady() const
 {
 #ifdef GSTREAMER_AVAILABLE
-    if (screenShareType_ == ScreenShareType::X11) {
+    if (screenShareType_ == ScreenShareType::X11 || screenShareType_ == ScreenShareType::D3D11) {
         return true;
     } else {
         return ScreenCastPortal::instance().ready();
@@ -875,11 +885,14 @@ QStringList
 CallManager::screenShareTypeList()
 {
     QStringList ret;
-    ret.reserve(2);
+    ret.reserve(3);
     for (ScreenShareType type : screenShareTypes_) {
         switch (type) {
         case ScreenShareType::X11:
             ret.append(tr("X11"));
+            break;
+        case ScreenShareType::D3D11:
+            ret.append("DirectX 11");
             break;
         case ScreenShareType::XDP:
             ret.append(tr("PipeWire"));
@@ -893,8 +906,10 @@ CallManager::screenShareTypeList()
 QStringList
 CallManager::windowList()
 {
-    if (!(std::find(screenShareTypes_.begin(), screenShareTypes_.end(), ScreenShareType::X11) !=
-          screenShareTypes_.end())) {
+    if (std::find(screenShareTypes_.begin(), screenShareTypes_.end(), ScreenShareType::X11) ==
+          screenShareTypes_.end() &&
+        std::find(screenShareTypes_.begin(), screenShareTypes_.end(), ScreenShareType::D3D11) ==
+          screenShareTypes_.end()) {
         return {};
     }
 
@@ -948,6 +963,23 @@ CallManager::windowList()
             windows_.push_back({QString::fromStdString(name), window});
         }
         xcb_ewmh_get_windows_reply_wipe(&clients);
+    }
+#endif
+#ifdef Q_OS_WINDOWS
+    for (HWND windowHandle = GetTopWindow(nullptr); windowHandle != nullptr;
+         windowHandle      = GetNextWindow(windowHandle, GW_HWNDNEXT)) {
+        if (!IsWindowVisible(windowHandle))
+            continue;
+
+        int titleLength = GetWindowTextLengthW(windowHandle);
+        if (titleLength == 0)
+            continue;
+
+        wchar_t *windowTitle = new wchar_t[titleLength + 1];
+        GetWindowTextW(windowHandle, windowTitle, titleLength + 1);
+
+        windows_.push_back(
+          {QString::fromWCharArray(windowTitle), reinterpret_cast<uint64_t>(windowHandle)});
     }
 #endif
     QStringList ret;
@@ -1007,6 +1039,8 @@ make_preview_sink()
 {
     if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
         return gst_element_factory_make("waylandsink", nullptr);
+    } else if (QGuiApplication::platformName() == QStringLiteral("windows")) {
+        return gst_element_factory_make("d3d11videosink", nullptr);
     } else {
         return gst_element_factory_make("ximagesink", nullptr);
     }
@@ -1029,6 +1063,12 @@ CallManager::previewWindow(unsigned int index) const
     if (screenShareType_ == ScreenShareType::X11 &&
         (windows_.empty() || index >= windows_.size())) {
         nhlog::ui()->error("X11 screencast not available");
+        return;
+    }
+
+    if (screenShareType_ == ScreenShareType::D3D11 &&
+        (windows_.empty() || index >= windows_.size())) {
+        nhlog::ui()->error("D3D11 screencast not available");
         return;
     }
 
@@ -1066,6 +1106,19 @@ CallManager::previewWindow(unsigned int index) const
 
         gst_bin_add(GST_BIN(pipe_), ximagesrc);
         screencastsrc = ximagesrc;
+    } else if (screenShareType_ == ScreenShareType::D3D11) {
+        GstElement *d3d11screensrc = gst_element_factory_make("d3d11screencapturesrc", nullptr);
+        if (!d3d11screensrc) {
+            nhlog::ui()->error("Failed to create d3d11screencapturesrc");
+            gst_object_unref(pipe_);
+            pipe_ = nullptr;
+            return;
+        }
+        g_object_set(d3d11screensrc, "window-handle", windows_[index].second, nullptr);
+        g_object_set(d3d11screensrc, "show-cursor", !settings->screenShareHideCursor(), nullptr);
+
+        gst_bin_add(GST_BIN(pipe_), d3d11screensrc);
+        screencastsrc = d3d11screensrc;
     } else {
         ScreenCastPortal &sc_portal            = ScreenCastPortal::instance();
         const ScreenCastPortal::Stream *stream = sc_portal.getStream();
