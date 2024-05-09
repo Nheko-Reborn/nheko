@@ -975,6 +975,15 @@ CallManager::windowList()
         if (titleLength == 0)
             continue;
 
+        if (GetWindowLong(windowHandle, GWL_EXSTYLE) & WS_EX_TOOLWINDOW)
+            continue;
+
+        TITLEBARINFO titleInfo;
+        titleInfo.cbSize = sizeof(titleInfo);
+        GetTitleBarInfo(windowHandle, &titleInfo);
+        if (titleInfo.rgstate[0] & STATE_SYSTEM_INVISIBLE)
+            continue;
+
         wchar_t *windowTitle = new wchar_t[titleLength + 1];
         GetWindowTextW(windowHandle, windowTitle, titleLength + 1);
 
