@@ -86,12 +86,9 @@ CallManager::CallManager(QObject *parent)
 {
 #ifdef GSTREAMER_AVAILABLE
     std::string errorMessage;
-    if (session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
-        screenShareTypes_.push_back(ScreenShareType::XDP);
-        screenShareType_ = ScreenShareType::XDP;
-    }
 
-    if (QGuiApplication::platformName() == QStringLiteral("windows")) {
+    if (QGuiApplication::platformName() == QStringLiteral("windows") &&
+        session_.havePlugins(true, true, ScreenShareType::D3D11, &errorMessage)) {
         screenShareType_ = ScreenShareType::D3D11;
         screenShareTypes_.push_back(ScreenShareType::D3D11);
     } else if (std::getenv("DISPLAY")) {
@@ -102,6 +99,12 @@ CallManager::CallManager(QObject *parent)
             if (screenShareTypes_.size() >= 2)
                 std::swap(screenShareTypes_[0], screenShareTypes_[1]);
         }
+    }
+
+    if (QGuiApplication::platformName() != QStringLiteral("windows") &&
+        session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
+        screenShareTypes_.push_back(ScreenShareType::XDP);
+        screenShareType_ = ScreenShareType::XDP;
     }
 #endif
 
