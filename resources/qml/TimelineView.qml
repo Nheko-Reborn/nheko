@@ -119,7 +119,7 @@ Item {
                         searchString: topBar.searchString
                     }
                     Loader {
-                        source: CallManager.isOnCall && CallManager.callType != Voip.VOICE ? "voip/VideoCall.qml" : ""
+                        source: CallManager.isOnCall && CallManager.callType != Voip.VOICE ? (Qt.platform.os != "windows" ? "voip/VideoCall.qml" : "voip/VideoCallD3D11.qml") : ""
 
                         onLoaded: TimelineManager.setVideoCallItem()
                     }

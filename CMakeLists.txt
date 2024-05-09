@@ -810,6 +810,7 @@ set(QML_SOURCES
     resources/qml/voip/PlaceCall.qml
     resources/qml/voip/ScreenShare.qml
     resources/qml/voip/VideoCall.qml
+	resources/qml/voip/VideoCallD3D11.qml
     resources/qml/delegates/EncryptionEnabled.qml
     resources/qml/ui/TimelineEffects.qml
 )

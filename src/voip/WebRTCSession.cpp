@@ -332,7 +332,7 @@ newVideoSinkChain(GstElement *pipe)
 {
     // use compositor for now; acceleration needs investigation
     GstElement *queue      = gst_element_factory_make("queue", nullptr);
-    GstElement *compositor = gst_element_factory_make("compositor", "compositor");
+    GstElement *compositor = gst_element_factory_make("d3d11compositor", "compositor");
     g_object_set(compositor, "background", 1, nullptr);
     switch (MainWindow::instance()->graphicsApi()) {
     case QSGRendererInterface::OpenGL: {
@@ -371,25 +371,17 @@ newVideoSinkChain(GstElement *pipe)
         GstElement *d3d11upload       = gst_element_factory_make("d3d11upload", nullptr);
         GstElement *d3d11colorconvert = gst_element_factory_make("d3d11colorconvert", nullptr);
         GstElement *qmld3d11sink      = gst_element_factory_make("qml6d3d11sink", nullptr);
-        GstElement *d3d11videosink    = gst_element_factory_make("d3d11videosink", nullptr);
 
         g_object_set(qmld3d11sink, "widget", WebRTCSession::instance().getVideoItem(), nullptr);
-        g_object_set(d3d11videosink, "sink", qmld3d11sink, nullptr);
-        gst_bin_add_many(GST_BIN(pipe),
-                         queue,
-                         compositor,
-                         d3d11upload,
-                         d3d11colorconvert,
-                         d3d11videosink,
-                         nullptr);
+        gst_bin_add_many(
+          GST_BIN(pipe), queue, d3d11upload, compositor, d3d11colorconvert, qmld3d11sink, nullptr);
         gst_element_link_many(
-          queue, compositor, d3d11upload, d3d11colorconvert, d3d11videosink, nullptr);
+          queue, d3d11upload, compositor, d3d11colorconvert, qmld3d11sink, nullptr);
 
         gst_element_sync_state_with_parent(queue);
         gst_element_sync_state_with_parent(compositor);
         gst_element_sync_state_with_parent(d3d11upload);
         gst_element_sync_state_with_parent(d3d11colorconvert);
-        gst_element_sync_state_with_parent(d3d11videosink);
 
         // to propagate context (hopefully)
         gst_element_set_state(qmld3d11sink, GST_STATE_READY);
