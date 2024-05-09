@@ -724,7 +724,7 @@ WebRTCSession::havePlugins(bool isVideo,
         if (haveScreensharePlugins) {
             if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
                 haveScreensharePlugins = check_plugins({"waylandsink"});
-            } else if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
+            } else if (QGuiApplication::platformName() == QStringLiteral("windows")) {
                 haveScreensharePlugins = check_plugins({"d3d11videosink"});
             } else {
                 haveScreensharePlugins = check_plugins({"ximagesink"});
@@ -734,7 +734,8 @@ WebRTCSession::havePlugins(bool isVideo,
             if (screenShareType == ScreenShareType::X11) {
                 haveScreensharePlugins = check_plugins({"ximagesrc"});
             } else if (screenShareType == ScreenShareType::D3D11) {
-                haveScreensharePlugins = check_plugins({"d3d11screencapturesrc"});
+                haveScreensharePlugins =
+                  check_plugins({"d3d11screencapturesrc", "d3d11download", "d3d11convert"});
             } else {
                 haveScreensharePlugins = check_plugins({"pipewiresrc"});
             }
