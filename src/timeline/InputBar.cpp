@@ -504,6 +504,16 @@ InputBar::generateMentions()
     for (const auto &m : mentions_)
         if (m != u"@room")
             userMentions.push_back(m.toStdString());
+
+    if (!room->reply().isEmpty()) {
+        auto replyToSender =
+          room->dataById(room->reply(), TimelineModel::Roles::UserId, "").toString().toStdString();
+        if (!replyToSender.empty() &&
+            std::ranges::find(userMentions, replyToSender) == userMentions.end()) {
+            userMentions.push_back(replyToSender);
+        }
+    }
+
     auto mention = mtx::common::Mentions{
       .user_ids = userMentions,
       .room     = containsAtRoom_,
