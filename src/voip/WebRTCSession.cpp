@@ -331,10 +331,13 @@ GstElement *
 newVideoSinkChain(GstElement *pipe)
 {
     // use compositor for now; acceleration needs investigation
-    GstElement *queue      = gst_element_factory_make("queue", nullptr);
-    GstElement *compositor = gst_element_factory_make("d3d11compositor", "compositor");
+    GstElement *queue = gst_element_factory_make("queue", nullptr);
+
+    auto graphicsApi       = MainWindow::instance()->graphicsApi();
+    GstElement *compositor = gst_element_factory_make(
+      graphicsApi == QSGRendererInterface::OpenGL ? "compositor" : "d3d11compositor", "compositor");
     g_object_set(compositor, "background", 1, nullptr);
-    switch (MainWindow::instance()->graphicsApi()) {
+    switch (graphicsApi) {
     case QSGRendererInterface::OpenGL: {
         GstElement *glupload       = gst_element_factory_make("glupload", nullptr);
         GstElement *glcolorconvert = gst_element_factory_make("glcolorconvert", nullptr);
