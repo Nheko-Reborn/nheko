@@ -389,6 +389,8 @@ newVideoSinkChain(GstElement *pipe)
         // to propagate context (hopefully)
         gst_element_set_state(qmld3d11sink, GST_STATE_READY);
     } break;
+    default:
+        break;
     }
 
     return queue;
@@ -756,6 +758,8 @@ WebRTCSession::havePlugins(bool isVideo,
             GstElement *qmld3d11sink = gst_element_factory_make("qml6d3d11sink", nullptr);
             gst_object_unref(qmld3d11sink);
         } break;
+        default:
+            break;
         }
     }
     return true;
