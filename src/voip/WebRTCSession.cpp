@@ -1390,7 +1390,8 @@ WebRTCSession::acceptAnswer(const std::string &)
 void
 WebRTCSession::acceptICECandidates(
   const std::vector<mtx::events::voip::CallCandidates::Candidate> &)
-{}
+{
+}
 
 bool
 WebRTCSession::isMicMuted() const
@@ -1406,11 +1407,13 @@ WebRTCSession::toggleMicMute()
 
 void
 WebRTCSession::toggleLocalPiP()
-{}
+{
+}
 
 void
 WebRTCSession::end()
-{}
+{
+}
 
 #endif
 
