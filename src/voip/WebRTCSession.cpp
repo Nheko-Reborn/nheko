@@ -23,6 +23,7 @@
 #include "voip/ScreenCastPortal.h"
 
 #ifdef GSTREAMER_AVAILABLE
+#include "MainWindow.h"
 extern "C"
 {
 #include "gst/gl/gstgldisplay.h"
@@ -330,33 +331,66 @@ GstElement *
 newVideoSinkChain(GstElement *pipe)
 {
     // use compositor for now; acceleration needs investigation
-    GstElement *queue      = gst_element_factory_make("queue", nullptr);
-    GstElement *compositor = gst_element_factory_make("compositor", "compositor");
-    GstElement *glupload   = gst_element_factory_make("glupload", nullptr);
-    GstElement *qmlglsink  = gst_element_factory_make("qml6glsink", nullptr);
-    GstElement *glsinkbin  = gst_element_factory_make("glsinkbin", nullptr);
+    GstElement *queue = gst_element_factory_make("queue", nullptr);
+
+    auto graphicsApi       = MainWindow::instance()->graphicsApi();
+    GstElement *compositor = gst_element_factory_make(
+      graphicsApi == QSGRendererInterface::OpenGL ? "compositor" : "d3d11compositor", "compositor");
     g_object_set(compositor, "background", 1, nullptr);
-    g_object_set(qmlglsink, "widget", WebRTCSession::instance().getVideoItem(), nullptr);
-    g_object_set(glsinkbin, "sink", qmlglsink, nullptr);
-    gst_bin_add_many(GST_BIN(pipe), queue, compositor, glupload, glsinkbin, nullptr);
-    gst_element_link_many(queue, compositor, glupload, glsinkbin, nullptr);
-    gst_element_sync_state_with_parent(queue);
-    gst_element_sync_state_with_parent(compositor);
-    gst_element_sync_state_with_parent(glupload);
-    gst_element_sync_state_with_parent(glsinkbin);
+    switch (graphicsApi) {
+    case QSGRendererInterface::OpenGL: {
+        GstElement *glupload       = gst_element_factory_make("glupload", nullptr);
+        GstElement *glcolorconvert = gst_element_factory_make("glcolorconvert", nullptr);
+        GstElement *qmlglsink      = gst_element_factory_make("qml6glsink", nullptr);
+        GstElement *glsinkbin      = gst_element_factory_make("glsinkbin", nullptr);
 
-    // to propagate context (hopefully)
-    gst_element_set_state(qmlglsink, GST_STATE_READY);
+        g_object_set(qmlglsink, "widget", WebRTCSession::instance().getVideoItem(), nullptr);
+        g_object_set(glsinkbin, "sink", qmlglsink, nullptr);
+        gst_bin_add_many(
+          GST_BIN(pipe), queue, compositor, glupload, glcolorconvert, glsinkbin, nullptr);
+        gst_element_link_many(queue, compositor, glupload, glcolorconvert, glsinkbin, nullptr);
 
-    // Workaround: On wayland, when egl is used, gstreamer might terminate the display connection.
-    // Prevent that by "leaking" a reference to the display. See
-    // https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/3743
-    if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
-        auto context = gst_element_get_context(qmlglsink, "gst.gl.GLDisplay");
-        if (context) {
-            GstGLDisplay *display;
-            gst_context_get_gl_display(context, &display);
+        gst_element_sync_state_with_parent(queue);
+        gst_element_sync_state_with_parent(compositor);
+        gst_element_sync_state_with_parent(glupload);
+        gst_element_sync_state_with_parent(glcolorconvert);
+        gst_element_sync_state_with_parent(glsinkbin);
+
+        // to propagate context (hopefully)
+        gst_element_set_state(qmlglsink, GST_STATE_READY);
+
+        // Workaround: On wayland, when egl is used, gstreamer might terminate the display
+        // connection. Prevent that by "leaking" a reference to the display. See
+        // https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/3743
+        if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
+            auto context = gst_element_get_context(qmlglsink, "gst.gl.GLDisplay");
+            if (context) {
+                GstGLDisplay *display;
+                gst_context_get_gl_display(context, &display);
+            }
         }
+    } break;
+    case QSGRendererInterface::Direct3D11: {
+        GstElement *d3d11upload       = gst_element_factory_make("d3d11upload", nullptr);
+        GstElement *d3d11colorconvert = gst_element_factory_make("d3d11colorconvert", nullptr);
+        GstElement *qmld3d11sink      = gst_element_factory_make("qml6d3d11sink", nullptr);
+
+        g_object_set(qmld3d11sink, "widget", WebRTCSession::instance().getVideoItem(), nullptr);
+        gst_bin_add_many(
+          GST_BIN(pipe), queue, d3d11upload, compositor, d3d11colorconvert, qmld3d11sink, nullptr);
+        gst_element_link_many(
+          queue, d3d11upload, compositor, d3d11colorconvert, qmld3d11sink, nullptr);
+
+        gst_element_sync_state_with_parent(queue);
+        gst_element_sync_state_with_parent(compositor);
+        gst_element_sync_state_with_parent(d3d11upload);
+        gst_element_sync_state_with_parent(d3d11colorconvert);
+
+        // to propagate context (hopefully)
+        gst_element_set_state(qmld3d11sink, GST_STATE_READY);
+    } break;
+    default:
+        break;
     }
 
     return queue;
@@ -606,24 +640,37 @@ WebRTCSession::havePlugins(bool isVideo,
     if (!initialised_ && !init(errorMessage))
         return false;
 
-    static constexpr std::initializer_list<const char *> audio_elements = {
-      "audioconvert",
-      "audioresample",
-      "autoaudiosink",
-      "capsfilter",
-      "decodebin",
-      "opusenc",
-      "queue",
-      "rtpopuspay",
-      "volume",
-      "webrtcbin",
-    };
+    static constexpr std::initializer_list<const char *> audio_elements = {"audioconvert",
+                                                                           "audioresample",
+                                                                           "autoaudiosink",
+                                                                           "capsfilter",
+                                                                           "decodebin",
+                                                                           "opusenc",
+                                                                           "queue",
+                                                                           "rtpopuspay",
+                                                                           "volume",
+                                                                           "webrtcbin",
+                                                                           "nicesrc",
+                                                                           "nicesink"};
 
-    static constexpr std::initializer_list<const char *> video_elements = {
+    static constexpr std::initializer_list<const char *> gl_video_elements = {
       "compositor",
       "glsinkbin",
       "glupload",
       "qml6glsink",
+      "rtpvp8pay",
+      "tee",
+      "videoconvert",
+      "videoscale",
+      "vp8enc",
+    };
+
+    static constexpr std::initializer_list<const char *> d3d11_video_elements = {
+      "compositor",
+      "d3d11colorconvert",
+      "d3d11videosink",
+      "d3d11upload",
+      "qml6d3d11sink",
       "rtpvp8pay",
       "tee",
       "videoconvert",
@@ -654,8 +701,19 @@ WebRTCSession::havePlugins(bool isVideo,
     haveVoicePlugins_ = check_plugins(audio_elements);
 
     // check both elements at once
-    if (isVideo)
-        haveVideoPlugins_ = check_plugins(video_elements);
+    if (isVideo) {
+        switch (MainWindow::instance()->graphicsApi()) {
+        case QSGRendererInterface::OpenGL:
+            haveVideoPlugins_ = check_plugins(gl_video_elements);
+            break;
+        case QSGRendererInterface::Direct3D11:
+            haveVideoPlugins_ = check_plugins(d3d11_video_elements);
+            break;
+        default:
+            haveVideoPlugins_ = false;
+            break;
+        }
+    }
 
     bool haveScreensharePlugins = false;
     if (isScreenshare) {
@@ -663,6 +721,8 @@ WebRTCSession::havePlugins(bool isVideo,
         if (haveScreensharePlugins) {
             if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
                 haveScreensharePlugins = check_plugins({"waylandsink"});
+            } else if (QGuiApplication::platformName() == QStringLiteral("windows")) {
+                haveScreensharePlugins = check_plugins({"d3d11videosink"});
             } else {
                 haveScreensharePlugins = check_plugins({"ximagesink"});
             }
@@ -670,6 +730,9 @@ WebRTCSession::havePlugins(bool isVideo,
         if (haveScreensharePlugins) {
             if (screenShareType == ScreenShareType::X11) {
                 haveScreensharePlugins = check_plugins({"ximagesrc"});
+            } else if (screenShareType == ScreenShareType::D3D11) {
+                haveScreensharePlugins =
+                  check_plugins({"d3d11screencapturesrc", "d3d11download", "d3d11convert"});
             } else {
                 haveScreensharePlugins = check_plugins({"pipewiresrc"});
             }
@@ -685,9 +748,19 @@ WebRTCSession::havePlugins(bool isVideo,
     }
 
     if (isVideo || isScreenshare) {
-        // load qmlglsink to register GStreamer's GstGLVideoItem QML type
-        GstElement *qmlglsink = gst_element_factory_make("qml6glsink", nullptr);
-        gst_object_unref(qmlglsink);
+        switch (MainWindow::instance()->graphicsApi()) {
+        case QSGRendererInterface::OpenGL: {
+            // load qmlglsink to register GStreamer's GstGLVideoItem QML type
+            GstElement *qmlglsink = gst_element_factory_make("qml6glsink", nullptr);
+            gst_object_unref(qmlglsink);
+        } break;
+        case QSGRendererInterface::Direct3D11: {
+            GstElement *qmld3d11sink = gst_element_factory_make("qml6d3d11sink", nullptr);
+            gst_object_unref(qmld3d11sink);
+        } break;
+        default:
+            break;
+        }
     }
     return true;
 }
@@ -1027,6 +1100,36 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
 
             gst_bin_add(GST_BIN(pipe_), ximagesrc);
             screencastsrc = ximagesrc;
+        } else if (screenShareType_ == ScreenShareType::D3D11) {
+            GstElement *d3d11screensrc =
+              gst_element_factory_make("d3d11screencapturesrc", "screenshare");
+            if (!d3d11screensrc) {
+                nhlog::ui()->error("WebRTC: failed to create d3d11screencapturesrc");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return false;
+            }
+            g_object_set(
+              d3d11screensrc, "window-handle", static_cast<guint64>(shareWindowId_), nullptr);
+            g_object_set(
+              d3d11screensrc, "show-cursor", !settings->screenShareHideCursor(), nullptr);
+            g_object_set(d3d11screensrc, "do-timestamp", (gboolean)1, nullptr);
+            gst_bin_add(GST_BIN(pipe_), d3d11screensrc);
+
+            GstElement *d3d11convert = gst_element_factory_make("d3d11convert", nullptr);
+            gst_bin_add(GST_BIN(pipe_), d3d11convert);
+            if (!gst_element_link(d3d11screensrc, d3d11convert)) {
+                nhlog::ui()->error("WebRTC: failed to link d3d11screencapturesrc -> d3d11convert");
+                return false;
+            }
+
+            GstElement *d3d11download = gst_element_factory_make("d3d11download", nullptr);
+            gst_bin_add(GST_BIN(pipe_), d3d11download);
+            if (!gst_element_link(d3d11convert, d3d11download)) {
+                nhlog::ui()->error("WebRTC: failed to link d3d11convert -> d3d11download");
+                return false;
+            }
+            screencastsrc = d3d11download;
         } else {
             ScreenCastPortal &sc_portal = ScreenCastPortal::instance();
             GstElement *pipewiresrc     = gst_element_factory_make("pipewiresrc", "screenshare");

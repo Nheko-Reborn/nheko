@@ -34,6 +34,10 @@
 #include <xcb/xcb_ewmh.h>
 #endif
 
+#ifdef Q_OS_WINDOWS
+#include <Windows.h>
+#endif
+
 #ifdef GSTREAMER_AVAILABLE
 extern "C"
 {
@@ -82,12 +86,12 @@ CallManager::CallManager(QObject *parent)
 {
 #ifdef GSTREAMER_AVAILABLE
     std::string errorMessage;
-    if (session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
-        screenShareTypes_.push_back(ScreenShareType::XDP);
-        screenShareType_ = ScreenShareType::XDP;
-    }
 
-    if (std::getenv("DISPLAY")) {
+    if (QGuiApplication::platformName() == QStringLiteral("windows") &&
+        session_.havePlugins(true, true, ScreenShareType::D3D11, &errorMessage)) {
+        screenShareType_ = ScreenShareType::D3D11;
+        screenShareTypes_.push_back(ScreenShareType::D3D11);
+    } else if (std::getenv("DISPLAY")) {
         screenShareTypes_.push_back(ScreenShareType::X11);
         if (QGuiApplication::platformName() != QStringLiteral("wayland")) {
             // Selected by default
@@ -95,6 +99,12 @@ CallManager::CallManager(QObject *parent)
             if (screenShareTypes_.size() >= 2)
                 std::swap(screenShareTypes_[0], screenShareTypes_[1]);
         }
+    }
+
+    if (QGuiApplication::platformName() != QStringLiteral("windows") &&
+        session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
+        screenShareTypes_.push_back(ScreenShareType::XDP);
+        screenShareType_ = ScreenShareType::XDP;
     }
 #endif
 
@@ -254,7 +264,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
 
 #ifdef GSTREAMER_AVAILABLE
     if (callType == CallType::SCREEN) {
-        if (screenShareType_ == ScreenShareType::X11) {
+        if (screenShareType_ == ScreenShareType::X11 ||
+            screenShareType_ == ScreenShareType::D3D11) {
             if (windows_.empty() || windowIndex >= windows_.size()) {
                 nhlog::ui()->error("WebRTC: window index out of range");
                 return;
@@ -270,8 +281,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
 #endif
 
     if (haveCallInvite_) {
-        nhlog::ui()->debug(
-          "WebRTC: Discarding outbound call for inbound call. localUser is polite party");
+        nhlog::ui()->debug("WebRTC: Discarding outbound call for inbound call. "
+                           "localUser is polite party");
         if (callParty_ == callee->user_id) {
             if (callType == callType_)
                 acceptInvite();
@@ -305,7 +316,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     playRingtone(QUrl(QStringLiteral("qrc:/media/media/ringback.ogg")), true);
 
     uint32_t shareWindowId =
-      callType == CallType::SCREEN && screenShareType_ == ScreenShareType::X11
+      callType == CallType::SCREEN &&
+          (screenShareType_ == ScreenShareType::X11 || screenShareType_ == ScreenShareType::D3D11)
         ? windows_[windowIndex].second
         : 0;
     if (!session_.createOffer(callType, screenShareType_, shareWindowId)) {
@@ -337,7 +349,7 @@ callHangUpReasonString(CallHangUp::Reason reason)
         return "User";
     }
 }
-}
+} // namespace
 
 void
 CallManager::hangUp(CallHangUp::Reason reason)
@@ -511,8 +523,8 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
 void
 CallManager::acceptInvite()
 {
-    // if call was accepted/rejected elsewhere and m.call.select_answer is received
-    // before acceptInvite
+    // if call was accepted/rejected elsewhere and m.call.select_answer is
+    // received before acceptInvite
     if (!haveCallInvite_)
         return;
 
@@ -699,7 +711,8 @@ CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
 
     if (callRejectEvent.content.call_id == callid_) {
         if (session_.state() == webrtc::State::OFFERSENT) {
-            // only accept reject if webrtc is in OFFERSENT state, else call has been accepted
+            // only accept reject if webrtc is in OFFERSENT state, else call has been
+            // accepted
             emit newMessage(
               roomid_,
               CallSelectAnswer{
@@ -861,7 +874,7 @@ bool
 CallManager::screenShareReady() const
 {
 #ifdef GSTREAMER_AVAILABLE
-    if (screenShareType_ == ScreenShareType::X11) {
+    if (screenShareType_ == ScreenShareType::X11 || screenShareType_ == ScreenShareType::D3D11) {
         return true;
     } else {
         return ScreenCastPortal::instance().ready();
@@ -875,11 +888,14 @@ QStringList
 CallManager::screenShareTypeList()
 {
     QStringList ret;
-    ret.reserve(2);
+    ret.reserve(3);
     for (ScreenShareType type : screenShareTypes_) {
         switch (type) {
         case ScreenShareType::X11:
             ret.append(tr("X11"));
+            break;
+        case ScreenShareType::D3D11:
+            ret.append("DirectX 11");
             break;
         case ScreenShareType::XDP:
             ret.append(tr("PipeWire"));
@@ -893,8 +909,10 @@ CallManager::screenShareTypeList()
 QStringList
 CallManager::windowList()
 {
-    if (!(std::find(screenShareTypes_.begin(), screenShareTypes_.end(), ScreenShareType::X11) !=
-          screenShareTypes_.end())) {
+    if (std::find(screenShareTypes_.begin(), screenShareTypes_.end(), ScreenShareType::X11) ==
+          screenShareTypes_.end() &&
+        std::find(screenShareTypes_.begin(), screenShareTypes_.end(), ScreenShareType::D3D11) ==
+          screenShareTypes_.end()) {
         return {};
     }
 
@@ -948,6 +966,32 @@ CallManager::windowList()
             windows_.push_back({QString::fromStdString(name), window});
         }
         xcb_ewmh_get_windows_reply_wipe(&clients);
+    }
+#endif
+#ifdef Q_OS_WINDOWS
+    for (HWND windowHandle = GetTopWindow(nullptr); windowHandle != nullptr;
+         windowHandle      = GetNextWindow(windowHandle, GW_HWNDNEXT)) {
+        if (!IsWindowVisible(windowHandle))
+            continue;
+
+        int titleLength = GetWindowTextLengthW(windowHandle);
+        if (titleLength == 0)
+            continue;
+
+        if (GetWindowLong(windowHandle, GWL_EXSTYLE) & WS_EX_TOOLWINDOW)
+            continue;
+
+        TITLEBARINFO titleInfo;
+        titleInfo.cbSize = sizeof(titleInfo);
+        GetTitleBarInfo(windowHandle, &titleInfo);
+        if (titleInfo.rgstate[0] & STATE_SYSTEM_INVISIBLE)
+            continue;
+
+        wchar_t *windowTitle = new wchar_t[titleLength + 1];
+        GetWindowTextW(windowHandle, windowTitle, titleLength + 1);
+
+        windows_.push_back(
+          {QString::fromWCharArray(windowTitle), reinterpret_cast<uint64_t>(windowHandle)});
     }
 #endif
     QStringList ret;
@@ -1007,11 +1051,13 @@ make_preview_sink()
 {
     if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
         return gst_element_factory_make("waylandsink", nullptr);
+    } else if (QGuiApplication::platformName() == QStringLiteral("windows")) {
+        return gst_element_factory_make("d3d11videosink", nullptr);
     } else {
         return gst_element_factory_make("ximagesink", nullptr);
     }
 }
-}
+} // namespace
 #endif
 
 void
@@ -1029,6 +1075,12 @@ CallManager::previewWindow(unsigned int index) const
     if (screenShareType_ == ScreenShareType::X11 &&
         (windows_.empty() || index >= windows_.size())) {
         nhlog::ui()->error("X11 screencast not available");
+        return;
+    }
+
+    if (screenShareType_ == ScreenShareType::D3D11 &&
+        (windows_.empty() || index >= windows_.size())) {
+        nhlog::ui()->error("D3D11 screencast not available");
         return;
     }
 
@@ -1066,6 +1118,19 @@ CallManager::previewWindow(unsigned int index) const
 
         gst_bin_add(GST_BIN(pipe_), ximagesrc);
         screencastsrc = ximagesrc;
+    } else if (screenShareType_ == ScreenShareType::D3D11) {
+        GstElement *d3d11screensrc = gst_element_factory_make("d3d11screencapturesrc", nullptr);
+        if (!d3d11screensrc) {
+            nhlog::ui()->error("Failed to create d3d11screencapturesrc");
+            gst_object_unref(pipe_);
+            pipe_ = nullptr;
+            return;
+        }
+        g_object_set(d3d11screensrc, "window-handle", windows_[index].second, nullptr);
+        g_object_set(d3d11screensrc, "show-cursor", !settings->screenShareHideCursor(), nullptr);
+
+        gst_bin_add(GST_BIN(pipe_), d3d11screensrc);
+        screencastsrc = d3d11screensrc;
     } else {
         ScreenCastPortal &sc_portal            = ScreenCastPortal::instance();
         const ScreenCastPortal::Stream *stream = sc_portal.getStream();
@@ -1171,6 +1236,6 @@ getTurnURIs(const mtx::responses::TurnServer &turnServer)
     }
     return ret;
 }
-}
+} // namespace
 
 #include "moc_CallManager.cpp"

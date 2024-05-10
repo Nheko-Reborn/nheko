@@ -133,7 +133,11 @@ private:
     QTimer turnServerTimer_;
     QMediaPlayer player_;
     std::vector<webrtc::ScreenShareType> screenShareTypes_;
+#ifndef Q_OS_WINDOWS
     std::vector<std::pair<QString, uint32_t>> windows_;
+#else
+    std::vector<std::pair<QString, uint64_t>> windows_;
+#endif
     std::vector<std::string> rejectCallPartyIDs_;
 
     template<typename T>
