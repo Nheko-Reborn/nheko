@@ -127,8 +127,8 @@ CallManager::CallManager(QObject *parent)
           QTimer::singleShot(timeoutms_, this, [this, callid]() {
               if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
                   hangUp(CallHangUp::Reason::InviteTimeOut);
-                  emit ChatPage::instance() -> showNotification(
-                                              QStringLiteral("The remote side failed to pick up."));
+                  emit ChatPage::instance()->showNotification(
+                    QStringLiteral("The remote side failed to pick up."));
               }
           });
       });
@@ -183,7 +183,7 @@ CallManager::CallManager(QObject *parent)
             QString error(QStringLiteral("Call connection failed."));
             if (turnURIs_.empty())
                 error += QLatin1String(" Your homeserver has no configured TURN server.");
-            emit ChatPage::instance() -> showNotification(error);
+            emit ChatPage::instance()->showNotification(error);
             hangUp(CallHangUp::Reason::ICEFailed);
             break;
         }
@@ -238,8 +238,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
 {
     if (isOnCall() || isOnCallOnOtherDevice()) {
         if (isOnCallOnOtherDevice_ != "")
-            emit ChatPage::instance() -> showNotification(
-                                        QStringLiteral("User is already in a call"));
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("User is already in a call"));
         return;
     }
 
@@ -257,8 +257,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     else if (roomInfo.member_count == 2)
         callee = members.front().user_id == utils::localUser() ? &members.back() : &members.front();
     else {
-        emit ChatPage::instance() -> showNotification(QStringLiteral(
-                                    "Calls are limited to rooms with less than two members"));
+        emit ChatPage::instance()->showNotification(
+          QStringLiteral("Calls are limited to rooms with less than two members"));
         return;
     }
 
@@ -281,21 +281,21 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
 #endif
 
     if (haveCallInvite_) {
-        nhlog::ui()->debug(
-          "WebRTC: Discarding outbound call for inbound call. localUser is polite party");
+        nhlog::ui()->debug("WebRTC: Discarding outbound call for inbound call. "
+                           "localUser is polite party");
         if (callParty_ == callee->user_id) {
             if (callType == callType_)
                 acceptInvite();
             else {
-                emit ChatPage::instance() -> showNotification(QStringLiteral(
-                                            "Can't place call. Call types do not match"));
+                emit ChatPage::instance()->showNotification(
+                  QStringLiteral("Can't place call. Call types do not match"));
                 emit newMessage(
                   roomid_,
                   CallHangUp{callid_, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
             }
         } else {
-            emit ChatPage::instance() -> showNotification(
-                                        QStringLiteral("Already on a call with a different user"));
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("Already on a call with a different user"));
             emit newMessage(
               roomid_,
               CallHangUp{callid_, partyid_, callPartyVersion_, CallHangUp::Reason::UserBusy});
@@ -321,7 +321,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
         ? windows_[windowIndex].second
         : 0;
     if (!session_.createOffer(callType, screenShareType_, shareWindowId)) {
-        emit ChatPage::instance() -> showNotification(QStringLiteral("Problem setting up call."));
+        emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
         endCall();
     }
 }
@@ -349,7 +349,7 @@ callHangUpReasonString(CallHangUp::Reason reason)
         return "User";
     }
 }
-}
+} // namespace
 
 void
 CallManager::hangUp(CallHangUp::Reason reason)
@@ -523,8 +523,8 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
 void
 CallManager::acceptInvite()
 {
-    // if call was accepted/rejected elsewhere and m.call.select_answer is received
-    // before acceptInvite
+    // if call was accepted/rejected elsewhere and m.call.select_answer is
+    // received before acceptInvite
     if (!haveCallInvite_)
         return;
 
@@ -534,14 +534,14 @@ CallManager::acceptInvite()
                               callType_ == CallType::SCREEN,
                               screenShareType_,
                               &errorMessage)) {
-        emit ChatPage::instance() -> showNotification(QString::fromStdString(errorMessage));
+        emit ChatPage::instance()->showNotification(QString::fromStdString(errorMessage));
         hangUp(CallHangUp::Reason::UserMediaFailed);
         return;
     }
 
     session_.setTurnServers(turnURIs_);
     if (!session_.acceptOffer(inviteSDP_)) {
-        emit ChatPage::instance() -> showNotification(QStringLiteral("Problem setting up call."));
+        emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
         hangUp();
         return;
     }
@@ -605,8 +605,8 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
             return;
 
         if (!isOnCall()) {
-            emit ChatPage::instance() -> showNotification(
-                                        QStringLiteral("Call answered on another device."));
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("Call answered on another device."));
             stopRingtone();
             haveCallInvite_ = false;
             if (callPartyVersion_ != "1") {
@@ -622,8 +622,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
     if (isOnCall() && callid_ == callAnswerEvent.content.call_id) {
         stopRingtone();
         if (!session_.acceptAnswer(callAnswerEvent.content.answer.sdp)) {
-            emit ChatPage::instance() -> showNotification(
-                                        QStringLiteral("Problem setting up call."));
+            emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
             hangUp();
         }
     }
@@ -704,15 +703,16 @@ CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
     // check remote echo
     if (callRejectEvent.sender == utils::localUser().toStdString()) {
         if (callRejectEvent.content.party_id != partyid_ && callParty_ != utils::localUser())
-            emit ChatPage::instance() -> showNotification(
-                                        QStringLiteral("Call rejected on another device."));
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("Call rejected on another device."));
         endCall();
         return;
     }
 
     if (callRejectEvent.content.call_id == callid_) {
         if (session_.state() == webrtc::State::OFFERSENT) {
-            // only accept reject if webrtc is in OFFERSENT state, else call has been accepted
+            // only accept reject if webrtc is in OFFERSENT state, else call has been
+            // accepted
             emit newMessage(
               roomid_,
               CallSelectAnswer{
@@ -732,7 +732,7 @@ CallManager::handleEvent(const RoomEvent<CallNegotiate> &callNegotiateEvent)
 
     std::string negotiationSDP_ = callNegotiateEvent.content.description.sdp;
     if (!session_.acceptNegotiation(negotiationSDP_)) {
-        emit ChatPage::instance() -> showNotification(QStringLiteral("Problem accepting new SDP"));
+        emit ChatPage::instance()->showNotification(QStringLiteral("Problem accepting new SDP"));
         hangUp();
         return;
     }
@@ -1057,7 +1057,7 @@ make_preview_sink()
         return gst_element_factory_make("ximagesink", nullptr);
     }
 }
-}
+} // namespace
 #endif
 
 void
@@ -1236,6 +1236,6 @@ getTurnURIs(const mtx::responses::TurnServer &turnServer)
     }
     return ret;
 }
-}
+} // namespace
 
 #include "moc_CallManager.cpp"
