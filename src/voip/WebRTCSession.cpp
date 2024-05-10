@@ -638,18 +638,18 @@ WebRTCSession::havePlugins(bool isVideo,
     if (!initialised_ && !init(errorMessage))
         return false;
 
-    static constexpr std::initializer_list<const char *> audio_elements = {
-      "audioconvert",
-      "audioresample",
-      "autoaudiosink",
-      "capsfilter",
-      "decodebin",
-      "opusenc",
-      "queue",
-      "rtpopuspay",
-      "volume",
-      "webrtcbin",
-    };
+    static constexpr std::initializer_list<const char *> audio_elements = {"audioconvert",
+                                                                           "audioresample",
+                                                                           "autoaudiosink",
+                                                                           "capsfilter",
+                                                                           "decodebin",
+                                                                           "opusenc",
+                                                                           "queue",
+                                                                           "rtpopuspay",
+                                                                           "volume",
+                                                                           "webrtcbin",
+                                                                           "nicesrc",
+                                                                           "nicesink"};
 
     static constexpr std::initializer_list<const char *> gl_video_elements = {
       "compositor",
