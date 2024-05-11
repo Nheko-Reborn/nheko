@@ -9,7 +9,8 @@ set -ue
 QT_BASEPATH=(${HOME}/Qt/6.*/macos/)
 PATH="${QT_BASEPATH}/bin/:${PATH}"
 pipx ensurepath
-. ~/.zshrc
+# TODO: this breaks on Cirrus, so it's commented out for now
+# . ~/.zshrc
 export PATH
 
 CMAKE_PREFIX_PATH="${QT_BASEPATH}/lib/cmake"
