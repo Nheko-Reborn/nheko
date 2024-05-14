@@ -249,6 +249,11 @@ Control {
                             text: model.roomName
                             textFormat: Text.RichText
                         }
+
+                        Label {
+                            text: model.roomParent === "" ? "" : ("[" + model.roomParent + "]")
+                            font.pixelSize: popup.avatarHeight * 0.5
+                        }
                     }
                 }
                 DelegateChoice {
