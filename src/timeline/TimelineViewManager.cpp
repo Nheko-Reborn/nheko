@@ -620,6 +620,9 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
 }
 
 //! WORKAROUND(Nico): for https://bugreports.qt.io/browse/QTBUG-93281
+// QTBUG-93281 Fixed in 6.7.0
+// https://github.com/qt/qtdeclarative/commit/7fb39a7accba014063e32ac41a58b77905bbd95b
+#if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
 void
 TimelineViewManager::fixImageRendering([[maybe_unused]] QQuickTextDocument *t,
                                        [[maybe_unused]] QQuickItem *i)
@@ -630,6 +633,11 @@ TimelineViewManager::fixImageRendering([[maybe_unused]] QQuickTextDocument *t,
     }
 #endif
 }
+#else
+void
+TimelineViewManager::fixImageRendering(QQuickTextDocument *, QQuickItem *)
+{}
+#endif
 
 using IgnoredUsers = mtx::events::EphemeralEvent<mtx::events::account_data::IgnoredUsers>;
 
