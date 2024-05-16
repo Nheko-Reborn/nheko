@@ -70,7 +70,8 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
     auto formatNotification = [this, notification] {
         const auto template_ = getMessageTemplate(notification);
         if (std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-              notification.event)) {
+              notification.event) ||
+            !template_.contains("%2")) {
             return template_;
         }
 

@@ -107,7 +107,8 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
     QString template_ = getMessageTemplate(notification);
     // TODO: decrypt this message if the decryption setting is on in the UserSettings
     if (std::holds_alternative<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
-          notification.event)) {
+          notification.event) ||
+        !template_.contains("%2")) {
         postNotif(template_);
         return;
     }
@@ -115,7 +116,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
     if (hasMarkup_) {
         if (hasImages_ &&
             (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image ||
-             mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)) {
+             mtx::accessors::event_type(notification.event) == mtx::events::EventType::Sticker)) {
             MxcImageProvider::download(
               QString::fromStdString(mtx::accessors::url(notification.event))
                 .remove(QStringLiteral("mxc://")),

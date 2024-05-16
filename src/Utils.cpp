@@ -45,9 +45,10 @@
 namespace {
 template<class T>
 QString
-messageDescription(const QString &username = QString(),
-                   const QString &body     = QString(),
-                   const bool isLocal      = false)
+messageDescription(const QString &username,
+                   const QString &body,
+                   const bool isLocal,
+                   bool containsSpoiler)
 {
     using Audio         = mtx::events::RoomEvent<mtx::events::msg::Audio>;
     using Emote         = mtx::events::RoomEvent<mtx::events::msg::Emote>;
@@ -105,6 +106,16 @@ messageDescription(const QString &username = QString(),
                                                "%1 sent a notification")
               .arg(username);
     } else if (std::is_same<T, Text>::value || std::is_same<T, Unknown>::value) {
+        if (containsSpoiler) {
+            if (isLocal)
+                return QCoreApplication::translate("message-description sent:",
+                                                   "You sent a spoiler.");
+            else
+                return QCoreApplication::translate("message-description sent:",
+                                                   "%1 sent a spoiler.")
+                  .arg(username);
+        }
+
         if (isLocal)
             return QCoreApplication::translate("message-description sent:", "You: %1").arg(body);
         else
@@ -121,6 +132,16 @@ messageDescription(const QString &username = QString(),
                                                    "%1 sent a chat effect")
                   .arg(username);
         } else {
+            if (containsSpoiler) {
+                if (isLocal)
+                    return QCoreApplication::translate("message-description sent:",
+                                                       "You sent a spoiler.");
+                else
+                    return QCoreApplication::translate("message-description sent:",
+                                                       "%1 sent a spoiler.")
+                      .arg(username);
+            }
+
             if (isLocal)
                 return QCoreApplication::translate("message-description sent:", "You: %1")
                   .arg(body);
@@ -129,6 +150,12 @@ messageDescription(const QString &username = QString(),
                   .arg(username, body);
         }
     } else if (std::is_same<T, Emote>::value) {
+        if (containsSpoiler) {
+            return QCoreApplication::translate("message-description sent:",
+                                               "* %1 spoils something.")
+              .arg(username);
+        }
+
         return QStringLiteral("* %1 %2").arg(username, body);
     } else if (std::is_same<T, Encrypted>::value) {
         if (isLocal)
@@ -178,16 +205,22 @@ createDescriptionInfo(const Event &event, const QString &localUser, const QStrin
     const auto username = displayName;
     const auto ts       = QDateTime::fromMSecsSinceEpoch(msg.origin_server_ts);
     auto body           = mtx::accessors::body(event);
-    if (mtx::accessors::relations(event).reply_to())
-        body = utils::stripReplyFromBody(body);
+    auto formatted_body = mtx::accessors::formatted_body(event);
+    if (mtx::accessors::relations(event).reply_to()) {
+        body           = utils::stripReplyFromBody(body);
+        formatted_body = utils::stripReplyFromFormattedBody(formatted_body);
+    }
 
-    return DescInfo{
-      QString::fromStdString(msg.event_id),
-      sender,
-      messageDescription<T>(username, QString::fromStdString(body), sender == localUser),
-      utils::descriptiveTime(ts),
-      msg.origin_server_ts,
-      ts};
+    // Simplistic heuristic
+    bool containsSpoiler = formatted_body.find("<span data-mx-spoiler") != formatted_body.npos;
+
+    return DescInfo{QString::fromStdString(msg.event_id),
+                    sender,
+                    messageDescription<T>(
+                      username, QString::fromStdString(body), sender == localUser, containsSpoiler),
+                    utils::descriptiveTime(ts),
+                    msg.origin_server_ts,
+                    ts};
 }
 
 std::string
@@ -402,7 +435,7 @@ utils::getMessageDescription(const mtx::events::collections::TimelineEvents &eve
         DescInfo info;
         info.userid = sender;
         info.body   = QStringLiteral(" %1").arg(
-          messageDescription<Encrypted>(username, QLatin1String(""), sender == localUser));
+          messageDescription<Encrypted>(username, QLatin1String(""), sender == localUser, false));
         info.timestamp       = msg->origin_server_ts;
         info.descriptiveTime = utils::descriptiveTime(ts);
         info.event_id        = QString::fromStdString(msg->event_id);

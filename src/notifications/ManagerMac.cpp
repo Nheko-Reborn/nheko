@@ -4,6 +4,7 @@
 
 #include "Manager.h"
 
+#include <QCoreApplication>
 #include <QRegularExpression>
 #include <QTextDocumentFragment>
 
@@ -19,7 +20,13 @@
 static QString
 formatNotification(const mtx::responses::Notification &notification)
 {
-    return utils::stripReplyFallbacks(notification.event, {}, {}).quoted_body;
+    auto fallbacks = utils::stripReplyFallbacks(notification.event, {}, {});
+
+    bool containsSpoiler = fallbacks.quoted_formatted_body.contains("<span data-mx-spoiler");
+    if (containsSpoiler)
+        return QCoreApplication::translate("macosNotification", "Message contains spoiler.");
+    else
+        return fallbacks.quoted_body;
 }
 
 NotificationsManager::NotificationsManager(QObject *parent)
