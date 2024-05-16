@@ -259,7 +259,10 @@ main(int argc, char *argv[])
         // getting a valid activation token on wayland is a bit of a pain, it works most reliably
         // when you have an actual window, that has the focus...
         auto waylandApp = app.nativeInterface<QNativeInterface::QWaylandApplication>();
-        if (waylandApp) {
+        // When the token is set in the env, use it by default as that's what we're supposed to do
+        // But leave a env knob so users can workaround terminal emulators that leak tokens
+        if (waylandApp &&
+            (!qEnvironmentVariableIsEmpty("NHEKO_FORCE_ACTIVATION_SPLASH") || token.isEmpty())) {
             QQuickView window;
             window.setTitle("Activate main instance");
             window.setMaximumSize(QSize(100, 50));
