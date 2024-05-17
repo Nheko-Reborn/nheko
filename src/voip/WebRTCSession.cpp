@@ -339,21 +339,16 @@ newVideoSinkChain(GstElement *pipe)
     g_object_set(compositor, "background", 1, nullptr);
     switch (graphicsApi) {
     case QSGRendererInterface::OpenGL: {
-        GstElement *glupload       = gst_element_factory_make("glupload", nullptr);
-        GstElement *glcolorconvert = gst_element_factory_make("glcolorconvert", nullptr);
-        GstElement *qmlglsink      = gst_element_factory_make("qml6glsink", nullptr);
-        GstElement *glsinkbin      = gst_element_factory_make("glsinkbin", nullptr);
+        GstElement *qmlglsink = gst_element_factory_make("qml6glsink", nullptr);
+        GstElement *glsinkbin = gst_element_factory_make("glsinkbin", nullptr);
 
         g_object_set(qmlglsink, "widget", WebRTCSession::instance().getVideoItem(), nullptr);
         g_object_set(glsinkbin, "sink", qmlglsink, nullptr);
-        gst_bin_add_many(
-          GST_BIN(pipe), queue, compositor, glupload, glcolorconvert, glsinkbin, nullptr);
-        gst_element_link_many(queue, compositor, glupload, glcolorconvert, glsinkbin, nullptr);
+        gst_bin_add_many(GST_BIN(pipe), queue, compositor, glsinkbin, nullptr);
+        gst_element_link_many(queue, compositor, glsinkbin, nullptr);
 
         gst_element_sync_state_with_parent(queue);
         gst_element_sync_state_with_parent(compositor);
-        gst_element_sync_state_with_parent(glupload);
-        gst_element_sync_state_with_parent(glcolorconvert);
         gst_element_sync_state_with_parent(glsinkbin);
 
         // to propagate context (hopefully)
