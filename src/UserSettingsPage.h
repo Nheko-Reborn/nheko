@@ -121,6 +121,8 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool updateSpaceVias READ updateSpaceVias WRITE setUpdateSpaceVias NOTIFY
                  updateSpaceViasChanged)
     Q_PROPERTY(bool expireEvents READ expireEvents WRITE setExpireEvents NOTIFY expireEventsChanged)
+    Q_PROPERTY(bool displayParentInSwitcher READ displayParentInSwitcher WRITE
+                 setDisplayParentInSwitcher NOTIFY displayParentInSwitcherChanged)
 
     UserSettings();
 
@@ -228,6 +230,7 @@ public:
     void setExposeDBusApi(bool state);
     void setUpdateSpaceVias(bool state);
     void setExpireEvents(bool state);
+    void setDisplayParentInSwitcher(bool state);
 
     QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
     bool messageHoverHighlight() const { return messageHoverHighlight_; }
@@ -305,6 +308,7 @@ public:
     bool exposeDBusApi() const { return exposeDBusApi_; }
     bool updateSpaceVias() const { return updateSpaceVias_; }
     bool expireEvents() const { return expireEvents_; }
+    bool displayParentInSwitcher() const { return displayParentInSwitcher_; }
 
 signals:
     void groupViewStateChanged(bool state);
@@ -371,6 +375,7 @@ signals:
     void exposeDBusApiChanged(bool state);
     void updateSpaceViasChanged(bool state);
     void expireEventsChanged(bool state);
+    void displayParentInSwitcherChanged(bool state);
 
 private:
     // Default to system theme if QT_QPA_PLATFORMTHEME var is set.
@@ -447,6 +452,7 @@ private:
     bool exposeDBusApi_;
     bool updateSpaceVias_;
     bool expireEvents_;
+    bool displayParentInSwitcher_;
 
     QSettings settings;
 
@@ -476,6 +482,7 @@ class UserSettingsModel : public QAbstractListModel
         PrivacyScreen,
         PrivacyScreenTimeout,
         ScrollbarsInRoomlist,
+        DisplayParentInSwitcher,
 #ifdef NHEKO_DBUS_SYS
         ExposeDBusApi,
 #endif
