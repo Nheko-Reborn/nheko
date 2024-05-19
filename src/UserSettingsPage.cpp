@@ -2127,8 +2127,22 @@ UserSettingsModel::exportSessionKeys()
     if (!ok)
         return;
 
+    auto repeatedPassword = QInputDialog::getText(nullptr,
+                                                  tr("Repeat File Password"),
+                                                  tr("Repeat the passphrase:"),
+                                                  QLineEdit::Password,
+                                                  QLatin1String(""),
+                                                  &ok);
+    if (!ok)
+        return;
+
     if (password.isEmpty()) {
         QMessageBox::warning(nullptr, tr("Error"), tr("The password cannot be empty"));
+        return;
+    }
+
+    if (password != repeatedPassword) {
+        QMessageBox::warning(nullptr, tr("Error"), tr("Passwords don't match"));
         return;
     }
 
