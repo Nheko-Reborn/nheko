@@ -2141,6 +2141,11 @@ UserSettingsModel::exportSessionKeys()
         return;
     }
 
+    if (repeatedPassword.isEmpty()) {
+        QMessageBox::warning(nullptr, tr("Error"), tr("Please repeat the password"));
+        return;
+    }
+
     if (password != repeatedPassword) {
         QMessageBox::warning(nullptr, tr("Error"), tr("Passwords don't match"));
         return;
