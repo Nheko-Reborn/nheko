@@ -45,7 +45,6 @@ TimelineEvent {
     property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
 
     property alias hovered: messageHover.hovered
-    property bool scrolledToThis: false
 
     mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0) + 4
     replyInset: mainInset + 4 + Nheko.paddingSmall

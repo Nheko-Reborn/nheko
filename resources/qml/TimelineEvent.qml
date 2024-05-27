@@ -13,6 +13,7 @@ EventDelegateChooser {
     id: wrapper
 
     required property bool isStateEvent
+    property bool scrolledToThis: false
 
     // qmllint disable required
     EventDelegateChoice {

@@ -84,6 +84,16 @@ Item {
                 messageContextMenu: messageContextMenuC
                 replyContextMenu: replyContextMenuC
                 scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+                data: [
+                    Connections {
+                        function onMovementEnded() {
+                            if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height) {
+                                room.currentIndex = index;
+                            }
+                        }
+                        target: chat
+                    }
+                ]
             }
         }
         Component {
@@ -94,6 +104,16 @@ Item {
                 messageContextMenu: messageContextMenuC
                 replyContextMenu: replyContextMenuC
                 scrolledToThis: eventId === room.scrollTarget && (y + height > chat.y + chat.contentY && y < chat.y + chat.height + chat.contentY)
+                data: [
+                    Connections {
+                        function onMovementEnded() {
+                            if (y + height + 2 * chat.spacing > chat.contentY + chat.height && y < chat.contentY + chat.height) {
+                                room.currentIndex = index;
+                            }
+                        }
+                        target: chat
+                    }
+                ]
             }
         }
 
