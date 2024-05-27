@@ -178,35 +178,15 @@ main(int argc, char *argv[])
     }
 #endif
 
-    // This is some hacky programming, but it's necessary (AFAIK?) to get the unique config name
-    // parsed before the SingleApplication userdata is set.
-    QString userdata{QLatin1String("")};
     QString matrixUri;
     for (int i = 1; i < argc; ++i) {
         QString arg{argv[i]};
-        if (arg.startsWith(QLatin1String("--profile="))) {
-            arg.remove(QStringLiteral("--profile="));
-            userdata = arg;
-        } else if (arg.startsWith(QLatin1String("-p="))) {
-            arg.remove(QStringLiteral("-p="));
-            userdata = arg;
-        } else if (arg == QLatin1String("--profile") || arg == QLatin1String("-p")) {
-            if (i < argc - 1) // if i is less than argc - 1, we still have a parameter
-                              // left to process as the name
-            {
-                ++i; // the next arg is the name, so increment
-                userdata = QString{argv[i]};
-            }
-        } else if (arg.startsWith(QLatin1String("matrix:"))) {
+        if (arg.startsWith(QLatin1String("matrix:"))) {
             matrixUri = arg;
         }
     }
 
     QApplication app(argc, argv);
-
-    KDSingleApplication singleapp(
-      QStringLiteral("im.nheko.nheko-%1")
-        .arg(userdata == QLatin1String("default") ? QLatin1String("") : userdata));
 
     QCommandLineParser parser;
     parser.addHelpOption();
@@ -249,6 +229,19 @@ main(int argc, char *argv[])
 
     if (parser.isSet(compactDb))
         cache::setNeedsCompactFlag();
+
+    if (parser.isSet(configName))
+        UserSettings::initialize(parser.value(configName));
+    else
+        UserSettings::initialize(std::nullopt);
+
+    auto settings = UserSettings::instance().toWeakRef();
+
+    auto profileName = settings.lock()->profile();
+
+    KDSingleApplication singleapp(
+      QStringLiteral("im.nheko.nheko-%1")
+        .arg(profileName == QLatin1String("default") ? QLatin1String("") : profileName));
 
     // This check needs to happen _after_ process(), so that we actually print help for --help when
     // Nheko is already running.
@@ -369,13 +362,6 @@ main(int argc, char *argv[])
 
     auto filter = new NhekoFixupPaletteEventFilter(&app);
     app.installEventFilter(filter);
-
-    if (parser.isSet(configName))
-        UserSettings::initialize(parser.value(configName));
-    else
-        UserSettings::initialize(std::nullopt);
-
-    auto settings = UserSettings::instance().toWeakRef();
 
     QFont font;
     QString userFontFamily = settings.lock()->font();
