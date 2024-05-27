@@ -615,11 +615,14 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
 
 //! WORKAROUND(Nico): for https://bugreports.qt.io/browse/QTBUG-93281
 void
-TimelineViewManager::fixImageRendering(QQuickTextDocument *t, QQuickItem *i)
+TimelineViewManager::fixImageRendering([[maybe_unused]] QQuickTextDocument *t,
+                                       [[maybe_unused]] QQuickItem *i)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
     if (t) {
         QObject::connect(t->textDocument(), SIGNAL(imagesLoaded()), i, SLOT(updateWholeDocument()));
     }
+#endif
 }
 
 using IgnoredUsers = mtx::events::EphemeralEvent<mtx::events::account_data::IgnoredUsers>;
