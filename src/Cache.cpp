@@ -2990,8 +2990,6 @@ Cache::roomNamesAndAliases()
                 parentName = getRoomName(*parentId);
             }
 
-            nhlog::db()->info("{} has parent [{}]", room_id_str, parentName);
-
             result.push_back(RoomNameAlias{
               .id              = std::move(room_id_str),
               .name            = std::move(info.name),
