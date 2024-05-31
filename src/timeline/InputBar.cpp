@@ -462,8 +462,7 @@ replaceMatrixToMarkdownLink(QString input)
         int newline   = input.indexOf('\n', endOfName);
         if (endOfLink > endOfName && (newline == -1 || endOfLink < newline)) {
             auto name = input.mid(startOfName + 1, endOfName - startOfName - 1);
-            name.replace("\\[", "[");
-            name.replace("\\]", "]");
+            name.remove(QChar(u'\\'), Qt::CaseSensitive);
             input.replace(startOfName, endOfLink - startOfName + 1, name);
             replaced = true;
         }
@@ -522,6 +521,7 @@ InputBar::generateMentions()
     // this->containsAtRoom_ = false;
     // this->mentions_.clear();
     // this->mentionTexts_.clear();
+
     return mention;
 }
 

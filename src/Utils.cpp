@@ -582,6 +582,34 @@ utils::linkifyMessage(const QString &body)
 }
 
 QString
+utils::escapeMentionMarkdown(QString input)
+{
+    input = input.toHtmlEscaped();
+
+    constexpr std::array<char, 10> markdownChars = {
+      '\\',
+      '`',
+      '*',
+      '_',
+      /*'{', '}',*/ '[',
+      ']',
+      '<',
+      '>',
+      /* '(', ')',  '#', '-', '+', '.', '!', */ '~',
+      '|',
+    };
+
+    QByteArray replacement = "\\\\";
+
+    for (char c : markdownChars) {
+        replacement[1] = c;
+        input.replace(QChar::fromLatin1(c), QLatin1StringView(replacement));
+    }
+
+    return input;
+}
+
+QString
 utils::escapeBlacklistedHtml(const QString &rawStr)
 {
     static const std::set<QByteArray> allowedTags = {
@@ -1139,18 +1167,19 @@ utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
             return QStringLiteral("sent a video");
         }
         default: {
-            return related.quoted_formatted_body;
+            return escapeBlacklistedHtml(related.quoted_formatted_body);
         }
         }
     };
+
     return QStringLiteral("<mx-reply><blockquote><a "
                           "href=\"https://matrix.to/#/%1/%2\">In reply "
                           "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
                           "/>%5</blockquote></mx-reply>")
              .arg(related.room,
                   QString::fromStdString(related.related_event),
-                  related.quoted_user,
-                  related.quoted_user,
+                  QUrl::toPercentEncoding(related.quoted_user),
+                  related.quoted_user.toHtmlEscaped(),
                   getFormattedBody()) +
            html;
 }

@@ -11,6 +11,7 @@
 #include "CompletionModelRoles.h"
 #include "Logging.h"
 #include "UserSettingsPage.h"
+#include "Utils.h"
 
 UsersModel::UsersModel(const std::string &roomId, QObject *parent)
   : QAbstractListModel(parent)
@@ -66,10 +67,7 @@ UsersModel::data(const QModelIndex &index, int role) const
         case CompletionModel::CompletionRole:
             if (UserSettings::instance()->markdown())
                 return QStringLiteral("[%1](https://matrix.to/#/%2)")
-                  .arg(QString(displayNames[index.row()])
-                         .replace("[", "\\[")
-                         .replace("]", "\\]")
-                         .toHtmlEscaped(),
+                  .arg(utils::escapeMentionMarkdown(QString(displayNames[index.row()])),
                        QString(QUrl::toPercentEncoding(userids[index.row()])));
             else
                 return displayNames[index.row()];

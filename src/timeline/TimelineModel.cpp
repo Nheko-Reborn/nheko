@@ -3080,8 +3080,6 @@ TimelineModel::setEdit(const QString &newEdit)
         input()->storeForEdit();
     }
 
-    auto quoted = [](QString in) { return in.replace("[", "\\[").replace("]", "\\]"); };
-
     if (edit_ != newEdit) {
         auto ev = events.get(newEdit.toStdString(), "");
         if (ev && mtx::accessors::sender(*ev) == http::client()->user_id().to_string()) {
@@ -3100,10 +3098,12 @@ TimelineModel::setEdit(const QString &newEdit)
                 for (const auto &user : mentionsList->user_ids) {
                     auto userid = QString::fromStdString(user);
                     mentions.append(userid);
-                    mentionTexts.append(
-                      QStringLiteral("[%1](https://matrix.to/#/%2)")
-                        .arg(displayName(userid).replace("[", "\\[").replace("]", "\\]"),
-                             QString(QUrl::toPercentEncoding(userid))));
+                    mentionTexts.append(QStringLiteral("[%1](https://matrix.to/#/%2)")
+                                          .arg(utils::escapeMentionMarkdown(
+                                                 // not using TimelineModel::displayName here,
+                                                 // because it would double html escape
+                                                 cache::displayName(room_id_, userid)),
+                                               QString(QUrl::toPercentEncoding(userid))));
                 }
             }
 
@@ -3127,7 +3127,9 @@ TimelineModel::setEdit(const QString &newEdit)
 
                     for (const auto &[user, link] : reverseNameMapping) {
                         // TODO(Nico): html unescape the user name
-                        editText.replace(user, QStringLiteral("[%1](%2)").arg(quoted(user), link));
+                        editText.replace(
+                          user,
+                          QStringLiteral("[%1](%2)").arg(utils::escapeMentionMarkdown(user), link));
                     }
                 }
 

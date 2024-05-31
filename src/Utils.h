@@ -140,6 +140,9 @@ linkifyMessage(const QString &body);
 QString
 markdownToHtml(const QString &text, bool rainbowify = false, bool noExtensions = false);
 
+QString
+escapeMentionMarkdown(QString input);
+
 //! Escape every html tag, that was not whitelisted
 QString
 escapeBlacklistedHtml(const QString &data);
