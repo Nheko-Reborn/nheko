@@ -2117,7 +2117,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat mit einem Spoiler geantwortet.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3367,7 +3367,9 @@ Beispiel: https://deinserver.example.com:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translatorcomment>Verschlüsselung ist aktuell noch experimentell und kann Fehler beinhalten. &lt;br&gt;
+Bitte sei dir bewusst, dass die Verschlüsselung nicht nachträglich deaktiviert werden kann.</translatorcomment>
+        <translation></translation>
     </message>
     <message>
         <location line="+19"/>
@@ -5600,7 +5602,7 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-12"/>
         <source>Message contains spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nachricht beinhaltet Spoiler.</translation>
     </message>
 </context>
 <context>
@@ -5669,13 +5671,13 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Du hast einen Spoiler gesendet.</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+26"/>
         <source>%1 sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 hat einen Spoiler gesendet.</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -5702,7 +5704,7 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     <message>
         <location line="+23"/>
         <source>* %1 spoils something.</source>
-        <translation type="unfinished"></translation>
+        <translation>* %1 spoilert etwas.</translation>
     </message>
     <message>
         <location line="+8"/>

@@ -2119,7 +2119,7 @@ Example: https://yourserver.example.com:8787</translation>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 replied with a spoiler.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3369,7 +3369,8 @@ Example: https://yourserver.example.com:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
+                                Please take note that it can&apos;t be disabled afterwards.</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -5602,7 +5603,7 @@ This setting will take effect upon restart.</translation>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-12"/>
         <source>Message contains spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Message contains spoiler.</translation>
     </message>
 </context>
 <context>
@@ -5671,13 +5672,13 @@ This setting will take effect upon restart.</translation>
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>You sent a spoiler.</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+26"/>
         <source>%1 sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sent a spoiler.</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -5704,7 +5705,7 @@ This setting will take effect upon restart.</translation>
     <message>
         <location line="+23"/>
         <source>* %1 spoils something.</source>
-        <translation type="unfinished"></translation>
+        <translation>* %1 spoils something.</translation>
     </message>
     <message>
         <location line="+8"/>
