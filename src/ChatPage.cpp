@@ -986,8 +986,15 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
         return;
     }
 
+    bool direct = req.is_direct;
+    std::string direct_user;
+    if (direct && !req.invite.empty())
+        direct_user = req.invite.front();
+
     http::client()->create_room(
-      req, [this](const mtx::responses::CreateRoom &res, mtx::http::RequestErr err) {
+      req,
+      [this, direct, direct_user](const mtx::responses::CreateRoom &res,
+                                  mtx::http::RequestErr err) {
           if (err) {
               const auto err_code = mtx::errors::to_string(err->matrix_error.errcode);
               const auto error    = err->matrix_error.error;
@@ -1000,6 +1007,16 @@ ChatPage::createRoom(const mtx::requests::CreateRoom &req)
           }
 
           QString newRoomId = QString::fromStdString(res.room_id.to_string());
+
+          if (direct && !direct_user.empty()) {
+              utils::markRoomAsDirect(newRoomId,
+                                      {RoomMember{
+                                        .user_id      = QString::fromStdString(direct_user),
+                                        .display_name = "",
+                                        .avatar_url   = "",
+                                      }});
+          }
+
           emit showNotification(tr("Room %1 created.").arg(newRoomId));
           emit newRoom(newRoomId);
           emit changeToRoom(newRoomId);
