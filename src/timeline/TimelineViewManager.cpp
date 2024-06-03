@@ -232,6 +232,9 @@ TimelineViewManager::openRoomSettings(QString room_id)
 void
 TimelineViewManager::openInviteUsers(QString roomId)
 {
+    if (!roomId.startsWith('!'))
+        return;
+
     InviteesModel *model = new InviteesModel{rooms_->getRoomById(roomId).data()};
     connect(model, &InviteesModel::accept, this, [this, model, roomId]() {
         emit inviteUsers(roomId, model->mxids());
@@ -243,6 +246,9 @@ TimelineViewManager::openInviteUsers(QString roomId)
 void
 TimelineViewManager::openGlobalUserProfile(QString userId)
 {
+    if (!userId.startsWith('@'))
+        return;
+
     UserProfile *profile = new UserProfile{QString{}, userId, this};
     QQmlEngine::setObjectOwnership(profile, QQmlEngine::JavaScriptOwnership);
     emit openProfile(profile);
