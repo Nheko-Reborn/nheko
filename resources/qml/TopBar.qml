@@ -96,7 +96,7 @@ Pane {
                 Layout.column: 1
                 Layout.row: 1
                 Layout.rowSpan: 2
-                displayName: roomName
+                displayName: room ? room.plainRoomName : roomName
                 enabled: false
                 implicitHeight: Nheko.avatarSize
                 implicitWidth: Nheko.avatarSize
