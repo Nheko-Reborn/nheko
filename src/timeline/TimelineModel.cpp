@@ -3277,8 +3277,8 @@ TimelineModel::widgetLinks() const
     QStringList list;
 
     auto user = utils::localUser();
-    auto av   = QUrl::toPercentEncoding(
-      QString::fromStdString(http::client()->mxc_to_download_url(avatarUrl(user).toStdString())));
+    // auto av   = QUrl::toPercentEncoding(
+    //   QString::fromStdString(http::client()->mxc_to_download_url(avatarUrl(user).toStdString())));
     auto disp  = QUrl::toPercentEncoding(displayName(user));
     auto theme = UserSettings::instance()->theme();
     if (theme == QStringLiteral("system"))
@@ -3299,7 +3299,7 @@ TimelineModel::widgetLinks() const
         url.replace("$matrix_user_id", user);
         url.replace("$matrix_room_id", QUrl::toPercentEncoding(room_id_));
         url.replace("$matrix_display_name", disp);
-        url.replace("$matrix_avatar_url", av);
+        // url.replace("$matrix_avatar_url", av);
 
         url.replace("$matrix_widget_id",
                     QUrl::toPercentEncoding(QString::fromStdString(p.content.id)));
