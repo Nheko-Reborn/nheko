@@ -194,16 +194,16 @@ public slots:
 
     void storeForEdit()
     {
-        textBeforeEdit     = text();
-        mentionsBefore     = mentions_;
-        mentionTextsBefore = mentionTexts_;
+        textBeforeEdit       = text();
+        mentionsBefore       = mentions_;
+        mentionTextsBefore   = mentionTexts_;
         containsAtRoomBefore = containsAtRoom_;
         emit mentionsChanged();
     }
     void restoreAfterEdit()
     {
-        mentions_     = mentionsBefore;
-        mentionTexts_ = mentionTextsBefore;
+        mentions_       = mentionsBefore;
+        mentionTexts_   = mentionTextsBefore;
         containsAtRoom_ = containsAtRoomBefore;
         mentionsBefore.clear();
         mentionTextsBefore.clear();
