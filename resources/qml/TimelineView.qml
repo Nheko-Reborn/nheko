@@ -27,7 +27,9 @@ Item {
     Keys.onPressed: event => {
         if (event.text && event.key !== Qt.Key_Enter && event.key !== Qt.Key_Return && !topBar.searchHasFocus) {
             TimelineManager.focusMessageInput();
-            room.input.setText(room.input.text + event.text);
+            if (event.modifiers != Qt.ControlModifier) {
+                room.input.setText(room.input.text + event.text);
+            }
         }
     }
     onRoomChanged: if (room != null)
