@@ -197,12 +197,14 @@ public slots:
         textBeforeEdit     = text();
         mentionsBefore     = mentions_;
         mentionTextsBefore = mentionTexts_;
+        containsAtRoomBefore = containsAtRoom_;
         emit mentionsChanged();
     }
     void restoreAfterEdit()
     {
         mentions_     = mentionsBefore;
         mentionTexts_ = mentionTextsBefore;
+        containsAtRoom_ = containsAtRoomBefore;
         mentionsBefore.clear();
         mentionTextsBefore.clear();
         setText(textBeforeEdit);
@@ -216,6 +218,9 @@ public slots:
 
         mentions_     = newMentions;
         mentionTexts_ = newMentionTexts;
+
+        this->containsAtRoom_ = newMentions.contains(u"@room");
+
         emit mentionsChanged();
     }
 
@@ -331,6 +336,7 @@ private:
     // store stuff during edits
     QStringList mentionsBefore, mentionTextsBefore;
     QString textBeforeEdit;
+    bool containsAtRoomBefore = false;
 
     using UploadHandle = std::unique_ptr<MediaUpload, DeleteLaterDeleter>;
     std::vector<UploadHandle> unconfirmedUploads;
