@@ -184,13 +184,14 @@ LoginPage::checkHomeserverVersion()
                     "v1.7",
                     "v1.8",
                     "v1.9",
+                    "v1.10",
                   };
                   return supported.count(v) != 0;
               }) == versions.versions.cend()) {
             emit versionErrorCb(
               tr("The selected server does not support a version of the Matrix protocol, that this "
                  "client understands (%1 to %2). You can't sign in.")
-                .arg(u"v1.1", u"v1.9"));
+                .arg(u"v1.1", u"v1.10"));
             return;
         }
 
