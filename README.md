@@ -12,7 +12,7 @@ feels more like a mainstream chat app ([Element], Telegram etc) and less like an
 ### Stable
 
 [![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/latest)
-<a href='https://flathub.org/apps/details/io.github.NhekoReborn.Nheko'><img height='32' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+<a href='https://flathub.org/apps/details/im.nheko.Nheko'><img height='32' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 [![Packaging status](https://repology.org/badge/tiny-repos/nheko.svg)](https://repology.org/project/nheko/versions)
 
 For other options and details see the [Installation](#installation) section.
@@ -39,17 +39,19 @@ Most of the features you would expect from a chat application are missing right 
 but we are getting close to a more feature complete client.
 Specifically there is support for:
 - E2E encryption.
-- VoIP calls (voice & video).
+- VoIP calls (voice & video, support varies by platform).
 - User registration.
 - Creating, joining & leaving rooms.
 - Sending & receiving invites.
 - Sending & receiving files and emoji (inline widgets for images, audio and file messages).
+- Custom stickers and emoji.
 - Replies with text, images and other media (and actually render them as inline widgets).
 - Typing notifications.
 - Username auto-completion.
 - Message & mention notifications.
 - Redacting messages.
 - Read receipts.
+- Presence and status messages (if enabled on the server side).
 - Basic communities support.
 - Room switcher (ctrl-K).
 - Light, Dark & System themes.
@@ -60,8 +62,9 @@ Specifically there is support for:
 
 ### Releases
 
-Releases for Linux (AppImage), macOS (disk image) & Windows (x64 installer)
+Releases for Linux (Flatpak), macOS (disk image) & Windows (x64 msix or appinstaller)
 can be found in the [GitHub releases](https://github.com/Nheko-Reborn/nheko/releases).
+The appinstaller on Windows will regularly check our servers for updates. The msix won't.
 
 ### Repositories
 
@@ -143,7 +146,7 @@ sudo zypper install qt-jdenticon
 #### Flatpak
 
 ```
-flatpak install flathub io.github.NhekoReborn.Nheko
+flatpak install flathub im.nheko.Nheko
 ```
 
 #### Guix
@@ -157,8 +160,8 @@ guix install nheko
 Install nheko via the `Discover` app in Desktop Mode (this installs the flatpak). To also make it work in Game Mode you'll have create a wrapper script that starts kwalletd and then nheko. You can create `/home/deck/nheko.sh` with the following content and then add this script as a "Non-Steam Game" to Steam.
 ```bash
 #!/bin/sh
-kwalletd5&
-flatpak run --env=XDG_CURRENT_DESKTOP=KDE --env=KDE_SESSION_VERSION=5 --branch=stable --arch=x86_64 --command=io.github.NhekoReborn.Nheko --file-forwarding io.github.NhekoReborn.Nheko @@u @@
+kwalletd6&
+flatpak run --env=XDG_CURRENT_DESKTOP=KDE --env=KDE_SESSION_VERSION=5 --branch=stable --arch=x86_64 --command=im.nheko.Nheko --file-forwarding im.nheko.Nheko @@u @@
 ```
 
 #### macOS (10.14 and above)
@@ -237,14 +240,14 @@ sharing easier.
 
 **A:** Nheko uses Qt's image plugins to render images. You might need to install
 additional packages to display some image types like webp. Usually those
-packages are called `qt5-image-formats-plugins`, `qt5-imageformats` or similar.
+packages are called `qt6-image-formats-plugins`, `qt6-imageformats` or similar.
 KDE has similar plugins, that can extend the supported image types even more.
 
 ---
 
 ### Build Requirements
 
-- Qt5 (5.15 or greater). Required for overlapping hover handlers in Qml.
+- Qt6 (6.5 or greater). Required for overlapping hover handlers in Qml.
 - CMake 3.15 or greater. (Lower version may work, but may break boost linking)
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [coeurl](https://nheko.im/nheko-reborn/coeurl)
@@ -253,7 +256,7 @@ KDE has similar plugins, that can extend the supported image types even more.
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)
 - [spdlog](https://github.com/gabime/spdlog) (1.8.1 too old)
-- [GStreamer](https://gitlab.freedesktop.org/gstreamer) 1.18.0 or greater (optional, needed for VoIP support. Pass `-DVOIP=OFF` to disable.).
+- [GStreamer](https://gitlab.freedesktop.org/gstreamer) 1.20.0 or greater (optional, needed for VoIP support. Pass `-DVOIP=OFF` to disable.).
     - Installing the gstreamer core library plus gst-plugins-base, gst-plugins-good & gst-plugins-bad
       is often sufficient. The qmlgl plugin though is often packaged separately. The actual plugin requirements
       are as follows:
@@ -265,7 +268,7 @@ KDE has similar plugins, that can extend the supported image types even more.
 - [KDSingleApplication](https://github.com/KDAB/KDSingleApplication) (1.0 or greater with Qt6 support)
 - A compiler that supports C++ 20:
     - Clang 16 (Only clazy 16 is tested in CI)
-    - GCC 11 (tested on Gitlab CI)
+    - GCC 11.3 (tested on Gitlab CI)
     - MSVC 19.13 (tested on AppVeyor)
 
 Nheko can use bundled version for most of those libraries automatically, if the versions in your distro are too old.
@@ -303,17 +306,17 @@ make docker-app-image
 #### Arch Linux
 
 ```bash
-sudo pacman -S qt5-base \
-    qt5-tools \
-    qt5-multimedia \
-    qt5-svg \
+sudo pacman -S qt6-base \
+    qt6-tools \
+    qt6-multimedia \
+    qt6-svg \
     cmake \
     gcc \
     fontconfig \
     lmdb \
     cmark \
     boost \
-    qtkeychain-qt5
+    qtkeychain-qt6
 ```
 
 #### Debian 13 [Testing/Sid] (Nheko QT6 Version)
@@ -335,8 +338,8 @@ cmake --build build
 *Build requirements + qml modules needed at runtime (you may not need all of them, but the following seem to work according to reports):*
 ```bash
 sudo apt install --no-install-recommends g++ cmake make zlib1g-dev libssl-dev libolm-dev liblmdb-dev libcmark-dev nlohmann-json3-dev libspdlog-dev libevent-dev libcurl4-openssl-dev libre2-dev libxcb-ewmh-dev asciidoc-base \
-qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt5svg5-dev qt5keychain-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2,quick-particles2} \
-libgstreamer1.0-dev libgstreamer-plugins-{base,bad}1.0-dev qtgstreamer-plugins-qt5 libnice-dev ninja-build
+qt{base,declarative,tools,multimedia,quickcontrols2-}5-dev libqt6svg5-dev qt6keychain-dev qml-module-qt{gstreamer,multimedia,quick-extras,-labs-settings,-labs-platform,graphicaleffects,quick-controls2,quick-particles2} \
+libgstreamer1.0-dev libgstreamer-plugins-{base,bad}1.0-dev qtgstreamer-plugins-qt6 libnice-dev ninja-build
 ```
 lmdb++-dev is too old so bundled lmdbxx must be used.  
 libspdlog-dev in debian bullseye is too old (without backporting) so requires using hunter to use bundled spdlog.  
@@ -365,7 +368,7 @@ guix environment nheko
 
 ```bash
 brew update
-brew install qt5 lmdb cmake llvm spdlog boost cmark libolm qtkeychain
+brew install qt6 lmdb cmake llvm spdlog boost cmark libolm qtkeychain
 ```
 
 #### Windows
@@ -398,18 +401,18 @@ Adapt the USE_BUNDLED_* as needed.
 
 If the build fails with the following error
 ```
-Could not find a package configuration file provided by "Qt5Widgets" with
+Could not find a package configuration file provided by "Qt6Widgets" with
 any of the following names:
 
-Qt5WidgetsConfig.cmake
-qt5widgets-config.cmake
+Qt6WidgetsConfig.cmake
+qt6widgets-config.cmake
 ```
-You might need to pass `-DCMAKE_PREFIX_PATH` to cmake to point it at your qt5 install.
+You might need to pass `-DCMAKE_PREFIX_PATH` to cmake to point it at your qt6 install.
 
 e.g on macOS
 
 ```
-cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$(brew --prefix qt5)
+cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=$(brew --prefix qt6)
 cmake --build build
 ```
 
@@ -420,11 +423,11 @@ The `nheko` binary will be located in the `build` directory.
 After installing all dependencies, you need to edit the `CMakeSettings.json` to
 be able to load and compile nheko within Visual Studio.
 
-You need to fill out the paths for the `Qt5_DIR`.
-The Qt5 dir should point to the `lib\cmake\Qt5` dir.
+You need to fill out the paths for the `Qt6_DIR`.
+The Qt6 dir should point to the `lib\cmake\Qt6` dir.
 
 Examples for the paths are:
- - `C:\\Qt\\5.15.1\\msvc2017_64\\lib\\cmake\\Qt5`
+ - `C:\\Qt\\6.5.2\\msvc2017_64\\lib\\cmake\\Qt6`
 
 You should also enable hunter by setting `HUNTER_ENABLED` to `ON` and `BUILD_SHARED_LIBS` to `OFF`.
 
