@@ -202,8 +202,8 @@ modules:
       - mkdir -p /app/bin/
       - cp libqtjdenticon.so /app/bin/
     sources:
-      - commit: 1e7013d64fd081d76e4ce69f2693129c817fd8f1
-        #tag: v0.3.0
+      - commit: 39cde33d4b23b57aa5b94e94071d6ff18d2bd92a
+        tag: v0.3.1
         type: git
         url: https://github.com/Nheko-Reborn/qt-jdenticon.git
   - buildsystem: meson
