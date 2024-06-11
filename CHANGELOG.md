@@ -1,6 +1,16 @@
 # Changelog
 
-## [0.12.0] -- unreleased
+## [0.12.0] -- 2024-06-12
+
+### Notes
+
+The packages for windows are split into an appinstaller file with autoupdates
+and an msix, which can be installed directly and won't check for updates. The
+appimage is currently disabled until someone ports it to Qt6. The flatpak appid
+changed and you will need to migrate manually.
+
+For packagers most of our dependencies have been changed or updated. Most
+significantly Nheko now depends on KDSingleApplication and Qt6.
 
 ### Highlights
 
@@ -48,7 +58,7 @@
 - Disable workarounds for inline images for Qt6.7 and up.
 - Various improvements around window activation on Wayland. (q234rty)
 - Update emoji shortcodes. (TheDrawingCoder-Gamer)
-- Windows and Apple Silicon builds on our own hardware. (Thanks Thulnima for
+- Windows and Apple Silicon builds on our own hardware. (Thanks Thulinma for
     sponsoring access the Apple Silicon box)
 - MSIX builds and appinstaller for Windows with valid signatures and automatic updates.
 - Add environment variable to dump the video call pipeline.

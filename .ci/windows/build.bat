@@ -4,7 +4,7 @@
 if defined CI_COMMIT_TAG (
 	set VERSION=%CI_COMMIT_TAG%
 ) else (
-	set VERSION=v0.11.3
+	set VERSION=v0.12.0
 )
 set INSTVERSION=%VERSION:~1%
 set WINVERSION=%VERSION:~1%.%CI_JOB_ID%
