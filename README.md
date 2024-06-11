@@ -110,10 +110,36 @@ sudo urpmi nheko
 #### Nix(os)
 
 ```bash
+# Imperatively: (not recommended)
 nix-env -iA nixpkgs.nheko
-# or
+
+# In an ephemeral shell: (recommended if you just want to try it out without committing to a full installation)
 nix-shell -p nheko --run nheko
 ```
+Alternatively, add it to your config in one of the following ways: (recommended for long-term installation)
+
+**System-wide:**
+```nix
+environment.systemPackages = with pkgs; [
+    # ...
+    nheko
+    # ...
+];
+```
+**User-specific:**
+```nix
+users.users.<user>.packages = with pkgs; [
+    # ...
+    nheko
+    # ...
+];
+```
+**via `home-manager`:**
+```nix
+programs.nheko.enable = true;
+```
+
+
 
 #### Alpine Linux (and postmarketOS)
 
