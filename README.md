@@ -115,6 +115,8 @@ nix-env -iA nixpkgs.nheko
 
 # In an ephemeral shell: (recommended if you just want to try it out without committing to a full installation)
 nix-shell -p nheko --run nheko
+# Note: The above command will both install and run Nheko.
+# To stop it from running immediately, just remove the `--run nheko` from the end.
 ```
 Alternatively, add it to your config in one of the following ways: (recommended for long-term installation)
 
