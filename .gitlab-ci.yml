@@ -96,9 +96,12 @@ pages:
     - apk add curl jq
   script:
     - export LATEST_WINDOWS_NIGHTLY=$(curl "https://nheko.im/api/v4/projects/2/packages?package_name=windows-nightly&order_by=version&sort=desc" | jq -r '.[0].version')
+    - export LATEST_WINDOWS=$(curl "https://nheko.im/api/v4/projects/2/packages?package_name=windows&order_by=version&sort=desc" | jq -r '.[0].version')
     - sed "s/0.12.0.0/${LATEST_WINDOWS_NIGHTLY}/g" -i resources/NhekoNightly.appinstaller
+    - sed "s/0.12.0.0/${LATEST_WINDOWS}/g" -i resources/Nheko.appinstaller
     - mkdir public
     - mv resources/NhekoNightly.appinstaller public
+    - mv resources/Nheko.appinstaller public
   needs:
     - job: upload-windows
       optional: true
