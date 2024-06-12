@@ -22,6 +22,10 @@ Page {
     contentItem: ListView {
         id: uploadsList
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "components/KirigamiWheelHandler.qml" : ""
+        }
+
         anchors.horizontalCenter: parent.horizontalCenter
         boundsBehavior: Flickable.StopAtBounds
         model: room ? room.input.uploads : undefined

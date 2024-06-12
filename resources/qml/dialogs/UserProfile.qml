@@ -45,6 +45,10 @@ ApplicationWindow {
         anchors.margins: 10
         footerPositioning: ListView.OverlayFooter
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+        }
+
         header: ColumnLayout {
             id: contentL
 

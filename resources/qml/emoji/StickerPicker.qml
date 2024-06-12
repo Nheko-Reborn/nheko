@@ -116,6 +116,10 @@ Menu {
                 clip: true
                 currentIndex: -1 // prevent sorting from stealing focus
 
+                Loader {
+                    source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+                }
+
                 section.property: "packname"
                 section.criteria: ViewSection.FullString
                 section.delegate: Rectangle {

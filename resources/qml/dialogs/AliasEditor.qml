@@ -52,6 +52,9 @@ ApplicationWindow {
 
             clip: true
 
+            Loader {
+                source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+            }
 
             model: editingModel
             spacing: 4

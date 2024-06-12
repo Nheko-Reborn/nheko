@@ -446,6 +446,10 @@ Page {
         model: Rooms
         boundsBehavior: Flickable.StopAtBounds
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "components/KirigamiWheelHandler.qml" : ""
+        }
+
         //reuseItems: true
         ScrollBar.vertical: ScrollBar {
             id: scrollbar

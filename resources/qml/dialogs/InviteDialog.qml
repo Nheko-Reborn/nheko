@@ -166,6 +166,9 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 clip: true
+                Loader {
+                    source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+                }
                 delegate: UserListRow {
                     id: del2
                     width: ListView.view.width
@@ -191,6 +194,10 @@ ApplicationWindow {
                 model: invitees
                 clip: true
                 visible: inviteDialogRoot.width >= 500
+
+                Loader {
+                    source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+                }
 
                 delegate: UserListRow {
                     id: del
