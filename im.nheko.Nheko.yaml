@@ -1,21 +1,23 @@
 id: im.nheko.Nheko
 command: im.nheko.Nheko
 runtime: org.kde.Platform
-runtime-version: '6.6'
+runtime-version: '6.7'
 sdk: org.kde.Sdk
 finish-args:
-  - --device=dri
-  # needed for webcams, see #517
+  # needed for webcams, see https://github.com/Nheko-Reborn/nheko/issues/517
   - --device=all
   - --share=ipc
   - --share=network
   - --socket=pulseaudio
-  - --socket=wayland
   - --socket=x11
+  - --socket=wayland
   - --talk-name=org.freedesktop.Notifications
   - --talk-name=org.freedesktop.secrets
+  - --talk-name=org.kde.kwalletd5
+  - --talk-name=org.kde.kwalletd6
   - --talk-name=org.freedesktop.StatusNotifierItem
-  - --talk-name=org.kde.*
+  # needed for tray icon
+  - --talk-name=org.kde.StatusNotifierWatcher
 cleanup:
   - /include
   - /lib/pkgconfig
@@ -83,18 +85,18 @@ modules:
       - sha256: 5197b3147cfcfaa67dd564db7b878e4a4b3d9f3443801722b3915cdeced656cb
         type: archive
         url: https://github.com/gabime/spdlog/archive/v1.8.1.tar.gz
-  - config-opts:
+  - name: olm
+    config-opts:
       - -DCMAKE_BUILD_TYPE=Release
     buildsystem: cmake-ninja
-    name: olm
     sources:
       - commit: 92769cec711c604a1f682b95d6944578d2a1bb3d
         disable-shallow-clone: true
         tag: 3.2.12
         type: git
         url: https://gitlab.matrix.org/matrix-org/olm.git
-  - buildsystem: meson
-    name: libsecret
+  - name: libsecret
+    buildsystem: meson
     config-opts:
       - -Dmanpage=false
       - -Dvapi=false
@@ -137,51 +139,52 @@ modules:
   #      tag: v5.93.0
   #      type: git
   #      url: https://invent.kde.org/frameworks/kimageformats.git
-  - config-opts:
+  - name: QtKeychain
+    config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_TEST_APPLICATION=OFF
       - -DQTKEYCHAIN_STATIC=ON
       - -DBUILD_WITH_QT6=ON
     buildsystem: cmake-ninja
-    name: QtKeychain
     sources:
       - commit: 69f993c47efed7e557d79a30a367014d9a27d809
         tag: 0.14.1
         type: git
         url: https://github.com/frankosterfeld/qtkeychain.git
-  - config-opts:
+  - name: nlohmann
+    config-opts:
       - -DJSON_BuildTests=OFF
-    buildsystem: cmake
-    name: nlohmann
+    buildsystem: cmake-ninja
     sources:
       - sha256: d69f9deb6a75e2580465c6c4c5111b89c4dc2fa94e3a85fcd2ffcd9a143d9273
         type: archive
         url: https://github.com/nlohmann/json/archive/v3.11.2.tar.gz
-  - config-opts:
+  - name: kdsingleapplication
+    config-opts:
       - -DKDSingleApplication_EXAMPLES=OFF
       - -DKDSingleApplication_QT6=ON
-    buildsystem: cmake
-    name: kdsingleapplication
+    buildsystem: cmake-ninja
     sources:
       - sha256: c92355dc10f3ebd39363458458fb5bdd9662e080cf77d91f0437763c4d936520
         type: archive
         url: https://github.com/KDAB/KDSingleApplication/releases/download/v1.0.0/kdsingleapplication-1.0.0.tar.gz
-  - buildsystem: simple
+  - name: re2
+    buildsystem: simple
     build-commands:
       - make static
       - make prefix=/app static-install
-    name: re2
     sources:
       - sha256: f89c61410a072e5cbcf8c27e3a778da7d6fd2f2b5b1445cd4f4508bee946ab0f
         type: archive
         url: https://github.com/google/re2/archive/refs/tags/2022-06-01.tar.gz
-  - buildsystem: meson
-    name: gstreamer
+  - name: gstreamer
+    buildsystem: meson
     sources:
-      - commit: 4d13eddc8b6d3f42ba44682ba42048acf170547f
-        tag: 1.22.7
+      - commit: d2c02bb704b5804ca057fc7e6c7b16b4466fd7d5
+        tag: 1.22.12
         type: git
         url: https://gitlab.freedesktop.org/gstreamer/gstreamer.git
+        disable-submodules: true
     config-opts:
       - --auto-features=disabled
       -  -Dgood=enabled
@@ -195,8 +198,8 @@ modules:
       -  -Dgst-plugins-base:gl_winsys=x11,wayland
       -  -Dgst-plugins-base:x11=enabled
       -  -Dgst-plugins-base:xshm=enabled
-  - buildsystem: cmake
-    name: qt-jdenticon
+  - name: qt-jdenticon
+    buildsystem: cmake-ninja
     no-make-install: true
     build-commands:
       - mkdir -p /app/bin/
@@ -206,35 +209,35 @@ modules:
         tag: v0.3.1
         type: git
         url: https://github.com/Nheko-Reborn/qt-jdenticon.git
-  - buildsystem: meson
+  - name: coeurl
+    buildsystem: meson
     config-opts:
       - -Ddefault_library=static
-    name: coeurl
     sources:
       - commit: 3007387745cf84138d0855e0f04ff94261fc7175
         #tag: v0.3.0
         type: git
         url: https://nheko.im/nheko-reborn/coeurl.git
-  - config-opts:
+  - name: mtxclient
+    config-opts:
       - -DBUILD_LIB_TESTS=OFF
       - -DBUILD_LIB_EXAMPLES=OFF
       - -DCMAKE_BUILD_TYPE=Release
       - -DBUILD_SHARED_LIBS=OFF
     buildsystem: cmake-ninja
-    name: mtxclient
     sources:
       - commit: 457bc52773b40142848f0b2ab025516bf6ed634d
         tag: v0.10.0
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git
-  - config-opts:
+  - name: nheko
+    config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DLMDBXX_INCLUDE_DIR=.deps/lmdbxx
       - -DCOMPILE_QML=ON
       - -DMAN=OFF
       - -DFLATPAK=ON
     buildsystem: cmake-ninja
-    name: nheko
     sources:
       - path: .
         type: dir
