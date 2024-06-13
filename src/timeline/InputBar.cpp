@@ -187,9 +187,6 @@ InputBar::addMention(QString mention, QString text)
         mentionTexts_.push_back(text);
 
         emit mentionsChanged();
-        if (mention == u"@room") {
-            this->containsAtRoom_ = true;
-        }
     }
 }
 
@@ -200,9 +197,6 @@ InputBar::removeMention(QString mention)
         mentions_.removeAt(idx);
         mentionTexts_.removeAt(idx);
         emit mentionsChanged();
-        if (mention == u"@room") {
-            this->containsAtRoom_ = false;
-        }
     }
 }
 
@@ -244,6 +238,7 @@ InputBar::updateTextContentProperties(const QString &t, bool charDeleted)
     auto roomMention = containsRoomMention(t) && this->room->permissions()->canPingRoom();
 
     if (roomMention != this->containsAtRoom_) {
+        this->containsAtRoom_ = roomMention;
         if (roomMention)
             addMention(QStringLiteral(u"@room"), QStringLiteral(u"@room"));
         else
@@ -500,8 +495,11 @@ mtx::common::Mentions
 InputBar::generateMentions()
 {
     std::vector<std::string> userMentions;
+    bool atRoom = false;
     for (const auto &m : mentions_)
-        if (m != u"@room")
+        if (m == u"@room")
+            atRoom = true;
+        else
             userMentions.push_back(m.toStdString());
 
     if (!room->reply().isEmpty()) {
@@ -515,7 +513,8 @@ InputBar::generateMentions()
 
     auto mention = mtx::common::Mentions{
       .user_ids = userMentions,
-      .room     = containsAtRoom_,
+      // We use the atRoom from the mentions list to allow suppressing a room mention
+      .room = atRoom,
     };
 
     // this->containsAtRoom_ = false;
