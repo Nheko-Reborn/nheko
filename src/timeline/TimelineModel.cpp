@@ -736,7 +736,9 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                             .arg(displayName(QString::fromStdString(e.sender)))
                             .arg(QStringLiteral("<img height=\"32\" src=\"%1\">")
                                    .arg(QUrl::toPercentEncoding(
-                                     QString::fromStdString(e.content.url))));
+                                     QString::fromStdString(e.content.url)
+                                       .replace("mxc://", "image://MxcImage/"),
+                                     ":/")));
                       else
                           return tr("%1 removed the room avatar.")
                             .arg(displayName(QString::fromStdString(e.sender)));
