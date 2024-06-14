@@ -2961,7 +2961,7 @@ Cache::roomNamesAndAliases()
     };
 
     auto getRoomName = [&](const std::string &roomId) {
-        auto spaceDb = getStatesDb(txn, roomId);
+        auto spaceDb   = getStatesDb(txn, roomId);
         auto membersDb = getMembersDb(txn, roomId);
         return Cache::getRoomName(txn, spaceDb, membersDb).toStdString();
     };
@@ -2983,7 +2983,7 @@ Cache::roomNamesAndAliases()
                 alias = aliases->content.alias;
             }
 
-            auto parentId = getParentRoomIdsWithTxn(room_id_str);
+            auto parentId   = getParentRoomIdsWithTxn(room_id_str);
             auto parentName = std::string{};
 
             if (parentId) {

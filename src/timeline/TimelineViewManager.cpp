@@ -636,7 +636,8 @@ TimelineViewManager::fixImageRendering([[maybe_unused]] QQuickTextDocument *t,
 #else
 void
 TimelineViewManager::fixImageRendering(QQuickTextDocument *, QQuickItem *)
-{}
+{
+}
 #endif
 
 using IgnoredUsers = mtx::events::EphemeralEvent<mtx::events::account_data::IgnoredUsers>;
