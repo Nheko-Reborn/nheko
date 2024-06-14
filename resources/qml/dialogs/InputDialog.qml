@@ -13,6 +13,8 @@ ApplicationWindow {
 
     property alias prompt: promptLabel.text
     property alias echoMode: statusInput.echoMode
+    property alias text: statusInput.text
+
     signal accepted(text: string)
 
     modality: Qt.NonModal

@@ -249,6 +249,8 @@ Page {
                 prompt: qsTr("Enter your status message:")
                 title: qsTr("Status Message")
 
+                text: userInfoGrid.profile ? Presence.userStatus(userInfoGrid.profile.userid) : ""
+
                 onAccepted: function (text) {
                     Nheko.setStatusMessage(text);
                 }
