@@ -65,16 +65,16 @@ UserSettings::load(std::optional<QString> profile)
       settings.value("user/timeline/message_hover_highlight", false).toBool();
     enlargeEmojiOnlyMessages_ =
       settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
-    markdown_             = settings.value("user/markdown_enabled", true).toBool();
-    invertEnterKey_       = settings.value("user/invert_enter_key", false).toBool();
-    bubbles_              = settings.value("user/bubbles_enabled", false).toBool();
-    smallAvatars_         = settings.value("user/small_avatars_enabled", false).toBool();
-    animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
-    typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
-    sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
-    sortByAlphabet_       = settings.value("user/sort_by_alphabet", false).toBool();
-    readReceipts_         = settings.value("user/read_receipts", true).toBool();
-    theme_                = settings.value("user/theme", defaultTheme_).toString();
+    markdown_                = settings.value("user/markdown_enabled", true).toBool();
+    invertEnterKey_          = settings.value("user/invert_enter_key", false).toBool();
+    bubbles_                 = settings.value("user/bubbles_enabled", false).toBool();
+    smallAvatars_            = settings.value("user/small_avatars_enabled", false).toBool();
+    animateImagesOnHover_    = settings.value("user/animate_images_on_hover", false).toBool();
+    typingNotifications_     = settings.value("user/typing_notifications", true).toBool();
+    sortByImportance_        = settings.value("user/sort_by_unread", true).toBool();
+    sortByAlphabet_          = settings.value("user/sort_by_alphabet", false).toBool();
+    readReceipts_            = settings.value("user/read_receipts", true).toBool();
+    theme_                   = settings.value("user/theme", defaultTheme_).toString();
     displayParentInSwitcher_ = settings.value("user/display_parent_on_room_switch", true).toBool();
 
     font_ = settings.value("user/font_family", "").toString();
