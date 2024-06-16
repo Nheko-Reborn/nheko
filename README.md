@@ -251,7 +251,7 @@ KDE has similar plugins, that can extend the supported image types even more.
 - CMake 3.15 or greater. (Lower version may work, but may break boost linking)
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [coeurl](https://nheko.im/nheko-reborn/coeurl)
-- [LMDB](https://symas.com/lightning-memory-mapped-database/)
+- [LMDB](https://www.symas.com/lmdb)
 - [lmdb++](https://github.com/hoytech/lmdbxx) (0.9.14 too old)
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)
