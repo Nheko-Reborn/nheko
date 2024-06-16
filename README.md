@@ -12,7 +12,7 @@ feels more like a mainstream chat app ([Element], Telegram etc) and less like an
 ### Stable
 
 [![Stable Version](https://img.shields.io/badge/download-stable-green.svg)](https://github.com/Nheko-Reborn/nheko/releases/latest)
-<a href='https://flathub.org/apps/details/im.nheko.Nheko'><img height='32' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+<a href='https://flathub.org/apps/io.github.NhekoReborn.Nheko'><img height='32' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 [![Packaging status](https://repology.org/badge/tiny-repos/nheko.svg)](https://repology.org/project/nheko/versions)
 
 For other options and details see the [Installation](#installation) section.
@@ -145,8 +145,8 @@ sudo zypper install qt-jdenticon
 
 #### Flatpak
 
-```
-flatpak install flathub im.nheko.Nheko
+```bash
+flatpak install flathub io.github.NhekoReborn.Nheko
 ```
 
 #### Guix
