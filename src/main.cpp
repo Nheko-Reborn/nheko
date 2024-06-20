@@ -21,7 +21,7 @@
 
 // in theory we can enable this everywhere, but the header is missing on some of our CI systems and
 // it is too much effort to install.
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
+#if QT_CONFIG(wayland)
 #include <QtGui/qpa/qplatformwindow_p.h>
 #endif
 
@@ -248,7 +248,7 @@ main(int argc, char *argv[])
     if (!singleapp.isPrimaryInstance()) {
         auto token = qgetenv("XDG_ACTIVATION_TOKEN");
 
-#if defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)
+#if QT_CONFIG(wayland)
         // getting a valid activation token on wayland is a bit of a pain, it works most reliably
         // when you have an actual window, that has the focus...
         auto waylandApp = app.nativeInterface<QNativeInterface::QWaylandApplication>();

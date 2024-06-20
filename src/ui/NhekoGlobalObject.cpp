@@ -19,7 +19,7 @@
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
-#if XCB_AVAILABLE
+#if XCB_AVAILABLE && QT_CONFIG(xcb)
 #include <xcb/xproto.h>
 #endif
 
@@ -186,7 +186,7 @@ Nheko::createRoom(bool space,
 void
 Nheko::setWindowRole([[maybe_unused]] QWindow *win, [[maybe_unused]] QString newRole) const
 {
-#if XCB_AVAILABLE
+#if XCB_AVAILABLE && QT_CONFIG(xcb)
     const QNativeInterface::QX11Application *x11Interface =
       qGuiApp->nativeInterface<QNativeInterface::QX11Application>();
 
