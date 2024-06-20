@@ -1420,7 +1420,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Will prevent swipe motions like swiping left/right between Rooms and "
                       "Timeline, or swiping a message to reply.");
         case ScaleFactor:
-            return tr("Change the scale factor of the whole user interface.");
+            return tr("Change the scale factor of the whole user interface. Requires a restart to "
+                      "take effect.");
         case UseStunServer:
             return tr(
               "Will use turn.matrix.org as assist when your home server does not offer one.");
