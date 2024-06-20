@@ -2133,6 +2133,20 @@ UserSettingsModel::exportSessionKeys()
         return;
     }
 
+    auto repeatedPassword = QInputDialog::getText(nullptr,
+                                                  tr("Repeat File Password"),
+                                                  tr("Repeat the passphrase:"),
+                                                  QLineEdit::Password,
+                                                  QLatin1String(""),
+                                                  &ok);
+    if (!ok)
+        return;
+
+    if (password != repeatedPassword) {
+        QMessageBox::warning(nullptr, tr("Error"), tr("Passwords don't match"));
+        return;
+    }
+
     // Open file dialog to save the file.
     const QString homeFolder = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
     const QString fileName   = QFileDialog::getSaveFileName(
