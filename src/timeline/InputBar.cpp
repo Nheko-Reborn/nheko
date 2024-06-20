@@ -1030,9 +1030,9 @@ InputBar::command(const QString &command, QString args)
     } else if (command == QLatin1String("converttoroom")) {
         utils::removeDirectFromRoom(this->room->roomId());
     } else if (command == QLatin1String("ignore")) {
-        this->toggleIgnore(args, true);
+        this->toggleIgnore(args.trimmed(), true);
     } else if (command == QLatin1String("unignore")) {
-        this->toggleIgnore(args, false);
+        this->toggleIgnore(args.trimmed(), false);
     } else {
         return false;
     }
@@ -1043,6 +1043,11 @@ InputBar::command(const QString &command, QString args)
 void
 InputBar::toggleIgnore(const QString &user, const bool ignored)
 {
+    if (!user.startsWith(u"@")) {
+        MainWindow::instance()->showNotification(tr("You need to pass a valid mxid when ignoring a user. '%1' is not a valid userid.").arg(user));
+        return;
+    }
+
     UserProfile *profile = new UserProfile(QString(), user, TimelineViewManager::instance());
     connect(profile, &UserProfile::failedToFetchProfile, [user, profile] {
         MainWindow::instance()->showNotification(tr("Failed to fetch user %1").arg(user));
