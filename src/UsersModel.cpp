@@ -25,10 +25,13 @@ UsersModel::UsersModel(const std::string &roomId, QObject *parent)
                   std::get_if<mtx::events::AccountDataEvent<mtx::events::account_data::Direct>>(
                     &e.value())) {
                 for (const auto &[userId, roomIds] : event->content.user_to_rooms) {
+                    if (roomIds.empty())
+                        continue;
+
                     displayNames.push_back(
-                      QString::fromStdString(cache::displayName(roomIds[0], userId)));
+                      QString::fromStdString(cache::displayName(roomIds.at(0), userId)));
                     userids.push_back(QString::fromStdString(userId));
-                    avatarUrls.push_back(cache::avatarUrl(QString::fromStdString(roomIds[0]),
+                    avatarUrls.push_back(cache::avatarUrl(QString::fromStdString(roomIds.at(0)),
                                                           QString::fromStdString(userId)));
                 }
             }
