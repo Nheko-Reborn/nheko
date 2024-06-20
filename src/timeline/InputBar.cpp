@@ -1044,7 +1044,9 @@ void
 InputBar::toggleIgnore(const QString &user, const bool ignored)
 {
     if (!user.startsWith(u"@")) {
-        MainWindow::instance()->showNotification(tr("You need to pass a valid mxid when ignoring a user. '%1' is not a valid userid.").arg(user));
+        MainWindow::instance()->showNotification(
+          tr("You need to pass a valid mxid when ignoring a user. '%1' is not a valid userid.")
+            .arg(user));
         return;
     }
 
