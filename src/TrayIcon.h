@@ -15,15 +15,11 @@ class QPainter;
 class MsgCountComposedIcon final : public QIconEngine
 {
 public:
-    MsgCountComposedIcon(const QString &filename);
+    MsgCountComposedIcon(const QIcon &icon);
 
     void paint(QPainter *p, const QRect &rect, QIcon::Mode mode, QIcon::State state) override;
     QIconEngine *clone() const override;
-    QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state)
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-      const
-#endif
-      override;
+    QList<QSize> availableSizes(QIcon::Mode mode, QIcon::State state) override;
     QPixmap pixmap(const QSize &size, QIcon::Mode mode, QIcon::State state) override;
 
     int msgCount = 0;
@@ -47,7 +43,6 @@ private:
     QAction *viewAction_;
     QAction *quitAction_;
 
-#if !defined(Q_OS_MACOS) && !defined(Q_OS_WIN)
-    MsgCountComposedIcon *icon_;
-#endif
+    int previousCount = 0;
+    QIcon icon;
 };

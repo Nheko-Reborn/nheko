@@ -60,7 +60,7 @@ MainWindow::MainWindow(QWindow *parent)
 
     connect(chat_page_, &ChatPage::closing, this, [this] { switchToLoginPage(""); });
     connect(chat_page_, &ChatPage::unreadMessages, this, &MainWindow::setWindowTitle);
-    connect(chat_page_, SIGNAL(unreadMessages(int)), trayIcon_, SLOT(setUnreadCount(int)));
+    connect(chat_page_, &ChatPage::unreadMessages, trayIcon_, &TrayIcon::setUnreadCount);
     connect(chat_page_, &ChatPage::showLoginPage, this, &MainWindow::switchToLoginPage);
     connect(chat_page_, &ChatPage::showNotification, this, &MainWindow::showNotification);
 

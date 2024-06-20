@@ -12,9 +12,9 @@
 
 #include "TrayIcon.h"
 
-MsgCountComposedIcon::MsgCountComposedIcon(const QString &filename)
+MsgCountComposedIcon::MsgCountComposedIcon(const QIcon &icon)
   : QIconEngine()
-  , icon_{QIcon{filename}}
+  , icon_{icon}
 {
 }
 
@@ -41,8 +41,8 @@ MsgCountComposedIcon::paint(QPainter *painter,
     brush.setColor(backgroundColor);
 
     QFont f;
-    f.setPointSizeF(8);
-    f.setWeight(QFont::Thin);
+    f.setPixelSize(int(BubbleDiameter * 0.6));
+    f.setWeight(QFont::Bold);
 
     painter->setBrush(brush);
     painter->setPen(Qt::NoPen);
@@ -66,9 +66,6 @@ MsgCountComposedIcon::clone() const
 
 QList<QSize>
 MsgCountComposedIcon::availableSizes(QIcon::Mode mode, QIcon::State state)
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-  const
-#endif
 {
     Q_UNUSED(mode);
     Q_UNUSED(state);
@@ -97,11 +94,12 @@ MsgCountComposedIcon::pixmap(const QSize &size, QIcon::Mode mode, QIcon::State s
 
 TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
   : QSystemTrayIcon(parent)
+  , icon(filename)
 {
 #if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
-    setIcon(QIcon(filename));
+    setIcon(icon);
 #else
-    icon_ = new MsgCountComposedIcon(filename);
+    auto icon_ = new MsgCountComposedIcon(icon);
     setIcon(QIcon(icon_));
 #endif
 
@@ -122,6 +120,15 @@ void
 TrayIcon::setUnreadCount(int count)
 {
     qGuiApp->setBadgeNumber(count);
+
+#if !defined(Q_OS_MACOS) && !defined(Q_OS_WIN)
+    if (count != previousCount) {
+        auto i      = new MsgCountComposedIcon(icon);
+        i->msgCount = count;
+        setIcon(QIcon(i));
+        previousCount = count;
+    }
+#endif
 }
 
 #include "moc_TrayIcon.cpp"
