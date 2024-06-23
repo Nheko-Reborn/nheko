@@ -3,6 +3,9 @@
 <component type="desktop">
   <id>im.nheko.Nheko</id>
   <launchable type="desktop-id">@APPID@.desktop</launchable>
+  <replaces>
+    <id>io.github.NhekoReborn.Nheko</id>
+  </replaces>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-3.0-or-later</project_license>
   <developer id="im.nheko">
