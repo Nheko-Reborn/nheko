@@ -5,10 +5,10 @@
 #include "Theme.h"
 
 QPalette
-Theme::paletteFromTheme(QStringView theme)
+Theme::paletteFromTheme(Theme::Kind theme)
 {
     static QPalette original;
-    if (theme == u"light") {
+    if (theme == Kind::Light) {
         static QPalette lightActive = [] {
             QPalette lightActive(
               /*windowText*/ QColor(0x33, 0x33, 0x33),
@@ -30,7 +30,7 @@ Theme::paletteFromTheme(QStringView theme)
             return lightActive;
         }();
         return lightActive;
-    } else if (theme == u"dark") {
+    } else if (theme == Kind::Dark) {
         static QPalette darkActive = [] {
             QPalette darkActive(
               /*windowText*/ QColor(0xca, 0xcc, 0xd1),
@@ -57,31 +57,48 @@ Theme::paletteFromTheme(QStringView theme)
     }
 }
 
-Theme::Theme(QStringView theme)
+QPalette
+Theme::paletteFromTheme(QStringView theme)
+{
+    return paletteFromTheme(kindFromString(theme));
+}
+
+Theme::Theme(Theme::Kind theme)
 {
     auto p     = paletteFromTheme(theme);
     separator_ = p.mid().color();
-    if (theme == u"light") {
+    if (theme == Kind::Light) {
         sidebarBackground_ = QColor(0x23, 0x36, 0x49);
-        alternateButton_   = QColor(0xcc, 0xcc, 0xcc);
         red_               = QColor(0xa8, 0x23, 0x53);
         green_             = QColor(QColorConstants::Svg::green);
         orange_            = QColor(0xfc, 0xbe, 0x05);
         error_             = QColor(0xdd, 0x3d, 0x3d);
-    } else if (theme == u"dark") {
+    } else if (theme == Kind::Dark) {
         sidebarBackground_ = QColor(0x2d, 0x31, 0x39);
-        alternateButton_   = QColor(0x41, 0x4A, 0x59);
         red_               = QColor(0xa8, 0x23, 0x53);
         green_             = QColor(QColorConstants::Svg::green);
         orange_            = QColor(0xfc, 0xc5, 0x3a);
         error_             = QColor(0xdd, 0x3d, 0x3d);
     } else {
         sidebarBackground_ = p.window().color();
-        alternateButton_   = p.dark().color();
         red_               = QColor(QColorConstants::Svg::red);
         green_             = QColor(QColorConstants::Svg::green);
         orange_            = QColor(QColorConstants::Svg::orange); // SVG orange
         error_             = QColor(0xdd, 0x3d, 0x3d);
+    }
+}
+
+Theme::Kind
+Theme::kindFromString(QStringView kind)
+{
+    if (kind == u"light") {
+        return Kind::Light;
+    } else if (kind == u"dark") {
+        return Kind::Dark;
+    } else if (kind == u"system") {
+        return Kind::System;
+    } else {
+        throw std::invalid_argument("Unknown theme kind: " + kind.toString().toStdString());
     }
 }
 
