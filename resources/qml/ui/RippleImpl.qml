@@ -59,6 +59,7 @@ Item {
                     Transition {
                         from: "NORMAL"
                         to: "ACTIVE"
+                        enabled: !Settings.reducedMotion
 
                         SequentialAnimation {
                             //PropertyAction { target: circle; property: "centerX"; value: ph.point.position.x }
@@ -87,6 +88,7 @@ Item {
                     Transition {
                         from: "ACTIVE"
                         to: "NORMAL"
+                        enabled: !Settings.reducedMotion
 
                         SequentialAnimation {
                             ParallelAnimation {

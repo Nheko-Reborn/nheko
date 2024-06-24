@@ -667,6 +667,7 @@ Item {
             from: ""
             reversible: true
             to: "shown"
+            enabled: !Settings.reducedMotion
 
             SequentialAnimation {
                 PauseAnimation {

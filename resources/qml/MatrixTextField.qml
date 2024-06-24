@@ -79,6 +79,7 @@ ColumnLayout {
                 from: ""
                 reversible: true
                 to: "focused"
+                enabled: !Settings.reducedMotion
 
                 NumberAnimation {
                     alwaysRunToEnd: true
@@ -164,6 +165,7 @@ ColumnLayout {
                 from: ""
                 reversible: true
                 to: "focused"
+                enabled: !Settings.reducedMotion
 
                 NumberAnimation {
                     alwaysRunToEnd: true

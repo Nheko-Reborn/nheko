@@ -335,6 +335,7 @@ Rectangle {
                     y: messageInput.positionToRectangle(messageInput.completerTriggeredAt).y - height
 
                     enter: Transition {
+                        enabled: !Settings.reducedMotion
                         NumberAnimation {
                             duration: 100
                             from: 0
@@ -343,6 +344,7 @@ Rectangle {
                         }
                     }
                     exit: Transition {
+                        enabled: !Settings.reducedMotion
                         NumberAnimation {
                             duration: 100
                             from: 1

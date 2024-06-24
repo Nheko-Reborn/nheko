@@ -146,6 +146,7 @@ Rectangle {
                     Transition {
                         from: ""
                         to: "shown"
+                        enabled: !Settings.reducedMotion
 
                         SequentialAnimation {
                             PauseAnimation {
@@ -163,6 +164,7 @@ Rectangle {
                     Transition {
                         from: "shown"
                         to: ""
+                        enabled: !Settings.reducedMotion
 
                         SequentialAnimation {
                             PauseAnimation {
