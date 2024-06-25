@@ -250,7 +250,8 @@ main(int argc, char *argv[])
 
 #if __has_include(<QtGui/qpa/qplatformwindow_p.h>) && \
         ((QT_VERSION >= QT_VERSION_CHECK(6, 7, 0) &&  QT_CONFIG(wayland)) || \
-         (QT_VERSION < QT_VERSION_CHECK(6, 7, 0) && defined(Q_OS_UNIX) && !defined(Q_OS_MACOS)))
+         (QT_VERSION < QT_VERSION_CHECK(6, 7, 0) && defined(Q_OS_UNIX) && !defined(Q_OS_MACOS) \
+         && !defined(Q_OS_HAIKU)))
         // getting a valid activation token on wayland is a bit of a pain, it works most reliably
         // when you have an actual window, that has the focus...
         auto waylandApp = app.nativeInterface<QNativeInterface::QWaylandApplication>();
