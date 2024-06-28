@@ -1,4 +1,3 @@
-tap "nlohmann/json"
 
 brew "python3"
 brew "pkg-config"
@@ -7,7 +6,7 @@ brew "cmake"
 brew "ninja"
 brew "openssl"
 # brew "qt6"
-brew "nlohmann_json"
+brew "nlohmann-json"
 brew "gstreamer"
 brew "qtkeychain"
 brew "pipx"
