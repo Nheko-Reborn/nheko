@@ -517,12 +517,12 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
         emojiModel->setParent(proxy);
         return proxy;
     } else if (completerName == QLatin1String("room")) {
-        auto roomModel = new RoomsModel(false);
+        auto roomModel = new RoomsModel(*rooms_, false);
         auto proxy     = new CompletionProxyModel(roomModel, 4);
         roomModel->setParent(proxy);
         return proxy;
     } else if (completerName == QLatin1String("roomAliases")) {
-        auto roomModel = new RoomsModel(true);
+        auto roomModel = new RoomsModel(*rooms_, true);
         auto proxy     = new CompletionProxyModel(roomModel);
         roomModel->setParent(proxy);
         return proxy;
