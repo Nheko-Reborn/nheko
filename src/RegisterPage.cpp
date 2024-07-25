@@ -4,6 +4,8 @@
 
 #include <set>
 
+#include <fmt/ranges.h>
+
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/register.hpp>
 #include <mtx/responses/version.hpp>

@@ -9,6 +9,7 @@
 #include <QDateTime>
 #include <QTimer>
 
+#include <fmt/ranges.h>
 #include <nlohmann/json.hpp>
 
 #include "Cache.h"
