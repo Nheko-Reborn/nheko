@@ -132,7 +132,7 @@ TrayIcon::setUnreadCount(int count)
 
     QString toolTip = QLatin1String("nheko");
     if (count > 0) {
-        toolTip.append(tr("\n%1 unread message(s)").arg(count));
+        toolTip.append(tr("\n%n unread message(s)", "", count));
     }
 
     setToolTip(toolTip);
