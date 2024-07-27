@@ -238,9 +238,11 @@ TimelineFilter::filterAcceptsRow(int source_row, const QModelIndex &) const
 
     if (auto s = sourceModel()) {
         auto idx = s->index(source_row, 0);
-        if (!contentFilter.isEmpty() && !s->data(idx, TimelineModel::Body)
-                                           .toString()
-                                           .contains(contentFilter, Qt::CaseInsensitive)) {
+        if (
+            !contentFilter.isEmpty()
+            && !s->data(idx, TimelineModel::Body).toString().contains(contentFilter, Qt::CaseInsensitive)
+            && !s->data(idx, TimelineModel::UserName).toString().contains(contentFilter, Qt::CaseInsensitive)
+        ) {
             return false;
         }
 
