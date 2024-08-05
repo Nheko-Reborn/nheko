@@ -50,6 +50,7 @@ endmacro()
 project(nheko LANGUAGES CXX C)
 
 option(USE_BUNDLED_SPDLOG "Use the bundled version of spdlog." ${HUNTER_ENABLED})
+option(USE_BUNDLED_FMT "Use the bundled version of {fmt}." ${HUNTER_ENABLED})
 option(USE_BUNDLED_OLM "Use the bundled version of libolm." ${HUNTER_ENABLED})
 option(USE_BUNDLED_GTEST "Use the bundled version of Google Test." ${HUNTER_ENABLED})
 option(USE_BUNDLED_CMARK "Use the bundled version of cmark." ${HUNTER_ENABLED})
@@ -179,6 +180,12 @@ else()
     find_package(PkgConfig REQUIRED) 
     pkg_check_modules(libcurl REQUIRED IMPORTED_TARGET libcurl)
 endif()
+
+# fmt
+if(USE_BUNDLED_FMT)
+    hunter_add_package_safe(fmt)
+endif()
+find_package(fmt 8.0.0 CONFIG REQUIRED)
 
 # spdlog
 if(USE_BUNDLED_SPDLOG)
@@ -896,6 +903,7 @@ target_link_libraries(nheko PRIVATE
     ${COEURL_TARGET_NAME}
     MatrixClient::MatrixClient
     cmark::cmark
+    fmt::fmt
     spdlog::spdlog
     Qt::Widgets
     Qt::Svg

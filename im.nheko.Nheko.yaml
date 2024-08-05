@@ -74,13 +74,24 @@ modules:
       - sha256: bbcb8f8c03b5af33fcfcf11a74e9499f20a9043200b8552f78a6e8ba76e04d11
         type: archive
         url: https://github.com/commonmark/cmark/archive/0.31.0.tar.gz
+  - name: fmt
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DFMT_DOC=OFF
+      - -DFMT_TEST=OFF
+    sources:
+      - sha256: 40fc58bebcf38c759e11a7bd8fdc163507d2423ef5058bba7f26280c5b9c5465
+        type: archive
+        url: https://github.com/fmtlib/fmt/releases/download/11.0.2/fmt-11.0.2.zip
   - name: spdlog
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
-      - -DSPDLOG_BUILD_EXAMPLES=0
-      - -DSPDLOG_BUILD_BENCH=0
-      - -DSPDLOG_BUILD_TESTING=0
+      - -DSPDLOG_BUILD_BENCH=OFF
+      - -DSPDLOG_BUILD_TESTING=OFF
+      - -DSPDLOG_BUILD_EXAMPLE=OFF
+      - -DSPDLOG_FMT_EXTERNAL=ON
     sources:
       - sha256: 1586508029a7d0670dfcb2d97575dcdc242d3868a259742b69f100801ab4e16b
         type: archive
