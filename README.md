@@ -284,6 +284,7 @@ KDE has similar plugins, that can extend the supported image types even more.
 - [cmark](https://github.com/commonmark/cmark) 0.29 or greater.
 - [libolm](https://gitlab.matrix.org/matrix-org/olm)
 - [spdlog](https://github.com/gabime/spdlog) (1.8.1 too old)
+- [fmt](https://github.com/fmtlib/fmt)
 - [GStreamer](https://gitlab.freedesktop.org/gstreamer) 1.20.0 or greater (optional, needed for VoIP support. Pass `-DVOIP=OFF` to disable.).
     - Installing the gstreamer core library plus gst-plugins-base, gst-plugins-good & gst-plugins-bad
       is often sufficient. The qmlgl plugin though is often packaged separately. The actual plugin requirements
