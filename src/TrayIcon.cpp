@@ -128,6 +128,8 @@ TrayIcon::setUnreadCount(int count)
         setIcon(QIcon(i));
         previousCount = count;
     }
+#else
+    (void)previousCount;
 #endif
 
     QString toolTip = QLatin1String("nheko");
