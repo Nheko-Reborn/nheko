@@ -81,6 +81,15 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
     this->allowedRoomsModel = new RoomSettingsAllowedRoomsModel(this);
 }
 
+bool
+RoomSettings::isRoomNameSet() const
+{
+    return !cache::client()
+              ->getStateEvent<mtx::events::state::Name>(roomid_.toStdString())
+              .value_or(mtx::events::StateEvent<mtx::events::state::Name>{})
+              .content.name.empty();
+}
+
 QString
 RoomSettings::roomName() const
 {

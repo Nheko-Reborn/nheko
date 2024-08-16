@@ -130,7 +130,7 @@ ApplicationWindow {
                 color: palette.text
 
                 Layout.alignment: Qt.AlignHCenter
-                Layout.maximumWidth: parent.width - (Nheko.paddingSmall * 2) - nameChangeButton.anchors.leftMargin - (nameChangeButton.width * 2)
+                Layout.maximumWidth: parent.width - (Nheko.paddingSmall + roomNameButtons.anchors.leftMargin + roomNameButtons.implicitWidth) * 2
                 horizontalAlignment: TextEdit.AlignHCenter
                 wrapMode: TextEdit.Wrap
                 selectByMouse: true
@@ -144,26 +144,42 @@ ApplicationWindow {
                     }
                 }
 
-                ImageButton {
-                    id: nameChangeButton
-                    visible: roomSettings.canChangeName
+                RowLayout {
+                    id: roomNameButtons
+
                     anchors.leftMargin: Nheko.paddingSmall
                     anchors.left: roomName.right
                     anchors.verticalCenter: roomName.verticalCenter
-                    hoverEnabled: true
-                    ToolTip.visible: hovered
-                    ToolTip.text: qsTr("Change name of this room")
-                    ToolTip.delay: Nheko.tooltipDelay
-                    image: roomName.isNameEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
-                    onClicked: {
-                        if (roomName.isNameEditingAllowed) {
-                            roomSettings.changeName(roomName.text);
-                            roomName.isNameEditingAllowed = false;
-                        } else {
-                            roomName.isNameEditingAllowed = true;
-                            roomName.focus = true;
-                            roomName.selectAll();
+
+                    ImageButton {
+                        id: nameChangeButton
+                        visible: roomSettings.canChangeName
+                        hoverEnabled: true
+                        ToolTip.visible: hovered
+                        ToolTip.text: qsTr("Change name of this room")
+                        ToolTip.delay: Nheko.tooltipDelay
+                        image: roomName.isNameEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
+                        onClicked: {
+                            if (roomName.isNameEditingAllowed) {
+                                roomSettings.changeName(roomName.text);
+                                roomName.isNameEditingAllowed = false;
+                            } else {
+                                roomName.isNameEditingAllowed = true;
+                                roomName.focus = true;
+                                roomName.selectAll();
+                            }
                         }
+                    }
+
+                    EncryptionIndicator {
+                        Layout.preferredHeight: 16
+                        Layout.preferredWidth: 16
+                        sourceSize.width: width
+                        sourceSize.height: height
+                        encrypted: true
+                        visible: roomSettings.isEncryptionEnabled && (roomSettings.isRoomNameSet || !roomName.readOnly)
+                        trust: Crypto.Unverified
+                        ToolTip.text: qsTr("Since room state can't be encrypted, make sure no confidential information is stored in the room name!")
                     }
                 }
 
@@ -220,25 +236,41 @@ ApplicationWindow {
 
             }
 
-            ImageButton {
-                id: topicChangeButton
+            RowLayout {
+                spacing: Nheko.paddingMedium
                 Layout.alignment: Qt.AlignHCenter
-                visible: roomSettings.canChangeTopic
-                hoverEnabled: true
-                ToolTip.visible: hovered
-                ToolTip.text: qsTr("Change topic of this room")
-                ToolTip.delay: Nheko.tooltipDelay
-                image: roomTopic.isTopicEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
-                onClicked: {
-                    if (roomTopic.isTopicEditingAllowed) {
-                        roomSettings.changeTopic(roomTopic.text);
-                        roomTopic.isTopicEditingAllowed = false;
-                    } else {
-                        roomTopic.isTopicEditingAllowed = true;
-                        roomTopic.showMore = true;
-                        roomTopic.focus = true;
-                        //roomTopic.selectAll();
+
+                ImageButton {
+                    id: topicChangeButton
+
+                    visible: roomSettings.canChangeTopic
+                    hoverEnabled: true
+                    ToolTip.visible: hovered
+                    ToolTip.text: qsTr("Change topic of this room")
+                    ToolTip.delay: Nheko.tooltipDelay
+                    image: roomTopic.isTopicEditingAllowed ? ":/icons/icons/ui/checkmark.svg" : ":/icons/icons/ui/edit.svg"
+                    onClicked: {
+                        if (roomTopic.isTopicEditingAllowed) {
+                            roomSettings.changeTopic(roomTopic.text);
+                            roomTopic.isTopicEditingAllowed = false;
+                        } else {
+                            roomTopic.isTopicEditingAllowed = true;
+                            roomTopic.showMore = true;
+                            roomTopic.focus = true;
+                            //roomTopic.selectAll();
+                        }
                     }
+                }
+
+                EncryptionIndicator {
+                    Layout.preferredHeight: 16
+                    Layout.preferredWidth: 16
+                    sourceSize.width: width
+                    sourceSize.height: height
+                    encrypted: true
+                    visible: roomSettings.isEncryptionEnabled && (roomSettings.plainRoomTopic != "" || !roomTopic.readOnly)
+                    trust: Crypto.Unverified
+                    ToolTip.text: qsTr("Since room state can't be encrypted, make sure no confidential information is stored in the room topic!")
                 }
             }
 

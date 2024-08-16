@@ -100,6 +100,7 @@ class RoomSettings final : public QObject
     Q_PROPERTY(bool supportsKnocking READ supportsKnocking CONSTANT)
     Q_PROPERTY(bool supportsRestricted READ supportsRestricted CONSTANT)
     Q_PROPERTY(bool supportsKnockRestricted READ supportsKnockRestricted CONSTANT)
+    Q_PROPERTY(bool isRoomNameSet READ isRoomNameSet NOTIFY roomNameChanged)
     Q_PROPERTY(
       QStringList allowedRooms READ allowedRooms WRITE setAllowedRooms NOTIFY allowedRoomsChanged)
     Q_PROPERTY(RoomSettingsAllowedRoomsModel *allowedRoomsModel MEMBER allowedRoomsModel CONSTANT)
@@ -128,6 +129,7 @@ public:
     QString roomAvatarUrl();
     int memberCount() const;
     int notifications();
+    bool isRoomNameSet() const;
     bool privateAccess() const;
     bool guestAccess() const;
     bool knockingEnabled() const;
