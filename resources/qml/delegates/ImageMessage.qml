@@ -20,6 +20,8 @@ AbstractButton {
     required property int containerHeight
     property double divisor: EventDelegateChooser.isReply ? 10 : 4
 
+    property bool showImage: room.showImage()
+
     EventDelegateChooser.keepAspectRatio: true
     EventDelegateChooser.maxWidth: originalWidth
     EventDelegateChooser.maxHeight: containerHeight / divisor
@@ -113,7 +115,7 @@ AbstractButton {
 
         visible: !mxcimage.loaded
         anchors.fill: parent
-        source: url != "" ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
+        source: (url != "" && showImage) ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignLeft
@@ -130,7 +132,7 @@ AbstractButton {
         visible: loaded
         roomm: room
         play: !Settings.animateImagesOnHover || parent.hovered
-        eventId: parent.eventId
+        eventId: showImage ? parent.eventId : ""
 
         anchors.fill: parent
     }
@@ -147,7 +149,9 @@ AbstractButton {
         anchors.fill: parent
     }
 
-    onClicked: Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
+    onClicked: {
+        Settings.openImageExternal ? room.openMedia(eventId) : TimelineManager.openImageOverlay(room, url, eventId, originalWidth, proportionalHeight);
+    }
 
     Item {
         id: overlay
@@ -180,4 +184,13 @@ AbstractButton {
 
     }
 
+    Button {
+        anchors.centerIn: parent
+        visible: !showImage && !parent.EventDelegateChooser.isReply
+        enabled: visible
+        text: qsTr("Show")
+        onClicked: {
+            showImage = true;
+        }
+    }
 }

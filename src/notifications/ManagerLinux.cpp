@@ -114,7 +114,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
     }
 
     if (hasMarkup_) {
-        if (hasImages_ &&
+        if (hasImages_ && allowShowingImages(notification) &&
             (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image ||
              mtx::accessors::event_type(notification.event) == mtx::events::EventType::Sticker)) {
             MxcImageProvider::download(

@@ -323,6 +323,7 @@ public:
       const mtx::events::StateEvent<mtx::events::msc2545::ImagePack> &event) const;
     Q_INVOKABLE QString formatPolicyRule(const QString &id) const;
     Q_INVOKABLE QVariantMap formatRedactedEvent(const QString &id);
+    Q_INVOKABLE bool showImage() const;
 
     Q_INVOKABLE void viewRawMessage(const QString &id);
     Q_INVOKABLE void forwardMessage(const QString &eventId, QString roomId);

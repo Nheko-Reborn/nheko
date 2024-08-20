@@ -93,7 +93,9 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
     } else {
         const QString messageInfo =
           (isReply ? tr("%1 replied to a message") : tr("%1 sent a message")).arg(sender);
-        if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)
+        if (allowShowingImages(notification) &&
+            (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image ||
+             mtx::accessors::event_type(notification.event) == mtx::events::EventType::Sticker))
             MxcImageProvider::download(
               QString::fromStdString(mtx::accessors::url(notification.event)).remove("mxc://"),
               QSize(200, 80),

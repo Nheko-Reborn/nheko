@@ -3387,4 +3387,26 @@ TimelineModel::parentSpace()
     return parentSummary.get();
 }
 
+bool
+TimelineModel::showImage() const
+{
+    auto show = UserSettings::instance()->showImage();
+
+    switch (show) {
+    case UserSettings::ShowImage::Always:
+        return true;
+    case UserSettings::ShowImage::OnlyPrivate: {
+        auto accessRules = cache::client()
+                             ->getStateEvent<mtx::events::state::JoinRules>(room_id_.toStdString())
+                             .value_or(mtx::events::StateEvent<mtx::events::state::JoinRules>{})
+                             .content;
+
+        return accessRules.join_rule != mtx::events::state::JoinRule::Public;
+    }
+    case UserSettings::ShowImage::Never:
+    default:
+        return false;
+    }
+}
+
 #include "moc_TimelineModel.cpp"

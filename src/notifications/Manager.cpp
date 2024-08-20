@@ -5,8 +5,32 @@
 #include "notifications/Manager.h"
 
 #include "Cache.h"
+#include "Cache_p.h"
 #include "EventAccessors.h"
+#include "UserSettingsPage.h"
 #include "Utils.h"
+
+bool
+NotificationsManager::allowShowingImages(const mtx::responses::Notification &notification)
+{
+    auto show = UserSettings::instance()->showImage();
+
+    switch (show) {
+    case UserSettings::ShowImage::Always:
+        return true;
+    case UserSettings::ShowImage::OnlyPrivate: {
+        auto accessRules = cache::client()
+                             ->getStateEvent<mtx::events::state::JoinRules>(notification.room_id)
+                             .value_or(mtx::events::StateEvent<mtx::events::state::JoinRules>{})
+                             .content;
+
+        return accessRules.join_rule != mtx::events::state::JoinRule::Public;
+    }
+    case UserSettings::ShowImage::Never:
+    default:
+        return false;
+    }
+}
 
 QString
 NotificationsManager::getMessageTemplate(const mtx::responses::Notification &notification)

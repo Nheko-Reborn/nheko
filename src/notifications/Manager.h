@@ -66,7 +66,6 @@ private:
                                 const QString &text,
                                 const QImage &icon);
     void closeNotification(uint id);
-
     const bool hasMarkup_;
     const bool hasImages_;
 #endif
@@ -111,6 +110,7 @@ private slots:
 
 private:
     QString getMessageTemplate(const mtx::responses::Notification &notification);
+    bool allowShowingImages(const mtx::responses::Notification &notification);
 
     // notification ID to (room ID, event ID)
     // Only populated on Linux atm

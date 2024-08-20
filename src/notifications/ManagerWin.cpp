@@ -83,8 +83,9 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
     if (!icon.save(iconPath))
         iconPath.clear();
 
-    if (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image ||
-        mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image) {
+    if (allowShowingImages(notification) &&
+        (mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image ||
+         mtx::accessors::msg_type(notification.event) == mtx::events::MessageType::Image)) {
         MxcImageProvider::download(
           QString::fromStdString(mtx::accessors::url(notification.event))
             .remove(QStringLiteral("mxc://")),

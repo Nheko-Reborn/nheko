@@ -133,6 +133,12 @@ UserSettings::load(std::optional<QString> profile)
         presenceValue = 0;
     presence_ = static_cast<Presence>(presenceValue);
 
+    auto tempShowImage  = settings.value(prefix + "user/show_images", "").toString().toStdString();
+    auto showImageValue = QMetaEnum::fromType<ShowImage>().keyToValue(tempShowImage.c_str());
+    if (showImageValue < 0)
+        showImageValue = 0;
+    showImage_ = static_cast<ShowImage>(showImageValue);
+
     collapsedSpaces_.clear();
     auto tempSpaces = settings.value(prefix + "user/collapsed_spaces", QList<QVariant>{}).toList();
     for (const auto &e : std::as_const(tempSpaces))
@@ -613,6 +619,16 @@ UserSettings::setPresence(Presence state)
 }
 
 void
+UserSettings::setShowImage(ShowImage state)
+{
+    if (state == showImage_)
+        return;
+    showImage_ = state;
+    emit showImageChanged(state);
+    save();
+}
+
+void
 UserSettings::setTheme(QString theme)
 {
     if (theme == theme_)
@@ -955,6 +971,9 @@ UserSettings::save()
     settings.setValue(
       prefix + "user/presence",
       QString::fromUtf8(QMetaEnum::fromType<Presence>().valueToKey(static_cast<int>(presence_))));
+    settings.setValue(
+      prefix + "user/show_images",
+      QString::fromUtf8(QMetaEnum::fromType<ShowImage>().valueToKey(static_cast<int>(showImage_))));
 
     QVariantList v;
     v.reserve(collapsedSpaces_.size());
@@ -1024,6 +1043,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Enable small Avatars");
         case AnimateImagesOnHover:
             return tr("Play animated images only on hover");
+        case ShowImage:
+            return tr("Show images automatically");
         case TypingNotifications:
             return tr("Typing notifications");
         case SortByImportance:
@@ -1182,6 +1203,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->smallAvatars();
         case AnimateImagesOnHover:
             return i->animateImagesOnHover();
+        case ShowImage:
+            return static_cast<int>(i->showImage());
         case TypingNotifications:
             return i->typingNotifications();
         case SortByImportance:
@@ -1349,6 +1372,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Avatars are resized to fit above the message.");
         case AnimateImagesOnHover:
             return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
+        case ShowImage:
+            return tr("If images should be automatically displayed. You can select between always "
+                      "showing images by default, only show them by default in private rooms or "
+                      "always require interaction to show images.");
         case TypingNotifications:
             return tr(
               "Show who is typing in a room.\nThis will also enable or disable sending typing "
@@ -1504,6 +1531,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case CameraResolution:
         case CameraFrameRate:
         case Ringtone:
+        case ShowImage:
             return Options;
         case TimelineMaxWidth:
         case PrivacyScreenTimeout:
@@ -1631,6 +1659,12 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               QStringLiteral("Dark"),
               QStringLiteral("System"),
             };
+        case ShowImage:
+            return QStringList{
+              tr("Always"),
+              tr("Only in private rooms"),
+              tr("Never"),
+            };
         case Microphone:
             return vecToList(CallDevices::instance().names(false, i->microphone().toStdString()));
         case Camera:
@@ -1709,6 +1743,16 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 return true;
             } else
                 return false;
+        }
+        case ShowImage: {
+            auto showImageValue = value.toInt();
+            if (showImageValue < 0 ||
+
+                QMetaEnum::fromType<UserSettings::ShowImage>().keyCount() <= showImageValue)
+                return false;
+
+            i->setShowImage(static_cast<UserSettings::ShowImage>(showImageValue));
+            return true;
         }
         case MessageHoverHighlight: {
             if (value.userType() == QMetaType::Bool) {
@@ -2240,6 +2284,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::animateImagesOnHoverChanged, this, [this]() {
         emit dataChanged(index(AnimateImagesOnHover), index(AnimateImagesOnHover), {Value});
+    });
+    connect(s.get(), &UserSettings::showImageChanged, this, [this]() {
+        emit dataChanged(index(ShowImage), index(ShowImage), {Value});
     });
     connect(s.get(), &UserSettings::typingNotificationsChanged, this, [this]() {
         emit dataChanged(index(TypingNotifications), index(TypingNotifications), {Value});

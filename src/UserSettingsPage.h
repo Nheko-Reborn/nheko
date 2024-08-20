@@ -75,6 +75,7 @@ class UserSettings final : public QObject
     Q_PROPERTY(QString font READ font WRITE setFontFamily NOTIFY fontChanged)
     Q_PROPERTY(QString emojiFont READ emojiFont WRITE setEmojiFontFamily NOTIFY emojiFontChanged)
     Q_PROPERTY(Presence presence READ presence WRITE setPresence NOTIFY presenceChanged)
+    Q_PROPERTY(ShowImage showImage READ showImage WRITE setShowImage NOTIFY showImageChanged)
     Q_PROPERTY(QString ringtone READ ringtone WRITE setRingtone NOTIFY ringtoneChanged)
     Q_PROPERTY(QString microphone READ microphone WRITE setMicrophone NOTIFY microphoneChanged)
     Q_PROPERTY(QString camera READ camera WRITE setCamera NOTIFY cameraChanged)
@@ -157,6 +158,14 @@ public:
     };
     Q_ENUM(Presence)
 
+    enum class ShowImage
+    {
+        Always,
+        OnlyPrivate,
+        Never,
+    };
+    Q_ENUM(ShowImage)
+
     void save();
     void load(std::optional<QString> profile);
     void applyTheme();
@@ -196,6 +205,7 @@ public:
     void setPrivacyScreen(bool state);
     void setPrivacyScreenTimeout(int state);
     void setPresence(Presence state);
+    void setShowImage(ShowImage state);
     void setRingtone(QString ringtone);
     void setMicrophone(QString microphone);
     void setCamera(QString camera);
@@ -273,6 +283,7 @@ public:
         return emojiFont_;
     }
     Presence presence() const { return presence_; }
+    ShowImage showImage() const { return showImage_; }
     QString ringtone() const { return ringtone_; }
     QString microphone() const { return microphone_; }
     QString camera() const { return camera_; }
@@ -343,6 +354,7 @@ signals:
     void fontChanged(QString state);
     void emojiFontChanged(QString state);
     void presenceChanged(Presence state);
+    void showImageChanged(ShowImage state);
     void ringtoneChanged(QString ringtone);
     void microphoneChanged(QString microphone);
     void cameraChanged(QString camera);
@@ -418,6 +430,7 @@ private:
     QString font_;
     QString emojiFont_;
     Presence presence_;
+    ShowImage showImage_;
     QString ringtone_;
     QString microphone_;
     QString camera_;
@@ -490,6 +503,7 @@ class UserSettingsModel : public QAbstractListModel
         TimelineSection,
         TimelineMaxWidth,
         EnlargeEmojiOnlyMessages,
+        ShowImage,
         OpenImageExternal,
         OpenVideoExternal,
         ButtonsInTimeline,
