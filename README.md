@@ -276,7 +276,7 @@ KDE has similar plugins, that can extend the supported image types even more.
 ### Build Requirements
 
 - Qt6 (6.5 or greater). Required for overlapping hover handlers in Qml.
-- CMake 3.15 or greater. (Lower version may work, but may break boost linking)
+- CMake 3.15 or greater.
 - [mtxclient](https://github.com/Nheko-Reborn/mtxclient)
 - [coeurl](https://nheko.im/nheko-reborn/coeurl)
 - [LMDB](https://www.symas.com/lmdb)
@@ -344,7 +344,6 @@ sudo pacman -S qt6-base \
     fontconfig \
     lmdb \
     cmark \
-    boost \
     qtkeychain-qt6
 ```
 
@@ -397,7 +396,7 @@ guix environment nheko
 
 ```bash
 brew update
-brew install qt6 lmdb cmake llvm spdlog boost cmark libolm qtkeychain
+brew install qt6 lmdb cmake llvm spdlog cmark libolm qtkeychain
 ```
 
 #### Windows
