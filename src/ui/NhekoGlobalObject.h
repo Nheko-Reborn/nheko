@@ -56,6 +56,7 @@ public:
         return QFontDatabase::systemFont(QFontDatabase::FixedFont);
     }
     Q_INVOKABLE void openLink(QString link) const;
+    Q_INVOKABLE QString punyLink(QString link) const;
     Q_INVOKABLE void setStatusMessage(QString msg) const;
     Q_INVOKABLE void showUserSettingsPage() const;
     Q_INVOKABLE void logout() const;

@@ -11,7 +11,7 @@ TextArea {
 
     property alias cursorShape: cs.cursorShape
 
-    ToolTip.text: hoveredLink
+    ToolTip.text: Nheko.punyLink(hoveredLink)
     ToolTip.visible: hoveredLink || false
     background: null
     bottomInset: 0

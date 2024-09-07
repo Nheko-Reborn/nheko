@@ -108,6 +108,12 @@ Nheko::openLink(QString link) const
                               url.toDisplayString().toStdString());
     }
 }
+QString
+Nheko::punyLink(QString link) const
+{
+    QUrl url(link);
+    return url.toDisplayString(QUrl::FullyEncoded);
+}
 void
 Nheko::setStatusMessage(QString msg) const
 {
