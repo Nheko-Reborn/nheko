@@ -477,6 +477,11 @@ Page {
             state: "normal"
             width: ListView.view.width - ((scrollbar.interactive && scrollbar.visible && scrollbar.parent) ? scrollbar.width : 0)
 
+            topInset: 0
+            bottomInset: 0
+            leftInset: 0
+            rightInset: 0
+
             background: Rectangle {
                 color: backgroundColor
             }
