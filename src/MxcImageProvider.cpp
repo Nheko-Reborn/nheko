@@ -279,9 +279,10 @@ MxcImageProvider::download(const QString &id,
                   }
               }
               image.setText(QStringLiteral("mxc url"), "mxc://" + id);
-              if (image.save(fileInfo.absoluteFilePath(), "png"))
+              if (image.save(fileInfo.absoluteFilePath(), "png")) {
+                  utils::markFileAsFromWeb(fileInfo.absoluteFilePath());
                   nhlog::ui()->debug("Wrote: {}", fileInfo.absoluteFilePath().toStdString());
-              else
+              } else
                   nhlog::ui()->debug("Failed to write: {}",
                                      fileInfo.absoluteFilePath().toStdString());
 
@@ -356,6 +357,7 @@ MxcImageProvider::download(const QString &id,
                   }
                   f.write(tempData.data(), tempData.size());
                   f.close();
+                  utils::markFileAsFromWeb(fileInfo.absoluteFilePath());
 
                   if (encryptionInfo) {
                       tempData = mtx::crypto::to_string(

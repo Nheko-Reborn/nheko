@@ -1990,6 +1990,7 @@ TimelineModel::saveMedia(const QString &eventId) const
 
                                      file.write(QByteArray(temp.data(), (int)temp.size()));
                                      file.close();
+                                     utils::markFileAsFromWeb(filename);
 
                                      return;
                                  } catch (const std::exception &e) {

@@ -13,6 +13,7 @@
 #include <QBuffer>
 #include <QComboBox>
 #include <QCryptographicHash>
+#include <QFile>
 #include <QGuiApplication>
 #include <QImageReader>
 #include <QProcessEnvironment>
@@ -2229,4 +2230,19 @@ utils::parseMatrixUri(QString uri)
       .action = std::move(action),
       .vias   = std::move(vias),
     };
+}
+
+void
+utils::markFileAsFromWeb(const QString &path [[maybe_unused]])
+{
+#ifdef Q_OS_WINDOWS
+    QFile file(path + ":Zone.Identifier");
+    if (!file.open(QIODevice::Truncate | QIODevice::WriteOnly)) {
+        nhlog::net()->error("Failed to open alternate stream for {}", path.toStdString());
+        return;
+    }
+
+    file.write("[ZoneTransfer]\nZoneId=3");
+    file.close();
+#endif
 }

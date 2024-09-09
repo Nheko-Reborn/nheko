@@ -369,6 +369,7 @@ TimelineViewManager::saveMedia(QString mxcUrl)
 
                                      file.write(QByteArray(data.data(), (int)data.size()));
                                      file.close();
+                                     utils::markFileAsFromWeb(filename);
 
                                      return;
                                  } catch (const std::exception &e) {

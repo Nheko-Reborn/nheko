@@ -215,4 +215,7 @@ struct MatrixUriParseResult
 
 std::optional<MatrixUriParseResult>
 parseMatrixUri(QString uri);
+
+void
+markFileAsFromWeb(const QString &file);
 }
