@@ -237,12 +237,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+940"/>
+        <location line="+957"/>
         <source>Invited user: %1</source>
         <translation>邀请已发送：%1</translation>
     </message>
     <message numerus="yes">
-        <location line="-692"/>
+        <location line="-709"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation>
@@ -286,7 +286,7 @@
         <translation>创建聊天室失败：别名错误</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+35"/>
         <source>Room %1 created.</source>
         <translation>聊天室 %1 已创建。</translation>
     </message>
@@ -347,7 +347,7 @@
         <translation>是否确认与 %1 开始私密聊天？</translation>
     </message>
     <message>
-        <location line="-1002"/>
+        <location line="-1019"/>
         <source>Cache migration failed!</source>
         <translation>缓存迁移失败！</translation>
     </message>
@@ -411,12 +411,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>未能移除邀请：%1</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+34"/>
         <source>Room creation failed: %1</source>
         <translation>创建聊天室失败：%1</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+28"/>
         <source>Failed to leave room: %1</source>
         <translation>未能离开聊天室：%1</translation>
     </message>
@@ -773,7 +773,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+125"/>
+        <location filename="../qml/CommunitiesList.qml" line="+130"/>
         <source>Expand</source>
         <translation>展开</translation>
     </message>
@@ -1156,8 +1156,8 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation>密钥来自一个不受信任的来源，比如从另一个用户转发或在线密钥备份。因此，我们无法验证发送消息的人是谁。</translation>
+        <source>Key is from an untrusted source likely forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1405,6 +1405,14 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
 </context>
 <context>
+    <name>ImageMessage</name>
+    <message>
+        <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
+        <source>Show</source>
+        <translation type="unfinished">显示</translation>
+    </message>
+</context>
+<context>
     <name>ImagePackDeleteDialog</name>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
@@ -1568,12 +1576,17 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+424"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
         <source>All Files (*)</source>
         <translation>所有文件 (*)</translation>
     </message>
     <message>
-        <location line="+625"/>
+        <location line="+629"/>
+        <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Failed to fetch user %1</source>
         <translation>无法获取用户 %1</translation>
     </message>
@@ -1583,7 +1596,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>上传 “%1” 失败</translation>
     </message>
     <message>
-        <location line="-965"/>
+        <location line="-976"/>
         <source>Select file(s)</source>
         <translation>选择文件</translation>
     </message>
@@ -1659,12 +1672,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+132"/>
+        <location line="+133"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>你输入的 Matrix ID 无效，例如 @user:yourserver.example.com</translation>
     </message>
     <message>
-        <location line="-162"/>
+        <location line="-163"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>自动发现失败。收到格式错误的回复。</translation>
     </message>
@@ -1689,7 +1702,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>发生了未知错误。请确认服务器域名合法。</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1828,7 +1841,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MediaUpload</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+811"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+822"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>未能上传媒体。请再试一次。</translation>
@@ -1893,7 +1906,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+216"/>
+        <location filename="../qml/MessageView.qml" line="+236"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
@@ -2106,7 +2119,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+46"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+90"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 发送了一条加密消息</translation>
@@ -2537,7 +2550,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+242"/>
+        <location filename="../../src/main.cpp" line="+222"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>创建一个独特的配置文件，允许你同时登录多个帐户并启动多个 Nheko 实例。</translation>
     </message>
@@ -2642,7 +2655,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+81"/>
+        <location filename="../../src/RegisterPage.cpp" line="+83"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>自动发现失败。收到格式错误的回复。</translation>
     </message>
@@ -2667,7 +2680,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>收到形式错误的响应。请确保主服务器域有效。</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2928,7 +2941,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>状态信息</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Profile settings</source>
         <translation>个人资料设置</translation>
     </message>
@@ -2981,7 +2994,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location line="+374"/>
+        <location line="+379"/>
         <source>Enter the tag you want to use:</source>
         <translation>输入你想使用的标签：</translation>
     </message>
@@ -3115,7 +3128,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+235"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+244"/>
         <source>Failed to enable encryption: %1</source>
         <translation>未能启用加密：%1</translation>
     </message>
@@ -3159,12 +3172,17 @@ Example: https://yourserver.example.com:8787</source>
         <translation>更改聊天室头像。</translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+97"/>
         <source>Change name of this room</source>
         <translation>更改此聊天室的名称</translation>
     </message>
+    <message>
+        <location line="+23"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+22"/>
+        <location line="+11"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n 个成员</numerusform>
@@ -3181,12 +3199,17 @@ Example: https://yourserver.example.com:8787</source>
         <translation>未设置话题</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+24"/>
         <source>Change topic of this room</source>
         <translation>更改此聊天室的话题</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+24"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>NOTIFICATIONS</source>
         <translation>通知</translation>
     </message>
@@ -3761,7 +3784,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+161"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+162"/>
         <source>Part of a thread</source>
         <translation>消息列的一部分</translation>
     </message>
@@ -3769,7 +3792,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineEvent</name>
     <message>
-        <location filename="../qml/TimelineEvent.qml" line="+87"/>
+        <location filename="../qml/TimelineEvent.qml" line="+88"/>
         <source>%1 placed a voice call.</source>
         <translation>%1 发起了语音通话。</translation>
     </message>
@@ -3841,7 +3864,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1596"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1598"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>删除消息失败：%1</translation>
@@ -3873,7 +3896,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>保存文件</translation>
     </message>
     <message numerus="yes">
-        <location line="+344"/>
+        <location line="+345"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4197,7 +4220,7 @@ Reason: %4</source>
         <translation>%1 删除了其加入请求。</translation>
     </message>
     <message>
-        <location line="-2298"/>
+        <location line="-2301"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 更改了允许在此聊天室使用的服务器。</translation>
     </message>
@@ -4227,7 +4250,7 @@ Reason: %4</source>
         <translation>%1 将聊天室头像更改为：%2</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>%1 removed the room avatar.</source>
         <translation>%1 移除了聊天室头像。</translation>
     </message>
@@ -4262,7 +4285,7 @@ Reason: %4</source>
         <translation>你已加入此聊天室。</translation>
     </message>
     <message>
-        <location line="+1017"/>
+        <location line="+1018"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 使此聊天室需要邀请才能加入。</translation>
     </message>
@@ -4309,7 +4332,7 @@ Reason: %4</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+49"/>
+        <location filename="../qml/TimelineView.qml" line="+51"/>
         <source>No room open</source>
         <translation>未打开聊天室</translation>
     </message>
@@ -4492,7 +4515,7 @@ Reason: %4</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+111"/>
+        <location filename="../../src/TrayIcon.cpp" line="+109"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>
@@ -4500,6 +4523,14 @@ Reason: %4</source>
         <location line="+1"/>
         <source>Quit</source>
         <translation>退出</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+27"/>
+        <source>
+%n unread message(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -4694,8 +4725,8 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
-        <location filename="../../src/UserSettingsPage.h" line="+270"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+601"/>
+        <location filename="../../src/UserSettingsPage.h" line="+280"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
@@ -4703,7 +4734,7 @@ Reason: %4</source>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+420"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
@@ -4761,6 +4792,11 @@ Reason: %4</source>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
         <translation>仅在悬停时播放动画图像</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show images automatically</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5063,7 +5099,7 @@ Reason: %4</source>
         <translation>定期删除过期的事件</translation>
     </message>
     <message>
-        <location line="+119"/>
+        <location line="+121"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
@@ -5135,6 +5171,11 @@ When disabled, all messages are sent as a plain text.</source>
     </message>
     <message>
         <location line="+2"/>
+        <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
         <translation>显示在聊天室中正在输入的人。
@@ -5188,7 +5229,12 @@ OFF - 方形，ON - 圆形。</translation>
         <translation>将禁用滑动操作，例如在聊天室和时间线之间左右滑动，或是滑动消息进行回复。</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+3"/>
+        <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>如果其他用户已通过验证，则自动回复他们的密钥请求，即使该设备不应该以其他方式访问这些密钥。</translation>
     </message>
@@ -5198,24 +5244,24 @@ OFF - 方形，ON - 圆形。</translation>
         <translation>验证你自己的设备的密钥。如果它已被缓存，验证你的设备之一将为你的所有其他设备和已验证你的用户标记它为已验证。</translation>
     </message>
     <message>
-        <location line="-80"/>
+        <location line="-81"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>收到消息时显示通知。
 这通常会导致任务栏中的应用程序图标以某种方式呈现动画效果。</translation>
     </message>
     <message>
-        <location line="-370"/>
+        <location line="-378"/>
         <source>Communities sidebar</source>
         <translation>社区侧边栏</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+48"/>
         <source>Show message counts for communities and tags</source>
         <translation>显示社区和标签的消息计数</translation>
     </message>
     <message>
-        <location line="+255"/>
+        <location line="+257"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>设置时间线中消息的最大宽度（以像素为单位）。 当 Nheko 最大化时，这有助于提高宽屏上的可读性</translation>
     </message>
@@ -5225,7 +5271,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>在聊天室列表旁边显示包含社区和标签的列。</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+27"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -5290,12 +5336,7 @@ be blurred.</source>
         <translation>防止在时间线中选择文本，以使触摸滚动更容易。</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Change the scale factor of the whole user interface.</source>
-        <translation>更改整个用户界面的比例系数。</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+9"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
         <translation>当你的主服务器没有提供通话辅助服务器时使用备用的 turn.matrix.org 服务器。</translation>
     </message>
@@ -5349,7 +5390,22 @@ This setting will take effect upon restart.</source>
         <translation>管理你已忽略的用户。</translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+142"/>
+        <source>Always</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only in private rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>System font</source>
         <translation>系统字体</translation>
     </message>
@@ -5359,7 +5415,7 @@ This setting will take effect upon restart.</source>
         <translation>系统表情符号字体</translation>
     </message>
     <message>
-        <location line="+330"/>
+        <location line="+340"/>
         <source>Select a file</source>
         <translation>选择一个文件</translation>
     </message>
@@ -5378,13 +5434,14 @@ This setting will take effect upon restart.</source>
         <location line="+18"/>
         <location line="+8"/>
         <location line="+18"/>
+        <location line="+14"/>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-78"/>
         <location line="+26"/>
         <source>File Password</source>
         <translation>文件密码</translation>
@@ -5406,12 +5463,27 @@ This setting will take effect upon restart.</source>
         <translation>输入口令以加密你的会话密钥：</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+13"/>
+        <source>Repeat File Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Repeat the passphrase:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Passwords don&apos;t match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>File to save the exported session keys</source>
         <translation>保存导出的会话密钥的文件</translation>
     </message>
     <message>
-        <location line="-1066"/>
+        <location line="-1104"/>
         <source>Disable swipe motions</source>
         <translation>禁用滑动操作</translation>
     </message>
@@ -5536,7 +5608,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+374"/>
+        <location filename="../../src/Utils.cpp" line="+375"/>
         <source>Yesterday</source>
         <translation>昨天</translation>
     </message>

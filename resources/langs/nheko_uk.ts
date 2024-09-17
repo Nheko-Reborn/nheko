@@ -239,12 +239,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+940"/>
+        <location line="+957"/>
         <source>Invited user: %1</source>
         <translation>Запрошений користувач: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-692"/>
+        <location line="-709"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation type="unfinished">
@@ -289,7 +289,7 @@
         <translation>Не вдалося створити кімнату: поганий псевдонім</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+35"/>
         <source>Room %1 created.</source>
         <translation>Кімната %1 створена.</translation>
     </message>
@@ -350,7 +350,7 @@
         <translation>Ви справді хочете розпочати приватну бесіду з %1?</translation>
     </message>
     <message>
-        <location line="-1002"/>
+        <location line="-1019"/>
         <source>Cache migration failed!</source>
         <translation>Помилка міграції кешу!</translation>
     </message>
@@ -414,12 +414,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Не вдалося видалити запрошення: %1</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+34"/>
         <source>Room creation failed: %1</source>
         <translation>Не вдалося створити кімнату: %1</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+28"/>
         <source>Failed to leave room: %1</source>
         <translation>Не вдалося залишити кімнату: %1</translation>
     </message>
@@ -776,7 +776,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+125"/>
+        <location filename="../qml/CommunitiesList.qml" line="+130"/>
         <source>Expand</source>
         <translation>Розгорнути</translation>
     </message>
@@ -1161,7 +1161,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <source>Key is from an untrusted source likely forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1410,6 +1410,14 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
 </context>
 <context>
+    <name>ImageMessage</name>
+    <message>
+        <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
+        <source>Show</source>
+        <translation type="unfinished">Показати</translation>
+    </message>
+</context>
+<context>
     <name>ImagePackDeleteDialog</name>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
@@ -1573,7 +1581,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+424"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
         <source>All Files (*)</source>
         <translation>Усі файли (*)</translation>
     </message>
@@ -1583,7 +1591,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+625"/>
+        <location line="+629"/>
+        <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Failed to fetch user %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1664,12 +1677,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+132"/>
+        <location line="+133"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-162"/>
+        <location line="-163"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Помилка автовиявлення. Отримано неправильну відповідь.</translation>
     </message>
@@ -1694,7 +1707,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Сталася невідома помилка. Переконайтеся, що домен домашнього сервера дійсний.</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1894,7 +1907,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+216"/>
+        <location filename="../qml/MessageView.qml" line="+236"/>
         <source>Edit</source>
         <translation>Змінити</translation>
     </message>
@@ -2107,7 +2120,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+46"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+90"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 надіслав зашифроване повідомлення</translation>
@@ -2538,7 +2551,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+242"/>
+        <location filename="../../src/main.cpp" line="+222"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Створити унікальний профіль, який дозволить вам входити в кілька облікових записів одночасно та запускати кілька екземплярів nheko.</translation>
     </message>
@@ -2643,7 +2656,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+81"/>
+        <location filename="../../src/RegisterPage.cpp" line="+83"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Помилка автовиявлення. Отримано неправильну відповідь.</translation>
     </message>
@@ -2668,7 +2681,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Сталася невідома помилка. Переконайтеся, що домен домашнього сервера дійсний.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2929,7 +2942,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Повідомлення про статус</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Profile settings</source>
         <translation>Налаштування профілю</translation>
     </message>
@@ -2982,7 +2995,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Закрити</translation>
     </message>
     <message>
-        <location line="+374"/>
+        <location line="+379"/>
         <source>Enter the tag you want to use:</source>
         <translation>Введіть тег, який ви хочете використовувати:</translation>
     </message>
@@ -3118,7 +3131,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+235"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+244"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Не вдалося ввімкнути шифрування: %1</translation>
     </message>
@@ -3162,12 +3175,17 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">Змінити аватар кімнати.</translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+97"/>
         <source>Change name of this room</source>
         <translation type="unfinished">Змінити назву цієї кімнати</translation>
     </message>
+    <message>
+        <location line="+23"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+22"/>
+        <location line="+11"/>
         <source>%n member(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -3186,12 +3204,17 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">Тема не встановлена</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+24"/>
         <source>Change topic of this room</source>
         <translation type="unfinished">Змінити тему цієї кімнати</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+24"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>NOTIFICATIONS</source>
         <translation type="unfinished">СПОВІЩЕННЯ</translation>
     </message>
@@ -3766,7 +3789,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+161"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+162"/>
         <source>Part of a thread</source>
         <translation type="unfinished">Частина нитки розмови</translation>
     </message>
@@ -3774,7 +3797,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineEvent</name>
     <message>
-        <location filename="../qml/TimelineEvent.qml" line="+87"/>
+        <location filename="../qml/TimelineEvent.qml" line="+88"/>
         <source>%1 placed a voice call.</source>
         <translation type="unfinished">%1 зробив голосовий виклик.</translation>
     </message>
@@ -3846,7 +3869,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1596"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1598"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Помилка редагування повідомлення: %1</translation>
@@ -3878,7 +3901,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>Зберегти файл</translation>
     </message>
     <message numerus="yes">
-        <location line="+344"/>
+        <location line="+345"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4212,7 +4235,7 @@ Reason: %4</source>
         <translation>%1 відредагував свій стукіт.</translation>
     </message>
     <message>
-        <location line="-2298"/>
+        <location line="-2301"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4242,7 +4265,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>%1 removed the room avatar.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4277,7 +4300,7 @@ Reason: %4</source>
         <translation>Ви приєдналися до цієї кімнати.</translation>
     </message>
     <message>
-        <location line="+1017"/>
+        <location line="+1018"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 зробив так, щоб ця кімната потребувала запрошення, щоб приєднатися.</translation>
     </message>
@@ -4324,7 +4347,7 @@ Reason: %4</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+49"/>
+        <location filename="../qml/TimelineView.qml" line="+51"/>
         <source>No room open</source>
         <translation>Немає відкритих кімнат</translation>
     </message>
@@ -4509,7 +4532,7 @@ Reason: %4</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+111"/>
+        <location filename="../../src/TrayIcon.cpp" line="+109"/>
         <source>Show</source>
         <translation>Показати</translation>
     </message>
@@ -4517,6 +4540,16 @@ Reason: %4</source>
         <location line="+1"/>
         <source>Quit</source>
         <translation>Вийти</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+27"/>
+        <source>
+%n unread message(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -4713,8 +4746,8 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
-        <location filename="../../src/UserSettingsPage.h" line="+270"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+601"/>
+        <location filename="../../src/UserSettingsPage.h" line="+280"/>
         <source>Default</source>
         <translation>За замовчуванням</translation>
     </message>
@@ -4722,7 +4755,7 @@ Reason: %4</source>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+420"/>
         <source>Theme</source>
         <translation>Тема</translation>
     </message>
@@ -4780,6 +4813,11 @@ Reason: %4</source>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
         <translation>Відтворення анімованих зображень тільки при наведенні</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show images automatically</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5087,7 +5125,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+119"/>
+        <location line="+121"/>
         <source>Default</source>
         <translation>За замовчуванням</translation>
     </message>
@@ -5159,6 +5197,11 @@ When disabled, all messages are sent as a plain text.</source>
     </message>
     <message>
         <location line="+2"/>
+        <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
         <translation>Показувати, хто друкує в кімнаті.
@@ -5212,7 +5255,12 @@ OFF - square, ON - circle.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+3"/>
+        <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Автоматично відповідає на запити ключів від інших користувачів, якщо вони підтверджені, навіть якщо цей пристрій не повинен мати доступу до цих ключів.</translation>
     </message>
@@ -5222,24 +5270,24 @@ OFF - square, ON - circle.</source>
         <translation>Ключ для перевірки власних пристроїв. Якщо він кешований, перевірка одного з ваших пристроїв позначить його як перевірений для всіх інших ваших пристроїв і користувачів, які вас верифікували.</translation>
     </message>
     <message>
-        <location line="-80"/>
+        <location line="-81"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Показувати сповіщення при отриманні повідомлення.
 Зазвичай це призводить до того, що іконка програми на панелі завдань певним чином анімується.</translation>
     </message>
     <message>
-        <location line="-370"/>
+        <location line="-378"/>
         <source>Communities sidebar</source>
         <translation>Бічна панель спільнот</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+48"/>
         <source>Show message counts for communities and tags</source>
         <translation>Показати кількість повідомлень для спільнот і тегів</translation>
     </message>
     <message>
-        <location line="+255"/>
+        <location line="+257"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Встановити максимальну ширину повідомлень на часовій шкалі (у пікселях). Це може покращити читабельність на широкому екрані, коли Nheko максимізовано</translation>
     </message>
@@ -5249,7 +5297,7 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>Показати стовпчик зі спільнотами та тегами поруч зі списком кімнат.</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+27"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -5310,12 +5358,7 @@ be blurred.</source>
         <translation>Запобігає виділенню тексту на шкалі часу, щоб полегшити сенсорну прокрутку.</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Change the scale factor of the whole user interface.</source>
-        <translation>Змінити коефіцієнт масштабування всього інтерфейсу користувача.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+9"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
         <translation>Використовуватиме turn.matrix.org як допоміжний, якщо ваш домашній сервер його не пропонує.</translation>
     </message>
@@ -5369,7 +5412,22 @@ This setting will take effect upon restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+142"/>
+        <source>Always</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only in private rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>System font</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5379,7 +5437,7 @@ This setting will take effect upon restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+330"/>
+        <location line="+340"/>
         <source>Select a file</source>
         <translation>Вибрати файл</translation>
     </message>
@@ -5398,13 +5456,14 @@ This setting will take effect upon restart.</source>
         <location line="+18"/>
         <location line="+8"/>
         <location line="+18"/>
+        <location line="+14"/>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
         <translation>Помилка</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-78"/>
         <location line="+26"/>
         <source>File Password</source>
         <translation>Пароль до файлу</translation>
@@ -5426,7 +5485,22 @@ This setting will take effect upon restart.</source>
         <translation>Введіть пароль для шифрування сеансових ключів:</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+13"/>
+        <source>Repeat File Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Repeat the passphrase:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Passwords don&apos;t match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>File to save the exported session keys</source>
         <translation>Файл для збереження експортованих сеансових ключів</translation>
     </message>
@@ -5551,7 +5625,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+374"/>
+        <location filename="../../src/Utils.cpp" line="+375"/>
         <source>Yesterday</source>
         <translation>Вчора</translation>
     </message>

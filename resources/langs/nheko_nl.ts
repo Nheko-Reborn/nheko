@@ -238,12 +238,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+940"/>
+        <location line="+957"/>
         <source>Invited user: %1</source>
         <translation>Gebruiker uitgenodigd: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-692"/>
+        <location line="-709"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation>
@@ -289,7 +289,7 @@
         <translation>Kamer aanmaken mislukt: slechte alias</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+35"/>
         <source>Room %1 created.</source>
         <translation>Kamer %1 gemaakt.</translation>
     </message>
@@ -350,7 +350,7 @@
         <translation>Weet je zeker dat je een privé chat wil beginnen met %1?</translation>
     </message>
     <message>
-        <location line="-1002"/>
+        <location line="-1019"/>
         <source>Cache migration failed!</source>
         <translation>Migreren van de cache is mislukt!</translation>
     </message>
@@ -414,12 +414,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>Uitnodiging verwijderen mislukt: %1</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+34"/>
         <source>Room creation failed: %1</source>
         <translation>Kamer aanmaken mislukt: %1</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+28"/>
         <source>Failed to leave room: %1</source>
         <translation>Kamer verlaten mislukt: %1</translation>
     </message>
@@ -776,7 +776,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+125"/>
+        <location filename="../qml/CommunitiesList.qml" line="+130"/>
         <source>Expand</source>
         <translation>Uitvouwen</translation>
     </message>
@@ -1160,8 +1160,8 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation>Sleutel is van een onvertrouwde bron, zoals doorgestuurd vanaf een andere gebruiker of van de online sleutelveiligheidskopie. Hierom kunnen we niet verifiëren wie het bericht verstuurde.</translation>
+        <source>Key is from an untrusted source likely forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1409,6 +1409,14 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     </message>
 </context>
 <context>
+    <name>ImageMessage</name>
+    <message>
+        <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
+        <source>Show</source>
+        <translation type="unfinished">Tonen</translation>
+    </message>
+</context>
+<context>
     <name>ImagePackDeleteDialog</name>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
@@ -1572,7 +1580,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+424"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
         <source>All Files (*)</source>
         <translation>Alle bestanden (*)</translation>
     </message>
@@ -1582,7 +1590,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>Selecteer bestand(en)</translation>
     </message>
     <message>
-        <location line="+625"/>
+        <location line="+629"/>
+        <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Failed to fetch user %1</source>
         <translation>Ophalen van gebruiker %1 mislukt</translation>
     </message>
@@ -1663,12 +1676,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+132"/>
+        <location line="+133"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>Je hebt een ongeldige Matrix ID opgegeven. Een voorbeeld van een geldige Matrix ID is: @gebruiker:jouwserver.example.com</translation>
     </message>
     <message>
-        <location line="-162"/>
+        <location line="-163"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatische herkenning mislukt. Ongeldig antwoord ontvangen.</translation>
     </message>
@@ -1693,7 +1706,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>Een onbekende fout trad op. Zorg dat de thuisserver geldig is.</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1898,7 +1911,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+216"/>
+        <location filename="../qml/MessageView.qml" line="+236"/>
         <source>Edit</source>
         <translation>Bewerken</translation>
     </message>
@@ -2111,7 +2124,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+46"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+90"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 stuurde een versleuteld bericht</translation>
@@ -2542,7 +2555,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+242"/>
+        <location filename="../../src/main.cpp" line="+222"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Maak een uniek profiel, waardoor je tegelijk meerdere kopieën van Nheko kan draaien en zo op meerdere gebruikers tegelijk ingelogd kan zijn.</translation>
     </message>
@@ -2647,7 +2660,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+81"/>
+        <location filename="../../src/RegisterPage.cpp" line="+83"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Automatische herkenning mislukt. Onjuist gevormd antwoord ontvangen.</translation>
     </message>
@@ -2672,7 +2685,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Een onbekende fout trad op. Zorg dat de thuisserver geldig is.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2933,7 +2946,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Statusbericht</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Profile settings</source>
         <translation>Profielinstellingen</translation>
     </message>
@@ -2986,7 +2999,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Sluiten</translation>
     </message>
     <message>
-        <location line="+374"/>
+        <location line="+379"/>
         <source>Enter the tag you want to use:</source>
         <translation>Voer de markering in die je wil gebruiken:</translation>
     </message>
@@ -3121,7 +3134,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+235"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+244"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Versleuteling kon niet worden ingeschakeld: %1</translation>
     </message>
@@ -3165,12 +3178,17 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Verander kamerafbeelding.</translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+97"/>
         <source>Change name of this room</source>
         <translation>Naam van deze kamer veranderen</translation>
     </message>
+    <message>
+        <location line="+23"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+22"/>
+        <location line="+11"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n deelnemer</numerusform>
@@ -3188,12 +3206,17 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Geen onderwerp</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+24"/>
         <source>Change topic of this room</source>
         <translation>Verander onderwerp van deze kamer</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+24"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>NOTIFICATIONS</source>
         <translation>MELDINGEN</translation>
     </message>
@@ -3768,7 +3791,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+161"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+162"/>
         <source>Part of a thread</source>
         <translation>Deel van een gespreksdraad</translation>
     </message>
@@ -3776,7 +3799,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineEvent</name>
     <message>
-        <location filename="../qml/TimelineEvent.qml" line="+87"/>
+        <location filename="../qml/TimelineEvent.qml" line="+88"/>
         <source>%1 placed a voice call.</source>
         <translation>%1 plaatste een spraakoproep.</translation>
     </message>
@@ -3848,7 +3871,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1596"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1598"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Bericht intrekken mislukt: %1</translation>
@@ -3880,7 +3903,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>Bestand opslaan</translation>
     </message>
     <message numerus="yes">
-        <location line="+344"/>
+        <location line="+345"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4209,7 +4232,7 @@ Reden: %4</translation>
         <translation>%1 heeft het aankloppen ingetrokken.</translation>
     </message>
     <message>
-        <location line="-2298"/>
+        <location line="-2301"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 heeft veranderd welke servers de kamer in mogen.</translation>
     </message>
@@ -4239,7 +4262,7 @@ Reden: %4</translation>
         <translation>%1 heeft de kamerafbeelding veranderd in: %2</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>%1 removed the room avatar.</source>
         <translation>%1 heeft de kamerafbeelding verwijderd.</translation>
     </message>
@@ -4274,7 +4297,7 @@ Reden: %4</translation>
         <translation>Je neemt nu deel aan deze kamer.</translation>
     </message>
     <message>
-        <location line="+1017"/>
+        <location line="+1018"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 heeft deze kamer zodanig ingesteld dat een uitnodiging vereist is om te mogen betreden.</translation>
     </message>
@@ -4321,7 +4344,7 @@ Reden: %4</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+49"/>
+        <location filename="../qml/TimelineView.qml" line="+51"/>
         <source>No room open</source>
         <translation>Geen kamer open</translation>
     </message>
@@ -4505,7 +4528,7 @@ Reden: %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+111"/>
+        <location filename="../../src/TrayIcon.cpp" line="+109"/>
         <source>Show</source>
         <translation>Tonen</translation>
     </message>
@@ -4513,6 +4536,15 @@ Reden: %4</translation>
         <location line="+1"/>
         <source>Quit</source>
         <translation>Afsluiten</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+27"/>
+        <source>
+%n unread message(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -4708,8 +4740,8 @@ Reden: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
-        <location filename="../../src/UserSettingsPage.h" line="+270"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+601"/>
+        <location filename="../../src/UserSettingsPage.h" line="+280"/>
         <source>Default</source>
         <translation>Standaard</translation>
     </message>
@@ -4717,7 +4749,7 @@ Reden: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+420"/>
         <source>Theme</source>
         <translation>Thema</translation>
     </message>
@@ -4775,6 +4807,11 @@ Reden: %4</translation>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
         <translation>Speel animaties in afbeeldingen alleen af tijdens muisover</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show images automatically</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5082,7 +5119,7 @@ Reden: %4</translation>
         <translation>Regelmatig verlopen gebeurtenissen wissen</translation>
     </message>
     <message>
-        <location line="+119"/>
+        <location line="+121"/>
         <source>Default</source>
         <translation>Standaard</translation>
     </message>
@@ -5154,6 +5191,11 @@ Indien uitgeschakeld worden alle berichten als platte tekst verstuurd.</translat
     </message>
     <message>
         <location line="+2"/>
+        <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
         <translation>Laat zien wie er typt in een kamer.
@@ -5207,7 +5249,12 @@ UIT - vierkant, AAN - cirkel.</translation>
         <translation>Schakelt veegbewegingen uit zoals naar links/rechts vegen om tussen kamers en de tijdlijn te wisselen, of op een bericht vegen om te beantwoorden.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+3"/>
+        <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Automatisch antwoorden op sleutelverzoeken van andere gebruikers als ze bevestigd zijn, zelfs als dat apparaat anders geen toegang tot die sleutel zou hebben gehad.</translation>
     </message>
@@ -5217,24 +5264,24 @@ UIT - vierkant, AAN - cirkel.</translation>
         <translation>De sleutel om je eigen apparaten te verifiëren. Indien gecached zal het verifiëren van één van je apparaten die ook als geverifieerd markeren voor je anderen apparaten en gebruikers die jou geverifieerd hebben.</translation>
     </message>
     <message>
-        <location line="-80"/>
+        <location line="-81"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Activeer een melding als een bericht binnen komt.
 Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets dergelijks.</translation>
     </message>
     <message>
-        <location line="-370"/>
+        <location line="-378"/>
         <source>Communities sidebar</source>
         <translation>Zijbalk voor groepen</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+48"/>
         <source>Show message counts for communities and tags</source>
         <translation>Laat totaalaantal berichten zien voor groepen en markeringen</translation>
     </message>
     <message>
-        <location line="+255"/>
+        <location line="+257"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Stel de maximale breedte in van berichten in de tijdlijn (in pixels). Dit kan helpen met leesbaarheid op een breed scherm als Nheko op volledig scherm staat ingesteld</translation>
     </message>
@@ -5244,7 +5291,7 @@ Meestal zorgt dit dat het icoon in de taakbalk op een manier animeert of iets de
         <translation>Laat een zijbalk zien met groepen en markeringen naast de kamerlijst.</translation>
     </message>
     <message>
-        <location line="+23"/>
+        <location line="+27"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -5309,12 +5356,7 @@ worden geblurt.</translation>
         <translation>Voorkomt dat tekst geselecteerd wordt in de tijdlijn, om scrollen makkelijker te maken.</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Change the scale factor of the whole user interface.</source>
-        <translation>Verander de schaalfactor van de gehele gebruikersinterface.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+9"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
         <translation>Zal turn.matrix.org gebruiken om te assisteren als je thuisserver geen TURN server heeft.</translation>
     </message>
@@ -5368,7 +5410,22 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
         <translation>Beheer genegeerde gebruikers.</translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+142"/>
+        <source>Always</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only in private rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>System font</source>
         <translation>Systeemlettertype</translation>
     </message>
@@ -5378,7 +5435,7 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
         <translation>Systeemlettertype voor emoji</translation>
     </message>
     <message>
-        <location line="+330"/>
+        <location line="+340"/>
         <source>Select a file</source>
         <translation>Selecteer een bestand</translation>
     </message>
@@ -5397,13 +5454,14 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
         <location line="+18"/>
         <location line="+8"/>
         <location line="+18"/>
+        <location line="+14"/>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
         <translation>Fout</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-78"/>
         <location line="+26"/>
         <source>File Password</source>
         <translation>Wachtwoord voor bestand</translation>
@@ -5425,7 +5483,22 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
         <translation>Voer wachtwoordzin in om je sessiesleutels mee te versleutelen:</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+13"/>
+        <source>Repeat File Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Repeat the passphrase:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Passwords don&apos;t match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>File to save the exported session keys</source>
         <translation>Bestand om geëxporteerde sessiesleutels in op te slaan</translation>
     </message>
@@ -5550,7 +5623,7 @@ Deze instelling wordt toegepast na opnieuw starten van de applicatie.</translati
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+374"/>
+        <location filename="../../src/Utils.cpp" line="+375"/>
         <source>Yesterday</source>
         <translation>Gisteren</translation>
     </message>
