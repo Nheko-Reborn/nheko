@@ -348,12 +348,11 @@ sudo pacman -S qt6-base \
 ```
 
 #### Debian 13 [Testing/Sid] (Nheko QT6 Version)
-*As of February 2024, Nheko from git master requires QT 6.5 whereas Trixie has 6.4.2, so you must enable Debian's [Experimental Repository](https://wiki.debian.org/DebianExperimental) to install newer QT6.  This may not be necessary in the future and the `-t experimental` can be removed for the second set of build requirements.*  
 
 ```bash
 # Install build requirements
 sudo apt install -y cmake asciidoc-base libevent-dev libspdlog-dev libre2-dev liblmdb++-dev libcurl4-openssl-dev libssl-dev libolm-dev libcmark-dev nlohmann-json3-dev libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libgstreamer-plugins-bad1.0-dev libkdsingleapplication-qt6-dev
-sudo apt install -y -t experimental qt6-base-dev qt6-tools-dev qt6-svg-dev qt6-multimedia-dev qt6-declarative-dev qtkeychain-qt6-dev qt6-base-private-dev qt6-declarative-private-dev
+sudo apt install -y qt6-base-dev qt6-tools-dev qt6-svg-dev qt6-multimedia-dev qt6-declarative-dev qtkeychain-qt6-dev qt6-base-private-dev qt6-declarative-private-dev
 # Clone nheko repository from github
 sudo apt install -y git
 git clone https://github.com/Nheko-Reborn/nheko && cd nheko
