@@ -74,6 +74,7 @@ AbstractButton {
             from: "ImageVisible"
             to: "BlurhashVisible"
             reversible: true
+            enabled: !Settings.reducedMotion
 
             SequentialAnimation {
                 PropertyAction {

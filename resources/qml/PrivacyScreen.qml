@@ -68,6 +68,7 @@ Item {
                 from: "Invisible"
                 reversible: true
                 to: "Visible"
+                enabled: !Settings.reducedMotion
 
                 SequentialAnimation {
                     NumberAnimation {

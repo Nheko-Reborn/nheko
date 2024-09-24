@@ -805,6 +805,7 @@ set(QML_SOURCES
     resources/qml/pages/WelcomePage.qml
     resources/qml/ui/NhekoSlider.qml
     resources/qml/ui/Ripple.qml
+    resources/qml/ui/RippleImpl.qml
     resources/qml/ui/Snackbar.qml
     resources/qml/ui/Spinner.qml
     resources/qml/ui/animations/BlinkAnimation.qml

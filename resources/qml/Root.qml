@@ -432,6 +432,7 @@ Pane {
 
         Transition {
             id: reducedMotionTransitionExit
+            enabled: !Settings.reducedMotion
 
             PropertyAnimation {
                 duration: 200
@@ -442,6 +443,7 @@ Pane {
         }
         Transition {
             id: reducedMotionTransitionEnter
+            enabled: !Settings.reducedMotion
 
             SequentialAnimation {
                 PropertyAction {
