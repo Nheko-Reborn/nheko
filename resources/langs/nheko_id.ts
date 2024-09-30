@@ -237,12 +237,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+940"/>
+        <location line="+957"/>
         <source>Invited user: %1</source>
         <translation>Pengguna yang diundang: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-692"/>
+        <location line="-709"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation>
@@ -286,7 +286,7 @@
         <translation>Pembuatan ruangan gagal: Alias Tidak Benar</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+35"/>
         <source>Room %1 created.</source>
         <translation>Ruangan %1 telah dibuat.</translation>
     </message>
@@ -347,7 +347,7 @@
         <translation>Apakah kamu ingin memulai chat privat dengan %1?</translation>
     </message>
     <message>
-        <location line="-1002"/>
+        <location line="-1019"/>
         <source>Cache migration failed!</source>
         <translation>Migrasi tembolok gagal!</translation>
     </message>
@@ -411,12 +411,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <translation>Gagal menghapus undangan: %1</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+34"/>
         <source>Room creation failed: %1</source>
         <translation>Pembuatan ruangan gagal: %1</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+28"/>
         <source>Failed to leave room: %1</source>
         <translation>Gagal meninggalkan ruangan: %1</translation>
     </message>
@@ -773,7 +773,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+125"/>
+        <location filename="../qml/CommunitiesList.qml" line="+130"/>
         <source>Expand</source>
         <translation>Besarkan</translation>
     </message>
@@ -1156,8 +1156,8 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
     <message>
         <location line="+2"/>
-        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation>Kunci dari sumber yang tidak terpercaya seperti diteruskan dari pengguna lain atau cadangan kunci daring. Karena alasan ini, kami tidak dapat memverifikasi siapa yang mengirim pesan tersebut.</translation>
+        <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1405,6 +1405,14 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     </message>
 </context>
 <context>
+    <name>ImageMessage</name>
+    <message>
+        <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
+        <source>Show</source>
+        <translation type="unfinished">Tampilkan</translation>
+    </message>
+</context>
+<context>
     <name>ImagePackDeleteDialog</name>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
@@ -1568,12 +1576,17 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+424"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
         <source>All Files (*)</source>
         <translation>Semua File (*)</translation>
     </message>
     <message>
-        <location line="+625"/>
+        <location line="+629"/>
+        <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Failed to fetch user %1</source>
         <translation>Gagal mendapatkan pengguna %1</translation>
     </message>
@@ -1583,7 +1596,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <translation>Pengunggahan &apos;%1&apos; gagal</translation>
     </message>
     <message>
-        <location line="-965"/>
+        <location line="-976"/>
         <source>Select file(s)</source>
         <translation>Pilih berkas</translation>
     </message>
@@ -1659,12 +1672,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+132"/>
+        <location line="+133"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>Anda telah memasukkan ID Matrix yang tidak valid, misalnya @pengguna:serveranda.contoh.id</translation>
     </message>
     <message>
-        <location line="-162"/>
+        <location line="-163"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Penemuan otomatis gagal. Menerima respons cacat.</translation>
     </message>
@@ -1689,7 +1702,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <translation>Terjadi kesalahan yang tidak diketahui. Pastikan domain homeservernya valid.</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1828,7 +1841,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>MediaUpload</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+811"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+822"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Gagal untuk mengunggah media. Silakan coba lagi.</translation>
@@ -1893,7 +1906,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+216"/>
+        <location filename="../qml/MessageView.qml" line="+236"/>
         <source>Edit</source>
         <translation>Sunting</translation>
     </message>
@@ -2106,7 +2119,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+46"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+90"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 mengirim pesan terenkripsi</translation>
@@ -2537,7 +2550,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+242"/>
+        <location filename="../../src/main.cpp" line="+222"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Buat sebuah profil unik yang memungkinkan kamu untuk masuk ke beberapa akun secara bersamaan dan mulai beberapa instansi Nheko.</translation>
     </message>
@@ -2642,7 +2655,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+81"/>
+        <location filename="../../src/RegisterPage.cpp" line="+83"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Penemuan otomatis gagal. Menerima respons cacat.</translation>
     </message>
@@ -2667,7 +2680,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Terjadi kesalahan yang tidak diketahui. Pastikan domain homeservernya valid.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2928,7 +2941,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Pesan Status</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Profile settings</source>
         <translation>Pengaturan profil</translation>
     </message>
@@ -2981,7 +2994,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Tutup</translation>
     </message>
     <message>
-        <location line="+374"/>
+        <location line="+379"/>
         <source>Enter the tag you want to use:</source>
         <translation>Masukkan tag yang kamu ingin gunakan:</translation>
     </message>
@@ -3115,7 +3128,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+235"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+244"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Gagal mengaktifkan enkripsi: %1</translation>
     </message>
@@ -3159,12 +3172,17 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Ubah avatar ruangan.</translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+97"/>
         <source>Change name of this room</source>
         <translation>Ubah nama ruangan</translation>
     </message>
+    <message>
+        <location line="+23"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+22"/>
+        <location line="+11"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n anggota</numerusform>
@@ -3181,12 +3199,17 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Tidak ada topik yang ditetapkan</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+24"/>
         <source>Change topic of this room</source>
         <translation>Ubah topik ruangan</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+24"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>NOTIFICATIONS</source>
         <translation>NOTIFIKASI</translation>
     </message>
@@ -3761,7 +3784,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+161"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+162"/>
         <source>Part of a thread</source>
         <translation>Bagian dari sebuah utas</translation>
     </message>
@@ -3769,7 +3792,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>TimelineEvent</name>
     <message>
-        <location filename="../qml/TimelineEvent.qml" line="+87"/>
+        <location filename="../qml/TimelineEvent.qml" line="+88"/>
         <source>%1 placed a voice call.</source>
         <translation>%1 melakukan panggilan suara.</translation>
     </message>
@@ -3841,7 +3864,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1596"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1598"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Reaksi pesan gagal: %1</translation>
@@ -3873,7 +3896,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
         <translation>Simpan file</translation>
     </message>
     <message numerus="yes">
-        <location line="+344"/>
+        <location line="+345"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4197,7 +4220,7 @@ Alasan: %4</translation>
         <translation>%1 menolak ketukannya.</translation>
     </message>
     <message>
-        <location line="-2298"/>
+        <location line="-2301"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 mengubah server mana yang diizinkan di ruangan ini.</translation>
     </message>
@@ -4227,7 +4250,7 @@ Alasan: %4</translation>
         <translation>%1 mengubah avatar ruangan ke: %2</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>%1 removed the room avatar.</source>
         <translation>%1 menghapus avatar ruangan.</translation>
     </message>
@@ -4262,7 +4285,7 @@ Alasan: %4</translation>
         <translation>Kamu bergabung ruangan ini.</translation>
     </message>
     <message>
-        <location line="+1017"/>
+        <location line="+1018"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 membuat ruangan ini membutuhkan undangan untuk bergabung.</translation>
     </message>
@@ -4309,7 +4332,7 @@ Alasan: %4</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+49"/>
+        <location filename="../qml/TimelineView.qml" line="+51"/>
         <source>No room open</source>
         <translation>Tidak ada ruangan yang dibuka</translation>
     </message>
@@ -4492,7 +4515,7 @@ Alasan: %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+111"/>
+        <location filename="../../src/TrayIcon.cpp" line="+109"/>
         <source>Show</source>
         <translation>Tampilkan</translation>
     </message>
@@ -4500,6 +4523,14 @@ Alasan: %4</translation>
         <location line="+1"/>
         <source>Quit</source>
         <translation>Tutup</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+27"/>
+        <source>
+%n unread message(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -4694,8 +4725,8 @@ Alasan: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
-        <location filename="../../src/UserSettingsPage.h" line="+270"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+601"/>
+        <location filename="../../src/UserSettingsPage.h" line="+280"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -4703,7 +4734,7 @@ Alasan: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+420"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
@@ -4761,6 +4792,11 @@ Alasan: %4</translation>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
         <translation>Mainkan gambar beranimasi hanya saat kursor diarahkan ke gambar</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show images automatically</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5063,7 +5099,7 @@ Alasan: %4</translation>
         <translation>Hapus peristiwa yang telah kedaluwarsa secara berkala</translation>
     </message>
     <message>
-        <location line="+119"/>
+        <location line="+121"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -5135,6 +5171,11 @@ Ketika dinonaktifkan, semua pesan akan dikirim sebagai teks biasa.</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
         <translation>Tampilkan siapa yang sedang mengetik dalam ruangan.
@@ -5206,7 +5247,12 @@ MATI - kotak, NYALA - bulat.</translation>
         <translation>Akan mencegah gerakan usap seperti mengusap ke kiri/kanan antara Ruangan dan Lini Masa, atau mengusap pesan untuk membalas.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+3"/>
+        <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Secara otomatis membalas permintaan kunci dari pengguna lain jika mereka terverifikasi, bahkan jika perangkat itu seharusnya tidak memiliki akses ke kunci itu bagaimanapun.</translation>
     </message>
@@ -5216,24 +5262,24 @@ MATI - kotak, NYALA - bulat.</translation>
         <translation>Kunci untuk memverifikasi perangkatmu. Jika disimpan, memverifikasi salah satu perangkatmu akan menandainya sebagai terverifikasi untuk perangkatmu yang lain dan untuk pengguna yang telah memverifikasimu.</translation>
     </message>
     <message>
-        <location line="-80"/>
+        <location line="-81"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Menampilkan pemberitahuan saat sebuah pesan diterima.
 Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</translation>
     </message>
     <message>
-        <location line="-370"/>
+        <location line="-378"/>
         <source>Communities sidebar</source>
         <translation>Bilah samping komunitas</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+48"/>
         <source>Show message counts for communities and tags</source>
         <translation>Tampilkan hitungan pesan untuk komunitas dan tag</translation>
     </message>
     <message>
-        <location line="+255"/>
+        <location line="+257"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Tetapkan lebar pesan di lini masa (dalam pixel). Ini dapat membantu keterbacaan di layar lebar ketika Nheko dimaksimalkan</translation>
     </message>
@@ -5243,7 +5289,7 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
         <translation>Tampilkan sebuah kolom berisi komunitas dan tag di samping daftar ruangan.</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+46"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
@@ -5290,12 +5336,7 @@ akan buram.</translation>
         <translation>Akan mencegah pemilihan teks di linimasi untuk membuat guliran mudah.</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Change the scale factor of the whole user interface.</source>
-        <translation>Mengubah faktor skala antarmuka pengguna.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+9"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
         <translation>Akan menggunakan turn.matrix.org sebagai bantuan jika homeserver-mu tidak menawarkannya.</translation>
     </message>
@@ -5349,7 +5390,22 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <translation>Kelola pengguna Anda yang diabaikan.</translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+142"/>
+        <source>Always</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only in private rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>System font</source>
         <translation>Fon sistem</translation>
     </message>
@@ -5359,7 +5415,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <translation>Fon emoji sistem</translation>
     </message>
     <message>
-        <location line="+330"/>
+        <location line="+340"/>
         <source>Select a file</source>
         <translation>Pilih sebuah file</translation>
     </message>
@@ -5378,13 +5434,14 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <location line="+18"/>
         <location line="+8"/>
         <location line="+18"/>
+        <location line="+14"/>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
         <translation>Kesalahan</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-78"/>
         <location line="+26"/>
         <source>File Password</source>
         <translation>Kata Sandi File</translation>
@@ -5406,12 +5463,27 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <translation>Masukkan frasa sandi untuk mengenkripsikan kunci sesimu:</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+13"/>
+        <source>Repeat File Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Repeat the passphrase:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Passwords don&apos;t match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>File to save the exported session keys</source>
         <translation>File untuk menyimpan kunci sesi yang telah diekspor</translation>
     </message>
     <message>
-        <location line="-1066"/>
+        <location line="-1104"/>
         <source>Disable swipe motions</source>
         <translation>Nonaktifkan gerakan usapan</translation>
     </message>
@@ -5536,7 +5608,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+374"/>
+        <location filename="../../src/Utils.cpp" line="+375"/>
         <source>Yesterday</source>
         <translation>Kemarin</translation>
     </message>
