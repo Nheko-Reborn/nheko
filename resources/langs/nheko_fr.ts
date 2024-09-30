@@ -1160,7 +1160,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     </message>
     <message>
         <location line="+2"/>
-        <source>Key is from an untrusted source likely forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
