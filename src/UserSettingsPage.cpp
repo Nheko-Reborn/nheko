@@ -65,16 +65,17 @@ UserSettings::load(std::optional<QString> profile)
       settings.value("user/timeline/message_hover_highlight", false).toBool();
     enlargeEmojiOnlyMessages_ =
       settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
-    markdown_             = settings.value("user/markdown_enabled", true).toBool();
-    invertEnterKey_       = settings.value("user/invert_enter_key", false).toBool();
-    bubbles_              = settings.value("user/bubbles_enabled", false).toBool();
-    smallAvatars_         = settings.value("user/small_avatars_enabled", false).toBool();
-    animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
-    typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
-    sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
-    sortByAlphabet_       = settings.value("user/sort_by_alphabet", false).toBool();
-    readReceipts_         = settings.value("user/read_receipts", true).toBool();
-    theme_                = settings.value("user/theme", defaultTheme_).toString();
+    markdown_                = settings.value("user/markdown_enabled", true).toBool();
+    invertEnterKey_          = settings.value("user/invert_enter_key", false).toBool();
+    bubbles_                 = settings.value("user/bubbles_enabled", false).toBool();
+    smallAvatars_            = settings.value("user/small_avatars_enabled", false).toBool();
+    animateImagesOnHover_    = settings.value("user/animate_images_on_hover", false).toBool();
+    typingNotifications_     = settings.value("user/typing_notifications", true).toBool();
+    sortByImportance_        = settings.value("user/sort_by_unread", true).toBool();
+    sortByAlphabet_          = settings.value("user/sort_by_alphabet", false).toBool();
+    readReceipts_            = settings.value("user/read_receipts", true).toBool();
+    theme_                   = settings.value("user/theme", defaultTheme_).toString();
+    displayParentInSwitcher_ = settings.value("user/display_parent_on_room_switch", true).toBool();
 
     font_ = settings.value("user/font_family", "").toString();
 
@@ -874,6 +875,16 @@ UserSettings::setOpenVideoExternal(bool state)
 }
 
 void
+UserSettings::setDisplayParentInSwitcher(bool state)
+{
+    if (state == displayParentInSwitcher_)
+        return;
+    displayParentInSwitcher_ = state;
+    emit displayParentInSwitcherChanged(displayParentInSwitcher_);
+    save();
+}
+
+void
 UserSettings::applyTheme()
 {
     QGuiApplication::setPalette(Theme::paletteFromTheme(this->theme()));
@@ -947,6 +958,7 @@ UserSettings::save()
     settings.setValue("expose_dbus_api", exposeDBusApi_);
     settings.setValue("space_background_maintenance", updateSpaceVias_);
     settings.setValue("expired_events_background_maintenance", expireEvents_);
+    settings.setValue("display_parent_on_room_switch", displayParentInSwitcher_);
 
     settings.endGroup(); // user
 
@@ -1033,6 +1045,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Communities sidebar");
         case ScrollbarsInRoomlist:
             return tr("Scrollbars in room list");
+        case DisplayParentInSwitcher:
+            return tr("Display room's parent in room switcher");
         case Markdown:
             return tr("Send messages as Markdown");
         case InvertEnterKey:
@@ -1193,6 +1207,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->groupView();
         case ScrollbarsInRoomlist:
             return i->scrollbarsInRoomlist();
+        case DisplayParentInSwitcher:
+            return i->displayParentInSwitcher();
         case Markdown:
             return i->markdown();
         case InvertEnterKey:
@@ -1357,6 +1373,10 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Show a column containing communities and tags next to the room list.");
         case ScrollbarsInRoomlist:
             return tr("Shows scrollbars in the room list and communities list.");
+        case DisplayParentInSwitcher:
+            return tr("Display a room's parent in the room switcher. "
+                      "Enabling this option allows distinguishing multiple rooms "
+                      "with the same name");
         case Markdown:
             return tr(
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
@@ -1545,6 +1565,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case StartInTray:
         case GroupView:
         case ScrollbarsInRoomlist:
+        case DisplayParentInSwitcher:
         case Markdown:
         case InvertEnterKey:
         case Bubbles:
@@ -1799,6 +1820,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case ScrollbarsInRoomlist: {
             if (value.userType() == QMetaType::Bool) {
                 i->setScrollbarsInRoomlist(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case DisplayParentInSwitcher: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setDisplayParentInSwitcher(value.toBool());
                 return true;
             } else
                 return false;
@@ -2314,6 +2342,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::scrollbarsInRoomlistChanged, this, [this]() {
         emit dataChanged(index(ScrollbarsInRoomlist), index(ScrollbarsInRoomlist), {Value});
+    });
+    connect(s.get(), &UserSettings::displayParentInSwitcherChanged, this, [this]() {
+        emit dataChanged(index(DisplayParentInSwitcher), index(DisplayParentInSwitcher), {Value});
     });
     connect(s.get(), &UserSettings::roomSortingChangedImportance, this, [this]() {
         emit dataChanged(index(SortByImportance), index(SortByImportance), {Value});
