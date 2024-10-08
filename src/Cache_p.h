@@ -9,12 +9,6 @@
 #include <QDateTime>
 #include <QString>
 
-#if __has_include(<lmdbxx/lmdb++.h>)
-#include <lmdbxx/lmdb++.h>
-#else
-#include <lmdb++.h>
-#endif
-
 #include <mtx/events/collections.hpp>
 #include <mtx/responses/notifications.hpp>
 #include <mtx/responses/sync.hpp>
@@ -29,12 +23,20 @@ struct Messages;
 struct StateEvents;
 }
 
+namespace lmdb {
+class txn;
+class dbi;
+}
+
+struct CacheDb;
+
 class Cache final : public QObject
 {
     Q_OBJECT
 
 public:
     Cache(const QString &userId, QObject *parent = nullptr);
+    ~Cache() noexcept;
 
     std::string displayName(const std::string &room_id, const std::string &user_id);
     QString displayName(const QString &room_id, const QString &user_id);
@@ -97,19 +99,11 @@ public:
     //! Get a specific state event
     template<typename T>
     std::optional<mtx::events::StateEvent<T>>
-    getStateEvent(const std::string &room_id, std::string_view state_key = "")
-    {
-        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        return getStateEvent<T>(txn, room_id, state_key);
-    }
+    getStateEvent(const std::string &room_id, std::string_view state_key = "");
     template<typename T>
     std::vector<mtx::events::StateEvent<T>>
     getStateEventsWithType(const std::string &room_id,
-                           mtx::events::EventType type = mtx::events::state_content_to_type<T>)
-    {
-        auto txn = lmdb::txn::begin(env_, nullptr, MDB_RDONLY);
-        return getStateEventsWithType<T>(txn, room_id, type);
-    }
+                           mtx::events::EventType type = mtx::events::state_content_to_type<T>);
 
     //! retrieve a specific event from account data
     //! pass empty room_id for global account data
@@ -304,20 +298,6 @@ public:
       std::is_same_v<std::remove_cv_t<std::remove_reference_t<T>>,
                      mtx::events::StateEvent<decltype(std::declval<T>().content)>>;
 
-    static int compare_state_key(const MDB_val *a, const MDB_val *b)
-    {
-        auto get_skey = [](const MDB_val *v) {
-            auto temp = std::string_view(static_cast<const char *>(v->mv_data), v->mv_size);
-            // allow only passing the state key, in which case no null char will be in it and we
-            // return the whole string because rfind returns npos.
-            // We search from the back, because state keys could include nullbytes, event ids can
-            // not.
-            return temp.substr(0, temp.rfind('\0'));
-        };
-
-        return get_skey(a).compare(get_skey(b));
-    }
-
 signals:
     void newReadReceipts(const QString &room_id, const std::vector<QString> &event_ids);
     void roomReadStatus(const std::map<QString, bool> &status);
@@ -401,134 +381,50 @@ private:
 
     //! Sends signals for the rooms that are removed.
     void
-    removeLeftRooms(lmdb::txn &txn, const std::map<std::string, mtx::responses::LeftRoom> &rooms)
-    {
-        for (const auto &room : rooms) {
-            removeRoom(txn, room.first);
-
-            // Clean up leftover invites.
-            removeInvite(txn, room.first);
-        }
-    }
+    removeLeftRooms(lmdb::txn &txn, const std::map<std::string, mtx::responses::LeftRoom> &rooms);
 
     void updateSpaces(lmdb::txn &txn,
                       const std::set<std::string> &spaces_with_updates,
                       std::set<std::string> rooms_with_updates);
 
-    lmdb::dbi getEventsDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/events").c_str(), MDB_CREATE);
-    }
+    lmdb::dbi getEventsDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getEventOrderDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(
-          txn, std::string(room_id + "/event_order").c_str(), MDB_CREATE | MDB_INTEGERKEY);
-    }
+    lmdb::dbi getEventOrderDb(lmdb::txn &txn, const std::string &room_id);
 
     // inverse of EventOrderDb
-    lmdb::dbi getEventToOrderDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/event2order").c_str(), MDB_CREATE);
-    }
+    lmdb::dbi getEventToOrderDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getMessageToOrderDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/msg2order").c_str(), MDB_CREATE);
-    }
+    lmdb::dbi getMessageToOrderDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getOrderToMessageDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(
-          txn, std::string(room_id + "/order2msg").c_str(), MDB_CREATE | MDB_INTEGERKEY);
-    }
+    lmdb::dbi getOrderToMessageDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getPendingMessagesDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(
-          txn, std::string(room_id + "/pending").c_str(), MDB_CREATE | MDB_INTEGERKEY);
-    }
+    lmdb::dbi getPendingMessagesDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getRelationsDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(
-          txn, std::string(room_id + "/related").c_str(), MDB_CREATE | MDB_DUPSORT);
-    }
+    lmdb::dbi getRelationsDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getInviteStatesDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/invite_state").c_str(), MDB_CREATE);
-    }
+    lmdb::dbi getInviteStatesDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getInviteMembersDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/invite_members").c_str(), MDB_CREATE);
-    }
+    lmdb::dbi getInviteMembersDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getStatesDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/state").c_str(), MDB_CREATE);
-    }
+    lmdb::dbi getStatesDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getStatesKeyDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        auto db = lmdb::dbi::open(
-          txn, std::string(room_id + "/states_key").c_str(), MDB_CREATE | MDB_DUPSORT);
-        lmdb::dbi_set_dupsort(txn, db, compare_state_key);
-        return db;
-    }
+    lmdb::dbi getStatesKeyDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getAccountDataDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/account_data").c_str(), MDB_CREATE);
-    }
+    lmdb::dbi getAccountDataDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getMembersDb(lmdb::txn &txn, const std::string &room_id)
-    {
-        return lmdb::dbi::open(txn, std::string(room_id + "/members").c_str(), MDB_CREATE);
-    }
+    lmdb::dbi getMembersDb(lmdb::txn &txn, const std::string &room_id);
 
-    lmdb::dbi getUserKeysDb(lmdb::txn &txn) { return lmdb::dbi::open(txn, "user_key", MDB_CREATE); }
+    lmdb::dbi getUserKeysDb(lmdb::txn &txn);
 
-    lmdb::dbi getVerificationDb(lmdb::txn &txn)
-    {
-        return lmdb::dbi::open(txn, "verified", MDB_CREATE);
-    }
+    lmdb::dbi getVerificationDb(lmdb::txn &txn);
 
-    QString getDisplayName(const mtx::events::StateEvent<mtx::events::state::Member> &event)
-    {
-        if (!event.content.display_name.empty())
-            return QString::fromStdString(event.content.display_name);
-
-        return QString::fromStdString(event.state_key);
-    }
+    QString getDisplayName(const mtx::events::StateEvent<mtx::events::state::Member> &event);
 
     std::optional<VerificationCache> verificationCache(const std::string &user_id, lmdb::txn &txn);
     VerificationStatus verificationStatus_(const std::string &user_id, lmdb::txn &txn);
     std::optional<UserKeyCache> userKeys_(const std::string &user_id, lmdb::txn &txn);
 
     void setNextBatchToken(lmdb::txn &txn, const std::string &token);
-
-    lmdb::env env_;
-    lmdb::dbi syncStateDb_;
-    lmdb::dbi roomsDb_;
-    lmdb::dbi spacesChildrenDb_, spacesParentsDb_;
-    lmdb::dbi invitesDb_;
-    lmdb::dbi readReceiptsDb_;
-    lmdb::dbi notificationsDb_;
-    lmdb::dbi presenceDb_;
-
-    lmdb::dbi devicesDb_;
-    lmdb::dbi deviceKeysDb_;
-
-    lmdb::dbi inboundMegolmSessionDb_;
-    lmdb::dbi outboundMegolmSessionDb_;
-    lmdb::dbi megolmSessionDataDb_;
-    lmdb::dbi olmSessionDb_;
-
-    lmdb::dbi encryptedRooms_;
-
-    lmdb::dbi eventExpiryBgJob_;
 
     QString localUserId_;
     QString cacheDirectory_;
@@ -538,6 +434,8 @@ private:
     VerificationStorage verification_storage;
 
     bool databaseReady_ = false;
+
+    std::unique_ptr<CacheDb> db;
 };
 
 namespace cache {
@@ -546,11 +444,12 @@ client();
 }
 
 #define NHEKO_CACHE_GET_STATE_EVENT_FORWARD(Content)                                               \
-    extern template std::optional<mtx::events::StateEvent<Content>> Cache::getStateEvent(          \
-      lmdb::txn &txn, const std::string &room_id, std::string_view state_key);                     \
+    extern template std::optional<mtx::events::StateEvent<Content>> Cache::getStateEvent<Content>( \
+      const std::string &room_id, std::string_view state_key);                                     \
                                                                                                    \
-    extern template std::vector<mtx::events::StateEvent<Content>> Cache::getStateEventsWithType(   \
-      lmdb::txn &txn, const std::string &room_id, mtx::events::EventType type);
+    extern template std::vector<mtx::events::StateEvent<Content>>                                  \
+    Cache::getStateEventsWithType<Content>(const std::string &room_id,                             \
+                                           mtx::events::EventType type);
 
 NHEKO_CACHE_GET_STATE_EVENT_FORWARD(mtx::events::state::Aliases)
 NHEKO_CACHE_GET_STATE_EVENT_FORWARD(mtx::events::state::Avatar)
