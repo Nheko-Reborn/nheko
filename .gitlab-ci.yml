@@ -282,7 +282,7 @@ build-macos-as:
     - pipx ensurepath
     - . ~/.zshrc
     - mkdir $HOME/Qt
-    - aqt install-qt --outputdir $HOME/qt mac desktop 6.6 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
+    - aqt install-qt --outputdir $HOME/qt mac desktop 6.8 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
   script:
     - export QTPATH=($HOME/qt/6.*/macos/bin)
     - export PATH="$QTPATH:${PATH}"
