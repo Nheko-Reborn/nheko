@@ -13,6 +13,9 @@
 
 #include <mtx/responses.hpp>
 
+#include "Logging.h"
+#include "UserSettingsPage.h"
+
 namespace http {
 
 mtx::http::Client *
@@ -20,9 +23,15 @@ client()
 {
     static auto client_ = [] {
         auto c = std::make_shared<mtx::http::Client>();
-        c->alt_svc_cache_path((QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
-                               "/curl_alt_svc_cache.txt")
-                                .toStdString());
+
+        // Disabled by default until CPU usage and reliability improves
+        if (UserSettings::instance()->qsettings()->value("enable_http3").toBool()) {
+            nhlog::net()->warn("Enabling http3 support. This is currently usually a worse "
+                               "experience, so you are on your own.");
+            c->alt_svc_cache_path((QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
+                                   "/curl_alt_svc_cache.txt")
+                                    .toStdString());
+        }
         return c;
     }();
     return client_.get();
