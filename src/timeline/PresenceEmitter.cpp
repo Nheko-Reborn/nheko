@@ -37,8 +37,14 @@ static CacheEntry *
 pullPresence(const QString &id)
 {
     auto p = cache::presence(id.toStdString());
-    auto c = new CacheEntry{
-      utils::replaceEmoji(QString::fromStdString(p.status_msg).toHtmlEscaped()), p.presence};
+
+    auto statusMsg = QString::fromStdString(p.status_msg);
+    if (statusMsg.size() > 255) {
+        statusMsg.truncate(255);
+        statusMsg.append(u'…');
+    }
+
+    auto c = new CacheEntry{utils::replaceEmoji(std::move(statusMsg).toHtmlEscaped()), p.presence};
     presences.insert(id, c);
     return c;
 }
