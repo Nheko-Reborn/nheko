@@ -420,9 +420,9 @@ Item {
             else
                 link = "";
             if (showAt_)
-                open(showAt_);
+                popup(showAt_);
             else
-                open();
+                popup();
         }
 
         Component {

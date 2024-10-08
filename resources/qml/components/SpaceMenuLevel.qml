@@ -73,7 +73,7 @@ Menu {
     MenuSeparator {
         //text: qsTr("Subcommunities")
         ButtonGroup.group: modificationGroup
-        visible: modificationGroup.visible && inst.model != undefined
+        visible: position != -1 && inst.model != undefined
     }
 
     Instantiator {

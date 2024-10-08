@@ -234,7 +234,7 @@ Pane {
                 image: ":/icons/icons/ui/options.svg"
                 visible: !!room
 
-                onClicked: roomOptionsMenu.open(roomOptionsButton)
+                onClicked: roomOptionsMenu.popup(roomOptionsButton)
 
                 Menu {
                     id: roomOptionsMenu

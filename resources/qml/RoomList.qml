@@ -41,6 +41,8 @@ Page {
                 id: buttonRow
 
                 ImageButton {
+                    id: startChatButton
+
                     Layout.fillWidth: true
                     Layout.margins: Nheko.paddingMedium
                     ToolTip.delay: Nheko.tooltipDelay
@@ -51,7 +53,7 @@ Page {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/add-square-button.svg"
 
-                    onClicked: roomJoinCreateMenu.open(parent)
+                    onClicked: roomJoinCreateMenu.popup(startChatButton)
 
                     Menu {
                         id: roomJoinCreateMenu
@@ -302,19 +304,23 @@ Page {
                 }
             }
             TapHandler {
+                id: userTapHandler
+
                 acceptedButtons: Qt.LeftButton
                 gesturePolicy: TapHandler.ReleaseWithinBounds
                 margin: -Nheko.paddingSmall
 
-                onLongPressed: userInfoMenu.open()
+                onLongPressed: userInfoMenu.popup(userTapHandler)
                 onSingleTapped: userInfoPanel.openUserProfile()
             }
             TapHandler {
+                id: userTapHandler2
+
                 acceptedButtons: Qt.RightButton
                 gesturePolicy: TapHandler.ReleaseWithinBounds
                 margin: -Nheko.paddingSmall
 
-                onSingleTapped: userInfoMenu.open()
+                onSingleTapped: userInfoMenu.popup(userTapHandler2)
             }
         }
         Rectangle {
@@ -523,7 +529,7 @@ Page {
             }
             onPressAndHold: {
                 if (!isInvite)
-                    roomContextMenu.show(roomId, tags);
+                    roomContextMenu.show(roomItem, roomId, tags);
             }
 
             Ripple {
@@ -536,13 +542,15 @@ Page {
                 anchors.margins: 1
 
                 TapHandler {
+                    id: roomItemTh
+
                     acceptedButtons: Qt.RightButton
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                     gesturePolicy: TapHandler.ReleaseWithinBounds
 
                     onSingleTapped: {
                         if (!TimelineManager.isInvite)
-                            roomContextMenu.show(roomId, tags);
+                            roomContextMenu.show(roomItemTh, roomId, tags);
                     }
                 }
             }
@@ -738,10 +746,10 @@ Page {
             property string roomid
             property var tags
 
-            function show(roomid_, tags_) {
+            function show(parent, roomid_, tags_) {
                 roomid = roomid_;
                 tags = tags_;
-                open();
+                popup(parent);
             }
 
             InputDialog {

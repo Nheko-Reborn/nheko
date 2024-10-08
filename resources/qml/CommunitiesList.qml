@@ -100,17 +100,18 @@ Page {
             ]
 
             onClicked: Communities.setCurrentTagId(model.id)
-            onPressAndHold: communityContextMenu.show(model.id, model.hidden, model.muted)
+            onPressAndHold: communityContextMenu.show(communityItem, model.id, model.hidden, model.muted)
 
             Item {
                 anchors.fill: parent
 
                 TapHandler {
+                    id: rth
                     acceptedButtons: Qt.RightButton
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                     gesturePolicy: TapHandler.ReleaseWithinBounds
 
-                    onSingleTapped: communityContextMenu.show(model.id, model.hidden, model.muted)
+                    onSingleTapped: communityContextMenu.show(rth, model.id, model.hidden, model.muted)
                 }
             }
             RowLayout {
@@ -201,11 +202,11 @@ Page {
             property bool muted
             property string tagId
 
-            function show(id_, hidden_, muted_) {
+            function show(parent, id_, hidden_, muted_) {
                 tagId = id_;
                 hidden = hidden_;
                 muted = muted_;
-                open();
+                popup(parent);
             }
 
             MenuItem {
