@@ -5,10 +5,10 @@
 import "./dialogs"
 import "./pages"
 import "./ui"
-import Qt.labs.platform 1.1 as Platform
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
+import QtQuick.Dialogs
 import im.nheko
 
 Pane {
@@ -342,15 +342,13 @@ Pane {
             return UIA.submit3pidToken(t);
         }
     }
-    Platform.MessageDialog {
+    MessageDialog {
         id: uiaConfirmationLinkDialog
 
-        buttons: Platform.MessageDialog.Ok
+        buttons: MessageDialog.Ok
         text: qsTr("Wait for the confirmation link to arrive, then continue.")
 
-        // Broken on macos, see https://bugreports.qt.io/browse/QTBUG-102078
-        //onAccepted: UIA.continue3pidReceived()
-        onOkClicked: UIA.continue3pidReceived()
+        onAccepted: UIA.continue3pidReceived()
     }
     Connections {
         function onConfirm3pidToken() {

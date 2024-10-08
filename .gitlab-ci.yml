@@ -151,7 +151,7 @@ build-clazy:
     - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev
         qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev
-        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform
+        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts
         qt5keychain-dev ccache libcurl4-openssl-dev libevent-dev libspdlog-dev git nlohmann-json3-dev libcmark-dev asciidoc time # libolm-dev
     # need recommended deps for wget
     - apt-get -y install wget
@@ -394,7 +394,7 @@ build-flatpak:
     - apt-get -y install --no-install-suggests --no-install-recommends ca-certificates build-essential ninja-build cmake gcc make automake ccache liblmdb-dev 
         libssl-dev libqt5multimedia5-plugins libqt5multimediagsttools5 libqt5multimediaquick5 libqt5svg5-dev 
         qtmultimedia5-dev qtquickcontrols2-5-dev qttools5-dev qttools5-dev-tools qtdeclarative5-dev 
-        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts qml-module-qt-labs-platform 
+        qml-module-qtmultimedia qml-module-qtquick-controls2 qml-module-qtquick-layouts
         qt5keychain-dev ccache libcurl4-openssl-dev libevent-dev libspdlog-dev nlohmann-json3-dev libcmark-dev asciidoc libre2-dev libgtest-dev libgl1-mesa-dev qml-module-qtquick-particles2
 
     # Installing the packages needed to build AppImage

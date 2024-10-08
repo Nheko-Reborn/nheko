@@ -5,8 +5,6 @@
 import "./components"
 import "./dialogs"
 import "./ui"
-import Qt.labs.platform 1.1 as Platform
-import QtQml
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -55,15 +53,15 @@ Page {
 
                     onClicked: roomJoinCreateMenu.open(parent)
 
-                    Platform.Menu {
+                    Menu {
                         id: roomJoinCreateMenu
 
-                        Platform.MenuItem {
+                        MenuItem {
                             text: qsTr("Join a room")
 
                             onTriggered: Nheko.openJoinRoomDialog()
                         }
-                        Platform.MenuItem {
+                        MenuItem {
                             text: qsTr("Create a new room")
 
                             onTriggered: {
@@ -72,7 +70,7 @@ Page {
                                 timelineRoot.destroyOnClose(createRoom);
                             }
                         }
-                        Platform.MenuItem {
+                        MenuItem {
                             text: qsTr("Start a direct chat")
 
                             onTriggered: {
@@ -81,7 +79,7 @@ Page {
                                 timelineRoot.destroyOnClose(createDirect);
                             }
                         }
-                        Platform.MenuItem {
+                        MenuItem {
                             text: qsTr("Create a new community")
 
                             onTriggered: {
@@ -255,49 +253,49 @@ Page {
                     Nheko.setStatusMessage(text);
                 }
             }
-            Platform.Menu {
+            Menu {
                 id: userInfoMenu
 
-                Platform.MenuItem {
+                MenuItem {
                     text: qsTr("Profile settings")
 
                     onTriggered: userInfoPanel.openUserProfile()
                 }
-                Platform.MenuItem {
+                MenuItem {
                     text: qsTr("Set status message")
 
                     onTriggered: statusDialog.show()
                 }
-                Platform.MenuSeparator {
+                MenuSeparator {
                 }
 
-                Platform.MenuItemGroup {
+                ButtonGroup {
                     id: onlineStateGroup
                 }
-                Platform.MenuItem {
+                MenuItem {
                     text: qsTr("Automatic online status")
-                    group: onlineStateGroup
+                    ButtonGroup.group: onlineStateGroup
                     checkable: true
                     checked: Settings.presence == Settings.AutomaticPresence
                     onTriggered: if (checked) Settings.presence = Settings.AutomaticPresence
                 }
-                Platform.MenuItem {
+                MenuItem {
                     text: qsTr("Online")
-                    group: onlineStateGroup
+                    ButtonGroup.group: onlineStateGroup
                     checkable: true
                     checked: Settings.presence == Settings.Online
                     onTriggered: if (checked) Settings.presence = Settings.Online
                 }
-                Platform.MenuItem {
+                MenuItem {
                     text: qsTr("Unavailable")
-                    group: onlineStateGroup
+                    ButtonGroup.group: onlineStateGroup
                     checkable: true
                     checked: Settings.presence == Settings.Unavailable
                     onTriggered: if (checked) Settings.presence = Settings.Unavailable
                 }
-                Platform.MenuItem {
+                MenuItem {
                     text: qsTr("Offline")
-                    group: onlineStateGroup
+                    ButtonGroup.group: onlineStateGroup
                     checkable: true
                     checked: Settings.presence == Settings.Offline
                     onTriggered: if (checked) Settings.presence = Settings.Offline
@@ -734,7 +732,7 @@ Page {
                 roomid: roomContextMenu.roomid
             }
         }
-        Platform.Menu {
+        Menu {
             id: roomContextMenu
 
             property string roomid
@@ -756,7 +754,7 @@ Page {
                     Rooms.toggleTag(roomContextMenu.roomid, "u." + text, true);
                 }
             }
-            Platform.MenuItem {
+            MenuItem {
                 text: qsTr("Open separately")
 
                 onTriggered: {
@@ -768,27 +766,27 @@ Page {
                     destroyOnClose(roomWindow);
                 }
             }
-            Platform.MenuItem {
+            MenuItem {
                 text: qsTr("Mark as read")
 
                 onTriggered: Rooms.getRoomById(roomContextMenu.roomid).markRoomAsRead()
             }
-            Platform.MenuItem {
+            MenuItem {
                 text: qsTr("Room settings")
 
                 onTriggered: TimelineManager.openRoomSettings(roomContextMenu.roomid)
             }
-            Platform.MenuItem {
+            MenuItem {
                 text: qsTr("Leave room")
 
                 onTriggered: TimelineManager.openLeaveRoomDialog(roomContextMenu.roomid)
             }
-            Platform.MenuItem {
+            MenuItem {
                 text: qsTr("Copy room link")
 
                 onTriggered: Rooms.copyLink(roomContextMenu.roomid)
             }
-            Platform.Menu {
+            Menu {
                 id: tagsMenu
 
                 title: qsTr("Tag room as:")
@@ -796,7 +794,7 @@ Page {
                 Instantiator {
                     model: Communities.tagsWithDefault
 
-                    delegate: Platform.MenuItem {
+                    delegate: MenuItem {
                         property string t: modelData
 
                         checkable: true
@@ -820,7 +818,7 @@ Page {
                     onObjectAdded: (index, object) => tagsMenu.insertItem(index, object)
                     onObjectRemoved: (index, object) => tagsMenu.removeItem(object)
                 }
-                Platform.MenuItem {
+                MenuItem {
                     text: qsTr("Create new tag...")
 
                     onTriggered: newTag.show()

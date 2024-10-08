@@ -4,11 +4,11 @@
 
 import ".."
 import "../ui"
-import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
+import QtQuick.Dialogs
 import im.nheko 1.0
 
 ApplicationWindow {
@@ -580,26 +580,23 @@ ApplicationWindow {
                     Layout.alignment: Qt.AlignRight
                 }
 
-                Platform.MessageDialog {
+                MessageDialog {
                     id: confirmEncryptionDialog
 
                     title: qsTr("End-to-End Encryption")
                     text: qsTr(`Encryption is currently experimental and things might break unexpectedly. <br>
                                 Please take note that it can't be disabled afterwards.`)
                     modality: Qt.NonModal
-                    // Broken on macos, see https://bugreports.qt.io/browse/QTBUG-102078
-                    //onAccepted: {
-                    onOkClicked: {
+                    onAccepted: {
                         if (roomSettings.isEncryptionEnabled)
                             return ;
 
                         roomSettings.enableEncryption();
                     }
-                    //onRejected: {
-                    onCancelClicked: {
+                    onRejected: {
                         encryptionToggle.checked = false;
                     }
-                    buttons: Platform.MessageDialog.Ok | Platform.MessageDialog.Cancel
+                    buttons: MessageDialog.Ok | MessageDialog.Cancel
                 }
 
                 Label {

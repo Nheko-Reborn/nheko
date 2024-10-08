@@ -3,7 +3,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 
 import "./components"
-import Qt.labs.platform 1.1 as Platform
 import QtQml
 import QtQuick
 import QtQuick.Controls
@@ -195,7 +194,7 @@ Page {
             }
         }
 
-        Platform.Menu {
+        Menu {
             id: communityContextMenu
 
             property bool hidden
@@ -209,14 +208,14 @@ Page {
                 open();
             }
 
-            Platform.MenuItem {
+            MenuItem {
                 checkable: true
                 checked: communityContextMenu.muted
                 text: qsTr("Do not show notification counts for this community or tag.")
 
                 onTriggered: Communities.toggleTagMute(communityContextMenu.tagId)
             }
-            Platform.MenuItem {
+            MenuItem {
                 checkable: true
                 checked: communityContextMenu.hidden
                 text: qsTr("Hide rooms with this tag or from this community by default.")

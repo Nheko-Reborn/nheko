@@ -2,7 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
-import Qt.labs.platform 1.1 as Platform
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
@@ -237,26 +236,26 @@ Pane {
 
                 onClicked: roomOptionsMenu.open(roomOptionsButton)
 
-                Platform.Menu {
+                Menu {
                     id: roomOptionsMenu
 
-                    Platform.MenuItem {
+                    MenuItem {
                         text: qsTr("Invite users")
                         visible: room ? room.permissions.canInvite() : false
 
                         onTriggered: TimelineManager.openInviteUsers(roomId)
                     }
-                    Platform.MenuItem {
+                    MenuItem {
                         text: qsTr("Members")
 
                         onTriggered: TimelineManager.openRoomMembers(room)
                     }
-                    Platform.MenuItem {
+                    MenuItem {
                         text: qsTr("Leave room")
 
                         onTriggered: TimelineManager.openLeaveRoomDialog(roomId)
                     }
-                    Platform.MenuItem {
+                    MenuItem {
                         text: qsTr("Settings")
 
                         onTriggered: TimelineManager.openRoomSettings(roomId)
