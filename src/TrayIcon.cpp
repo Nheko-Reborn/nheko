@@ -131,8 +131,8 @@ TrayIcon::setUnreadCount(int count)
     qGuiApp->setBadgeNumber(count);
     if (count != previousCount) {
         QString currentToolTip = toolTip();
-        const QString before = tr("\n%n unread message(s)", "", previousCount);
-        const QString after = tr("\n%n unread message(s)", "", count);
+        const QString before   = tr("\n%n unread message(s)", "", previousCount);
+        const QString after    = tr("\n%n unread message(s)", "", count);
         if (previousCount == 0)
             currentToolTip.append(after);
         else if (count == 0)
