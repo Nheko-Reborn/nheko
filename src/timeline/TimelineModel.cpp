@@ -2073,10 +2073,12 @@ TimelineModel::cacheMedia(const QString &eventId,
 
     const auto url  = mxcUrl.toStdString();
     const auto name = QString(mxcUrl).remove(QStringLiteral("mxc://"));
-    QFileInfo filename(
-      QStringLiteral("%1/media_cache/%2.%3")
-        .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), name, suffix));
-    if (QDir::cleanPath(name) != name) {
+    QFileInfo filename(QStringLiteral("%1/media_cache/%2.%3")
+                         .arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation),
+                              QString::fromUtf8(name.toUtf8().toBase64(
+                                QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals)),
+                              suffix));
+    if (QDir::cleanPath(filename.filePath()) != filename.filePath()) {
         nhlog::net()->warn("mxcUrl '{}' is not safe, not downloading file", url);
         return;
     }

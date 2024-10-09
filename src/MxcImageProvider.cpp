@@ -32,22 +32,41 @@ MxcImageProvider::MxcImageProvider()
     timer->setInterval(std::chrono::hours(1));
     connect(timer, &QTimer::timeout, this, [] {
         QThreadPool::globalInstance()->start([] {
+            nhlog::net()->debug("Running media purge");
             QDir dir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                        "/media_cache",
                      "",
                      QDir::SortFlags(QDir::Name | QDir::IgnoreCase),
-                     QDir::Filter::Writable | QDir::Filter::NoDotAndDotDot | QDir::Filter::Files);
+                     QDir::Filter::Writable | QDir::Filter::NoDotAndDotDot | QDir::Filter::Files |
+                       QDir::Filter::Dirs);
 
-            auto files = dir.entryInfoList();
-            for (const auto &fileInfo : std::as_const(files)) {
+            auto handleFile = [](const QFileInfo &fileInfo) {
                 if (fileInfo.fileTime(QFile::FileTime::FileAccessTime)
-                      .daysTo(QDateTime::currentDateTime()) > 30) {
+                      .daysTo(QDateTime::currentDateTime()) > 14) {
                     if (QFile::remove(fileInfo.absoluteFilePath()))
                         nhlog::net()->debug("Deleted stale media '{}'",
                                             fileInfo.absoluteFilePath().toStdString());
                     else
                         nhlog::net()->warn("Failed to delete stale media '{}'",
                                            fileInfo.absoluteFilePath().toStdString());
+                }
+            };
+
+            auto files = dir.entryInfoList();
+            for (const auto &fileInfo : std::as_const(files)) {
+                if (fileInfo.isDir()) {
+                    // handle one level of legacy directories
+                    auto nestedDir = QDir(fileInfo.absoluteFilePath(),
+                                          "",
+                                          QDir::SortFlags(QDir::Name | QDir::IgnoreCase),
+                                          QDir::Filter::Writable | QDir::Filter::NoDotAndDotDot |
+                                            QDir::Filter::Files)
+                                       .entryInfoList();
+                    for (const auto &nestedFile : std::as_const(nestedDir)) {
+                        handleFile(nestedFile);
+                    }
+                } else {
+                    handleFile(fileInfo);
                 }
             }
         });
