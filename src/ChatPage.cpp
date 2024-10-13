@@ -460,8 +460,8 @@ ChatPage::dropToLoginPage(const QString &msg)
       QMessageBox::StandardButton::Close | QMessageBox::StandardButton::Ok,
       QMessageBox::StandardButton::Ok);
     if (btn == QMessageBox::StandardButton::Close) {
-        QCoreApplication::exit(1);
-        exit(1);
+        QCoreApplication::exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     resetUI();
