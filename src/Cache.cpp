@@ -658,8 +658,8 @@ fatalSecretError()
         "https://github.com/Nheko-Reborn/nheko/issues"),
       QMessageBox::StandardButton::Close);
 
-    QCoreApplication::exit(1);
-    exit(1);
+    QCoreApplication::exit(EXIT_FAILURE);
+    exit(EXIT_FAILURE);
 }
 
 static QString
@@ -2691,8 +2691,8 @@ try {
              "increased the capacity automatically, however you will need to "
              "restart to apply this change. Nheko will now close automatically."),
           QMessageBox::StandardButton::Close);
-        QCoreApplication::exit(1);
-        exit(1);
+        QCoreApplication::exit(EXIT_FAILURE);
+        exit(EXIT_FAILURE);
     }
 
     throw;

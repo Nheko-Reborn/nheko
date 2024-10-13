@@ -352,14 +352,14 @@ main(int argc, char *argv[])
         if (!targets.isEmpty()) {
             std::cerr << "Invalid log type '" << targets.first().toStdString().c_str() << "'"
                       << std::endl;
-            std::exit(1);
+            std::exit(EXIT_FAILURE);
         }
 
         nhlog::init(level, path, to_stderr);
 
     } catch (const spdlog::spdlog_ex &ex) {
         std::cerr << "Log initialization failed: " << ex.what() << std::endl;
-        std::exit(1);
+        std::exit(EXIT_FAILURE);
     }
 
     auto filter = new NhekoFixupPaletteEventFilter(&app);
