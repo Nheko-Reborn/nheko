@@ -11,6 +11,7 @@
 #include <QWindow>
 
 #include "TrayIcon.h"
+#include "UserSettingsPage.h"
 
 MsgCountComposedIcon::MsgCountComposedIcon(const QIcon &icon)
   : QIconEngine()
@@ -114,12 +115,30 @@ TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
 
     menu->addAction(viewAction_);
     menu->addAction(quitAction_);
+
+    QString toolTip = QLatin1String("nheko");
+    QString profile = UserSettings::instance()->profile();
+    if (!profile.isEmpty())
+        toolTip.append(QStringLiteral(" | %1").arg(profile));
+
+    setToolTip(toolTip);
 }
 
 void
 TrayIcon::setUnreadCount(int count)
 {
     qGuiApp->setBadgeNumber(count);
+    if (count != previousCount) {
+        QString toolTip = QLatin1String("nheko");
+        QString profile = UserSettings::instance()->profile();
+        if (!profile.isEmpty())
+            toolTip.append(QStringLiteral(" | %1").arg(profile));
+
+        if (count != 0)
+            toolTip.append(tr("\n%n unread message(s)", "", count));
+
+        setToolTip(toolTip);
+    }
 
 #if !defined(Q_OS_MACOS) && !defined(Q_OS_WIN)
     if (count != previousCount) {
@@ -131,13 +150,6 @@ TrayIcon::setUnreadCount(int count)
 #else
     (void)previousCount;
 #endif
-
-    QString toolTip = QLatin1String("nheko");
-    if (count > 0) {
-        toolTip.append(tr("\n%n unread message(s)", "", count));
-    }
-
-    setToolTip(toolTip);
 }
 
 #include "moc_TrayIcon.cpp"
