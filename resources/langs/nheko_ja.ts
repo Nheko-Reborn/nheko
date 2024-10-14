@@ -237,12 +237,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+940"/>
+        <location line="+957"/>
         <source>Invited user: %1</source>
         <translation>招待されたユーザー: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-692"/>
+        <location line="-709"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation type="unfinished">
@@ -313,7 +313,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+35"/>
         <source>Room %1 created.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -399,7 +399,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-925"/>
+        <location line="-942"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLMアカウントを復元できませんでした。もう一度ログインして下さい。</translation>
     </message>
@@ -432,12 +432,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>招待を削除できませんでした: %1</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+34"/>
         <source>Room creation failed: %1</source>
         <translation>部屋を作成できませんでした: %1</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+28"/>
         <source>Failed to leave room: %1</source>
         <translation>部屋から出られませんでした: %1</translation>
     </message>
@@ -769,7 +769,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+125"/>
+        <location filename="../qml/CommunitiesList.qml" line="+130"/>
         <source>Expand</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1152,7 +1152,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1401,6 +1401,14 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
 </context>
 <context>
+    <name>ImageMessage</name>
+    <message>
+        <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
+        <source>Show</source>
+        <translation type="unfinished">表示</translation>
+    </message>
+</context>
+<context>
     <name>ImagePackDeleteDialog</name>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
@@ -1564,7 +1572,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+424"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
         <source>All Files (*)</source>
         <translation type="unfinished">全てのファイル (*)</translation>
     </message>
@@ -1574,7 +1582,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+625"/>
+        <location line="+629"/>
+        <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Failed to fetch user %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1655,12 +1668,12 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+132"/>
+        <location line="+133"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-162"/>
+        <location line="-163"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>自動検出できませんでした。不正な形式の応答を受信しました。</translation>
     </message>
@@ -1685,7 +1698,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>不明なエラーが発生しました。ホームサーバーのドメイン名が有効であるかを確認して下さい。</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1885,7 +1898,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+216"/>
+        <location filename="../qml/MessageView.qml" line="+236"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2098,7 +2111,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+46"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+90"/>
         <source>%1 sent an encrypted message</source>
         <translation type="unfinished">%1が暗号化されたメッセージを送信しました</translation>
@@ -2529,7 +2542,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+242"/>
+        <location filename="../../src/main.cpp" line="+222"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2634,7 +2647,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+81"/>
+        <location filename="../../src/RegisterPage.cpp" line="+83"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation type="unfinished">自動検出できませんでした。不正な形式の応答を受信しました。</translation>
     </message>
@@ -2659,7 +2672,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">不明なエラーが発生しました。ホームサーバーのドメイン名が有効であるかを確認して下さい。</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2920,7 +2933,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Profile settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2973,7 +2986,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">閉じる</translation>
     </message>
     <message>
-        <location line="+374"/>
+        <location line="+379"/>
         <source>Enter the tag you want to use:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3107,7 +3120,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+235"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+244"/>
         <source>Failed to enable encryption: %1</source>
         <translation type="unfinished">暗号化を有効にできませんでした: %1</translation>
     </message>
@@ -3151,12 +3164,17 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+97"/>
         <source>Change name of this room</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+23"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+22"/>
+        <location line="+11"/>
         <source>%n member(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -3173,12 +3191,17 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+24"/>
         <source>Change topic of this room</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+24"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>NOTIFICATIONS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3751,7 +3774,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+161"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+162"/>
         <source>Part of a thread</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3759,7 +3782,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineEvent</name>
     <message>
-        <location filename="../qml/TimelineEvent.qml" line="+87"/>
+        <location filename="../qml/TimelineEvent.qml" line="+88"/>
         <source>%1 placed a voice call.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3831,7 +3854,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1596"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1598"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>メッセージを編集できませんでした: %1</translation>
@@ -3863,7 +3886,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>ファイルを保存</translation>
     </message>
     <message numerus="yes">
-        <location line="+344"/>
+        <location line="+345"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4186,7 +4209,7 @@ Reason: %4</source>
         <translation>%1は退室しました。</translation>
     </message>
     <message>
-        <location line="-2286"/>
+        <location line="-2289"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4216,7 +4239,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>%1 removed the room avatar.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4251,7 +4274,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+1677"/>
+        <location line="+1678"/>
         <source>%2 revoked the invite to %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4298,7 +4321,7 @@ Reason: %4</source>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+49"/>
+        <location filename="../qml/TimelineView.qml" line="+51"/>
         <source>No room open</source>
         <translation>部屋が開いていません</translation>
     </message>
@@ -4481,7 +4504,7 @@ Reason: %4</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+111"/>
+        <location filename="../../src/TrayIcon.cpp" line="+109"/>
         <source>Show</source>
         <translation>表示</translation>
     </message>
@@ -4489,6 +4512,14 @@ Reason: %4</source>
         <location line="+1"/>
         <source>Quit</source>
         <translation>終了</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+27"/>
+        <source>
+%n unread message(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -4683,8 +4714,8 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
-        <location filename="../../src/UserSettingsPage.h" line="+270"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+601"/>
+        <location filename="../../src/UserSettingsPage.h" line="+280"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4692,7 +4723,7 @@ Reason: %4</source>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+420"/>
         <source>Theme</source>
         <translation type="unfinished">テーマ</translation>
     </message>
@@ -4754,6 +4785,11 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show images automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5067,7 +5103,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+119"/>
+        <location line="+121"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5146,6 +5182,11 @@ When disabled, all messages are sent as a plain text.</source>
     </message>
     <message>
         <location line="+2"/>
+        <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
         <translation type="unfinished"></translation>
@@ -5259,11 +5300,11 @@ be blurred.</source>
     </message>
     <message>
         <location line="+3"/>
-        <source>Change the scale factor of the whole user interface.</source>
+        <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5325,7 +5366,22 @@ This setting will take effect upon restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+142"/>
+        <source>Always</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only in private rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>System font</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5335,7 +5391,7 @@ This setting will take effect upon restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+330"/>
+        <location line="+340"/>
         <source>Select a file</source>
         <translation type="unfinished">ファイルを選択</translation>
     </message>
@@ -5354,13 +5410,14 @@ This setting will take effect upon restart.</source>
         <location line="+18"/>
         <location line="+8"/>
         <location line="+18"/>
+        <location line="+14"/>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
         <translation type="unfinished">エラー</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-78"/>
         <location line="+26"/>
         <source>File Password</source>
         <translation type="unfinished">ファイルのパスワード</translation>
@@ -5382,7 +5439,22 @@ This setting will take effect upon restart.</source>
         <translation type="unfinished">セッション鍵を暗号化するためのパスフレーズを入力して下さい:</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+13"/>
+        <source>Repeat File Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Repeat the passphrase:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Passwords don&apos;t match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>File to save the exported session keys</source>
         <translation type="unfinished">エクスポートされたセッション鍵を保存するファイル</translation>
     </message>
@@ -5507,7 +5579,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+374"/>
+        <location filename="../../src/Utils.cpp" line="+375"/>
         <source>Yesterday</source>
         <translation>昨日</translation>
     </message>

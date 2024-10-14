@@ -238,12 +238,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+940"/>
+        <location line="+957"/>
         <source>Invited user: %1</source>
         <translation>Utilisateur(rice) invité(e)&#xa0;: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-692"/>
+        <location line="-709"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation>
@@ -289,7 +289,7 @@
         <translation>Impossible de créer le salon : mauvais alias</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+35"/>
         <source>Room %1 created.</source>
         <translation>Salon %1 créé.</translation>
     </message>
@@ -350,7 +350,7 @@
         <translation>Voulez-vous vraiment commencer une discussion privée avec %1 ?</translation>
     </message>
     <message>
-        <location line="-1002"/>
+        <location line="-1019"/>
         <source>Cache migration failed!</source>
         <translation>Échec de la migration du cache&#x202f;!</translation>
     </message>
@@ -414,12 +414,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
         <translation>Impossible de supprimer l&apos;invitation&#x202f;: %1</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+34"/>
         <source>Room creation failed: %1</source>
         <translation>Échec de la création du salon&#xa0;: %1</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+28"/>
         <source>Failed to leave room: %1</source>
         <translation>Impossible de quitter le salon&#xa0;: %1</translation>
     </message>
@@ -776,7 +776,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
 <context>
     <name>CommunitiesList</name>
     <message>
-        <location filename="../qml/CommunitiesList.qml" line="+125"/>
+        <location filename="../qml/CommunitiesList.qml" line="+130"/>
         <source>Expand</source>
         <translation>Développer</translation>
     </message>
@@ -1160,8 +1160,8 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     </message>
     <message>
         <location line="+2"/>
-        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation>La clé de chiffrement ne provient pas d&apos;une source de confiance comme un autre utilisateur ou une sauvegarde en ligne. Pour cette raison, nous ne pouvons vérifier qui a envoyé ce message.</translation>
+        <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1409,6 +1409,14 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     </message>
 </context>
 <context>
+    <name>ImageMessage</name>
+    <message>
+        <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
+        <source>Show</source>
+        <translation type="unfinished">Montrer</translation>
+    </message>
+</context>
+<context>
     <name>ImagePackDeleteDialog</name>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
@@ -1572,7 +1580,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+424"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
         <source>All Files (*)</source>
         <translation>Tous les types de fichiers (*)</translation>
     </message>
@@ -1582,7 +1590,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
         <translation>Choisir fichier(s)</translation>
     </message>
     <message>
-        <location line="+625"/>
+        <location line="+629"/>
+        <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>Failed to fetch user %1</source>
         <translation>La récupération de l&apos;utilisateur %1 a échoué</translation>
     </message>
@@ -1663,12 +1676,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
         <location filename="../../src/LoginPage.cpp" line="+78"/>
         <location line="+6"/>
         <location line="+64"/>
-        <location line="+132"/>
+        <location line="+133"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
         <translation>Vous avez entré un identifiant Matrix invalide (ex&#xa0;: @utilisateur:serveur.domaine.extension)</translation>
     </message>
     <message>
-        <location line="-162"/>
+        <location line="-163"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Échec de la découverte automatique. Réponse mal formée reçue.</translation>
     </message>
@@ -1693,7 +1706,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
         <translation>Une erreur inconnue est survenue. Vérifiez que le nom de domaine du serveur est valide.</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1898,7 +1911,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+216"/>
+        <location filename="../qml/MessageView.qml" line="+236"/>
         <source>Edit</source>
         <translation>Modifier</translation>
     </message>
@@ -2111,7 +2124,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
 <context>
     <name>NotificationsManager</name>
     <message>
-        <location filename="../../src/notifications/Manager.cpp" line="+22"/>
+        <location filename="../../src/notifications/Manager.cpp" line="+46"/>
         <location filename="../../src/notifications/ManagerMac.cpp" line="+90"/>
         <source>%1 sent an encrypted message</source>
         <translation>%1 a envoyé un message chiffré</translation>
@@ -2542,7 +2555,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+242"/>
+        <location filename="../../src/main.cpp" line="+222"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Créer un profile unique qui vous permettra de vous connecter sur plusieurs compte en même temps et démarrer plusieurs instances de Nheko.</translation>
     </message>
@@ -2647,7 +2660,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
 <context>
     <name>RegisterPage</name>
     <message>
-        <location filename="../../src/RegisterPage.cpp" line="+81"/>
+        <location filename="../../src/RegisterPage.cpp" line="+83"/>
         <source>Autodiscovery failed. Received malformed response.</source>
         <translation>Échec de la découverte automatique. Réponse mal formée reçue.</translation>
     </message>
@@ -2672,7 +2685,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Une erreur inconnue est survenue. Vérifiez que le nom de domaine du serveur est valide.</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2933,7 +2946,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Message de statut</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+12"/>
         <source>Profile settings</source>
         <translation>Paramètres de profil</translation>
     </message>
@@ -2986,7 +2999,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location line="+374"/>
+        <location line="+379"/>
         <source>Enter the tag you want to use:</source>
         <translation>Entrez l&apos;étiquette que vous voulez utiliser :</translation>
     </message>
@@ -3121,7 +3134,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
 <context>
     <name>RoomSettings</name>
     <message>
-        <location filename="../../src/ui/RoomSettings.cpp" line="+235"/>
+        <location filename="../../src/ui/RoomSettings.cpp" line="+244"/>
         <source>Failed to enable encryption: %1</source>
         <translation>Échec de l&apos;activation du chiffrement&#xa0;: %1</translation>
     </message>
@@ -3165,12 +3178,17 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Changer l&apos;image de ce salon.</translation>
     </message>
     <message>
-        <location line="+93"/>
+        <location line="+97"/>
         <source>Change name of this room</source>
         <translation>Changer le nom de ce salon</translation>
     </message>
+    <message>
+        <location line="+23"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
+        <translation type="unfinished"></translation>
+    </message>
     <message numerus="yes">
-        <location line="+22"/>
+        <location line="+11"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n membre</numerusform>
@@ -3188,12 +3206,17 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Pas de sujet défini</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+24"/>
         <source>Change topic of this room</source>
         <translation>Changer le sujet de ce salon</translation>
     </message>
     <message>
-        <location line="+31"/>
+        <location line="+24"/>
+        <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>NOTIFICATIONS</source>
         <translation>NOTIFICATIONS</translation>
     </message>
@@ -3768,7 +3791,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+161"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+162"/>
         <source>Part of a thread</source>
         <translation>Partie d&apos;un fil</translation>
     </message>
@@ -3776,7 +3799,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>TimelineEvent</name>
     <message>
-        <location filename="../qml/TimelineEvent.qml" line="+87"/>
+        <location filename="../qml/TimelineEvent.qml" line="+88"/>
         <source>%1 placed a voice call.</source>
         <translation>%1 a effectué un appel vocal.</translation>
     </message>
@@ -3848,7 +3871,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1596"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1598"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Échec de la suppression du message&#xa0;: %1</translation>
@@ -3880,7 +3903,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
         <translation>Enregistrer le fichier</translation>
     </message>
     <message numerus="yes">
-        <location line="+344"/>
+        <location line="+345"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4214,7 +4237,7 @@ Raison : %4</translation>
         <translation>%1 a arrêté de toquer.</translation>
     </message>
     <message>
-        <location line="-2298"/>
+        <location line="-2301"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 a changé quels serveurs sont autorisés dans ce salon.</translation>
     </message>
@@ -4244,7 +4267,7 @@ Raison : %4</translation>
         <translation>%1 a changé l&apos;image du salon en&#xa0;: %2</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>%1 removed the room avatar.</source>
         <translation>%1 a effacé l&apos;image du salon.</translation>
     </message>
@@ -4279,7 +4302,7 @@ Raison : %4</translation>
         <translation>Vous avez rejoint ce salon.</translation>
     </message>
     <message>
-        <location line="+1635"/>
+        <location line="+1636"/>
         <source>%1 invited %2.</source>
         <translation>%1 a invité %2.</translation>
     </message>
@@ -4321,7 +4344,7 @@ Raison : %4</translation>
 <context>
     <name>TimelineView</name>
     <message>
-        <location filename="../qml/TimelineView.qml" line="+49"/>
+        <location filename="../qml/TimelineView.qml" line="+51"/>
         <source>No room open</source>
         <translation>Aucun salon ouvert</translation>
     </message>
@@ -4505,7 +4528,7 @@ Raison : %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+111"/>
+        <location filename="../../src/TrayIcon.cpp" line="+109"/>
         <source>Show</source>
         <translation>Montrer</translation>
     </message>
@@ -4513,6 +4536,15 @@ Raison : %4</translation>
         <location line="+1"/>
         <source>Quit</source>
         <translation>Quitter</translation>
+    </message>
+    <message numerus="yes">
+        <location line="+27"/>
+        <source>
+%n unread message(s)</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
     </message>
 </context>
 <context>
@@ -4708,8 +4740,8 @@ Raison : %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+595"/>
-        <location filename="../../src/UserSettingsPage.h" line="+270"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+601"/>
+        <location filename="../../src/UserSettingsPage.h" line="+280"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
@@ -4717,7 +4749,7 @@ Raison : %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+407"/>
+        <location line="+420"/>
         <source>Theme</source>
         <translation>Thème</translation>
     </message>
@@ -4780,6 +4812,11 @@ Raison : %4</translation>
         <location line="+2"/>
         <source>Play animated images only on hover</source>
         <translation>Ne jouer les images animées qu&apos;au survol</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Show images automatically</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5092,7 +5129,7 @@ Raison : %4</translation>
         <translation>Périodiquement effacer les évènements expirés</translation>
     </message>
     <message>
-        <location line="+119"/>
+        <location line="+121"/>
         <source>Default</source>
         <translation>Défaut</translation>
     </message>
@@ -5173,6 +5210,11 @@ Si désactivé, tous les messages sont envoyés comme texte brut.</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
         <source>Show who is typing in a room.
 This will also enable or disable sending typing notifications to others.</source>
         <translation>Montre qui est en train d&apos;écrire un message dans un salon.
@@ -5253,7 +5295,12 @@ OFF - carré, ON - circulaire.</translation>
         <translation>Désactivera les mouvements glissés (swipe gauche/droite) entre salons et ligne du temps ou glissé d&apos;un message pour y répondre directement.</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+3"/>
+        <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+9"/>
         <source>Automatically replies to key requests from other users if they are verified, even if that device shouldn&apos;t have access to those keys otherwise.</source>
         <translation>Automatiquement répondre aux demandes de clés d&apos;autres utilisateurs s&apos;ils sont vérifiés, même si cet appareil ne devrait autrement pas avoir accès à ces clés.</translation>
     </message>
@@ -5263,7 +5310,7 @@ OFF - carré, ON - circulaire.</translation>
         <translation>La clef pour vérifier vos propres appareils. Si elle est en cache, vérifier un de vos appareils le marquera comme vérifié pour tous vos autres appareils et pour les utilisateurs qui vous ont vérifié.</translation>
     </message>
     <message>
-        <location line="-80"/>
+        <location line="-81"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
         <translation>Alerte lorsqu&apos;un message est reçu.
@@ -5307,12 +5354,7 @@ be blurred.</source>
         <translation>Empêche la sélection de texte dans la discussion pour faciliter le défilement tactile.</translation>
     </message>
     <message>
-        <location line="+6"/>
-        <source>Change the scale factor of the whole user interface.</source>
-        <translation>Change le facteur d&apos;agrandissement de toute l&apos;interface.</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+9"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
         <translation>Utiliser le serveur turn.matrix.org pour vous aider à rejoindre les appels si votre serveur ne propose pas la fonctionnalité TURN.</translation>
     </message>
@@ -5366,7 +5408,22 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
         <translation>Gérer vos utilisateurs ignorés.</translation>
     </message>
     <message>
-        <location line="+151"/>
+        <location line="+142"/>
+        <source>Always</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only in private rooms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+14"/>
         <source>System font</source>
         <translation>Police système</translation>
     </message>
@@ -5376,7 +5433,7 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
         <translation>Police d&apos;emoji système</translation>
     </message>
     <message>
-        <location line="+330"/>
+        <location line="+340"/>
         <source>Select a file</source>
         <translation>Sélectionnez un fichier</translation>
     </message>
@@ -5395,13 +5452,14 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
         <location line="+18"/>
         <location line="+8"/>
         <location line="+18"/>
+        <location line="+14"/>
         <location line="+11"/>
         <location line="+18"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
     <message>
-        <location line="-64"/>
+        <location line="-78"/>
         <location line="+26"/>
         <source>File Password</source>
         <translation>Mot de passe du fichier</translation>
@@ -5423,7 +5481,22 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
         <translation>Entrez une phrase de passe pour chiffrer vos clés de session&#xa0;:</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+13"/>
+        <source>Repeat File Password</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Repeat the passphrase:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Passwords don&apos;t match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <source>File to save the exported session keys</source>
         <translation>Fichier où sauvegarder les clés de session exportées</translation>
     </message>
@@ -5548,7 +5621,7 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+374"/>
+        <location filename="../../src/Utils.cpp" line="+375"/>
         <source>Yesterday</source>
         <translation>Hier</translation>
     </message>
