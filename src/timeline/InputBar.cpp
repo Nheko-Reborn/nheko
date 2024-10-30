@@ -20,6 +20,8 @@
 #include <QVideoFrame>
 #include <QVideoSink>
 
+#include <fmt/format.h>
+
 #include <nlohmann/json.hpp>
 
 #include <mtx/responses/common.hpp>
@@ -578,8 +580,7 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
                 }
             }
 
-            text.body =
-              QStringLiteral("%1\n%2").arg(body, QString::fromStdString(text.body)).toStdString();
+            text.body = fmt::format("{}\n{}", body.toStdString(), text.body);
 
             // NOTE(Nico): rich replies always need a formatted_body!
             text.format = "org.matrix.custom.html";
