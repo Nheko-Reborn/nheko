@@ -274,7 +274,7 @@
     <message>
         <location line="+4"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation>Möchstest du wirklich an %1 anklopfen? Du kannst zusätzlich einen Grund angeben, warum die anderen dich reinlassen sollen:</translation>
+        <translation>Möchtest du wirklich bei %1 anklopfen? Du kannst zusätzlich einen Grund angeben, warum die anderen dich reinlassen sollen:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -4685,7 +4685,7 @@ Grund: %4</translation>
     <message>
         <location line="+11"/>
         <source>Ban the user.</source>
-        <translation>Benutzer aus dem Raum verbannen.</translation>
+        <translation>Benutzer verbannen.</translation>
     </message>
     <message>
         <location line="+11"/>
