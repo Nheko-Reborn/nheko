@@ -6,18 +6,18 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+103"/>
         <source>Calling...</source>
-        <translation>Ligando...</translation>
+        <translation>Chamando…</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+9"/>
         <source>Connecting...</source>
-        <translation>Conectando...</translation>
+        <translation>Conectando…</translation>
     </message>
     <message>
         <location line="+73"/>
         <source>You are screen sharing</source>
-        <translation>Você está compartilhando sua tela</translation>
+        <translation>Você está compartilhando sua tela.</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -43,12 +43,12 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao cancelar a publicação do alias %1: %2</translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Failed to update aliases: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao atualizar os aliases: %1</translation>
     </message>
 </context>
 <context>
@@ -56,7 +56,7 @@
     <message>
         <location filename="../qml/dialogs/AliasEditor.qml" line="+25"/>
         <source>Aliases to %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias para %1</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -66,7 +66,7 @@
     <message>
         <location line="+41"/>
         <source>Primary alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Alias primário</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -76,27 +76,27 @@
     <message>
         <location line="+14"/>
         <source>Advertise as an alias in this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Anunciar como um alias nesta sala</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Publish in room directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Publicar no diretório da sala</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Remove this alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Remover este alias</translation>
     </message>
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#new-alias:server.tld</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Adicionar</translation>
     </message>
 </context>
 <context>
@@ -104,17 +104,17 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+24"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Configurações de salas permitidas</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lista de salas que permitem acesso a esta sala. Qualquer um que esteja em qualquer uma dessas salas pode entrar nesta sala.</translation>
     </message>
     <message>
         <location line="+36"/>
         <source>Parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Comunidade pai</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -133,21 +133,21 @@
         <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 e %2</translation>
     </message>
     <message numerus="yes">
         <location line="+2"/>
         <source>%1 and %n other(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 e %n outra</numerusform>
+            <numerusform>%1 e %n outras</numerusform>
         </translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Sala Vazia</translation>
     </message>
 </context>
 <context>
@@ -216,12 +216,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+895"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -254,45 +254,48 @@
     <message>
         <location line="+84"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Confirma logout</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
+        <translation>Devido ao seguinte motivo, Nheko deseja redirecioná-lo para a página de login:
+% 1
+Se você acha que isso é um erro, pode fechar o Nheko para possivelmente recuperar suas chaves de criptografia. Depois de ir para a página de login, você pode entrar novamente usando seus métodos habituais.</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>A migração do cache para a versão atual falhou. Isso pode ter diferentes razões. Abra um problema em https://github.com/Nheko-Reborn/nheko e tente usar uma versão mais antiga enquanto isso. Como alternativa, você pode tentar excluir o cache manualmente.</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>The cache on your disk is newer than this version of Nheko supports. Please update Nheko or clear your cache.</source>
-        <translation type="unfinished"></translation>
+        <translation>O cache em seu disco é mais recente do que esta versão do Nheko suporta. Atualize o Nheko ou limpe seu cache.</translation>
     </message>
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha ao abrir o banco de dados, saindo!</translation>
     </message>
     <message>
         <location line="+310"/>
         <source>Knock on room</source>
-        <translation type="unfinished"></translation>
+        <translation>Bater na sala</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Você não conseguiu entrar em% 1. Você pode tentar bater para que outros possam convidá-lo a entrar. Você quer fazer isso?
+Você pode, opcionalmente, fornecer um motivo para que outras pessoas aceitem sua batida:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you really want to knock on %1? You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Você realmente quer bater em %1? Você pode, opcionalmente, fornecer um motivo para que outras pessoas aceitem sua batida:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -302,12 +305,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+59"/>
         <source>Room creation failed: Bad Alias</source>
-        <translation type="unfinished"></translation>
+        <translation>Falha na criação da sala: Alias inválido</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Room creation failed: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>A criação da sala falhou: %1</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -348,12 +351,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+10"/>
         <source>Reason for the ban</source>
-        <translation type="unfinished"></translation>
+        <translation>Razão para o ban</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Digite o motivo para banir %1 (%2) ou pressione enter sem motivo:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -454,12 +457,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+116"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;mensagem&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;texto&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -474,12 +477,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [razão]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [razão]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2005,12 +2008,12 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+12"/>
         <source>&amp;Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Marcar como lido</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>View raw message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ver mensagem bruta</translation>
     </message>
     <message>
         <location line="+6"/>
