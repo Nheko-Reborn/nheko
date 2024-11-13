@@ -579,12 +579,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>/glitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/glitch &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/gradualglitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/gradualglitch &lt;bericht&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -740,12 +740,12 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>Send a message with a glitch effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuur een bericht met een verstoringseffect.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message that gradually glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verstuur een bericht dat langzaam sterker verstoord met elke letter.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1271,7 +1271,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+2"/>
         <source>The verification was accepted by a different device.</source>
-        <translation type="unfinished"></translation>
+        <translation>De verificatie is geaccepteerd door een ander apparaat.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1708,7 +1708,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
     <message>
         <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>De gekozen server ondersteund geen versies van het Matrix protocol die deze applicatie begrijpt (tussen %1 en %2). Je kan daarom niet inloggen.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1905,7 +1905,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location filename="../qml/MessageInputWarning.qml" line="+61"/>
         <source>Don&apos;t mention them in this message</source>
-        <translation type="unfinished"></translation>
+        <translation>Geen melding versturen in dit bericht</translation>
     </message>
 </context>
 <context>
@@ -2687,7 +2687,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>De gekozen server ondersteund geen versies van het Matrix protocol die deze applicatie begrijpt (tussen %1 en %2). Je kan daarom niet registreren.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4351,7 +4351,7 @@ Reden: %4</translation>
     <message>
         <location line="+0"/>
         <source>You will be mentioning %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Je zal een melding versturen naar %1</translation>
     </message>
     <message>
         <location line="+6"/>
