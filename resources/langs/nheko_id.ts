@@ -576,12 +576,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>/glitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/glitch &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/gradualglitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/gradualglitch &lt;pesan&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -737,12 +737,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>Send a message with a glitch effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan dengan efek glitch.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message that gradually glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kirim pesan yang akan glitch secara berkala.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1267,7 +1267,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>The verification was accepted by a different device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifikasi telah diterima di perangkat lain.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1704,7 +1704,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server yang dipilih tidak mendukung versi protokol Matrix yang diketahui oleh klien ini (%1 sampai %2). Kamu tidak bisa masuk.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1900,7 +1900,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
     <message>
         <location filename="../qml/MessageInputWarning.qml" line="+61"/>
         <source>Don&apos;t mention them in this message</source>
-        <translation type="unfinished"></translation>
+        <translation>Jangan menyebutkan mereka dalam pesan ini</translation>
     </message>
 </context>
 <context>
@@ -2682,7 +2682,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
     <message>
         <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Server yang dipilih tidak mendukung versi protokol Matrix yang diketahui oleh klien ini (%1 sampai %2). Kamu tidak bisa mendaftar.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4339,7 +4339,7 @@ Alasan: %4</translation>
     <message>
         <location line="+0"/>
         <source>You will be mentioning %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kamu akan menyebutkan %1</translation>
     </message>
     <message>
         <location line="+6"/>
