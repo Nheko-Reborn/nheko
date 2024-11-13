@@ -5311,12 +5311,13 @@ Only affects messages in encrypted chats.</source>
         <location line="+3"/>
         <source>When the window loses focus, the timeline will
 be blurred.</source>
-        <translation type="unfinished"></translation>
+        <translation>Размывать список сообщений при потере фокуса
+(переключении на другие приложения).</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished">Будет прерывать выделение текста в таймлайне, чтобы сделать перелистывание косанием проще.</translation>
+        <translation>Прерывать выделение текста в списке сообщений, чтобы было проще перелистывать на сенсорных экранах.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5326,17 +5327,17 @@ be blurred.</source>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поменять коэфициент масштаба для всего пользовательского интерфейса.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Will use turn.matrix.org as assist when your home server does not offer one.</source>
-        <translation type="unfinished">Будет использован turn.matrix.org для помощи, когда вам домашний сервер не позволяет.</translation>
+        <translation>В случае, если домашний сервер не предоставляет адрес TURN/STUN сервера, будет использоваться turn.matrix.org.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Requires a user to be verified to send encrypted messages to them. This improves safety but makes E2EE more tedious.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправлять зашифрованные сообщения только тем собеседникам, которых Вы верифицировали. Это повышает безопасность, но требует больше ручных операций для использования оконечного шифрования.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5346,7 +5347,7 @@ be blurred.</source>
     <message>
         <location line="+4"/>
         <source>Download message encryption keys from and upload to the encrypted online key backup.</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить загрузку и отправку ключей шифрования в онлайн-хранилище резервных копий.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -5769,7 +5770,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+3"/>
         <source>%1 sent an encrypted message</source>
-        <translation>%1 отправил зашифрованное сообщение</translation>
+        <translation>%1 отправил(а) зашифрованное сообщение</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -5799,7 +5800,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+2"/>
         <source>%1 ended a call</source>
-        <translation>%1 Закончил разговор</translation>
+        <translation>%1 закончил(а) разговор</translation>
     </message>
     <message>
         <location line="+4"/>
