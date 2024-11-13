@@ -576,12 +576,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/glitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/glitch &lt;消息&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/gradualglitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/gradualglitch &lt;消息&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -737,12 +737,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a message with a glitch effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条带有闪烁效果的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message that gradually glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>发送一条逐渐闪烁的消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1267,7 +1267,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The verification was accepted by a different device.</source>
-        <translation type="unfinished"></translation>
+        <translation>验证已由另一台设备接受。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1704,7 +1704,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>所选服务器不支持此客户端可理解的 Matrix 协议版本（%1 至 %2）。你无法登录。</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1900,7 +1900,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location filename="../qml/MessageInputWarning.qml" line="+61"/>
         <source>Don&apos;t mention them in this message</source>
-        <translation type="unfinished"></translation>
+        <translation>请勿在此消息中提及它们</translation>
     </message>
 </context>
 <context>
@@ -2682,7 +2682,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>所选服务器不支持此客户端可理解的 Matrix 协议版本（%1 至 %2）。你无法注册。</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -4339,7 +4339,7 @@ Reason: %4</source>
     <message>
         <location line="+0"/>
         <source>You will be mentioning %1</source>
-        <translation type="unfinished"></translation>
+        <translation>你将提及 %1</translation>
     </message>
     <message>
         <location line="+6"/>
