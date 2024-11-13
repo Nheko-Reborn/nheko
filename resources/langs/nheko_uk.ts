@@ -133,7 +133,7 @@
         <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 та %2</translation>
     </message>
     <message numerus="yes">
         <location line="+2"/>
@@ -217,12 +217,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+895"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -247,10 +247,13 @@
         <location line="-709"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n непрочитане повідомлення у кімнаті %1
+</numerusform>
+            <numerusform>%n непрочитаних повідомлень у кімнаті %1
+</numerusform>
+            <numerusform>%n непрочитаних повідомлень у кімнаті %1
+</numerusform>
         </translation>
     </message>
     <message>
@@ -569,17 +572,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+16"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [повідомлення]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/msgtype &lt;msgtype&gt; [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/msgtype &lt;msgtype&gt; [повідомлення]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/glitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/glitch &lt;повідомлення&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
