@@ -579,12 +579,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>/glitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/glitch &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/gradualglitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/gradualglitch &lt;sõnum&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -740,12 +740,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Send a message with a glitch effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada sõnum kiiksuga vea efektiga.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message that gradually glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Saada sõnum kiiksuga ja aegamööda tekkiva vea efektiga.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1271,7 +1271,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>The verification was accepted by a different device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Verifitseerimisega nõustus üks teine seade.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1708,7 +1708,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitud server ei toeta Matrix&apos;i protokolli seda versiooni, mida see klient rääkida oskab (%1 vs %2). Sa ei saa sisse logida.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1904,7 +1904,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     <message>
         <location filename="../qml/MessageInputWarning.qml" line="+61"/>
         <source>Don&apos;t mention them in this message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ära maini neid selles sõnumis</translation>
     </message>
 </context>
 <context>
@@ -2132,7 +2132,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 vastas rõõmurikkujaga.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2686,7 +2686,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     <message>
         <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitud server ei toeta Matrix&apos;i protokolli seda versiooni, mida see klient rääkida oskab (%1 vs %2). Sa ei saa registreeruda.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3392,7 +3392,8 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptimine on hetkel katseline ja nii mõnigi asi võib viltu minna.&lt;br&gt;
+                                Palun arvesta, et seda ei saa hiljem välja lülitada.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4350,7 +4351,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+0"/>
         <source>You will be mentioning %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Sa nüüd mainid kasutajat %1</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -5670,7 +5671,7 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-12"/>
         <source>Message contains spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sõnumis leidub rõõmurikkuja.</translation>
     </message>
 </context>
 <context>
@@ -5739,13 +5740,13 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sina saatsid rõõmurikkuja.</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+26"/>
         <source>%1 sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 saatis rõõmurikkuja.</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -5772,7 +5773,7 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="+23"/>
         <source>* %1 spoils something.</source>
-        <translation type="unfinished"></translation>
+        <translation>* %1 rikub väikese rõõmu ära.</translation>
     </message>
     <message>
         <location line="+8"/>
