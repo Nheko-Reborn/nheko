@@ -17,12 +17,12 @@
     <message>
         <location line="+73"/>
         <source>You are screen sharing</source>
-        <translation type="unfinished"></translation>
+        <translation>你正在分享螢幕。</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Hide/Show Picture-in-Picture</source>
-        <translation type="unfinished"></translation>
+        <translation>隱藏/顯示畫中畫</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -43,7 +43,7 @@
         <location line="+60"/>
         <location line="+13"/>
         <source>Failed to unpublish alias %1: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>無法撤回別名%1: %2</translation>
     </message>
     <message>
         <location line="+84"/>
@@ -159,12 +159,12 @@
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>語音通話</translation>
     </message>
     <message>
         <location line="+62"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>找不到麥克風。</translation>
     </message>
 </context>
 <context>
@@ -177,22 +177,22 @@
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation type="unfinished"></translation>
+        <translation>語音通話</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>裝置</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>接受</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>No microphone found.</source>
-        <translation type="unfinished"></translation>
+        <translation>找不到麥克風</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -207,7 +207,7 @@
     <message>
         <location line="+14"/>
         <source>Decline</source>
-        <translation type="unfinished"></translation>
+        <translation>拒絕</translation>
     </message>
 </context>
 <context>
@@ -215,7 +215,7 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+895"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -225,7 +225,7 @@
     <message>
         <location line="+19"/>
         <source>Entire screen</source>
-        <translation type="unfinished"></translation>
+        <translation>整個螢幕</translation>
     </message>
 </context>
 <context>
@@ -233,13 +233,13 @@
     <message>
         <location filename="../../src/ChatPage.cpp" line="+118"/>
         <source>Failed to invite user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>無法邀請用戶：%1</translation>
     </message>
     <message>
         <location line="+4"/>
         <location line="+957"/>
         <source>Invited user: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>已邀請用戶： %1</translation>
     </message>
     <message numerus="yes">
         <location line="-709"/>
@@ -262,7 +262,7 @@
     <message>
         <location line="+41"/>
         <source>Failed to open database, logging out!</source>
-        <translation type="unfinished"></translation>
+        <translation>無法打開資料庫，正在登出！</translation>
     </message>
     <message>
         <location line="+310"/>
