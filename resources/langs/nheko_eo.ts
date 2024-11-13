@@ -580,12 +580,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>/glitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/glitch &lt;mesaĝo&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/gradualglitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/gradualglitch &lt;mesaĝo&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -741,12 +741,12 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>Send a message with a glitch effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendas mesaĝon kun misigita teksto.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message that gradually glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Sendas mesaĝon, kies teksto pli kaj pli misiĝas.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1272,7 +1272,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+2"/>
         <source>The verification was accepted by a different device.</source>
-        <translation type="unfinished"></translation>
+        <translation>La kontrolo</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1709,7 +1709,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     <message>
         <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>La elektita servilo ne subtenas version de Matrikso, kiun ĉi tiu kliento povus kompreni (%1 – %2). Vi ne povas saluti.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1906,7 +1906,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
     <message>
         <location filename="../qml/MessageInputWarning.qml" line="+61"/>
         <source>Don&apos;t mention them in this message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne mencii ĝin en ĉi tiu mesaĝo</translation>
     </message>
 </context>
 <context>
@@ -2134,7 +2134,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 respondis per malkaŝo de intrigo.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2688,7 +2688,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
     <message>
         <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>La elektita servilo ne subtenas version de Matrikso, kiun ĉi tiu kliento povus kompreni (%1 – %2). Vi ne povas registriĝi.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3396,7 +3396,8 @@ forigi la enhavon, se necese.</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ĉifrado estas eksperimenta, kaj aferoj povus subite rompiĝi.&lt;br&gt;
+                                Bonvolu scii, ke ne eblas malŝalti ĝin poste!</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4356,7 +4357,7 @@ Kialo: %4</translation>
     <message>
         <location line="+0"/>
         <source>You will be mentioning %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vi mencios uzanton %1</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -5679,7 +5680,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-12"/>
         <source>Message contains spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mesaĝo enhavas malkaŝon de intrigo.</translation>
     </message>
 </context>
 <context>
@@ -5748,13 +5749,13 @@ This setting will take effect upon restart.</source>
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vi sendis malkaŝon de intrigo.</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+26"/>
         <source>%1 sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 sendis malkaŝon de intrigo.</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -5781,7 +5782,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+23"/>
         <source>* %1 spoils something.</source>
-        <translation type="unfinished"></translation>
+        <translation>* %1 malkaŝas la intrigon.</translation>
     </message>
     <message>
         <location line="+8"/>
