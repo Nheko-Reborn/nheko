@@ -560,41 +560,6 @@ InputBar::message(const QString &msg, MarkdownOverride useMarkdown, bool rainbow
 
     text.mentions  = generateMentions();
     text.relations = generateRelations();
-    if (!room->reply().isEmpty() && room->thread().isEmpty() && room->edit().isEmpty()) {
-        auto related = room->relatedInfo(room->reply());
-
-        // Skip reply fallbacks to users who would cause a room ping with the fallback.
-        // This should be fine, since in some cases the reply fallback can be omitted now and the
-        // alternative is worse! On Element Android this applies to any substring, but that is their
-        // bug to fix.
-        if (!related.quoted_user.startsWith("@room:")) {
-            QString body;
-            bool firstLine = true;
-            auto lines     = QStringView(related.quoted_body).split(u'\n');
-            for (auto line : std::as_const(lines)) {
-                if (firstLine) {
-                    firstLine = false;
-                    body      = QStringLiteral("> <%1> %2\n").arg(related.quoted_user, line);
-                } else {
-                    body += QStringLiteral("> %1\n").arg(line);
-                }
-            }
-
-            text.body = fmt::format("{}\n{}", body.toStdString(), text.body);
-
-            // NOTE(Nico): rich replies always need a formatted_body!
-            text.format = "org.matrix.custom.html";
-            if ((ChatPage::instance()->userSettings()->markdown() &&
-                 useMarkdown == MarkdownOverride::NOT_SPECIFIED) ||
-                useMarkdown == MarkdownOverride::ON)
-                text.formatted_body =
-                  utils::getFormattedQuoteBody(related, utils::markdownToHtml(msg, rainbowify))
-                    .toStdString();
-            else
-                text.formatted_body =
-                  utils::getFormattedQuoteBody(related, msg.toHtmlEscaped()).toStdString();
-        }
-    }
 
     room->sendMessageEvent(text, mtx::events::EventType::RoomMessage);
 }

@@ -42,6 +42,9 @@
 #include "MatrixClient.h"
 #include "UserSettingsPage.h"
 
+static QString
+getQuoteBody(const RelatedInfo &related);
+
 //! Match widgets/events with a description message.
 namespace {
 template<class T>
@@ -267,7 +270,7 @@ utils::stripReplyFallbacks(const mtx::events::collections::TimelineEvents &event
     related.quoted_body = QString::fromStdString(mtx::accessors::body(event));
     related.quoted_body =
       QString::fromStdString(stripReplyFromBody(related.quoted_body.toStdString()));
-    related.quoted_body = utils::getQuoteBody(related);
+    related.quoted_body = getQuoteBody(related);
 
     // get quoted body and strip reply fallback
     related.quoted_formatted_body = mtx::accessors::formattedBodyWithFallback(event);
@@ -1149,44 +1152,7 @@ utils::markdownToHtml(const QString &text, bool rainbowify_, bool noExtensions)
 }
 
 QString
-utils::getFormattedQuoteBody(const RelatedInfo &related, const QString &html)
-{
-    auto getFormattedBody = [related]() -> QString {
-        using MsgType = mtx::events::MessageType;
-
-        switch (related.type) {
-        case MsgType::File: {
-            return QStringLiteral("sent a file.");
-        }
-        case MsgType::Image: {
-            return QStringLiteral("sent an image.");
-        }
-        case MsgType::Audio: {
-            return QStringLiteral("sent an audio file.");
-        }
-        case MsgType::Video: {
-            return QStringLiteral("sent a video");
-        }
-        default: {
-            return escapeBlacklistedHtml(related.quoted_formatted_body);
-        }
-        }
-    };
-
-    return QStringLiteral("<mx-reply><blockquote><a "
-                          "href=\"https://matrix.to/#/%1/%2\">In reply "
-                          "to</a> <a href=\"https://matrix.to/#/%3\">%4</a><br"
-                          "/>%5</blockquote></mx-reply>")
-             .arg(related.room,
-                  QString::fromStdString(related.related_event),
-                  QUrl::toPercentEncoding(related.quoted_user),
-                  related.quoted_user.toHtmlEscaped(),
-                  getFormattedBody()) +
-           html;
-}
-
-QString
-utils::getQuoteBody(const RelatedInfo &related)
+getQuoteBody(const RelatedInfo &related)
 {
     using MsgType = mtx::events::MessageType;
 
