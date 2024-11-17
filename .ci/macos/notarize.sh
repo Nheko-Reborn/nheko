@@ -62,8 +62,6 @@ requestUUID="$(awk -F ': ' '/id/ {print $2}' "$NOTARIZE_SUBMIT_LOG" | head -1)"
 
 if [ -z "${requestUUID}" ]; then
   echo "Something went wrong when submitting the request... we don't have a UUID"
-  mkdir -p artifacts
-  cp "$NOTARIZE_SUBMIT_LOG" artifacts/notarize_submit.log
   exit 1
 else
   echo "Received requestUUID: \"${requestUUID}\""
