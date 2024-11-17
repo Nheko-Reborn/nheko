@@ -306,6 +306,7 @@ build-macos-as:
       - artifacts/nheko-${CI_COMMIT_SHORT_SHA}-${PLAT}.dmg
       - artifacts/notarize_submit.log
     name: nheko-${CI_COMMIT_SHORT_SHA}-macos
+    when: always
 
 codesign-macos-intel:
   <<: *codesign_macos
