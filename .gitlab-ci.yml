@@ -266,12 +266,9 @@ build-macos:
 
 build-macos-as:
   extends: build-macos
-  image: ghcr.io/cirruslabs/macos-ventura-xcode:14.3
+  image: ghcr.io/cirruslabs/macos-sequoia-xcode:16.1
   tags: [macos-tart]
   before_script:
-    # The following update-reset is a workaround for this issue: https://github.com/Homebrew/homebrew-bundle/issues/1179
-    - brew update-reset
-    - brew upgrade
     - brew bundle --file .ci/macos/Brewfile
     ### CMake 3.29 issue with re2 workaround.
     - brew uninstall cmake
