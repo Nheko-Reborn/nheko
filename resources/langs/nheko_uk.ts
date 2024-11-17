@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3399"/>
+        <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation type="unfinished"></translation>
@@ -786,7 +786,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>Згорнути</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+92"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Не показувати кількість сповіщень для цієї спільноти чи тегу.</translation>
     </message>
@@ -1581,7 +1581,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
         <source>All Files (*)</source>
         <translation>Усі файли (*)</translation>
     </message>
@@ -1591,7 +1591,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+629"/>
+        <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1907,7 +1907,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+236"/>
+        <location filename="../qml/MessageView.qml" line="+235"/>
         <source>Edit</source>
         <translation>Змінити</translation>
     </message>
@@ -1952,29 +1952,29 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Причина видалення</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+21"/>
         <source>Go to &amp;message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+148"/>
+        <location line="+162"/>
         <source>&amp;Copy</source>
         <translation>&amp;Копіювати</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+148"/>
+        <location line="-155"/>
+        <location line="+162"/>
         <source>Copy &amp;link location</source>
         <translation>Копіювати &amp;посилання розташування</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-153"/>
         <source>Re&amp;act</source>
         <translation>Ре&amp;агувати</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Repl&amp;y</source>
         <translation>Відпо&amp;вісти</translation>
     </message>
@@ -1999,22 +1999,22 @@ Example: https://yourserver.example.com:8787</source>
         <translation>&amp;Закріпити</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Read receipts</source>
         <translation>&amp;Прочитати квитанції</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>&amp;Forward</source>
         <translation>&amp;Вперед</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>&amp;Mark as read</source>
         <translation>&amp;Відзначити як прочитане</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>Переглянути необроблене повідомлення</translation>
     </message>
@@ -2024,7 +2024,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Переглянути розшифроване необроблене повідомлення</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Remo&amp;ve message</source>
         <translation>Ви&amp;далити повідомлення</translation>
     </message>
@@ -2049,7 +2049,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Копіювати посилання на &amp;подію</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+49"/>
         <source>&amp;Go to quoted message</source>
         <translation>&amp;Перейти до цитованого повідомлення</translation>
     </message>
@@ -2551,7 +2551,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+222"/>
+        <location filename="../../src/main.cpp" line="+221"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Створити унікальний профіль, який дозволить вам входити в кілька облікових записів одночасно та запускати кілька екземплярів nheko.</translation>
     </message>
@@ -2972,7 +2972,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+58"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation>Шифрування не встановлено</translation>
@@ -2995,7 +2995,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Закрити</translation>
     </message>
     <message>
-        <location line="+379"/>
+        <location line="+388"/>
         <source>Enter the tag you want to use:</source>
         <translation>Введіть тег, який ви хочете використовувати:</translation>
     </message>
@@ -3265,12 +3265,12 @@ Example: https://yourserver.example.com:8787</source>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+245"/>
+        <location line="+242"/>
         <source>Change</source>
         <translation type="unfinished">Змінити</translation>
     </message>
     <message>
-        <location line="-244"/>
+        <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
         <translation type="unfinished">Змінити список кімнат, через які користувачі можуть приєднатися до цієї кімнати. Зазвичай це офіційна спільнота цієї кімнати.</translation>
     </message>
@@ -3352,13 +3352,13 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+63"/>
+        <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
         <translation type="unfinished">Налаштувати</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-89"/>
         <source>Select events to hide in this room</source>
         <translation type="unfinished">Вибрати події, які потрібно приховати в цій кімнаті</translation>
     </message>
@@ -3394,7 +3394,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+16"/>
         <source>Permission</source>
         <translation type="unfinished">Дозволи</translation>
     </message>
@@ -3572,7 +3572,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5145"/>
+        <location filename="../../src/Cache.cpp" line="-5141"/>
         <source>Failed to connect to secret storage</source>
         <translation>Не вдалося підключитися до секретного сховища</translation>
     </message>
@@ -3707,29 +3707,24 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>Офіційна спільнота цієї кімнати</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Affiliated community for this room</source>
         <translation>Афілійована спільнота для цієї кімнати</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for community members</source>
         <translation>Наведено лише для учасників спільноти</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for room members</source>
         <translation>Наведено лише для учасників кімнати</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Not related</source>
         <translation>Не пов&apos;язано</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Subcommunities</source>
-        <translation>Підспільноти</translation>
     </message>
 </context>
 <context>
@@ -3901,7 +3896,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>Зберегти файл</translation>
     </message>
     <message numerus="yes">
-        <location line="+345"/>
+        <location line="+347"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4235,7 +4230,7 @@ Reason: %4</source>
         <translation>%1 відредагував свій стукіт.</translation>
     </message>
     <message>
-        <location line="-2301"/>
+        <location line="-2303"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4300,7 +4295,7 @@ Reason: %4</source>
         <translation>Ви приєдналися до цієї кімнати.</translation>
     </message>
     <message>
-        <location line="+1018"/>
+        <location line="+1020"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 зробив так, щоб ця кімната потребувала запрошення, щоб приєднатися.</translation>
     </message>
@@ -4449,7 +4444,7 @@ Reason: %4</source>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+21"/>
+        <location filename="../qml/TopBar.qml" line="+20"/>
         <source>No room selected</source>
         <translation>Кімнату не вибрано</translation>
     </message>
@@ -4499,7 +4494,7 @@ Reason: %4</source>
         <translation>Налаштування кімнати</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+18"/>
         <source>Invite users</source>
         <translation>Запросити користувачів</translation>
     </message>
@@ -4532,7 +4527,7 @@ Reason: %4</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+109"/>
+        <location filename="../../src/TrayIcon.cpp" line="+110"/>
         <source>Show</source>
         <translation>Показати</translation>
     </message>

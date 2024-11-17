@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3399"/>
+        <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 和 %2</translation>
@@ -783,7 +783,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>收起</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+92"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>不显示此社区或标签的通知计数。</translation>
     </message>
@@ -1576,12 +1576,12 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
         <source>All Files (*)</source>
         <translation>所有文件 (*)</translation>
     </message>
     <message>
-        <location line="+629"/>
+        <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1596,7 +1596,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation>上传 “%1” 失败</translation>
     </message>
     <message>
-        <location line="-976"/>
+        <location line="-975"/>
         <source>Select file(s)</source>
         <translation>选择文件</translation>
     </message>
@@ -1841,7 +1841,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MediaUpload</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+822"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+821"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>未能上传媒体。请再试一次。</translation>
@@ -1906,7 +1906,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+236"/>
+        <location filename="../qml/MessageView.qml" line="+235"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
@@ -1951,29 +1951,29 @@ Example: https://yourserver.example.com:8787</source>
         <translation>移除理由</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+21"/>
         <source>Go to &amp;message</source>
         <translation>转到消息(&amp;m)</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+148"/>
+        <location line="+162"/>
         <source>&amp;Copy</source>
         <translation>复制(&amp;C)</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+148"/>
+        <location line="-155"/>
+        <location line="+162"/>
         <source>Copy &amp;link location</source>
         <translation>复制链接位置(&amp;l)</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-153"/>
         <source>Re&amp;act</source>
         <translation>回应(&amp;a)</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Repl&amp;y</source>
         <translation>回复(&amp;y)</translation>
     </message>
@@ -1998,22 +1998,22 @@ Example: https://yourserver.example.com:8787</source>
         <translation>置顶(&amp;P)</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Read receipts</source>
         <translation>&amp;已读回执</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>&amp;Forward</source>
         <translation>转发(&amp;F)</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>&amp;Mark as read</source>
         <translation>标为已读(&amp;M)</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>查看源代码</translation>
     </message>
@@ -2023,7 +2023,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>查看解密后的源代码</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Remo&amp;ve message</source>
         <translation>移除消息(&amp;v)</translation>
     </message>
@@ -2048,7 +2048,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>复制到事件的链接(&amp;n)</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+49"/>
         <source>&amp;Go to quoted message</source>
         <translation>转到引用的消息(&amp;G)</translation>
     </message>
@@ -2550,7 +2550,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+222"/>
+        <location filename="../../src/main.cpp" line="+221"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>创建一个独特的配置文件，允许你同时登录多个帐户并启动多个 Nheko 实例。</translation>
     </message>
@@ -2971,7 +2971,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>离线</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+58"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation>加密功能未设置</translation>
@@ -2994,7 +2994,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location line="+379"/>
+        <location line="+388"/>
         <source>Enter the tag you want to use:</source>
         <translation>输入你想使用的标签：</translation>
     </message>
@@ -3260,12 +3260,12 @@ Example: https://yourserver.example.com:8787</source>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+245"/>
+        <location line="+242"/>
         <source>Change</source>
         <translation>更改</translation>
     </message>
     <message>
-        <location line="-244"/>
+        <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
         <translation>更改用户可以加入此聊天室的聊天室列表。通常这是此聊天室的官方社区。</translation>
     </message>
@@ -3347,13 +3347,13 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+63"/>
+        <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
         <translation>配置</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-89"/>
         <source>Select events to hide in this room</source>
         <translation>选择在此聊天室中要隐藏的事件</translation>
     </message>
@@ -3389,7 +3389,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+16"/>
         <source>Permission</source>
         <translation>权限</translation>
     </message>
@@ -3567,7 +3567,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5145"/>
+        <location filename="../../src/Cache.cpp" line="-5141"/>
         <source>Failed to connect to secret storage</source>
         <translation>未能连接秘密存储</translation>
     </message>
@@ -3702,29 +3702,24 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>此聊天室的官方社区</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Affiliated community for this room</source>
         <translation>此聊天室的附属社区</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for community members</source>
         <translation>仅为社区成员列出</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for room members</source>
         <translation>仅为聊天室成员列出</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Not related</source>
         <translation>不相关的</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Subcommunities</source>
-        <translation>子社区</translation>
     </message>
 </context>
 <context>
@@ -3896,7 +3891,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>保存文件</translation>
     </message>
     <message numerus="yes">
-        <location line="+345"/>
+        <location line="+347"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4220,7 +4215,7 @@ Reason: %4</source>
         <translation>%1 删除了其加入请求。</translation>
     </message>
     <message>
-        <location line="-2301"/>
+        <location line="-2303"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 更改了允许在此聊天室使用的服务器。</translation>
     </message>
@@ -4285,7 +4280,7 @@ Reason: %4</source>
         <translation>你已加入此聊天室。</translation>
     </message>
     <message>
-        <location line="+1018"/>
+        <location line="+1020"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 使此聊天室需要邀请才能加入。</translation>
     </message>
@@ -4432,7 +4427,7 @@ Reason: %4</source>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+21"/>
+        <location filename="../qml/TopBar.qml" line="+20"/>
         <source>No room selected</source>
         <translation>未选择聊天室</translation>
     </message>
@@ -4482,7 +4477,7 @@ Reason: %4</source>
         <translation>聊天室选项</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+18"/>
         <source>Invite users</source>
         <translation>邀请用户</translation>
     </message>
@@ -4515,7 +4510,7 @@ Reason: %4</source>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+109"/>
+        <location filename="../../src/TrayIcon.cpp" line="+110"/>
         <source>Show</source>
         <translation>显示</translation>
     </message>

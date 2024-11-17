@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3399"/>
+        <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 kaj %2</translation>
@@ -787,7 +787,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation>Maletendi</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+92"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Ne montri nombron de sciigoj por ĉi tiu komunumo aŭ etikedo.</translation>
     </message>
@@ -1581,7 +1581,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
         <source>All Files (*)</source>
         <translation>Ĉiuj dosieroj (*)</translation>
     </message>
@@ -1591,7 +1591,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation>Elekti dosiero(j)n</translation>
     </message>
     <message>
-        <location line="+629"/>
+        <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1912,7 +1912,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+236"/>
+        <location filename="../qml/MessageView.qml" line="+235"/>
         <source>Edit</source>
         <translation>Redakti</translation>
     </message>
@@ -1957,29 +1957,29 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <translation>Kialo de forigo</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+21"/>
         <source>Go to &amp;message</source>
         <translation>Iri al &amp;mesaĝo</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+148"/>
+        <location line="+162"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopii</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+148"/>
+        <location line="-155"/>
+        <location line="+162"/>
         <source>Copy &amp;link location</source>
         <translation>Kopii celon de &amp;ligilo</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-153"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;agi</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Repl&amp;y</source>
         <translation>Re&amp;spondi</translation>
     </message>
@@ -2004,22 +2004,22 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <translation>&amp;Fiksi</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Read receipts</source>
         <translation>K&amp;vitancoj</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>&amp;Forward</source>
         <translation>&amp;Plusendi</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>&amp;Mark as read</source>
         <translation>&amp;Marki legita</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>Vidi krudan mesaĝon</translation>
     </message>
@@ -2029,7 +2029,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <translation>Vidi malĉifritan krudan mesaĝon</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Remo&amp;ve message</source>
         <translation>&amp;Forigi mesaĝon</translation>
     </message>
@@ -2054,7 +2054,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <translation>Kopii ligilon al oka&amp;zo</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+49"/>
         <source>&amp;Go to quoted message</source>
         <translation>&amp;Iri al citita mesaĝo</translation>
     </message>
@@ -2556,7 +2556,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+222"/>
+        <location filename="../../src/main.cpp" line="+221"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Krei unikan profilon, kiu ebligos saluton al pluraj kontoj samtempe, kaj starton de pluraj nhekoj.</translation>
     </message>
@@ -2979,7 +2979,7 @@ forigi la enhavon, se necese.</translation>
         <translation>Eksterreta</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+58"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation>Ĉifrado ne jam agordiĝis</translation>
@@ -3002,7 +3002,7 @@ forigi la enhavon, se necese.</translation>
         <translation>Fermi</translation>
     </message>
     <message>
-        <location line="+379"/>
+        <location line="+388"/>
         <source>Enter the tag you want to use:</source>
         <translation>Enigu la etikedon, kiun vi volas uzi:</translation>
     </message>
@@ -3270,12 +3270,12 @@ forigi la enhavon, se necese.</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+245"/>
+        <location line="+242"/>
         <source>Change</source>
         <translation>Ŝanĝi</translation>
     </message>
     <message>
-        <location line="-244"/>
+        <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
         <translation>Ŝanĝi liston de ĉambroj, tra kiuj oni povos aliĝi al ĉi tiu. Ordinare tio estas la oficiala aro de ĉi tiu ĉambro.</translation>
     </message>
@@ -3357,13 +3357,13 @@ forigi la enhavon, se necese.</translation>
     <message>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+63"/>
+        <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
         <translation>Agordi</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-89"/>
         <source>Select events to hide in this room</source>
         <translation>Elekti kaŝotajn okazojn en ĉi tiu ĉambro</translation>
     </message>
@@ -3399,7 +3399,7 @@ forigi la enhavon, se necese.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+16"/>
         <source>Permission</source>
         <translation>Permesoj</translation>
     </message>
@@ -3577,7 +3577,7 @@ forigi la enhavon, se necese.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5145"/>
+        <location filename="../../src/Cache.cpp" line="-5141"/>
         <source>Failed to connect to secret storage</source>
         <translation>Malsukcesis konektiĝi al sekreta deponejo</translation>
     </message>
@@ -3712,29 +3712,24 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
         <translation>Oficiala komunumo por ĉi tiu ĉambro</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Affiliated community for this room</source>
         <translation>Parenca komunumo por ĉi tiu ĉambro</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for community members</source>
         <translation>Listigita nur por komunumanoj</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for room members</source>
         <translation>Listigita nur por ĉambranoj</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Not related</source>
         <translation>Nerilata</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Subcommunities</source>
-        <translation>Subkomunumoj</translation>
     </message>
 </context>
 <context>
@@ -3907,7 +3902,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
         <translation>Konservi dosieron</translation>
     </message>
     <message numerus="yes">
-        <location line="+345"/>
+        <location line="+347"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4237,7 +4232,7 @@ Kialo: %4</translation>
         <translation>%1 forigis sian frapon.</translation>
     </message>
     <message>
-        <location line="-2301"/>
+        <location line="-2303"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 ŝanĝis, kiuj serviloj estas permesitaj en la ĉambro.</translation>
     </message>
@@ -4302,7 +4297,7 @@ Kialo: %4</translation>
         <translation>Vi aliĝis ĉi tiun ĉambron.</translation>
     </message>
     <message>
-        <location line="+1018"/>
+        <location line="+1020"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 necesigis inviton por aliĝo al ĉi tiu ĉambro.</translation>
     </message>
@@ -4450,7 +4445,7 @@ Kialo: %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+21"/>
+        <location filename="../qml/TopBar.qml" line="+20"/>
         <source>No room selected</source>
         <translation>Neniu ĉambro estas elektita</translation>
     </message>
@@ -4500,7 +4495,7 @@ Kialo: %4</translation>
         <translation>Elektebloj de ĉambro</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+18"/>
         <source>Invite users</source>
         <translation>Inviti uzantojn</translation>
     </message>
@@ -4533,7 +4528,7 @@ Kialo: %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+109"/>
+        <location filename="../../src/TrayIcon.cpp" line="+110"/>
         <source>Show</source>
         <translation>Montri</translation>
     </message>

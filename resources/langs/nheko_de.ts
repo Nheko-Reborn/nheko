@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3399"/>
+        <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 und %2</translation>
@@ -784,7 +784,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>Einklappen</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+92"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Zeige keine Benachrichtigungen für diese Gruppe oder Tag an.</translation>
     </message>
@@ -1159,7 +1159,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Schlüssel ist aus einer unverifizierten Quelle z.B. von einem anderen Nutzer geteilt oder aus dem Onlineschlüsselbackup. Aus diesem Grund kann nicht verifiziert werden, wer diese Nachricht geschickt hat.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1411,7 +1411,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
     <message>
         <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
         <source>Show</source>
-        <translation type="unfinished">Zeigen</translation>
+        <translation>Zeigen</translation>
     </message>
 </context>
 <context>
@@ -1578,7 +1578,7 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
         <source>All Files (*)</source>
         <translation>Alle Dateien (*)</translation>
     </message>
@@ -1588,9 +1588,9 @@ Du kannst zusätzlich einen Grund angeben, warum die anderen dein Anklopfen anne
         <translation>Datei(en) auswählen</translation>
     </message>
     <message>
-        <location line="+629"/>
+        <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Du musst eine korrekte mxid angeben, wenn du einen Nutzer ignorieren willst. &apos;%1&apos; ist keine valide Nutzer-ID.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1908,7 +1908,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+236"/>
+        <location filename="../qml/MessageView.qml" line="+235"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
@@ -1953,29 +1953,29 @@ Beispiel: https://deinserver.example.com:8787</translation>
         <translation>Grund für die Löschung</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+21"/>
         <source>Go to &amp;message</source>
         <translation>Gehe zu &amp;Nachricht</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+148"/>
+        <location line="+162"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopieren</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+148"/>
+        <location line="-155"/>
+        <location line="+162"/>
         <source>Copy &amp;link location</source>
         <translation>Kopiere &amp;Link-Ziel</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-153"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;agieren</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Repl&amp;y</source>
         <translation>Antwo&amp;rten</translation>
     </message>
@@ -2000,22 +2000,22 @@ Beispiel: https://deinserver.example.com:8787</translation>
         <translation>An&amp;heften</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Read receipts</source>
         <translation>&amp;Lesebestätigungen</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>&amp;Forward</source>
         <translation>&amp;Weiterleiten</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>&amp;Mark as read</source>
         <translation>Als gelesen &amp;markieren</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>Zeige rohen Nachrichteninhalt</translation>
     </message>
@@ -2025,7 +2025,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
         <translation>Zeige rohen, entschlüsselten Nachrichteninhalt</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Remo&amp;ve message</source>
         <translation>Na&amp;chricht löschen</translation>
     </message>
@@ -2050,7 +2050,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
         <translation>Link &amp;zu diesem Event kopieren</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+49"/>
         <source>&amp;Go to quoted message</source>
         <translation>&amp;Gehe zur zitierten Nachricht</translation>
     </message>
@@ -2552,7 +2552,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+222"/>
+        <location filename="../../src/main.cpp" line="+221"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Erstelle ein separates Profil, was mehrere Instanzen von Nheko mit verschiedenen Accounts zur gleichen Zeit ermöglicht.</translation>
     </message>
@@ -2973,7 +2973,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
         <translation>Offline</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+58"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation>Verschlüsselung ist nicht konfiguriert</translation>
@@ -2996,7 +2996,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location line="+379"/>
+        <location line="+388"/>
         <source>Enter the tag you want to use:</source>
         <translation>Gib den Tag, den du verwenden willst, ein:</translation>
     </message>
@@ -3182,7 +3182,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
     <message>
         <location line="+23"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumzustand kann nicht verschlüsselt werden. Stelle sicher dass keine vertaulichen Informationen im Raumnamen enthalten sind!</translation>
     </message>
     <message numerus="yes">
         <location line="+11"/>
@@ -3210,7 +3210,7 @@ Beispiel: https://deinserver.example.com:8787</translation>
     <message>
         <location line="+24"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
-        <translation type="unfinished"></translation>
+        <translation>Raumzustand kann nicht verschlüsselt werden. Stelle sicher dass keine vertaulichen Informationen im Raumthema enthalten sind!</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3264,12 +3264,12 @@ Beispiel: https://deinserver.example.com:8787</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+245"/>
+        <location line="+242"/>
         <source>Change</source>
         <translation>Ändern</translation>
     </message>
     <message>
-        <location line="-244"/>
+        <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
         <translation>Ändere die Liste an Räumen, die den Zutritt erlauben. Normalerweise ist das die offizielle Gruppe dieses Raumes.</translation>
     </message>
@@ -3351,13 +3351,13 @@ Beispiel: https://deinserver.example.com:8787</translation>
     <message>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+63"/>
+        <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
         <translation>Konfigurieren</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-89"/>
         <source>Select events to hide in this room</source>
         <translation>Wähle aus, weche Events in diesem Raum angezeigt werden</translation>
     </message>
@@ -3395,7 +3395,7 @@ Bitte sei dir bewusst, dass die Verschlüsselung nicht nachträglich deaktiviert
         <translation></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+16"/>
         <source>Permission</source>
         <translation>Berechtigungen</translation>
     </message>
@@ -3573,7 +3573,7 @@ Bitte sei dir bewusst, dass die Verschlüsselung nicht nachträglich deaktiviert
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5145"/>
+        <location filename="../../src/Cache.cpp" line="-5141"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbindung zum kryptografischen Speicher fehlgeschlagen</translation>
     </message>
@@ -3708,29 +3708,24 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <translation>Offizielle Gruppe für diesen Raum</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Affiliated community for this room</source>
         <translation>Assoziierte Gruppe für diesen Raum</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for community members</source>
         <translation>Nur für Gruppenmitglieder gelistet</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for room members</source>
         <translation>Nur für Raummitglieder gelistet</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Not related</source>
         <translation>Nicht assoziiert</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Subcommunities</source>
-        <translation>Untergruppen</translation>
     </message>
 </context>
 <context>
@@ -3902,7 +3897,7 @@ Wenn du verifizieren wählst, musst du dein anderes Gerät zur Hand haben. Wenn 
         <translation>Datei speichern</translation>
     </message>
     <message numerus="yes">
-        <location line="+345"/>
+        <location line="+347"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4231,7 +4226,7 @@ Grund: %4</translation>
         <translation>%1 hat das Anklopfen zurückgezogen.</translation>
     </message>
     <message>
-        <location line="-2301"/>
+        <location line="-2303"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 hat die erlaubten Server in diesem Raum geändert.</translation>
     </message>
@@ -4296,7 +4291,7 @@ Grund: %4</translation>
         <translation>Du bist dem Raum beigetreten.</translation>
     </message>
     <message>
-        <location line="+1018"/>
+        <location line="+1020"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 hat diesen Raum nur eingeladenen Nutzern zugänglich gemacht.</translation>
     </message>
@@ -4444,7 +4439,7 @@ Grund: %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+21"/>
+        <location filename="../qml/TopBar.qml" line="+20"/>
         <source>No room selected</source>
         <translation>Kein Raum ausgewählt</translation>
     </message>
@@ -4494,7 +4489,7 @@ Grund: %4</translation>
         <translation>Raumoptionen</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+18"/>
         <source>Invite users</source>
         <translation>Benutzer einladen</translation>
     </message>
@@ -4527,7 +4522,7 @@ Grund: %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+109"/>
+        <location filename="../../src/TrayIcon.cpp" line="+110"/>
         <source>Show</source>
         <translation>Zeigen</translation>
     </message>
@@ -4540,9 +4535,11 @@ Grund: %4</translation>
         <location line="+27"/>
         <source>
 %n unread message(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>
+%n ungelesene Nachricht</numerusform>
+            <numerusform>
+%n ungelesene Nachrichten</numerusform>
         </translation>
     </message>
 </context>
@@ -4810,7 +4807,7 @@ Grund: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show images automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Bilder automatisch anzeigen</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5191,7 +5188,7 @@ Wenn deaktiviert werden alle Nachrichten als unformatierter Text gesendet.</tran
     <message>
         <location line="+2"/>
         <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob Bilder automatisch angezeigt werden. Du kannst aussuchen zwischen immer automatisch anzeigen, nur in privaten Räumen automatisch anzeigen oder immer eine manuelle Interaktion zu benötigen vor dem Anzeigen.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5268,7 +5265,7 @@ AUS - Quadratisch, AN - Kreisförmig.</translation>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ändert den Skalierungsfaktor für das gesamte UI. Nheko muss neugestartet werden um die Änderung anzuwenden.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -5411,17 +5408,17 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     <message>
         <location line="+142"/>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>Immer</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Only in private rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur in privaten Räumen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Niemals</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -5484,17 +5481,17 @@ Diese Einstellung benötigt einen Neustart von Nheko.</translation>
     <message>
         <location line="+13"/>
         <source>Repeat File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort für Datei wiederholen</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Repeat the passphrase:</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwort wiederholen:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Passwörter stimmen nicht überein</translation>
     </message>
     <message>
         <location line="+7"/>

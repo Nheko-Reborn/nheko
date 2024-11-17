@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3399"/>
+        <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 et %2</translation>
@@ -786,7 +786,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
         <translation>Réduire</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+92"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Ne pas afficher le compteur de notifications pour cette communauté ou cette étiquette.</translation>
     </message>
@@ -1580,7 +1580,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
         <source>All Files (*)</source>
         <translation>Tous les types de fichiers (*)</translation>
     </message>
@@ -1590,7 +1590,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
         <translation>Choisir fichier(s)</translation>
     </message>
     <message>
-        <location line="+629"/>
+        <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1911,7 +1911,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+236"/>
+        <location filename="../qml/MessageView.qml" line="+235"/>
         <source>Edit</source>
         <translation>Modifier</translation>
     </message>
@@ -1956,29 +1956,29 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Raison de la suppression</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+21"/>
         <source>Go to &amp;message</source>
         <translation>Aller au &amp;message</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+148"/>
+        <location line="+162"/>
         <source>&amp;Copy</source>
         <translation>&amp;Copier</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+148"/>
+        <location line="-155"/>
+        <location line="+162"/>
         <source>Copy &amp;link location</source>
         <translation>Copier l&apos;adresse du &amp;lien</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-153"/>
         <source>Re&amp;act</source>
         <translation>Ré&amp;agir</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Repl&amp;y</source>
         <translation>&amp;Y répondre</translation>
     </message>
@@ -2003,22 +2003,22 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>É&amp;pingler</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Read receipts</source>
         <translation>&amp;Accusés de lecture</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>&amp;Forward</source>
         <translation>&amp;Faire suivre</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>&amp;Mark as read</source>
         <translation>&amp;Marquer comme lu</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>Voir le message brut</translation>
     </message>
@@ -2028,7 +2028,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Voir le message déchiffré brut</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Remo&amp;ve message</source>
         <translation>Enle&amp;ver le message</translation>
     </message>
@@ -2053,7 +2053,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Copier le lien vers l&apos;évène&amp;nement</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+49"/>
         <source>&amp;Go to quoted message</source>
         <translation>Aller au messa&amp;ge cité</translation>
     </message>
@@ -2555,7 +2555,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+222"/>
+        <location filename="../../src/main.cpp" line="+221"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Créer un profile unique qui vous permettra de vous connecter sur plusieurs compte en même temps et démarrer plusieurs instances de Nheko.</translation>
     </message>
@@ -2976,7 +2976,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Hors ligne</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+58"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation>Chiffrement non configuré</translation>
@@ -2999,7 +2999,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location line="+379"/>
+        <location line="+388"/>
         <source>Enter the tag you want to use:</source>
         <translation>Entrez l&apos;étiquette que vous voulez utiliser :</translation>
     </message>
@@ -3267,12 +3267,12 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+245"/>
+        <location line="+242"/>
         <source>Change</source>
         <translation>Modifier</translation>
     </message>
     <message>
-        <location line="-244"/>
+        <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
         <translation>Changer la liste des salons que les utilisateurs peuvent emprunter pour rejoindre ce salon. En général, il s&apos;agit de la communauté officielle de ce salon.</translation>
     </message>
@@ -3354,13 +3354,13 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
     <message>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+63"/>
+        <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
         <translation>Configurer</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-89"/>
         <source>Select events to hide in this room</source>
         <translation>Sélectionner les évènements à cacher dans ce salon</translation>
     </message>
@@ -3396,7 +3396,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+16"/>
         <source>Permission</source>
         <translation>Permissions</translation>
     </message>
@@ -3574,7 +3574,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5145"/>
+        <location filename="../../src/Cache.cpp" line="-5141"/>
         <source>Failed to connect to secret storage</source>
         <translation>Échec de la connexion au stockage des secrets</translation>
     </message>
@@ -3709,29 +3709,24 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
         <translation>Communauté officielle de ce salon</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Affiliated community for this room</source>
         <translation>Communautées affiliées à ce salon</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for community members</source>
         <translation>Listé uniquement pour les membres de la communauté</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for room members</source>
         <translation>Listé uniquement pour les membres du salon</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Not related</source>
         <translation>Sans lien</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Subcommunities</source>
-        <translation>Sous-communautées</translation>
     </message>
 </context>
 <context>
@@ -3903,7 +3898,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
         <translation>Enregistrer le fichier</translation>
     </message>
     <message numerus="yes">
-        <location line="+345"/>
+        <location line="+347"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4237,7 +4232,7 @@ Raison : %4</translation>
         <translation>%1 a arrêté de toquer.</translation>
     </message>
     <message>
-        <location line="-2301"/>
+        <location line="-2303"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 a changé quels serveurs sont autorisés dans ce salon.</translation>
     </message>
@@ -4302,7 +4297,7 @@ Raison : %4</translation>
         <translation>Vous avez rejoint ce salon.</translation>
     </message>
     <message>
-        <location line="+1636"/>
+        <location line="+1638"/>
         <source>%1 invited %2.</source>
         <translation>%1 a invité %2.</translation>
     </message>
@@ -4445,7 +4440,7 @@ Raison : %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+21"/>
+        <location filename="../qml/TopBar.qml" line="+20"/>
         <source>No room selected</source>
         <translation>Pas de salon sélectionné</translation>
     </message>
@@ -4495,7 +4490,7 @@ Raison : %4</translation>
         <translation>Options du salon</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+18"/>
         <source>Invite users</source>
         <translation>Inviter des utilisateurs</translation>
     </message>
@@ -4528,7 +4523,7 @@ Raison : %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+109"/>
+        <location filename="../../src/TrayIcon.cpp" line="+110"/>
         <source>Show</source>
         <translation>Montrer</translation>
     </message>

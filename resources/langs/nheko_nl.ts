@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3399"/>
+        <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 en %2</translation>
@@ -786,7 +786,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>Invouwen</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+92"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Laat geen meldingteller zien voor deze groep of markering.</translation>
     </message>
@@ -1580,7 +1580,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
         <source>All Files (*)</source>
         <translation>Alle bestanden (*)</translation>
     </message>
@@ -1590,7 +1590,7 @@ Je kan optioneel hier een reden invoeren dat je aanklopt:</translation>
         <translation>Selecteer bestand(en)</translation>
     </message>
     <message>
-        <location line="+629"/>
+        <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1911,7 +1911,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+236"/>
+        <location filename="../qml/MessageView.qml" line="+235"/>
         <source>Edit</source>
         <translation>Bewerken</translation>
     </message>
@@ -1956,29 +1956,29 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Reden voor verwijdering</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+21"/>
         <source>Go to &amp;message</source>
         <translation>Ga naar &amp;bericht</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+148"/>
+        <location line="+162"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiëren</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+148"/>
+        <location line="-155"/>
+        <location line="+162"/>
         <source>Copy &amp;link location</source>
         <translation>Kopieer &amp;link</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-153"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;ageren</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Repl&amp;y</source>
         <translation>Beantwoo&amp;rden</translation>
     </message>
@@ -2003,22 +2003,22 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Vast%prikken</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Read receipts</source>
         <translation>&amp;Leesbevestigingen</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>&amp;Forward</source>
         <translation>&amp;Doorsturen</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>&amp;Mark as read</source>
         <translation>Gelezen &amp;markeren</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>Ruw bericht bekijken</translation>
     </message>
@@ -2028,7 +2028,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Ontsleuteld ruw bericht bekijken</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Remo&amp;ve message</source>
         <translation>&amp;Verwijder bericht</translation>
     </message>
@@ -2053,7 +2053,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Kopieer link naar gebeurte&amp;nis</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+49"/>
         <source>&amp;Go to quoted message</source>
         <translation>&amp;Ga naar geciteerd bericht</translation>
     </message>
@@ -2555,7 +2555,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+222"/>
+        <location filename="../../src/main.cpp" line="+221"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Maak een uniek profiel, waardoor je tegelijk meerdere kopieën van Nheko kan draaien en zo op meerdere gebruikers tegelijk ingelogd kan zijn.</translation>
     </message>
@@ -2976,7 +2976,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Offline</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+58"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation>Versleuteling niet ingesteld</translation>
@@ -2999,7 +2999,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation>Sluiten</translation>
     </message>
     <message>
-        <location line="+379"/>
+        <location line="+388"/>
         <source>Enter the tag you want to use:</source>
         <translation>Voer de markering in die je wil gebruiken:</translation>
     </message>
@@ -3267,12 +3267,12 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+245"/>
+        <location line="+242"/>
         <source>Change</source>
         <translation>Bewerken</translation>
     </message>
     <message>
-        <location line="-244"/>
+        <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
         <translation>Verander de lijst van kamers waarlangs gebruikers kunnen binnentreden. Meestal is dit de officiële groep van deze kamer.</translation>
     </message>
@@ -3354,13 +3354,13 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
     <message>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+63"/>
+        <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
         <translation>Instellen</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-89"/>
         <source>Select events to hide in this room</source>
         <translation>Selecteer gebeurtenissen die verborgen dienen te worden in deze kamer</translation>
     </message>
@@ -3396,7 +3396,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+16"/>
         <source>Permission</source>
         <translation>Toestemmingen</translation>
     </message>
@@ -3574,7 +3574,7 @@ Voorbeeld: https://jouwserver.example.com:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5145"/>
+        <location filename="../../src/Cache.cpp" line="-5141"/>
         <source>Failed to connect to secret storage</source>
         <translation>Verbinden met geheimopslag mislukt</translation>
     </message>
@@ -3709,29 +3709,24 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>Officiële community voor deze kamer</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Affiliated community for this room</source>
         <translation>Gerelateerde community voor deze kamer</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for community members</source>
         <translation>Alleen voor groepsdeelnemers zichtbaar</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for room members</source>
         <translation>Alleen voor kamer deelnemers zichtbaar</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Not related</source>
         <translation>Ongerelateerd</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Subcommunities</source>
-        <translation>Deelgroepen</translation>
     </message>
 </context>
 <context>
@@ -3903,7 +3898,7 @@ Als je &quot;verifieer&quot; kiest, moet je het andere apparaat bij de hand hebb
         <translation>Bestand opslaan</translation>
     </message>
     <message numerus="yes">
-        <location line="+345"/>
+        <location line="+347"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4232,7 +4227,7 @@ Reden: %4</translation>
         <translation>%1 heeft het aankloppen ingetrokken.</translation>
     </message>
     <message>
-        <location line="-2301"/>
+        <location line="-2303"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 heeft veranderd welke servers de kamer in mogen.</translation>
     </message>
@@ -4297,7 +4292,7 @@ Reden: %4</translation>
         <translation>Je neemt nu deel aan deze kamer.</translation>
     </message>
     <message>
-        <location line="+1018"/>
+        <location line="+1020"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 heeft deze kamer zodanig ingesteld dat een uitnodiging vereist is om te mogen betreden.</translation>
     </message>
@@ -4445,7 +4440,7 @@ Reden: %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+21"/>
+        <location filename="../qml/TopBar.qml" line="+20"/>
         <source>No room selected</source>
         <translation>Geen kamer geselecteerd</translation>
     </message>
@@ -4495,7 +4490,7 @@ Reden: %4</translation>
         <translation>Kameropties</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+18"/>
         <source>Invite users</source>
         <translation>Gebruikers uitnodigen</translation>
     </message>
@@ -4528,7 +4523,7 @@ Reden: %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+109"/>
+        <location filename="../../src/TrayIcon.cpp" line="+110"/>
         <source>Show</source>
         <translation>Tonen</translation>
     </message>

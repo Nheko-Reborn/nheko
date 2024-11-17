@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3399"/>
+        <location filename="../../src/Cache.cpp" line="+3549"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 ja %2</translation>
@@ -786,7 +786,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <translation>Ahenda</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+92"/>
         <source>Do not show notification counts for this community or tag.</source>
         <translation>Ära näita teavituste loendit selle kogukonna või sildi kohta.</translation>
     </message>
@@ -1580,12 +1580,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+419"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
         <source>All Files (*)</source>
         <translation>Kõik failid (*)</translation>
     </message>
     <message>
-        <location line="+629"/>
+        <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1600,7 +1600,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
         <translation>„%1“ üleslaadimine ei õnnestunud</translation>
     </message>
     <message>
-        <location line="-976"/>
+        <location line="-975"/>
         <source>Select file(s)</source>
         <translation>Vali fail(id)</translation>
     </message>
@@ -1845,7 +1845,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
 <context>
     <name>MediaUpload</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+822"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+821"/>
         <location line="+35"/>
         <source>Failed to upload media. Please try again.</source>
         <translation>Meediafailide üleslaadimine ei õnnestunud. Palun proovi uuesti.</translation>
@@ -1910,7 +1910,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+236"/>
+        <location filename="../qml/MessageView.qml" line="+235"/>
         <source>Edit</source>
         <translation>Muuda</translation>
     </message>
@@ -1955,29 +1955,29 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>Eemaldamise põhjus</translation>
     </message>
     <message>
-        <location line="+15"/>
+        <location line="+21"/>
         <source>Go to &amp;message</source>
         <translation>Ava &amp;sõnum</translation>
     </message>
     <message>
         <location line="+10"/>
-        <location line="+148"/>
+        <location line="+162"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopeeri</translation>
     </message>
     <message>
-        <location line="-141"/>
-        <location line="+148"/>
+        <location line="-155"/>
+        <location line="+162"/>
         <source>Copy &amp;link location</source>
         <translation>Kopeeri &amp;lingi asukoht</translation>
     </message>
     <message>
-        <location line="-140"/>
+        <location line="-153"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;ageeri</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+10"/>
         <source>Repl&amp;y</source>
         <translation>&amp;Vasta</translation>
     </message>
@@ -2002,22 +2002,22 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>&amp;Määra püsisõnumiks</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Read receipts</source>
         <translation>&amp;Lugemisteatised</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
         <source>&amp;Forward</source>
         <translation>&amp;Edasta</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>&amp;Mark as read</source>
         <translation>&amp;Märgi loetuks</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>View raw message</source>
         <translation>Näita sõnumi lähtekoodi</translation>
     </message>
@@ -2027,7 +2027,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>Näita sõnumi dekrüptitud lähtekoodi</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Remo&amp;ve message</source>
         <translation>Eemal&amp;da sõnum</translation>
     </message>
@@ -2052,7 +2052,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>Kopeeri sündmuse li&amp;nk</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+49"/>
         <source>&amp;Go to quoted message</source>
         <translation>&amp;Vaata tsiteeritud sõnumit</translation>
     </message>
@@ -2554,7 +2554,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+222"/>
+        <location filename="../../src/main.cpp" line="+221"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Loo unikaalne kasutajaprofiil, mis võimaldab samaaegselt sisse logide mitmele Matrixi kontole ja avada vastavalt mitu nheko rakenduse akent.</translation>
     </message>
@@ -2975,7 +2975,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>Võrgust väljas</translation>
     </message>
     <message>
-        <location line="+54"/>
+        <location line="+58"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation>Krüptimine pole veel kasutusel</translation>
@@ -2998,7 +2998,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation>Sulge</translation>
     </message>
     <message>
-        <location line="+379"/>
+        <location line="+388"/>
         <source>Enter the tag you want to use:</source>
         <translation>Kirjuta silt, mida soovid kasutada:</translation>
     </message>
@@ -3266,12 +3266,12 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     </message>
     <message>
         <location line="+12"/>
-        <location line="+245"/>
+        <location line="+242"/>
         <source>Change</source>
         <translation>Muuda</translation>
     </message>
     <message>
-        <location line="-244"/>
+        <location line="-241"/>
         <source>Change the list of rooms users can join this room via. Usually this is the official community of this room.</source>
         <translation>Muuda jututube, mille kaudu on võimalik selle jututoaga liituda. Tavaliselt on selleks näiteks selle jututoa põhiline kogukond.</translation>
     </message>
@@ -3353,13 +3353,13 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     <message>
         <location line="+11"/>
         <location line="+18"/>
-        <location line="+63"/>
+        <location line="+60"/>
         <location line="+12"/>
         <source>Configure</source>
         <translation>Seadista</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-89"/>
         <source>Select events to hide in this room</source>
         <translation>Vali sündmused, mida siin jututoas peita</translation>
     </message>
@@ -3395,7 +3395,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+16"/>
         <source>Permission</source>
         <translation>Õigused</translation>
     </message>
@@ -3573,7 +3573,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5145"/>
+        <location filename="../../src/Cache.cpp" line="-5141"/>
         <source>Failed to connect to secret storage</source>
         <translation>Ühenduse loomine võtmehoidlaga ei õnnestunud</translation>
     </message>
@@ -3708,29 +3708,24 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
         <translation>Selle jututoa ametlik kogukond</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Affiliated community for this room</source>
         <translation>Selle jututoaga seotud kogukond</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for community members</source>
         <translation>Kuvatakse vaid kogukonna liikmetele</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Listed only for room members</source>
         <translation>Kuvatakse vaid jututoa liikmetele</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Not related</source>
         <translation>Pole seotud</translation>
-    </message>
-    <message>
-        <location line="+9"/>
-        <source>Subcommunities</source>
-        <translation>Alamkogukonnad</translation>
     </message>
 </context>
 <context>
@@ -3902,7 +3897,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
         <translation>Salvesta fail</translation>
     </message>
     <message numerus="yes">
-        <location line="+345"/>
+        <location line="+347"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -4231,7 +4226,7 @@ Põhjus: %4</translation>
         <translation>%1 muutis oma koputust jututoa uksele.</translation>
     </message>
     <message>
-        <location line="-2301"/>
+        <location line="-2303"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 muutis serverid, mis on selles jututoas lubatud.</translation>
     </message>
@@ -4296,7 +4291,7 @@ Põhjus: %4</translation>
         <translation>Sa liitusid jututoaga.</translation>
     </message>
     <message>
-        <location line="+1018"/>
+        <location line="+1020"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 seadistas, et see jututuba vajab liitumiseks kutset.</translation>
     </message>
@@ -4444,7 +4439,7 @@ Põhjus: %4</translation>
 <context>
     <name>TopBar</name>
     <message>
-        <location filename="../qml/TopBar.qml" line="+21"/>
+        <location filename="../qml/TopBar.qml" line="+20"/>
         <source>No room selected</source>
         <translation>Jututuba on valimata</translation>
     </message>
@@ -4494,7 +4489,7 @@ Põhjus: %4</translation>
         <translation>Jututoa valikud</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+18"/>
         <source>Invite users</source>
         <translation>Kutsu kasutajaid</translation>
     </message>
@@ -4527,7 +4522,7 @@ Põhjus: %4</translation>
 <context>
     <name>TrayIcon</name>
     <message>
-        <location filename="../../src/TrayIcon.cpp" line="+109"/>
+        <location filename="../../src/TrayIcon.cpp" line="+110"/>
         <source>Show</source>
         <translation>Näita</translation>
     </message>
