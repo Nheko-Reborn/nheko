@@ -41,7 +41,7 @@ Image {
         case Crypto.TOFU:
             return qsTr("Encrypted by an unverified device, but you have trusted that user so far.");
         case Crypto.MessageUnverified:
-            return qsTr("Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can't verify who sent the message.");
+            return qsTr("Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can't verify who sent the message.");
         default:
             return qsTr("Encrypted by an unverified device.");
         }
