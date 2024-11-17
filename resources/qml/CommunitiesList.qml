@@ -209,6 +209,13 @@ Page {
                 popup(parent);
             }
 
+            Component.onCompleted: {
+                if (communityContextMenu.popupType != undefined) {
+                    communityContextMenu.popupType = 2; // Popup.Native with fallback on older Qt (<6.8.0)
+                }
+            }
+
+
             MenuItem {
                 checkable: true
                 checked: communityContextMenu.muted

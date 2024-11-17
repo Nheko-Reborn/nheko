@@ -82,7 +82,7 @@ Menu {
         onObjectAdded: (idx, o) => {
             spacesMenu.insertMenu(idx + (spacesMenu.position != -1 ? 6 : 0), o)
         }
-        //onObjectRemoved: spacesMenu.removeMenu(object)
+        onObjectRemoved: (index, object) => tagsMenu.removeItem(object)
 
         delegate: childMenu
     }

@@ -732,14 +732,6 @@ Page {
                 }
             }
         }
-        Component {
-            id: nestedSpaceMenuLevel
-
-            SpaceMenuLevel {
-                childMenu: rootSpaceMenu.childMenu
-                roomid: roomContextMenu.roomid
-            }
-        }
         Menu {
             id: roomContextMenu
 
@@ -750,6 +742,21 @@ Page {
                 roomid = roomid_;
                 tags = tags_;
                 popup(parent);
+            }
+
+            Component.onCompleted: {
+                if (roomContextMenu.popupType != undefined) {
+                    roomContextMenu.popupType = 2; // Popup.Native with fallback on older Qt (<6.8.0)
+                }
+            }
+
+            Component {
+                id: nestedSpaceMenuLevel
+
+                SpaceMenuLevel {
+                    childMenu: rootSpaceMenu.childMenu
+                    roomid: roomContextMenu.roomid
+                }
             }
 
             InputDialog {

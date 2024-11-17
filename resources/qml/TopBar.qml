@@ -239,9 +239,16 @@ Pane {
                 Menu {
                     id: roomOptionsMenu
 
+                    Component.onCompleted: {
+                        if (roomOptionsMenu.popupType != undefined) {
+                            roomOptionsMenu.popupType = 2; // Popup.Native with fallback on older Qt (<6.8.0)
+                        }
+                    }
+
+
                     MenuItem {
                         text: qsTr("Invite users")
-                        visible: room ? room.permissions.canInvite() : false
+                        enabled: room ? room.permissions.canInvite() : false
 
                         onTriggered: TimelineManager.openInviteUsers(roomId)
                     }

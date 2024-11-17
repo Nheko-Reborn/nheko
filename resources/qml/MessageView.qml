@@ -447,6 +447,12 @@ Item {
             ReportMessage {}
         }
 
+        Component.onCompleted: {
+            if (messageContextMenuC.popupType != undefined) {
+                messageContextMenuC.popupType = 2; // Popup.Native with fallback on older Qt (<6.8.0)
+            }
+        }
+
         MenuItem {
             enabled: visible
             text: qsTr("Go to &message")
@@ -472,6 +478,7 @@ Item {
             onTriggered: Clipboard.text = messageContextMenuC.link
         }
         MenuItem {
+            enabled: visible
             id: reactionOption
 
             text: qsTr("Re&act")
@@ -483,6 +490,7 @@ Item {
                 })
         }
         MenuItem {
+            enabled: visible
             text: qsTr("Repl&y")
             visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
 
@@ -510,11 +518,13 @@ Item {
             onTriggered: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? room.unpin(messageContextMenuC.eventId) : room.pin(messageContextMenuC.eventId)
         }
         MenuItem {
+            enabled: visible
             text: qsTr("&Read receipts")
 
             onTriggered: room.showReadReceipts(messageContextMenuC.eventId)
         }
         MenuItem {
+            enabled: visible
             text: qsTr("&Forward")
             visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker || messageContextMenuC.eventType == MtxEvent.TextMessage || messageContextMenuC.eventType == MtxEvent.LocationMessage || messageContextMenuC.eventType == MtxEvent.EmoteMessage || messageContextMenuC.eventType == MtxEvent.NoticeMessage
 
@@ -526,9 +536,11 @@ Item {
             }
         }
         MenuItem {
+            enabled: visible
             text: qsTr("&Mark as read")
         }
         MenuItem {
+            enabled: visible
             text: qsTr("View raw message")
 
             onTriggered: room.viewRawMessage(messageContextMenuC.eventId)
@@ -542,6 +554,7 @@ Item {
             onTriggered: room.viewDecryptedRawMessage(messageContextMenuC.eventId)
         }
         MenuItem {
+            enabled: visible
             text: qsTr("Remo&ve message")
             visible: (room ? room.permissions.canRedact() : false) || messageContextMenuC.isSender
 
@@ -604,6 +617,13 @@ Item {
             eventId = eventId_;
             open();
         }
+
+        Component.onCompleted: {
+            if (replyContextMenuC.popupType != undefined) {
+                replyContextMenuC.popupType = 2; // Popup.Native with fallback on older Qt (<6.8.0)
+            }
+        }
+
 
         MenuItem {
             enabled: visible
