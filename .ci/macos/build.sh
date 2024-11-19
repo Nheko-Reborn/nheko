@@ -15,6 +15,8 @@ export PATH
 CMAKE_PREFIX_PATH="${QT_BASEPATH}/lib/cmake"
 export CMAKE_PREFIX_PATH
 
+export CMAKE_BUILD_PARALLEL_LEVEL="$(sysctl -n hw.ncpu)"
+
 cmake -GNinja -S. -Bbuild \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_INSTALL_PREFIX="nheko.temp" \
@@ -31,7 +33,7 @@ cmake --install build
   git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
   ( cd qt-jdenticon
     qmake
-    make -j 4
+    make -j "$CMAKE_BUILD_PARALLEL_LEVEL"
     cp libqtjdenticon.dylib ../../nheko.temp/nheko.app/Contents/MacOS
   )
   # "$(brew --prefix qt6)/bin/macdeployqt" nheko.app -always-overwrite -qmldir=../resources/qml/
