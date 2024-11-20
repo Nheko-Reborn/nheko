@@ -270,11 +270,6 @@ build-macos-as:
   tags: [macos-tart]
   before_script:
     - brew bundle --file .ci/macos/Brewfile
-    ### CMake 3.29 issue with re2 workaround.
-    - brew uninstall cmake
-    - curl "https://raw.githubusercontent.com/Homebrew/homebrew-core/9ae2628ed1337f342960fd6c2598ae69cf057615/Formula/c/cmake.rb" -o /tmp/cmake.rb
-    - brew install -s /tmp/cmake.rb
-    ### End Cmake 3.29 issue with re2 workaround.
     - pipx install aqtinstall
     - pipx ensurepath
     - . ~/.zshrc
