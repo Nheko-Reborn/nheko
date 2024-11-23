@@ -1,7 +1,7 @@
 id: im.nheko.Nheko
 command: im.nheko.Nheko
 runtime: org.kde.Platform
-runtime-version: '6.7'
+runtime-version: '6.8'
 sdk: org.kde.Sdk
 finish-args:
   # needed for webcams, see https://github.com/Nheko-Reborn/nheko/issues/517
@@ -118,46 +118,6 @@ modules:
         tag: 0.21.4
         type: git
         url: https://gitlab.gnome.org/GNOME/libsecret.git
-  - name: libavif
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DAVIF_CODEC_AOM=ON
-      - -DBUILD_SHARED_LIBS=OFF
-    buildsystem: cmake-ninja
-    sources:
-      - sha256: dc56708c83a4b934a8af2b78f67f866ba2fb568605c7cf94312acf51ee57d146
-        type: archive
-        url: https://github.com/AOMediaCodec/libavif/archive/refs/tags/v1.0.4.tar.gz
-  - name: libde265
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DENABLE_DECODER=OFF
-    buildsystem: cmake-ninja
-    sources:
-      - sha256: 00251986c29d34d3af7117ed05874950c875dd9292d016be29d3b3762666511d
-        type: archive
-        url: https://github.com/strukturag/libde265/releases/download/v1.0.15/libde265-1.0.15.tar.gz
-  - name: libheif
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DWITH_EXAMPLES=OFF
-      - -DWITH_AOM_DECODER=OFF
-      - -DWITH_AOM_ENCODER=OFF
-    buildsystem: cmake-ninja
-    sources:
-      - sha256: 8390baf4913eda0a183e132cec62b875fb2ef507ced5ddddc98dfd2f17780aee
-        type: archive
-        url: https://github.com/strukturag/libheif/releases/download/v1.17.6/libheif-1.17.6.tar.gz
-  - name: KImageFormats
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DKIMAGEFORMATS_HEIF=ON
-    buildsystem: cmake-ninja
-    sources:
-      - commit: 6c1a7ad33924764e8d1efff61919efebc31f5e5a
-        tag: v6.3.0
-        type: git
-        url: https://invent.kde.org/frameworks/kimageformats.git
   - name: QtKeychain
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
