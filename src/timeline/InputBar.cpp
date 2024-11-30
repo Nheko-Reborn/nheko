@@ -1182,7 +1182,7 @@ MediaUpload::startUpload()
         QBuffer buffer(&ba);
         buffer.open(QIODevice::WriteOnly);
         thumbnail_.save(&buffer, "PNG", 0);
-        if (ba.size() >= (data.size() - data.size() / 10)) {
+        if (type() == MediaType::Image && ba.size() >= (data.size() - data.size() / 10)) {
             nhlog::ui()->info(
               "Thumbnail is not a lot smaller than original image, not uploading it");
             nhlog::ui()->debug(
