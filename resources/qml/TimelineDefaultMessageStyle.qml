@@ -107,6 +107,7 @@ TimelineEvent {
             transitions: Transition {
                 from: ""
                 to: "revealed"
+                enabled: !Settings.reducedMotion
 
                 SequentialAnimation {
                     PropertyAnimation {
