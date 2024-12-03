@@ -148,7 +148,7 @@
         <location line="+2"/>
         <location line="+175"/>
         <source>Empty Room</source>
-        <translation>Пустая Комната</translation>
+        <translation>Пустая комната</translation>
     </message>
 </context>
 <context>
@@ -156,12 +156,12 @@
     <message>
         <location filename="../qml/voip/CallInvite.qml" line="+75"/>
         <source>Video Call</source>
-        <translation>Видео Звонок</translation>
+        <translation>Видеозвонок</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation>Голосовой Звонок</translation>
+        <translation>Голосовой звонок</translation>
     </message>
     <message>
         <location line="+62"/>
@@ -179,7 +179,7 @@
     <message>
         <location line="+0"/>
         <source>Voice Call</source>
-        <translation>Голосовой Звонок</translation>
+        <translation>Голосовой звонок</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1065,7 +1065,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Please verify the following emoji. You should see the same emoji on both sides. If they differ, please press &apos;They do not match!&apos; to abort verification!</source>
-        <translation>Пожалуйста сверьте данные эмоджи. Вы должны видеть одинаковые эможди у себя и у собеседника. Если они разные, пожалуйста нажмите &apos; Они не совпадают!&apos; для отмены верификации!</translation>
+        <translation>Пожалуйста сверьте данные эмодзи. Вы должны видеть одинаковые эмодзи у себя и у собеседника. Если они разные, пожалуйста нажмите &apos; Они не совпадают!&apos; для отмены верификации!</translation>
     </message>
     <message>
         <location line="+379"/>
@@ -1149,12 +1149,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+3"/>
         <source>Encrypted by a verified device</source>
-        <translation>Зашифровано верефицированым устройством</translation>
+        <translation>Зашифровано верифицированым устройством</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation>Зашифрованно неверефицированым устройством, но Вы все еще доверяете этому пользователю.</translation>
+        <translation>Зашифровано неверифицированым устройством, но Вы все еще доверяете этому пользователю.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1880,7 +1880,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+24"/>
         <source>Emoji</source>
-        <translation>Эмоджи</translation>
+        <translation>Эмодзи</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -2655,12 +2655,12 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location filename="../../src/RegisterPage.cpp" line="+83"/>
         <source>Autodiscovery failed. Received malformed response.</source>
-        <translation type="unfinished">Автообноружение не удалось. Получен поврежденный ответ.</translation>
+        <translation type="unfinished">Автообнaружение не удалось. Получен повреждённый ответ.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished">Автообноружение не удалось. Не известаня ошибка во время запроса .well-known.</translation>
+        <translation type="unfinished">Автообнaружение не удалось. Неизвестнaz ошибка во время запроса .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -2720,7 +2720,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+3"/>
         <source>A server that allows registration. Since matrix is decentralized, you need to first find a server you can register on or host your own.</source>
-        <translation>Сервер разрешающий регистрацию.Поскольку matrix децентрализованный, нужно выбрать сервер где вы можете зарегистрироваться или поднимите свой сервер.</translation>
+        <translation>Сервер разрешающий регистрацию. Поскольку matrix децентрализованный, нужно выбрать сервер где вы можете зарегистрироваться или настроить свой сервер.</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -2746,7 +2746,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+2"/>
         <source>Please choose a secure password. The exact requirements for password strength may depend on your server.</source>
-        <translation>Пожалуйста выбирите надежный пароль. Надёжность пароля, влияет на безопасность сервера.</translation>
+        <translation>Пожалуйста выберите надежный пароль. Надёжность пароля, влияет на безопасность сервера.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -4761,7 +4761,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Large Emoji in timeline</source>
-        <translation type="unfinished">Большие эмоджи в таймлайне</translation>
+        <translation type="unfinished">Большие эмодзи в таймлайне</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4941,7 +4941,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished">Семья шрифта эмоджи</translation>
+        <translation type="unfinished">Семья шрифта эмодзи</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5153,7 +5153,7 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished">Делать шрифт больше, если сообщения содержать только несколько эмоджи.</translation>
+        <translation type="unfinished">Делать шрифт больше, если сообщения содержать только несколько эмодзи.</translation>
     </message>
     <message>
         <location line="+2"/>
