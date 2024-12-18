@@ -52,6 +52,7 @@ public:
     mtx::events::state::power_level_t kick() const;
     mtx::events::state::power_level_t invite() const;
     mtx::events::state::power_level_t ban() const;
+    mtx::events::state::power_level_t redact() const;
     mtx::events::state::power_level_t eventsDefault() const;
     mtx::events::state::power_level_t stateDefault() const;
 

@@ -113,6 +113,14 @@ PowerlevelsTypeListModel::ban() const
     return powerLevels_.users_default;
 }
 mtx::events::state::power_level_t
+PowerlevelsTypeListModel::redact() const
+{
+    for (const auto &[key, pl] : std::as_const(types))
+        if (key == "redact")
+            return pl;
+    return powerLevels_.users_default;
+}
+mtx::events::state::power_level_t
 PowerlevelsTypeListModel::eventsDefault() const
 {
     for (const auto &[key, pl] : std::as_const(types))
@@ -602,6 +610,7 @@ PowerlevelEditingModels::calculateNewPowerlevel() const
     newPl.kick           = types_.kick();
     newPl.invite         = types_.invite();
     newPl.ban            = types_.ban();
+    newPl.redact         = types_.redact();
     newPl.events_default = types_.eventsDefault();
     newPl.state_default  = types_.stateDefault();
     newPl.users          = users_.toUsers();
