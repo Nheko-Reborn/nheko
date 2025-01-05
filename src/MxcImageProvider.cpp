@@ -91,7 +91,7 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
         auto query     = QStringView(id).mid(queryStart + 1);
         auto queryBits = query.split('&');
 
-        for (auto b : queryBits) {
+        for (auto b : std::as_const(queryBits)) {
             if (b == QStringView(u"scale")) {
                 crop = false;
             } else if (b.startsWith(QStringView(u"radius="))) {

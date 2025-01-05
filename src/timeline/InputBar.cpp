@@ -494,11 +494,11 @@ InputBar::generateRelations() const
 }
 
 mtx::common::Mentions
-InputBar::generateMentions()
+InputBar::generateMentions() const
 {
     std::vector<std::string> userMentions;
     bool atRoom = false;
-    for (const auto &m : mentions_)
+    for (const auto &m : std::as_const(mentions_))
         if (m == u"@room")
             atRoom = true;
         else

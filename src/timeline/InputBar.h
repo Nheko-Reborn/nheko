@@ -304,7 +304,7 @@ private:
     QPair<QString, QString> getCommandAndArgs() const { return getCommandAndArgs(text()); }
     QPair<QString, QString> getCommandAndArgs(const QString &currentText) const;
     mtx::common::Relations generateRelations() const;
-    mtx::common::Mentions generateMentions();
+    mtx::common::Mentions generateMentions() const;
 
     void startUploadFromPath(const QString &path);
     void startUploadFromMimeData(const QMimeData &source, const QString &format);

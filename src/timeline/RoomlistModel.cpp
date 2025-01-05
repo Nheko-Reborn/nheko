@@ -1014,7 +1014,7 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                           ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
                           .toStringList();
 
-            for (const auto &t : tags)
+            for (const auto &t : std::as_const(tags))
                 if (hiddenTags.contains(t))
                     return false;
         }
@@ -1023,7 +1023,7 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
             auto parents = sourceModel()
                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
                              .toStringList();
-            for (const auto &t : parents)
+            for (const auto &t : std::as_const(parents))
                 if (hiddenSpaces.contains(t))
                     return false;
         }
@@ -1053,7 +1053,7 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                           ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
                           .toStringList();
 
-            for (const auto &t : tags)
+            for (const auto &t : std::as_const(tags))
                 if (hiddenTags.contains(t))
                     return false;
         }
@@ -1062,7 +1062,7 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
             auto parents = sourceModel()
                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
                              .toStringList();
-            for (const auto &t : parents)
+            for (const auto &t : std::as_const(parents))
                 if (hiddenSpaces.contains(t))
                     return false;
         }
@@ -1091,7 +1091,7 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
             return false;
 
         if (!hiddenTags.empty()) {
-            for (const auto &t : tags)
+            for (const auto &t : std::as_const(tags))
                 if (t != filterStr && hiddenTags.contains(t))
                     return false;
         }
@@ -1100,7 +1100,7 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
             auto parents = sourceModel()
                              ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::ParentSpaces)
                              .toStringList();
-            for (const auto &t : parents)
+            for (const auto &t : std::as_const(parents))
                 if (hiddenSpaces.contains(t))
                     return false;
         }
@@ -1130,13 +1130,13 @@ FilteredRoomlistModel::filterAcceptsRow(int sourceRow, const QModelIndex &) cons
                           ->data(sourceModel()->index(sourceRow, 0), RoomlistModel::Tags)
                           .toStringList();
 
-            for (const auto &t : tags)
+            for (const auto &t : std::as_const(tags))
                 if (hiddenTags.contains(t))
                     return false;
         }
 
         if (!hiddenSpaces.empty()) {
-            for (const auto &t : parents)
+            for (const auto &t : std::as_const(parents))
                 if (t != filterStr && hiddenSpaces.contains(t))
                     return false;
         }

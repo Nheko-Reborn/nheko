@@ -120,11 +120,11 @@ build-clazy:
     CLAZY_CHECKS: level0,level1,no-non-pod-global-static
     TRAVIS_OS_NAME: linux
   before_script:
-    - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qtmultimedia-dev qt6-qtsvg-dev qt6-qttools-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang16 gcc musl-dev git re2-dev libsecret-dev
+    - apk add	asciidoctor cmake cmark-dev gst-plugins-bad-dev gst-plugins-base-dev gstreamer-dev lmdb-dev lmdbxx nlohmann-json olm-dev openssl-dev qt6-qtbase-dev qt6-qtdeclarative-dev qt6-qtmultimedia-dev qt6-qtsvg-dev qt6-qttools-dev samurai spdlog-dev xcb-util-wm-dev zlib-dev ccache curl-dev libevent-dev meson clazy clang18 gcc musl-dev git re2-dev libsecret-dev
   script:
     - export PATH="/usr/lib/ccache:${PATH}"
     - export CMAKE_BUILD_PARALLEL_LEVEL=$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l)
-    - export CLANGXX=clang++-16
+    - export CLANGXX=clang++-18
     - cmake -GNinja -H. -Bbuild
         -DCMAKE_INSTALL_PREFIX=.deps/usr
         -DHUNTER_ENABLED=OFF -DBUILD_SHARED_LIBS=OFF -DUSE_BUNDLED_OPENSSL=ON -DUSE_BUNDLED_MTXCLIENT=ON -DUSE_BUNDLED_COEURL=ON -DUSE_BUNDLED_OLM=ON -DUSE_BUNDLED_QTKEYCHAIN=ON -DUSE_BUNDLED_KDSINGLEAPPLICATION=ON

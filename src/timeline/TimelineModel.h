@@ -360,7 +360,7 @@ public:
         auto list = events.reactions(event_id);
         std::vector<::Reaction> vec;
         vec.reserve(list.size());
-        for (const auto &r : list)
+        for (const auto &r : std::as_const(list))
             vec.push_back(r.value<Reaction>());
         return vec;
     }

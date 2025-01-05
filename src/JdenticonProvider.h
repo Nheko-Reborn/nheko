@@ -69,7 +69,7 @@ public slots:
             auto query     = id.mid(queryStart + 1);
             auto queryBits = QStringView(query).split('&');
 
-            for (const auto &b : queryBits) {
+            for (const auto &b : std::as_const(queryBits)) {
                 if (b.startsWith(QStringView(u"radius="))) {
                     radius = b.mid(7).toDouble();
                 }

@@ -203,7 +203,8 @@ NhekoFixupPaletteEventFilter::eventFilter(QObject *obj, QEvent *event)
     // reason?!?
     if (event->type() == QEvent::ChildAdded &&
         obj->metaObject()->className() == QStringLiteral("QQuickRootItem")) {
-        for (const auto window : QGuiApplication::topLevelWindows()) {
+        auto windows = QGuiApplication::topLevelWindows();
+        for (const auto window : std::as_const(windows)) {
             if (window->property("posted").isValid())
                 continue;
             QGuiApplication::postEvent(window, new QEvent(QEvent::ApplicationPaletteChange));
