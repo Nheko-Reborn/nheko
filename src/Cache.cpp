@@ -5389,6 +5389,22 @@ Cache::markUserKeysOutOfDate(lmdb::txn &txn,
         db_.put(txn, user, nlohmann::json(cacheEntry).dump());
 
         query.device_keys[user] = {};
+
+        if (query.device_keys.size() >= 32) {
+            http::client()->query_keys(
+              query,
+              [this, sync_token](const mtx::responses::QueryKeys &keys, mtx::http::RequestErr err) {
+                  if (err) {
+                      nhlog::net()->warn("failed to query device keys: {} {}",
+                                         err->matrix_error.error,
+                                         static_cast<int>(err->status_code));
+                      return;
+                  }
+
+                  emit userKeysUpdate(sync_token, keys);
+              });
+            query.device_keys.clear();
+        }
     }
 
     if (!query.device_keys.empty())
