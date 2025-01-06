@@ -419,6 +419,9 @@ Item {
                 link = link_;
             else
                 link = "";
+
+            messageActionsCFilter.updateTarget();
+
             if (showAt_)
                 popup(showAt_);
             else
@@ -453,149 +456,189 @@ Item {
             }
         }
 
-        MenuItem {
-            enabled: visible
-            text: qsTr("Go to &message")
-            visible: filteredTimeline.filterByContent
+        NhekoMenuVisibilityFilter on contentData {
+            id: messageActionsCFilter
 
-            onTriggered: function () {
-                topBar.searchString = "";
-                room.showEvent(messageContextMenuC.eventId);
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("Go to &message")
+                    visible: filteredTimeline.filterByContent
+
+                    onTriggered: function () {
+                        topBar.searchString = "";
+                        room.showEvent(messageContextMenuC.eventId);
+                    }
+                }
             }
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Copy")
-            visible: messageContextMenuC.text
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Copy")
+                    visible: messageContextMenuC.text
 
-            onTriggered: Clipboard.text = messageContextMenuC.text
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("Copy &link location")
-            visible: messageContextMenuC.link
-
-            onTriggered: Clipboard.text = messageContextMenuC.link
-        }
-        MenuItem {
-            enabled: visible
-            id: reactionOption
-
-            text: qsTr("Re&act")
-            visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
-
-            onTriggered: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(null, room.roomId, function (plaintext, markdown) {
-                    room.input.reaction(messageContextMenuC.eventId, plaintext);
-                    TimelineManager.focusMessageInput();
-                })
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("Repl&y")
-            visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-
-            onTriggered: room.reply = (messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Edit")
-            visible: messageContextMenuC.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
-
-            onTriggered: room.edit = (messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Thread")
-            visible: (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
-
-            onTriggered: room.thread = (messageContextMenuC.threadId || messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
-            visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
-
-            onTriggered: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? room.unpin(messageContextMenuC.eventId) : room.pin(messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Read receipts")
-
-            onTriggered: room.showReadReceipts(messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Forward")
-            visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker || messageContextMenuC.eventType == MtxEvent.TextMessage || messageContextMenuC.eventType == MtxEvent.LocationMessage || messageContextMenuC.eventType == MtxEvent.EmoteMessage || messageContextMenuC.eventType == MtxEvent.NoticeMessage
-
-            onTriggered: {
-                var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
-                forwardMess.setMessageEventId(messageContextMenuC.eventId);
-                forwardMess.open();
-                timelineRoot.destroyOnClose(forwardMess);
+                    onTriggered: Clipboard.text = messageContextMenuC.text
+                }
             }
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Mark as read")
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("View raw message")
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("Copy &link location")
+                    visible: messageContextMenuC.link
 
-            onTriggered: room.viewRawMessage(messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("View decrypted raw message")
-            // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
-            visible: messageContextMenuC.isEncrypted
-
-            onTriggered: room.viewDecryptedRawMessage(messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("Remo&ve message")
-            visible: (room ? room.permissions.canRedact() : false) || messageContextMenuC.isSender
-
-            onTriggered: function () {
-                var dialog = removeReason.createObject(timelineRoot);
-                dialog.eventId = messageContextMenuC.eventId;
-                dialog.show();
-                dialog.forceActiveFocus();
-                timelineRoot.destroyOnClose(dialog);
+                    onTriggered: Clipboard.text = messageContextMenuC.link
+                }
             }
-        }
-        MenuItem {
-            text: qsTr("Report message")
-            enabled: visible
-            onTriggered: function () {
-                var dialog = reportDialog.createObject(timelineRoot, {"eventId": messageContextMenuC.eventId});
-                dialog.show();
-                dialog.forceActiveFocus();
-                timelineRoot.destroyOnClose(dialog);
+            Component {
+                MenuItem {
+                    enabled: visible
+                    id: reactionOption
+
+                    text: qsTr("Re&act")
+                    visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
+
+                    onTriggered: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(null, room.roomId, function (plaintext, markdown) {
+                        room.input.reaction(messageContextMenuC.eventId, plaintext);
+                        TimelineManager.focusMessageInput();
+                    })
+                }
             }
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Save as")
-            visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("Repl&y")
+                    visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
 
-            onTriggered: room.saveMedia(messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Open in external program")
-            visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
+                    onTriggered: room.reply = (messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Edit")
+                    visible: messageContextMenuC.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
 
-            onTriggered: room.openMedia(messageContextMenuC.eventId)
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("Copy link to eve&nt")
-            visible: messageContextMenuC.eventId
+                    onTriggered: room.edit = (messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Thread")
+                    visible: (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
 
-            onTriggered: room.copyLinkToEvent(messageContextMenuC.eventId)
+                    onTriggered: room.thread = (messageContextMenuC.threadId || messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
+                    visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
+
+                    onTriggered: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? room.unpin(messageContextMenuC.eventId) : room.pin(messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Read receipts")
+
+                    onTriggered: room.showReadReceipts(messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Forward")
+                    visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker || messageContextMenuC.eventType == MtxEvent.TextMessage || messageContextMenuC.eventType == MtxEvent.LocationMessage || messageContextMenuC.eventType == MtxEvent.EmoteMessage || messageContextMenuC.eventType == MtxEvent.NoticeMessage
+
+                    onTriggered: {
+                        var forwardMess = forwardCompleterComponent.createObject(timelineRoot);
+                        forwardMess.setMessageEventId(messageContextMenuC.eventId);
+                        forwardMess.open();
+                        timelineRoot.destroyOnClose(forwardMess);
+                    }
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Mark as read")
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("View raw message")
+
+                    onTriggered: room.viewRawMessage(messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("View decrypted raw message")
+                    // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
+                    visible: messageContextMenuC.isEncrypted
+
+                    onTriggered: room.viewDecryptedRawMessage(messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("Remo&ve message")
+                    visible: (room ? room.permissions.canRedact() : false) || messageContextMenuC.isSender
+
+                    onTriggered: function () {
+                        var dialog = removeReason.createObject(timelineRoot);
+                        dialog.eventId = messageContextMenuC.eventId;
+                        dialog.show();
+                        dialog.forceActiveFocus();
+                        timelineRoot.destroyOnClose(dialog);
+                    }
+                }
+            }
+            Component {
+                MenuItem {
+                    text: qsTr("Report message")
+                    enabled: visible
+                    onTriggered: function () {
+                        var dialog = reportDialog.createObject(timelineRoot, {"eventId": messageContextMenuC.eventId});
+                        dialog.show();
+                        dialog.forceActiveFocus();
+                        timelineRoot.destroyOnClose(dialog);
+                    }
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Save as")
+                    visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
+
+                    onTriggered: room.saveMedia(messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Open in external program")
+                    visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
+
+                    onTriggered: room.openMedia(messageContextMenuC.eventId)
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("Copy link to eve&nt")
+                    visible: messageContextMenuC.eventId
+
+                    onTriggered: room.copyLinkToEvent(messageContextMenuC.eventId)
+                }
+            }
         }
     }
     Component {
@@ -615,6 +658,8 @@ Item {
             text = text_;
             link = link_;
             eventId = eventId_;
+
+            replyContextMenuCFilter.updateTarget();
             open();
         }
 
@@ -625,26 +670,36 @@ Item {
         }
 
 
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Copy")
-            visible: replyContextMenuC.text
+        NhekoMenuVisibilityFilter on contentData {
+            id: replyContextMenuCFilter
 
-            onTriggered: Clipboard.text = replyContextMenuC.text
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("Copy &link location")
-            visible: replyContextMenuC.link
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Copy")
+                    visible: replyContextMenuC.text
 
-            onTriggered: Clipboard.text = replyContextMenuC.link
-        }
-        MenuItem {
-            enabled: visible
-            text: qsTr("&Go to quoted message")
-            visible: true
+                    onTriggered: Clipboard.text = replyContextMenuC.text
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("Copy &link location")
+                    visible: replyContextMenuC.link
 
-            onTriggered: room.showEvent(replyContextMenuC.eventId)
+                    onTriggered: Clipboard.text = replyContextMenuC.link
+                }
+            }
+            Component {
+                MenuItem {
+                    enabled: visible
+                    text: qsTr("&Go to quoted message")
+                    visible: true
+
+                    onTriggered: room.showEvent(replyContextMenuC.eventId)
+                }
+            }
         }
     }
     RoundButton {

@@ -35,7 +35,7 @@ TextArea {
     Component.onCompleted: {
         TimelineManager.fixImageRendering(r.textDocument, r);
     }
-    onLinkActivated: Nheko.openLink(link)
+    onLinkActivated: (link) => Nheko.openLink(link)
 
     // propagate events up
     onPressAndHold: event => event.accepted = false

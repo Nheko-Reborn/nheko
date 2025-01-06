@@ -408,6 +408,8 @@ set(SRC_FILES
     src/ui/NhekoDropArea.h
     src/ui/NhekoGlobalObject.cpp
     src/ui/NhekoGlobalObject.h
+    src/ui/NhekoMenuVisibilityFilter.h
+    src/ui/NhekoMenuVisibilityFilter.cpp
     src/ui/RoomSettings.cpp
     src/ui/RoomSettings.h
     src/ui/RoomSummary.cpp
