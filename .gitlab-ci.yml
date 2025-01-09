@@ -325,7 +325,8 @@ codesign-macos-as:
 build-flatpak:
   stage: build
   image:
-    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:latest
+    # need flatpak builder 1.4.4
+    name: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/ubuntu:rolling
     #docker:
     #  platform: ${ARCH}
   #image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master'
