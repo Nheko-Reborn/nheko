@@ -6,6 +6,7 @@
 
 #include <QQmlListReference>
 #include <QQuickItem>
+#include <QTimer>
 
 #include "Logging.h"
 
@@ -129,6 +130,18 @@ NhekoMenuVisibilityFilter::updateTarget()
             //  emit addItem(newItem); <- would work, but manual code, ew
         }
     }
+
+    QTimer::singleShot(0, this, [this] {
+        auto createdItems = qvariant_cast<QQmlListReference>(targetProperty.read());
+        // newItems.clear(); <- does not remove the visual items
+
+        for (qsizetype i = createdItems.size(); i > 0; i--) {
+            // only remove items, not other random stuff in there!
+            if (auto item = qobject_cast<QQuickItem *>(createdItems.at(i - 1))) {
+                item->enabledChanged();
+            }
+        }
+    });
 
     // targetProperty.write(QVariant::fromValue(std::move(newItems)));
 }

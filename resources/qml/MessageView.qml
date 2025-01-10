@@ -420,12 +420,12 @@ Item {
             else
                 link = "";
 
+            messageActionsCFilter.updateTarget();
+
             if (showAt_)
                 popup(showAt_);
             else
                 popup();
-
-            messageActionsCFilter.updateTarget();
         }
 
         Component {
@@ -659,8 +659,8 @@ Item {
             link = link_;
             eventId = eventId_;
 
-            popup();
             replyContextMenuCFilter.updateTarget();
+            popup();
         }
 
         Component.onCompleted: {

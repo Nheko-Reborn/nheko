@@ -17,7 +17,7 @@ Menu {
     title: modelData != undefined ? modelData.name : qsTr("Add or remove from community")
     property bool loadChildren: false
 
-    onOpened: {
+    onAboutToShow: {
         loadChildren = true;
         menuFilter.updateTarget();
     }
