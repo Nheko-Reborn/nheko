@@ -461,7 +461,6 @@ Item {
 
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("Go to &message")
                     visible: filteredTimeline.filterByContent
 
@@ -473,7 +472,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Copy")
                     visible: messageContextMenuC.text
 
@@ -482,7 +480,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("Copy &link location")
                     visible: messageContextMenuC.link
 
@@ -491,7 +488,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     id: reactionOption
 
                     text: qsTr("Re&act")
@@ -505,7 +501,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("Repl&y")
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
 
@@ -514,7 +509,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Edit")
                     visible: messageContextMenuC.isEditable && (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
 
@@ -523,7 +517,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Thread")
                     visible: (room ? room.permissions.canSend(MtxEvent.TextMessage) : false)
 
@@ -532,7 +525,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
                     visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
 
@@ -541,7 +533,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Read receipts")
 
                     onTriggered: room.showReadReceipts(messageContextMenuC.eventId)
@@ -549,7 +540,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Forward")
                     visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker || messageContextMenuC.eventType == MtxEvent.TextMessage || messageContextMenuC.eventType == MtxEvent.LocationMessage || messageContextMenuC.eventType == MtxEvent.EmoteMessage || messageContextMenuC.eventType == MtxEvent.NoticeMessage
 
@@ -563,13 +553,11 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Mark as read")
                 }
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("View raw message")
 
                     onTriggered: room.viewRawMessage(messageContextMenuC.eventId)
@@ -577,7 +565,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("View decrypted raw message")
                     // TODO(Nico): Fix this still being iterated over, when using keyboard to select options
                     visible: messageContextMenuC.isEncrypted
@@ -587,7 +574,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("Remo&ve message")
                     visible: (room ? room.permissions.canRedact() : false) || messageContextMenuC.isSender
 
@@ -603,7 +589,6 @@ Item {
             Component {
                 MenuItem {
                     text: qsTr("Report message")
-                    enabled: visible
                     onTriggered: function () {
                         var dialog = reportDialog.createObject(timelineRoot, {"eventId": messageContextMenuC.eventId});
                         dialog.show();
@@ -614,7 +599,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Save as")
                     visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
 
@@ -623,7 +607,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Open in external program")
                     visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
 
@@ -632,7 +615,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("Copy link to eve&nt")
                     visible: messageContextMenuC.eventId
 
@@ -675,7 +657,6 @@ Item {
 
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Copy")
                     visible: replyContextMenuC.text
 
@@ -684,7 +665,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("Copy &link location")
                     visible: replyContextMenuC.link
 
@@ -693,7 +673,6 @@ Item {
             }
             Component {
                 MenuItem {
-                    enabled: visible
                     text: qsTr("&Go to quoted message")
                     visible: true
 
