@@ -58,6 +58,7 @@ Flow {
                     anchors.baseline: reactionCounter.baseline
                     color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText : palette.text
                     font.family: Settings.emojiFont
+                    textFormat: TextEdit.RichText
                     maximumLineCount: 1
                     text: {
                         // When an emoji font is selected that doesn't have …, it is dropped from elidedText. So we add it back.
