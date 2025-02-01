@@ -391,6 +391,9 @@ InputBar::send()
 {
     QInputMethod *im = QGuiApplication::inputMethod();
     im->commit();
+    // If the input from the UI is only blanks or no text, this trigger should
+    // be used to confirm media upload. If that is not the case however, but
+    // but there are pending uploads, we fall into one of the cases seen later.
     if (text().trimmed().isEmpty()) {
         acceptUploads();
         return;
@@ -404,8 +407,18 @@ InputBar::send()
     updateTextContentProperties(text());
     if (containsIncompleteCommand_)
         return;
-    if (commandName.isEmpty() || !command(commandName, args))
-        message(text());
+    if (unconfirmedUploads.empty()) {
+        if (commandName.isEmpty() || !command(commandName, args)) {
+            message(text());
+        }
+    } else {
+        if (commandName.isEmpty()) {
+            // This is a set of uploads with text
+            acceptUploadsWithCaption(text());
+        } else if (!command(commandName, args)) {
+            message(text());
+        }
+    }
 
     if (!wasEdit) {
         history_.push_front(QLatin1String(""));
@@ -683,6 +696,7 @@ void
 InputBar::image(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
+                const std::optional<QString> &caption,
                 const QString &mime,
                 uint64_t dsize,
                 const QSize &dimensions,
@@ -696,9 +710,10 @@ InputBar::image(const QString &filename,
     image.info.mimetype = mime.toStdString();
     image.info.size     = dsize;
     image.info.blurhash = blurhash.toStdString();
-    image.body          = filename.toStdString();
-    image.info.h        = dimensions.height();
-    image.info.w        = dimensions.width();
+    // Depending on the input bar's situation, retrieve the text
+    image.body   = caption.has_value() ? caption.value().toStdString() : filename.toStdString();
+    image.info.h = dimensions.height();
+    image.info.w = dimensions.width();
 
     if (file)
         image.file = file;
@@ -727,13 +742,14 @@ void
 InputBar::file(const QString &filename,
                const std::optional<mtx::crypto::EncryptedFile> &encryptedFile,
                const QString &url,
+               const std::optional<QString> &caption,
                const QString &mime,
                uint64_t dsize)
 {
     mtx::events::msg::File file;
     file.info.mimetype = mime.toStdString();
     file.info.size     = dsize;
-    file.body          = filename.toStdString();
+    file.body = caption.has_value() ? caption.value().toStdString() : filename.toStdString();
 
     if (encryptedFile)
         file.file = encryptedFile;
@@ -750,6 +766,7 @@ void
 InputBar::audio(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
+                const std::optional<QString> &caption,
                 const QString &mime,
                 uint64_t dsize,
                 uint64_t duration)
@@ -757,8 +774,8 @@ InputBar::audio(const QString &filename,
     mtx::events::msg::Audio audio;
     audio.info.mimetype = mime.toStdString();
     audio.info.size     = dsize;
-    audio.body          = filename.toStdString();
-    audio.url           = url.toStdString();
+    audio.body = caption.has_value() ? caption.value().toStdString() : filename.toStdString();
+    audio.url  = url.toStdString();
 
     if (duration > 0)
         audio.info.duration = duration;
@@ -778,6 +795,7 @@ void
 InputBar::video(const QString &filename,
                 const std::optional<mtx::crypto::EncryptedFile> &file,
                 const QString &url,
+                const std::optional<QString> &caption,
                 const QString &mime,
                 uint64_t dsize,
                 uint64_t duration,
@@ -792,7 +810,7 @@ InputBar::video(const QString &filename,
     video.info.mimetype = mime.toStdString();
     video.info.size     = dsize;
     video.info.blurhash = blurhash.toStdString();
-    video.body          = filename.toStdString();
+    video.body = caption.has_value() ? caption.value().toStdString() : filename.toStdString();
 
     if (duration > 0)
         video.info.duration = duration;
@@ -1264,10 +1282,12 @@ InputBar::finalizeUpload(MediaUpload *upload, const QString &url)
     auto mimeClass     = upload->mimeClass();
     auto size          = upload->size();
     auto encryptedFile = upload->encryptedFile_();
+    auto caption       = upload->caption();
     if (mimeClass == u"image")
         image(filename,
               encryptedFile,
               url,
+              caption,
               mime,
               size,
               upload->dimensions(),
@@ -1277,11 +1297,12 @@ InputBar::finalizeUpload(MediaUpload *upload, const QString &url)
               upload->thumbnailImg().size(),
               upload->blurhash());
     else if (mimeClass == u"audio")
-        audio(filename, encryptedFile, url, mime, size, upload->duration());
+        audio(filename, encryptedFile, url, caption, mime, size, upload->duration());
     else if (mimeClass == u"video")
         video(filename,
               encryptedFile,
               url,
+              caption,
               mime,
               size,
               upload->duration(),
@@ -1292,7 +1313,7 @@ InputBar::finalizeUpload(MediaUpload *upload, const QString &url)
               upload->thumbnailImg().size(),
               upload->blurhash());
     else
-        file(filename, encryptedFile, url, mime, size);
+        file(filename, encryptedFile, url, caption, mime, size);
 
     removeRunUpload(upload);
 }
@@ -1385,6 +1406,15 @@ InputBar::acceptUploads()
         setUploading(true);
         runningUploads.front()->startUpload();
     }
+}
+
+void
+InputBar::acceptUploadsWithCaption(QString caption)
+{
+    for (UploadHandle &upload : unconfirmedUploads) {
+        upload->caption_ = std::optional(caption);
+    }
+    acceptUploads();
 }
 
 void
