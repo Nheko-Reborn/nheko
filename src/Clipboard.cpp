@@ -6,6 +6,7 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QTextDocumentFragment>
 
 Clipboard::Clipboard(QObject *parent)
   : QObject(parent)
@@ -17,6 +18,12 @@ void
 Clipboard::setText(QString text)
 {
     QGuiApplication::clipboard()->setText(text);
+}
+
+void
+Clipboard::setHtmlText(QString text)
+{
+    setText(QTextDocumentFragment::fromHtml(text).toPlainText());
 }
 
 QString
