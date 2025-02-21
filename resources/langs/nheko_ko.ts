@@ -1152,11 +1152,6 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Key is from an untrusted source like forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3688,11 +3683,6 @@ If you choose verify, you need to have the other device available. If you choose
         <source>Not related</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location line="+9"/>
-        <source>Subcommunities</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>StatusIndicator</name>
@@ -5265,11 +5255,6 @@ be blurred.</source>
     <message>
         <location line="+2"/>
         <source>Will prevent text selection in the timeline to make touch scrolling easier.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Change the scale factor of the whole user interface.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
