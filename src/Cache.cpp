@@ -32,6 +32,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include <mtx/events/spaces.hpp>
 #include <mtx/responses/common.hpp>
 #include <mtx/responses/messages.hpp>
 
@@ -3095,6 +3096,26 @@ Cache::roomNamesAndAliases()
 {
     auto txn = ro_txn(db->env_);
 
+    auto getParentRoomIdsWithTxn = [&](const std::string &id) -> std::optional<std::string> {
+        auto cursor         = lmdb::cursor::open(txn, spacesParentsDb_);
+        std::string_view sp = id, space_parent;
+        if (cursor.get(sp, space_parent, MDB_SET)) {
+            while (cursor.get(sp, space_parent, MDB_FIRST_DUP)) {
+                if (!space_parent.empty())
+                    return std::make_optional(static_cast<std::string>(space_parent));
+            }
+        }
+        cursor.close();
+
+        return std::nullopt;
+    };
+
+    auto getRoomName = [&](const std::string &roomId) {
+        auto spaceDb   = getStatesDb(txn, roomId);
+        auto membersDb = getMembersDb(txn, roomId);
+        return Cache::getRoomName(txn, spaceDb, membersDb).toStdString();
+    };
+
     std::vector<RoomNameAlias> result;
     result.reserve(db->rooms.size(txn));
 
@@ -3112,6 +3133,13 @@ Cache::roomNamesAndAliases()
                 alias = aliases->content.alias;
             }
 
+            auto parentId   = getParentRoomIdsWithTxn(room_id_str);
+            auto parentName = std::string{};
+
+            if (parentId) {
+                parentName = getRoomName(*parentId);
+            }
+
             result.push_back(RoomNameAlias{
               .id              = std::move(room_id_str),
               .name            = std::move(info.name),
@@ -3119,6 +3147,7 @@ Cache::roomNamesAndAliases()
               .recent_activity = info.approximate_last_modification_ts,
               .is_tombstoned   = info.is_tombstoned,
               .is_space        = info.is_space,
+              .parent          = std::move(parentName),
             });
         } catch (std::exception &e) {
             nhlog::db()->warn("Failed to add room {} to result: {}", room_id, e.what());
