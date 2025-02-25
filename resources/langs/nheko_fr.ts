@@ -579,12 +579,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>/glitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/glitch &lt;message&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/gradualglitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/gradualglitch &lt;message&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1161,7 +1161,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>La clé de chiffrement ne provient pas d&apos;une source de confiance, potentiellement transférée depuis un autre utilisateur ou la sauvegarde en ligne. Pour cette raison, nous ne pouvons vérifier qui a envoyé le message.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1271,7 +1271,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>The verification was accepted by a different device.</source>
-        <translation type="unfinished"></translation>
+        <translation>La vérification a été acceptée par un autre appareil.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1413,7 +1413,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
         <source>Show</source>
-        <translation type="unfinished">Montrer</translation>
+        <translation>Montrer</translation>
     </message>
 </context>
 <context>
@@ -1421,7 +1421,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
         <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
-        <translation>Êtes-vous sûr(e) de vouloir effacer le paquet d&apos;autocollants &apos;%1&apos;&#xa0;?</translation>
+        <translation>Êtes-vous sûr(e) de vouloir effacer le paquet d&apos;autocollants &apos;%1&apos;&#x202f;?</translation>
     </message>
 </context>
 <context>
@@ -1592,7 +1592,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous devez fournir un identifiant matrix valide pour ignorer un utilisateur. &apos;%1&apos; n&apos;est pas un identifiant d&apos;utilisateur valide.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1708,7 +1708,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+21"/>
         <source>The selected server does not support a version of the Matrix protocol, that this client understands (%1 to %2). You can&apos;t sign in.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le serveur sélectionné ne supporte pas une version du protocole Matrix que ce client supporte (%1 à %2). Vous ne pouvez pas vous connecter.</translation>
     </message>
     <message>
         <location line="+21"/>
@@ -1905,7 +1905,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
     <message>
         <location filename="../qml/MessageInputWarning.qml" line="+61"/>
         <source>Don&apos;t mention them in this message</source>
-        <translation type="unfinished"></translation>
+        <translation>Ne les mentionnez pas dans ce message</translation>
     </message>
 </context>
 <context>
@@ -2605,7 +2605,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
     <message>
         <location line="+4"/>
         <source>Set the log output type. A comma-separated list is allowed. The default is &apos;file,stderr&apos;. types:{file,stderr,none}</source>
-        <translation>Définir le type de sortie pour les logs. Une liste de valeurs séparées par des virgules est possible. La valeur par défaut est &apos;file,stderr&apos;. Types:{file,stderr,none}</translation>
+        <translation>Définir le type de sortie pour les logs. Une liste de valeurs séparées par des virgules est possible. La valeur par défaut est &apos;file,stderr&apos;. Types&#x202f;:{file,stderr,none}</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2687,7 +2687,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
     <message>
         <location line="+22"/>
         <source>The selected server does not support a version of the Matrix protocol that this client understands (%1 to %2). You can&apos;t register.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le serveur sélectionné ne supporte pas une version du protocole Matrix que ce client supporte (%1 à %2). Vous ne pouvez pas vous enregistrer.</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3185,7 +3185,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
     <message>
         <location line="+23"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;état d&apos;un salon ne peut être chiffré, faites attention à ne pas mettre d&apos;informations confidentielles dans le nom du salon&#x202f;!</translation>
     </message>
     <message numerus="yes">
         <location line="+11"/>
@@ -3213,7 +3213,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
     <message>
         <location line="+24"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;état d&apos;un salon ne peut être chiffré, faites attention à ne pas mettre d&apos;informations confidentielles dans le sujet du salon&#x202f;!</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4351,7 +4351,7 @@ Raison : %4</translation>
     <message>
         <location line="+0"/>
         <source>You will be mentioning %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous mentionnerez %1</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -4536,9 +4536,11 @@ Raison : %4</translation>
         <location line="+27"/>
         <source>
 %n unread message(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>
+%n message non lu</numerusform>
+            <numerusform>
+%n messages non lus</numerusform>
         </translation>
     </message>
 </context>
@@ -4811,7 +4813,7 @@ Raison : %4</translation>
     <message>
         <location line="+2"/>
         <source>Show images automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrer les images automatiquement</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5206,7 +5208,7 @@ Si désactivé, tous les messages sont envoyés comme texte brut.</translation>
     <message>
         <location line="+2"/>
         <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
-        <translation type="unfinished"></translation>
+        <translation>Si les images devraient être présentées automatiquement. Vous pouvez choisir de les présenter par défaut, uniquement par défaut dans les salons privés ou toujours recourir à une interraction pour présenter les images.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5292,7 +5294,7 @@ OFF - carré, ON - circulaire.</translation>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer l&apos;échelle de toute l&apos;interface utilisateur. Requiert un redémarrage pour prendre effet.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -5405,17 +5407,17 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
     <message>
         <location line="+142"/>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>Toujours</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Only in private rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Seulement pour les salons privés</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Jamais</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -5483,12 +5485,12 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
     <message>
         <location line="+1"/>
         <source>Repeat the passphrase:</source>
-        <translation type="unfinished"></translation>
+        <translation>Répéter la phrase secrète&#x202f;:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Les mots de passes ne correspondent pas</translation>
     </message>
     <message>
         <location line="+7"/>
