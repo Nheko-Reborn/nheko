@@ -1157,7 +1157,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>密钥来自不可信的来源，可能是从其他用户或在线密钥备份转发的。因此，我们无法验证是谁发送了该消息。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1583,7 +1583,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
-        <translation type="unfinished"></translation>
+        <translation>您需要传递一个有效的 mxid 才能忽略用户。&apos;%1&apos; 不是有效的用户 ID。</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2128,7 +2128,7 @@ Example: https://yourserver.example.com:8787</source>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 回复了一个剧透。</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3179,7 +3179,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+23"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
-        <translation type="unfinished"></translation>
+        <translation>由于房间状态无法加密，请确保房间名称中没有存储机密信息！</translation>
     </message>
     <message numerus="yes">
         <location line="+11"/>
@@ -3206,7 +3206,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+24"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
-        <translation type="unfinished"></translation>
+        <translation>由于房间状态无法加密，请确保房间主题中没有存储机密信息！</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3386,7 +3386,8 @@ Example: https://yourserver.example.com:8787</source>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>加密当前处于实验阶段，可能会出现意外故障。&lt;br&gt;
+                                请注意，之后无法禁用它。</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3814,7 +3815,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>%1 selected answer.</source>
-        <translation>%1 选择了选项</translation>
+        <translation>%1 选择了选项。</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4523,8 +4524,9 @@ Reason: %4</source>
         <location line="+27"/>
         <source>
 %n unread message(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>
+%n 条未读消息</numerusform>
         </translation>
     </message>
 </context>
@@ -4791,7 +4793,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Show images automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>自动显示图片</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5167,7 +5169,7 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+2"/>
         <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果图片应自动显示。您可以选择始终默认显示图片、仅在私人房间中默认显示，或始终需要交互才能显示图片。</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5226,7 +5228,7 @@ OFF - 方形，ON - 圆形。</translation>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>更改整个用户界面的缩放比例。需要重启才能生效。</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -5387,17 +5389,17 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+142"/>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>始终</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Only in private rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>仅在私人房间</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>从不</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -5460,17 +5462,17 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+13"/>
         <source>Repeat File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>重复文件密码</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Repeat the passphrase:</source>
-        <translation type="unfinished"></translation>
+        <translation>重复输入密码：</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>密码不匹配</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -5656,7 +5658,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-12"/>
         <source>Message contains spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>消息包含剧透。</translation>
     </message>
 </context>
 <context>
@@ -5725,13 +5727,13 @@ This setting will take effect upon restart.</source>
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>您发送了一个剧透。</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+26"/>
         <source>%1 sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 发送了一个剧透。</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -5758,7 +5760,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+23"/>
         <source>* %1 spoils something.</source>
-        <translation type="unfinished"></translation>
+        <translation>* %1 剧透了某件事。</translation>
     </message>
     <message>
         <location line="+8"/>
