@@ -1161,7 +1161,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Krüptovõti on pärit mitteusaldusväärsest allikast, näiteks võib olla edasi saadetud mõnelt kasutajalt või pärit mingist võtmete võrguvarundusest. Sel põhjusel me ei saa kinnitada sõnumi tegelikku saatjat.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1413,7 +1413,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
         <source>Show</source>
-        <translation type="unfinished">Näita</translation>
+        <translation>Näita</translation>
     </message>
 </context>
 <context>
@@ -1587,7 +1587,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kasutaja eitamisel peab päringus olema korrektne Matrixi kasutajatunnus. „%1“ aga pole kehtiv ega korrektne.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3184,7 +3184,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     <message>
         <location line="+23"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuna jututoa olekut ei saa krüptida, siis palun alati kontrolli, et jututoa nimes ei leiduks konfidentsiaalset teavet!</translation>
     </message>
     <message numerus="yes">
         <location line="+11"/>
@@ -3212,7 +3212,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     <message>
         <location line="+24"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
-        <translation type="unfinished"></translation>
+        <translation>Kuna jututoa olekut ei saa krüptida, siis palun alati kontrolli, et jututoa teemas ei leiduks konfidentsiaalset teavet!</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -4536,9 +4536,11 @@ Põhjus: %4</translation>
         <location line="+27"/>
         <source>
 %n unread message(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>
+%n lugemata sõnum</numerusform>
+            <numerusform>
+%n lugemata sõnumit</numerusform>
         </translation>
     </message>
 </context>
@@ -4806,7 +4808,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show images automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Näita pilte automaatselt</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5182,7 +5184,7 @@ Kui Markdown ei ole kasutusel, siis saadetakse kõik sõnumid vormindamata tekst
     <message>
         <location line="+2"/>
         <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kas pildid peaksid olema kuvatud automaatselt? Võimalusteks on automaatne kuvamine alati, automaatne kuvamine vaid privaatsetes jututubades ning kuvamine igakordse otsuse alusel.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5241,7 +5243,7 @@ Väljalülitatuna - ruut, sisselülitatuna - ümmargune.</translation>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda kogu kasutajaliidese suurendust. Jõustamiseks palun käivita rakendus uuesti.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -5402,17 +5404,17 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="+142"/>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>Alati</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Only in private rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Vaid privaatsetes jututubades</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Mitte kunagi</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -5475,17 +5477,17 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="+13"/>
         <source>Repeat File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Korda faili salasõna</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Repeat the passphrase:</source>
-        <translation type="unfinished"></translation>
+        <translation>Korda salafraasi:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Salasõnad ei klapi omavahel</translation>
     </message>
     <message>
         <location line="+7"/>
