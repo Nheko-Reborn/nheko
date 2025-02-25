@@ -1157,7 +1157,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>Key is from an untrusted source, possibly forwarded from another user or the online key backup. For this reason we can&apos;t verify who sent the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunci dari sumber yang tidak dipercayai, kemungkinan diteruskan dari pengguna lain atau pencadangan kunci daring. Untuk alasan ini kami tidak dapat memverifikasi siapa yang mengirim pesan.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1409,7 +1409,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
         <source>Show</source>
-        <translation type="unfinished">Tampilkan</translation>
+        <translation>Tampilkan</translation>
     </message>
 </context>
 <context>
@@ -1583,7 +1583,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+628"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anda perlu mxid yang valid saat mengabaikan pengguna. &apos;%1&apos; bukan userid yang valid.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2128,7 +2128,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 membalas dengan bocoran.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3179,7 +3179,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
     <message>
         <location line="+23"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room name!</source>
-        <translation type="unfinished"></translation>
+        <translation>Karena keadaan ruangan tidak dapat dienkripsi, pastikan tidak ada informasi rahasia yang disimpan dalam nama ruangan!</translation>
     </message>
     <message numerus="yes">
         <location line="+11"/>
@@ -3206,7 +3206,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
     <message>
         <location line="+24"/>
         <source>Since room state can&apos;t be encrypted, make sure no confidential information is stored in the room topic!</source>
-        <translation type="unfinished"></translation>
+        <translation>Karena keadaan ruangan tidak dapat dienkripsi, pastikan tidak ada informasi rahasia yang disimpan dalam topik ruangan!</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -3386,7 +3386,9 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Enkripsi saat ini bersifat eksperimental dan dapat rusak secara tidak terduga. &lt;br&gt;
+                                
+Mohon diingat bahwa ini tidak dapat dinonaktifkan setelah diaktifkan.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -4523,8 +4525,9 @@ Alasan: %4</translation>
         <location line="+27"/>
         <source>
 %n unread message(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>
+%n pesan belum dibaca</numerusform>
         </translation>
     </message>
 </context>
@@ -4791,7 +4794,7 @@ Alasan: %4</translation>
     <message>
         <location line="+2"/>
         <source>Show images automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Tampilkan gambar secara otomatis</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5167,7 +5170,7 @@ Ketika dinonaktifkan, semua pesan akan dikirim sebagai teks biasa.</translation>
     <message>
         <location line="+2"/>
         <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
-        <translation type="unfinished"></translation>
+        <translation>Apakah gambar ditampilkan secara otomatis. Anda dapat memilih antara selalu menampilkan gambar secara bawaan, hanya tampilkan dalam ruangan pribadi secara bawaan atau selalu memerlukan interaksi untuk menampilkan gambar.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5244,7 +5247,7 @@ MATI - kotak, NYALA - bulat.</translation>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ubah faktor skala antarmuka pengguna. Memerlukan pemulaian ulang untuk diterapkan.</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -5387,17 +5390,17 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="+142"/>
         <source>Always</source>
-        <translation type="unfinished"></translation>
+        <translation>Selalu</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Only in private rooms</source>
-        <translation type="unfinished"></translation>
+        <translation>Hanya dalam ruangan publik</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Never</source>
-        <translation type="unfinished"></translation>
+        <translation>Tidak pernah</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -5460,17 +5463,17 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="+13"/>
         <source>Repeat File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Ulangi Kata Sandi Berkas</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Repeat the passphrase:</source>
-        <translation type="unfinished"></translation>
+        <translation>Ulangi frasa sandi:</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Passwords don&apos;t match</source>
-        <translation type="unfinished"></translation>
+        <translation>Kata sandi tidak cocok</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -5656,7 +5659,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-12"/>
         <source>Message contains spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Pesan berisi bocoran.</translation>
     </message>
 </context>
 <context>
@@ -5725,13 +5728,13 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Anda mengirim bocoran.</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+26"/>
         <source>%1 sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 mengirim bocoran.</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -5758,7 +5761,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="+23"/>
         <source>* %1 spoils something.</source>
-        <translation type="unfinished"></translation>
+        <translation>­­* %1 membocorkan sesuatu.</translation>
     </message>
     <message>
         <location line="+8"/>
