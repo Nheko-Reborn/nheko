@@ -1149,12 +1149,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+3"/>
         <source>Encrypted by a verified device</source>
-        <translation>Зашифровано верифицированым устройством</translation>
+        <translation>Зашифровано верифицированным устройством</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device, but you have trusted that user so far.</source>
-        <translation>Зашифровано неверифицированым устройством, но Вы все еще доверяете этому пользователю.</translation>
+        <translation>Зашифровано неверифицированным устройством, но Вы все еще доверяете этому пользователю.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2018,7 +2018,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+6"/>
         <source>View decrypted raw message</source>
-        <translation type="unfinished">Просмототреть дешифрованое сырое сообщение</translation>
+        <translation type="unfinished">Просмотреть дешифрованое сырое сообщение</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -2147,7 +2147,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+0"/>
         <source>%1 sent a message</source>
-        <translation>%1 отправил сообщениe</translation>
+        <translation>%1 отправил сообщение</translation>
     </message>
 </context>
 <context>
@@ -2660,7 +2660,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+7"/>
         <source>Autodiscovery failed. Unknown error when requesting .well-known.</source>
-        <translation type="unfinished">Автообнaружение не удалось. Неизвестнaz ошибка во время запроса .well-known.</translation>
+        <translation type="unfinished">Автообнaружение не удалось. Неизвестнaя ошибка во время запроса .well-known.</translation>
     </message>
     <message>
         <location line="+25"/>
@@ -3727,7 +3727,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/StatusIndicator.qml" line="+18"/>
         <source>Failed</source>
-        <translation>Не удалоcь</translation>
+        <translation>Не удалось</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3768,7 +3768,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+10"/>
         <source>Verification successful! Both sides verified their devices!</source>
-        <translation>Верификация прошла успешно! Обе стороны верефицировали свои устройства!</translation>
+        <translation>Верификация прошла успешно! Обе стороны верифицировали свои устройства!</translation>
     </message>
     <message>
         <location line="+14"/>
@@ -4623,7 +4623,7 @@ Reason: %4</source>
     <message>
         <location line="+0"/>
         <source>Room User Profile</source>
-        <translation>Поользовательский Профиль в Комнате</translation>
+        <translation>Пользовательский Профиль в Комнате</translation>
     </message>
     <message>
         <location line="+43"/>
@@ -5254,7 +5254,7 @@ Warning: If your homeserver does not support this, your rooms will never be mark
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished">Показывать предупреждение, когда получено сообщеение.
+        <translation type="unfinished">Показывать предупреждение, когда получено сообщение.
 На это обычно реагирует иконка приложения в таскбаре.</translation>
     </message>
     <message>
@@ -5327,7 +5327,7 @@ be blurred.</source>
     <message>
         <location line="+3"/>
         <source>Change the scale factor of the whole user interface. Requires a restart to take effect.</source>
-        <translation>Поменять коэфициент масштаба для всего пользовательского интерфейса.</translation>
+        <translation>Поменять коэффициент масштаба для всего пользовательского интерфейса.</translation>
     </message>
     <message>
         <location line="+3"/>
