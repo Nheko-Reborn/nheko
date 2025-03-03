@@ -475,7 +475,7 @@ Item {
                     text: qsTr("&Copy")
                     visible: messageContextMenuC.text
 
-                    onTriggered: Clipboard.text = messageContextMenuC.text
+                    onTriggered: Clipboard.setHtmlText(messageContextMenuC.text)
                 }
             }
             Component {
@@ -660,7 +660,7 @@ Item {
                     text: qsTr("&Copy")
                     visible: replyContextMenuC.text
 
-                    onTriggered: Clipboard.text = replyContextMenuC.text
+                    onTriggered: Clipboard.setHtmlText(replyContextMenuC.text)
                 }
             }
             Component {
