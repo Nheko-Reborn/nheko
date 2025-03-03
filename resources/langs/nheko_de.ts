@@ -5379,7 +5379,7 @@ den Fokus verliert.</translation>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation>Der wichtigste Schlüssel. Muss nicht lokal gecachet wrden, weil es das schwieriger macht ihn auszulesen und dadurch das Rotieren der anderen Schlüsel leichter ist.</translation>
+        <translation>Der wichtigste Schlüssel. Muss nicht lokal gecachet werden, weil es das schwieriger macht ihn auszulesen und dadurch das Rotieren der anderen Schlüsel leichter ist.</translation>
     </message>
     <message>
         <location line="+5"/>
