@@ -130,6 +130,7 @@ Menu {
                         anchors.right: parent.right
                         text: parent.section
                         font.bold: true
+			            color: palette.text
                     }
                 }
                 section.labelPositioning: ViewSection.InlineLabels | ViewSection.CurrentLabelAtStart
