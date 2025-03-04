@@ -38,7 +38,7 @@ Rectangle {
         var totalSeconds = Math.floor(duration / 1000);
         var seconds = totalSeconds % 60;
         var minutes = (Math.floor(totalSeconds / 60)) % 60;
-        var hours = (Math.floor(totalSeconds / (60 * 24))) % 24;
+        var hours = (Math.floor(totalSeconds / (60 * 60))) % 24;
         // Always show minutes and don't prepend zero into the leftmost element
         var ss = maybeZeroPrepend(seconds);
         var mm = (hours > 0) ? maybeZeroPrepend(minutes) : minutes.toString();
