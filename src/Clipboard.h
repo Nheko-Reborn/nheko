@@ -21,6 +21,7 @@ public:
 
     QString text() const;
     void setText(QString text_);
+    Q_INVOKABLE void setHtmlText(QString text_);
 signals:
     void textChanged();
 };
