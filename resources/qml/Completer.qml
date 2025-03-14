@@ -153,7 +153,7 @@ Control {
 
                     RowLayout {
                         anchors.centerIn: centerRowContent ? parent : undefined
-                        spacing: rowSpacing
+                        spacing: Nheko.paddingSmall
 
                         Avatar {
                             displayName: model.displayName
@@ -178,7 +178,7 @@ Control {
 
                     RowLayout {
                         anchors.centerIn: parent
-                        spacing: rowSpacing
+                        spacing: Nheko.paddingSmall
 
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
@@ -213,7 +213,7 @@ Control {
 
                     RowLayout {
                         anchors.centerIn: parent
-                        spacing: rowSpacing
+                        spacing: Nheko.paddingSmall
 
                         Label {
                             color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
@@ -231,7 +231,7 @@ Control {
 
                     RowLayout {
                         anchors.centerIn: centerRowContent ? parent : undefined
-                        spacing: rowSpacing
+                        spacing: Nheko.paddingSmall
 
                         Avatar {
                             displayName: model.roomName
@@ -256,7 +256,7 @@ Control {
 
                     RowLayout {
                         anchors.centerIn: parent
-                        spacing: rowSpacing
+                        spacing: Nheko.paddingSmall
 
                         Avatar {
                             displayName: model.roomName
