@@ -750,15 +750,6 @@ Page {
                 }
             }
 
-            Component {
-                id: nestedSpaceMenuLevel
-
-                SpaceMenuLevel {
-                    childMenu: rootSpaceMenu.childMenu
-                    roomid: roomContextMenu.roomid
-                }
-            }
-
             InputDialog {
                 id: newTag
 
@@ -839,13 +830,10 @@ Page {
                     onTriggered: newTag.show()
                 }
             }
-            SpaceMenuLevel {
+            SpaceMenu {
                 id: rootSpaceMenu
 
-                childMenu: nestedSpaceMenuLevel
-                position: -1
                 roomid: roomContextMenu.roomid
-                title: qsTr("Add or remove from community...")
             }
         }
     }
