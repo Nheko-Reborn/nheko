@@ -59,7 +59,9 @@ ApplicationWindow {
                 model: packlist
                 clip: true
 
-                
+                Loader {
+                    source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+                }
 
                 footer: ColumnLayout {
                     Button {
