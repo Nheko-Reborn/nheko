@@ -1084,14 +1084,14 @@ void
 ChatPage::kickUser(const QString &room, QString userid, QString reason)
 {
     bool confirmed;
-    reason =
-      QInputDialog::getText(nullptr,
-                            tr("Reason for the kick"),
-                            tr("Enter reason for kicking %1 (%2) or hit enter for no reason:")
-                              .arg(cache::displayName(room, userid), userid),
-                            QLineEdit::Normal,
-                            reason,
-                            &confirmed);
+    reason = QInputDialog::getText(
+      nullptr,
+      tr("Reason for the kick"),
+      tr("Enter reason for kicking %1 (%2) or hit enter for no reason:")
+        .arg(cache::displayName(room, userid).toHtmlEscaped(), userid.toHtmlEscaped()),
+      QLineEdit::Normal,
+      reason,
+      &confirmed);
     if (!confirmed) {
         return;
     }
@@ -1113,14 +1113,14 @@ void
 ChatPage::banUser(const QString &room, QString userid, QString reason)
 {
     bool confirmed;
-    reason =
-      QInputDialog::getText(nullptr,
-                            tr("Reason for the ban"),
-                            tr("Enter reason for banning %1 (%2) or hit enter for no reason:")
-                              .arg(cache::displayName(room, userid), userid),
-                            QLineEdit::Normal,
-                            reason,
-                            &confirmed);
+    reason = QInputDialog::getText(
+      nullptr,
+      tr("Reason for the ban"),
+      tr("Enter reason for banning %1 (%2) or hit enter for no reason:")
+        .arg(cache::displayName(room, userid).toHtmlEscaped(), userid.toHtmlEscaped()),
+      QLineEdit::Normal,
+      reason,
+      &confirmed);
     if (!confirmed) {
         return;
     }
@@ -1144,7 +1144,8 @@ ChatPage::unbanUser(const QString &room, QString userid, QString reason)
     if (QMessageBox::question(nullptr,
                               tr("Confirm unban"),
                               tr("Do you really want to unban %1 (%2)?")
-                                .arg(cache::displayName(room, userid), userid)) != QMessageBox::Yes)
+                                .arg(cache::displayName(room, userid).toHtmlEscaped(),
+                                     userid.toHtmlEscaped())) != QMessageBox::Yes)
         return;
 
     http::client()->unban_user(

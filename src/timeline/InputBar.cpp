@@ -901,19 +901,45 @@ InputBar::command(const QString &command, QString args)
         ChatPage::instance()->inviteUser(
           room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
     } else if (command == QLatin1String("kick")) {
-        ChatPage::instance()->kickUser(
-          room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+        if (args.startsWith('@')) {
+            ChatPage::instance()->kickUser(
+              room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (auto reply = room->reply(); !reply.isEmpty()) {
+            auto replySender =
+              room->dataById(room->reply(), TimelineModel::Roles::UserId, "").toString();
+            if (!replySender.isEmpty()) {
+                ChatPage::instance()->kickUser(room->roomId(), replySender, args);
+            }
+        }
     } else if (command == QLatin1String("ban")) {
-        ChatPage::instance()->banUser(
-          room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+        if (args.startsWith('@')) {
+            ChatPage::instance()->banUser(
+              room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (auto reply = room->reply(); !reply.isEmpty()) {
+            auto replySender =
+              room->dataById(room->reply(), TimelineModel::Roles::UserId, "").toString();
+            if (!replySender.isEmpty()) {
+                ChatPage::instance()->banUser(room->roomId(), replySender, args);
+            }
+        }
     } else if (command == QLatin1String("unban")) {
-        ChatPage::instance()->unbanUser(
-          room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+        if (args.startsWith('@')) {
+            ChatPage::instance()->unbanUser(
+              room->roomId(), args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (auto reply = room->reply(); !reply.isEmpty()) {
+            auto replySender =
+              room->dataById(room->reply(), TimelineModel::Roles::UserId, "").toString();
+            if (!replySender.isEmpty()) {
+                ChatPage::instance()->unbanUser(room->roomId(), replySender, args);
+            }
+        }
     } else if (command == QLatin1String("redact")) {
         if (args.startsWith('@')) {
             room->redactAllFromUser(args.section(' ', 0, 0), args.section(' ', 1, -1));
         } else if (args.startsWith('$')) {
             room->redactEvent(args.section(' ', 0, 0), args.section(' ', 1, -1));
+        } else if (auto reply = room->reply(); !reply.isEmpty()) {
+            room->redactEvent(reply, args);
         }
     } else if (command == QLatin1String("roomnick")) {
         mtx::events::state::Member member;

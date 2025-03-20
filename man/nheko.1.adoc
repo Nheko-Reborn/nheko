@@ -198,19 +198,19 @@ Leave the current room. _reason_ is optional.
 Invite a user into the current room. _reason_ is optional.
 
 */kick* _<username>_ _[reason]_::
-Kick a user from the current room. _reason_ is optional.
+Kick a user from the current room. _reason_ is optional. You can alternatively kick the user you are replying to by leaving out the _username_.
 
 */ban* _<username>_ _[reason]_::
-Ban a user from the current room. _reason_ is optional.
+Ban a user from the current room. _reason_ is optional. You can alternatively ban the user you are replying to by leaving out the _username_.
 
 */unban* _<username>_ _[reason]_::
-Unban a user. _reason_ is optional.
+Unban a user. _reason_ is optional. You can alternatively unban the user you are replying to by leaving out the _username_.
 
 */redact* _<username>_ _[reason]_::
 Redacts all visible messages of the specified user. You will run into rate limits quickly.
 
 */redact* _<eventid>_ _[reason]_::
-Redacts a specific event.
+Redacts a specific event. You can alternatively redact the event you are replying to by specifying neither an _eventid_ nor _username_.
 
 */roomnick* _<roomname>_::
 Change your nickname in a single room.

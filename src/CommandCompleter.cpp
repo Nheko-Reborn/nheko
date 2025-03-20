@@ -207,13 +207,17 @@ CommandCompleter::data(const QModelIndex &index, int role) const
             case Invite:
                 return tr("Invite a user into the current room. Reason is optional.");
             case Kick:
-                return tr("Kick a user from the current room. Reason is optional.");
+                return tr("Kick a user from the current room. Reason is optional. If user is left "
+                          "out, will try to kick the sender you are replying to.");
             case Ban:
-                return tr("Ban a user from the current room. Reason is optional.");
+                return tr("Ban a user from the current room. Reason is optional. If user is left "
+                          "out, will try to ban the sender you are replying to.");
             case Unban:
-                return tr("Unban a user in the current room. Reason is optional.");
+                return tr("Unban a user in the current room. Reason is optional. If user is left "
+                          "out, will try to unban the sender you are replying to.");
             case Redact:
-                return tr("Redact an event or all locally cached messages of a user.");
+                return tr("Redact an event by event id or that you are replying to or all locally "
+                          "cached messages of a user.");
             case Roomnick:
                 return tr("Change your displayname in this room.");
             case Shrug:
