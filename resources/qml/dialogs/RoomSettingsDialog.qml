@@ -656,6 +656,7 @@ ApplicationWindow {
                     Label { // TextEdit does not trigger onClicked
                         id: idLabel
                         text: roomSettings.roomId
+                        textFormat: Text.PlainText
                         font.pixelSize: Math.floor(fontMetrics.font.pixelSize * 0.8)
                         color: palette.text
                         width: parent.width
@@ -666,6 +667,7 @@ ApplicationWindow {
                     }
                     TextEdit{ // label does not allow selection
                         id: textEdit
+                        textFormat: TextEdit.PlainText
                         visible: false
                         text: roomSettings.roomId
                     }

@@ -65,7 +65,7 @@ ApplicationWindow {
         }
         TextEdit {
             readOnly: true
-            textFormat: TextEdit.RichText
+            textFormat: TextEdit.PlainText
             text: summary.roomid
             font.pixelSize: fontMetrics.font.pixelSize * 0.8
             color: palette.text

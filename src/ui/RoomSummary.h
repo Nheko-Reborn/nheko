@@ -55,8 +55,8 @@ public:
     QString reason() const { return reason_; }
 
     QString roomid() const { return room ? QString::fromStdString(room->room_id) : ""; }
-    QString roomName() const { return QString::fromStdString(room ? room->name : roomIdOrAlias); }
-    QString roomTopic() const { return room ? QString::fromStdString(room->topic) : ""; }
+    QString roomName() const;
+    QString roomTopic() const;
     QString roomAvatarUrl() const { return room ? QString::fromStdString(room->avatar_url) : ""; }
     bool isInvite() const
     {

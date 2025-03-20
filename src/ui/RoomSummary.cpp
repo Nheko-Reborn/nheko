@@ -9,6 +9,7 @@
 #include "Cache.h"
 #include "ChatPage.h"
 #include "MatrixClient.h"
+#include "Utils.h"
 
 RoomSummary::RoomSummary(std::string roomIdOrAlias_,
                          std::vector<std::string> vias_,
@@ -74,6 +75,22 @@ RoomSummary::RoomSummary(std::string roomIdOrAlias_,
           }
       },
       vias);
+}
+
+QString
+RoomSummary::roomName() const
+{
+    return utils::replaceEmoji(
+      QString::fromStdString(room ? room->name : roomIdOrAlias).toHtmlEscaped());
+}
+QString
+RoomSummary::roomTopic() const
+{
+    return room ? utils::replaceEmoji(
+                    utils::linkifyMessage(QString::fromStdString(room->topic)
+                                            .toHtmlEscaped()
+                                            .replace(QLatin1String("\n"), QLatin1String("<br>"))))
+                : "";
 }
 
 void
