@@ -269,7 +269,7 @@ build-macos-as:
   image: ghcr.io/cirruslabs/macos-sequoia-xcode:16.1
   tags: [macos-tart]
   before_script:
-    - brew bundle --file .ci/macos/Brewfile
+    - brew install python3 pkg-config clang-format cmake ninja openssl gstreamer pipx
     - pipx install aqtinstall
     - pipx ensurepath
     - . ~/.zshrc

@@ -23,8 +23,6 @@ cmake -GNinja -S. -Bbuild \
       -DHUNTER_ROOT="../.hunter" \
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
-      -DUSE_BUNDLED_OPENSSL=ON \
-      -DUSE_BUNDLED_KDSINGLEAPPLICATION=ON -DKDSingleApplication_STATIC=ON \
       -DQt6_DIR=${QT_BASEPATH}/lib/cmake \
       -DCI_BUILD=ON
 cmake --build build
