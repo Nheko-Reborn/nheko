@@ -372,7 +372,7 @@ ColumnLayout {
                         Layout.alignment: Qt.AlignHCenter
                         text: col.emoji.emoji
                         font.pixelSize: Qt.application.font.pixelSize * 2
-                        font.family: Settings.emojiFont
+                        font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
                         color: palette.text
                     }
 

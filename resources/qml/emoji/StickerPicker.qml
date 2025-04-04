@@ -183,7 +183,7 @@ Menu {
                                         height: stickerDim
                                         horizontalAlignment: Text.AlignHCenter
                                         verticalAlignment: Text.AlignVCenter
-                                        font.family: Settings.emojiFont
+                                        font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
                                         font.pixelSize: 36
                                         text: del.modelData.unicode.replace('\ufe0f', '')
                                     }

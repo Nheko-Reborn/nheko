@@ -49,7 +49,7 @@ Flow {
 
                     elide: Text.ElideRight
                     elideWidth: 150
-                    font.family: Settings.emojiFont
+                    font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
                     text: modelData.displayKey
                 }
                 Text {
@@ -57,7 +57,7 @@ Flow {
 
                     anchors.baseline: reactionCounter.baseline
                     color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText : palette.text
-                    font.family: Settings.emojiFont
+                    font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
                     textFormat: TextEdit.RichText
                     maximumLineCount: 1
                     text: {

@@ -206,7 +206,7 @@ Item {
 
                             anchors.centerIn: parent
                             color: button.hovered ? button.highlightColor : button.buttonTextColor
-                            font.family: Settings.emojiFont
+                            font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
                             horizontalAlignment: Text.AlignHCenter
                             padding: 0
                             text: button.modelData
