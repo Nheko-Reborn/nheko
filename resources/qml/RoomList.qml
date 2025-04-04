@@ -550,7 +550,7 @@ Page {
 
                     onSingleTapped: {
                         if (!TimelineManager.isInvite)
-                            roomContextMenu.show(roomItemTh, roomId, tags);
+                            roomContextMenu.show(roomItemTh.parent, roomId, tags);
                     }
                 }
             }
