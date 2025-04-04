@@ -301,52 +301,57 @@ utils::codepointIsEmoji(uint code)
 QString
 utils::replaceEmoji(const QString &body)
 {
-    QString fmtBody;
-    fmtBody.reserve(body.size());
+    if constexpr (QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)) {
+        return body;
+    } else {
+        QString fmtBody;
+        fmtBody.reserve(body.size());
 
-    QVector<uint> utf32_string = body.toUcs4();
+        QVector<uint> utf32_string = body.toUcs4();
 
-    bool insideFontBlock = false;
-    bool insideTag       = false;
-    for (auto &code : utf32_string) {
-        if (code == U'<')
-            insideTag = true;
-        else if (code == U'>')
-            insideTag = false;
+        bool insideFontBlock = false;
+        bool insideTag       = false;
+        for (auto &code : utf32_string) {
+            if (code == U'<')
+                insideTag = true;
+            else if (code == U'>')
+                insideTag = false;
 
-        if (!insideTag && utils::codepointIsEmoji(code)) {
-            if (!insideFontBlock) {
-                fmtBody += QStringLiteral("<font face=\"") % UserSettings::instance()->emojiFont() %
-                           (UserSettings::instance()->enlargeEmojiOnlyMessages()
-                              ? QStringLiteral("\" size=\"4\">")
-                              : QStringLiteral("\">"));
-                insideFontBlock = true;
-            } else if (code == 0xfe0f) {
-                // BUG(Nico):
-                // Workaround https://bugreports.qt.io/browse/QTBUG-97401
-                // See also https://github.com/matrix-org/matrix-react-sdk/pull/1458/files
-                // Nheko bug: https://github.com/Nheko-Reborn/nheko/issues/439
-                continue;
+            if (!insideTag && utils::codepointIsEmoji(code)) {
+                if (!insideFontBlock) {
+                    fmtBody += QStringLiteral("<font face=\"") %
+                               UserSettings::instance()->emojiFont() %
+                               (UserSettings::instance()->enlargeEmojiOnlyMessages()
+                                  ? QStringLiteral("\" size=\"4\">")
+                                  : QStringLiteral("\">"));
+                    insideFontBlock = true;
+                } else if (code == 0xfe0f) {
+                    // BUG(Nico):
+                    // Workaround https://bugreports.qt.io/browse/QTBUG-97401
+                    // See also https://github.com/matrix-org/matrix-react-sdk/pull/1458/files
+                    // Nheko bug: https://github.com/Nheko-Reborn/nheko/issues/439
+                    continue;
+                }
+            } else {
+                if (insideFontBlock) {
+                    fmtBody += QStringLiteral("</font>");
+                    insideFontBlock = false;
+                }
             }
-        } else {
-            if (insideFontBlock) {
-                fmtBody += QStringLiteral("</font>");
-                insideFontBlock = false;
+            if (QChar::requiresSurrogates(code)) {
+                QChar emoji[] = {static_cast<ushort>(QChar::highSurrogate(code)),
+                                 static_cast<ushort>(QChar::lowSurrogate(code))};
+                fmtBody.append(emoji, 2);
+            } else {
+                fmtBody.append(QChar(static_cast<ushort>(code)));
             }
         }
-        if (QChar::requiresSurrogates(code)) {
-            QChar emoji[] = {static_cast<ushort>(QChar::highSurrogate(code)),
-                             static_cast<ushort>(QChar::lowSurrogate(code))};
-            fmtBody.append(emoji, 2);
-        } else {
-            fmtBody.append(QChar(static_cast<ushort>(code)));
+        if (insideFontBlock) {
+            fmtBody += QStringLiteral("</font>");
         }
-    }
-    if (insideFontBlock) {
-        fmtBody += QStringLiteral("</font>");
-    }
 
-    return fmtBody;
+        return fmtBody;
+    }
 }
 
 void

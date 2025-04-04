@@ -598,9 +598,18 @@ UserSettings::setEmojiFontFamily(QString family)
     if (family == emojiFont_)
         return;
 
-    if (family == tr("Default")) {
-        emojiFont_ = QStringLiteral("emoji");
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    if (emojiFont_.isEmpty()) {
+        QFontDatabase::removeApplicationEmojiFontFamily(emojiFont_);
+    }
+#endif
+
+    if (family.isEmpty() || family == QStringLiteral("emoji")) {
+        emojiFont_.clear();
     } else {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+        QFontDatabase::addApplicationEmojiFontFamily(family);
+#endif
         emojiFont_ = family;
     }
 
@@ -1256,7 +1265,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
                 return data(index, Values).toStringList().indexOf(i->font());
         }
         case EmojiFont: {
-            if (i->emojiFont().isEmpty())
+            if (i->emojiFont().isEmpty() || i->emojiFont() == QLatin1String("emoji"))
                 return 0;
             else
                 return data(index, Values).toStringList().indexOf(i->emojiFont());
@@ -2006,7 +2015,7 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
                 // More special handling for the default font option
                 auto v = value.toInt();
                 i->setEmojiFontFamily(
-                  v == 0 ? QStringLiteral("emoji")
+                  v <= 0 ? QString()
                          : QFontDatabase::families(QFontDatabase::WritingSystem::Symbol).at(v - 1));
                 return true;
             } else

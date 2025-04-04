@@ -373,6 +373,13 @@ main(int argc, char *argv[])
     font.setPointSizeF(settings.lock()->fontSize());
 
     app.setFont(font);
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+    if (auto emojiFont = settings.lock()->emojiFont(); !emojiFont.isEmpty()) {
+        QFontDatabase::addApplicationEmojiFontFamily(emojiFont);
+    }
+#endif
+
     settings.lock()->applyTheme();
 
     if (QLocale().language() == QLocale::C)
