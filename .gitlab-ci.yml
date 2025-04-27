@@ -348,7 +348,7 @@ build-flatpak:
   script:
     - export VERSION=$(git describe)
     # workaround for https://github.com/flatpak/flatpak/issues/5076
-    - dbus-send --system /org/freedesktop/DBus org.freedesktop.DBus || dbus-daemon --system --fork
+    - dbus-send --system /org/freedesktop/DBus org.freedesktop.DBus || (mkdir -p /run/dbus/ && dbus-daemon --system --fork)
     - mkdir -p build-flatpak
     - cd build-flatpak
     - flatpak-builder --arch=${AARCH} --install-deps-from=flathub --user --disable-rofiles-fuse --ccache --repo=repo --default-branch=${CI_COMMIT_REF_NAME//\//_} --subject="Build of Nheko ${VERSION} `date` for ${ARCH}" app ../im.nheko.Nheko.yaml --jobs=$JOBS
