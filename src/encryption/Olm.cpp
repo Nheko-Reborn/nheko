@@ -8,7 +8,10 @@
 #include <QRandomGenerator>
 #include <QTimer>
 
+#include <fmt/ranges.h>
 #include <nlohmann/json.hpp>
+
+#include <ranges>
 #include <variant>
 
 #include <mtx/responses/common.hpp>
@@ -1698,7 +1701,9 @@ unlock_secrets(const std::string &key,
       key,
       [secrets](mtx::secret_storage::AesHmacSha2KeyDescription keyDesc, mtx::http::RequestErr err) {
           if (err) {
-              nhlog::net()->error("Failed to download secret storage key");
+              nhlog::net()->error("Failed to download secret storage key for {}: {}",
+                                  fmt::join(std::views::keys(secrets), ", "),
+                                  *err);
               return;
           }
 
