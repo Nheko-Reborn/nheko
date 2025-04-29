@@ -59,7 +59,7 @@ AbstractButton {
 
             clip: r.limitHeight
 
-            height: Math.min( timelineEvent.main?.height, timelineView.height / 10) + Nheko.paddingSmall + usernameBtn.height
+            height: r.limitHeight ? Math.min( timelineEvent.main?.height, timelineView.height / 10) + Nheko.paddingSmall + usernameBtn.height : undefined
 
             Rectangle {
                 id: colorline
