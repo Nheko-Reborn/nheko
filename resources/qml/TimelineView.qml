@@ -192,6 +192,7 @@ Item {
 
         Item {
             Layout.fillHeight: true
+            Layout.fillWidth: true
         }
         Avatar {
             Layout.alignment: Qt.AlignHCenter
@@ -208,14 +209,14 @@ Item {
             Layout.fillWidth: true
 
             MatrixText {
-                Layout.preferredWidth: implicitWidth
-                horizontalAlignment: TextEdit.AlignRight
+                horizontalAlignment: TextEdit.AlignHCenter
                 font.pixelSize: 24
                 text: (!room && !(roomPreview?.isFetched ?? false)) ? qsTr("No preview available") : preview.roomName
             }
             ImageButton {
                 ToolTip.text: qsTr("Settings")
                 ToolTip.visible: hovered
+
                 hoverEnabled: true
                 image: ":/icons/icons/ui/settings.svg"
                 visible: !!room
@@ -335,8 +336,6 @@ Item {
 
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
-            Layout.leftMargin: Nheko.paddingLarge
-            Layout.rightMargin: Nheko.paddingLarge
             visible: preview.reason !== "" && showReason
 
             TextArea {
