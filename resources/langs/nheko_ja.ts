@@ -6,13 +6,13 @@
     <message>
         <location filename="../qml/voip/ActiveCallBar.qml" line="+103"/>
         <source>Calling...</source>
-        <translation type="unfinished"></translation>
+        <translation>発信中…</translation>
     </message>
     <message>
         <location line="+9"/>
         <location line="+9"/>
         <source>Connecting...</source>
-        <translation type="unfinished"></translation>
+        <translation>接続中…</translation>
     </message>
     <message>
         <location line="+73"/>
