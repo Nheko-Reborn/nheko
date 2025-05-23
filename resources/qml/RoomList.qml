@@ -304,23 +304,19 @@ Page {
                 }
             }
             TapHandler {
-                id: userTapHandler
-
                 acceptedButtons: Qt.LeftButton
                 gesturePolicy: TapHandler.ReleaseWithinBounds
                 margin: -Nheko.paddingSmall
 
-                onLongPressed: userInfoMenu.popup(userTapHandler)
+                onLongPressed: userInfoMenu.popup(userInfoPanel)
                 onSingleTapped: userInfoPanel.openUserProfile()
             }
             TapHandler {
-                id: userTapHandler2
-
                 acceptedButtons: Qt.RightButton
                 gesturePolicy: TapHandler.ReleaseWithinBounds
                 margin: -Nheko.paddingSmall
 
-                onSingleTapped: userInfoMenu.popup(userTapHandler2)
+                onSingleTapped: userInfoMenu.popup(userInfoPanel)
             }
         }
         Rectangle {
