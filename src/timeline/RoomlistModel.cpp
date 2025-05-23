@@ -702,6 +702,8 @@ RoomlistModel::declineInvite(QString roomid)
 void
 RoomlistModel::leave(QString roomid, QString reason)
 {
+    // We want to leave in any case, even if this is an invite or similar.
+    ChatPage::instance()->leaveRoom(roomid, reason);
     if (models.contains(roomid)) {
         auto idx = roomidToIndex(roomid);
 
@@ -710,7 +712,6 @@ RoomlistModel::leave(QString roomid, QString reason)
             roomids.erase(roomids.begin() + idx);
             models.remove(roomid);
             endRemoveRows();
-            ChatPage::instance()->leaveRoom(roomid, reason);
         }
     }
 }
