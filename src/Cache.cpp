@@ -357,19 +357,6 @@ compactDatabase(lmdb::env &from, lmdb::env &to)
     toTxn.commit();
 }
 
-static bool
-containsStateUpdates(const mtx::events::collections::StrippedEvents &e)
-{
-    using namespace mtx::events;
-    using namespace mtx::events::state;
-
-    return std::holds_alternative<StrippedEvent<state::Avatar>>(e) ||
-           std::holds_alternative<StrippedEvent<CanonicalAlias>>(e) ||
-           std::holds_alternative<StrippedEvent<Name>>(e) ||
-           std::holds_alternative<StrippedEvent<Member>>(e) ||
-           std::holds_alternative<StrippedEvent<Topic>>(e);
-}
-
 bool
 Cache::isHiddenEvent(lmdb::txn &txn,
                      mtx::events::collections::TimelineEvents e,
@@ -2779,42 +2766,6 @@ Cache::savePresence(
             db->presence.put(txn, update.sender, toWriteStr);
         }
     }
-}
-
-std::vector<std::string>
-Cache::roomsWithStateUpdates(const mtx::responses::Sync &res)
-{
-    std::vector<std::string> rooms;
-    for (const auto &room : res.rooms.join) {
-        bool hasUpdates = false;
-        for (const auto &s : room.second.state.events) {
-            if (mtx::accessors::is_state_event(s)) {
-                hasUpdates = true;
-                break;
-            }
-        }
-
-        for (const auto &s : room.second.timeline.events) {
-            if (mtx::accessors::is_state_event(s)) {
-                hasUpdates = true;
-                break;
-            }
-        }
-
-        if (hasUpdates)
-            rooms.emplace_back(room.first);
-    }
-
-    for (const auto &room : res.rooms.invite) {
-        for (const auto &s : room.second.invite_state) {
-            if (containsStateUpdates(s)) {
-                rooms.emplace_back(room.first);
-                break;
-            }
-        }
-    }
-
-    return rooms;
 }
 
 RoomInfo
@@ -6222,11 +6173,6 @@ RoomInfo
 singleRoomInfo(const std::string &room_id)
 {
     return instance_->singleRoomInfo(room_id);
-}
-std::vector<std::string>
-roomsWithStateUpdates(const mtx::responses::Sync &res)
-{
-    return instance_->roomsWithStateUpdates(res);
 }
 
 std::map<QString, RoomInfo>

@@ -165,7 +165,6 @@ public:
     UserReceipts readReceipts(const QString &event_id, const QString &room_id);
 
     RoomInfo singleRoomInfo(const std::string &room_id);
-    std::vector<std::string> roomsWithStateUpdates(const mtx::responses::Sync &res);
     std::map<QString, RoomInfo> getRoomInfo(const std::vector<std::string> &rooms);
 
     std::vector<RoomNameAlias> roomNamesAndAliases();

@@ -807,8 +807,6 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
         cache::client()->saveState(res);
         olm::handle_to_device_messages(res.to_device.events);
 
-        auto updates = cache::getRoomInfo(cache::client()->roomsWithStateUpdates(res));
-
         emit syncUI(std::move(res));
 
         // if the ignored users changed, clear timeline of all affected rooms.
