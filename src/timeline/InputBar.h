@@ -320,6 +320,7 @@ private:
     void updateTextContentProperties(const QString &t, bool textDeleted = false);
 
     void toggleIgnore(const QString &user, const bool ignored);
+    void toggleInvitePermission(const QString &id, bool block);
 
     QTimer typingRefresh_;
     QTimer typingTimeout_;

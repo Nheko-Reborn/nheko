@@ -807,6 +807,36 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
         cache::client()->saveState(res);
         olm::handle_to_device_messages(res.to_device.events);
 
+        // reject forbidden invites
+        if (!res.rooms.invite.empty()) {
+            if (auto ev =
+                  cache::client()->getAccountData(mtx::events::EventType::NhekoInvitePermissions)) {
+                const auto &invitePerms = std::get<mtx::events::AccountDataEvent<
+                  mtx::events::account_data::nheko_extensions::InvitePermissions>>(*ev)
+                                            .content;
+
+                for (const auto &[roomid, invite] : res.rooms.invite) {
+                    std::string_view inviter = "";
+                    for (const auto &memberEv : invite.invite_state) {
+                        if (auto member =
+                              std::get_if<mtx::events::StrippedEvent<mtx::events::state::Member>>(
+                                &memberEv)) {
+                            if (member->content.membership ==
+                                  mtx::events::state::Membership::Invite &&
+                                member->state_key == http::client()->user_id().to_string()) {
+                                inviter = member->sender;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!invitePerms.invite_allowed(roomid, inviter)) {
+                        leaveRoom(QString::fromStdString(roomid), "");
+                    }
+                }
+            }
+        }
+
         emit syncUI(std::move(res));
 
         // if the ignored users changed, clear timeline of all affected rooms.
@@ -1583,112 +1613,19 @@ ChatPage::startChat(QString userid, std::optional<bool> encryptionEnabled)
     emit ChatPage::instance()->createRoom(req);
 }
 
-static QString
-mxidFromSegments(QStringView sigil, QStringView mxid)
-{
-    if (mxid.isEmpty())
-        return QString();
-
-    auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
-
-    if (sigil == u"u") {
-        return "@" + mxid_;
-    } else if (sigil == u"roomid") {
-        return "!" + mxid_;
-    } else if (sigil == u"r") {
-        return "#" + mxid_;
-        //} else if (sigil == "group") {
-        //        return "+" + mxid_;
-    } else {
-        return QString();
-    }
-}
-
 bool
 ChatPage::handleMatrixUri(QString uri)
 {
     nhlog::ui()->info("Received uri! {}", uri.toStdString());
-    QUrl uri_{uri};
 
-    // Convert matrix.to URIs to proper format
-    if (uri_.scheme() == QLatin1String("https") && uri_.host() == QLatin1String("matrix.to")) {
-        QString p = uri_.fragment(QUrl::FullyEncoded);
-        if (p.startsWith(QLatin1String("/")))
-            p.remove(0, 1);
+    auto m = utils::parseMatrixUri(uri);
 
-        auto temp = p.split(QStringLiteral("?"));
-        QString query;
-        if (temp.size() >= 2)
-            query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
-
-        temp            = temp.first().split(QStringLiteral("/"));
-        auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
-        QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
-        if (!identifier.isEmpty()) {
-            if (identifier.startsWith(QLatin1String("@"))) {
-                QByteArray newUri = "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                return handleMatrixUri(QUrl::fromEncoded(newUri));
-            } else if (identifier.startsWith(QLatin1String("#"))) {
-                QByteArray newUri = "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!eventId.isEmpty())
-                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                return handleMatrixUri(QUrl::fromEncoded(newUri));
-            } else if (identifier.startsWith(QLatin1String("!"))) {
-                QByteArray newUri =
-                  "matrix:roomid/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!eventId.isEmpty())
-                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                return handleMatrixUri(QUrl::fromEncoded(newUri));
-            }
-        }
+    if (!m) {
+        nhlog::ui()->info("failed to parse uri! {}", uri.toStdString());
+        return false;
     }
 
-    // non-matrix URIs are not handled by us, return false
-    if (uri_.scheme() != QLatin1String("matrix"))
-        return false;
-
-    auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
-    if (tempPath.startsWith('/'))
-        tempPath.remove(0, 1);
-    auto segments = QStringView(tempPath).split('/');
-
-    if (segments.size() != 2 && segments.size() != 4)
-        return false;
-
-    auto sigil1 = segments[0];
-    auto mxid1  = mxidFromSegments(sigil1, segments[1]);
-    if (mxid1.isEmpty())
-        return false;
-
-    QString mxid2;
-    if (segments.size() == 4 && segments[2] == QStringView(u"e")) {
-        if (segments[3].isEmpty())
-            return false;
-        else
-            mxid2 = "$" + QUrl::fromPercentEncoding(segments[3].toUtf8());
-    }
-
-    std::vector<std::string> vias;
-    QString action;
-
-    auto items =
-      uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&', Qt::SkipEmptyParts);
-    for (QString item : std::as_const(items)) {
-        nhlog::ui()->info("item: {}", item.toStdString());
-
-        if (item.startsWith(QLatin1String("action="))) {
-            action = item.remove(QStringLiteral("action="));
-        } else if (item.startsWith(QLatin1String("via="))) {
-            vias.push_back(QUrl::fromPercentEncoding(item.remove(QStringLiteral("via=")).toUtf8())
-                             .toStdString());
-        }
-    }
+    const auto &[sigil1, mxid1, sigil2, mxid2, action, vias] = *m;
 
     if (sigil1 == u"u") {
         if (action.isEmpty()) {

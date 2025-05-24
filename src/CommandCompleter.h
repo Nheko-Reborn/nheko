@@ -55,6 +55,8 @@ public:
         ConvertToRoom,
         Ignore,
         Unignore,
+        BlockInvites,
+        AllowInvites,
         COUNT,
     };
 

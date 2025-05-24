@@ -211,7 +211,7 @@ modules:
       - -DBUILD_SHARED_LIBS=OFF
     buildsystem: cmake-ninja
     sources:
-      - commit: a0b203980491ddf2e2fe4f1cd6af8c2562b3ee35
+      - commit: d6a0a4ebee83275dbbeb999679a22a7d238326ff
         #tag: v0.10.0
         type: git
         url: https://github.com/Nheko-Reborn/mtxclient.git

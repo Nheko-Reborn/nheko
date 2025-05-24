@@ -105,6 +105,10 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QStringLiteral("/ignore");
             case Unignore:
                 return QStringLiteral("/unignore");
+            case BlockInvites:
+                return QStringLiteral("/blockinvites");
+            case AllowInvites:
+                return QStringLiteral("/allowinvites");
             default:
                 return {};
             }
@@ -186,6 +190,10 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return QStringLiteral("/ignore <@userid>");
             case Unignore:
                 return QStringLiteral("/unignore <@userid>");
+            case BlockInvites:
+                return QStringLiteral("/blockinvites <@userid>|<!roomid>|<servername>|all");
+            case AllowInvites:
+                return QStringLiteral("/allowinvites <@userid>|<!roomid>|<servername>|all");
             default:
                 return {};
             }
@@ -271,6 +279,12 @@ CommandCompleter::data(const QModelIndex &index, int role) const
                 return tr("Ignore a user.");
             case Unignore:
                 return tr("Stop ignoring a user.");
+            case BlockInvites:
+                return tr("Block all invites from a user, a server, to a specific room or set the "
+                          "default.");
+            case AllowInvites:
+                return tr("Allow all invites from a user, a server, to a specific room or set the "
+                          "default.");
             default:
                 return {};
             }

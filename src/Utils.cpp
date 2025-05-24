@@ -2114,3 +2114,119 @@ utils::graduallyGlitchText(const QString &text)
 
     return result;
 }
+
+static QString
+mxidFromSegments(QStringView sigil, QStringView mxid)
+{
+    if (mxid.isEmpty())
+        return QString();
+
+    auto mxid_ = QUrl::fromPercentEncoding(mxid.toUtf8());
+
+    if (sigil == u"u") {
+        return "@" + mxid_;
+    } else if (sigil == u"roomid") {
+        return "!" + mxid_;
+    } else if (sigil == u"r") {
+        return "#" + mxid_;
+        //} else if (sigil == "group") {
+        //        return "+" + mxid_;
+    } else {
+        return QString();
+    }
+}
+
+std::optional<utils::MatrixUriParseResult>
+utils::parseMatrixUri(QString uri)
+{
+    QUrl uri_{uri};
+
+    // Convert matrix.to URIs to proper format
+    if (uri_.scheme() == QLatin1String("https") && uri_.host() == QLatin1String("matrix.to")) {
+        QString p = uri_.fragment(QUrl::FullyEncoded);
+        if (p.startsWith(QLatin1String("/")))
+            p.remove(0, 1);
+
+        auto temp = p.split(QStringLiteral("?"));
+        QString query;
+        if (temp.size() >= 2)
+            query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
+
+        temp            = temp.first().split(QStringLiteral("/"));
+        auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
+        QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
+        if (!identifier.isEmpty()) {
+            if (identifier.startsWith(QLatin1String("@"))) {
+                QByteArray newUri = "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                if (!query.isEmpty())
+                    newUri.append("?" + query.toUtf8());
+                uri_ = QUrl::fromEncoded(newUri);
+            } else if (identifier.startsWith(QLatin1String("#"))) {
+                QByteArray newUri = "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                if (!eventId.isEmpty())
+                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
+                if (!query.isEmpty())
+                    newUri.append("?" + query.toUtf8());
+                uri_ = QUrl::fromEncoded(newUri);
+            } else if (identifier.startsWith(QLatin1String("!"))) {
+                QByteArray newUri =
+                  "matrix:roomid/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+                if (!eventId.isEmpty())
+                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
+                if (!query.isEmpty())
+                    newUri.append("?" + query.toUtf8());
+                uri_ = QUrl::fromEncoded(newUri);
+            }
+        }
+    }
+
+    // non-matrix URIs are not handled by us, return false
+    if (uri_.scheme() != QLatin1String("matrix"))
+        return {};
+
+    auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
+    if (tempPath.startsWith('/'))
+        tempPath.remove(0, 1);
+    auto segments = QStringView(tempPath).split('/');
+
+    if (segments.size() != 2 && segments.size() != 4)
+        return {};
+
+    auto sigil1 = segments[0];
+    auto mxid1  = mxidFromSegments(sigil1, segments[1]);
+    if (mxid1.isEmpty())
+        return {};
+
+    QString mxid2;
+    QString sigil2;
+    if (segments.size() == 4 && segments[2] == QStringView(u"e")) {
+        if (segments[3].isEmpty())
+            return {};
+        else
+            mxid2 = "$" + QUrl::fromPercentEncoding(segments[3].toUtf8());
+        sigil2 = "$";
+    }
+
+    std::vector<std::string> vias;
+    QString action;
+
+    auto items =
+      uri_.query(QUrl::ComponentFormattingOption::FullyEncoded).split('&', Qt::SkipEmptyParts);
+    for (QString item : std::as_const(items)) {
+        if (item.startsWith(QLatin1String("action="))) {
+            action = item.remove(QStringLiteral("action="));
+        } else if (item.startsWith(QLatin1String("via="))) {
+            vias.push_back(QUrl::fromPercentEncoding(item.remove(QStringLiteral("via=")).toUtf8())
+                             .toStdString());
+        }
+    }
+
+    return MatrixUriParseResult{
+      .sigil1 = sigil1.toString(),
+      .mxid1  = std::move(mxid1),
+      .sigil2 = std::move(sigil2),
+      .mxid2  = std::move(mxid2),
+      .action = std::move(action),
+      .vias   = std::move(vias),
+    };
+}

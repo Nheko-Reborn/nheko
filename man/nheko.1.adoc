@@ -243,6 +243,14 @@ Ignore a user, invites from them are also rejected.
 */unignore* _<username>_::
 Stops ignoring a user.
 
+=== Invite permission management
+
+*/blockinvites* _<username>_|_<roomid>_|_<servername>_|all::
+Block all invites either by default ("all") or from a specific user or server or to a specific room.
+
+*/allowinvites* _<username>_|_<roomid>_|_<servername>_|all::
+Allow all invites either by default ("all") or from a specific user or server or to a specific room.
+
 === Advanced
 
 */clear-timeline*::

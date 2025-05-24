@@ -206,4 +206,13 @@ glitchText(const QString &text);
 
 QString
 graduallyGlitchText(const QString &text);
+
+struct MatrixUriParseResult
+{
+    QString sigil1, mxid1, sigil2, mxid2, action;
+    std::vector<std::string> vias;
+};
+
+std::optional<MatrixUriParseResult>
+parseMatrixUri(QString uri);
 }

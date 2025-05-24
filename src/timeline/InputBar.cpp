@@ -285,7 +285,9 @@ InputBar::updateTextContentProperties(const QString &t, bool charDeleted)
                                              QStringLiteral("converttodm"),
                                              QStringLiteral("converttoroom"),
                                              QStringLiteral("ignore"),
-                                             QStringLiteral("unignore")};
+                                             QStringLiteral("unignore"),
+                                             QStringLiteral("blockinvites"),
+                                             QStringLiteral("allowinvites")};
     bool hasInvalidCommand    = !commandName.isNull() && !validCommands.contains(commandName);
     bool hasIncompleteCommand = hasInvalidCommand && '/' + commandName == t;
 
@@ -1025,6 +1027,10 @@ InputBar::command(const QString &command, QString args)
         this->toggleIgnore(args.trimmed(), true);
     } else if (command == QLatin1String("unignore")) {
         this->toggleIgnore(args.trimmed(), false);
+    } else if (command == QLatin1String("blockinvites")) {
+        this->toggleInvitePermission(args.trimmed(), true);
+    } else if (command == QLatin1String("allowinvites")) {
+        this->toggleInvitePermission(args.trimmed(), false);
     } else {
         return false;
     }
@@ -1054,6 +1060,78 @@ InputBar::toggleIgnore(const QString &user, const bool ignored)
           profile->setIgnored(ignored);
           profile->deleteLater();
       });
+}
+
+void
+InputBar::toggleInvitePermission(const QString &id, bool block)
+{
+    mtx::events::account_data::nheko_extensions::InvitePermissions permissions;
+    if (auto ev = cache::client()->getAccountData(mtx::events::EventType::NhekoInvitePermissions)) {
+        permissions = std::get<mtx::events::AccountDataEvent<
+          mtx::events::account_data::nheko_extensions::InvitePermissions>>(*ev)
+                        .content;
+    }
+
+    auto idstr = id.toStdString();
+
+    if (id.startsWith("matrix:") || id.startsWith("https://matrix.to")) {
+        auto m = utils::parseMatrixUri(id);
+        if (m) {
+            idstr = m->mxid1.toStdString();
+        } else {
+            return;
+        }
+    }
+
+    if (idstr.starts_with("@")) {
+        if (block) {
+            permissions.user_allow.erase(idstr);
+            permissions.user_deny.emplace(idstr, "{}");
+        } else {
+            permissions.user_deny.erase(idstr);
+            permissions.user_allow.emplace(idstr, "{}");
+        }
+    } else if (idstr.starts_with("!")) {
+        if (block) {
+            permissions.room_allow.erase(idstr);
+            permissions.room_deny.emplace(idstr, "{}");
+        } else {
+            permissions.room_deny.erase(idstr);
+            permissions.room_allow.emplace(idstr, "{}");
+        }
+    } else if (idstr == "all" || idstr == "default") {
+        if (block)
+            permissions.default_ = "deny";
+        else
+            permissions.default_ = "allow";
+    } else if (!idstr.starts_with("#")) {
+        if (block) {
+            permissions.server_allow.erase(idstr);
+            permissions.server_deny.emplace(idstr, "{}");
+        } else {
+            permissions.server_deny.erase(idstr);
+            permissions.server_allow.emplace(idstr, "{}");
+        }
+    }
+
+    http::client()->put_account_data(permissions, [](mtx::http::RequestErr err) {
+        if (err) {
+            nhlog::ui()->error("Failed to update invite permissions: {}", *err);
+        }
+    });
+
+    auto invites = cache::client()->invites();
+
+    for (const auto &[roomid, info] : invites.asKeyValueRange()) {
+        auto roomid_ = roomid.toStdString();
+        auto self =
+          cache::client()->getInviteMember(roomid_, http::client()->user_id().to_string());
+        if (!self->inviter.empty()) {
+            if (!permissions.invite_allowed(roomid_, self->inviter)) {
+                ChatPage::instance()->leaveRoom(roomid, "");
+            }
+        }
+    }
 }
 
 MediaUpload::MediaUpload(std::unique_ptr<QIODevice> source_,
