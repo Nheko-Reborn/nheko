@@ -21,6 +21,7 @@ TimelineEvent {
     required property bool isSender
     required property int index
     property var previousMessageDay: (index + 1) >= chat.count ? 0 : chat.model.dataByIndex(index + 1, Room.Day)
+    property var previousMessageTimestamp: (index + 1) >= chat.count ? 0 : chat.model.dataByIndex(index + 1, Room.Timestamp)
     property bool previousMessageIsStateEvent: (index + 1) >= chat.count ? true : chat.model.dataByIndex(index + 1, Room.IsStateEvent)
     property string previousMessageUserId: (index + 1) >= chat.count ? "" : chat.model.dataByIndex(index + 1, Room.UserId)
 
@@ -46,6 +47,9 @@ TimelineEvent {
 
     property alias hovered: messageHover.hovered
 
+    property int oneHour: 60 * 60 * 1000
+    property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour 
+
     mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0) + 4
     replyInset: mainInset + 4 + Nheko.paddingSmall
 
@@ -57,7 +61,7 @@ TimelineEvent {
         Loader {
             id: section
 
-            active: wrapper.previousMessageUserId !== wrapper.userId || wrapper.previousMessageDay !== wrapper.day || wrapper.previousMessageIsStateEvent !== wrapper.isStateEvent
+            active: wrapper.previousMessageUserId !== wrapper.userId || wrapper.showSection || wrapper.previousMessageIsStateEvent !== wrapper.isStateEvent
             //asynchronous: true
             sourceComponent: TimelineSectionHeader {
                 day: wrapper.day
@@ -65,6 +69,7 @@ TimelineEvent {
                 isStateEvent: wrapper.isStateEvent
                 parentWidth: wrapper.width
                 previousMessageDay: wrapper.previousMessageDay
+                previousMessageTimestamp: wrapper.previousMessageTimestamp
                 previousMessageIsStateEvent: wrapper.previousMessageIsStateEvent
                 previousMessageUserId: wrapper.previousMessageUserId
                 timestamp: wrapper.timestamp

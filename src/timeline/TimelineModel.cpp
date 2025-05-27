@@ -1441,6 +1441,13 @@ TimelineModel::formatDateSeparator(QDate date) const
     return date.toString(fmt);
 }
 
+QString
+TimelineModel::formatLaterSeparator(QDateTime prevDate, QDateTime date) const
+{
+    auto deltaHours = prevDate.secsTo(date) / 60 / 60;
+    return tr("%n hour(s) later", "", deltaHours);
+}
+
 void
 TimelineModel::viewRawMessage(const QString &id)
 {
