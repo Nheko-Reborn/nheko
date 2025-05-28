@@ -14,7 +14,6 @@ class Theme final : public QPalette
     QML_ANONYMOUS
 
     Q_PROPERTY(QColor sidebarBackground READ sidebarBackground CONSTANT)
-    Q_PROPERTY(QColor alternateButton READ alternateButton CONSTANT)
     Q_PROPERTY(QColor separator READ separator CONSTANT)
     Q_PROPERTY(QColor red READ red CONSTANT)
     Q_PROPERTY(QColor green READ green CONSTANT)
@@ -23,12 +22,20 @@ class Theme final : public QPalette
     Q_PROPERTY(QColor online READ online CONSTANT)
     Q_PROPERTY(QColor unavailable READ unavailable CONSTANT)
 public:
-    Theme() {}
-    explicit Theme(QStringView theme);
+    enum class Kind {
+        Light,
+        Dark,
+        System,
+    };
+    static Kind kindFromString(QStringView kind);
+
+    static QPalette paletteFromTheme(Kind theme);
     static QPalette paletteFromTheme(QStringView theme);
 
+    Theme() {}
+    explicit Theme(Kind theme);
+
     QColor sidebarBackground() const { return sidebarBackground_; }
-    QColor alternateButton() const { return alternateButton_; }
     QColor separator() const { return separator_; }
     QColor red() const { return red_; }
     QColor green() const { return green_; }
@@ -38,5 +45,5 @@ public:
     QColor unavailable() const { return QColor(0xff, 0x99, 0x33); }
 
 private:
-    QColor sidebarBackground_, separator_, red_, green_, error_, orange_, alternateButton_;
+    QColor sidebarBackground_, separator_, red_, green_, error_, orange_;
 };
