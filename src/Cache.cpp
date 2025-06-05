@@ -4292,7 +4292,7 @@ Cache::saveOldMessages(const std::string &room_id, const mtx::responses::Message
             orderDb.put(txn, lmdb::to_sv(index), orderEntry.dump());
             txn.commit();
         }
-        return index;
+        return msgIndex;
     }
 
     std::string event_id_val;

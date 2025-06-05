@@ -69,9 +69,9 @@ EventStore::EventStore(std::string room_id, QObject *)
           }
 
           uint64_t newFirst = cache::client()->saveOldMessages(room_id_, res);
-          if (newFirst == first)
+          if (newFirst == first) {
               fetchMore();
-          else {
+          } else {
               if (this->last != std::numeric_limits<uint64_t>::max()) {
                   auto oldFirst = this->first;
                   emit beginInsertRows(toExternalIdx(newFirst), toExternalIdx(this->first - 1));
@@ -323,6 +323,7 @@ EventStore::clearTimeline()
 
     decryptedEvents_.clear();
     events_.clear();
+    noMoreMessages = false;
 
     emit endResetModel();
 }
@@ -428,6 +429,7 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
 
         decryptedEvents_.clear();
         events_.clear();
+        noMoreMessages = false;
         emit endResetModel();
         return;
     }
@@ -439,6 +441,7 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
 
         decryptedEvents_.clear();
         events_.clear();
+        noMoreMessages = false;
         emit endResetModel();
     } else if (range->last > this->last) {
         emit beginInsertRows(toExternalIdx(this->last + 1), toExternalIdx(range->last));
