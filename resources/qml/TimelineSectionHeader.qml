@@ -16,6 +16,7 @@ Column {
     required property bool isStateEvent
     required property int parentWidth
     required property var previousMessageDay
+    required property var previousMessageTimestamp
     required property bool previousMessageIsStateEvent
     required property string previousMessageUserId
     required property date timestamp
@@ -23,10 +24,14 @@ Column {
     required property string userName
     required property string userPowerlevel
 
-    bottomPadding: Settings.bubbles ? (isSender && previousMessageDay == day ? 0 : 2) : 3
+    property int oneHour: 60 * 60 * 1000
+    property bool dayChanged: previousMessageDay !== day
+    property bool showLabel: dayChanged || timestamp - previousMessageTimestamp > oneHour
+
+    bottomPadding: Settings.bubbles ? (isSender && !showLabel ? 0 : 2) : 3
     spacing: 8
     topPadding: userName_.visible ? 4 : 0
-    visible: (previousMessageUserId !== userId || previousMessageDay !== day || isStateEvent !== previousMessageIsStateEvent)
+    visible: (previousMessageUserId !== userId || showLabel || isStateEvent !== previousMessageIsStateEvent)
     width: parentWidth
 
     Label {
@@ -36,9 +41,9 @@ Column {
         color: palette.text
         height: Math.round(fontMetrics.height * 1.4)
         horizontalAlignment: Text.AlignHCenter
-        text: room ? room.formatDateSeparator(timestamp) : ""
+        text: room ? (dayChanged ? room.formatDateSeparator(timestamp) : room.formatLaterSeparator(previousMessageTimestamp, timestamp)) : ""
         verticalAlignment: Text.AlignVCenter
-        visible: room && previousMessageDay !== day
+        visible: room && showLabel
         width: contentWidth * 1.2
 
         background: Rectangle {
