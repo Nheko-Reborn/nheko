@@ -538,7 +538,9 @@ if(USE_BUNDLED_OLM)
     FetchContent_Declare(
         Olm
         GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
-        GIT_TAG        3.2.12
+        GIT_TAG        3.2.16
+        PATCH_COMMAND  git apply ${CMAKE_CURRENT_SOURCE_DIR}/third_party/olm-patches/0001-fix-list-const-ptr.patch
+        UPDATE_DISCONNECTED 1
     )
     set(OLM_TESTS OFF CACHE INTERNAL "")
     FetchContent_MakeAvailable(Olm)
