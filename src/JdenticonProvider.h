@@ -15,7 +15,7 @@ class JdenticonRunnable final
 {
     Q_OBJECT
 public:
-    JdenticonRunnable(const QString &key, bool crop, double radius, const QSize &requestedSize);
+    JdenticonRunnable(const QString &key, double radius, const QSize &requestedSize);
 
     void run() override;
 
@@ -24,7 +24,6 @@ signals:
 
 private:
     QString m_key;
-    bool m_crop;
     double m_radius;
     QSize m_requestedSize;
 };
@@ -32,7 +31,7 @@ private:
 class JdenticonResponse final : public QQuickImageResponse
 {
 public:
-    JdenticonResponse(const QString &key, bool crop, double radius, const QSize &requestedSize);
+    JdenticonResponse(const QString &key, double radius, const QSize &requestedSize);
 
     QQuickTextureFactory *textureFactory() const override
     {
@@ -60,7 +59,6 @@ public slots:
     requestImageResponse(const QString &id, const QSize &requestedSize) override
     {
         auto id_      = id;
-        bool crop     = true;
         double radius = 0;
 
         auto queryStart = id.lastIndexOf('?');
@@ -76,6 +74,6 @@ public slots:
             }
         }
 
-        return new JdenticonResponse(id_, crop, radius, requestedSize);
+        return new JdenticonResponse(id_, radius, requestedSize);
     }
 };

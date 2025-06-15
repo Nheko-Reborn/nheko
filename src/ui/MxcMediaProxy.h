@@ -92,7 +92,6 @@ private:
     QString eventId_;
     QString filename_;
     QBuffer buffer;
-    QObject *m_surface = nullptr;
-    float volume_      = 1.f;
-    bool muted_        = false;
+    float volume_ = 1.f;
+    bool muted_   = false;
 };

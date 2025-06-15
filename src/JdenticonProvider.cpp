@@ -61,22 +61,15 @@ clipRadius(QPixmap img, double radius)
     return out;
 }
 
-JdenticonResponse::JdenticonResponse(const QString &key,
-                                     bool crop,
-                                     double radius,
-                                     const QSize &requestedSize)
+JdenticonResponse::JdenticonResponse(const QString &key, double radius, const QSize &requestedSize)
 {
-    auto runnable = new JdenticonRunnable(key, crop, radius, requestedSize);
+    auto runnable = new JdenticonRunnable(key, radius, requestedSize);
     connect(runnable, &JdenticonRunnable::done, this, &JdenticonResponse::handleDone);
     QThreadPool::globalInstance()->start(runnable);
 }
 
-JdenticonRunnable::JdenticonRunnable(const QString &key,
-                                     bool crop,
-                                     double radius,
-                                     const QSize &requestedSize)
+JdenticonRunnable::JdenticonRunnable(const QString &key, double radius, const QSize &requestedSize)
   : m_key(key)
-  , m_crop{crop}
   , m_radius{radius}
   , m_requestedSize(requestedSize.isValid() ? requestedSize : QSize(100, 100))
 {
