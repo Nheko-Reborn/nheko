@@ -17,6 +17,8 @@ export CMAKE_PREFIX_PATH
 
 export CMAKE_BUILD_PARALLEL_LEVEL="$(sysctl -n hw.ncpu)"
 
+export CMAKE_POLICY_VERSION_MINIMUM="3.5"
+
 cmake -GNinja -S. -Bbuild \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo \
       -DCMAKE_INSTALL_PREFIX="nheko.temp" \
@@ -25,7 +27,6 @@ cmake -GNinja -S. -Bbuild \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
       -DQt6_DIR=${QT_BASEPATH}/lib/cmake \
       -DCI_BUILD=ON \
-      -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 cmake --build build
 cmake --install build
 ( cd build
