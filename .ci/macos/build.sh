@@ -24,7 +24,8 @@ cmake -GNinja -S. -Bbuild \
       -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF \
       -DCMAKE_BUILD_TYPE=RelWithDebInfo -DHUNTER_CONFIGURATION_TYPES=RelWithDebInfo \
       -DQt6_DIR=${QT_BASEPATH}/lib/cmake \
-      -DCI_BUILD=ON
+      -DCI_BUILD=ON \
+      -DCMAKE_POLICY_VERSION_MINIMUM=3.5
 cmake --build build
 cmake --install build
 ( cd build
