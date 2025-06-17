@@ -25,8 +25,8 @@ set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15" CACHE STRING "macos deployment target")
 option(HUNTER_ENABLED "Enable Hunter package manager" OFF)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.25.5.tar.gz"
-    SHA1 "a20151e4c0740ee7d0f9994476856d813cdead29"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.26.1.tar.gz"
+    SHA1 "e41ac7a18c49b35ebac99ff2b5244317b2638a65"
     LOCAL
 )
 
@@ -566,10 +566,12 @@ if(USE_BUNDLED_CMARK)
         CMAKE_ARGS     "CMARK_STATIC=ON CMARK_SHARED=OFF CMARK_TESTS=OFF CMARK_TESTS=OFF"
     )
     FetchContent_MakeAvailable(cmark)
-    if(MSVC)
-        add_library(cmark::cmark ALIAS cmark)
-    else()
-        add_library(cmark::cmark ALIAS cmark_static)
+    if (NOT TARGET cmark::cmark)
+        if(MSVC)
+            add_library(cmark::cmark ALIAS cmark)
+        else()
+            add_library(cmark::cmark ALIAS cmark_static)
+        endif()
     endif()
 else()
     find_package(cmark REQUIRED 0.29.0)
