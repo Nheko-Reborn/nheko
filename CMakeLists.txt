@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13..3.21)
+cmake_minimum_required(VERSION 3.13...3.21)
 
 option(APPVEYOR_BUILD "Build on appveyor" OFF)
 option(CI_BUILD "Set when building in CI. Enables -Werror where possible" OFF)
