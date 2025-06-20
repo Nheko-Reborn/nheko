@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3549"/>
+        <location filename="../../src/Cache.cpp" line="+3500"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation type="unfinished"></translation>
@@ -237,12 +237,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+957"/>
+        <location line="+985"/>
         <source>Invited user: %1</source>
         <translation>招待されたユーザー: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-709"/>
+        <location line="-737"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation type="unfinished">
@@ -287,7 +287,7 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+310"/>
+        <location line="+338"/>
         <source>Knock on room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -319,12 +319,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+43"/>
-        <location line="+497"/>
+        <location line="+498"/>
         <source>Confirm invite</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-496"/>
+        <location line="-497"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -384,7 +384,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
         <translation>%2で%1の永久追放を解除できませんでした: %3</translation>
     </message>
@@ -399,7 +399,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-942"/>
+        <location line="-971"/>
         <source>Failed to restore OLM account. Please login again.</source>
         <translation>OLMアカウントを復元できませんでした。もう一度ログインして下さい。</translation>
     </message>
@@ -417,7 +417,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+35"/>
-        <location line="+156"/>
+        <location line="+184"/>
         <source>Please try to login again: %1</source>
         <translation>もう一度ログインしてみて下さい: %1</translation>
     </message>
@@ -450,7 +450,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+116"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+120"/>
         <source>/me &lt;message&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -585,7 +585,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Send a message expressing an action.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -617,26 +617,36 @@ You may optionally provide a reason for others to accept your knock:</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Kick a user from the current room. Reason is optional.</source>
+        <source>Kick a user from the current room. Reason is optional. If user is left out, will try to kick the sender you are replying to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Ban a user from the current room. Reason is optional.</source>
+        <location line="+3"/>
+        <source>Ban a user from the current room. Reason is optional. If user is left out, will try to ban the sender you are replying to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Unban a user in the current room. Reason is optional.</source>
+        <location line="+3"/>
+        <source>Unban a user in the current room. Reason is optional. If user is left out, will try to unban the sender you are replying to.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Redact an event or all locally cached messages of a user.</source>
+        <location line="+3"/>
+        <source>Redact an event by event id or that you are replying to or all locally cached messages of a user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+56"/>
+        <source>Block all invites from a user, a server, to a specific room or set the default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Allow all invites from a user, a server, to a specific room or set the default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-56"/>
         <source>Change your displayname in this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1001,7 +1011,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+397"/>
+        <location filename="../../src/ChatPage.cpp" line="+398"/>
         <source>Decrypt secrets</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1572,7 +1582,7 @@ You may optionally provide a reason for others to accept your knock:</source>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+423"/>
         <source>All Files (*)</source>
         <translation type="unfinished">全てのファイル (*)</translation>
     </message>
@@ -1582,7 +1592,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+628"/>
+        <location line="+623"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1592,7 +1602,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+412"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1933,7 +1943,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">オプション</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+133"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1943,44 +1953,44 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+24"/>
         <source>Go to &amp;message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location line="+162"/>
+        <location line="+11"/>
+        <location line="+185"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-155"/>
-        <location line="+162"/>
+        <location line="-177"/>
+        <location line="+185"/>
         <source>Copy &amp;link location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-153"/>
+        <location line="-175"/>
         <source>Re&amp;act</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Repl&amp;y</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>&amp;Thread</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Un&amp;pin</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1990,37 +2000,37 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>&amp;Read receipts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Forward</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>&amp;Mark as read</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>View raw message</source>
         <translation type="unfinished">ソースを見る</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>View decrypted raw message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Remo&amp;ve message</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+14"/>
         <source>Report message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2030,17 +2040,17 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>&amp;Open in external program</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Copy link to eve&amp;nt</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>&amp;Go to quoted message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2317,7 +2327,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerLevels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+741"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+750"/>
         <source>Failed to update powerlevel: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2351,7 +2361,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="-467"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="-468"/>
         <source>Other events</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2870,7 +2880,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2064"/>
+        <location filename="../../src/Cache.cpp" line="+2080"/>
         <source>no version stored</source>
         <translation>バージョンが保存されていません</translation>
     </message>
@@ -2963,7 +2973,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+54"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation type="unfinished"></translation>
@@ -2986,7 +2996,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">閉じる</translation>
     </message>
     <message>
-        <location line="+388"/>
+        <location line="+379"/>
         <source>Enter the tag you want to use:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3043,11 +3053,6 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+13"/>
         <source>Create new tag...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Add or remove from community...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3559,7 +3564,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5141"/>
+        <location filename="../../src/Cache.cpp" line="-5121"/>
         <source>Failed to connect to secret storage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3680,34 +3685,37 @@ If you choose verify, you need to have the other device available. If you choose
     </message>
 </context>
 <context>
-    <name>SpaceMenuLevel</name>
+    <name>SpaceMenu</name>
     <message>
-        <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
-        <source>Add or remove from community</source>
+        <location filename="../qml/components/SpaceMenu.qml" line="+16"/>
+        <source>Add or remove from community...</source>
         <translation type="unfinished"></translation>
     </message>
+</context>
+<context>
+    <name>SpaceMenuLevel</name>
     <message>
-        <location line="+12"/>
+        <location filename="../qml/components/SpaceMenuLevel.qml" line="+28"/>
         <source>Official community for this room</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Affiliated community for this room</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Listed only for community members</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Listed only for room members</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Not related</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3743,7 +3751,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+188"/>
+        <location line="+189"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3769,7 +3777,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+162"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+167"/>
         <source>Part of a thread</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3849,7 +3857,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1598"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1605"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>メッセージを編集できませんでした: %1</translation>
@@ -4204,7 +4212,7 @@ Reason: %4</source>
         <translation>%1は退室しました。</translation>
     </message>
     <message>
-        <location line="-2291"/>
+        <location line="-2298"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4268,8 +4276,15 @@ Reason: %4</source>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message numerus="yes">
+        <location line="+115"/>
+        <source>%n hour(s) later</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+1680"/>
+        <location line="+1572"/>
         <source>%2 revoked the invite to %1.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4308,7 +4323,7 @@ Reason: %4</source>
 <context>
     <name>TimelineSectionHeader</name>
     <message>
-        <location filename="../qml/TimelineSectionHeader.qml" line="+134"/>
+        <location filename="../qml/TimelineSectionHeader.qml" line="+139"/>
         <source>%1&apos;s status message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4351,7 +4366,7 @@ Reason: %4</source>
         <translation type="unfinished">設定</translation>
     </message>
     <message numerus="yes">
-        <location line="+17"/>
+        <location line="+18"/>
         <source>%n member(s)</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -4398,7 +4413,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+43"/>
         <source>Hide invite reason</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4709,7 +4724,6 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+601"/>
         <location filename="../../src/UserSettingsPage.h" line="+280"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
@@ -4718,7 +4732,7 @@ Reason: %4</source>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+420"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+1030"/>
         <source>Theme</source>
         <translation type="unfinished">テーマ</translation>
     </message>
@@ -5574,7 +5588,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+375"/>
+        <location filename="../../src/Utils.cpp" line="+383"/>
         <source>Yesterday</source>
         <translation>昨日</translation>
     </message>
@@ -5633,7 +5647,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="-303"/>
+        <location filename="../../src/Utils.cpp" line="-308"/>
         <source>You sent an audio clip</source>
         <translation>音声データを送信しました</translation>
     </message>

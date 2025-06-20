@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3549"/>
+        <location filename="../../src/Cache.cpp" line="+3500"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 kaj %2</translation>
@@ -238,12 +238,12 @@
     </message>
     <message>
         <location line="+4"/>
-        <location line="+957"/>
+        <location line="+985"/>
         <source>Invited user: %1</source>
         <translation>Invitita uzanto: %1</translation>
     </message>
     <message numerus="yes">
-        <location line="-709"/>
+        <location line="-737"/>
         <source>%n unread message(s) in room %1
 </source>
         <translation>
@@ -269,7 +269,7 @@
         <translation>Malsukcesis malfermi datumbazon; adiaŭas!</translation>
     </message>
     <message>
-        <location line="+310"/>
+        <location line="+338"/>
         <source>Knock on room</source>
         <translation>Frapi al ĉambro</translation>
     </message>
@@ -296,12 +296,12 @@
     </message>
     <message>
         <location line="+43"/>
-        <location line="+497"/>
+        <location line="+498"/>
         <source>Confirm invite</source>
         <translation>Konfirmu inviton</translation>
     </message>
     <message>
-        <location line="-496"/>
+        <location line="-497"/>
         <source>Do you really want to invite %1 (%2)?</source>
         <translation>Ĉu vi certe volas inviti uzanton %1 (%2)?</translation>
     </message>
@@ -336,7 +336,7 @@
         <translation>Ĉu vi certe volas malforbari uzanton %1 (%2)?</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Failed to unban %1 in %2: %3</source>
         <translation>Malsukcesis malforbari uzanton %1 en %2: %3</translation>
     </message>
@@ -351,7 +351,7 @@
         <translation>Ĉu vi certe volas komenci privatan babilon kun %1?</translation>
     </message>
     <message>
-        <location line="-1019"/>
+        <location line="-1048"/>
         <source>Cache migration failed!</source>
         <translation>Malsukcesis migrado de kaŝmemoro!</translation>
     </message>
@@ -393,7 +393,7 @@ Se vi opinias tion erara, vi povas anstataŭe fermi Nhekon, por eble reakiri via
     </message>
     <message>
         <location line="+35"/>
-        <location line="+156"/>
+        <location line="+184"/>
         <source>Please try to login again: %1</source>
         <translation>Bonvolu provi resaluti: %1</translation>
     </message>
@@ -458,7 +458,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
 <context>
     <name>CommandCompleter</name>
     <message>
-        <location filename="../../src/CommandCompleter.cpp" line="+116"/>
+        <location filename="../../src/CommandCompleter.cpp" line="+120"/>
         <source>/me &lt;message&gt;</source>
         <translation>/me &lt;mesaĝo&gt;</translation>
     </message>
@@ -593,7 +593,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation>/goto &lt;indiko de mesaĝo&gt;</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+20"/>
         <source>Send a message expressing an action.</source>
         <translation>Sendi mesaĝon, kiu esprimas agon.</translation>
     </message>
@@ -625,26 +625,26 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
     </message>
     <message>
         <location line="+2"/>
-        <source>Kick a user from the current room. Reason is optional.</source>
-        <translation>Forpeli uzanton de nuna ĉambro. Kialo estas malnepra.</translation>
+        <source>Kick a user from the current room. Reason is optional. If user is left out, will try to kick the sender you are replying to.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Ban a user from the current room. Reason is optional.</source>
-        <translation>Forbari uzanton de nuna ĉambro. Kialo estas malnepra.</translation>
+        <location line="+3"/>
+        <source>Ban a user from the current room. Reason is optional. If user is left out, will try to ban the sender you are replying to.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Unban a user in the current room. Reason is optional.</source>
-        <translation>Malforbari uzanton de nuna ĉambro. Kialo estas malnepra.</translation>
+        <location line="+3"/>
+        <source>Unban a user in the current room. Reason is optional. If user is left out, will try to unban the sender you are replying to.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Redact an event or all locally cached messages of a user.</source>
-        <translation>Forigi okazon aŭ ĉiujn kaŝmemoritajn mesaĝojn de uzanto.</translation>
+        <location line="+3"/>
+        <source>Redact an event by event id or that you are replying to or all locally cached messages of a user.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="+3"/>
         <source>Change your displayname in this room.</source>
         <translation>Ŝanĝi vian prezentan nomon en ĉi tiu ĉambro.</translation>
     </message>
@@ -772,6 +772,16 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
         <translation>Reatenti uzanton.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Block all invites from a user, a server, to a specific room or set the default.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Allow all invites from a user, a server, to a specific room or set the default.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1010,7 +1020,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
 <context>
     <name>CrossSigningSecrets</name>
     <message>
-        <location filename="../../src/ChatPage.cpp" line="+311"/>
+        <location filename="../../src/ChatPage.cpp" line="+312"/>
         <source>Decrypt secrets</source>
         <translation>Malĉifri sekretojn</translation>
     </message>
@@ -1581,7 +1591,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
 <context>
     <name>InputBar</name>
     <message>
-        <location filename="../../src/timeline/InputBar.cpp" line="+421"/>
+        <location filename="../../src/timeline/InputBar.cpp" line="+423"/>
         <source>All Files (*)</source>
         <translation>Ĉiuj dosieroj (*)</translation>
     </message>
@@ -1591,7 +1601,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation>Elekti dosiero(j)n</translation>
     </message>
     <message>
-        <location line="+628"/>
+        <location line="+623"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1601,7 +1611,7 @@ Vi povas aldoni noton, pri kial oni akceptu vian frapadon:</translation>
         <translation>Malsukcesis preni uzanton %1</translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+412"/>
         <source>Upload of &apos;%1&apos; failed</source>
         <translation>Alŝuto de «%1» malsukcesis</translation>
     </message>
@@ -1947,7 +1957,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <translation>Elektebloj</translation>
     </message>
     <message>
-        <location line="+130"/>
+        <location line="+133"/>
         <source>Enter reason for removal or hit enter for no reason:</source>
         <translation>Enigu kialon de forigo aŭ premu enigan klavon por vaka kialo:</translation>
     </message>
@@ -1957,44 +1967,44 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <translation>Kialo de forigo</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="+24"/>
         <source>Go to &amp;message</source>
         <translation>Iri al &amp;mesaĝo</translation>
     </message>
     <message>
-        <location line="+10"/>
-        <location line="+162"/>
+        <location line="+11"/>
+        <location line="+185"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopii</translation>
     </message>
     <message>
-        <location line="-155"/>
-        <location line="+162"/>
+        <location line="-177"/>
+        <location line="+185"/>
         <source>Copy &amp;link location</source>
         <translation>Kopii celon de &amp;ligilo</translation>
     </message>
     <message>
-        <location line="-153"/>
+        <location line="-175"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;agi</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>Repl&amp;y</source>
         <translation>Re&amp;spondi</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>&amp;Edit</source>
         <translation>R&amp;edakti</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>&amp;Thread</source>
         <translation>&amp;Fadeno</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Un&amp;pin</source>
         <translation>Mal&amp;fiksi</translation>
     </message>
@@ -2004,37 +2014,37 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <translation>&amp;Fiksi</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>&amp;Read receipts</source>
         <translation>K&amp;vitancoj</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>&amp;Forward</source>
         <translation>&amp;Plusendi</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>&amp;Mark as read</source>
         <translation>&amp;Marki legita</translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>View raw message</source>
         <translation>Vidi krudan mesaĝon</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>View decrypted raw message</source>
         <translation>Vidi malĉifritan krudan mesaĝon</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+9"/>
         <source>Remo&amp;ve message</source>
         <translation>&amp;Forigi mesaĝon</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+14"/>
         <source>Report message</source>
         <translation>Raporti mesaĝon</translation>
     </message>
@@ -2044,17 +2054,17 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
         <translation>Kon&amp;servi kiel</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>&amp;Open in external program</source>
         <translation>&amp;Malfermi per aparta programo</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="+8"/>
         <source>Copy link to eve&amp;nt</source>
         <translation>Kopii ligilon al oka&amp;zo</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>&amp;Go to quoted message</source>
         <translation>&amp;Iri al citita mesaĝo</translation>
     </message>
@@ -2331,7 +2341,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
 <context>
     <name>PowerLevels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+741"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+750"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>Malsukcesis ŝanĝi povnivelon: %1</translation>
     </message>
@@ -2365,7 +2375,7 @@ Ekzemplo: https://yourserver.example.com:8787</translation>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="-467"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="-468"/>
         <source>Other events</source>
         <translation>Aliaj okazoj</translation>
     </message>
@@ -2886,7 +2896,7 @@ forigi la enhavon, se necese.</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2064"/>
+        <location filename="../../src/Cache.cpp" line="+2080"/>
         <source>no version stored</source>
         <translation>neniu versio konservita</translation>
     </message>
@@ -2979,7 +2989,7 @@ forigi la enhavon, se necese.</translation>
         <translation>Eksterreta</translation>
     </message>
     <message>
-        <location line="+58"/>
+        <location line="+54"/>
         <source>Encryption not set up</source>
         <extracomment>Cross-signing setup has not run yet.</extracomment>
         <translation>Ĉifrado ne jam agordiĝis</translation>
@@ -3002,7 +3012,7 @@ forigi la enhavon, se necese.</translation>
         <translation>Fermi</translation>
     </message>
     <message>
-        <location line="+388"/>
+        <location line="+379"/>
         <source>Enter the tag you want to use:</source>
         <translation>Enigu la etikedon, kiun vi volas uzi:</translation>
     </message>
@@ -3060,11 +3070,6 @@ forigi la enhavon, se necese.</translation>
         <location line="+13"/>
         <source>Create new tag...</source>
         <translation>Krei novan etikedon…</translation>
-    </message>
-    <message>
-        <location line="+11"/>
-        <source>Add or remove from community...</source>
-        <translation>Aldoni al aŭ forigi de komunumo…</translation>
     </message>
 </context>
 <context>
@@ -3578,7 +3583,7 @@ forigi la enhavon, se necese.</translation>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5141"/>
+        <location filename="../../src/Cache.cpp" line="-5121"/>
         <source>Failed to connect to secret storage</source>
         <translation>Malsukcesis konektiĝi al sekreta deponejo</translation>
     </message>
@@ -3701,34 +3706,37 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
     </message>
 </context>
 <context>
+    <name>SpaceMenu</name>
+    <message>
+        <location filename="../qml/components/SpaceMenu.qml" line="+16"/>
+        <source>Add or remove from community...</source>
+        <translation type="unfinished">Aldoni al aŭ forigi de komunumo…</translation>
+    </message>
+</context>
+<context>
     <name>SpaceMenuLevel</name>
     <message>
-        <location filename="../qml/components/SpaceMenuLevel.qml" line="+16"/>
-        <source>Add or remove from community</source>
-        <translation>Aldoni al aŭ forigi de komunumo</translation>
-    </message>
-    <message>
-        <location line="+12"/>
+        <location filename="../qml/components/SpaceMenuLevel.qml" line="+28"/>
         <source>Official community for this room</source>
         <translation>Oficiala komunumo por ĉi tiu ĉambro</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Affiliated community for this room</source>
         <translation>Parenca komunumo por ĉi tiu ĉambro</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Listed only for community members</source>
         <translation>Listigita nur por komunumanoj</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Listed only for room members</source>
         <translation>Listigita nur por ĉambranoj</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="+8"/>
         <source>Not related</source>
         <translation>Nerilata</translation>
     </message>
@@ -3765,7 +3773,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
         <translation>Serĉu</translation>
     </message>
     <message>
-        <location line="+188"/>
+        <location line="+189"/>
         <source>Change what packs are enabled, remove packs, or create new ones</source>
         <translation>Ŝalti pakojn, forigi ilin, aŭ krei novajn</translation>
     </message>
@@ -3791,7 +3799,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
 <context>
     <name>TimelineDefaultMessageStyle</name>
     <message>
-        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+162"/>
+        <location filename="../qml/TimelineDefaultMessageStyle.qml" line="+167"/>
         <source>Part of a thread</source>
         <translation>Parto de fadeno</translation>
     </message>
@@ -3871,7 +3879,7 @@ Se vi elektos kontrolon, vi devos havi alian aparaton disponeblan. Se vi elektos
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1598"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1605"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Malsukcesis redaktado de mesaĝo: %1</translation>
@@ -4233,7 +4241,7 @@ Kialo: %4</translation>
         <translation>%1 forigis sian frapon.</translation>
     </message>
     <message>
-        <location line="-2303"/>
+        <location line="-2310"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 ŝanĝis, kiuj serviloj estas permesitaj en la ĉambro.</translation>
     </message>
@@ -4297,8 +4305,16 @@ Kialo: %4</translation>
         <source>You joined this room.</source>
         <translation>Vi aliĝis ĉi tiun ĉambron.</translation>
     </message>
+    <message numerus="yes">
+        <location line="+115"/>
+        <source>%n hour(s) later</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
     <message>
-        <location line="+1020"/>
+        <location line="+912"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 necesigis inviton por aliĝo al ĉi tiu ĉambro.</translation>
     </message>
@@ -4337,7 +4353,7 @@ Kialo: %4</translation>
 <context>
     <name>TimelineSectionHeader</name>
     <message>
-        <location filename="../qml/TimelineSectionHeader.qml" line="+134"/>
+        <location filename="../qml/TimelineSectionHeader.qml" line="+139"/>
         <source>%1&apos;s status message</source>
         <translation>Statmesaĝo de %1</translation>
     </message>
@@ -4380,7 +4396,7 @@ Kialo: %4</translation>
         <translation>Agordoj</translation>
     </message>
     <message numerus="yes">
-        <location line="+17"/>
+        <location line="+18"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n ano</numerusform>
@@ -4428,7 +4444,7 @@ Kialo: %4</translation>
         <translation>Invitita de %1 (%2)</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+43"/>
         <source>Hide invite reason</source>
         <translation>Kaŝi kialon de invito</translation>
     </message>
@@ -4741,7 +4757,6 @@ Kialo: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+601"/>
         <location filename="../../src/UserSettingsPage.h" line="+280"/>
         <source>Default</source>
         <translation>Implicita</translation>
@@ -4750,7 +4765,7 @@ Kialo: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location line="+420"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+1030"/>
         <source>Theme</source>
         <translation>Haŭto</translation>
     </message>
@@ -5627,7 +5642,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+375"/>
+        <location filename="../../src/Utils.cpp" line="+383"/>
         <source>Yesterday</source>
         <translation>Hieraŭ</translation>
     </message>
@@ -5686,7 +5701,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>message-description sent:</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="-303"/>
+        <location filename="../../src/Utils.cpp" line="-308"/>
         <source>You sent an audio clip</source>
         <translation>Vi sendis sonmesaĝon</translation>
     </message>
