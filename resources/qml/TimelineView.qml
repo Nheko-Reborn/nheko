@@ -203,27 +203,27 @@ Item {
             url: parent.avatarUrl.replace("mxc://", "image://MxcImage/")
             implicitWidth: 130
         }
-        RowLayout {
-            Layout.alignment: Qt.AlignHCenter
-            spacing: Nheko.paddingMedium
+
+        MatrixText {
+            horizontalAlignment: TextEdit.AlignHCenter
             Layout.fillWidth: true
+            font.pixelSize: 24
+            text: (!room && !(roomPreview?.isFetched ?? false)) ? qsTr("No preview available") : preview.roomName
 
-            MatrixText {
-                horizontalAlignment: TextEdit.AlignHCenter
-                font.pixelSize: 24
-                text: (!room && !(roomPreview?.isFetched ?? false)) ? qsTr("No preview available") : preview.roomName
-            }
-            ImageButton {
-                ToolTip.text: qsTr("Settings")
-                ToolTip.visible: hovered
-
-                hoverEnabled: true
-                image: ":/icons/icons/ui/settings.svg"
-                visible: !!room
-
-                onClicked: TimelineManager.openRoomSettings(room.roomId)
-            }
         }
+        ImageButton {
+            Layout.alignment: Qt.AlignHCenter
+            ToolTip.text: qsTr("Settings")
+            ToolTip.visible: hovered
+            Layout.bottomMargin: Nheko.paddingMedium
+
+            hoverEnabled: true
+            image: ":/icons/icons/ui/settings.svg"
+            visible: !!room
+
+            onClicked: TimelineManager.openRoomSettings(room.roomId)
+        }
+
         RowLayout {
             Layout.alignment: Qt.AlignHCenter
             spacing: Nheko.paddingMedium
@@ -231,7 +231,7 @@ Item {
             Layout.fillWidth: true
 
             MatrixText {
-                Layout.preferredWidth: implicitWidth
+                Layout.preferredWidth: contentWidth
                 text: qsTr("%n member(s)", "", room ? room.roomMemberCount : 0)
             }
             ImageButton {
@@ -250,21 +250,11 @@ Item {
             Layout.rightMargin: Nheko.paddingLarge
             Layout.maximumHeight: timelineView.height / 3
 
-            TextArea {
+            MatrixText {
                 background: null
                 horizontalAlignment: TextEdit.AlignHCenter
-                readOnly: true
-                selectByMouse: true
                 text: (room || (roomPreview?.isFetched ?? false)) ? TimelineManager.escapeEmoji(preview.roomTopic) : qsTr("This room is possibly inaccessible. If this room is private, you should remove it from this community.")
                 textFormat: TextEdit.RichText
-                wrapMode: TextEdit.WordWrap
-
-                onLinkActivated: Nheko.openLink(link)
-
-                NhekoCursorShape {
-                    anchors.fill: parent
-                    cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
-                }
             }
         }
         FlatButton {
@@ -312,6 +302,9 @@ Item {
             visible: roomPreview && roomPreview.isInvite && reasonField.showReason
 
             MatrixText {
+                Layout.maximumWidth: contentWidth
+                Layout.preferredWidth: contentWidth
+                Layout.fillWidth: true
                 text: qsTr("Invited by %1 (%2)").arg(TimelineManager.escapeEmoji(inviterAvatar.displayName)).arg(TimelineManager.escapeEmoji(TimelineManager.htmlEscape(inviterAvatar.userid)))
             }
             Avatar {
@@ -370,6 +363,7 @@ Item {
             Layout.fillHeight: true
         }
     }
+
     ImageButton {
         id: backToRoomsButton
 
