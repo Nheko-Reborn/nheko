@@ -4369,17 +4369,17 @@ Alasan: %4</translation>
         <translation>/%1 terlihat seperti perintah yang tidak lengkap. Untuk tetap mengirimkannya, tambahkan spasi di akhir pesan kamu.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>Tidak ada tampilan yang tersedia</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Pengaturan</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n anggota</numerusform>
@@ -4391,12 +4391,12 @@ Alasan: %4</translation>
         <translation>Tampilkan anggota %1</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>Ruangan ini mungkin tidak dapat diakses. Jika ruangan ini bersifat pribadi, kamu seharusnya menghapusnya dari komunitas ini.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>bergabung ke percakapan</translation>
     </message>
@@ -4421,7 +4421,7 @@ Alasan: %4</translation>
         <translation>tinggalkan</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>Diundang oleh</translation>
     </message>
@@ -4436,7 +4436,7 @@ Alasan: %4</translation>
         <translation>Tampilkan alasan undangan</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Kembali ke daftar ruangan</translation>
     </message>

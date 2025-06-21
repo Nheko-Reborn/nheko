@@ -4380,17 +4380,17 @@ Raison : %4</translation>
         <translation>/%1 ressemble à une commande incomplète. Néanmoins, pour forcer l&apos;envoi, ajoutez un espace à la fin de votre message.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>Aucune prévisualisation disponible</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n membre</numerusform>
@@ -4403,12 +4403,12 @@ Raison : %4</translation>
         <translation>Voir les membres de %1</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>Ce salon est potentiellement inaccessible. Si ce salon est privé, vous devriez le retirer de cette communauté.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>rejoindre la conversation</translation>
     </message>
@@ -4433,7 +4433,7 @@ Raison : %4</translation>
         <translation>quitter</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>Invité(e) par %1 (%2)</translation>
     </message>
@@ -4448,7 +4448,7 @@ Raison : %4</translation>
         <translation>Montrer la raison de l&apos;invitation</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Revenir à la liste des salons</translation>
     </message>

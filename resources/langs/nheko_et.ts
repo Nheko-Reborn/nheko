@@ -4380,17 +4380,17 @@ Põhjus: %4</translation>
         <translation>/%1 tundub olema poolik käsk. Kui tahad seda ikkagi saata, siis lisa oma sõnumi lõppu tühik.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>Eelvaade pole saadaval</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Seadistused</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n liige</numerusform>
@@ -4403,12 +4403,12 @@ Põhjus: %4</translation>
         <translation>Vaata %1 jututoa liikmeid</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>Tõenäoliselt puudub ligipääs sellele jututoale. Kui tegemist on privaatse jututoaga, siis palun eemalda ta kogukonnast.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>liitu vestlusega</translation>
     </message>
@@ -4433,7 +4433,7 @@ Põhjus: %4</translation>
         <translation>lahku</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>%1 (%2) saatis kutse</translation>
     </message>
@@ -4448,7 +4448,7 @@ Põhjus: %4</translation>
         <translation>Näita kutse põhjust</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Tagasi jututubade loendisse</translation>
     </message>

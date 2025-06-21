@@ -4386,17 +4386,17 @@ Kialo: %4</translation>
         <translation>/%1 aspektas kiel nefinita ordono. Por tamen sendi ĝin, aldonu spacon al la fino de via mesaĝo.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>Neniu antaŭrigardo disponeblas</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Agordoj</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n ano</numerusform>
@@ -4409,12 +4409,12 @@ Kialo: %4</translation>
         <translation>Montri anojn de %1</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>Ĉi tiu ĉambro eble estas nealirebla. Se la ĉambro estas privata, vi devus forigi ĝin de ĉi tiu komunumo.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>aliĝi al interparolo</translation>
     </message>
@@ -4439,7 +4439,7 @@ Kialo: %4</translation>
         <translation>foriri</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>Invitita de %1 (%2)</translation>
     </message>
@@ -4454,7 +4454,7 @@ Kialo: %4</translation>
         <translation>Montri kialon de invito</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Reen al listo de ĉambroj</translation>
     </message>

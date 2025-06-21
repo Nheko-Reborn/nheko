@@ -4380,17 +4380,17 @@ Reason: %4</translation>
         <translation>/%1 looks like an incomplete command. To send it anyway, add a space to the end of your message.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>No preview available</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Settings</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n member</numerusform>
@@ -4403,12 +4403,12 @@ Reason: %4</translation>
         <translation>View members of %1</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>This room is possibly inaccessible. If this room is private, you should remove it from this community.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>join the conversation</translation>
     </message>
@@ -4433,7 +4433,7 @@ Reason: %4</translation>
         <translation>leave</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>Invited by %1 (%2)</translation>
     </message>
@@ -4448,7 +4448,7 @@ Reason: %4</translation>
         <translation>Show invite reason</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Back to room list</translation>
     </message>

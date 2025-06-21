@@ -4375,17 +4375,17 @@ Syy: %4</translation>
         <translation>/%1 vaikuttaa puutteeliselta komennolta. Lähettääksesi sen silti, lisää välilyönti viestin perään.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>Esikatselua ei saatavilla</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Asetukset</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n jäsen</numerusform>
@@ -4398,12 +4398,12 @@ Syy: %4</translation>
         <translation>Näytä huoneen %1 jäsenet</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>liity keskusteluun</translation>
     </message>
@@ -4428,7 +4428,7 @@ Syy: %4</translation>
         <translation>lähde</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4443,7 +4443,7 @@ Syy: %4</translation>
         <translation>Näytä kutsun syy</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Takaisin huonelistaan</translation>
     </message>
@@ -5342,7 +5342,7 @@ Vaikuttaa vain salattujen keskustelujen viesteihin.</translation>
     <message>
         <location line="+3"/>
         <source>Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Nheko käyttää animaatioita useissa paikoissa tehden asioista nättejä. Tämä asetus sallii niiden poistamisen käytöstä jos ne aiheuttavat huonovointisuutta.</translation>
     </message>
     <message>
         <location line="+3"/>

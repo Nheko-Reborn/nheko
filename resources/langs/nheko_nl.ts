@@ -4380,17 +4380,17 @@ Reden: %4</translation>
         <translation>/%1 ziet eruit als een onvolledig commando. Om het toch te versturen, voeg een spatie toe aan het eind van je bericht.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>Geen voorbeeld beschikbaar</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Instellingen</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n deelnemer</numerusform>
@@ -4403,12 +4403,12 @@ Reden: %4</translation>
         <translation>Bekijk deelnemers aan %1</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>Deze kamer is mogelijk niet toegankelijk. Als de kamer privé is, wil je hem waarschijnlijk uit de moedergroep weghalen.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>Neem deel aan het gesprek</translation>
     </message>
@@ -4433,7 +4433,7 @@ Reden: %4</translation>
         <translation>verlaten</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>Uitgenodigd door %1 (%2)</translation>
     </message>
@@ -4448,7 +4448,7 @@ Reden: %4</translation>
         <translation>Toon uitnodigingsreden</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Terug naar kamerlijst</translation>
     </message>

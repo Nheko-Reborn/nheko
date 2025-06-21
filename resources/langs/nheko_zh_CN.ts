@@ -4368,17 +4368,17 @@ Reason: %4</source>
         <translation>命令 /%1 似乎不完整。如果仍然要发送，请在消息末尾添加空格。</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>预览不可用</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n 个成员</numerusform>
@@ -4390,12 +4390,12 @@ Reason: %4</source>
         <translation>查看 %1 的成员</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>此聊天室可能无法访问。如果此聊天室是私有的，你应该将它从此社区中移除。</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>加入对话</translation>
     </message>
@@ -4420,7 +4420,7 @@ Reason: %4</source>
         <translation>离开</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>邀请自 %1 (%2)</translation>
     </message>
@@ -4435,7 +4435,7 @@ Reason: %4</source>
         <translation>显示邀请理由</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>返回聊天室列表</translation>
     </message>

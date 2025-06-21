@@ -4385,17 +4385,17 @@ Motivo: %4</translation>
         <translation>/%1 parece un comando incompleto. Para enviarlo de todos modos, añade un espacio al final del mensaje.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>No hay vista previa disponible</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Ajustes</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n miembro</numerusform>
@@ -4408,12 +4408,12 @@ Motivo: %4</translation>
         <translation>Ver miembros de %1</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>Esta habitación es posiblemente inaccesible. Si esta sala es privada, debes eliminarla de esta comunidad.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>unirse a la conversación</translation>
     </message>
@@ -4438,7 +4438,7 @@ Motivo: %4</translation>
         <translation>irse</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>Invitado por %1 (%2)</translation>
     </message>
@@ -4453,7 +4453,7 @@ Motivo: %4</translation>
         <translation>Mostrar el motivo de la invitación</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Volver a la lista de salas</translation>
     </message>

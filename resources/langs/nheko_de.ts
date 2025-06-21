@@ -4380,17 +4380,17 @@ Grund: %4</translation>
         <translation>/%1 schein ein unvollständiger Befehl zu sein. Zum trotzdem senden kannst du ein Leerzeichen danach einfügen.</translation>
     </message>
     <message>
-        <location line="+44"/>
+        <location line="+41"/>
         <source>No preview available</source>
         <translation>Keine Vorschau verfügbar</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+5"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message numerus="yes">
-        <location line="+18"/>
+        <location line="+19"/>
         <source>%n member(s)</source>
         <translation>
             <numerusform>%n Mitglied</numerusform>
@@ -4403,12 +4403,12 @@ Grund: %4</translation>
         <translation>Zeige Mitglieder von %1 an</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+18"/>
         <source>This room is possibly inaccessible. If this room is private, you should remove it from this community.</source>
         <translation>Dieser Raum kann nicht betreten werden. Wenn der Raum privat ist, solltest du ihn von der Gruppe entfernen.</translation>
     </message>
     <message>
-        <location line="+14"/>
+        <location line="+6"/>
         <source>join the conversation</source>
         <translation>An der Unterhaltung teilnehmen</translation>
     </message>
@@ -4433,7 +4433,7 @@ Grund: %4</translation>
         <translation>verlassen</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+15"/>
         <source>Invited by %1 (%2)</source>
         <translation>Eingeladen durch %1 (%2)</translation>
     </message>
@@ -4448,7 +4448,7 @@ Grund: %4</translation>
         <translation>Einladungsgrund anzeigen</translation>
     </message>
     <message>
-        <location line="+18"/>
+        <location line="+19"/>
         <source>Back to room list</source>
         <translation>Zurück zur Raumliste</translation>
     </message>
