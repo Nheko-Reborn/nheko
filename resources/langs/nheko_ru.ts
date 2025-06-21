@@ -66,7 +66,7 @@
     <message>
         <location line="+41"/>
         <source>Primary alias</source>
-        <translation>Основное имя</translation>
+        <translation>Основной псевдоним</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -91,7 +91,7 @@
     <message>
         <location line="+19"/>
         <source>#new-alias:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>#новый-псевдоним:сервер.домен</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -104,12 +104,12 @@
     <message>
         <location filename="../qml/dialogs/AllowedRoomsSettingsDialog.qml" line="+24"/>
         <source>Allowed rooms settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Предоставляющие доступ комнаты</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>List of rooms that allow access to this room. Anyone who is in any of those rooms can join this room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Список комнат, которые предоставляют доступ к этой комнате. Любой, кто находится в какой-то из этих комнат, может присоединиться к этой комнате.</translation>
     </message>
     <message>
         <location line="+36"/>
@@ -133,7 +133,7 @@
         <location filename="../../src/Cache.cpp" line="+3500"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 и %2</translation>
     </message>
     <message numerus="yes">
         <location line="+2"/>
@@ -217,12 +217,12 @@
     <message>
         <location filename="../../src/voip/CallManager.cpp" line="+895"/>
         <source>X11</source>
-        <translation type="unfinished"></translation>
+        <translation>X11</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>PipeWire</source>
-        <translation type="unfinished"></translation>
+        <translation>PipeWire</translation>
     </message>
     <message>
         <location line="+19"/>
@@ -247,28 +247,33 @@
         <location line="-737"/>
         <source>%n unread message(s) in room %1
 </source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n непрочитанное сообщение в комнате %1
+</numerusform>
+            <numerusform>%n непрочитанных сообщения в комнате %1
+</numerusform>
+            <numerusform>%n непрочитанных сообщений в комнате %1
+</numerusform>
         </translation>
     </message>
     <message>
         <location line="+84"/>
         <source>Confirm logout</source>
-        <translation type="unfinished"></translation>
+        <translation>Подтвердите выход из аккаунта</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Because of the following reason Nheko wants to drop you to the login page:
 %1
 If you think this is a mistake, you can close Nheko instead to possibly recover your encryption keys. After you have been dropped to the login page, you can sign in again using your usual methods.</source>
-        <translation type="unfinished"></translation>
+        <translation>По следующей причине Nheko хочет перенаправить вас на страницу входа:
+%1
+Если вы считаете, что это ошибка, вы можете вместо этого закрыть Nheko, чтобы, возможно, восстановить свои ключи шифрования. После того, как вы попали на страницу входа, вы можете снова войти в систему, используя обычные методы.</translation>
     </message>
     <message>
         <location line="+88"/>
         <source>Migrating the cache to the current version failed. This can have different reasons. Please open an issue at https://github.com/Nheko-Reborn/nheko and try to use an older version in the meantime. Alternatively you can try deleting the cache manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Миграция кэша на текущую версию не удалась. На это могут быть разные причины. Пожалуйста, откройте Issue на https://github.com/Nheko-Reborn/nheko и попробуйте пока что использовать чуть более старую версию программы. Вы также можете удалить кэш вручную.</translation>
     </message>
     <message>
         <location line="+13"/>
@@ -289,7 +294,8 @@ If you think this is a mistake, you can close Nheko instead to possibly recover 
         <location line="+3"/>
         <source>You failed to join %1. You can try to knock so that others can invite you in. Do you want to do so?
 You may optionally provide a reason for others to accept your knock:</source>
-        <translation type="unfinished"></translation>
+        <translation>Вам не удалось присоединиться к %1. Вы можете попробовать постучать, чтобы другие могли пригласить вас войти. Вы хотите сделать это?
+При желании вы можете указать причину, по которой другие должны принять вас:</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -330,7 +336,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+14"/>
         <source>Enter reason for kicking %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите причину исключения %1 (%2) или нажмите Enter, чтобы исключить без причины:</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -340,7 +346,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+11"/>
         <source>Enter reason for banning %1 (%2) or hit enter for no reason:</source>
-        <translation type="unfinished"></translation>
+        <translation>Укажите причину блокировки %1 (%2) или нажмите Enter, чтобы заблокировать без причины:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -350,7 +356,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+3"/>
         <source>Banned user: %1</source>
-        <translation>Удалённый пользователь: %1</translation>
+        <translation>Заблокированный пользователь: %1</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -456,12 +462,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/CommandCompleter.cpp" line="+120"/>
         <source>/me &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/me &lt;сообщение&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;текст&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -476,12 +482,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/part [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/part [причина]</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/leave [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/leave [причина]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -521,37 +527,37 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+14"/>
         <source>/md &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/md &lt;сообщение&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/cmark &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/cmark &lt;сообщение&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/plain &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/plain &lt;сообщение&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbow &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbow &lt;сообщение&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbowme &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbowme &lt;сообщение&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/notice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/notice &lt;сообщение&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>/rainbownotice &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainbownotice &lt;сообщение&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -566,7 +572,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/rainfall [message]</source>
-        <translation type="unfinished"></translation>
+        <translation>/rainfall [сообщение]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -586,7 +592,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/goto &lt;message reference&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/goto &lt;ccылка на сообщение&gt;</translation>
     </message>
     <message>
         <location line="+20"/>
@@ -737,12 +743,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a message with rain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправить сообщение с дождём.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message with a custom message type.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправить сообщение с пользовательским типом сообщения.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -752,32 +758,32 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a message that gradually glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправить сообщение, которое постепенно искажается.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Go to a specific message using an event id, index or matrix: link</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейти к определённому сообщению используя идентификатор события, индекс или matrix: ссылку</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this room to a direct chat.</source>
-        <translation type="unfinished"></translation>
+        <translation>Преобразовать эту комнату в личную переписку.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Convert this direct chat into a room.</source>
-        <translation type="unfinished"></translation>
+        <translation>Преобразовать эту личную переписку в комнату.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать пользователя.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перестать игнорировать пользователя.</translation>
     </message>
 </context>
 <context>
@@ -795,7 +801,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+92"/>
         <source>Do not show notification counts for this community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не показывать счётчик уведомлений для этого сообщества или тэга.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -813,7 +819,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Shows all rooms without filtering.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывает все комнаты без фильтрации.</translation>
     </message>
     <message>
         <location line="+23"/>
@@ -858,22 +864,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+678"/>
         <source>Failed to update community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось обновить сообщество: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to delete room from community: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось удалить комнату из сообщества: %1</translation>
     </message>
     <message>
         <location line="+23"/>
         <source>Failed to update community for room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось обновить сообщество для комнаты: %1</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Failed to remove community from room: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось удалить сообщество из комнаты: %1</translation>
     </message>
 </context>
 <context>
@@ -905,7 +911,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>Do you want to join this room? You can optionally add a reason below:</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы хотите присоединиться к этой комнате? При желании вы можете указать причину ниже:</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -923,22 +929,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateDirect.qml" line="+14"/>
         <source>Create Direct Chat</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать личную переписку</translation>
     </message>
     <message>
         <location line="+60"/>
         <source>User to invite</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользователь для приглашения</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>@user:server.tld</source>
-        <translation type="unfinished"></translation>
+        <translation>@пользователь:сервер.домен</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Encryption</source>
-        <translation type="unfinished">Шифрование</translation>
+        <translation>Шифрование</translation>
     </message>
 </context>
 <context>
@@ -946,12 +952,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/CreateRoom.qml" line="+17"/>
         <source>New community</source>
-        <translation type="unfinished"></translation>
+        <translation>Новое сообщество</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>New Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Новая комната</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -1006,12 +1012,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+6"/>
         <source>Caution: Encryption cannot be disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Внимание: шифрование нельзя отключить</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Create Room</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать комнату</translation>
     </message>
 </context>
 <context>
@@ -1123,12 +1129,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The encryption key was reused! Someone is possibly trying to insert false messages into this chat!</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключом шифрования воспользовались повторно! Возможно, кто-то пытается вставить поддельные сообщения в этот чат!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown decryption error</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестная ошибка расшифровки</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1141,12 +1147,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/EncryptionEnabled.qml" line="+38"/>
         <source>%1 enabled end-to-end encryption</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 включил(а) сквозное шифрование</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Encryption keeps your messages safe by only allowing the people you sent the message to to read it. For extra security, if you want to make sure you are talking to the right people, you can verify them in real life.</source>
-        <translation type="unfinished"></translation>
+        <translation>Шифрование хранит ваши сообщения в безопасности, позволяя читать сообщения лишь тем людям, которым вы их отправили. В качестве дополнительной меры безопасности, если вы хотите убедиться, что говорите именно с теми людьми, вы может проверить их в реальной жизни.</translation>
     </message>
 </context>
 <context>
@@ -1721,27 +1727,27 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+21"/>
         <source>Sign in with Apple</source>
-        <translation type="unfinished"></translation>
+        <translation>Войти при помощи Apple</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Continue with Facebook</source>
-        <translation type="unfinished"></translation>
+        <translation>Войти при помощи Facebook</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Google</source>
-        <translation type="unfinished"></translation>
+        <translation>Войти при помощи Google</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Sign in with Twitter</source>
-        <translation type="unfinished"></translation>
+        <translation>Войти при помощи Twitter</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Login using %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Войти при помощи %1</translation>
     </message>
     <message>
         <location line="+9"/>
@@ -2142,7 +2148,7 @@ Example: https://yourserver.example.com:8787</source>
         <location line="+10"/>
         <source>%1 replied: %2</source>
         <comment>Format a reply in a notification. %1 is the sender, %2 the message</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 ответил(а) на сообщение: %2</translation>
     </message>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-1"/>
@@ -2343,7 +2349,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="-119"/>
         <source>Failed to update powerlevel: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось обновить уровень доступа: %1</translation>
     </message>
 </context>
 <context>
@@ -2369,7 +2375,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location filename="../../src/PowerlevelsEditModels.cpp" line="-468"/>
         <source>Other events</source>
-        <translation type="unfinished"></translation>
+        <translation>Прочие события</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2657,7 +2663,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location filename="../../src/ReadReceiptsModel.cpp" line="+111"/>
         <source>Yesterday, %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Вчера, %1</translation>
     </message>
 </context>
 <context>
@@ -2715,7 +2721,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+2"/>
         <source>Part of the reserved namespace.</source>
-        <translation type="unfinished"></translation>
+        <translation>Зарезервировано под служебные нужды.</translation>
     </message>
     <message>
         <location filename="../qml/pages/RegisterPage.qml" line="+58"/>
@@ -3233,7 +3239,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+0"/>
         <source>Mentions only</source>
-        <translation type="unfinished">Упоминания только</translation>
+        <translation>Только упоминания</translation>
     </message>
     <message>
         <location line="+0"/>
@@ -3466,12 +3472,12 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+29"/>
         <source>Previewing this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Предварительный просмотр комнаты</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>No preview available</source>
-        <translation type="unfinished"></translation>
+        <translation>Предварительный просмотр недоступен</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4163,7 +4169,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location line="+2"/>
         <source>%1 (%2) removed this message at %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) удалил(а) сообщение %3</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4174,22 +4180,23 @@ If you choose verify, you need to have the other device available. If you choose
         <location line="+1"/>
         <source>%1 (%2) removed this message at %3
 Reason: %4</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 (%2) удалил(а) сообщение %3
+Причина: %4</translation>
     </message>
     <message>
         <location line="+102"/>
         <source>%1 invited %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 пригласил(а) %2</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 has changed their avatar and changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 изменил(а) свой аватар и отображаемое имя на %2.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1 has changed their display name to %2.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 изменил(а) своё отображаемое имя на %2.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4214,7 +4221,7 @@ Reason: %4</source>
     <message>
         <location line="+10"/>
         <source>%2 kicked %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 выгнал(а) %1.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4224,7 +4231,7 @@ Reason: %4</source>
     <message>
         <location line="+26"/>
         <source>Reason: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Причина: %1</translation>
     </message>
     <message>
         <location line="-31"/>
@@ -4318,7 +4325,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>%2 unbanned %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>%2 разблокировал(а) %1.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -4334,7 +4341,7 @@ Reason: %4</source>
     <message>
         <location line="+7"/>
         <source>%1 banned %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 заблокировал(а) %2</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -4570,7 +4577,7 @@ Reason: %4</source>
         <location line="+22"/>
         <location line="+13"/>
         <source>Registration aborted</source>
-        <translation type="unfinished"></translation>
+        <translation>Регистрация отменена</translation>
     </message>
     <message>
         <location line="-23"/>
@@ -4802,7 +4809,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Send messages as Markdown</source>
-        <translation type="unfinished">Посылать сообщение в формате Markdown</translation>
+        <translation>Отправлять сообщение в формате Markdown</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4857,7 +4864,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Read receipts</source>
-        <translation type="unfinished">Просмотр получателей</translation>
+        <translation>Показывать подтверждение о прочтении</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4892,17 +4899,17 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Open images with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Открывать изображения в другой программе</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Open videos with external program</source>
-        <translation type="unfinished"></translation>
+        <translation>Открывать видео в другой программе</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Decrypt messages in sidebar</source>
-        <translation type="unfinished">Дешифровывать сообщение в сайдбаре</translation>
+        <translation>Расшифровывать сообщения в боковой панели</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4952,17 +4959,17 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Font Family</source>
-        <translation type="unfinished">Семья Шрифта</translation>
+        <translation>Семейство шрифтов</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Emoji Font Family</source>
-        <translation type="unfinished">Семья шрифта эмодзи</translation>
+        <translation>Семейство шрифтов для эмодзи</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Ringtone</source>
-        <translation type="unfinished">Мелодия Звонка</translation>
+        <translation>Мелодия вызова</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4987,12 +4994,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Allow fallback call assist server</source>
-        <translation type="unfinished">Разрешить помощь резервного сервера для звонков</translation>
+        <translation>Разрешить использование резервного сервера для звонков</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send encrypted messages to verified users only</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправлять зашифрованные сообщения только верифицированным пользователям</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5007,7 +5014,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Profile</source>
-        <translation type="unfinished"></translation>
+        <translation>Профиль</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5017,7 +5024,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Accesstoken</source>
-        <translation type="unfinished"></translation>
+        <translation>Токен доступа</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5057,17 +5064,17 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>TIMELINE</source>
-        <translation type="unfinished"></translation>
+        <translation>СПИСОК СООБЩЕНИЙ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>SIDEBAR</source>
-        <translation type="unfinished"></translation>
+        <translation>БОКОВАЯ ПАНЕЛЬ</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>TRAY</source>
-        <translation type="unfinished"></translation>
+        <translation>СИСТЕМНАЯ ПАНЕЛЬ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5077,7 +5084,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>NOTIFICATIONS</source>
-        <translation type="unfinished"></translation>
+        <translation>УВЕДОМЛЕНИЯ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5097,12 +5104,12 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Session Keys</source>
-        <translation type="unfinished">Ключи сеанса</translation>
+        <translation>Сеансовые ключи</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Cross Signing Secrets</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключи взаимной подписи</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5147,7 +5154,7 @@ Reason: %4</source>
     <message>
         <location line="+39"/>
         <source>Set the notification sound to play when a call invite arrives</source>
-        <translation>Выбрать звук уведомления входящего звонка</translation>
+        <translation>Выбрать звук уведомления входящего вызова</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -5159,22 +5166,24 @@ Reason: %4</source>
         <source>Set timeout (in seconds) for how long after window loses
 focus before the screen will be blurred.
 Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds)</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить задержку (в секундах) прежде чем содержимое окна будет размыто после потери фокуса.
+Если установлено значение 0, размытие будет производиться сразу же, как только Вы переключились на другое приложение.
+Максимальное значение - 3600 с. (1 час).</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Change the background color of messages when you hover over them.</source>
-        <translation type="unfinished">Поменять цвет фона сообщения, когда вы навели курсор над ним.</translation>
+        <translation>Менять цвет фона сообщения при наведении на него курсора мыши.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Make font size larger if messages with only a few emojis are displayed.</source>
-        <translation type="unfinished">Делать шрифт больше, если сообщения содержать только несколько эмодзи.</translation>
+        <translation>Увеличивать размер шрифта, если сообщение не содержит текста, только эмодзи.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Keep the application running in the background after closing the client window.</source>
-        <translation type="unfinished">Держать приложение запущенным в фоне, после закрытия окна.</translation>
+        <translation>Поддерживать приложение запущенным в фоне после закрытия окна.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5195,8 +5204,8 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
         <location line="+2"/>
         <source>Allow using markdown in messages.
 When disabled, all messages are sent as a plain text.</source>
-        <translation type="unfinished">Разрешить использовать markdown в сообщениях.
-Когда выключено, все сообщения посылаются как обычный текст.</translation>
+        <translation>Позволяет использовать Markdown в сообщениях.
+Если выключено, все сообщения посылаются как обычный текст.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5211,12 +5220,12 @@ When disabled, all messages are sent as a plain text.</source>
     <message>
         <location line="+3"/>
         <source>Avatars are resized to fit above the message.</source>
-        <translation type="unfinished"></translation>
+        <translation>Поместить аватар над текстом сообщения и уменьшить его размер, чтобы он соответствовал размеру имени отправителя.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Проигрывать анимированные изображения и видеоролики (например, GIF и WEBP) только при наведении на них курсора мыши.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5264,44 +5273,47 @@ Warning: If your homeserver does not support this, your rooms will never be mark
     <message>
         <location line="+2"/>
         <source>Notify about received messages when the client is not currently focused.</source>
-        <translation type="unfinished"></translation>
+        <translation>Уведомлять о новых сообщениях, если приложение не в фокусе или работает в фоне.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Show an alert when a message is received.
 This usually causes the application icon in the task bar to animate in some fashion.</source>
-        <translation type="unfinished">Показывать предупреждение, когда получено сообщение.
-На это обычно реагирует иконка приложения в таскбаре.</translation>
+        <translation>Отображать визуальное и/или звуковое уведомление при получении нового сообщения.
+Обычно это приводит к анимации иконки приложения в системной панели, конкретный эффект зависит от используемого окружения.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Change the appearance of user avatars in chats.
 OFF - square, ON - circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сменить внешний вид аватаров пользователей.
+Если включено - отображать в виде круга, выключено - в виде квадрата.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Display an identicon instead of a letter when no avatar is set.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отображать Identicon (визуальная иконка как в Github) вместо первой буквы имени, если у собеседника не установлен аватар.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Opens images with an external program when tapping the image.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>При нажатии, открывать изображения при помощи внешнего приложения.
+Примечание: если опция отмечена, зашифрованные данные будут сохраняться на диске в открытом виде и должны быть удалены вручную.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Opens videos with an external program when tapping the video.
 Note that when this option is ON, opened files are left unencrypted on disk and must be manually deleted.</source>
-        <translation type="unfinished"></translation>
+        <translation>При нажатии, открывать видеофайлы при помощи внешнего приложения.
+Примечание: если опция отмечена, зашифрованные данные будут сохраняться на диске в открытом виде и должны быть удалены вручную.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Decrypt the messages shown in the sidebar.
 Only affects messages in encrypted chats.</source>
-        <translation>Отображать расшифрованные сообщения в боковой панели (списке комнат).
-Актуально только для комнат, в которых включено шифрование.</translation>
+        <translation>Расшифровывать сообщение отображающиеся в боковой панели. 
+Влияет только на зашифрованные чаты.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -5368,22 +5380,22 @@ be blurred.</source>
     <message>
         <location line="+25"/>
         <source>The key to decrypt online key backups. If it is cached, you can enable online key backup to store encryption keys securely encrypted on the server.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ, используемый для шифрования резервных копий ключей в онлайн-хранилище. Если он закэширован, Вы можете включить резервирование ключей на удалённом сервере в зашифрованном виде.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>The key to verify your own devices. If it is cached, verifying one of your devices will mark it verified for all your other devices and for users that have verified you.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ предназначен для верификации собственных устройств. Если он закэширован, после верификации одного из ваших устройств оно будет помечено как верифицированное для всех других ваших устройств, а также для пользователей, которые вас верифицировали.</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>The key to verify other users. If it is cached, verifying a user will verify all their devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ предназначен для верификации других пользователей. Если он закэширован, верификация пользователя так автоматически верифицирует всего его устройства.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Your most important key. You don&apos;t need to have it cached, since not caching it makes it less likely it can be stolen and it is only needed to rotate your other signing keys.</source>
-        <translation type="unfinished"></translation>
+        <translation>Самый важный ключ. Используется только для обновления других Ваших ключей и, во избежание кражи, его можно не кэшировать вовсе.</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -5462,12 +5474,12 @@ This setting will take effect upon restart.</source>
         <location line="-78"/>
         <location line="+26"/>
         <source>File Password</source>
-        <translation type="unfinished">Пароль файла</translation>
+        <translation>Пароль для файла</translation>
     </message>
     <message>
         <location line="-25"/>
         <source>Enter the passphrase to decrypt the file:</source>
-        <translation type="unfinished">Введите парольную фразу для расшифрования файла:</translation>
+        <translation>Введите парольную фразу для расшифровки файла:</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -5554,7 +5566,7 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/encryption/VerificationManager.cpp" line="+143"/>
         <source>No encrypted private chat found with this user. Create an encrypted private chat with this user and try again.</source>
-        <translation type="unfinished">Не найдено личного чата с этим пользователем. Создайте зашифрованный личный чат с этим пользователем и попытайтесь еще раз.</translation>
+        <translation>Личный чат с этим пользователем не найден. Создайте зашифрованный личный чат с этим пользователем и попытайтесь еще раз.</translation>
     </message>
 </context>
 <context>
@@ -5821,12 +5833,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+4"/>
         <source>You rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы отклонили звонок</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>%1 rejected a call</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 отклонил(а) звонок</translation>
     </message>
 </context>
 <context>

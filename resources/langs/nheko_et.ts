@@ -1646,7 +1646,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation>Loobu</translation>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -1763,7 +1763,7 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location filename="../qml/pages/LoginPage.qml" line="+58"/>
         <source>Matrix ID</source>
-        <translation>Matrix&apos;i kasutajatunnus</translation>
+        <translation>Matrixi kasutajatunnus</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3573,7 +3573,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     <message>
         <location line="+7"/>
         <source>Cancel</source>
-        <translation>Loobu</translation>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
@@ -3604,7 +3604,7 @@ Näide: https://sinuserver.domeen.com:8787</translation>
     <message>
         <location line="+8"/>
         <source>Failed to setup encryption: %1</source>
-        <translation>Krüptimise seadistamine ei õnnestunud: %1</translation>
+        <translation>Krüptimise kasutuselevõtmine ei õnnestunud: %1</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -4998,7 +4998,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>User ID</source>
-        <translation>Kasutaja tunnus</translation>
+        <translation>Kasutajatunnus</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5038,7 +5038,7 @@ Põhjus: %4</translation>
     <message>
         <location line="+2"/>
         <source>ACCESSIBILITY</source>
-        <translation>LIGIPÄÄSETAVUS</translation>
+        <translation>HÕLPSUS / LIGIPÄÄSETAVUS</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5596,7 +5596,7 @@ Selle funktsionaalsuse jõustumine eeldab rakenduse uuesti käivitamist.</transl
     <message>
         <location line="+19"/>
         <source>Cancel</source>
-        <translation>Tühista</translation>
+        <translation>Katkesta</translation>
     </message>
 </context>
 <context>
