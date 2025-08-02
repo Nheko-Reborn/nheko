@@ -209,7 +209,7 @@ Item {
                             font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
                             horizontalAlignment: Text.AlignHCenter
                             padding: 0
-                            text: button.modelData
+                            text: TimelineManager.htmlEscape(button.modelData)
                             verticalAlignment: Text.AlignVCenter
                             visible: !button.showImage
                         }
