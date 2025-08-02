@@ -515,6 +515,11 @@ EventStore::handleSync(const mtx::responses::Timeline &events)
                 mtx::accessors::sender(*d_event->event) != utils::localUser().toStdString()) {
                 handle_room_verification(this, *d_event->event);
             }
+        } else {
+            // workaround Element not encrypting verification events anymore
+            if (mtx::accessors::sender(event) != utils::localUser().toStdString()) {
+                handle_room_verification(this, event);
+            }
         }
     }
 }
