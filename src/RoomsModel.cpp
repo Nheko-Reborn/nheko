@@ -34,6 +34,7 @@ RoomsModel::roleNames() const
       {Roles::RoomAlias, "roomAlias"},
       {Roles::AvatarUrl, "avatarUrl"},
       {Roles::RoomID, "roomid"},
+      {Roles::RawRoomID, "rawroomid"},
       {Roles::RoomName, "roomName"},
       {Roles::IsTombstoned, "isTombstoned"},
       {Roles::IsSpace, "isSpace"},
@@ -68,6 +69,8 @@ RoomsModel::data(const QModelIndex &index, int role) const
               cache::client()->singleRoomInfo(rooms[index.row()].id).avatar_url);
         case Roles::RoomID:
             return QString::fromStdString(rooms[index.row()].id).toHtmlEscaped();
+        case Roles::RawRoomID:
+            return QString::fromStdString(rooms[index.row()].id);
         case Roles::IsTombstoned:
             return rooms[index.row()].is_tombstoned;
         case Roles::IsSpace:

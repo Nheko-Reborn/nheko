@@ -17,6 +17,7 @@ public:
         AvatarUrl = Qt::UserRole,
         RoomAlias,
         RoomID,
+        RawRoomID,
         RoomName,
         IsTombstoned,
         IsSpace,

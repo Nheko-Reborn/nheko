@@ -62,7 +62,7 @@ Control {
     }
     function finishCompletion() {
         if (popup.completerName == "room")
-            popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.roomid);
+            popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.rawroomid);
         else if (popup.completerName == "user")
             popup.completionSelected(listView.itemAtIndex(currentIndex).modelData.userid);
     }
