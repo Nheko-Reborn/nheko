@@ -1,5 +1,73 @@
 # Changelog
 
+## [0.12.1] -- unreleased
+
+### Features
+
+- Commands to modify invite permissions.
+
+### Improvements
+
+- Also accept unencrypted verification events for compatibility with newer
+    Element clients.
+- Show an "N hours later" bubble when there are gaps in the timeline. (Alexandru
+    Scvorțov)
+- Use native emoji font support on Qt6.9.
+- Ban, unban, kick or redact by replying.
+- Update GPG key in flatpak refs (you need to readd the Nheko repo, if you are
+    using it).
+- More framerates for screen sharing. (Integral)
+- Chunk key requests.
+- Remove reply fallbacks.
+- Disable http3 by default to reduce CPU usage.
+- Limit size of status messages.
+- Ask for password confirmation when exporting keys. (Integral)
+- Allow setting a scale factor on Windows.
+- Show current status message in the status message editor.
+- Use roomids in event links.
+- Stable Nheko app installer.
+
+### Translations
+
+- Russian (Evgeny, Hereore, Libre Hacker, SOT-Tech, Vashkevich Ivan, pizdjuk,
+    sodiel, lemenkov)
+- Estonian (Priit Jõerüüt)
+- Finnish (Aminda Suomalainen, Lurkki14, Priit Jõerüüt)
+- Japanese (cc5efd7b0)
+- German (Sascha, msrd0, nova)
+- Simplified Chinese (Poesty Li)
+- Indonesian (Linerly)
+- French (luilegeant)
+- Dutch (Jaron Viëtor)
+- Protugese (Brazil) (Fábio Rodrigues Ribeiro, Tomás Zandoná)
+- Chinese Traditional (AdrianL40)
+- Ukrainian (Tunguso4ka)
+- Esperanto (Tirifto)
+- Korean (Seungmin Cho)
+
+
+### Bugfixes
+
+- Long room names breaking invite & community UI.
+- Message pagination could get stuck in specific cases.
+- Decline invites from the context menu.
+- Pinned messages getting cut off.
+- Room list menu not opening.
+- Emoji font in reactions.
+- Row spacing in the command completer. (Integral)
+- Hours were calculated incorrectly in human-readable durations. (Integral)
+- Color of emoji picker categories in dark theme. (Integral)
+- Properly thumbnail tiny videos.
+- Profile name and unread message count in task bar entries. (Integral)
+- Properly purge animated media.
+- Fix sending messages with IME active. (q234rty)
+- Fix insets on Qt6.7+.
+- No wayland check on Haiku. (begasus)
+- Skip users we don't share a room with for invites.
+- Ignoring empty mxids.
+- Render avatar changes again.
+- Skipping room pings.
+
 ## [0.12.0] -- 2024-06-12
 
 ### Notes
