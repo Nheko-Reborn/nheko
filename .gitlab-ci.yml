@@ -265,7 +265,11 @@ build-macos:
 
 build-macos-as:
   extends: build-macos
-  image: ghcr.io/cirruslabs/macos-sequoia-xcode:16.1
+  image: registry.nheko.im/nheko-reborn/nheko/cirruslabs/macos-sequoia-xcode:16.2
+  variables:
+    TART_REGISTRY_HOSTNAME: $CI_REGISTRY
+    TART_REGISTRY_USERNAME: $CI_REGISTRY_USER
+    TART_REGISTRY_PASSWORD: $CI_JOB_TOKEN
   tags: [macos-tart]
   before_script:
     - brew install python3 pkg-config clang-format cmake ninja openssl gstreamer pipx
