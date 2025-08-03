@@ -9,6 +9,8 @@
 #include <QAbstractListModel>
 #include <QString>
 
+class RoomlistModel;
+
 class RoomsModel final : public QAbstractListModel
 {
 public:
@@ -20,9 +22,10 @@ public:
         RoomName,
         IsTombstoned,
         IsSpace,
+        RoomParent,
     };
 
-    RoomsModel(bool showOnlyRoomWithAliases = false, QObject *parent = nullptr);
+    RoomsModel(RoomlistModel &roomListModel, bool showOnlyRoomWithAliases = false, QObject *parent = nullptr);
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override
     {
@@ -32,6 +35,7 @@ public:
     QVariant data(const QModelIndex &index, int role) const override;
 
 private:
+    RoomlistModel &roomListModel_;
     std::vector<RoomNameAlias> rooms;
     bool showOnlyRoomWithAliases_;
 };
