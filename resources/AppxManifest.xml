@@ -4,7 +4,7 @@
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
   xmlns:uap10="http://schemas.microsoft.com/appx/manifest/uap/windows10/10"
   xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities">
-  <Identity Name="im.nheko.Nheko" Version="0.12.0.0" Publisher="CN=Nicolas Werner, O=Nicolas Werner, L=Munich, S=Bavaria, C=DE" ProcessorArchitecture="x64"/>
+  <Identity Name="im.nheko.Nheko" Version="0.12.1.0" Publisher="CN=Nicolas Werner, O=Nicolas Werner, L=Munich, S=Bavaria, C=DE" ProcessorArchitecture="x64"/>
   <Properties>
     <DisplayName>Nheko</DisplayName>
     <PublisherDisplayName>Nheko-Reborn</PublisherDisplayName>

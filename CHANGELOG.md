@@ -1,6 +1,15 @@
 # Changelog
 
-## [0.12.1] -- unreleased
+## [0.12.1] -- 2025-08-10
+
+### Security
+
+- Fix html escaping in several locations.
+  - Thank you, HarHarLinks, for the report.
+- Encode urls in tooltips to prevent confusion.
+  - Thank you, Emma, for the report.
+- Mark downloads with a "mark of the web" on Windows to warn before executing them.
+  - Thank you, DarkKirb, for the report.
 
 ### Features
 

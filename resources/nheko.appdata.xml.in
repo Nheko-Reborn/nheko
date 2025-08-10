@@ -62,6 +62,13 @@
   <url type="homepage">https://github.com/Nheko-Reborn/nheko</url>
   <update_contact>https://github.com/Nheko-Reborn</update_contact>
   <releases>
+    <release date="2025-08-10" version="0.12.1">
+      <description>
+        <p>This release fixes a few security issues around rendering rich text messages. Otherwise it also includes a lot of minor improvements.</p>
+      </description>
+
+      <url>https://github.com/Nheko-Reborn/nheko/releases/tag/v0.12.1</url>
+    </release>
     <release date="2024-06-12" version="0.12.0">
       <description>
         <p>This release features a complete port to Qt6, intentional mentions, expiring messages, ignoring users, better sticker and emoji handling and much, much more!</p>
