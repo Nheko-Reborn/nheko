@@ -249,6 +249,14 @@ Control {
                             text: model.roomName
                             textFormat: Text.RichText
                         }
+                        Loader {
+                            active: Settings.displayParentInSwitcher && model.roomParent !== ""
+                            sourceComponent: Label {
+                                color: model.index == popup.currentIndex ? palette.highlightedText : palette.text
+                                text: "[" + model.roomParent + "]"
+                                font.pixelSize: popup.avatarHeight * 0.5
+                            }
+                        }
                     }
                 }
                 DelegateChoice {
