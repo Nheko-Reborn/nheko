@@ -271,6 +271,7 @@ if(USE_BUNDLED_KDSINGLEAPPLICATION)
         kdsingleapplication
         GIT_REPOSITORY https://github.com/KDAB/KDSingleApplication.git
         GIT_TAG        v1.0.0
+        CMAKE_ARGS     "KDSingleApplication_STATIC=ON KDSingleApplication_EXAMPLES=OFF"
     )
     FetchContent_MakeAvailable(kdsingleapplication)
 else()
