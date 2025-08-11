@@ -562,16 +562,12 @@ if(USE_BUNDLED_CMARK)
     FetchContent_Declare(
         cmark
         GIT_REPOSITORY https://github.com/commonmark/cmark.git
-        GIT_TAG        0.30.2
-        CMAKE_ARGS     "CMARK_STATIC=ON CMARK_SHARED=OFF CMARK_TESTS=OFF CMARK_TESTS=OFF"
+        GIT_TAG        0.31.1
+        CMAKE_ARGS     "BUILD_TESTING=OFF"
     )
     FetchContent_MakeAvailable(cmark)
     if (NOT TARGET cmark::cmark)
-        if(MSVC)
-            add_library(cmark::cmark ALIAS cmark)
-        else()
-            add_library(cmark::cmark ALIAS cmark_static)
-        endif()
+        add_library(cmark::cmark ALIAS cmark)
     endif()
 else()
     find_package(cmark REQUIRED 0.29.0)
