@@ -39,7 +39,7 @@ Rectangle {
 
         anchors.fill: parent
         spacing: 0
-        visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
+        visible: room ? room.permissions.canSend(room.isEncrypted ? MtxEvent.Encrypted :  MtxEvent.TextMessage) : false
 
         ImageButton {
             Layout.alignment: Qt.AlignBottom
