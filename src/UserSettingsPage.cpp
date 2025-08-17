@@ -25,6 +25,12 @@
 
 #include "config/nheko.h"
 
+QStringList themes{
+  QStringLiteral("light"),
+  QStringLiteral("dark"),
+  QStringLiteral("system"),
+};
+
 QSharedPointer<UserSettings> UserSettings::instance_;
 
 UserSettings::UserSettings()
@@ -640,7 +646,7 @@ UserSettings::setShowImage(ShowImage state)
 void
 UserSettings::setTheme(QString theme)
 {
-    if (theme == theme_)
+    if (theme == theme_ || !themes.contains(theme))
         return;
     theme_ = theme;
     save();
@@ -1182,12 +1188,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
     } else if (role == Value) {
         switch (index.row()) {
         case Theme:
-            return QStringList{
-              QStringLiteral("light"),
-              QStringLiteral("dark"),
-              QStringLiteral("system"),
-            }
-              .indexOf(i->theme());
+            return themes.indexOf(i->theme());
         case ScaleFactor:
             return utils::scaleFactor();
         case MessageHoverHighlight:
@@ -1741,14 +1742,10 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
     if (role == Value) {
         switch (index.row()) {
         case Theme: {
-            if (value == 0) {
-                i->setTheme("light");
-                return true;
-            } else if (value == 1) {
-                i->setTheme("dark");
-                return true;
-            } else if (value == 2) {
-                i->setTheme("system");
+            auto idx = value.toInt();
+
+            if (idx >= 0 && idx < themes.size()) {
+                i->setTheme(themes[idx]);
                 return true;
             } else
                 return false;
