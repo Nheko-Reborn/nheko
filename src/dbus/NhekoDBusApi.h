@@ -85,6 +85,9 @@ statusMessage();
 //! Sets the user's status message (if supported by the homeserver).
 void
 setStatusMessage(const QString &message);
+//! Sets the current theme (supported values: "light", "dark" or "system")
+void
+setTheme(const QString &theme);
 
 QDBusArgument &
 operator<<(QDBusArgument &arg, const RoomInfoItem &item);

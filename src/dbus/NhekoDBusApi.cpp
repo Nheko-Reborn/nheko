@@ -170,6 +170,14 @@ setStatusMessage(const QString &message)
         interface.call(QDBus::NoBlock, QStringLiteral("setStatusMessage"), message);
 }
 
+void
+setTheme(const QString &theme)
+{
+    if (QDBusInterface interface{QStringLiteral(NHEKO_DBUS_SERVICE_NAME), QStringLiteral("/")};
+        interface.isValid())
+        interface.call(QDBus::NoBlock, QStringLiteral("setTheme"), theme);
+}
+
 } // nheko::dbus
 
 /**
