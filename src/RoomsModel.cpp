@@ -8,11 +8,14 @@
 
 #include "Cache_p.h"
 #include "CompletionModelRoles.h"
+#include "RoomlistModel.h"
+#include "TimelineModel.h"
 #include "UserSettingsPage.h"
 #include "Utils.h"
 
-RoomsModel::RoomsModel(bool showOnlyRoomWithAliases, QObject *parent)
+RoomsModel::RoomsModel(RoomlistModel &roomlistModel, bool showOnlyRoomWithAliases, QObject *parent)
   : QAbstractListModel(parent)
+  , roomListModel_(roomlistModel)
   , showOnlyRoomWithAliases_(showOnlyRoomWithAliases)
 {
     rooms = cache::client()->roomNamesAndAliases();
@@ -36,6 +39,7 @@ RoomsModel::roleNames() const
       {Roles::RoomID, "roomid"},
       {Roles::RawRoomID, "rawroomid"},
       {Roles::RoomName, "roomName"},
+      {Roles::RoomParent, "roomParent"},
       {Roles::IsTombstoned, "isTombstoned"},
       {Roles::IsSpace, "isSpace"},
     };
@@ -75,6 +79,21 @@ RoomsModel::data(const QModelIndex &index, int role) const
             return rooms[index.row()].is_tombstoned;
         case Roles::IsSpace:
             return rooms[index.row()].is_space;
+        case Roles::RoomParent: {
+            const auto roomPtr = roomListModel_.getRoomById(QString::fromStdString(rooms[index.row()].id));
+            if (auto &room = *roomPtr; roomPtr) {
+                if (const auto &parent = room.parentSpace(); parent) {
+                    qInfo() << "Parent has name" << parent->roomName();
+                    return parent->roomName();
+                } else {
+                    qWarning() << "No parent for room" << "expected" << rooms[index.row()].parent;
+                }
+            }
+            else {
+                qWarning() << "No room with ID";
+            }
+            return QString{};
+        }
         }
     }
     return {};
