@@ -89,7 +89,7 @@ Rectangle {
                             roleValue: UserSettingsModel.Toggle
                             ToggleButton {
                                 checked: model.value
-                                onCheckedChanged: model.value = checked
+                                onClicked: model.value = checked
                                 enabled: model.enabled
                             }
                         }
@@ -100,7 +100,7 @@ Rectangle {
                                 model: r.model.values
                                 currentIndex: r.model.value
                                 width: Math.min(implicitWidth, scroll.availableWidth - Nheko.paddingMedium)
-                                onCurrentIndexChanged: r.model.value = currentIndex
+                                onActivated: r.model.value = currentIndex
                                 implicitContentWidthPolicy: ComboBox.WidestTextWhenCompleted
 
                                 WheelHandler{} // suppress scrolling changing values
@@ -135,7 +135,7 @@ Rectangle {
                                 to: model.valueUpperBound * div
                                 stepSize: model.valueStep * div
                                 value: model.value * div
-                                onValueChanged: model.value = value/div
+                                onValueModified: model.value = value/div
                                 editable: true
 
                                 property real realValue: value / div
