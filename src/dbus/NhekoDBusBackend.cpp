@@ -11,6 +11,7 @@
 #include "Logging.h"
 #include "MainWindow.h"
 #include "MxcImageProvider.h"
+#include "UserSettingsPage.h"
 #include "timeline/RoomlistModel.h"
 #include "timeline/TimelineModel.h"
 
@@ -110,6 +111,12 @@ void
 NhekoDBusBackend::setStatusMessage(const QString &message)
 {
     ChatPage::instance()->setStatus(message);
+}
+
+void
+NhekoDBusBackend::setTheme(const QString &theme)
+{
+    UserSettings::instance()->setTheme(theme);
 }
 
 void
