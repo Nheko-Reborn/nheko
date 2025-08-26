@@ -343,6 +343,7 @@ sudo pacman -S qt6-base \
     gcc \
     fontconfig \
     lmdb \
+    lmdbxx \
     cmark \
     qtkeychain-qt6
 ```
