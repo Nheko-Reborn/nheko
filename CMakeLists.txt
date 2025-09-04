@@ -247,6 +247,9 @@ endif()
 # Discover Qt dependencies.
 #
 find_package(Qt6 6.5 COMPONENTS Core Widgets Gui LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
+if (Qt6Qml_VERSION VERSION_GREATER_EQUAL "6.10.0")
+    find_package(Qt6 REQUIRED COMPONENTS GuiPrivate QmlPrivate)
+endif()
 find_package(Qt6DBus)
 
 if(USE_BUNDLED_QTKEYCHAIN)
