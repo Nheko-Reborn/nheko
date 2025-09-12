@@ -119,6 +119,7 @@ Item {
                         Layout.fillWidth: true
                         implicitHeight: msgView.height - typingIndicator.height
                         searchString: topBar.searchString
+                        filterByNotifications: topBar.filterNotifications
                     }
                     Loader {
                         source: CallManager.isOnCall && CallManager.callType != Voip.VOICE ? (Qt.platform.os != "windows" ? "voip/VideoCall.qml" : "voip/VideoCallD3D11.qml") : ""

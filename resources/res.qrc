@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/icons">
         <file>icons/ui/add-square-button.svg</file>
+        <file>icons/ui/alert.svg</file>
         <file>icons/ui/angle-arrow-left.svg</file>
         <file>icons/ui/attach.svg</file>
         <file>icons/ui/ban.svg</file>

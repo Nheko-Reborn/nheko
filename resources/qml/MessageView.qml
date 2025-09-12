@@ -16,6 +16,7 @@ Item {
     property int availableWidth: width
     property int padding: Nheko.paddingMedium
     property string searchString: ""
+    property bool filterByNotifications: false
     property Room roommodel: room
 
     // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu
@@ -60,7 +61,7 @@ Item {
         boundsBehavior: Flickable.StopAtBounds
         displayMarginBeginning: height / 4
         displayMarginEnd: height / 4
-        model: (filteredTimeline.filterByThread || filteredTimeline.filterByContent) ? filteredTimeline : room
+        model: (filteredTimeline.filterByThread || filteredTimeline.filterByContent || filteredTimeline.filterByNotifications) ? filteredTimeline : room
         //pixelAligned: true
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
@@ -145,6 +146,7 @@ Item {
             id: filteredTimeline
 
             filterByContent: chatRoot.searchString
+            filterByNotifications: chatRoot.filterByNotifications
             filterByThread: room ? room.thread : ""
             source: room
         }

@@ -22,6 +22,7 @@ Pane {
     property bool searchHasFocus: searchField.focus && searchField.enabled
     property string searchString: ""
     property bool showBackButton: false
+    property bool filterNotifications: false
     property int trustlevel: room ? room.trustlevel : Crypto.Unverified
 
     Layout.fillWidth: true
@@ -130,12 +131,29 @@ Pane {
                 text: roomTopic
             }
             ImageButton {
+                id: notificationsButton
+
+                Layout.alignment: Qt.AlignRight
+                Layout.column: 3
+                Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
+                Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
+                Layout.row: 1
+                Layout.rowSpan: 2
+                ToolTip.text: qsTr("Show only notifications")
+                ToolTip.visible: hovered
+                image: ":/icons/icons/ui/alert.svg"
+
+                onClicked: {
+                    topBar.filterNotifications = !topBar.filterNotifications
+                }
+            }
+            ImageButton {
                 id: pinButton
 
                 property bool pinsShown: !Settings.hiddenPins.includes(roomId)
 
                 Layout.alignment: Qt.AlignVCenter
-                Layout.column: 3
+                Layout.column: 4
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.row: 1
@@ -160,7 +178,7 @@ Pane {
             }
             AbstractButton {
                 id: memberButton
-                Layout.column: 4
+                Layout.column: 5
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.row: 1
@@ -200,7 +218,7 @@ Pane {
                 property bool searchActive: false
 
                 Layout.alignment: Qt.AlignVCenter
-                Layout.column: 5
+                Layout.column: 6
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.row: 1
@@ -224,7 +242,7 @@ Pane {
                 id: roomOptionsButton
 
                 Layout.alignment: Qt.AlignVCenter
-                Layout.column: 6
+                Layout.column: 7
                 Layout.preferredHeight: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.preferredWidth: Nheko.avatarSize - Nheko.paddingMedium
                 Layout.row: 1
@@ -273,7 +291,7 @@ Pane {
                 id: pinnedMessages
 
                 Layout.column: 2
-                Layout.columnSpan: 4
+                Layout.columnSpan: 5
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.min(contentHeight, Nheko.avatarSize * 4)
                 Layout.row: 3
@@ -330,7 +348,7 @@ Pane {
                 id: widgets
 
                 Layout.column: 2
-                Layout.columnSpan: 4
+                Layout.columnSpan: 5
                 Layout.fillWidth: true
                 Layout.preferredHeight: Math.min(contentHeight, Nheko.avatarSize * 1.5)
                 Layout.row: 4
@@ -356,7 +374,7 @@ Pane {
                 id: searchField
 
                 Layout.column: 2
-                Layout.columnSpan: 4
+                Layout.columnSpan: 5
                 Layout.fillWidth: true
                 Layout.row: 5
                 enabled: visible
@@ -378,6 +396,7 @@ Pane {
         searchString = "";
         searchButton.searchActive = false;
         searchField.text = "";
+        filterNotifications = false;
     }
 
     // HACK: https://bugreports.qt.io/browse/QTBUG-83972, qtwayland cannot auto hide menu

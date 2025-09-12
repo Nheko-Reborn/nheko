@@ -96,9 +96,29 @@ TimelineFilter::setThreadId(const QString &t)
 {
     nhlog::ui()->debug("Filtering by thread '{}'", t.toStdString());
     if (this->threadId != t) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+        beginFilterChange();
+#endif
+
         this->threadId = t;
 
         emit threadIdChanged();
+        startFiltering();
+        fetchMore({});
+    }
+}
+
+void
+TimelineFilter::setFilterNotifications(bool filter)
+{
+    nhlog::ui()->debug("Filtering by notifications '{}'", filter);
+    if (this->filterByNotifications_ != filter) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+        beginFilterChange();
+#endif
+        this->filterByNotifications_ = filter;
+
+        emit filterNotificationsChanged();
         startFiltering();
         fetchMore({});
     }
@@ -109,6 +129,9 @@ TimelineFilter::setContentFilter(const QString &c)
 {
     nhlog::ui()->debug("Filtering by content '{}'", c.toStdString());
     if (this->contentFilter != c) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+        beginFilterChange();
+#endif
         this->contentFilter = c;
 
         emit contentFilterChanged();
@@ -145,7 +168,8 @@ TimelineFilter::sourceDataChanged(const QModelIndex &topLeft,
                                   const QModelIndex &bottomRight,
                                   const QVector<int> &roles)
 {
-    if (!roles.contains(TimelineModel::Roles::Body) && !roles.contains(TimelineModel::ThreadId))
+    if (!roles.contains(TimelineModel::Roles::Body) && !roles.contains(TimelineModel::ThreadId) &&
+        !roles.contains(TimelineModel::Notificationlevel))
         return;
 
     if (auto s = source()) {
@@ -233,19 +257,27 @@ TimelineFilter::filterAcceptsRow(int source_row, const QModelIndex &) const
     if (source_row > incrementalSearchIndex)
         return false;
 
-    if (threadId.isEmpty() && contentFilter.isEmpty())
+    if (threadId.isEmpty() && contentFilter.isEmpty() && !filterByNotifications_)
         return true;
 
     if (auto s = sourceModel()) {
         auto idx = s->index(source_row, 0);
+
         if (!contentFilter.isEmpty() && !s->data(idx, TimelineModel::Body)
                                            .toString()
                                            .contains(contentFilter, Qt::CaseInsensitive)) {
             return false;
         }
 
-        if (threadId.isEmpty())
+        if (filterByNotifications_ && s->data(idx, TimelineModel::Notificationlevel)
+                                          .value<qml_mtx_events::NotificationLevel>() !=
+                                        qml_mtx_events::NotificationLevel::Highlight) {
+            return false;
+        }
+
+        if (threadId.isEmpty()) {
             return true;
+        }
 
         return s->data(idx, TimelineModel::EventId) == threadId ||
                s->data(idx, TimelineModel::ThreadId) == threadId;
