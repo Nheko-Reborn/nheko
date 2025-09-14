@@ -5,6 +5,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
+import QtQuick.Layouts
 import im.nheko
 import "../"
 
@@ -21,7 +22,11 @@ AbstractButton {
     property string userId: eventId ? room.dataById(eventId, Room.UserId, "") : ""
     property string userName: eventId ? room.dataById(eventId, Room.UserName, "") : ""
     implicitHeight: replyContainer.height
-    implicitWidth: replyContainer.implicitWidth
+    implicitWidth: replyContainer.implicitWidth + leftPadding + rightPadding
+
+    leftPadding: 4 + Nheko.paddingSmall
+    rightPadding: Nheko.paddingSmall
+
     required property int maxWidth
     property bool limitHeight: false
 
@@ -31,14 +36,14 @@ AbstractButton {
     }
 
     onClicked: {
-        let link = reply.child.linkAt != undefined && reply.child.linkAt(pressX-colorline.width, pressY - userName_.implicitHeight);
+        let link = timelineEvent.main.linkAt != undefined && timelineEvent.main.linkAt(pressX-colorline.width, pressY - userName_.implicitHeight);
         if (link) {
             Nheko.openLink(link)
         } else {
             room.showEvent(r.eventId)
         }
     }
-    onPressAndHold: replyContextMenu.show(reply.child.copyText, reply.child.linkAt(pressX-colorline.width, pressY - userName_.implicitHeight), r.eventId)
+    onPressAndHold: replyContextMenu.show(timelineEvent.main.copyText, timelineEvent.main.linkAt(pressX-colorline.width, pressY - userName_.implicitHeight), r.eventId)
 
     contentItem: TimelineEvent {
         id: timelineEvent
@@ -51,49 +56,36 @@ AbstractButton {
         maxWidth: r.maxWidth
         limitAsReply: r.limitHeight
 
-        //height: replyContainer.implicitHeight
-        data: Row {
+        data: Column {
             id: replyContainer
-
-            spacing: Nheko.paddingSmall
+            spacing: 0
 
             clip: r.limitHeight
 
             height: r.limitHeight ? Math.min( timelineEvent.main?.height, timelineView.height / 10) + Nheko.paddingSmall + usernameBtn.height : undefined
 
-            Rectangle {
-                id: colorline
+            // FIXME: I have no idea, why this name doesn't render in the reply popup on Qt 6.9.2
+            AbstractButton {
+                id: usernameBtn
 
-                width: 4
-                height: content.height
+                visible: r.eventId
 
-                color: TimelineManager.userColor(r.userId, palette.base)
-            }
-
-            Column {
-                id: content
-                spacing: 0
-
-                AbstractButton {
-                    id: usernameBtn
-
-
-                    contentItem: Label {
-                        id: userName_
-                        text: r.userName
-                        color: r.userColor
-                        textFormat: Text.RichText
-                        width: timelineEvent.main?.width
-                    }
-                    onClicked: room.openUserProfile(r.userId)
+                contentItem: Label {
+                    visible: r.eventId
+                    id: userName_
+                    text: r.userName
+                    color: r.userColor
+                    textFormat: Text.RichText
+                    width: timelineEvent.main?.width
                 }
-
-                data: [
-                    usernameBtn, timelineEvent.main,
-                ]
+                onClicked: room.openUserProfile(r.userId)
             }
 
+            data: [
+                usernameBtn, timelineEvent.main,
+            ]
         }
+
     }
 
     background: Rectangle {
@@ -103,6 +95,16 @@ AbstractButton {
         property color userColor: TimelineManager.userColor(r.userId, palette.base)
         property color bgColor: palette.base
         color: Qt.tint(bgColor, Qt.hsla(userColor.hslHue, 0.5, userColor.hslLightness, 0.1))
+
+        Rectangle {
+            anchors.top: parent.top
+            anchors.bottom: parent.bottom
+            anchors.left: parent.left
+
+            id: colorline
+            color: backgroundItem.userColor
+            width: 4
+        }
     }
 
 }

@@ -210,9 +210,10 @@ TimelineEvent {
 
                         AbstractButton {
                             id: replyRow
-                            visible: wrapper.reply
+                            visible: wrapper.replyTo
 
-                            height: replyLine.height
+                            leftPadding: Nheko.paddingSmall + 4
+
                             anchors.left: parent.left
                             anchors.right: parent.right
 
@@ -225,19 +226,7 @@ TimelineEvent {
                                 cursorShape: Qt.PointingHandCursor
                             }
 
-                            contentItem: Row {
-                                id: replyRowLay
-
-                                spacing: Nheko.paddingSmall
-
-                                Rectangle {
-                                    id: replyLine
-                                    height: Math.min( wrapper.reply?.height, timelineView.height / 10) + Nheko.paddingSmall + replyUserButton.height
-                                    color: replyRow.userColor
-                                    width: 4
-                                }
-
-                                Column {
+                            contentItem: Column {
                                     spacing: 0
 
                                     id: replyCol
@@ -247,7 +236,7 @@ TimelineEvent {
 
                                         contentItem: Label {
                                             id: userName_
-                                            text: wrapper.reply?.userName ?? ''
+                                            text: wrapper.reply?.userName ?? 'missing name'
                                             color: replyRow.userColor
                                             textFormat: Text.RichText
                                             width: wrapper.maxWidth
@@ -259,12 +248,20 @@ TimelineEvent {
                                         replyUserButton,
                                         wrapper.reply,
                                     ]
-                                }
                             }
 
                             background: Rectangle {
                                 //width: replyRow.implicitContentWidth
                                 color: Qt.tint(palette.base, Qt.hsla(replyRow.userColor.hslHue, 0.5, replyRow.userColor.hslLightness, 0.1))
+                                Rectangle {
+                                    anchors.top: parent.top
+                                    anchors.bottom: parent.bottom
+                                    anchors.left: parent.left
+
+                                    id: replyLine
+                                    color: replyRow.userColor
+                                    width: 4
+                                }
                             }
 
                             onClicked: {

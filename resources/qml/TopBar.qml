@@ -330,7 +330,7 @@ Pane {
                         ImageButton {
                             id: deletePinButton
 
-                            Layout.alignment: Qt.AlignTop | Qt.AlignLeft
+                            Layout.alignment: Qt.AlignTop | Qt.AlignRight
                             Layout.preferredHeight: 16
                             Layout.preferredWidth: 16
                             ToolTip.text: qsTr("Unpin")
