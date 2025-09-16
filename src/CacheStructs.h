@@ -111,6 +111,7 @@ struct RoomNameAlias
     std::uint64_t recent_activity;
     bool is_tombstoned;
     bool is_space;
+    std::string parent;
 };
 
 //! Basic information per member.
