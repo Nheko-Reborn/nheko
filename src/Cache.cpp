@@ -4852,6 +4852,51 @@ Cache::getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::st
 }
 
 bool
+Cache::isV12Creator(const std::string &room_id, const std::string &user_id)
+{
+    auto txn   = ro_txn(this->db->env_);
+    auto state = this->getStatesDb(txn, room_id);
+
+    return this->isV12Creator(txn, state, user_id);
+}
+
+bool
+Cache::isV12Creator(lmdb::txn &txn, lmdb::dbi &state, const std::string &user_id)
+{
+    using namespace mtx::events;
+    using namespace mtx::events::state;
+
+    bool ok;
+    const int room_version = this->getRoomVersion(txn, state).toInt(&ok);
+    if (!ok || room_version < 12) {
+        return false;
+    }
+
+    std::string_view create_event;
+    if (state.get(txn, to_string(EventType::RoomCreate), create_event)) {
+        try {
+            const StateEvent<Create> evt =
+              nlohmann::json::parse(create_event).get<StateEvent<Create>>();
+            if (evt.sender == user_id) {
+                return true;
+            }
+
+            const std::optional<std::vector<std::string>> &additional_creators =
+              evt.content.additional_creators;
+            if (additional_creators &&
+                std::find(additional_creators->begin(), additional_creators->end(), user_id) !=
+                  additional_creators->end()) {
+                return true;
+            }
+        } catch (...) {
+            return false;
+        }
+    }
+
+    return false;
+}
+
+bool
 Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
                            const std::string &room_id,
                            const std::string &user_id)
@@ -4862,6 +4907,10 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
     auto txn = ro_txn(db->env_);
     try {
         auto db_ = getStatesDb(txn, room_id);
+
+        if (this->isV12Creator(txn, db_, user_id)) {
+            return true;
+        }
 
         int64_t min_event_level = std::numeric_limits<int64_t>::max();
         int64_t user_level      = std::numeric_limits<int64_t>::min();
@@ -6127,6 +6176,13 @@ std::vector<std::string>
 roomMembers(const std::string &room_id)
 {
     return instance_->roomMembers(room_id);
+}
+
+//! Check if the given user is a room creator and that gives them an infinite PL.
+bool
+isV12Creator(const std::string &room_id, const std::string &user_id)
+{
+    return instance_->isV12Creator(room_id, user_id);
 }
 
 //! Check if the given user has power level greater than

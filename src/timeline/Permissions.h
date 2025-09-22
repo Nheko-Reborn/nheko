@@ -36,6 +36,8 @@ public:
     const mtx::events::state::PowerLevels &powerlevelEvent() const { return pl; };
 
 private:
+    bool isV12Creator();
+
     QString roomId_;
     mtx::events::state::PowerLevels pl;
 };
