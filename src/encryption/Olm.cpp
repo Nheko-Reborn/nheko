@@ -398,17 +398,19 @@ handle_olm_message(const OlmMessage &msg, const UserKeyCache &otherUserDeviceKey
                             body[local_user][dev] = secretRequest;
                     }
 
-                    http::client()->send_to_device<mtx::events::msg::SecretRequest>(
-                      http::client()->generate_txn_id(),
-                      body,
-                      [secret_name](mtx::http::RequestErr err) {
-                          if (err) {
-                              nhlog::net()->error("Failed to send request cancellation "
-                                                  "for secrect "
-                                                  "'{}'",
-                                                  secret_name);
-                          }
-                      });
+                    if (!body.empty()) {
+                        http::client()->send_to_device<mtx::events::msg::SecretRequest>(
+                          http::client()->generate_txn_id(),
+                          body,
+                          [secret_name](mtx::http::RequestErr err) {
+                              if (err) {
+                                  nhlog::net()->error("Failed to send request cancellation "
+                                                      "for secrect "
+                                                      "'{}'",
+                                                      secret_name);
+                              }
+                          });
+                    }
 
                     nhlog::crypto()->info("Storing secret {}", secret_name);
                     cache::client()->storeSecret(secret_name, e->content.secret);
