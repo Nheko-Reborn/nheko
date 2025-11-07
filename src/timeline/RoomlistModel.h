@@ -212,6 +212,8 @@ public slots:
 
     void updateFilterTag(QString tagId)
     {
+        beginFilterChange();
+
         if (tagId.startsWith(QLatin1String("tag:"))) {
             filterType = FilterBy::Tag;
             filterStr  = tagId.mid(4);
@@ -227,7 +229,7 @@ public slots:
             filterStr.clear();
         }
 
-        invalidateFilter();
+        endFilterChange();
     }
 
     void updateHiddenTagsAndSpaces();

@@ -977,6 +977,8 @@ FilteredRoomlistModel::getRoomById(const QString &id) const
 void
 FilteredRoomlistModel::updateHiddenTagsAndSpaces()
 {
+    beginFilterChange();
+
     hiddenTags.clear();
     hiddenSpaces.clear();
     hideDMs = false;
@@ -991,7 +993,7 @@ FilteredRoomlistModel::updateHiddenTagsAndSpaces()
             hideDMs = true;
     }
 
-    invalidateFilter();
+    endFilterChange();
 }
 
 bool
