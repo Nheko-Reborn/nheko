@@ -298,27 +298,37 @@ MxcImageProvider::download(const QString &id,
             QFileInfo fileInfo(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) +
                                  "/media_cache",
                                fileName);
-            QDir().mkpath(fileInfo.absolutePath());
+
+            if (!QDir().mkpath(fileInfo.absolutePath())) {
+                nhlog::db()->error("Could not create media cache folder {}",
+                                   fileInfo.absolutePath().toUtf8().toStdString());
+                then(id, QSize(), {}, QLatin1String(""));
+                return;
+            }
 
             if (fileInfo.exists()) {
                 if (encryptionInfo) {
                     QFile f(fileInfo.absoluteFilePath());
-                    f.open(QIODevice::ReadOnly);
+                    if (f.open(QIODevice::ReadOnly)) {
+                        QByteArray fileData = f.readAll();
+                        auto tempData       = mtx::crypto::to_string(
+                          mtx::crypto::decrypt_file(fileData.toStdString(), encryptionInfo.value()));
+                        auto data    = QByteArray(tempData.data(), (int)tempData.size());
+                        QImage image = utils::readImage(data);
+                        image.setText(QStringLiteral("mxc url"), "mxc://" + id);
+                        if (!image.isNull()) {
+                            possiblyUpdateAccessTime(fileInfo);
+                            if (radius != 0) {
+                                image = clipRadius(std::move(image), radius);
+                            }
 
-                    QByteArray fileData = f.readAll();
-                    auto tempData       = mtx::crypto::to_string(
-                      mtx::crypto::decrypt_file(fileData.toStdString(), encryptionInfo.value()));
-                    auto data    = QByteArray(tempData.data(), (int)tempData.size());
-                    QImage image = utils::readImage(data);
-                    image.setText(QStringLiteral("mxc url"), "mxc://" + id);
-                    if (!image.isNull()) {
-                        possiblyUpdateAccessTime(fileInfo);
-                        if (radius != 0) {
-                            image = clipRadius(std::move(image), radius);
+                            then(id, requestedSize, image, fileInfo.absoluteFilePath());
+                            return;
                         }
-
-                        then(id, requestedSize, image, fileInfo.absoluteFilePath());
-                        return;
+                    } else {
+                        nhlog::net()->warn("Failed to open {}: {}",
+                                           fileInfo.absolutePath().toUtf8().toStdString(),
+                                           f.errorString().toStdString());
                     }
                 } else {
                     QImage image = utils::readImageFromFile(fileInfo.absoluteFilePath());
