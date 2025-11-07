@@ -170,15 +170,13 @@ Rectangle {
                     } else if (event.matches(StandardKey.SelectAll) && popup.opened) {
                         completer.completerName = "";
                         popup.close();
-                    } else if (event.matches(StandardKey.InsertLineSeparator)) {
-                        if (popup.opened)
-                            popup.close();
-                        if (Settings.invertEnterKey) {
-                            room.input.send();
-                            event.accepted = true;
-                        }
-                    } else if (event.matches(StandardKey.InsertParagraphSeparator)) {
-                        if (popup.opened) {
+                    } else if (event.key == Qt.Key_Enter || event.key == Qt.Key_Return) {
+                        // Handling popup takes priority over newline and sending message.
+                        if (popup.opened &&
+                            (event.modifiers == Qt.NoModifier
+                            || event.modifiers == Qt.ShiftModifier
+                            || event.modifiers == Qt.ControlModifier)
+                        ) {
                             var currentCompletion = completer.currentCompletion();
                             let userid = completer.currentUserid();
 
@@ -191,14 +189,26 @@ Rectangle {
                                     console.log(userid);
                                     room.input.addMention(userid, currentCompletion);
                                 }
-                                event.accepted = true;
-                                return;
                             }
+                            event.accepted = true;
                         }
-                        if (!Settings.invertEnterKey) {
+                        // Send message Enter key combination event.
+                        else if (Settings.sendMessageKey == 0 && event.modifiers == Qt.NoModifier
+                              || Settings.sendMessageKey == 1 && event.modifiers == Qt.ShiftModifier
+                              || Settings.sendMessageKey == 2 && event.modifiers == Qt.ControlModifier
+                        ) {
                             room.input.send();
                             event.accepted = true;
                         }
+                        // Add newline Enter key combination event.
+                        else if (Settings.sendMessageKey == 0 && event.modifiers == Qt.ShiftModifier
+                              || Settings.sendMessageKey == 1 && event.modifiers == Qt.NoModifier
+                              || Settings.sendMessageKey == 2 && event.modifiers == Qt.ShiftModifier
+                        ) {
+                            messageInput.insert(messageInput.cursorPosition, "\n");
+                            event.accepted = true;
+                        }
+                        // Any other Enter key combo is ignored here.
                     } else if (event.key == Qt.Key_Tab && (event.modifiers == Qt.NoModifier || event.modifiers == Qt.ShiftModifier)) {
                         event.accepted = true;
                         if (popup.opened) {

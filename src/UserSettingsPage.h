@@ -29,8 +29,8 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool scrollbarsInRoomlist READ scrollbarsInRoomlist WRITE setScrollbarsInRoomlist
                  NOTIFY scrollbarsInRoomlistChanged)
     Q_PROPERTY(bool markdown READ markdown WRITE setMarkdown NOTIFY markdownChanged)
-    Q_PROPERTY(
-      bool invertEnterKey READ invertEnterKey WRITE setInvertEnterKey NOTIFY invertEnterKeyChanged)
+    Q_PROPERTY(SendMessageKey sendMessageKey READ sendMessageKey WRITE setSendMessageKey NOTIFY
+                 sendMessageKeyChanged)
     Q_PROPERTY(bool bubbles READ bubbles WRITE setBubbles NOTIFY bubblesChanged)
     Q_PROPERTY(bool smallAvatars READ smallAvatars WRITE setSmallAvatars NOTIFY smallAvatarsChanged)
     Q_PROPERTY(bool animateImagesOnHover READ animateImagesOnHover WRITE setAnimateImagesOnHover
@@ -166,6 +166,14 @@ public:
     };
     Q_ENUM(ShowImage)
 
+    enum class SendMessageKey
+    {
+        Enter,
+        ShiftEnter,
+        CtrlEnter,
+    };
+    Q_ENUM(SendMessageKey)
+
     void save();
     void load(std::optional<QString> profile);
     void applyTheme();
@@ -182,7 +190,7 @@ public:
     void setGroupView(bool state);
     void setScrollbarsInRoomlist(bool state);
     void setMarkdown(bool state);
-    void setInvertEnterKey(bool state);
+    void setSendMessageKey(SendMessageKey key);
     void setBubbles(bool state);
     void setSmallAvatars(bool state);
     void setAnimateImagesOnHover(bool state);
@@ -255,7 +263,7 @@ public:
     bool privacyScreen() const { return privacyScreen_; }
     int privacyScreenTimeout() const { return privacyScreenTimeout_; }
     bool markdown() const { return markdown_; }
-    bool invertEnterKey() const { return invertEnterKey_; }
+    SendMessageKey sendMessageKey() const { return sendMessageKey_; }
     bool bubbles() const { return bubbles_; }
     bool smallAvatars() const { return smallAvatars_; }
     bool animateImagesOnHover() const { return animateImagesOnHover_; }
@@ -328,7 +336,7 @@ signals:
     void trayChanged(bool state);
     void startInTrayChanged(bool state);
     void markdownChanged(bool state);
-    void invertEnterKeyChanged(bool state);
+    void sendMessageKeyChanged(SendMessageKey key);
     void bubblesChanged(bool state);
     void smallAvatarsChanged(bool state);
     void animateImagesOnHoverChanged(bool state);
@@ -399,7 +407,7 @@ private:
     bool groupView_;
     bool scrollbarsInRoomlist_;
     bool markdown_;
-    bool invertEnterKey_;
+    SendMessageKey sendMessageKey_;
     bool bubbles_;
     bool smallAvatars_;
     bool animateImagesOnHover_;
@@ -510,7 +518,7 @@ class UserSettingsModel : public QAbstractListModel
         TypingNotifications,
         ReadReceipts,
         Markdown,
-        InvertEnterKey,
+        SendMessageKey,
         Bubbles,
         SmallAvatars,
 

@@ -35,6 +35,14 @@ QSharedPointer<UserSettings> UserSettings::instance_;
 
 UserSettings::UserSettings()
 {
+    if (settings.contains("user/invert_enter_key")) {
+        auto oldValue =
+          (settings.value("user/invert_enter_key", false).toBool() ? SendMessageKey::ShiftEnter
+                                                                   : SendMessageKey::Enter);
+        settings.setValue("user/send_message_key", static_cast<int>(oldValue));
+        settings.remove("user/invert_enter_key");
+    }
+
     connect(
       QCoreApplication::instance(), &QCoreApplication::aboutToQuit, []() { instance_.clear(); });
 }
@@ -71,8 +79,13 @@ UserSettings::load(std::optional<QString> profile)
       settings.value("user/timeline/message_hover_highlight", false).toBool();
     enlargeEmojiOnlyMessages_ =
       settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
-    markdown_             = settings.value("user/markdown_enabled", true).toBool();
-    invertEnterKey_       = settings.value("user/invert_enter_key", false).toBool();
+    markdown_ = settings.value("user/markdown_enabled", true).toBool();
+
+    auto sendMessageKey = settings.value("user/send_message_key", 0).toInt();
+    if (sendMessageKey < 0 || sendMessageKey > 2)
+        sendMessageKey = static_cast<int>(SendMessageKey::Enter);
+    sendMessageKey_ = static_cast<SendMessageKey>(sendMessageKey);
+
     bubbles_              = settings.value("user/bubbles_enabled", false).toBool();
     smallAvatars_         = settings.value("user/small_avatars_enabled", false).toBool();
     animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
@@ -340,13 +353,12 @@ UserSettings::setMarkdown(bool state)
 }
 
 void
-UserSettings::setInvertEnterKey(bool state)
+UserSettings::setSendMessageKey(SendMessageKey key)
 {
-    if (state == invertEnterKey_)
+    if (key == sendMessageKey_)
         return;
-
-    invertEnterKey_ = state;
-    emit invertEnterKeyChanged(state);
+    sendMessageKey_ = key;
+    emit sendMessageKeyChanged(key);
     save();
 }
 
@@ -936,7 +948,7 @@ UserSettings::save()
     settings.setValue("group_view", groupView_);
     settings.setValue("scrollbars_in_roomlist", scrollbarsInRoomlist_);
     settings.setValue("markdown_enabled", markdown_);
-    settings.setValue("invert_enter_key", invertEnterKey_);
+    settings.setValue("send_message_key", static_cast<int>(sendMessageKey_));
     settings.setValue("bubbles_enabled", bubbles_);
     settings.setValue("small_avatars_enabled", smallAvatars_);
     settings.setValue("animate_images_on_hover", animateImagesOnHover_);
@@ -1050,8 +1062,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Scrollbars in room list");
         case Markdown:
             return tr("Send messages as Markdown");
-        case InvertEnterKey:
-            return tr("Use shift+enter to send and enter to start a new line");
+        case SendMessageKey:
+            return tr("Send messages with a shortcut");
         case Bubbles:
             return tr("Enable message bubbles");
         case SmallAvatars:
@@ -1205,8 +1217,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->scrollbarsInRoomlist();
         case Markdown:
             return i->markdown();
-        case InvertEnterKey:
-            return i->invertEnterKey();
+        case SendMessageKey:
+            return static_cast<int>(i->sendMessageKey());
         case Bubbles:
             return i->bubbles();
         case SmallAvatars:
@@ -1371,10 +1383,11 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr(
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
               "text.");
-        case InvertEnterKey:
+        case SendMessageKey:
             return tr(
-              "Invert the behavior of the enter key in the text input, making it send the message "
-              "when shift+enter is pressed and starting a new line when enter is pressed.");
+              "Select what Enter key combination sends the message. Shift+Enter adds a new line, "
+              "unless it has been selected, in which case Enter adds a new line instead.\n\n"
+              "If an emoji picker or a mention picker is open, it is always handled first.");
         case Bubbles:
             return tr(
               "Messages get a bubble background. This also triggers some layout changes (WIP).");
@@ -1542,6 +1555,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case CameraFrameRate:
         case Ringtone:
         case ShowImage:
+        case SendMessageKey:
             return Options;
         case TimelineMaxWidth:
         case PrivacyScreenTimeout:
@@ -1556,7 +1570,6 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case GroupView:
         case ScrollbarsInRoomlist:
         case Markdown:
-        case InvertEnterKey:
         case Bubbles:
         case SmallAvatars:
         case AnimateImagesOnHover:
@@ -1674,6 +1687,12 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               tr("Always"),
               tr("Only in private rooms"),
               tr("Never"),
+            };
+        case SendMessageKey:
+            return QStringList{
+              tr("Enter"),
+              tr("Shift+Enter"),
+              tr("Ctrl+Enter"),
             };
         case Microphone:
             return vecToList(CallDevices::instance().names(false, i->microphone().toStdString()));
@@ -1816,12 +1835,14 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
-        case InvertEnterKey: {
-            if (value.userType() == QMetaType::Bool) {
-                i->setInvertEnterKey(value.toBool());
-                return true;
-            } else
+        case SendMessageKey: {
+            auto newKey = value.toInt();
+            if (newKey < 0 ||
+                QMetaEnum::fromType<UserSettings::SendMessageKey>().keyCount() <= newKey)
                 return false;
+
+            i->setSendMessageKey(static_cast<UserSettings::SendMessageKey>(newKey));
+            return true;
         }
         case Bubbles: {
             if (value.userType() == QMetaType::Bool) {
@@ -2306,8 +2327,8 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     connect(s.get(), &UserSettings::markdownChanged, this, [this]() {
         emit dataChanged(index(Markdown), index(Markdown), {Value});
     });
-    connect(s.get(), &UserSettings::invertEnterKeyChanged, this, [this]() {
-        emit dataChanged(index(InvertEnterKey), index(InvertEnterKey), {Value});
+    connect(s.get(), &UserSettings::sendMessageKeyChanged, this, [this]() {
+        emit dataChanged(index(SendMessageKey), index(SendMessageKey), {Value});
     });
     connect(s.get(), &UserSettings::bubblesChanged, this, [this]() {
         emit dataChanged(index(Bubbles), index(Bubbles), {Value});
