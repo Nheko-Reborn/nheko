@@ -39,9 +39,11 @@ TimelineFilter::TimelineFilter(QObject *parent)
 void
 TimelineFilter::startFiltering()
 {
+    beginFilterChange();
     incrementalSearchIndex = 0;
     emit isFilteringChanged();
-    invalidateFilter();
+    endFilterChange();
+
     beginResetModel();
     endResetModel();
 
@@ -181,6 +183,8 @@ void
 TimelineFilter::setSource(TimelineModel *s)
 {
     if (auto orig = this->source(); orig != s) {
+        beginFilterChange();
+
         cachedCount            = 0;
         incrementalSearchIndex = 0;
 
@@ -213,9 +217,10 @@ TimelineFilter::setSource(TimelineModel *s)
         // reset the search index a second time just to be safe.
         incrementalSearchIndex = 0;
 
+        endFilterChange();
+
         emit sourceChanged();
         emit isFilteringChanged();
-        invalidateFilter();
     }
 }
 
