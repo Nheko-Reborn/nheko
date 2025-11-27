@@ -17,7 +17,7 @@
     <message>
         <location line="+73"/>
         <source>You are screen sharing</source>
-        <translation>Vous êtes en train de partager votre écran.</translation>
+        <translation>Vous êtes en train de partager votre écran</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -312,7 +312,7 @@
     <message>
         <location line="+32"/>
         <source>Kicked user: %1</source>
-        <translation>L&apos;utilisateur %1 a été expulsé.</translation>
+        <translation>L&apos;utilisateur %1 a été expulsé</translation>
     </message>
     <message>
         <location line="+26"/>
@@ -322,7 +322,7 @@
     <message>
         <location line="+3"/>
         <source>Banned user: %1</source>
-        <translation>L&apos;utilisateur %1 a été banni.</translation>
+        <translation>L&apos;utilisateur %1 a été banni</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -625,32 +625,32 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional. If user is left out, will try to kick the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Expulser un utilisateur de la salle actuelle. La raison est optionnelle. Si l&apos;utilisateur est exclu, une tentative d&apos;expulsion de l&apos;utilisateur auquel vous êtes en train de répondre sera effectuée.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ban a user from the current room. Reason is optional. If user is left out, will try to ban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bannir un utilisateur de la salle actuelle. La raison est optionnelle. Si l&apos;utilisateur est exclu, une tentative de bannissement de l&apos;utilisateur auquel vous êtes en train de répondre sera effectuée.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unban a user in the current room. Reason is optional. If user is left out, will try to unban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler le banissement d&apos;un utilisateur dans le salon actuel. La raison est optionnelle. Si l&apos;utilisateur est exclu, une tentative d&apos;annulation du bannissement de l&apos;utilisateur auquel vous êtes en train de répondre sera effectuée.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Redact an event by event id or that you are replying to or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Rédiger un événement grâce à un identifiant événement, ou celui auquel vous êtes en train de répondre, ou tous les messages de l&apos;utilisateur mis en cache localement.</translation>
     </message>
     <message>
         <location line="+56"/>
         <source>Block all invites from a user, a server, to a specific room or set the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bloquer toutes les invitations en provenance d&apos;un utilisateur ou d&apos;un serveur pour un salon spécifique, ou bien définir le comportement par défaut.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Allow all invites from a user, a server, to a specific room or set the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Autoriser toutes les invitations en provenance d&apos;un utilisateur ou d&apos;un serveur pour un salon spécifique, ou bien définir le comportement par défaut.</translation>
     </message>
     <message>
         <location line="-56"/>
@@ -750,12 +750,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Send a message with a glitch effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer un message avec un effet de déformation.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message that gradually glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer un message qui se déforme progressivement.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2143,7 +2143,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 a répondu avec un spoiler.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2250,7 +2250,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
     <message>
         <location line="-238"/>
         <source>User (%1)</source>
-        <translation>Utilisateur (%)</translation>
+        <translation>Utilisateur (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -3706,7 +3706,7 @@ Si vous choisissez de vérifier, vous aurez besoin de l&apos;autre appareil. Si 
     <message>
         <location filename="../qml/components/SpaceMenu.qml" line="+16"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished">Ajouter ou retirer de la communauté...</translation>
+        <translation>Ajouter ou retirer de la communauté...</translation>
     </message>
 </context>
 <context>
@@ -4307,9 +4307,9 @@ Raison : %4</translation>
     <message numerus="yes">
         <location line="+115"/>
         <source>%n hour(s) later</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n heure plus tard</numerusform>
+            <numerusform>%n heures plus tard</numerusform>
         </translation>
     </message>
     <message>
@@ -5495,7 +5495,7 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
     <message>
         <location line="+13"/>
         <source>Repeat File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Répéter le mot de passe du fichier</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5686,7 +5686,7 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-12"/>
         <source>Message contains spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le message contient un spoiler.</translation>
     </message>
 </context>
 <context>
@@ -5755,13 +5755,13 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé un spoiler.</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+26"/>
         <source>%1 sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé un spoiler.</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -5788,7 +5788,7 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
     <message>
         <location line="+23"/>
         <source>* %1 spoils something.</source>
-        <translation type="unfinished"></translation>
+        <translation>* %1 a spoilé quelque chose.</translation>
     </message>
     <message>
         <location line="+8"/>
