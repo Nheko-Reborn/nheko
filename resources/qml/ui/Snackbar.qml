@@ -61,6 +61,7 @@ Popup {
     }
 
     enter: Transition {
+        enabled: !Settings.reducedMotion
         NumberAnimation {
             target: snackbar
             property: "opacity"
@@ -79,6 +80,7 @@ Popup {
         }
     }
     exit: Transition {
+        enabled: !Settings.reducedMotion
         NumberAnimation {
             target: snackbar
             property: "opacity"

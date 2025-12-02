@@ -55,21 +55,21 @@ Nheko::inactiveColors() const
     auto theme = UserSettings::instance()->theme();
     if (theme == QLatin1String("light")) {
         static QPalette lightInactive = [] {
-            auto lightInactive = Theme::paletteFromTheme(u"light");
+            auto lightInactive = Theme::paletteFromTheme(Theme::Kind::Light);
             lightInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
             return lightInactive;
         }();
         return lightInactive;
     } else if (theme == QLatin1String("dark")) {
         static QPalette darkInactive = [] {
-            auto darkInactive = Theme::paletteFromTheme(u"dark");
+            auto darkInactive = Theme::paletteFromTheme(Theme::Kind::Dark);
             darkInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
             return darkInactive;
         }();
         return darkInactive;
     } else {
         static QPalette originalInactive = [] {
-            auto originalInactive = Theme::paletteFromTheme(u"system");
+            auto originalInactive = Theme::paletteFromTheme(Theme::Kind::System);
             originalInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
             return originalInactive;
         }();
@@ -80,7 +80,7 @@ Nheko::inactiveColors() const
 Theme
 Nheko::theme() const
 {
-    return Theme(UserSettings::instance()->theme());
+    return Theme(Theme::kindFromString(UserSettings::instance()->theme()));
 }
 
 int
