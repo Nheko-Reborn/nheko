@@ -712,7 +712,9 @@ set_target_properties(nheko
 #
 # Add qml files
 #
-
+if(QT_KNOWN_POLICY_QTP0004)
+    qt_policy(SET QTP0004 NEW)
+endif()
 set(QML_SOURCES
     resources/qml/Root.qml
     resources/qml/ChatPage.qml

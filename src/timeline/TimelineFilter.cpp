@@ -41,7 +41,13 @@ TimelineFilter::startFiltering()
 {
     incrementalSearchIndex = 0;
     emit isFilteringChanged();
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+    endFilterChange();
+#else
     invalidateFilter();
+#endif
+
     beginResetModel();
     endResetModel();
 
@@ -181,6 +187,10 @@ void
 TimelineFilter::setSource(TimelineModel *s)
 {
     if (auto orig = this->source(); orig != s) {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+        beginFilterChange();
+#endif
+
         cachedCount            = 0;
         incrementalSearchIndex = 0;
 
@@ -215,7 +225,12 @@ TimelineFilter::setSource(TimelineModel *s)
 
         emit sourceChanged();
         emit isFilteringChanged();
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+        endFilterChange();
+#else
         invalidateFilter();
+#endif
     }
 }
 

@@ -212,6 +212,10 @@ public slots:
 
     void updateFilterTag(QString tagId)
     {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+        beginFilterChange();
+#endif
+
         if (tagId.startsWith(QLatin1String("tag:"))) {
             filterType = FilterBy::Tag;
             filterStr  = tagId.mid(4);
@@ -227,7 +231,11 @@ public slots:
             filterStr.clear();
         }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+        endFilterChange();
+#else
         invalidateFilter();
+#endif
     }
 
     void updateHiddenTagsAndSpaces();

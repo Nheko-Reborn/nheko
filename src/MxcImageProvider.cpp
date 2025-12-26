@@ -299,12 +299,10 @@ MxcImageProvider::download(const QString &id,
                                  "/media_cache",
                                fileName);
             QDir().mkpath(fileInfo.absolutePath());
+            QFile f(fileInfo.absoluteFilePath());
 
-            if (fileInfo.exists()) {
+            if (fileInfo.exists() && f.open(QIODevice::ReadOnly)) {
                 if (encryptionInfo) {
-                    QFile f(fileInfo.absoluteFilePath());
-                    f.open(QIODevice::ReadOnly);
-
                     QByteArray fileData = f.readAll();
                     auto tempData       = mtx::crypto::to_string(
                       mtx::crypto::decrypt_file(fileData.toStdString(), encryptionInfo.value()));
