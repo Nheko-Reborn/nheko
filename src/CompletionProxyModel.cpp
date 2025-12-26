@@ -44,6 +44,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
         auto string1 = sourceModel()
                          ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole)
                          .toString()
+                         .normalized(QString::NormalizationForm_KD)
                          .toCaseFolded();
         if (!string1.isEmpty()) {
             trie_.insert<ElementRank::first>(string1.toUcs4(), i);
@@ -53,6 +54,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
         auto string2 = sourceModel()
                          ->data(sourceModel()->index(i, 0), CompletionModel::SearchRole2)
                          .toString()
+                         .normalized(QString::NormalizationForm_KD)
                          .toCaseFolded();
         if (!string2.isEmpty()) {
             trie_.insert<ElementRank::first>(string2.toUcs4(), i);
@@ -73,7 +75,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
       &CompletionProxyModel::newSearchString,
       this,
       [this](const QString &s) {
-          searchString_ = s.toCaseFolded();
+          searchString_ = s.normalized(QString::NormalizationForm_KD).toCaseFolded();
           invalidate();
       },
       Qt::QueuedConnection);
