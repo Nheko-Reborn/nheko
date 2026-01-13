@@ -304,13 +304,16 @@ ApplicationWindow {
                 }
 
                 ComboBox {
+                    id: notificationsCombo
+                    Layout.fillWidth: true
                     model: [qsTr("Muted"), qsTr("Mentions only"), qsTr("All messages")]
                     currentIndex: roomSettings.notifications
                     onActivated: (index) => {
                         roomSettings.changeNotifications(index);
                     }
-                    Layout.fillWidth: true
-                    WheelHandler{} // suppress scrolling changing values
+
+                    // Disable built-in wheel handling unless focused
+                    wheelEnabled: activeFocus
                 }
 
                 Label {
