@@ -450,7 +450,7 @@ linting:
   before_script:
     - apk update && apk add make git python3 py3-pip qt6-qtdeclarative-dev
     # clang18 seems to mess with the emit keyword when using the `->` operator
-    - apk add clang17-extra-tools --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
+    - apk add clang-extra-tools --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main
     - export PATH="$PATH:/usr/lib/llvm17/bin/:/root/.local/bin"
     - pip3 install --break-system-packages --user reuse
   script:
