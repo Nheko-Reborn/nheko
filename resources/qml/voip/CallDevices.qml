@@ -36,6 +36,7 @@ Popup {
                 ComboBox {
                     id: micCombo
 
+                    enabled: !HardwareCallDevices.scanning
                     Layout.fillWidth: true
                     model: CallManager.mics
                 }
@@ -54,6 +55,7 @@ Popup {
                 ComboBox {
                     id: cameraCombo
 
+                    enabled: !HardwareCallDevices.scanning
                     Layout.fillWidth: true
                     model: CallManager.cameras
                 }
