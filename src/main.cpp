@@ -478,6 +478,10 @@ main(int argc, char *argv[])
 
     nhlog::ui()->info("starting nheko {}", nheko::version);
 
+#ifdef GSTREAMER_AVAILABLE
+    CallDevices::instance().refresh();
+#endif
+
     auto returnvalue = app.exec();
 
 #ifdef GSTREAMER_AVAILABLE

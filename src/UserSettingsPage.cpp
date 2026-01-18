@@ -1162,6 +1162,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("NOTIFICATIONS");
         case VoipSection:
             return tr("CALLS");
+        case RescanAudioVideoDevices:
+            return tr("Rescan Audio/Video Devices");
         case EncryptionSection:
             return tr("ENCRYPTION");
         case LoginInfoSection:
@@ -1344,6 +1346,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case CameraFrameRate:
         case Ringtone:
             return {};
+        case RescanAudioVideoDevices:
+            return tr("Rescan for new devices (webcams/microphones). "
+                      "Nheko does not scan continuously to save resources.");
         case TimelineMaxWidth:
             return tr("Set the max width of messages in the timeline (in pixels). This can help "
                       "readability on wide screen when Nheko is maximized");
@@ -1540,6 +1545,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case Camera:
         case CameraResolution:
         case CameraFrameRate:
+            return DeviceOptions;
         case Ringtone:
         case ShowImage:
             return Options;
@@ -1618,6 +1624,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return KeyStatus;
         case HiddenTimelineEvents:
             return ConfigureHiddenEvents;
+        case RescanAudioVideoDevices:
+            return RescanDevs;
         case IgnoredUsers:
             return ManageIgnoredUsers;
         }
@@ -1727,6 +1735,11 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->privacyScreen();
         case UseIdenticon:
             return JdenticonProvider::isAvailable();
+        case Microphone:
+        case Camera:
+        case CameraResolution:
+        case CameraFrameRate:
+            return !CallDevices::instance().scanning();
         default:
             return true;
         }
@@ -2236,6 +2249,12 @@ UserSettingsModel::downloadCrossSigningSecrets()
     olm::download_cross_signing_keys();
 }
 
+void
+UserSettingsModel::refreshDevices()
+{
+    CallDevices::instance().refresh();
+}
+
 UserSettingsModel::UserSettingsModel(QObject *p)
   : QAbstractListModel(p)
 {
@@ -2398,6 +2417,21 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::expireEventsChanged, this, [this] {
         emit dataChanged(index(ExpireEvents), index(ExpireEvents), {Value});
+    });
+
+    connect(&CallDevices::instance(), &CallDevices::devicesChanged, this, [this] {
+        emit dataChanged(index(Microphone), index(Microphone), {Value, Values});
+        emit dataChanged(index(Camera), index(Camera), {Value, Values});
+        emit dataChanged(index(CameraResolution), index(CameraResolution), {Value, Values});
+        emit dataChanged(index(CameraFrameRate), index(CameraFrameRate), {Value, Values});
+    });
+
+    connect(&CallDevices::instance(), &CallDevices::scanningChanged, this, [this] {
+        emit dataChanged(index(RescanAudioVideoDevices), index(RescanAudioVideoDevices), {Value});
+        emit dataChanged(index(Microphone), index(Microphone), {Enabled});
+        emit dataChanged(index(Camera), index(Camera), {Enabled});
+        emit dataChanged(index(CameraResolution), index(CameraResolution), {Enabled});
+        emit dataChanged(index(CameraFrameRate), index(CameraFrameRate), {Enabled});
     });
 }
 
