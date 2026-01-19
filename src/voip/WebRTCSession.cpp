@@ -1337,7 +1337,6 @@ WebRTCSession::clear()
     remotePiPSinkPad_      = nullptr;
     localsdp_.clear();
     localcandidates_.clear();
-    lastError_.clear();
 }
 
 void

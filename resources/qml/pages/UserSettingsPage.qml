@@ -124,7 +124,7 @@ Rectangle {
 
                                 // Disable built-in wheel handling unless focused
                                 wheelEnabled: activeFocus
-                                enabled: !HardwareCallDevices.scanning
+                                enabled: !HardwareCallDevices.scanning && r.model.enabled
                             }
                         }
                         DelegateChoice {

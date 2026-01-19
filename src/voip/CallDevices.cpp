@@ -268,6 +268,7 @@ CallDevices::refresh()
 
     emit devicesChanged();
 
+    this->deinit();
     this->init();
     if (!scanning_) {
         scanning_ = true;
