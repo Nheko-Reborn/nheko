@@ -479,6 +479,7 @@ main(int argc, char *argv[])
     nhlog::ui()->info("starting nheko {}", nheko::version);
 
 #ifdef GSTREAMER_AVAILABLE
+    gst_init(nullptr, nullptr);
     CallDevices::instance().refresh();
 #endif
 
