@@ -7,7 +7,7 @@
 
 == NAME
 
-nheko - Desktop client for Matrix using Qt and C++17
+nheko - Desktop client for Matrix using Qt and C++20
 
 == SYNOPSIS
 
