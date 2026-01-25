@@ -4,7 +4,7 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 @@ -1,4 +1,7 @@
 -cmake_minimum_required(VERSION 3.4)
 +cmake_minimum_required(VERSION 3.5)
-+if(${CMAKE_VERSION} VERSION_GREATER "3.27")
++if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.27")
 +    cmake_policy(SET CMP0148 OLD)
 +endif()
  
