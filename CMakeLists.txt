@@ -246,7 +246,7 @@ endif()
 #
 # Discover Qt dependencies.
 #
-set(QT_NO_PRIVATE_MODULE_WARNING ON)  # silence verbose warnings in cmake
+
 find_package(Qt6 6.5 COMPONENTS Core Widgets Gui LinguistTools Svg Multimedia Qml QuickControls2 REQUIRED)
 if (Qt6Qml_VERSION VERSION_GREATER_EQUAL "6.10.0")
     find_package(Qt6 REQUIRED COMPONENTS GuiPrivate QmlPrivate)
@@ -544,7 +544,9 @@ if(USE_BUNDLED_OLM)
         Olm
         GIT_REPOSITORY https://gitlab.matrix.org/matrix-org/olm.git
         GIT_TAG        3.2.16
-        PATCH_COMMAND  git apply ${CMAKE_CURRENT_SOURCE_DIR}/third_party/olm-patches/0001-fix-list-const-ptr.patch
+        PATCH_COMMAND  git apply
+            ${CMAKE_CURRENT_SOURCE_DIR}/third_party/olm-patches/0001-fix-list-const-ptr.patch
+            ${CMAKE_CURRENT_SOURCE_DIR}/third_party/olm-patches/0002-fix-cmake-cmp0148.patch
         UPDATE_DISCONNECTED 1
     )
     set(OLM_TESTS OFF CACHE INTERNAL "")
