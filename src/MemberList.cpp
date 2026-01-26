@@ -179,12 +179,12 @@ MemberList::lessThan(const QModelIndex &source_left, const QModelIndex &source_r
         return QSortFilterProxyModel::lessThan(source_left, source_right);
     }
 
-    const QString left =
+    const QString &left =
       this->m_model.data(source_left, MemberListBackend::Roles::Mxid).toString();
-    const QString right =
+    const QString &right =
       this->m_model.data(source_right, MemberListBackend::Roles::Mxid).toString();
 
-    const std::string room_id = this->roomId().toStdString();
+    const std::string &room_id = this->roomId().toStdString();
     if (cache::isV12Creator(room_id, left.toStdString())) {
         if (!cache::isV12Creator(room_id, right.toStdString())) {
             return false;
