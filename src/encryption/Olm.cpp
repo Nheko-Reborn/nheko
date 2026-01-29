@@ -805,6 +805,18 @@ import_inbound_megolm_session(
         // original sender might send us a signed session.
         data.trusted = olm_inbound_group_session_is_verified(megolm_session.get());
 
+        if (!data.trusted && !roomKey.content.forwarding_curve25519_key_chain.empty()) {
+            auto forwarder_key = roomKey.content.forwarding_curve25519_key_chain.back();
+            auto status        = cache::client()->verificationStatus(roomKey.sender);
+            if (status.verified_device_keys.count(forwarder_key) &&
+                status.verified_device_keys.at(forwarder_key) == crypto::Trust::Verified) {
+                data.trusted = true;
+                nhlog::crypto()->debug("import_inbound_megolm_session: Trusting forwarded "
+                                       "session key from verified device: {}",
+                                       forwarder_key);
+            }
+        }
+
         backup_session_key(index, data, megolm_session);
         cache::saveInboundMegolmSession(index, std::move(megolm_session), data);
     } catch (const lmdb::error &e) {
