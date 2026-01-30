@@ -401,7 +401,32 @@ CallDevices::videoDevice(std::pair<int, int> &resolution, std::pair<int, int> &f
     }
 }
 
-#else
+void
+CallDevices::refresh()
+{
+}
+
+void
+CallDevices::init()
+{
+}
+
+void
+CallDevices::deinit()
+{
+}
+
+GstDevice *
+CallDevices::audioDevice() const
+{
+    return nullptr;
+}
+
+GstDevice *
+CallDevices::videoDevice(std::pair<int, int> &, std::pair<int, int> &) const
+{
+    return nullptr;
+}
 
 bool
 CallDevices::haveMic() const
