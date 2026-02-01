@@ -40,7 +40,7 @@ public slots:
     void setUnreadCount(int count);
 
 private:
-    QAction *viewAction_;
+    QAction *toggleAction_;
     QAction *quitAction_;
 
     int previousCount = 0;
