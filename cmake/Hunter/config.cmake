@@ -61,3 +61,18 @@ else()
             BUILD_TESTING=OFF
     )
 endif()
+
+include(hunter_add_version)
+include(hunter_cacheable)
+include(hunter_cmake_args)
+include(hunter_download)
+include(hunter_pick_scheme)
+
+hunter_add_version(
+    PACKAGE_NAME Libevent
+    VERSION "2.2.1-alpha"
+    URL "https://github.com/libevent/libevent/releases/download/release-2.2.1-alpha/libevent-2.2.1-alpha-dev.tar.gz"
+    SHA1 "fafa816cc4e08d6029c294dc33e4576986578b1b")
+
+
+hunter_config(Libevent VERSION "2.2.1-alpha"
