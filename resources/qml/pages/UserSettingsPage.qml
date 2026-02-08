@@ -100,10 +100,13 @@ Rectangle {
                                 model: r.model.values
                                 currentIndex: r.model.value
                                 width: Math.min(implicitWidth, scroll.availableWidth - Nheko.paddingMedium)
-                                onActivated: r.model.value = currentIndex
+                                onActivated: {
+                                    r.model.value = currentIndex
+                                }
                                 implicitContentWidthPolicy: ComboBox.WidestTextWhenCompleted
 
-                                WheelHandler{} // suppress scrolling changing values
+                                // Disable built-in wheel handling unless focused
+                                wheelEnabled: activeFocus
                             }
                         }
                         DelegateChoice {
@@ -118,7 +121,7 @@ Rectangle {
                                 onValueChanged: model.value = value
                                 editable: true
 
-                                WheelHandler{} // suppress scrolling changing values
+                                wheelEnabled: activeFocus
                             }
                         }
                         DelegateChoice {
@@ -153,7 +156,7 @@ Rectangle {
                                     return Number.fromLocaleString(locale, text) * spinbox.div
                                 }
 
-                                WheelHandler{} // suppress scrolling changing values
+                                wheelEnabled: activeFocus
                             }
                         }
                         DelegateChoice {
@@ -272,6 +275,5 @@ Rectangle {
         ToolTip.text: qsTr("Back")
         onClicked: mainWindow.pop()
     }
-
 }
 
