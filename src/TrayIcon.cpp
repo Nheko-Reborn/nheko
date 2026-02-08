@@ -107,13 +107,21 @@ TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
     QMenu *menu = new QMenu();
     setContextMenu(menu);
 
-    viewAction_ = new QAction(tr("Show"), this);
+    toggleAction_ = new QAction(tr("Show"), this);
     quitAction_ = new QAction(tr("Quit"), this);
 
-    connect(viewAction_, &QAction::triggered, parent, &QWindow::show);
+    connect(toggleAction_, &QAction::triggered, parent, [=, this](){
+        if (parent->isVisible()) {
+            parent->hide();
+            toggleAction_->setText(tr("Show"));
+        } else {
+            parent->show();
+            toggleAction_->setText(tr("Hide"));
+        }
+    });
     connect(quitAction_, &QAction::triggered, this, QApplication::quit);
 
-    menu->addAction(viewAction_);
+    menu->addAction(toggleAction_);
     menu->addAction(quitAction_);
 
     QString toolTip = QLatin1String("nheko");
