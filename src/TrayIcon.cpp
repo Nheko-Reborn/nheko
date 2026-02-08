@@ -108,9 +108,9 @@ TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
     setContextMenu(menu);
 
     toggleAction_ = new QAction(tr("Show"), this);
-    quitAction_ = new QAction(tr("Quit"), this);
+    quitAction_   = new QAction(tr("Quit"), this);
 
-    connect(toggleAction_, &QAction::triggered, parent, [=, this](){
+    connect(toggleAction_, &QAction::triggered, parent, [=, this]() {
         if (parent->isVisible()) {
             parent->hide();
             toggleAction_->setText(tr("Show"));

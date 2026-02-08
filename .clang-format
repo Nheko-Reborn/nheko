@@ -13,6 +13,8 @@ KeepEmptyLinesAtTheStartOfBlocks: false
 PointerAlignment: Right
 Cpp11BracedListStyle: true
 PenaltyReturnTypeOnItsOwnLine: 0
+StatementAttributeLikeMacros:
+  - emit
 ---
 BasedOnStyle: WebKit
 Language: ObjC

@@ -28,7 +28,7 @@ EventExpiry::load()
         if (auto temp = cache::client()->getAccountData(mtx::events::EventType::NhekoEventExpiry,
                                                         roomid_.toStdString())) {
             auto h      = std::get<mtx::events::AccountDataEvent<
-              mtx::events::account_data::nheko_extensions::EventExpiry>>(*temp);
+                   mtx::events::account_data::nheko_extensions::EventExpiry>>(*temp);
             this->event = std::move(h.content);
         }
     }

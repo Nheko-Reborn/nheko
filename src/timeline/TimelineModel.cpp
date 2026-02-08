@@ -1137,7 +1137,6 @@ TimelineModel::syncState(const mtx::responses::State &s)
             avatarChanged      = true;
             nameChanged        = true;
             memberCountChanged = true;
-
         } else if (std::holds_alternative<StateEvent<state::Encryption>>(e)) {
             this->isEncrypted_ = cache::isRoomEncrypted(room_id_.toStdString());
             emit encryptionChanged();
