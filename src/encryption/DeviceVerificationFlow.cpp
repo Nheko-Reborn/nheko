@@ -611,9 +611,10 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
 
     // Get SAS fields with defaults
     auto key_agreement = msg.key_agreement_protocols.value_or(std::vector<std::string>{});
-    auto hashes_list = msg.hashes.value_or(std::vector<std::string>{});
-    auto mac_codes = msg.message_authentication_codes.value_or(std::vector<std::string>{});
-    auto sas_methods = msg.short_authentication_string.value_or(std::vector<mtx::events::msg::SASMethods>{});
+    auto hashes_list   = msg.hashes.value_or(std::vector<std::string>{});
+    auto mac_codes     = msg.message_authentication_codes.value_or(std::vector<std::string>{});
+    auto sas_methods =
+      msg.short_authentication_string.value_or(std::vector<mtx::events::msg::SASMethods>{});
 
     // TODO(Nico): Replace with contains once we use C++23
     if (std::ranges::count(key_agreement, "curve25519-hkdf-sha256") &&
@@ -627,11 +628,9 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
             return;
         }
 
-        if (std::ranges::count(sas_methods,
-                               mtx::events::msg::SASMethods::Emoji)) {
+        if (std::ranges::count(sas_methods, mtx::events::msg::SASMethods::Emoji)) {
             this->method = mtx::events::msg::SASMethods::Emoji;
-        } else if (std::ranges::count(sas_methods,
-                                      mtx::events::msg::SASMethods::Decimal)) {
+        } else if (std::ranges::count(sas_methods, mtx::events::msg::SASMethods::Decimal)) {
             this->method = mtx::events::msg::SASMethods::Decimal;
         } else {
             this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);

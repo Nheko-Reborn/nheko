@@ -347,7 +347,8 @@ UserProfile::updateVerificationStatus()
     emit userStatusChanged();
 
     deviceInfo.reserve(devices.size());
-    nhlog::db()->debug("Building device list for user {} with {} devices", userid_.toStdString(), devices.size());
+    nhlog::db()->debug(
+      "Building device list for user {} with {} devices", userid_.toStdString(), devices.size());
     for (const auto &d : devices) {
         auto device = d.second;
         verification::Status verified =
@@ -361,10 +362,10 @@ UserProfile::updateVerificationStatus()
             verified = verification::Status::SELF;
 
         nhlog::db()->debug("  Device: {} | Name: '{}' | Status: {} | User verified: {}",
-                          device.device_id,
-                          device.unsigned_info.device_display_name,
-                          static_cast<int>(verified),
-                          static_cast<int>(verificationStatus.user_verified));
+                           device.device_id,
+                           device.unsigned_info.device_display_name,
+                           static_cast<int>(verified),
+                           static_cast<int>(verificationStatus.user_verified));
 
         // Fall back to device_id if display_name is empty
         std::string displayName = device.unsigned_info.device_display_name;
@@ -372,9 +373,8 @@ UserProfile::updateVerificationStatus()
             displayName = device.device_id;
         }
 
-        deviceInfo.emplace_back(QString::fromStdString(d.first),
-                                QString::fromStdString(displayName),
-                                verified);
+        deviceInfo.emplace_back(
+          QString::fromStdString(d.first), QString::fromStdString(displayName), verified);
     }
 
     // For self, also query devices without keys

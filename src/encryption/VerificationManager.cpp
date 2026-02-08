@@ -139,9 +139,8 @@ VerificationManager::verifyUser(QString userid)
         }
     }
 
-    emit ChatPage::instance()->showNotification(
-      tr("No encrypted private chat found with this user. Create an "
-         "encrypted private chat with this user and try again."));
+    emit ChatPage::instance()->showNotification(tr("No encrypted private chat found with this user. Create an "
+                             "encrypted private chat with this user and try again."));
 }
 
 void

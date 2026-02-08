@@ -127,8 +127,7 @@ CallManager::CallManager(QObject *parent)
           QTimer::singleShot(timeoutms_, this, [this, callid]() {
               if (session_.state() == webrtc::State::OFFERSENT && callid == callid_) {
                   hangUp(CallHangUp::Reason::InviteTimeOut);
-                  emit ChatPage::instance()->showNotification(
-                    QStringLiteral("The remote side failed to pick up."));
+                  emit ChatPage::instance()->showNotification(QStringLiteral("The remote side failed to pick up."));
               }
           });
       });
@@ -244,8 +243,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
 {
     if (isOnCall() || isOnCallOnOtherDevice()) {
         if (isOnCallOnOtherDevice_ != "")
-            emit ChatPage::instance()->showNotification(
-              QStringLiteral("User is already in a call"));
+            emit ChatPage::instance()->showNotification(QStringLiteral("User is already in a call"));
         return;
     }
 
@@ -612,8 +610,7 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
             return;
 
         if (!isOnCall()) {
-            emit ChatPage::instance()->showNotification(
-              QStringLiteral("Call answered on another device."));
+            emit ChatPage::instance()->showNotification(QStringLiteral("Call answered on another device."));
             stopRingtone();
             haveCallInvite_ = false;
             if (callPartyVersion_ != "1") {
@@ -712,8 +709,7 @@ CallManager::handleEvent(const RoomEvent<CallReject> &callRejectEvent)
     // check remote echo
     if (callRejectEvent.sender == utils::localUser().toStdString()) {
         if (callRejectEvent.content.party_id != partyid_ && callParty_ != utils::localUser())
-            emit ChatPage::instance()->showNotification(
-              QStringLiteral("Call rejected on another device."));
+            emit ChatPage::instance()->showNotification(QStringLiteral("Call rejected on another device."));
         endCall();
         return;
     }

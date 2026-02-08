@@ -302,8 +302,7 @@ SelfVerificationStatus::invalidate()
     if (!keys || keys->device_keys.find(http::client()->device_id()) == keys->device_keys.end()) {
         if (keys && (keys->seen_device_ids.count(http::client()->device_id()) ||
                      keys->seen_device_keys.count(olm::client()->identity_keys().curve25519))) {
-            emit ChatPage::instance()->dropToLoginPageCb(
-              tr("Identity key changed. This breaks E2EE, so logging out."));
+            emit ChatPage::instance()->dropToLoginPageCb(tr("Identity key changed. This breaks E2EE, so logging out."));
             return;
         }
 
