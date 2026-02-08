@@ -401,6 +401,7 @@ CallDevices::videoDevice(std::pair<int, int> &resolution, std::pair<int, int> &f
     }
 }
 
+#else
 void
 CallDevices::refresh()
 {
