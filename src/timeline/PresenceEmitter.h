@@ -49,6 +49,7 @@ public:
 
     Q_INVOKABLE QString userPresence(QString id) const;
     Q_INVOKABLE QString userStatus(QString id) const;
+    Q_INVOKABLE QString lastActive(QString id) const;
 
 signals:
     void presenceChanged(QString userid);

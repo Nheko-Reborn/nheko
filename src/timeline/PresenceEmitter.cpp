@@ -14,6 +14,7 @@ struct CacheEntry
 {
     QString status;
     mtx::presence::PresenceState state;
+    QDateTime lastActiveTime;
 };
 }
 
@@ -44,7 +45,12 @@ pullPresence(const QString &id)
         statusMsg.append(u'…');
     }
 
-    auto c = new CacheEntry{utils::replaceEmoji(std::move(statusMsg).toHtmlEscaped()), p.presence};
+    QDateTime lastActiveTime;
+    if (p.last_active_ago > 0)
+        lastActiveTime = QDateTime::currentDateTime().addMSecs(-(qint64)p.last_active_ago);
+
+    auto c = new CacheEntry{
+      utils::replaceEmoji(std::move(statusMsg).toHtmlEscaped()), p.presence, lastActiveTime};
     presences.insert(id, c);
     return c;
 }
@@ -55,8 +61,8 @@ PresenceEmitter::sync(
 {
     for (const auto &p : presences_) {
         auto id = QString::fromStdString(p.sender);
-        presences.remove(id);
-        emit presenceChanged(std::move(id));
+        presences.remove(std::move(id));
+        emit presenceChanged(id);
     }
 }
 
@@ -80,6 +86,37 @@ PresenceEmitter::userStatus(QString id) const
         return p->status;
     else
         return pullPresence(id)->status;
+}
+
+QString
+PresenceEmitter::lastActive(QString id) const
+{
+    if (id.isEmpty())
+        return {};
+
+    QString status;
+    bool online = false;
+    QDateTime lastActiveTime;
+
+    if (auto p = presences[id]) {
+        status         = p->status;
+        online         = (p->state == mtx::presence::PresenceState::online);
+        lastActiveTime = p->lastActiveTime;
+    } else {
+        auto p         = pullPresence(id);
+        status         = p->status;
+        online         = (p->state == mtx::presence::PresenceState::online);
+        lastActiveTime = p->lastActiveTime;
+    }
+
+    if (online)
+        return QStringLiteral("Online") + (status.isEmpty() ? "" : " - " + status);
+
+    if (lastActiveTime.isValid())
+        return QStringLiteral("Last active: ") + utils::descriptiveTime(lastActiveTime) +
+               (status.isEmpty() ? "" : " - " + status);
+
+    return status;
 }
 
 #include "moc_PresenceEmitter.cpp"

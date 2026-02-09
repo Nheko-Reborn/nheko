@@ -99,6 +99,15 @@ AbstractButton {
         visible: !!avatar.userid
         width: height
 
+        ToolTip.visible: ma.hovered
+        ToolTip.text: Presence.lastActive(avatar.userid)
+
+        MouseArea {
+            id: ma
+            anchors.fill: parent
+            hoverEnabled: true
+        }
+
         Connections {
             function onPresenceChanged(id) {
                 if (id == avatar.userid)
