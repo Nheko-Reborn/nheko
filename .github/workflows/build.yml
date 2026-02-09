@@ -13,12 +13,6 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Qt
-        uses: jurplel/install-qt-action@v3
-        with:
-          version: "6.5.3"
-          modules: "qtmultimedia qtshadertools qtimageformats"
-
       - name: Install Dependencies
         run: |
           sudo apt-get update
@@ -26,23 +20,14 @@ jobs:
             build-essential git cmake ninja-build \
             libssl-dev liblmdb-dev libgstreamer-plugins-base1.0-dev \
             libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev libevent-dev libcurl4-openssl-dev \
-            libxcb-ewmh-dev pkg-config libsecret-1-dev asciidoc
+            libxcb-ewmh-dev pkg-config libsecret-1-dev asciidoc \
+            libfmt-dev libspdlog-dev libolm-dev nlohmann-json3-dev libqt6keychain-dev \
+            qt6-base-dev qt6-declarative-dev qt6-multimedia-dev qt6-l10n-tools qt6-svg-dev libqt6shadertools6-dev
           sudo pip3 install asciidoc --break-system-packages
 
       - name: Configure
         run: |
-          cmake -B build -G Ninja \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DHUNTER_ENABLED=ON \
-            -DUSE_BUNDLED_MTXCLIENT=ON \
-            -DUSE_BUNDLED_COEURL=ON \
-            -DUSE_BUNDLED_KDSINGLEAPPLICATION=ON \
-            -DUSE_BUNDLED_FMT=ON \
-            -DUSE_BUNDLED_SPDLOG=ON \
-            -DUSE_BUNDLED_OLM=ON \
-            -DUSE_BUNDLED_QTKEYCHAIN=ON \
-            -DUSE_BUNDLED_JSON=ON \
-            -DVOIP=ON
+          cmake -S . -B build
 
       - name: Build
-        run: cmake --build build
+        run: cmake --build build -j$(nproc)
