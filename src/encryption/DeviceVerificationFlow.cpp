@@ -596,9 +596,9 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         return;
     }
 
-    if (msg.message_authentication_codes.has_value()) {
+    if (!msg.message_authentication_codes.empty()) {
         nhlog::crypto()->info("verification: received start with mac methods {}",
-                              fmt::join(msg.message_authentication_codes.value(), ", "));
+                              fmt::join(msg.message_authentication_codes, ", "));
     } else {
         nhlog::crypto()->info("verification: received start with no mac methods");
     }
@@ -610,11 +610,10 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
     }
 
     // Get SAS fields with defaults
-    auto key_agreement = msg.key_agreement_protocols.value_or(std::vector<std::string>{});
-    auto hashes_list   = msg.hashes.value_or(std::vector<std::string>{});
-    auto mac_codes     = msg.message_authentication_codes.value_or(std::vector<std::string>{});
-    auto sas_methods =
-      msg.short_authentication_string.value_or(std::vector<mtx::events::msg::SASMethods>{});
+    auto key_agreement = msg.key_agreement_protocols;
+    auto hashes_list   = msg.hashes;
+    auto mac_codes     = msg.message_authentication_codes;
+    auto sas_methods   = msg.short_authentication_string;
 
     // TODO(Nico): Replace with contains once we use C++23
     if (std::ranges::count(key_agreement, "curve25519-hkdf-sha256") &&

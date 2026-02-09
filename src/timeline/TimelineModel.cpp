@@ -1426,18 +1426,18 @@ TimelineModel::avatarUrl(const QString &id) const
 }
 
 QString
-TimelineModel::formatDateSeparator(QDate date) const
+TimelineModel::formatDateSeparator(QDateTime date) const
 {
     auto now = QDateTime::currentDateTime();
 
     QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
 
-    if (now.date().year() == date.year()) {
+    if (now.date().year() == date.date().year()) {
         static QRegularExpression rx(QStringLiteral("[^a-zA-Z]*y+[^a-zA-Z]*"));
         fmt = fmt.remove(rx);
     }
 
-    return date.toString(fmt);
+    return date.date().toString(fmt);
 }
 
 QString
