@@ -32,6 +32,7 @@ jobs:
         run: |
           cmake -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
+            -DHUNTER_ENABLED=ON \
             -DUSE_BUNDLED_MTXCLIENT=ON \
             -DUSE_BUNDLED_COEURL=ON \
             -DUSE_BUNDLED_KDSINGLEAPPLICATION=ON \
@@ -39,8 +40,6 @@ jobs:
             -DUSE_BUNDLED_SPDLOG=ON \
             -DUSE_BUNDLED_OLM=ON \
             -DUSE_BUNDLED_QTKEYCHAIN=ON \
-            -DUSE_BUNDLED_JSON=ON \
-            -DVOIP=ONDLED_QTKEYCHAIN=ON \
             -DUSE_BUNDLED_JSON=ON \
             -DVOIP=ON
 

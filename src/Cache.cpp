@@ -5618,16 +5618,25 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
     auto verifyAtLeastOneSig = [](const auto &toVerif,
                                   const std::map<std::string, std::string> &keys,
                                   const std::string &keyOwner) {
-        if (!toVerif.signatures.count(keyOwner))
+        if (!toVerif.signatures.count(keyOwner)) {
+            nhlog::crypto()->debug("verifyAtLeastOneSig: No signature from {} found on object",
+                                   keyOwner);
             return false;
+        }
 
         for (const auto &[key_id, signature] : toVerif.signatures.at(keyOwner)) {
-            if (!keys.count(key_id))
+            if (!keys.count(key_id)) {
+                nhlog::crypto()->debug("verifyAtLeastOneSig: Key {} not found in provided keys",
+                                       key_id);
                 continue;
+            }
 
             if (mtx::crypto::ed25519_verify_signature(
                   keys.at(key_id), nlohmann::json(toVerif), signature))
                 return true;
+
+            nhlog::crypto()->debug("verifyAtLeastOneSig: Signature verification failed for key {}",
+                                   key_id);
         }
         return false;
     };

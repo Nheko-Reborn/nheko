@@ -632,6 +632,12 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
     auto mac_codes     = dflt(msg.message_authentication_codes);
     auto sas_methods   = dflt(msg.short_authentication_string);
 
+    nhlog::crypto()->info("verification: keys: {}, hashes: {}, macs: {}, sas: {}",
+                          fmt::join(key_agreement, ", "),
+                          fmt::join(hashes_list, ", "),
+                          fmt::join(mac_codes, ", "),
+                          nlohmann::json(sas_methods).dump());
+
     // TODO(Nico): Replace with contains once we use C++23
     if (std::ranges::count(key_agreement, "curve25519-hkdf-sha256") &&
         std::ranges::count(hashes_list, "sha256")) {

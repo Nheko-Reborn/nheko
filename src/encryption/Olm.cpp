@@ -1317,6 +1317,16 @@ calculate_trust(const std::string &user_id,
     if (megolmData && megolmData->trusted &&
         status.verified_device_keys.count(megolmData->sender_key)) {
         trustlevel = status.verified_device_keys.at(megolmData->sender_key);
+    } else {
+        if (!megolmData)
+            nhlog::crypto()->debug("calculate_trust: no megolm session for room {}, session {}",
+                                   index.room_id,
+                                   index.session_id);
+        else if (!megolmData->trusted)
+            nhlog::crypto()->debug("calculate_trust: megolm session not trusted");
+        else
+            nhlog::crypto()->debug("calculate_trust: device {} not in verified_device_keys",
+                                   megolmData->sender_key);
     }
 
     return trustlevel;
