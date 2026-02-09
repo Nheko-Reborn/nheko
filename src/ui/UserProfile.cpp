@@ -354,7 +354,8 @@ UserProfile::updateVerificationStatus()
 
     std::vector<DeviceInfo> deviceInfo;
     auto devices = user_keys->device_keys;
-    nhlog::ui()->info("UserProfile: Found {} devices in E2EE cache", devices.size());
+    nhlog::db()->debug(
+      "Building device list for user {} with {} devices", userid_.toStdString(), devices.size());
     auto verificationStatus = cache::client()->verificationStatus(userid_.toStdString());
 
     this->isUserVerified = verificationStatus.user_verified;
@@ -376,8 +377,11 @@ UserProfile::updateVerificationStatus()
         deviceInfo.emplace_back(QString::fromStdString(d.first),
                                 QString::fromStdString(device.unsigned_info.device_display_name),
                                 verified);
-        nhlog::ui()->info(
-          "UserProfile: Added device {} ({})", d.first, device.unsigned_info.device_display_name);
+        nhlog::db()->debug("  Device: {} | Status: {} | User verified: {} | Name: '{}'",
+                           d.first,
+                           (int)verified,
+                           (int)this->isUserVerified,
+                           device.unsigned_info.device_display_name);
     }
 
     // For self, also query devices without keys
