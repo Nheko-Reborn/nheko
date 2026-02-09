@@ -596,33 +596,29 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         return;
     }
 
-    if (msg.message_authentication_codes)
-        nhlog::crypto()->info("verification: received start with mac methods {}",
-                              fmt::join(*msg.message_authentication_codes, ", "));
-    else
+
+    if (msg.message_authentication_codes.empty())
         nhlog::crypto()->info("verification: received start with no mac methods");
+    else
+        nhlog::crypto()->info("verification: received start with mac methods {}",
+                              fmt::join(msg.message_authentication_codes, ", "));
 
     // TODO(Nico): Replace with contains once we use C++23
-    if ((msg.key_agreement_protocols &&
-         std::ranges::count(*msg.key_agreement_protocols, "curve25519-hkdf-sha256")) &&
-        (msg.hashes && std::ranges::count(*msg.hashes, "sha256"))) {
-        if (msg.message_authentication_codes &&
-            std::ranges::count(*msg.message_authentication_codes, mac_method_alg_v2)) {
+    if (std::ranges::count(msg.key_agreement_protocols, "curve25519-hkdf-sha256") &&
+        std::ranges::count(msg.hashes, "sha256")) {
+        if (std::ranges::count(msg.message_authentication_codes, mac_method_alg_v2)) {
             this->mac_method = mac_method_alg_v2;
-        } else if (msg.message_authentication_codes &&
-                   std::ranges::count(*msg.message_authentication_codes, mac_method_alg_v1)) {
+        } else if (std::ranges::count(msg.message_authentication_codes, mac_method_alg_v1)) {
             this->mac_method = mac_method_alg_v1;
         } else {
             this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
             return;
         }
 
-        if (msg.short_authentication_string &&
-            std::ranges::count(*msg.short_authentication_string,
+        if (std::ranges::count(msg.short_authentication_string,
                                mtx::events::msg::SASMethods::Emoji)) {
             this->method = mtx::events::msg::SASMethods::Emoji;
-        } else if (msg.short_authentication_string &&
-                   std::ranges::count(*msg.short_authentication_string,
+        } else if (std::ranges::count(msg.short_authentication_string,
                                       mtx::events::msg::SASMethods::Decimal)) {
             this->method = mtx::events::msg::SASMethods::Decimal;
         } else {
