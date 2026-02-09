@@ -1739,11 +1739,13 @@ TimelineModel::sendEncryptedMessage(const mtx::events::RoomEvent<T> &msg,
         // TODO: Let the user know about the errors.
     } catch (const lmdb::error &e) {
         nhlog::db()->critical("failed to open outbound megolm session ({}): {}", room_id, e.what());
-        emit ChatPage::instance()->showNotification(tr("Failed to encrypt event, sending aborted!"));
+        emit ChatPage::instance()->showNotification(
+          tr("Failed to encrypt event, sending aborted!"));
     } catch (const mtx::crypto::olm_exception &e) {
         nhlog::crypto()->critical(
           "failed to open outbound megolm session ({}): {}", room_id, e.what());
-        emit ChatPage::instance()->showNotification(tr("Failed to encrypt event, sending aborted!"));
+        emit ChatPage::instance()->showNotification(
+          tr("Failed to encrypt event, sending aborted!"));
     }
 }
 

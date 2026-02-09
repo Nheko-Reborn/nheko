@@ -1307,7 +1307,8 @@ MediaUpload::startUpload()
               "",
               [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
                   if (err) {
-                      emit ChatPage::instance()->showNotification(tr("Failed to upload media. Please try again."));
+                      emit ChatPage::instance()->showNotification(
+                        tr("Failed to upload media. Please try again."));
                       nhlog::net()->warn("failed to upload media: {} {} ({})",
                                          err->matrix_error.error,
                                          to_string(err->matrix_error.errcode),
@@ -1341,7 +1342,8 @@ MediaUpload::startUpload()
       encrypt_ ? "" : originalFilename_.toStdString(),
       [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
           if (err) {
-              emit ChatPage::instance()->showNotification(tr("Failed to upload media. Please try again."));
+              emit ChatPage::instance()->showNotification(
+                tr("Failed to upload media. Please try again."));
               nhlog::net()->warn("failed to upload media: {} {} ({})",
                                  err->matrix_error.error,
                                  to_string(err->matrix_error.errcode),
