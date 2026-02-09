@@ -803,6 +803,7 @@ import_inbound_megolm_session(
         data.sender_key                      = roomKey.content.sender_key;
         // Keys from online key backup won't have a signature, so they will be untrusted. But the
         // original sender might send us a signed session.
+        // If the key was forwarded by a verified device, we might trust it.
         data.trusted = olm_inbound_group_session_is_verified(megolm_session.get());
 
         backup_session_key(index, data, megolm_session);

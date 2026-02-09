@@ -7,9 +7,11 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v3
@@ -23,7 +25,7 @@ jobs:
           sudo apt-get install -y \
             build-essential git cmake ninja-build \
             libssl-dev liblmdb-dev libgstreamer-plugins-base1.0-dev \
-            libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev libevent-dev libcurl4-openssl-dev \
             libxcb-ewmh-dev pkg-config
 
       - name: Configure
@@ -37,6 +39,8 @@ jobs:
             -DUSE_BUNDLED_SPDLOG=ON \
             -DUSE_BUNDLED_OLM=ON \
             -DUSE_BUNDLED_QTKEYCHAIN=ON \
+            -DUSE_BUNDLED_JSON=ON \
+            -DVOIP=ONDLED_QTKEYCHAIN=ON \
             -DUSE_BUNDLED_JSON=ON \
             -DVOIP=ON
 
