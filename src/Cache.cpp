@@ -4397,6 +4397,12 @@ Cache::clearTimeline(const std::string &room_id)
             if (obj.count("event_id") != 0) {
                 std::string event_id = obj["event_id"].get<std::string>();
 
+                // Don't delete pending messages!
+                // We don't have a cheap way to check if an event is pending, so we just
+                // check if the event_id starts with "m". This is accurate enough.
+                if (event_id.size() > 0 && event_id[0] == 'm')
+                     continue;
+
                 if (!event_id.empty()) {
                     evToOrderDb.del(txn, event_id);
                     eventsDb.del(txn, event_id);
