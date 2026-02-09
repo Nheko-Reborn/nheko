@@ -1248,51 +1248,26 @@ ChatPage::currentPresence() const
     }
 }
 
-static void
-restoreSelfDeviceKeySignatures(mtx::requests::UploadKeys &req, std::string_view context)
+void
+ChatPage::verifyOneTimeKeyCountAfterStartup()
 {
-    if (req.device_keys.device_id != http::client()->device_id())
-        return;
-
-    auto myUser   = http::client()->user_id().to_string();
-    auto myDevice = http::client()->device_id();
-
-    if (auto keys = cache::client()->userKeys(myUser)) {
-        if (keys->device_keys.count(myDevice)) {
-            const auto &cachedKey = keys->device_keys.at(myDevice);
-            if (cachedKey.signatures.count(myUser)) {
-                auto &reqSigsForUser = req.device_keys.signatures[myUser];
-                for (const auto &[key_id, signature] : cachedKey.signatures.at(myUser)) {
-                    auto it = reqSigsForUser.find(key_id);
-                    if (it == reqSigsForUser.end()) {
-                        // Only restore signatures that are not already present in the request.
-                        reqSigsForUser.emplace(key_id, signature);
+    auto req = olm::client()->create_upload_keys_request();
+    if (req.device_keys.device_id == http::client()->device_id()) {
+        auto myUser   = http::client()->user_id().to_string();
+        auto myDevice = http::client()->device_id();
+        if (auto keys = cache::client()->userKeys(myUser)) {
+            if (keys->device_keys.count(myDevice)) {
+                const auto &cachedKey = keys->device_keys.at(myDevice);
+                if (cachedKey.signatures.count(myUser)) {
+                    for (const auto &[key_id, signature] : cachedKey.signatures.at(myUser)) {
+                        req.device_keys.signatures[myUser][key_id] = signature;
                         nhlog::crypto()->debug(
-                          "Restored self-signature for {} from cache ({})", key_id, context);
-                    } else if (it->second != signature) {
-                        // Keep the existing request signature if it differs from the cached one.
-                        nhlog::crypto()->warn(
-                          "Cached self-signature for {} differs from request signature; "
-                          "keeping request signature ({})",
-                          key_id,
-                          context);
-                    } else {
-                        nhlog::crypto()->debug(
-                          "Cached self-signature for {} matches existing value ({})",
-                          key_id,
-                          context);
+                          "Restored self-signature for {} from cache (startup check)", key_id);
                     }
                 }
             }
         }
     }
-}
-
-void
-ChatPage::verifyOneTimeKeyCountAfterStartup()
-{
-    auto req = olm::client()->create_upload_keys_request();
-    restoreSelfDeviceKeySignatures(req, "startup check");
 
     http::client()->upload_keys(
       req, [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
@@ -1349,7 +1324,23 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string_view, uint16_t> &coun
             olm::client()->generate_one_time_keys(nkeys, replace_fallback_key);
 
             auto req = olm::client()->create_upload_keys_request();
-            restoreSelfDeviceKeySignatures(req, "OTK upload");
+            if (req.device_keys.device_id == http::client()->device_id()) {
+                auto myUser   = http::client()->user_id().to_string();
+                auto myDevice = http::client()->device_id();
+                if (auto keys = cache::client()->userKeys(myUser)) {
+                    if (keys->device_keys.count(myDevice)) {
+                        const auto &cachedKey = keys->device_keys.at(myDevice);
+                        if (cachedKey.signatures.count(myUser)) {
+                            for (const auto &[key_id, signature] :
+                                 cachedKey.signatures.at(myUser)) {
+                                req.device_keys.signatures[myUser][key_id] = signature;
+                                nhlog::crypto()->debug(
+                                  "Restored self-signature for {} from cache (OTK upload)", key_id);
+                            }
+                        }
+                    }
+                }
+            }
 
             http::client()->upload_keys(
               req,
