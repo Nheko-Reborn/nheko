@@ -303,29 +303,30 @@ UserProfile::fetchDeviceList(const QString &userID)
       userID.toStdString(),
       [other_user_id = userID.toStdString(),
        self = QPointer<UserProfile>(this)](const UserKeyCache &, mtx::http::RequestErr err) {
-          if (!self)
-              return;
+          QMetaObject::invokeMethod(QCoreApplication::instance(), [self, err]() {
+              if (!self)
+                  return;
 
-          if (err) {
-              nhlog::net()->warn("failed to query device keys: {}", *err);
-          }
+              if (err) {
+                  nhlog::net()->warn("failed to query device keys: {}", *err);
+              }
 
-          // Ensure local key cache is up to date
-          cache::client()->query_keys(
-            utils::localUser().toStdString(),
-            [self](const UserKeyCache &, mtx::http::RequestErr err) {
-                if (!self)
-                    return;
+              // Ensure local key cache is up to date
+              cache::client()->query_keys(
+                utils::localUser().toStdString(),
+                [self](const UserKeyCache &, mtx::http::RequestErr err) {
+                    QMetaObject::invokeMethod(QCoreApplication::instance(), [self, err]() {
+                        if (!self)
+                            return;
 
-                using namespace mtx;
-                std::string local_user_id = utils::localUser().toStdString();
+                        if (err) {
+                            nhlog::net()->warn("failed to query device keys: {}", *err);
+                        }
 
-                if (err) {
-                    nhlog::net()->warn("failed to query device keys: {}", *err);
-                }
-
-                emit self->verificationStatiChanged();
-            });
+                        emit self->verificationStatiChanged();
+                    });
+                });
+          });
       });
 }
 

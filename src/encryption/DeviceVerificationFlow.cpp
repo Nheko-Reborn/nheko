@@ -596,80 +596,80 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         return;
     }
 
-auto get_content = [](const auto &v) -> const auto & {
-    if constexpr (requires { *v; })
-        return *v;
+    auto get_content = [](const auto &v) -> const auto & {
+        if constexpr (requires { *v; })
+            return *v;
+        else
+            return v;
+    };
+
+    auto has_content = [](const auto &v) {
+        if constexpr (requires { *v; })
+            return v.has_value();
+        else
+            return !v.empty();
+    };
+
+    if (has_content(msg.message_authentication_codes))
+        nhlog::crypto()->info("verification: received start with mac methods {}",
+                              fmt::join(get_content(msg.message_authentication_codes), ", "));
     else
-        return v;
-};
+        nhlog::crypto()->info("verification: received start with no mac methods");
 
-auto has_content = [](const auto &v) {
-    if constexpr (requires { *v; })
-        return v.has_value();
-    else
-        return !v.empty();
-};
-
-if (has_content(msg.message_authentication_codes))
-    nhlog::crypto()->info("verification: received start with mac methods {}",
-                          fmt::join(get_content(msg.message_authentication_codes), ", "));
-else
-    nhlog::crypto()->info("verification: received start with no mac methods");
-
-// TODO(Nico): Replace with contains once we use C++23
-if ((has_content(msg.key_agreement_protocols) &&
-     std::ranges::count(get_content(msg.key_agreement_protocols), "curve25519-hkdf-sha256")) &&
-    (has_content(msg.hashes) && std::ranges::count(get_content(msg.hashes), "sha256"))) {
-    if (has_content(msg.message_authentication_codes) &&
-        std::ranges::count(get_content(msg.message_authentication_codes), mac_method_alg_v2)) {
-        this->mac_method = mac_method_alg_v2;
-    } else if (has_content(msg.message_authentication_codes) &&
-               std::ranges::count(get_content(msg.message_authentication_codes),
-                                  mac_method_alg_v1)) {
-        this->mac_method = mac_method_alg_v1;
-    } else {
-        this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
-        return;
-    }
-
-    if (has_content(msg.short_authentication_string) &&
-        std::ranges::count(get_content(msg.short_authentication_string),
-                           mtx::events::msg::SASMethods::Emoji)) {
-        this->method = mtx::events::msg::SASMethods::Emoji;
-    } else if (has_content(msg.short_authentication_string) &&
-               std::ranges::count(get_content(msg.short_authentication_string),
-                                  mtx::events::msg::SASMethods::Decimal)) {
-        this->method = mtx::events::msg::SASMethods::Decimal;
-    } else {
-        this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
-        return;
-    }
-
-    if (!sender)
-        this->canonical_json = nlohmann::json(msg).dump();
-    else {
-        // resolve glare
-        if (std::tuple(this->toClient.to_string(), this->deviceId.toStdString()) <
-            std::tuple(utils::localUser().toStdString(), http::client()->device_id())) {
-            // treat this as if the user with the smaller mxid or smaller deviceid (if the mxid
-            // was the same) was the sender of "start"
-            this->canonical_json = nlohmann::json(msg).dump();
-            this->sender         = false;
-        }
-
-        if (msg.method != mtx::events::msg::VerificationMethods::SASv1) {
-            cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
+    // TODO(Nico): Replace with contains once we use C++23
+    if ((has_content(msg.key_agreement_protocols) &&
+         std::ranges::count(get_content(msg.key_agreement_protocols), "curve25519-hkdf-sha256")) &&
+        (has_content(msg.hashes) && std::ranges::count(get_content(msg.hashes), "sha256"))) {
+        if (has_content(msg.message_authentication_codes) &&
+            std::ranges::count(get_content(msg.message_authentication_codes), mac_method_alg_v2)) {
+            this->mac_method = mac_method_alg_v2;
+        } else if (has_content(msg.message_authentication_codes) &&
+                   std::ranges::count(get_content(msg.message_authentication_codes),
+                                      mac_method_alg_v1)) {
+            this->mac_method = mac_method_alg_v1;
+        } else {
+            this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
             return;
         }
-    }
 
-    // If we didn't send "start", accept the verification (otherwise wait for the other side to
-    // accept
-    if (state_ != PromptStartVerification && !sender)
-        this->acceptVerificationRequest();
-} else {
-    this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
-}
+        if (has_content(msg.short_authentication_string) &&
+            std::ranges::count(get_content(msg.short_authentication_string),
+                               mtx::events::msg::SASMethods::Emoji)) {
+            this->method = mtx::events::msg::SASMethods::Emoji;
+        } else if (has_content(msg.short_authentication_string) &&
+                   std::ranges::count(get_content(msg.short_authentication_string),
+                                      mtx::events::msg::SASMethods::Decimal)) {
+            this->method = mtx::events::msg::SASMethods::Decimal;
+        } else {
+            this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
+            return;
+        }
+
+        if (!sender)
+            this->canonical_json = nlohmann::json(msg).dump();
+        else {
+            // resolve glare
+            if (std::tuple(this->toClient.to_string(), this->deviceId.toStdString()) <
+                std::tuple(utils::localUser().toStdString(), http::client()->device_id())) {
+                // treat this as if the user with the smaller mxid or smaller deviceid (if the mxid
+                // was the same) was the sender of "start"
+                this->canonical_json = nlohmann::json(msg).dump();
+                this->sender         = false;
+            }
+
+            if (msg.method != mtx::events::msg::VerificationMethods::SASv1) {
+                cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
+                return;
+            }
+        }
+
+        // If we didn't send "start", accept the verification (otherwise wait for the other side to
+        // accept
+        if (state_ != PromptStartVerification && !sender)
+            this->acceptVerificationRequest();
+    } else {
+        this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
+    }
 }
 
 //! accepts a verification
