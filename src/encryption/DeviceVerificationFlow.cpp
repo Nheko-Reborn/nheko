@@ -15,12 +15,14 @@
 
 namespace {
 template<typename T>
-const T &dflt(const T &v)
+const T &
+dflt(const T &v)
 {
     return v;
 }
 template<typename T>
-const T &dflt(const std::optional<T> &v)
+const T &
+dflt(const std::optional<T> &v)
 {
     static const T empty;
     return v.has_value() ? *v : empty;
