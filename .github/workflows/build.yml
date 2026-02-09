@@ -1,0 +1,44 @@
+---
+name: Build Nheko
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: "6.5.3"
+          modules: "qtmultimedia qtshadertools qtimageformats"
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential git cmake ninja-build \
+            libssl-dev liblmdb-dev libgstreamer-plugins-base1.0-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev \
+            libxcb-ewmh-dev pkg-config
+
+      - name: Configure
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DUSE_BUNDLED_MTXCLIENT=ON \
+            -DUSE_BUNDLED_COEURL=ON \
+            -DUSE_BUNDLED_KDSINGLEAPPLICATION=ON \
+            -DUSE_BUNDLED_FMT=ON \
+            -DUSE_BUNDLED_SPDLOG=ON \
+            -DUSE_BUNDLED_OLM=ON \
+            -DUSE_BUNDLED_QTKEYCHAIN=ON \
+            -DUSE_BUNDLED_JSON=ON \
+            -DVOIP=ON
+
+      - name: Build
+        run: cmake --build build
