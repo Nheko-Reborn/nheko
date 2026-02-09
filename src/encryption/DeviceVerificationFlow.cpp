@@ -595,7 +595,6 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         cancelVerification(AcceptedOnOtherDevice);
         return;
     }
-}
 
 auto get_content = [](const auto &v) -> const auto & {
     if constexpr (requires { *v; })
