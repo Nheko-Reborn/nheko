@@ -361,11 +361,11 @@ UserProfile::updateVerificationStatus()
         if (isSelf() && device.device_id == ::http::client()->device_id())
             verified = verification::Status::SELF;
 
-        nhlog::db()->debug("  Device: {} | Name: '{}' | Status: {} | User verified: {}",
+        nhlog::db()->debug("  Device: {} | Status: {} | User verified: {} | Name: '{}'",
                            device.device_id,
-                           device.unsigned_info.device_display_name,
                            static_cast<int>(verified),
-                           static_cast<int>(verificationStatus.user_verified));
+                           static_cast<int>(verificationStatus.user_verified),
+                           device.unsigned_info.device_display_name);
 
         // Fall back to device_id if display_name is empty
         std::string displayName = device.unsigned_info.device_display_name;
