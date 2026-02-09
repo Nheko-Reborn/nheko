@@ -26,7 +26,8 @@ jobs:
             build-essential git cmake ninja-build \
             libssl-dev liblmdb-dev libgstreamer-plugins-base1.0-dev \
             libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev libevent-dev libcurl4-openssl-dev \
-            libxcb-ewmh-dev pkg-config
+            libxcb-ewmh-dev pkg-config libsecret-1-dev asciidoc
+          sudo pip3 install asciidoc --break-system-packages
 
       - name: Configure
         run: |
