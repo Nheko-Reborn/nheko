@@ -11,6 +11,21 @@
 
 #include <fmt/ranges.h>
 #include <nlohmann/json.hpp>
+#include <optional>
+
+namespace {
+template<typename T>
+const T &dflt(const T &v)
+{
+    return v;
+}
+template<typename T>
+const T &dflt(const std::optional<T> &v)
+{
+    static const T empty;
+    return v.has_value() ? *v : empty;
+}
+}
 
 #include "Cache.h"
 #include "Cache_p.h"
@@ -596,9 +611,9 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         return;
     }
 
-    if (!msg.message_authentication_codes.empty()) {
+    if (!dflt(msg.message_authentication_codes).empty()) {
         nhlog::crypto()->info("verification: received start with mac methods {}",
-                              fmt::join(msg.message_authentication_codes, ", "));
+                              fmt::join(dflt(msg.message_authentication_codes), ", "));
     } else {
         nhlog::crypto()->info("verification: received start with no mac methods");
     }
@@ -610,10 +625,10 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
     }
 
     // Get SAS fields with defaults
-    auto key_agreement = msg.key_agreement_protocols;
-    auto hashes_list   = msg.hashes;
-    auto mac_codes     = msg.message_authentication_codes;
-    auto sas_methods   = msg.short_authentication_string;
+    auto key_agreement = dflt(msg.key_agreement_protocols);
+    auto hashes_list   = dflt(msg.hashes);
+    auto mac_codes     = dflt(msg.message_authentication_codes);
+    auto sas_methods   = dflt(msg.short_authentication_string);
 
     // TODO(Nico): Replace with contains once we use C++23
     if (std::ranges::count(key_agreement, "curve25519-hkdf-sha256") &&
