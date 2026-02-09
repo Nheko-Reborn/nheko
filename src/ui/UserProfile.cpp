@@ -240,8 +240,8 @@ UserProfile::signOutDevice(const QString &deviceID)
 void
 UserProfile::refreshDevices()
 {
-    cache::client()->markUserKeysOutOfDate({this->userid_.toStdString()});
-    fetchDeviceList(this->userid_);
+    cache::client()->markUserKeysOutOfDate(
+      {this->userid_.toStdString(), utils::localUser().toStdString()});
 }
 
 bool
