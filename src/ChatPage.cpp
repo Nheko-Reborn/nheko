@@ -1261,7 +1261,8 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
                 if (cachedKey.signatures.count(myUser)) {
                     for (const auto &[key_id, signature] : cachedKey.signatures.at(myUser)) {
                         req.device_keys.signatures[myUser][key_id] = signature;
-                        nhlog::crypto()->debug("Restored self-signature for {} from cache (startup check)", key_id);
+                        nhlog::crypto()->debug(
+                          "Restored self-signature for {} from cache (startup check)", key_id);
                     }
                 }
             }
@@ -1269,8 +1270,7 @@ ChatPage::verifyOneTimeKeyCountAfterStartup()
     }
 
     http::client()->upload_keys(
-      req,
-      [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
+      req, [this](const mtx::responses::UploadKeys &res, mtx::http::RequestErr err) {
           if (err) {
               nhlog::crypto()->warn("failed to update one-time keys: {}", err);
 
@@ -1331,9 +1331,11 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string_view, uint16_t> &coun
                     if (keys->device_keys.count(myDevice)) {
                         const auto &cachedKey = keys->device_keys.at(myDevice);
                         if (cachedKey.signatures.count(myUser)) {
-                            for (const auto &[key_id, signature] : cachedKey.signatures.at(myUser)) {
+                            for (const auto &[key_id, signature] :
+                                 cachedKey.signatures.at(myUser)) {
                                 req.device_keys.signatures[myUser][key_id] = signature;
-                                nhlog::crypto()->debug("Restored self-signature for {} from cache (OTK upload)", key_id);
+                                nhlog::crypto()->debug(
+                                  "Restored self-signature for {} from cache (OTK upload)", key_id);
                             }
                         }
                     }
