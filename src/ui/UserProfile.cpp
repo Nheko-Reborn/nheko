@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QImageReader>
 #include <QMimeDatabase>
+#include <QPointer>
 #include <QStandardPaths>
 
 #include "Cache.h"
@@ -300,8 +301,11 @@ UserProfile::fetchDeviceList(const QString &userID)
 
     cache::client()->query_keys(
       userID.toStdString(),
-      [other_user_id = userID.toStdString(), this](const UserKeyCache &,
-                                                   mtx::http::RequestErr err) {
+      [other_user_id = userID.toStdString(),
+       self = QPointer<UserProfile>(this)](const UserKeyCache &, mtx::http::RequestErr err) {
+          if (!self)
+              return;
+
           if (err) {
               nhlog::net()->warn("failed to query device keys: {}", *err);
           }
@@ -309,7 +313,10 @@ UserProfile::fetchDeviceList(const QString &userID)
           // Ensure local key cache is up to date
           cache::client()->query_keys(
             utils::localUser().toStdString(),
-            [this](const UserKeyCache &, mtx::http::RequestErr err) {
+            [self](const UserKeyCache &, mtx::http::RequestErr err) {
+                if (!self)
+                    return;
+
                 using namespace mtx;
                 std::string local_user_id = utils::localUser().toStdString();
 
@@ -317,7 +324,7 @@ UserProfile::fetchDeviceList(const QString &userID)
                     nhlog::net()->warn("failed to query device keys: {}", *err);
                 }
 
-                emit verificationStatiChanged();
+                emit self->verificationStatiChanged();
             });
       });
 }
