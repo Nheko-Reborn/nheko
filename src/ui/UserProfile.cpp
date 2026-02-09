@@ -217,18 +217,23 @@ UserProfile::signOutDevice(const QString &deviceID)
     http::client()->delete_device(
       deviceID.toStdString(),
       UIA::instance()->genericHandler(tr("Sign out device %1").arg(deviceID)),
-      [this, deviceID](mtx::http::RequestErr e) {
-          if (e) {
-              nhlog::ui()->critical("Failure when attempting to sign out device {}",
-                                    deviceID.toStdString());
-              return;
-          }
-          nhlog::ui()->info("Device {} successfully signed out!", deviceID.toStdString());
-          // This is us. Let's update the interface accordingly
-          if (isSelf() && deviceID.toStdString() == ::http::client()->device_id()) {
-              ChatPage::instance()->dropToLoginPageCb(tr("You signed out this device."));
-          }
-          refreshDevices();
+      [self = QPointer<UserProfile>(this), deviceID](mtx::http::RequestErr e) {
+          QMetaObject::invokeMethod(QCoreApplication::instance(), [self, deviceID, e]() {
+              if (!self)
+                  return;
+
+              if (e) {
+                  nhlog::ui()->critical("Failure when attempting to sign out device {}",
+                                        deviceID.toStdString());
+                  return;
+              }
+              nhlog::ui()->info("Device {} successfully signed out!", deviceID.toStdString());
+              // This is us. Let's update the interface accordingly
+              if (self->isSelf() && deviceID.toStdString() == ::http::client()->device_id()) {
+                  ChatPage::instance()->dropToLoginPageCb(tr("You signed out this device."));
+              }
+              self->refreshDevices();
+          });
       });
 }
 
@@ -374,40 +379,47 @@ UserProfile::updateVerificationStatus()
 
     // For self, also query devices without keys
     if (isSelf()) {
-        http::client()->query_devices(
-          [this, deviceInfo](const mtx::responses::QueryDevices &allDevs,
-                             mtx::http::RequestErr err) mutable {
-              if (err) {
-                  nhlog::net()->warn("failed to query device keys: {}", *err);
-                  this->deviceList_.queueReset(std::move(deviceInfo));
-                  emit devicesChanged();
-                  return;
-              }
-              for (const auto &d : allDevs.devices) {
-                  // First, check if we already have an entry for this device
-                  bool found = false;
-                  for (auto &e : deviceInfo) {
-                      if (e.device_id.toStdString() == d.device_id) {
-                          found = true;
-                          // Gottem! Let's fill in the blanks
-                          e.lastIp = QString::fromStdString(d.last_seen_ip);
-                          e.lastTs = static_cast<qlonglong>(d.last_seen_ts);
-                          break;
+        http::client()->query_devices([self = QPointer<UserProfile>(this),
+                                       deviceInfo](const mtx::responses::QueryDevices &allDevs,
+                                                   mtx::http::RequestErr err) mutable {
+            QMetaObject::invokeMethod(
+              QCoreApplication::instance(),
+              [self, deviceInfo = std::move(deviceInfo), allDevs, err]() mutable {
+                  if (!self)
+                      return;
+
+                  if (err) {
+                      nhlog::net()->warn("failed to query device keys: {}", *err);
+                      self->deviceList_.queueReset(std::move(deviceInfo));
+                      emit self->devicesChanged();
+                      return;
+                  }
+                  for (const auto &d : allDevs.devices) {
+                      // First, check if we already have an entry for this device
+                      bool found = false;
+                      for (auto &e : deviceInfo) {
+                          if (e.device_id.toStdString() == d.device_id) {
+                              found = true;
+                              // Gottem! Let's fill in the blanks
+                              e.lastIp = QString::fromStdString(d.last_seen_ip);
+                              e.lastTs = static_cast<qlonglong>(d.last_seen_ts);
+                              break;
+                          }
+                      }
+                      // No entry? Let's add one.
+                      if (!found) {
+                          deviceInfo.emplace_back(QString::fromStdString(d.device_id),
+                                                  QString::fromStdString(d.display_name),
+                                                  verification::NOT_APPLICABLE,
+                                                  QString::fromStdString(d.last_seen_ip),
+                                                  d.last_seen_ts);
                       }
                   }
-                  // No entry? Let's add one.
-                  if (!found) {
-                      deviceInfo.emplace_back(QString::fromStdString(d.device_id),
-                                              QString::fromStdString(d.display_name),
-                                              verification::NOT_APPLICABLE,
-                                              QString::fromStdString(d.last_seen_ip),
-                                              d.last_seen_ts);
-                  }
-              }
 
-              this->deviceList_.queueReset(std::move(deviceInfo));
-              emit devicesChanged();
-          });
+                  self->deviceList_.queueReset(std::move(deviceInfo));
+                  emit self->devicesChanged();
+              });
+        });
         return;
     }
 
@@ -467,12 +479,19 @@ void
 UserProfile::changeDeviceName(const QString &deviceID, const QString &deviceName)
 {
     http::client()->set_device_name(
-      deviceID.toStdString(), deviceName.toStdString(), [this](mtx::http::RequestErr err) {
-          if (err) {
-              nhlog::net()->warn("could not change device name: {}", *err);
-              return;
-          }
-          refreshDevices();
+      deviceID.toStdString(),
+      deviceName.toStdString(),
+      [self = QPointer<UserProfile>(this)](mtx::http::RequestErr err) {
+          QMetaObject::invokeMethod(QCoreApplication::instance(), [self, err]() {
+              if (!self)
+                  return;
+
+              if (err) {
+                  nhlog::net()->warn("could not change device name: {}", *err);
+                  return;
+              }
+              self->refreshDevices();
+          });
       });
 }
 
