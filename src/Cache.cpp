@@ -4401,7 +4401,7 @@ Cache::clearTimeline(const std::string &room_id)
                 // We don't have a cheap way to check if an event is pending, so we just
                 // check if the event_id starts with "m". This is accurate enough.
                 if (event_id.size() > 0 && event_id[0] == 'm')
-                     continue;
+                    continue;
 
                 if (!event_id.empty()) {
                     evToOrderDb.del(txn, event_id);
