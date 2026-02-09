@@ -5615,9 +5615,6 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
         status.verified_device_keys[olm::client()->identity_keys().curve25519] =
           crypto::Trust::Verified;
         trustlevel = crypto::Trust::Verified;
-        nhlog::crypto()->debug("  {} is local user, injecting own device_id and key: {}",
-                               user_id,
-                               olm::client()->identity_keys().curve25519);
     }
 
     auto verifyAtLeastOneSig = [](const auto &toVerif,
