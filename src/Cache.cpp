@@ -5598,9 +5598,12 @@ Cache::verificationStatus(const std::string &user_id)
 VerificationStatus
 Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
 {
+    nhlog::crypto()->debug("VS_DEBUG: Processing verificationStatus for {}", user_id);
     std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
-    if (verification_storage.status.count(user_id))
+    if (verification_storage.status.count(user_id)) {
+        nhlog::crypto()->debug("VS_DEBUG: Returning cached status for {}", user_id);
         return verification_storage.status.at(user_id);
+    }
 
     VerificationStatus status;
 
@@ -5672,6 +5675,8 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
             status.no_keys = false;
 
         if (!ourKeys || !theirKeys) {
+            nhlog::crypto()->debug(
+              "VS_DEBUG: Missing keys! ourKeys={}, theirKeys={}", (bool)ourKeys, (bool)theirKeys);
             verification_storage.status[user_id] = status;
             return status;
         }
@@ -5687,9 +5692,21 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
                                                        nlohmann::json(mk),
                                                        mk.signatures.at(local_user).at(dev_id))) {
                 nhlog::crypto()->debug("We have not verified our own master key");
+                nhlog::crypto()->debug("Local user: {}", local_user);
+                nhlog::crypto()->debug("Device ID: {}", dev_id);
+                nhlog::crypto()->debug("Has signature from local user: {}",
+                                       mk.signatures.count(local_user));
+                if (mk.signatures.count(local_user)) {
+                    nhlog::crypto()->debug("Has signature from device: {}",
+                                           mk.signatures.at(local_user).count(dev_id));
+                    if (mk.signatures.at(local_user).count(dev_id)) {
+                        nhlog::crypto()->debug("Signature verification failed!");
+                    }
+                }
                 verification_storage.status[user_id] = status;
                 return status;
             }
+            nhlog::crypto()->debug("VS_DEBUG: Local Master Key signature valid.");
         }
 
         auto master_keys = ourKeys->master_keys.keys;
