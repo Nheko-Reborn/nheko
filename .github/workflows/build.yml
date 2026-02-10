@@ -27,7 +27,7 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -S . -B build
+          cmake -S . -B build -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         run: cmake --build build -j$(nproc)
