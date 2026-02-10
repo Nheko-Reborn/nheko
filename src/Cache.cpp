@@ -5681,6 +5681,15 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
                                                        nlohmann::json(mk),
                                                        mk.signatures.at(local_user).at(dev_id))) {
                 nhlog::crypto()->debug("We have not verified our own master key");
+                nhlog::crypto()->debug("Local user: {}", local_user);
+                nhlog::crypto()->debug("Device ID: {}", dev_id);
+                nhlog::crypto()->debug("Has signature from local user: {}", mk.signatures.count(local_user));
+                if (mk.signatures.count(local_user)) {
+                    nhlog::crypto()->debug("Has signature from device: {}", mk.signatures.at(local_user).count(dev_id));
+                    if (mk.signatures.at(local_user).count(dev_id)) {
+                        nhlog::crypto()->debug("Signature verification failed!");
+                    }
+                }
                 verification_storage.status[user_id] = status;
                 return status;
             }

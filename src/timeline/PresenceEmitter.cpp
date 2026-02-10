@@ -95,22 +95,25 @@ PresenceEmitter::lastActive(QString id) const
         return {};
 
     QString status;
-    bool online = false;
+    mtx::presence::PresenceState state;
     QDateTime lastActiveTime;
 
     if (auto p = presences[id]) {
         status         = p->status;
-        online         = (p->state == mtx::presence::PresenceState::online);
+        state          = p->state;
         lastActiveTime = p->lastActiveTime;
     } else {
         auto fetched   = pullPresence(id);
         status         = fetched->status;
-        online         = (fetched->state == mtx::presence::PresenceState::online);
+        state          = fetched->state;
         lastActiveTime = fetched->lastActiveTime;
     }
 
-    if (online)
+    if (state == mtx::presence::PresenceState::online)
         return QStringLiteral("Online") + (status.isEmpty() ? "" : " - " + status);
+
+    if (state == mtx::presence::PresenceState::unavailable)
+        return QStringLiteral("Idle") + (status.isEmpty() ? "" : " - " + status);
 
     if (lastActiveTime.isValid())
         return QStringLiteral("Last active: ") + utils::descriptiveTime(lastActiveTime) +
