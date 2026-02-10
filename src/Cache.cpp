@@ -4397,6 +4397,12 @@ Cache::clearTimeline(const std::string &room_id)
             if (obj.count("event_id") != 0) {
                 std::string event_id = obj["event_id"].get<std::string>();
 
+                // Don't delete pending messages!
+                // We don't have a cheap way to check if an event is pending, so we just
+                // check if the event_id starts with "m". This is accurate enough.
+                if (event_id.size() > 0 && event_id[0] == 'm')
+                    continue;
+
                 if (!event_id.empty()) {
                     evToOrderDb.del(txn, event_id);
                     eventsDb.del(txn, event_id);
@@ -5681,15 +5687,6 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
                                                        nlohmann::json(mk),
                                                        mk.signatures.at(local_user).at(dev_id))) {
                 nhlog::crypto()->debug("We have not verified our own master key");
-                nhlog::crypto()->debug("Local user: {}", local_user);
-                nhlog::crypto()->debug("Device ID: {}", dev_id);
-                nhlog::crypto()->debug("Has signature from local user: {}", mk.signatures.count(local_user));
-                if (mk.signatures.count(local_user)) {
-                    nhlog::crypto()->debug("Has signature from device: {}", mk.signatures.at(local_user).count(dev_id));
-                    if (mk.signatures.at(local_user).count(dev_id)) {
-                        nhlog::crypto()->debug("Signature verification failed!");
-                    }
-                }
                 verification_storage.status[user_id] = status;
                 return status;
             }
