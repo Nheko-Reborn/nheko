@@ -21,7 +21,7 @@ jobs:
             libssl-dev liblmdb-dev libgstreamer-plugins-base1.0-dev \
             libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev libevent-dev libcurl4-openssl-dev \
             libxcb-ewmh-dev pkg-config libsecret-1-dev asciidoc \
-            libfmt-dev libspdlog-dev libolm-dev nlohmann-json3-dev qt6-keychain-dev \
+            libfmt-dev libspdlog-dev libolm-dev nlohmann-json3-dev \
             qt6-base-dev qt6-declarative-dev qt6-multimedia-dev qt6-l10n-tools qt6-svg-dev libqt6shadertools6-dev
           sudo pip3 install asciidoc --break-system-packages
 
