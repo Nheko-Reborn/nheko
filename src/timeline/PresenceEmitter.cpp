@@ -103,10 +103,10 @@ PresenceEmitter::lastActive(QString id) const
         online         = (p->state == mtx::presence::PresenceState::online);
         lastActiveTime = p->lastActiveTime;
     } else {
-        auto p         = pullPresence(id);
-        status         = p->status;
-        online         = (p->state == mtx::presence::PresenceState::online);
-        lastActiveTime = p->lastActiveTime;
+        auto fetched   = pullPresence(id);
+        status         = fetched->status;
+        online         = (fetched->state == mtx::presence::PresenceState::online);
+        lastActiveTime = fetched->lastActiveTime;
     }
 
     if (online)

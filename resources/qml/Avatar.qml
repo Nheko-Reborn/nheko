@@ -99,7 +99,7 @@ AbstractButton {
         visible: !!avatar.userid
         width: height
 
-        ToolTip.visible: ma.hovered
+        ToolTip.visible: ma.containsMouse
         ToolTip.text: Presence.lastActive(avatar.userid)
 
         MouseArea {
