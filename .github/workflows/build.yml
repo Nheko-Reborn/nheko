@@ -40,7 +40,7 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -S . -B build -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release
+          cmake -S . -B build -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXE_LINKER_FLAGS="-lbsd"
 
       - name: Build
         run: cmake --build build -j$(nproc)
