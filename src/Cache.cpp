@@ -4379,7 +4379,9 @@ Cache::clearTimeline(const std::string &room_id)
     std::string_view indexVal, val;
     auto cursor = lmdb::cursor::open(txn, orderDb);
 
-    int kept_messages = 0;
+    bool start                   = true;
+    bool passed_pagination_token = false;
+    int kept_messages            = 0;
     while (cursor.get(indexVal, val, start ? MDB_LAST : MDB_PREV)) {
         start = false;
         nlohmann::json obj;

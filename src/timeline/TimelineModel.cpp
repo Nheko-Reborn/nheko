@@ -3252,11 +3252,11 @@ TimelineModel::roomTopic() const
         if (!userid.isEmpty()) {
             auto p = cache::presence(userid.toStdString());
             switch (p.presence) {
-            case mtx::events::presence::PresenceState::Online:
+            case mtx::presence::PresenceState::online:
                 return tr("Online");
-            case mtx::events::presence::PresenceState::Unavailable:
+            case mtx::presence::PresenceState::unavailable:
                 return tr("Idle");
-            case mtx::events::presence::PresenceState::Offline:
+            case mtx::presence::PresenceState::offline:
                 return tr("Offline");
             default:
                 return {};
