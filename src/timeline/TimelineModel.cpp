@@ -3247,6 +3247,23 @@ TimelineModel::roomAvatarUrl() const
 QString
 TimelineModel::roomTopic() const
 {
+    if (isDirect()) {
+        auto userid = directChatOtherUserId();
+        if (!userid.isEmpty()) {
+            auto p = cache::presence(userid.toStdString());
+            switch (p.presence) {
+            case mtx::events::presence::PresenceState::Online:
+                return tr("Online");
+            case mtx::events::presence::PresenceState::Unavailable:
+                return tr("Idle");
+            case mtx::events::presence::PresenceState::Offline:
+                return tr("Offline");
+            default:
+                return {};
+            }
+        }
+    }
+
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
