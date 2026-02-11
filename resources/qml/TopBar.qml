@@ -103,6 +103,7 @@ Pane {
                 roomid: roomId
                 url: avatarUrl.replace("mxc://", "image://MxcImage/")
                 userid: isDirect ? directChatOtherUserId : ""
+                showTooltip: false
             }
             Label {
                 Layout.column: 2

@@ -34,6 +34,7 @@
 #include "TimelineViewManager.h"
 #include "Utils.h"
 #include "encryption/Olm.h"
+#include "timeline/PresenceEmitter.h"
 #include "ui/UserProfile.h"
 
 namespace std {
@@ -525,6 +526,15 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         cache::client()->updateState(room_id_.toStdString(), events_, true);
         this->syncState({std::move(events_.events)});
     });
+
+    connect(PresenceEmitter::get(),
+            &PresenceEmitter::presenceChanged,
+            this,
+            [this](const QString &user_id) {
+                if (isDirect() && directChatOtherUserId() == user_id) {
+                    emit roomTopicChanged();
+                }
+            });
 }
 
 QHash<int, QByteArray>

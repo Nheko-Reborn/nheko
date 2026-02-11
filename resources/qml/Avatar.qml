@@ -18,6 +18,7 @@ AbstractButton {
     property alias textColor: label.color
     property string url
     property string userid
+    property bool showTooltip: true
 
     height: 48
     width: 48
@@ -99,7 +100,7 @@ AbstractButton {
         visible: !!avatar.userid
         width: height
 
-        ToolTip.visible: ma.containsMouse
+        ToolTip.visible: avatar.showTooltip && ma.containsMouse
         ToolTip.text: Presence.lastActive(avatar.userid)
 
         MouseArea {

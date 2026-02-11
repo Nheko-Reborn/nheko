@@ -26,6 +26,8 @@ public:
         instance_ = this;
     }
 
+    static PresenceEmitter *get() { return instance_; }
+
     static PresenceEmitter *create(QQmlEngine *qmlEngine, QJSEngine *)
     {
         // The instance has to exist before it is used. We cannot replace it.

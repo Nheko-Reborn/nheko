@@ -119,7 +119,7 @@ PresenceEmitter::lastActive(QString id) const
         return QStringLiteral("Last active: ") + utils::descriptiveTime(lastActiveTime) +
                (status.isEmpty() ? "" : " - " + status);
 
-    return status;
+    return status.isEmpty() ? QStringLiteral("Offline") : status;
 }
 
 #include "moc_PresenceEmitter.cpp"
