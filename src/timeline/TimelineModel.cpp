@@ -3410,12 +3410,20 @@ TimelineModel::parentSpace()
         auto parents = cache::client()->getStateEventsWithType<mtx::events::state::space::Parent>(
           this->room_id_.toStdString());
 
+        const mtx::events::StateEvent<mtx::events::state::space::Parent> *first = nullptr;
         for (const auto &p : parents) {
             if (p.content.canonical and p.content.via and not p.content.via->empty()) {
                 parentSummary.reset(new RoomSummary(p.state_key, *p.content.via, ""));
                 QQmlEngine::setObjectOwnership(parentSummary.get(), QQmlEngine::CppOwnership);
                 break;
             }
+            if (!first && p.content.via && !p.content.via->empty())
+                first = &p;
+        }
+
+        if (!parentSummary && first) {
+            parentSummary.reset(new RoomSummary(first->state_key, *first->content.via, ""));
+            QQmlEngine::setObjectOwnership(parentSummary.get(), QQmlEngine::CppOwnership);
         }
         parentChecked = true;
     }
