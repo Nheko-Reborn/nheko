@@ -105,6 +105,7 @@ AbstractButton {
         MouseArea {
             id: ma
             anchors.fill: parent
+            anchors.margins: -10
             hoverEnabled: true
         }
 
