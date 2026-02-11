@@ -4379,8 +4379,7 @@ Cache::clearTimeline(const std::string &room_id)
     std::string_view indexVal, val;
     auto cursor = lmdb::cursor::open(txn, orderDb);
 
-    bool start                   = true;
-    bool passed_pagination_token = false;
+    int kept_messages           = 0;
     while (cursor.get(indexVal, val, start ? MDB_LAST : MDB_PREV)) {
         start = false;
         nlohmann::json obj;
@@ -4393,7 +4392,7 @@ Cache::clearTimeline(const std::string &room_id)
             obj = {{"event_id", std::string(val.data(), val.size())}};
         }
 
-        if (passed_pagination_token) {
+        if (passed_pagination_token && kept_messages > 10) {
             if (obj.count("event_id") != 0) {
                 std::string event_id = obj["event_id"].get<std::string>();
 
@@ -4420,6 +4419,7 @@ Cache::clearTimeline(const std::string &room_id)
         } else {
             if (obj.count("prev_batch") != 0)
                 passed_pagination_token = true;
+            kept_messages++;
         }
     }
 
