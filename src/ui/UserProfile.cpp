@@ -376,8 +376,6 @@ UserProfile::updateVerificationStatus()
 
         deviceInfo.emplace_back(
           QString::fromStdString(d.first), QString::fromStdString(displayName), verified);
-        nhlog::ui()->info(
-          "UserProfile: Added device {} ({})", d.first, device.unsigned_info.device_display_name);
     }
 
     // For self, also query devices without keys
