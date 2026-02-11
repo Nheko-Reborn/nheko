@@ -112,6 +112,17 @@ ApplicationWindow {
                 checked: !hiddenEvents.hiddenEvents.includes(MtxEvent.Sticker)
                 onToggled: hiddenEvents.toggle(MtxEvent.Sticker)
             }
+
+            MatrixText {
+                text: qsTr("Allowed server changes")
+                Layout.fillWidth: true
+            }
+
+            ToggleButton {
+                Layout.alignment: Qt.AlignRight
+                checked: !hiddenEvents.hiddenEvents.includes(MtxEvent.ServerAcl)
+                onToggled: hiddenEvents.toggle(MtxEvent.ServerAcl)
+            }
         }
     }
 
