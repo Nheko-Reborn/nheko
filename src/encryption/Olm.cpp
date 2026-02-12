@@ -802,8 +802,22 @@ import_inbound_megolm_session(
         data.sender_claimed_ed25519_key      = roomKey.content.sender_claimed_ed25519_key;
         data.sender_key                      = roomKey.content.sender_key;
         // Keys from online key backup won't have a signature, so they will be untrusted. But the
-        // original sender might send us a signed session.
+        // original sender might send us a signed session, or we might stick with the untrusted
+        // session we got from the backup. However, if we received the session from a verified
+        // device, we can also trust it.
         data.trusted = olm_inbound_group_session_is_verified(megolm_session.get());
+
+        if (!data.trusted && !roomKey.content.forwarding_curve25519_key_chain.empty()) {
+            auto forwarder_key = roomKey.content.forwarding_curve25519_key_chain.back();
+            auto status        = cache::client()->verificationStatus(roomKey.sender);
+            if (status.verified_device_keys.count(forwarder_key) &&
+                status.verified_device_keys.at(forwarder_key) == crypto::Trust::Verified) {
+                data.trusted = true;
+                nhlog::crypto()->debug("import_inbound_megolm_session: Trusting forwarded "
+                                       "session key from verified device: {}",
+                                       forwarder_key);
+            }
+        }
 
         backup_session_key(index, data, megolm_session);
         cache::saveInboundMegolmSession(index, std::move(megolm_session), data);

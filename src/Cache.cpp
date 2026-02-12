@@ -4397,6 +4397,12 @@ Cache::clearTimeline(const std::string &room_id)
             if (obj.count("event_id") != 0) {
                 std::string event_id = obj["event_id"].get<std::string>();
 
+                // Don't delete pending messages!
+                // We don't have a cheap way to check if an event is pending, so we just
+                // check if the event_id starts with "m". This is accurate enough.
+                if (event_id.size() > 0 && event_id[0] == 'm')
+                    continue;
+
                 if (!event_id.empty()) {
                     evToOrderDb.del(txn, event_id);
                     eventsDb.del(txn, event_id);
@@ -5201,23 +5207,20 @@ Cache::updateUserKeys(const std::string &sync_token, const mtx::responses::Query
                     // this is safe, since the keys are the same
                     updateToWrite.device_keys[device_id] = device_keys;
                 } else {
-                    bool keyReused = false;
                     for (const auto &[key_id, key] : device_keys.keys) {
                         (void)key_id;
                         if (updateToWrite.seen_device_keys.count(key)) {
                             nhlog::crypto()->warn(
                               "Key '{}' reused by ({}: {})", key, user, device_id);
-                            keyReused = true;
                             break;
                         }
                         if (updateToWrite.seen_device_ids.count(device_id)) {
                             nhlog::crypto()->warn("device_id '{}' reused by ({})", device_id, user);
-                            keyReused = true;
                             break;
                         }
                     }
 
-                    if (!keyReused && !oldDeviceKeys.count(device_id)) {
+                    if (!oldDeviceKeys.count(device_id)) {
                         // ensure the key has a valid signature from itself
                         std::string device_signing_key = "ed25519:" + device_keys.device_id;
                         if (device_id != device_keys.device_id) {
@@ -5612,6 +5615,8 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
     crypto::Trust trustlevel = crypto::Trust::Unverified;
     if (user_id == local_user) {
         status.verified_devices.insert(http::client()->device_id());
+        status.verified_device_keys[olm::client()->identity_keys().curve25519] =
+          crypto::Trust::Verified;
         trustlevel = crypto::Trust::Verified;
     }
 
