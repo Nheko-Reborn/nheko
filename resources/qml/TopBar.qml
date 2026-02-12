@@ -103,6 +103,7 @@ Pane {
                 roomid: roomId
                 url: avatarUrl.replace("mxc://", "image://MxcImage/")
                 userid: isDirect ? directChatOtherUserId : ""
+                showTooltip: false
             }
             Label {
                 Layout.column: 2
@@ -415,7 +416,7 @@ Pane {
     TapHandler {
         gesturePolicy: TapHandler.ReleaseWithinBounds
 
-        onSingleTapped: {
+        onSingleTapped: (eventPoint) => {
             if (eventPoint.position.y > topBar.height - (pinnedMessages.visible ? pinnedMessages.height : 0) - (widgets.visible ? widgets.height : 0)) {
                 eventPoint.accepted = true;
                 return;
@@ -428,12 +429,16 @@ Pane {
                 eventPoint.accepted = true;
                 return;
             }
-            if (communityLabel.visible && eventPoint.position.y < communityAvatar.height + Nheko.paddingMedium + Nheko.paddingSmall / 2) {
+
+            var communityLabelVisible = communityLabel.visible
+            var communityAvatarHeight = communityAvatar.height
+            if (communityLabelVisible && eventPoint.position.y < communityAvatarHeight + Nheko.paddingMedium + Nheko.paddingSmall / 2) {
                 if (!Communities.trySwitchToSpace(room.parentSpace.roomid))
                     room.parentSpace.promptJoin();
                 eventPoint.accepted = true;
                 return;
             }
+    
             if (room) {
                 let p = topBar.mapToItem(roomTopicC, eventPoint.position.x, eventPoint.position.y);
                 let link = roomTopicC.linkAt(p.x, p.y);

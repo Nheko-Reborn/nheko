@@ -111,7 +111,7 @@ Page {
                     acceptedDevices: PointerDevice.Mouse | PointerDevice.Stylus | PointerDevice.TouchPad
                     gesturePolicy: TapHandler.ReleaseWithinBounds
 
-                    onSingleTapped: communityContextMenu.show(rth, model.id, model.hidden, model.muted)
+                    onSingleTapped: communityContextMenu.show(rth.parent, model.id, model.hidden, model.muted)
                 }
             }
             RowLayout {

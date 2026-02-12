@@ -90,6 +90,7 @@ public slots:
     QStringList screenShareTypeList();
     QStringList windowList();
     void previewWindow(unsigned int windowIndex) const;
+    void refreshDevices();
 
 signals:
     void newMessage(const QString &roomid, const mtx::events::voip::CallInvite &);

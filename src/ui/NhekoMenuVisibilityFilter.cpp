@@ -54,7 +54,7 @@ NhekoMenuVisibilityFilter::replaceItem(QQmlListProperty<QQmlComponent> *p,
                                        qsizetype index,
                                        QQmlComponent *c)
 {
-    static_cast<NhekoMenuVisibilityFilter *>(p->object)->items_.assign(index, c);
+    static_cast<NhekoMenuVisibilityFilter *>(p->object)->items_.replace(index, c);
     // static_cast<NhekoMenuVisibilityFilter *>(p->object)->updateTarget();
 }
 void

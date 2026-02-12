@@ -22,13 +22,20 @@ MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
 {
     try {
         info_ = cache::singleRoomInfo(room_id_.toStdString());
-    } catch (const lmdb::error &) {
-        nhlog::db()->warn("failed to retrieve room info from cache: {}", room_id_.toStdString());
+        nhlog::db()->debug("MemberList: room {} has member_count={} from cache",
+                           room_id_.toStdString(),
+                           info_.member_count);
+    } catch (const lmdb::error &e) {
+        nhlog::db()->warn(
+          "failed to retrieve room info from cache: {} ({})", room_id_.toStdString(), e.what());
     }
 
     try {
         // HACK: due to QTBUG-1020169, we'll load a big chunk to speed things up
         auto members = cache::getMembers(room_id_.toStdString(), 0, -1);
+        nhlog::db()->debug("MemberList: loaded {} members from cache for room {}",
+                           members.size(),
+                           room_id_.toStdString());
         addUsers(members);
         numUsersLoaded_ = (int)members.size();
     } catch (const lmdb::error &e) {

@@ -249,6 +249,13 @@ MxcImageProvider::download(const QString &id,
           [fileInfo, requestedSize, radius, then, id, crop, cropLocally](
             const std::string &res, mtx::http::RequestErr err) {
               if (err || res.empty()) {
+                  if (err)
+                      nhlog::net()->warn(
+                        "Failed to download thumbnail for mxc://{}: {}", id.toStdString(), *err);
+                  else
+                      nhlog::net()->warn(
+                        "Failed to download thumbnail for mxc://{}: empty response",
+                        id.toStdString());
                   download(id, QSize(), then, crop, radius);
                   return;
               }

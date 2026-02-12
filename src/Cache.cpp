@@ -4381,6 +4381,7 @@ Cache::clearTimeline(const std::string &room_id)
 
     bool start                   = true;
     bool passed_pagination_token = false;
+    int kept_messages            = 0;
     while (cursor.get(indexVal, val, start ? MDB_LAST : MDB_PREV)) {
         start = false;
         nlohmann::json obj;
@@ -4393,9 +4394,15 @@ Cache::clearTimeline(const std::string &room_id)
             obj = {{"event_id", std::string(val.data(), val.size())}};
         }
 
-        if (passed_pagination_token) {
+        if (passed_pagination_token && kept_messages > 10) {
             if (obj.count("event_id") != 0) {
                 std::string event_id = obj["event_id"].get<std::string>();
+
+                // Don't delete pending messages!
+                // We don't have a cheap way to check if an event is pending, so we just
+                // check if the event_id starts with "m". This is accurate enough.
+                if (event_id.size() > 0 && event_id[0] == 'm')
+                    continue;
 
                 if (!event_id.empty()) {
                     evToOrderDb.del(txn, event_id);
@@ -4414,6 +4421,7 @@ Cache::clearTimeline(const std::string &room_id)
         } else {
             if (obj.count("prev_batch") != 0)
                 passed_pagination_token = true;
+            kept_messages++;
         }
     }
 
@@ -5592,9 +5600,12 @@ Cache::verificationStatus(const std::string &user_id)
 VerificationStatus
 Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
 {
+    nhlog::crypto()->debug("VS_DEBUG: Processing verificationStatus for {}", user_id);
     std::unique_lock<std::mutex> lock(verification_storage.verification_storage_mtx);
-    if (verification_storage.status.count(user_id))
+    if (verification_storage.status.count(user_id)) {
+        nhlog::crypto()->debug("VS_DEBUG: Returning cached status for {}", user_id);
         return verification_storage.status.at(user_id);
+    }
 
     VerificationStatus status;
 
@@ -5618,16 +5629,25 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
     auto verifyAtLeastOneSig = [](const auto &toVerif,
                                   const std::map<std::string, std::string> &keys,
                                   const std::string &keyOwner) {
-        if (!toVerif.signatures.count(keyOwner))
+        if (!toVerif.signatures.count(keyOwner)) {
+            nhlog::crypto()->debug("verifyAtLeastOneSig: No signature from {} found on object",
+                                   keyOwner);
             return false;
+        }
 
         for (const auto &[key_id, signature] : toVerif.signatures.at(keyOwner)) {
-            if (!keys.count(key_id))
+            if (!keys.count(key_id)) {
+                nhlog::crypto()->debug("verifyAtLeastOneSig: Key {} not found in provided keys",
+                                       key_id);
                 continue;
+            }
 
             if (mtx::crypto::ed25519_verify_signature(
                   keys.at(key_id), nlohmann::json(toVerif), signature))
                 return true;
+
+            nhlog::crypto()->debug("verifyAtLeastOneSig: Signature verification failed for key {}",
+                                   key_id);
         }
         return false;
     };
@@ -5657,6 +5677,8 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
             status.no_keys = false;
 
         if (!ourKeys || !theirKeys) {
+            nhlog::crypto()->debug(
+              "VS_DEBUG: Missing keys! ourKeys={}, theirKeys={}", (bool)ourKeys, (bool)theirKeys);
             verification_storage.status[user_id] = status;
             return status;
         }
@@ -5672,9 +5694,21 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
                                                        nlohmann::json(mk),
                                                        mk.signatures.at(local_user).at(dev_id))) {
                 nhlog::crypto()->debug("We have not verified our own master key");
+                nhlog::crypto()->debug("Local user: {}", local_user);
+                nhlog::crypto()->debug("Device ID: {}", dev_id);
+                nhlog::crypto()->debug("Has signature from local user: {}",
+                                       mk.signatures.count(local_user));
+                if (mk.signatures.count(local_user)) {
+                    nhlog::crypto()->debug("Has signature from device: {}",
+                                           mk.signatures.at(local_user).count(dev_id));
+                    if (mk.signatures.at(local_user).count(dev_id)) {
+                        nhlog::crypto()->debug("Signature verification failed!");
+                    }
+                }
                 verification_storage.status[user_id] = status;
                 return status;
             }
+            nhlog::crypto()->debug("VS_DEBUG: Local Master Key signature valid.");
         }
 
         auto master_keys = ourKeys->master_keys.keys;

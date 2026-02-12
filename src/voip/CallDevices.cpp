@@ -10,6 +10,8 @@
 #include "Logging.h"
 #include "UserSettingsPage.h"
 
+#include <QTimer>
+
 #ifdef GSTREAMER_AVAILABLE
 extern "C"
 {
@@ -176,21 +178,24 @@ removeDevice(GstDevice *device, bool changed)
 }
 
 gboolean
-newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data G_GNUC_UNUSED)
+newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data)
 {
+    CallDevices *self = static_cast<CallDevices *>(user_data);
     switch (GST_MESSAGE_TYPE(msg)) {
     case GST_MESSAGE_DEVICE_ADDED: {
         GstDevice *device;
         gst_message_parse_device_added(msg, &device);
         addDevice(device);
-        emit CallDevices::instance().devicesChanged();
+        if (self)
+            emit self->devicesChanged();
         break;
     }
     case GST_MESSAGE_DEVICE_REMOVED: {
         GstDevice *device;
         gst_message_parse_device_removed(msg, &device);
         removeDevice(device, false);
-        emit CallDevices::instance().devicesChanged();
+        if (self)
+            emit self->devicesChanged();
         break;
     }
     case GST_MESSAGE_DEVICE_CHANGED: {
@@ -199,6 +204,8 @@ newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data G_G
         gst_message_parse_device_changed(msg, &device, &oldDevice);
         removeDevice(oldDevice, true);
         addDevice(device);
+        if (self)
+            emit self->devicesChanged();
         break;
     }
     default:
@@ -249,6 +256,36 @@ tokenise(std::string_view str, char delim)
 static GstDeviceMonitor *monitor = nullptr;
 
 void
+CallDevices::refresh()
+{
+#ifdef GSTREAMER_AVAILABLE
+    for (auto &s : audioSources_)
+        gst_object_unref(s.device);
+    audioSources_.clear();
+    for (auto &s : videoSources_)
+        gst_object_unref(s.device);
+    videoSources_.clear();
+
+    emit devicesChanged();
+
+    this->deinit();
+    this->init();
+    if (!scanning_) {
+        scanning_ = true;
+        emit scanningChanged();
+    }
+    QTimer::singleShot(3000, this, [this]() {
+        this->deinit();
+        if (scanning_) {
+            scanning_ = false;
+            emit scanningChanged();
+        }
+        nhlog::ui()->debug("WebRTC: Device scan stopped to prevent log spam.");
+    });
+#endif
+}
+
+void
 CallDevices::init()
 {
     if (!monitor) {
@@ -263,7 +300,7 @@ CallDevices::init()
         gst_caps_unref(caps);
 
         GstBus *bus = gst_device_monitor_get_bus(monitor);
-        gst_bus_add_watch(bus, newBusMessage, nullptr);
+        busWatchId_ = gst_bus_add_watch(bus, newBusMessage, this);
         gst_object_unref(bus);
         if (!gst_device_monitor_start(monitor)) {
             nhlog::ui()->error("WebRTC: failed to start device monitor");
@@ -276,6 +313,10 @@ void
 CallDevices::deinit()
 {
     if (monitor) {
+        if (busWatchId_ > 0) {
+            g_source_remove(busWatchId_);
+            busWatchId_ = 0;
+        }
         gst_device_monitor_stop(monitor);
         gst_object_unref(monitor);
         monitor = nullptr;
@@ -335,7 +376,7 @@ CallDevices::audioDevice() const
                                [&name](const auto &s) { return s.name == name; });
         it != audioSources_.cend()) {
         nhlog::ui()->debug("WebRTC: microphone: {}", name);
-        return it->device;
+        return static_cast<GstDevice *>(gst_object_ref(it->device));
     } else {
         nhlog::ui()->error("WebRTC: unknown microphone: {}", name);
         return nullptr;
@@ -353,7 +394,7 @@ CallDevices::videoDevice(std::pair<int, int> &resolution, std::pair<int, int> &f
         frameRate  = tokenise(settings->cameraFrameRate().toStdString(), '/');
         nhlog::ui()->debug("WebRTC: camera resolution: {}x{}", resolution.first, resolution.second);
         nhlog::ui()->debug("WebRTC: camera frame rate: {}/{}", frameRate.first, frameRate.second);
-        return s->device;
+        return static_cast<GstDevice *>(gst_object_ref(s->device));
     } else {
         nhlog::ui()->error("WebRTC: unknown camera: {}", name);
         return nullptr;
@@ -361,6 +402,32 @@ CallDevices::videoDevice(std::pair<int, int> &resolution, std::pair<int, int> &f
 }
 
 #else
+void
+CallDevices::refresh()
+{
+}
+
+void
+CallDevices::init()
+{
+}
+
+void
+CallDevices::deinit()
+{
+}
+
+GstDevice *
+CallDevices::audioDevice() const
+{
+    return nullptr;
+}
+
+GstDevice *
+CallDevices::videoDevice(std::pair<int, int> &, std::pair<int, int> &) const
+{
+    return nullptr;
+}
 
 bool
 CallDevices::haveMic() const

@@ -26,6 +26,8 @@ public:
         instance_ = this;
     }
 
+    static PresenceEmitter *get() { return instance_; }
+
     static PresenceEmitter *create(QQmlEngine *qmlEngine, QJSEngine *)
     {
         // The instance has to exist before it is used. We cannot replace it.
@@ -49,6 +51,7 @@ public:
 
     Q_INVOKABLE QString userPresence(QString id) const;
     Q_INVOKABLE QString userStatus(QString id) const;
+    Q_INVOKABLE QString lastActive(QString id) const;
 
 signals:
     void presenceChanged(QString userid);
