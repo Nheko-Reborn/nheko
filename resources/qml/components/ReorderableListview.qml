@@ -100,6 +100,10 @@ Item {
         ListView {
             id: view
 
+            Loader {
+                source: NHEKO_USE_KIRIGAMI ? "KirigamiWheelHandler.qml" : ""
+            }
+
             clip: true
 
             anchors { fill: parent; margins: 2 }
