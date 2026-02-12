@@ -110,14 +110,11 @@ TrayIcon::TrayIcon(const QString &filename, QWindow *parent)
     toggleAction_ = new QAction(tr("Show"), this);
     quitAction_   = new QAction(tr("Quit"), this);
 
-    connect(toggleAction_, &QAction::triggered, parent, [=, this]() {
-        if (parent->isVisible()) {
-            parent->hide();
-            toggleAction_->setText(tr("Show"));
-        } else {
-            parent->show();
-            toggleAction_->setText(tr("Hide"));
-        }
+    connect(parent, &QWindow::visibleChanged, toggleAction_, [=, this] {
+        toggleAction_->setText(tr(parent->isVisible() ? "Hide" : "Show"));
+    });
+    connect(toggleAction_, &QAction::triggered, parent, [=] {
+        parent->isVisible() ? parent->hide() : parent->show();
     });
     connect(quitAction_, &QAction::triggered, this, QApplication::quit);
 
