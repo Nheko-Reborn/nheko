@@ -556,6 +556,8 @@ Item {
             Component {
                 MenuItem {
                     text: qsTr("&Mark as read")
+
+                    onTriggered: room.markEventAsRead(messageContextMenuC.eventId)
                 }
             }
             Component {

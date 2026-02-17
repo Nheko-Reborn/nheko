@@ -332,6 +332,7 @@ public:
     Q_INVOKABLE void openUserProfile(QString userid);
     Q_INVOKABLE void unpin(const QString &id);
     Q_INVOKABLE void pin(const QString &id);
+    Q_INVOKABLE void markEventAsRead(const QString &id) { this->readEvent(id.toStdString()); }
     Q_INVOKABLE void showReadReceipts(const QString &id);
     Q_INVOKABLE void redactEvent(const QString &id, const QString &reason = "");
     Q_INVOKABLE void redactAllFromUser(const QString &userid, const QString &reason = "");
