@@ -48,8 +48,10 @@ Window {
     Item {
         id: imgContainer
 
-        property int imgSrcWidth: (imageOverlay.originalWidth && imageOverlay.originalWidth > 100) ? imageOverlay.originalWidth : Screen.width
-        property int imgSrcHeight: imageOverlay.proportionalHeight ? imgSrcWidth * imageOverlay.proportionalHeight : Screen.height
+        property int imgSrcWidth: (imageOverlay.originalWidth && imageOverlay.originalWidth > 100) ? imageOverlay.originalWidth : imageOverlay.width
+        property int imgSrcHeight: imageOverlay.proportionalHeight ? imgSrcWidth * imageOverlay.proportionalHeight : imageOverlay.height
+        readonly property int physicalWidth: width * scale
+        readonly property int physicalHeight: height * scale
 
         property double initialScale: Math.min(Window.height/imgSrcHeight, Window.width/imgSrcWidth, 1.0)
 
@@ -58,6 +60,22 @@ Window {
 
         x: (parent.width - width) / 2
         y: (parent.height - height) / 2
+
+        onXChanged: {
+            if (physicalWidth < imageOverlay.width)
+                x = (parent.width - width) / 2;
+        }
+        onYChanged: {
+            if (physicalHeight < imageOverlay.height)
+                y = (parent.height - height) / 2;
+        }
+
+        Behavior on rotation {
+            NumberAnimation {
+                duration: 100
+                easing.type: Easing.InOutQuad
+            }
+        }
 
         Image {
             id: img
@@ -89,13 +107,30 @@ Window {
     }
 
     Item {
-        anchors.fill: parent
+        id: handlerContainer
 
+        function snapImageRotation()
+        {
+            // snap to 15-degree angles
+            let rotationOffset = imgContainer.rotation % 15;
+            if (rotationOffset != 0)
+            {
+                if (rotationOffset < 7.5)
+                    imgContainer.rotation -= rotationOffset;
+                else
+                    imgContainer.rotation += rotationOffset;
+
+            }
+        }
+
+        anchors.fill: parent
 
         PinchHandler {
             target: imgContainer
             maximumScale: 10
             minimumScale: 0.1
+
+            onGrabChanged: handlerContainer.snapImageRotation()
         }
 
         WheelHandler {
@@ -105,10 +140,16 @@ Window {
             // and we don't yet distinguish mice and trackpads on Wayland either
             acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
             target: imgContainer
+
+            onWheel: handlerContainer.snapImageRotation()
         }
 
         DragHandler {
             target: imgContainer
+            xAxis.enabled: imgContainer.physicalWidth > imageOverlay.width
+            yAxis.enabled: imgContainer.physicalHeight > imageOverlay.height
+
+            onGrabChanged: handlerContainer.snapImageRotation()
         }
 
         HoverHandler {
