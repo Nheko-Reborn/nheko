@@ -1413,6 +1413,12 @@ TimelineModel::readEvent(const std::string &id)
       !UserSettings::instance()->readReceipts());
 }
 
+bool
+TimelineModel::isV12Creator(const QString &id) const
+{
+    return cache::isV12Creator(this->roomId().toStdString(), id.toStdString());
+}
+
 QString
 TimelineModel::displayName(const QString &id) const
 {

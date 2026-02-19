@@ -89,6 +89,7 @@ Column {
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
 
+                isV12Creator: room.isV12Creator(userId)
                 powerlevel: userPowerlevel
                 height: fontMetrics.ascent
                 width: height
@@ -97,7 +98,7 @@ Column {
                 sourceSize.height: height
 
                 permissions: room ? room.permissions : null
-                visible: isAdmin || isModerator
+                visible: isAdmin || isModerator || isV12Creator
             }
 
             ToolTip.delay: Nheko.tooltipDelay

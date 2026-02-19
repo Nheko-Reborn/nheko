@@ -27,39 +27,45 @@ Permissions::invalidate()
 bool
 Permissions::canInvite()
 {
-    return pl.user_level(http::client()->user_id().to_string()) >= pl.invite;
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >= pl.invite;
+    return plCheck || this->isV12Creator();
 }
 
 bool
 Permissions::canBan()
 {
-    return pl.user_level(http::client()->user_id().to_string()) >= pl.ban;
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >= pl.ban;
+    return plCheck || this->isV12Creator();
 }
 
 bool
 Permissions::canKick()
 {
-    return pl.user_level(http::client()->user_id().to_string()) >= pl.kick;
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >= pl.kick;
+    return plCheck || this->isV12Creator();
 }
 
 bool
 Permissions::canRedact()
 {
-    return pl.user_level(http::client()->user_id().to_string()) >= pl.redact;
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >= pl.redact;
+    return plCheck || this->isV12Creator();
 }
 bool
 Permissions::canChange(int eventType)
 {
-    return pl.user_level(http::client()->user_id().to_string()) >=
-           pl.state_level(to_string(
-             qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >=
+                         pl.state_level(to_string(qml_mtx_events::fromRoomEventType(
+                           static_cast<qml_mtx_events::EventType>(eventType))));
+    return plCheck || this->isV12Creator();
 }
 bool
 Permissions::canSend(int eventType)
 {
-    return pl.user_level(http::client()->user_id().to_string()) >=
-           pl.event_level(to_string(
-             qml_mtx_events::fromRoomEventType(static_cast<qml_mtx_events::EventType>(eventType))));
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >=
+                         pl.event_level(to_string(qml_mtx_events::fromRoomEventType(
+                           static_cast<qml_mtx_events::EventType>(eventType))));
+    return plCheck || this->isV12Creator();
 }
 
 int
@@ -88,8 +94,15 @@ Permissions::sendLevel(int eventType)
 bool
 Permissions::canPingRoom()
 {
-    return pl.user_level(http::client()->user_id().to_string()) >=
-           pl.notification_level(mtx::events::state::notification_keys::room);
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >=
+                         pl.notification_level(mtx::events::state::notification_keys::room);
+    return plCheck || this->isV12Creator();
 }
 
+bool
+Permissions::isV12Creator()
+{
+    return cache::client()->isV12Creator(this->roomId_.toStdString(),
+                                         http::client()->user_id().to_string());
+}
 #include "moc_Permissions.cpp"
