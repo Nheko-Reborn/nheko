@@ -64,16 +64,17 @@ AbstractButton {
 
             height: r.limitHeight ? Math.min( timelineEvent.main?.height, timelineView.height / 10) + Nheko.paddingSmall + usernameBtn.height : undefined
 
-            // FIXME: I have no idea, why this name doesn't render in the reply popup on Qt 6.9.2
             AbstractButton {
                 id: usernameBtn
 
-                visible: r.eventId
-
                 contentItem: Label {
-                    visible: r.eventId
                     id: userName_
-                    text: r.userName
+                    // HACK: To ensure the username gets rendered in Qt 6.9.2,
+                    // we need to always have some text in here. The name
+                    // should never be empty, since it falls to the mxid, but
+                    // if we have no text there, Qt culls the item, before we
+                    // fill it...
+                    text: r.userName || "."
                     color: r.userColor
                     textFormat: Text.RichText
                     width: timelineEvent.main?.width
