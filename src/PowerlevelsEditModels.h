@@ -29,9 +29,11 @@ public:
         Removeable,
     };
 
-    explicit PowerlevelsTypeListModel(const std::string &room_id_,
-                                      const mtx::events::state::PowerLevels &pl,
-                                      QObject *parent = nullptr);
+    explicit PowerlevelsTypeListModel(
+      const std::string &room_id_,
+      const mtx::events::state::PowerLevels &pl,
+      const mtx::events::StateEvent<mtx::events::state::Create> &create,
+      QObject *parent = nullptr);
 
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &) const override { return static_cast<int>(types.size()); }
@@ -67,6 +69,7 @@ public:
     std::string room_id;
     QVector<Entry> types;
     mtx::events::state::PowerLevels powerLevels_;
+    mtx::events::StateEvent<mtx::events::state::Create> create_;
 };
 
 class PowerlevelsUserListModel final : public QAbstractListModel
@@ -88,9 +91,11 @@ public:
         Removeable,
     };
 
-    explicit PowerlevelsUserListModel(const std::string &room_id_,
-                                      const mtx::events::state::PowerLevels &pl,
-                                      QObject *parent = nullptr);
+    explicit PowerlevelsUserListModel(
+      const std::string &room_id_,
+      const mtx::events::state::PowerLevels &pl,
+      const mtx::events::StateEvent<mtx::events::state::Create> &create,
+      QObject *parent = nullptr);
 
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &) const override { return static_cast<int>(users.size()); }
@@ -121,6 +126,7 @@ public:
     std::string room_id;
     QVector<Entry> users;
     mtx::events::state::PowerLevels powerLevels_;
+    mtx::events::StateEvent<mtx::events::state::Create> create_;
 };
 
 class PowerlevelsSpacesListModel final : public QAbstractListModel
@@ -147,9 +153,11 @@ public:
         ApplyPermissions,
     };
 
-    explicit PowerlevelsSpacesListModel(const std::string &room_id_,
-                                        const mtx::events::state::PowerLevels &pl,
-                                        QObject *parent = nullptr);
+    explicit PowerlevelsSpacesListModel(
+      const std::string &room_id_,
+      const mtx::events::state::PowerLevels &pl,
+      const mtx::events::StateEvent<mtx::events::state::Create> &create,
+      QObject *parent = nullptr);
 
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &) const override { return static_cast<int>(spaces.size()); }
@@ -183,6 +191,7 @@ public:
 
         std::string roomid;
         mtx::events::state::PowerLevels pl;
+        mtx::events::StateEvent<mtx::events::state::Create> create;
         bool apply = false;
     };
 
@@ -203,6 +212,7 @@ class PowerlevelEditingModels final : public QObject
     Q_PROPERTY(PowerlevelsUserListModel *users READ users CONSTANT)
     Q_PROPERTY(PowerlevelsTypeListModel *types READ types CONSTANT)
     Q_PROPERTY(PowerlevelsSpacesListModel *spaces READ spaces CONSTANT)
+    Q_PROPERTY(qlonglong creatorLevel READ creatorLevel CONSTANT)
     Q_PROPERTY(qlonglong adminLevel READ adminLevel NOTIFY adminLevelChanged)
     Q_PROPERTY(qlonglong moderatorLevel READ moderatorLevel NOTIFY moderatorLevelChanged)
     Q_PROPERTY(qlonglong defaultUserLevel READ defaultUserLevel NOTIFY defaultUserLevelChanged)
@@ -222,6 +232,7 @@ public:
     PowerlevelsUserListModel *users() { return &users_; }
     PowerlevelsTypeListModel *types() { return &types_; }
     PowerlevelsSpacesListModel *spaces() { return &spaces_; }
+    qlonglong creatorLevel() const { return mtx::events::state::Creator; }
     qlonglong adminLevel() const
     {
         return powerLevels_.state_level(to_string(mtx::events::EventType::RoomPowerLevels));
@@ -235,6 +246,7 @@ public:
     Q_INVOKABLE void addRole(int pl);
 
     mtx::events::state::PowerLevels powerLevels_;
+    mtx::events::StateEvent<mtx::events::state::Create> create_;
     PowerlevelsTypeListModel types_;
     PowerlevelsUserListModel users_;
     PowerlevelsSpacesListModel spaces_;

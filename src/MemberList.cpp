@@ -19,6 +19,9 @@ MemberListBackend::MemberListBackend(const QString &room_id, QObject *parent)
                    ->getStateEvent<mtx::events::state::PowerLevels>(room_id_.toStdString())
                    .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
                    .content}
+  , create_{cache::client()
+              ->getStateEvent<mtx::events::state::Create>(room_id_.toStdString())
+              .value_or(mtx::events::StateEvent<mtx::events::state::Create>{})}
 {
     try {
         info_ = cache::singleRoomInfo(room_id_.toStdString());
@@ -92,7 +95,7 @@ MemberListBackend::data(const QModelIndex &index, int role) const
     }
     case Powerlevel:
         return static_cast<qlonglong>(
-          powerLevels_.user_level(m_memberList[index.row()].first.user_id.toStdString()));
+          powerLevels_.user_level(m_memberList[index.row()].first.user_id.toStdString(), create_));
     default:
         return {};
     }
@@ -170,30 +173,6 @@ MemberList::filterAcceptsRow(int source_row, const QModelIndex &) const
                                                                    Qt::CaseInsensitive) ||
            m_model.m_memberList[source_row].first.display_name.contains(filterString,
                                                                         Qt::CaseInsensitive);
-}
-
-bool
-MemberList::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
-{
-    if (this->sortRole() != MemberSortRoles::Powerlevel) {
-        return QSortFilterProxyModel::lessThan(source_left, source_right);
-    }
-
-    const QString &left =
-      this->m_model.data(source_left, MemberListBackend::Roles::Mxid).toString();
-    const QString &right =
-      this->m_model.data(source_right, MemberListBackend::Roles::Mxid).toString();
-
-    const std::string &room_id = this->roomId().toStdString();
-    if (cache::isV12Creator(room_id, left.toStdString())) {
-        if (!cache::isV12Creator(room_id, right.toStdString())) {
-            return false;
-        }
-        // If both are creators, sort by mxid.
-        return left < right;
-    }
-
-    return QSortFilterProxyModel::lessThan(source_left, source_right);
 }
 
 #include "moc_MemberList.cpp"

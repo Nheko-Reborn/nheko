@@ -302,7 +302,6 @@ public:
     static QString getBareRoomLink(const QString &);
     static QString getRoomVias(const QString &);
 
-    Q_INVOKABLE bool isV12Creator(const QString &id) const;
     Q_INVOKABLE QString displayName(const QString &id) const;
     Q_INVOKABLE QString avatarUrl(const QString &id) const;
     Q_INVOKABLE QString formatDateSeparator(QDate date) const;

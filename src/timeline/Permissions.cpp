@@ -4,6 +4,8 @@
 
 #include "Permissions.h"
 
+#include <algorithm>
+
 #include "Cache_p.h"
 #include "MatrixClient.h"
 #include "TimelineModel.h"
@@ -22,50 +24,53 @@ Permissions::invalidate()
            ->getStateEvent<mtx::events::state::PowerLevels>(roomId_.toStdString())
            .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
            .content;
+    create = cache::client()
+               ->getStateEvent<mtx::events::state::Create>(roomId_.toStdString())
+               .value_or(mtx::events::StateEvent<mtx::events::state::Create>{});
 }
 
 bool
 Permissions::canInvite()
 {
-    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >= pl.invite;
-    return plCheck || this->isV12Creator();
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string(), create) >= pl.invite;
+    return plCheck;
 }
 
 bool
 Permissions::canBan()
 {
-    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >= pl.ban;
-    return plCheck || this->isV12Creator();
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string(), create) >= pl.ban;
+    return plCheck;
 }
 
 bool
 Permissions::canKick()
 {
-    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >= pl.kick;
-    return plCheck || this->isV12Creator();
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string(), create) >= pl.kick;
+    return plCheck;
 }
 
 bool
 Permissions::canRedact()
 {
-    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >= pl.redact;
-    return plCheck || this->isV12Creator();
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string(), create) >= pl.redact;
+    return plCheck;
 }
 bool
 Permissions::canChange(int eventType)
 {
-    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >=
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string(), create) >=
                          pl.state_level(to_string(qml_mtx_events::fromRoomEventType(
                            static_cast<qml_mtx_events::EventType>(eventType))));
-    return plCheck || this->isV12Creator();
+    return plCheck;
 }
 bool
 Permissions::canSend(int eventType)
 {
-    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >=
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string(), create) >=
                          pl.event_level(to_string(qml_mtx_events::fromRoomEventType(
                            static_cast<qml_mtx_events::EventType>(eventType))));
-    return plCheck || this->isV12Creator();
+    return plCheck;
 }
 
 int
@@ -94,15 +99,9 @@ Permissions::sendLevel(int eventType)
 bool
 Permissions::canPingRoom()
 {
-    const bool plCheck = pl.user_level(http::client()->user_id().to_string()) >=
+    const bool plCheck = pl.user_level(http::client()->user_id().to_string(), create) >=
                          pl.notification_level(mtx::events::state::notification_keys::room);
-    return plCheck || this->isV12Creator();
+    return plCheck;
 }
 
-bool
-Permissions::isV12Creator()
-{
-    return cache::client()->isV12Creator(this->roomId_.toStdString(),
-                                         http::client()->user_id().to_string());
-}
 #include "moc_Permissions.cpp"

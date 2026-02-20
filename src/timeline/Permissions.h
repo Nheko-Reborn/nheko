@@ -6,6 +6,8 @@
 
 #include <QObject>
 
+#include <mtx/events.hpp>
+#include <mtx/events/create.hpp>
 #include <mtx/events/power_levels.hpp>
 
 class TimelineModel;
@@ -28,16 +30,20 @@ public:
     Q_INVOKABLE int redactLevel();
     Q_INVOKABLE int changeLevel(int eventType);
     Q_INVOKABLE int sendLevel(int eventType);
+    Q_INVOKABLE qint64 creatorLevel() const { return mtx::events::state::Creator; }
 
     Q_INVOKABLE bool canPingRoom();
 
     void invalidate();
 
     const mtx::events::state::PowerLevels &powerlevelEvent() const { return pl; };
+    const mtx::events::StateEvent<mtx::events::state::Create> &createEvent() const
+    {
+        return create;
+    };
 
 private:
-    bool isV12Creator();
-
     QString roomId_;
     mtx::events::state::PowerLevels pl;
+    mtx::events::StateEvent<mtx::events::state::Create> create;
 };

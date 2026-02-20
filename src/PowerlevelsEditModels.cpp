@@ -17,12 +17,15 @@
 #include "Logging.h"
 #include "MatrixClient.h"
 
-PowerlevelsTypeListModel::PowerlevelsTypeListModel(const std::string &rid,
-                                                   const mtx::events::state::PowerLevels &pl,
-                                                   QObject *parent)
+PowerlevelsTypeListModel::PowerlevelsTypeListModel(
+  const std::string &rid,
+  const mtx::events::state::PowerLevels &pl,
+  const mtx::events::StateEvent<mtx::events::state::Create> &create,
+  QObject *parent)
   : QAbstractListModel(parent)
   , room_id(rid)
   , powerLevels_(pl)
+  , create_(create)
 {
     std::set<mtx::events::state::power_level_t> seen_levels;
     for (const auto &[type, level] : powerLevels_.events) {
@@ -39,6 +42,9 @@ PowerlevelsTypeListModel::PowerlevelsTypeListModel(const std::string &rid,
             types.push_back(Entry{"", level});
             seen_levels.insert(level);
         }
+    }
+    if (create_.content.room_version_creators_with_infinite_power()) {
+        seen_levels.insert(mtx::events::state::Creator);
     }
 
     for (const auto &level : {
@@ -354,12 +360,15 @@ PowerlevelsTypeListModel::moveRows(const QModelIndex &,
     return true;
 }
 
-PowerlevelsUserListModel::PowerlevelsUserListModel(const std::string &rid,
-                                                   const mtx::events::state::PowerLevels &pl,
-                                                   QObject *parent)
+PowerlevelsUserListModel::PowerlevelsUserListModel(
+  const std::string &rid,
+  const mtx::events::state::PowerLevels &pl,
+  const mtx::events::StateEvent<mtx::events::state::Create> &create,
+  QObject *parent)
   : QAbstractListModel(parent)
   , room_id(rid)
   , powerLevels_(pl)
+  , create_(create)
 {
     std::set<mtx::events::state::power_level_t> seen_levels;
     for (const auto &[user, level] : powerLevels_.users) {
@@ -375,6 +384,16 @@ PowerlevelsUserListModel::PowerlevelsUserListModel(const std::string &rid,
         if (!seen_levels.count(level)) {
             users.push_back(Entry{"", level});
             seen_levels.insert(level);
+        }
+    }
+
+    if (create_.content.room_version_creators_with_infinite_power()) {
+        users.push_back(Entry{"", mtx::events::state::Creator});
+        seen_levels.insert(mtx::events::state::Creator);
+
+        users.push_back(Entry{create_.sender, mtx::events::state::Creator});
+        for (const auto &user : create.content.additional_creators) {
+            users.push_back(Entry{user, mtx::events::state::Creator});
         }
     }
 
@@ -408,7 +427,7 @@ PowerlevelsUserListModel::toUsers() const
 {
     std::map<std::string, mtx::events::state::power_level_t, std::less<>> m;
     for (const auto &[key, pl] : std::as_const(users))
-        if (key.size() > 0 && key.at(0) == '@')
+        if (key.size() > 0 && key.at(0) == '@' && pl != mtx::events::state::Creator)
             m[key] = pl;
     return m;
 }
@@ -459,7 +478,7 @@ PowerlevelsUserListModel::data(const QModelIndex &index, int role) const
     case IsUser:
         return !user.mxid.empty();
     case Moveable:
-        return !user.mxid.empty();
+        return !user.mxid.empty() && user.pl != mtx::events::state::Creator;
     case Removeable:
         return !user.mxid.empty() && user.mxid.find('.') != std::string::npos;
     }
@@ -554,7 +573,15 @@ PowerlevelsUserListModel::moveRows(const QModelIndex &,
     if (users.at(sourceRow).mxid.empty())
         return false;
 
-    auto pl         = users.at(destinationChild > 0 ? destinationChild - 1 : 0).pl;
+    if (users.at(sourceRow).pl == mtx::events::state::Creator)
+        return false;
+    if (users.at(destinationChild).pl == mtx::events::state::Creator)
+        return false;
+
+    auto pl = users.at(destinationChild > 0 ? destinationChild - 1 : 0).pl;
+    if (pl == mtx::events::state::Creator)
+        return false;
+
     auto sourceItem = users.takeAt(sourceRow);
     sourceItem.pl   = pl;
 
@@ -577,9 +604,12 @@ PowerlevelEditingModels::PowerlevelEditingModels(QString room_id, QObject *paren
                    ->getStateEvent<mtx::events::state::PowerLevels>(room_id.toStdString())
                    .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
                    .content)
-  , types_(room_id.toStdString(), powerLevels_, this)
-  , users_(room_id.toStdString(), powerLevels_, this)
-  , spaces_(room_id.toStdString(), powerLevels_, this)
+  , create_(cache::client()
+              ->getStateEvent<mtx::events::state::Create>(room_id.toStdString())
+              .value_or(mtx::events::StateEvent<mtx::events::state::Create>{}))
+  , types_(room_id.toStdString(), powerLevels_, create_, this)
+  , users_(room_id.toStdString(), powerLevels_, create_, this)
+  , spaces_(room_id.toStdString(), powerLevels_, create_, this)
   , room_id_(room_id.toStdString())
 {
     connect(&types_,
@@ -678,16 +708,18 @@ samePl(const mtx::events::state::PowerLevels &a, const mtx::events::state::Power
                                           b.redact);
 }
 
-PowerlevelsSpacesListModel::PowerlevelsSpacesListModel(const std::string &room_id_,
-                                                       const mtx::events::state::PowerLevels &pl,
-                                                       QObject *parent)
+PowerlevelsSpacesListModel::PowerlevelsSpacesListModel(
+  const std::string &room_id_,
+  const mtx::events::state::PowerLevels &pl,
+  const mtx::events::StateEvent<mtx::events::state::Create> &create,
+  QObject *parent)
   : QAbstractListModel(parent)
   , room_id(std::move(room_id_))
   , oldPowerLevels_(std::move(pl))
 {
     beginResetModel();
 
-    spaces.push_back(Entry{room_id, oldPowerLevels_, true});
+    spaces.push_back(Entry{room_id, oldPowerLevels_, create, true});
 
     std::unordered_set<std::string> visited;
 
@@ -703,10 +735,16 @@ PowerlevelsSpacesListModel::PowerlevelsSpacesListModel(const std::string &room_i
               cache::client()->getStateEvent<mtx::events::state::space::Parent>(s, space);
             if (parent && parent->content.via && !parent->content.via->empty() &&
                 parent->content.canonical) {
-                auto parentPl = cache::client()->getStateEvent<mtx::events::state::PowerLevels>(s);
+                auto childPl = cache::client()->getStateEvent<mtx::events::state::PowerLevels>(s);
+                auto childCreate =
+                  cache::client()->getStateEvent<mtx::events::state::Create>(s).value_or(
+                    mtx::events::StateEvent<mtx::events::state::Create>{});
 
-                spaces.push_back(Entry{
-                  s, parentPl ? parentPl->content : mtx::events::state::PowerLevels{}, false});
+                spaces.push_back(
+                  Entry{s,
+                        childPl ? childPl->content : mtx::events::state::PowerLevels{},
+                        childCreate,
+                        false});
                 addChildren(s);
             }
         }
@@ -813,7 +851,7 @@ PowerlevelsSpacesListModel::data(QModelIndex const &index, int role) const
     auto entry = spaces.at(row);
     switch (role) {
     case Roles::IsEditable:
-        return entry.pl.user_level(http::client()->user_id().to_string()) >=
+        return entry.pl.user_level(http::client()->user_id().to_string(), entry.create) >=
                entry.pl.state_level(to_string(mtx::events::EventType::RoomPowerLevels));
     case Roles::IsDifferentFromBase:
         return !samePl(entry.pl, oldPowerLevels_);

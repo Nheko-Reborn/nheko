@@ -168,7 +168,6 @@ ApplicationWindow {
                             sourceSize.height: height
                             powerlevel: model.powerlevel
                             permissions: room.permissions
-                            isV12Creator: room.isV12Creator(model.mxid)
                         }
 
                         EncryptionIndicator {

@@ -7,10 +7,10 @@ import QtQuick.Controls
 import im.nheko
 
 Image {
-    required property int powerlevel
+    required property var powerlevel
     required property var permissions
-    required property bool isV12Creator
 
+    readonly property bool isV12Creator: permissions ? permissions.creatorLevel() == powerlevel : false
     readonly property bool isAdmin: permissions ? permissions.changeLevel(MtxEvent.PowerLevels) <= powerlevel : false
     readonly property bool isModerator: permissions ? permissions.redactLevel() <= powerlevel : false
     readonly property bool isDefault: permissions ? permissions.defaultLevel() <= powerlevel : false
@@ -27,14 +27,15 @@ Image {
     source: sourceUrl + (ma.hovered ? palette.highlight : palette.buttonText)
     ToolTip.visible: ma.hovered
     ToolTip.text: {
+        let pl = powerlevel.toLocaleString(Qt.locale(), "f", 0);
         if (isV12Creator)
             return qsTr("Creator");
         else if (isAdmin)
-            return qsTr("Administrator: %1").arg(powerlevel);
+            return qsTr("Administrator (%1)").arg(pl)
         else if (isModerator)
-            return qsTr("Moderator: %1").arg(powerlevel);
+            return qsTr("Moderator: %1").arg(pl);
         else
-            return qsTr("User: %1").arg(powerlevel);
+            return qsTr("User: %1").arg(pl);
     }
 
     HoverHandler {

@@ -94,14 +94,17 @@ ApplicationWindow {
                                 Text {
                                     visible: !model.isType;
                                     text: {
+                                        let pl = model.powerlevel.toLocaleString(Qt.locale(), "f", 0);
+                                        if (editingModel.creatorLevel == model.powerlevel)
+                                        return qsTr("Creator")
                                         if (editingModel.adminLevel == model.powerlevel)
-                                        return qsTr("Administrator (%1)").arg(model.powerlevel)
+                                        return qsTr("Administrator (%1)").arg(pl)
                                         else if (editingModel.moderatorLevel == model.powerlevel)
-                                        return qsTr("Moderator (%1)").arg(model.powerlevel)
+                                        return qsTr("Moderator (%1)").arg(pl)
                                         else if (editingModel.defaultUserLevel == model.powerlevel)
-                                        return qsTr("User (%1)").arg(model.powerlevel)
+                                        return qsTr("User (%1)").arg(pl)
                                         else
-                                        return qsTr("Custom (%1)").arg(model.powerlevel)
+                                        return qsTr("Custom (%1)").arg(pl)
                                     }
                                     color: palette.text
                                 }
@@ -138,7 +141,7 @@ ApplicationWindow {
 
                             color: palette.text
 
-                            Keys.onPressed: {
+                            Keys.onPressed: event => {
                                 if (typeEntry.text.includes('.') && event.matches(StandardKey.InsertParagraphSeparator)) {
                                     editingModel.types.add(typeEntry.index, typeEntry.text)
                                     typeEntry.visible = false;
@@ -334,12 +337,17 @@ ApplicationWindow {
                                 Text {
                                     visible: !model.isUser;
                                     text: {
+                                        let pl = model.powerlevel.toLocaleString(Qt.locale(), "f", 0);
+                                        if (editingModel.creatorLevel == model.powerlevel)
+                                        return qsTr("Creator")
                                         if (editingModel.adminLevel == model.powerlevel)
-                                        return qsTr("Administrator (%1)").arg(model.powerlevel)
+                                        return qsTr("Administrator (%1)").arg(pl)
                                         else if (editingModel.moderatorLevel == model.powerlevel)
-                                        return qsTr("Moderator (%1)").arg(model.powerlevel)
+                                        return qsTr("Moderator (%1)").arg(pl)
+                                        else if (editingModel.defaultUserLevel == model.powerlevel)
+                                        return qsTr("User (%1)").arg(pl)
                                         else
-                                        return qsTr("Custom (%1)").arg(model.powerlevel)
+                                        return qsTr("Custom (%1)").arg(pl)
                                     }
                                     color: palette.text
                                 }
@@ -349,7 +357,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignRight
                                 Layout.rightMargin: 2
                                 image: model.isUser ? ":/icons/icons/ui/dismiss.svg" : ":/icons/icons/ui/add-square-button.svg" 
-                                visible: !model.isUser || model.removeable
+                                visible: (!model.isUser || model.removeable) && model.powerlevel != editingModel.creatorLevel
                                 hoverEnabled: true
                                 ToolTip.visible: hovered
                                 ToolTip.text: model.isUser ? qsTr("Remove user") : qsTr("Add user")

@@ -4621,12 +4621,14 @@ Cache::updateSpaces(lmdb::txn &txn,
                 event.state_key.at(0) == '!') {
                 const std::string &space = event.state_key;
 
+                auto create = getStateEvent<mtx::events::state::Create>(txn, space)
+                                .value_or(mtx::events::StateEvent<mtx::events::state::Create>{});
                 auto pls = getStateEvent<mtx::events::state::PowerLevels>(txn, space);
 
                 if (!pls)
                     continue;
 
-                if (pls->content.user_level(event.sender) >=
+                if (pls->content.user_level(event.sender, create) >=
                     pls->content.state_level(space_event_type)) {
                     db->spacesChildren.put(txn, space, room);
                     db->spacesParents.put(txn, room, space);
@@ -4635,7 +4637,7 @@ Cache::updateSpaces(lmdb::txn &txn,
                                        room,
                                        space,
                                        event.sender,
-                                       pls->content.user_level(event.sender),
+                                       pls->content.user_level(event.sender, create),
                                        pls->content.state_level(space_event_type));
                 }
             }
@@ -4852,51 +4854,6 @@ Cache::getAccountData(lmdb::txn &txn, mtx::events::EventType type, const std::st
 }
 
 bool
-Cache::isV12Creator(const std::string &room_id, const std::string &user_id)
-{
-    auto txn   = ro_txn(this->db->env_);
-    auto state = this->getStatesDb(txn, room_id);
-
-    return this->isV12Creator(txn, state, user_id);
-}
-
-bool
-Cache::isV12Creator(lmdb::txn &txn, lmdb::dbi &state, const std::string &user_id)
-{
-    using namespace mtx::events;
-    using namespace mtx::events::state;
-
-    bool ok;
-    const int room_version = this->getRoomVersion(txn, state).toInt(&ok);
-    if (!ok || room_version < 12) {
-        return false;
-    }
-
-    std::string_view create_event;
-    if (state.get(txn, to_string(EventType::RoomCreate), create_event)) {
-        try {
-            const StateEvent<Create> evt =
-              nlohmann::json::parse(create_event).get<StateEvent<Create>>();
-            if (evt.sender == user_id) {
-                return true;
-            }
-
-            const std::optional<std::vector<std::string>> &additional_creators =
-              evt.content.additional_creators;
-            if (additional_creators &&
-                std::find(additional_creators->begin(), additional_creators->end(), user_id) !=
-                  additional_creators->end()) {
-                return true;
-            }
-        } catch (...) {
-            return false;
-        }
-    }
-
-    return false;
-}
-
-bool
 Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes,
                            const std::string &room_id,
                            const std::string &user_id)
@@ -4908,30 +4865,22 @@ Cache::hasEnoughPowerLevel(const std::vector<mtx::events::EventType> &eventTypes
     try {
         auto db_ = getStatesDb(txn, room_id);
 
-        if (this->isV12Creator(txn, db_, user_id)) {
-            return true;
-        }
-
         int64_t min_event_level = std::numeric_limits<int64_t>::max();
         int64_t user_level      = std::numeric_limits<int64_t>::min();
 
-        std::string_view event;
-        bool res = db_.get(txn, to_string(EventType::RoomPowerLevels), event);
+        try {
+            StateEvent<Create> create = getStateEvent<mtx::events::state::Create>(txn, room_id)
+                                          .value_or(StateEvent<Create>{});
+            StateEvent<PowerLevels> pls =
+              getStateEvent<mtx::events::state::PowerLevels>(txn, room_id)
+                .value_or(StateEvent<PowerLevels>{});
 
-        if (res) {
-            try {
-                StateEvent<PowerLevels> msg =
-                  nlohmann::json::parse(std::string_view(event.data(), event.size()))
-                    .get<StateEvent<PowerLevels>>();
+            user_level = pls.content.user_level(user_id, create);
 
-                user_level = msg.content.user_level(user_id);
-
-                for (const auto &ty : eventTypes)
-                    min_event_level =
-                      std::min(min_event_level, msg.content.state_level(to_string(ty)));
-            } catch (const nlohmann::json::exception &e) {
-                nhlog::db()->warn("failed to parse m.room.power_levels event: {}", e.what());
-            }
+            for (const auto &ty : eventTypes)
+                min_event_level = std::min(min_event_level, pls.content.state_level(to_string(ty)));
+        } catch (const nlohmann::json::exception &e) {
+            nhlog::db()->warn("failed to parse m.room.power_levels event: {}", e.what());
         }
 
         return user_level >= min_event_level;
@@ -6178,13 +6127,6 @@ roomMembers(const std::string &room_id)
     return instance_->roomMembers(room_id);
 }
 
-//! Check if the given user is a room creator and that gives them an infinite PL.
-bool
-isV12Creator(const std::string &room_id, const std::string &user_id)
-{
-    return instance_->isV12Creator(room_id, user_id);
-}
-
 //! Check if the given user has power level greater than
 //! lowest power level of the given events.
 bool
@@ -6466,6 +6408,7 @@ NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::JoinRules)
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Name)
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::PinnedEvents)
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::PowerLevels)
+NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::Create)
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::ServerAcl)
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::space::Child)
 NHEKO_CACHE_GET_STATE_EVENT_DEFINITION(mtx::events::state::space::Parent)
