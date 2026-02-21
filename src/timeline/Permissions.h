@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QObject>
+#include <QQmlEngine>
 
 #include <mtx/events.hpp>
 #include <mtx/events/create.hpp>
@@ -15,6 +16,8 @@ class TimelineModel;
 class Permissions final : public QObject
 {
     Q_OBJECT
+    QML_ELEMENT
+    QML_UNCREATABLE("Only to be used to refer to C++ values")
 
 public:
     Permissions(QString roomId, QObject *parent = nullptr);

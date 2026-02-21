@@ -8,7 +8,7 @@ import im.nheko
 
 Image {
     required property var powerlevel
-    required property var permissions
+    required property Permissions permissions
 
     readonly property bool isV12Creator: permissions ? permissions.creatorLevel() == powerlevel : false
     readonly property bool isAdmin: permissions ? permissions.changeLevel(MtxEvent.PowerLevels) <= powerlevel : false
