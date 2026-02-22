@@ -3624,7 +3624,7 @@ Cache::getRoomIsTombstoned(lmdb::txn &txn, lmdb::dbi &statesdb)
     using namespace mtx::events::state;
 
     std::string_view event;
-    bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomCreate), event);
+    bool res = statesdb.get(txn, to_string(mtx::events::EventType::RoomTombstone), event);
 
     if (res) {
         try {
