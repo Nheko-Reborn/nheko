@@ -2479,11 +2479,12 @@ try {
             }
         }
 
-        updatedInfo.name       = getRoomName(txn, statesdb, membersdb).toStdString();
-        updatedInfo.topic      = getRoomTopic(txn, statesdb).toStdString();
-        updatedInfo.avatar_url = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
-        updatedInfo.version    = getRoomVersion(txn, statesdb).toStdString();
-        updatedInfo.is_space   = getRoomIsSpace(txn, statesdb);
+        updatedInfo.name          = getRoomName(txn, statesdb, membersdb).toStdString();
+        updatedInfo.topic         = getRoomTopic(txn, statesdb).toStdString();
+        updatedInfo.avatar_url    = getRoomAvatarUrl(txn, statesdb, membersdb).toStdString();
+        updatedInfo.version       = getRoomVersion(txn, statesdb).toStdString();
+        updatedInfo.is_space      = getRoomIsSpace(txn, statesdb);
+        updatedInfo.is_tombstoned = getRoomIsTombstoned(txn, statesdb);
 
         updatedInfo.notification_count = room.second.unread_notifications.notification_count;
         updatedInfo.highlight_count    = room.second.unread_notifications.highlight_count;
