@@ -61,9 +61,7 @@ getFrameRate(const GValue *value)
 void
 addFrameRate(std::vector<std::string> &rates, const FrameRate &rate)
 {
-    constexpr double minimumFrameRate = 15.0;
-    if (static_cast<double>(rate.first) / rate.second >= minimumFrameRate)
-        rates.push_back(std::to_string(rate.first) + "/" + std::to_string(rate.second));
+    rates.push_back(std::to_string(rate.first) + "/" + std::to_string(rate.second));
 }
 
 void
