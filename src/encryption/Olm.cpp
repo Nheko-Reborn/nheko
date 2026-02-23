@@ -1658,7 +1658,7 @@ request_cross_signing_keys()
               if (err) {
                   nhlog::net()->error("Failed to send request for secrect '{}'", secretName);
                   // Cancel request on UI thread
-                  QTimer::singleShot(1, cache::client(), [request_id]() {
+                  QTimer::singleShot(0, cache::client(), [request_id]() {
                       request_id_to_secret_name.erase(request_id);
                   });
                   return;
