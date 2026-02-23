@@ -61,3 +61,16 @@ else()
             BUILD_TESTING=OFF
     )
 endif()
+
+hunter_config(ZLIB
+	URL "https://codeload.github.com/madler/zlib/zip/tags/v1.3.2"
+	VERSION "1.3.2-chromium"
+	SHA1 "40b515519dceca271d77e97c680ab4871f3a8556"
+	CMAKE_ARGS
+		ZLIB_BUILD_TESTING=OFF
+    ZLIB_BUILD_SHARED=ON
+		ZLIB_BUILD_STATIC=ON
+		ZLIB_BUILD_MINIZIP=OFF
+		ZLIB_INSTALL=ON
+		ZLIB_PREFIX=OFF
+)
