@@ -57,6 +57,7 @@ Popup {
             eventId: mid
             userColor: TimelineManager.userColor(replyPreview.userId, palette.window)
             maxWidth: parent.width
+            limitHeight: true
         }
         MatrixTextField {
             id: roomTextInput
