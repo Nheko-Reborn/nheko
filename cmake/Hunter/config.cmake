@@ -7,7 +7,9 @@ hunter_config(
 if (WIN32)
     hunter_config(
         CURL
-        VERSION 8.4.0-p0
+    VERSION "8.18.0"
+    URL "https://github.com/curl/curl/releases/download/curl-8_18_0/curl-8.18.0.tar.gz"
+    SHA1 1a13070ccd2c5fe1d47cb34dd56138f69708f3f9
         CMAKE_ARGS
             BUILD_CURL_TESTS=OFF
             BUILD_CURL_EXE=OFF
@@ -35,7 +37,9 @@ if (WIN32)
 else()
     hunter_config(
         CURL
-        VERSION 8.4.0-p0
+    VERSION "8.18.0"
+    URL "https://github.com/curl/curl/releases/download/curl-8_18_0/curl-8.18.0.tar.gz"
+    SHA1 1a13070ccd2c5fe1d47cb34dd56138f69708f3f9
         CMAKE_ARGS
             BUILD_CURL_TESTS=OFF
             BUILD_CURL_EXE=OFF

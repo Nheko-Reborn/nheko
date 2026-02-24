@@ -64,6 +64,7 @@ option(USE_BUNDLED_COEURL "Use a bundled version of the Curl wrapper"
     ${HUNTER_ENABLED})
 option(USE_BUNDLED_LIBEVENT "Use the bundled version of libevent." ${HUNTER_ENABLED})
 option(USE_BUNDLED_LIBCURL "Use the bundled version of libcurl." ${HUNTER_ENABLED})
+option(USE_BUNDLED_ZLIB "Use the bundled version of zlib (for curl)." ${HUNTER_ENABLED})
 option(USE_BUNDLED_RE2 "Use the bundled version of re2." ${HUNTER_ENABLED})
 option(USE_BUNDLED_KDSINGLEAPPLICATION "Use the bundled version of KDSingleApplication." ${HUNTER_ENABLED})
 option(USE_BUNDLED_CPPHTTPLIB "Use the bundled version of cpp-httplib." ON)
@@ -173,6 +174,10 @@ else()
 endif()
 
 # curl
+if(USE_BUNDLED_ZLIB)
+    hunter_add_package_safe(zlib)
+    find_package(ZLIB CONFIG)
+endif()
 if(USE_BUNDLED_LIBCURL)
     hunter_add_package_safe(CURL)
     find_package(CURL CONFIG REQUIRED)
