@@ -78,3 +78,15 @@ hunter_config(ZLIB
 		ZLIB_INSTALL=ON
 		ZLIB_PREFIX=OFF
 )
+
+hunter_config(
+    Libevent
+    VERSION "2.2.0-a994a52d5373d6284b27576efa617aff2baa7bd3"
+    URL "https://github.com/hunter-packages/libevent/archive/a994a52d5373d6284b27576efa617aff2baa7bd3.tar.gz"
+    SHA1 "a6f87f2b76465ccc1e5d75024475aae7d4c766a4"
+    CMAKE_ARGS
+        EVENT__DISABLE_TESTS=ON
+        EVENT__DISABLE_SAMPLES=ON
+        EVENT__DISABLE_REGRESS=ON
+        EVENT__DISABLE_BENCHMARK=ON
+)
