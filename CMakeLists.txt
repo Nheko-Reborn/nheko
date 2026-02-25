@@ -203,7 +203,7 @@ if(USE_BUNDLED_COEURL)
     FetchContent_Declare(
         coeurl
         GIT_REPOSITORY https://nheko.im/Nheko-Reborn/coeurl.git
-        GIT_TAG        831e2ee8e9cf08ea1ee9736cde8370f9d0312abc
+        GIT_TAG        8dc03085329138ac965e3e7341f0067125d109fa
     )
     FetchContent_MakeAvailable(coeurl)
     set(COEURL_TARGET_NAME coeurl::coeurl)
