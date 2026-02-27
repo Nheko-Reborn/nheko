@@ -101,6 +101,7 @@ modules:
   - name: olm
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_POLICY_VERSION_MINIMUM=3.5
     buildsystem: cmake-ninja
     sources:
       - commit: 7e0c8277032e40308987257b711b38af8d77cc69
