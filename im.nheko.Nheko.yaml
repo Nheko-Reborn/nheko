@@ -76,28 +76,18 @@ modules:
       - sha256: 3da93db5469c30588cfeb283d9d62edfc6ded9eb0edc10a4f5bbfb7d722ea802
         type: archive
         url: https://github.com/commonmark/cmark/archive/0.31.1.tar.gz
-  - name: fmt
-    buildsystem: cmake-ninja
-    config-opts:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DFMT_DOC=OFF
-      - -DFMT_TEST=OFF
-    sources:
-      - sha256: 40fc58bebcf38c759e11a7bd8fdc163507d2423ef5058bba7f26280c5b9c5465
-        type: archive
-        url: https://github.com/fmtlib/fmt/releases/download/11.0.2/fmt-11.0.2.zip
   - name: spdlog
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DSPDLOG_BUILD_BENCH=OFF
-      - -DSPDLOG_BUILD_TESTING=OFF
+      - -DSPDLOG_BUILD_TESTS=OFF
       - -DSPDLOG_BUILD_EXAMPLE=OFF
       - -DSPDLOG_FMT_EXTERNAL=ON
     sources:
-      - sha256: 1586508029a7d0670dfcb2d97575dcdc242d3868a259742b69f100801ab4e16b
+      - sha256: d8862955c6d74e5846b3f580b1605d2428b11d97a410d86e2fb13e857cd3a744
         type: archive
-        url: https://github.com/gabime/spdlog/archive/v1.14.1.tar.gz
+        url: https://github.com/gabime/spdlog/archive/v1.17.0.tar.gz
   - name: olm
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
