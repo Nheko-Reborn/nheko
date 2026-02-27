@@ -109,18 +109,6 @@ modules:
         tag: 3.2.16
         type: git
         url: https://gitlab.matrix.org/matrix-org/olm.git
-  - name: libsecret
-    buildsystem: meson
-    config-opts:
-      - -Dmanpage=false
-      - -Dvapi=false
-      - -Dgtk_doc=false
-      - -Dintrospection=false
-    sources:
-      - commit: 6b5a6c28afc6dd93c232a4907a87c881079ff91b
-        tag: 0.21.4
-        type: git
-        url: https://gitlab.gnome.org/GNOME/libsecret.git
   - name: QtKeychain
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
