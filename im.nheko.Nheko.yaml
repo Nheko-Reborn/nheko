@@ -1,7 +1,7 @@
 id: im.nheko.Nheko
 command: im.nheko.Nheko
 runtime: org.kde.Platform
-runtime-version: '6.8'
+runtime-version: '6.10'
 sdk: org.kde.Sdk
 finish-args:
   # needed for webcams, see https://github.com/Nheko-Reborn/nheko/issues/517
