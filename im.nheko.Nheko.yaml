@@ -140,8 +140,8 @@ modules:
   - name: gstreamer
     buildsystem: meson
     sources:
-      - commit: 9137f539a022ec3f5f7c5ee704198dbf35a41940
-        tag: 1.24.4
+      - commit: f313fae193089408e278c0dd3450145e5a12307b
+        tag: 1.26.9
         type: git
         url: https://gitlab.freedesktop.org/gstreamer/gstreamer.git
         disable-submodules: true
