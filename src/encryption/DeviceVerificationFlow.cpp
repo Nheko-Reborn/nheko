@@ -596,25 +596,48 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         return;
     }
 
-    nhlog::crypto()->info("verification: received start with mac methods {}",
-                          fmt::join(msg.message_authentication_codes, ", "));
+    auto get_content = [](const auto &v) -> const auto & {
+        if constexpr (requires { *v; })
+            return *v;
+        else
+            return v;
+    };
+
+    auto has_content = [](const auto &v) {
+        if constexpr (requires { *v; })
+            return v.has_value();
+        else
+            return !v.empty();
+    };
+
+    if (has_content(msg.message_authentication_codes))
+        nhlog::crypto()->info("verification: received start with mac methods {}",
+                              fmt::join(get_content(msg.message_authentication_codes), ", "));
+    else
+        nhlog::crypto()->info("verification: received start with no mac methods");
 
     // TODO(Nico): Replace with contains once we use C++23
-    if (std::ranges::count(msg.key_agreement_protocols, "curve25519-hkdf-sha256") &&
-        std::ranges::count(msg.hashes, "sha256")) {
-        if (std::ranges::count(msg.message_authentication_codes, mac_method_alg_v2)) {
+    if ((has_content(msg.key_agreement_protocols) &&
+         std::ranges::count(get_content(msg.key_agreement_protocols), "curve25519-hkdf-sha256")) &&
+        (has_content(msg.hashes) && std::ranges::count(get_content(msg.hashes), "sha256"))) {
+        if (has_content(msg.message_authentication_codes) &&
+            std::ranges::count(get_content(msg.message_authentication_codes), mac_method_alg_v2)) {
             this->mac_method = mac_method_alg_v2;
-        } else if (std::ranges::count(msg.message_authentication_codes, mac_method_alg_v1)) {
+        } else if (has_content(msg.message_authentication_codes) &&
+                   std::ranges::count(get_content(msg.message_authentication_codes),
+                                      mac_method_alg_v1)) {
             this->mac_method = mac_method_alg_v1;
         } else {
             this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
             return;
         }
 
-        if (std::ranges::count(msg.short_authentication_string,
+        if (has_content(msg.short_authentication_string) &&
+            std::ranges::count(get_content(msg.short_authentication_string),
                                mtx::events::msg::SASMethods::Emoji)) {
             this->method = mtx::events::msg::SASMethods::Emoji;
-        } else if (std::ranges::count(msg.short_authentication_string,
+        } else if (has_content(msg.short_authentication_string) &&
+                   std::ranges::count(get_content(msg.short_authentication_string),
                                       mtx::events::msg::SASMethods::Decimal)) {
             this->method = mtx::events::msg::SASMethods::Decimal;
         } else {
