@@ -86,6 +86,7 @@ public:
             return MediaType::File;
     }
     [[nodiscard]] QString url() const { return url_; }
+    [[nodiscard]] std::optional<QString> caption() const { return caption_; }
     [[nodiscard]] QString mimetype() const { return mimetype_; }
     [[nodiscard]] QString mimeClass() const { return mimeClass_; }
     [[nodiscard]] QString filename() const { return originalFilename_; }
@@ -143,6 +144,7 @@ public:
     QString blurhash_;
     QString thumbnailUrl_;
     QString url_;
+    std::optional<QString> caption_;
     std::optional<mtx::crypto::EncryptedFile> encryptedFile, thumbnailEncryptedFile;
 
     QImage thumbnail_;
@@ -241,6 +243,7 @@ public slots:
     void sticker(QStringList descriptor);
 
     void acceptUploads();
+    void acceptUploadsWithCaption(QString);
     void declineUploads();
 
 private slots:
@@ -269,6 +272,7 @@ private:
     void image(const QString &filename,
                const std::optional<mtx::crypto::EncryptedFile> &file,
                const QString &url,
+               const std::optional<QString> &caption,
                const QString &mime,
                uint64_t dsize,
                const QSize &dimensions,
@@ -280,17 +284,20 @@ private:
     void file(const QString &filename,
               const std::optional<mtx::crypto::EncryptedFile> &encryptedFile,
               const QString &url,
+              const std::optional<QString> &caption,
               const QString &mime,
               uint64_t dsize);
     void audio(const QString &filename,
                const std::optional<mtx::crypto::EncryptedFile> &file,
                const QString &url,
+               const std::optional<QString> &caption,
                const QString &mime,
                uint64_t dsize,
                uint64_t duration);
     void video(const QString &filename,
                const std::optional<mtx::crypto::EncryptedFile> &file,
                const QString &url,
+               const std::optional<QString> &caption,
                const QString &mime,
                uint64_t dsize,
                uint64_t duration,
