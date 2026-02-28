@@ -112,7 +112,9 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool openVideoExternal READ openVideoExternal WRITE setOpenVideoExternal NOTIFY
                  openVideoExternalChanged)
 
+    Q_PROPERTY(bool hideAllPins READ hideAllPins WRITE setHideAllPins NOTIFY hideAllPinsChanged)
     Q_PROPERTY(QStringList hiddenPins READ hiddenPins WRITE setHiddenPins NOTIFY hiddenPinsChanged)
+    Q_PROPERTY(QStringList shownPins READ shownPins WRITE setShownPins NOTIFY shownPinsChanged)
     Q_PROPERTY(QStringList recentReactions READ recentReactions WRITE setRecentReactions NOTIFY
                  recentReactionsChanged)
     Q_PROPERTY(QStringList hiddenWidgets READ hiddenWidgets WRITE setHiddenWidgets NOTIFY
@@ -236,7 +238,9 @@ public:
     void setDisableCertificateValidation(bool disabled);
     void setHiddenTags(const QStringList &hiddenTags);
     void setMutedTags(const QStringList &mutedTags);
-    void setHiddenPins(const QStringList &hiddenTags);
+    void setHideAllPins(bool state);
+    void setHiddenPins(const QStringList &hiddenPins);
+    void setShownPins(const QStringList &shownPins);
     void setHiddenWidgets(const QStringList &hiddenTags);
     void setRecentReactions(QStringList recent);
     void setUseIdenticon(bool state);
@@ -314,7 +318,9 @@ public:
     bool disableCertificateValidation() const { return disableCertificateValidation_; }
     QStringList hiddenTags() const { return hiddenTags_; }
     QStringList mutedTags() const { return mutedTags_; }
+    bool hideAllPins() const { return hideAllPins_; }
     QStringList hiddenPins() const { return hiddenPins_; }
+    QStringList shownPins() const { return shownPins_; }
     QStringList hiddenWidgets() const { return hiddenWidgets_; }
     QStringList recentReactions() const { return recentReactions_; }
     bool useIdenticon() const;
@@ -385,7 +391,9 @@ signals:
     void useIdenticonChanged(bool state);
     void openImageExternalChanged(bool state);
     void openVideoExternalChanged(bool state);
+    void hideAllPinsChanged(bool state);
     void hiddenPinsChanged();
+    void shownPinsChanged();
     void hiddenWidgetsChanged();
     void recentReactionsChanged();
     void exposeDBusApiChanged(bool state);
@@ -458,7 +466,9 @@ private:
     QString homeserver_;
     QStringList hiddenTags_;
     QStringList mutedTags_;
+    bool hideAllPins_;
     QStringList hiddenPins_;
+    QStringList shownPins_;
     QStringList hiddenWidgets_;
     QStringList recentReactions_;
     QList<QStringList> collapsedSpaces_;
@@ -497,6 +507,7 @@ class UserSettingsModel : public QAbstractListModel
         PrivacyScreen,
         PrivacyScreenTimeout,
         ScrollbarsInRoomlist,
+        HideAllPins,
 #ifdef NHEKO_DBUS_SYS
         ExposeDBusApi,
 #endif
