@@ -6,6 +6,8 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QMimeData>
+#include <QPixmap>
 
 Clipboard::Clipboard(QObject *parent)
   : QObject(parent)
@@ -16,7 +18,17 @@ Clipboard::Clipboard(QObject *parent)
 void
 Clipboard::setText(QString text)
 {
-    QGuiApplication::clipboard()->setText(text);
+    QMimeData *mimeData = new QMimeData();
+    mimeData->setText(text);
+
+    QClipboard *clipboard = QGuiApplication::clipboard();
+    if (mimeData->hasImage()) {
+        clipboard->setPixmap(qvariant_cast<QPixmap>(mimeData->imageData()));
+    } else if (mimeData->hasHtml()) {
+        clipboard->setText(mimeData->html());
+    } else if (mimeData->hasText()) {
+        clipboard->setText(mimeData->text());
+    }
 }
 
 QString
