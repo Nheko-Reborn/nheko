@@ -143,6 +143,7 @@ Popup {
                 ComboBox {
                     id: micCombo
 
+                    enabled: !HardwareCallDevices.scanning
                     Layout.fillWidth: true
                     model: CallManager.mics
                 }
@@ -164,6 +165,7 @@ Popup {
                 ComboBox {
                     id: cameraCombo
 
+                    enabled: !HardwareCallDevices.scanning
                     Layout.fillWidth: true
                     model: CallManager.cameras
                 }
@@ -171,6 +173,19 @@ Popup {
             }
 
         }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            Button {
+                id: rescanBtn
+                text: HardwareCallDevices.scanning ? qsTr("Scanning...") : qsTr("Rescan devices")
+                enabled: !HardwareCallDevices.scanning
+                onClicked: {
+                    CallManager.refreshDevices()
+                }
+            }
+        }
+
 
     }
 

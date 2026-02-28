@@ -72,6 +72,8 @@ public:
     bool isOffering() const { return isOffering_; }
     bool isRemoteVideoRecvOnly() const { return isRemoteVideoRecvOnly_; }
     bool isRemoteVideoSendOnly() const { return isRemoteVideoSendOnly_; }
+    std::string lastError() const { return lastError_; }
+    void setLastError(const std::string &error) { lastError_ = error; }
 
     bool createOffer(webrtc::CallType, webrtc::ScreenShareType, uint32_t shareWindowId);
     bool acceptOffer(const std::string &sdp);
@@ -113,10 +115,11 @@ private:
     bool isOffering_                         = false;
     bool isRemoteVideoRecvOnly_              = false;
     bool isRemoteVideoSendOnly_              = false;
-    QQuickItem *videoItem_                   = nullptr;
-    GstElement *pipe_                        = nullptr;
-    GstElement *webrtc_                      = nullptr;
-    unsigned int busWatchId_                 = 0;
+    std::string lastError_;
+    QQuickItem *videoItem_   = nullptr;
+    GstElement *pipe_        = nullptr;
+    GstElement *webrtc_      = nullptr;
+    unsigned int busWatchId_ = 0;
     std::vector<std::string> turnServers_;
     uint32_t shareWindowId_ = 0;
 

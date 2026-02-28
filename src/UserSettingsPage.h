@@ -544,6 +544,7 @@ class UserSettingsModel : public QAbstractListModel
         DecryptNotifications,
 
         VoipSection,
+        RescanAudioVideoDevices,
         UseStunServer,
         Microphone,
         Camera,
@@ -596,6 +597,8 @@ public:
         XSignKeysRequestDownload,
         ConfigureHiddenEvents,
         ManageIgnoredUsers,
+        DeviceOptions,
+        RescanDevs,
     };
     Q_ENUM(Types);
 
@@ -627,4 +630,5 @@ public:
     Q_INVOKABLE void exportSessionKeys();
     Q_INVOKABLE void requestCrossSigningSecrets();
     Q_INVOKABLE void downloadCrossSigningSecrets();
+    Q_INVOKABLE void refreshDevices();
 };

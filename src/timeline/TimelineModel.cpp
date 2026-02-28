@@ -34,6 +34,7 @@
 #include "TimelineViewManager.h"
 #include "Utils.h"
 #include "encryption/Olm.h"
+#include "timeline/PresenceEmitter.h"
 #include "ui/UserProfile.h"
 
 namespace std {
@@ -525,6 +526,15 @@ TimelineModel::TimelineModel(TimelineViewManager *manager, QString room_id, QObj
         cache::client()->updateState(room_id_.toStdString(), events_, true);
         this->syncState({std::move(events_.events)});
     });
+
+    connect(PresenceEmitter::get(),
+            &PresenceEmitter::presenceChanged,
+            this,
+            [this](const QString &user_id) {
+                if (isDirect() && directChatOtherUserId() == user_id) {
+                    emit roomTopicChanged();
+                }
+            });
 }
 
 QHash<int, QByteArray>
@@ -1426,18 +1436,18 @@ TimelineModel::avatarUrl(const QString &id) const
 }
 
 QString
-TimelineModel::formatDateSeparator(QDate date) const
+TimelineModel::formatDateSeparator(QDateTime date) const
 {
     auto now = QDateTime::currentDateTime();
 
     QString fmt = QLocale::system().dateFormat(QLocale::LongFormat);
 
-    if (now.date().year() == date.year()) {
+    if (now.date().year() == date.date().year()) {
         static QRegularExpression rx(QStringLiteral("[^a-zA-Z]*y+[^a-zA-Z]*"));
         fmt = fmt.remove(rx);
     }
 
-    return date.toString(fmt);
+    return date.date().toString(fmt);
 }
 
 QString
@@ -3249,6 +3259,23 @@ TimelineModel::roomAvatarUrl() const
 QString
 TimelineModel::roomTopic() const
 {
+    if (isDirect()) {
+        auto userid = directChatOtherUserId();
+        if (!userid.isEmpty()) {
+            auto p = cache::presence(userid.toStdString());
+            switch (p.presence) {
+            case mtx::presence::PresenceState::online:
+                return tr("Online");
+            case mtx::presence::PresenceState::unavailable:
+                return tr("Idle");
+            case mtx::presence::PresenceState::offline:
+                return tr("Offline");
+            default:
+                return {};
+            }
+        }
+    }
+
     auto info = cache::getRoomInfo({room_id_.toStdString()});
 
     if (!info.count(room_id_))
@@ -3386,12 +3413,20 @@ TimelineModel::parentSpace()
         auto parents = cache::client()->getStateEventsWithType<mtx::events::state::space::Parent>(
           this->room_id_.toStdString());
 
+        const mtx::events::StateEvent<mtx::events::state::space::Parent> *first = nullptr;
         for (const auto &p : parents) {
             if (p.content.canonical and p.content.via and not p.content.via->empty()) {
                 parentSummary.reset(new RoomSummary(p.state_key, *p.content.via, ""));
                 QQmlEngine::setObjectOwnership(parentSummary.get(), QQmlEngine::CppOwnership);
                 break;
             }
+            if (!first && p.content.via && !p.content.via->empty())
+                first = &p;
+        }
+
+        if (!parentSummary && first) {
+            parentSummary.reset(new RoomSummary(first->state_key, *first->content.via, ""));
+            QQmlEngine::setObjectOwnership(parentSummary.get(), QQmlEngine::CppOwnership);
         }
         parentChecked = true;
     }

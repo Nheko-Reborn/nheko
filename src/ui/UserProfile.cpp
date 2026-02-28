@@ -340,13 +340,16 @@ UserProfile::updateVerificationStatus()
     this->hasMasterKey = !user_keys->master_keys.keys.empty();
 
     std::vector<DeviceInfo> deviceInfo;
-    auto devices            = user_keys->device_keys;
+    auto devices = user_keys->device_keys;
+    nhlog::ui()->info("UserProfile: Found {} devices in E2EE cache", devices.size());
     auto verificationStatus = cache::client()->verificationStatus(userid_.toStdString());
 
     this->isUserVerified = verificationStatus.user_verified;
     emit userStatusChanged();
 
     deviceInfo.reserve(devices.size());
+    nhlog::db()->debug(
+      "Building device list for user {} with {} devices", userid_.toStdString(), devices.size());
     for (const auto &d : devices) {
         auto device = d.second;
         verification::Status verified =
@@ -359,9 +362,20 @@ UserProfile::updateVerificationStatus()
         if (isSelf() && device.device_id == ::http::client()->device_id())
             verified = verification::Status::SELF;
 
-        deviceInfo.emplace_back(QString::fromStdString(d.first),
-                                QString::fromStdString(device.unsigned_info.device_display_name),
-                                verified);
+        nhlog::db()->debug("  Device: {} | Status: {} | User verified: {} | Name: '{}'",
+                           device.device_id,
+                           static_cast<int>(verified),
+                           static_cast<int>(verificationStatus.user_verified),
+                           device.unsigned_info.device_display_name);
+
+        // Fall back to device_id if display_name is empty
+        std::string displayName = device.unsigned_info.device_display_name;
+        if (displayName.empty()) {
+            displayName = device.device_id;
+        }
+
+        deviceInfo.emplace_back(
+          QString::fromStdString(d.first), QString::fromStdString(displayName), verified);
     }
 
     // For self, also query devices without keys
@@ -375,6 +389,8 @@ UserProfile::updateVerificationStatus()
                   emit devicesChanged();
                   return;
               }
+              nhlog::ui()->info("UserProfile: Query devices returned {} devices",
+                                allDevs.devices.size());
               for (const auto &d : allDevs.devices) {
                   // First, check if we already have an entry for this device
                   bool found = false;

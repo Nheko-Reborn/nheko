@@ -130,6 +130,7 @@ newBusMessage(GstBus *bus G_GNUC_UNUSED, GstMessage *msg, gpointer user_data)
         GError *error;
         gchar *debug;
         gst_message_parse_error(msg, &error, &debug);
+        session->setLastError(error->message);
         nhlog::ui()->error(
           "WebRTC: error from element {}: {}", GST_OBJECT_NAME(msg->src), error->message);
         g_clear_error(&error);
@@ -765,7 +766,12 @@ WebRTCSession::createOffer(CallType callType,
                            ScreenShareType screenShareType,
                            uint32_t shareWindowId)
 {
+    lastError_.clear();
     clear();
+
+    if (!initialised_ && !init(&lastError_))
+        return false;
+
     isOffering_      = true;
     callType_        = callType;
     screenShareType_ = screenShareType;
@@ -782,11 +788,17 @@ WebRTCSession::createOffer(CallType callType,
 bool
 WebRTCSession::acceptOffer(const std::string &sdp)
 {
+    lastError_.clear();
     nhlog::ui()->debug("WebRTC: received offer:\n{}", sdp);
-    if (state_ != State::DISCONNECTED)
+    if (state_ != State::DISCONNECTED) {
+        lastError_ = "Session already in progress";
         return false;
+    }
 
     clear();
+
+    if (!initialised_ && !init(&lastError_))
+        return false;
     GstWebRTCSessionDescription *offer = parseSDP(sdp, GST_WEBRTC_SDP_TYPE_OFFER);
     if (!offer)
         return false;
@@ -796,11 +808,13 @@ WebRTCSession::acceptOffer(const std::string &sdp)
     bool sendOnly;
     if (getMediaAttributes(offer->sdp, "audio", "opus", opusPayloadType, recvOnly, sendOnly)) {
         if (opusPayloadType == -1) {
+            lastError_ = "Remote audio offer - no opus encoding";
             nhlog::ui()->error("WebRTC: remote audio offer - no opus encoding");
             gst_webrtc_session_description_free(offer);
             return false;
         }
     } else {
+        lastError_ = "Remote offer - no audio media";
         nhlog::ui()->error("WebRTC: remote offer - no audio media");
         gst_webrtc_session_description_free(offer);
         return false;
@@ -810,6 +824,7 @@ WebRTCSession::acceptOffer(const std::string &sdp)
     bool isVideo = getMediaAttributes(
       offer->sdp, "video", "vp8", vp8PayloadType, isRemoteVideoRecvOnly_, isRemoteVideoSendOnly_);
     if (isVideo && vp8PayloadType == -1) {
+        lastError_ = "Remote video offer - no vp8 encoding";
         nhlog::ui()->error("WebRTC: remote video offer - no vp8 encoding");
         gst_webrtc_session_description_free(offer);
         return false;
@@ -938,6 +953,7 @@ WebRTCSession::startPipeline(int opusPayloadType, int vp8PayloadType)
     // start the pipeline
     GstStateChangeReturn ret = gst_element_set_state(pipe_, GST_STATE_PLAYING);
     if (ret == GST_STATE_CHANGE_FAILURE) {
+        lastError_ = "Unable to start pipeline";
         nhlog::ui()->error("WebRTC: unable to start pipeline");
         end();
         return false;
@@ -959,7 +975,8 @@ WebRTCSession::createPipeline(int opusPayloadType, int vp8PayloadType)
     if (!device)
         return false;
 
-    GstElement *source     = gst_device_create_element(device, nullptr);
+    GstElement *source = gst_device_create_element(device, nullptr);
+    gst_object_unref(device);
     GstElement *volume     = gst_element_factory_make("volume", "srclevel");
     GstElement *convert    = gst_element_factory_make("audioconvert", nullptr);
     GstElement *resample   = gst_element_factory_make("audioresample", nullptr);
@@ -1011,6 +1028,7 @@ WebRTCSession::createPipeline(int opusPayloadType, int vp8PayloadType)
                                capsfilter,
                                webrtcbin,
                                nullptr)) {
+        lastError_ = "Failed to link audio pipeline elements";
         nhlog::ui()->error("WebRTC: failed to link audio pipeline elements");
         return false;
     }
@@ -1043,7 +1061,8 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
             return false;
 
         GstElement *camera = gst_device_create_element(device, nullptr);
-        GstCaps *caps      = gst_caps_new_simple("video/x-raw",
+        gst_object_unref(device);
+        GstCaps *caps = gst_caps_new_simple("video/x-raw",
                                             "width",
                                             G_TYPE_INT,
                                             resolution.first,
@@ -1055,7 +1074,7 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                                             frameRate.first,
                                             frameRate.second,
                                             nullptr);
-        camerafilter       = gst_element_factory_make("capsfilter", "camerafilter");
+        camerafilter  = gst_element_factory_make("capsfilter", "camerafilter");
         g_object_set(camerafilter, "caps", caps, nullptr);
         gst_caps_unref(caps);
 
@@ -1188,6 +1207,7 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
             }
             gst_object_unref(srcpad);
         } else if (!gst_element_link_many(screencastsrc, videoconvert, capsfilter, tee, nullptr)) {
+            lastError_ = "Failed to link screen share elements";
             nhlog::ui()->error("WebRTC: failed to link screen share elements");
             return false;
         }
@@ -1307,7 +1327,6 @@ WebRTCSession::clear()
     isOffering_            = false;
     isRemoteVideoRecvOnly_ = false;
     isRemoteVideoSendOnly_ = false;
-    videoItem_             = nullptr;
     pipe_                  = nullptr;
     webrtc_                = nullptr;
     busWatchId_            = 0;

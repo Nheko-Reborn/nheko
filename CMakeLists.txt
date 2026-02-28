@@ -173,6 +173,8 @@ else()
     endif()
 endif()
 
+pkg_check_modules(LIBBSD IMPORTED_TARGET libbsd)
+
 # curl
 if(USE_BUNDLED_ZLIB)
     hunter_add_package_safe(zlib)
@@ -934,7 +936,11 @@ target_link_libraries(nheko PRIVATE
     nlohmann_json::nlohmann_json
     lmdbxx::lmdbxx
     liblmdb::lmdb)
-    
+
+if(TARGET PkgConfig::LIBBSD)
+    target_link_libraries(nheko PRIVATE PkgConfig::LIBBSD)
+endif()
+
 if(UNIX)
     # for wayland activation tokens
     target_link_libraries(nheko PRIVATE Qt::GuiPrivate)

@@ -803,6 +803,7 @@ import_inbound_megolm_session(
         data.sender_key                      = roomKey.content.sender_key;
         // Keys from online key backup won't have a signature, so they will be untrusted. But the
         // original sender might send us a signed session.
+        // If the key was forwarded by a verified device, we might trust it.
         data.trusted = olm_inbound_group_session_is_verified(megolm_session.get());
 
         backup_session_key(index, data, megolm_session);
@@ -1316,6 +1317,16 @@ calculate_trust(const std::string &user_id,
     if (megolmData && megolmData->trusted &&
         status.verified_device_keys.count(megolmData->sender_key)) {
         trustlevel = status.verified_device_keys.at(megolmData->sender_key);
+    } else {
+        if (!megolmData)
+            nhlog::crypto()->debug("calculate_trust: no megolm session for room {}, session {}",
+                                   index.room_id,
+                                   index.session_id);
+        else if (!megolmData->trusted)
+            nhlog::crypto()->debug("calculate_trust: megolm session not trusted");
+        else
+            nhlog::crypto()->debug("calculate_trust: device {} not in verified_device_keys",
+                                   megolmData->sender_key);
     }
 
     return trustlevel;

@@ -1,0 +1,46 @@
+---
+name: Build Nheko
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '6.7.2'
+          host: 'linux'
+          target: 'desktop'
+          arch: 'linux_gcc_64'
+          dir: '${{ runner.temp }}'
+          install-deps: 'true'
+          modules: 'qtmultimedia qt5compat qtshadertools qtimageformats'
+          tools: 'tools_cmake'
+          set-env: 'true'
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential git ninja-build \
+            libssl-dev liblmdb-dev libgstreamer-plugins-base1.0-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-bad1.0-dev libevent-dev libcurl4-openssl-dev \
+            libxcb-ewmh-dev pkg-config libsecret-1-dev asciidoc libbsd-dev \
+            libfmt-dev libspdlog-dev libolm-dev nlohmann-json3-dev
+
+          sudo pip3 install asciidoc --break-system-packages
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -DHUNTER_ENABLED=ON -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXE_LINKER_FLAGS="-lbsd"
+
+      - name: Build
+        run: cmake --build build -j$(nproc)
