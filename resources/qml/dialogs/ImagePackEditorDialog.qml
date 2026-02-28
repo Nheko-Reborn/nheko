@@ -49,6 +49,9 @@ ApplicationWindow {
 
                 model: imagePack
 
+                Loader {
+                    source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+                }
 
                 header: AvatarListTile {
                     title: imagePack.packname
