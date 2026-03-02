@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3500"/>
+        <location filename="../../src/Cache.cpp" line="+3501"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 和 %2</translation>
@@ -1395,6 +1395,11 @@ You may optionally provide a reason for others to accept your knock:</source>
         <source>Stickers</source>
         <translation>贴纸</translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>Allowed server changes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IgnoredUsers</name>
@@ -1885,7 +1890,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>写一条消息…</translation>
     </message>
     <message>
-        <location line="+263"/>
+        <location line="+273"/>
         <source>Stickers</source>
         <translation>贴纸</translation>
     </message>
@@ -1916,7 +1921,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+235"/>
+        <location filename="../qml/MessageView.qml" line="+237"/>
         <source>Edit</source>
         <translation>编辑</translation>
     </message>
@@ -1967,18 +1972,18 @@ Example: https://yourserver.example.com:8787</source>
     </message>
     <message>
         <location line="+11"/>
-        <location line="+185"/>
+        <location line="+187"/>
         <source>&amp;Copy</source>
         <translation>复制(&amp;C)</translation>
     </message>
     <message>
-        <location line="-177"/>
-        <location line="+185"/>
+        <location line="-179"/>
+        <location line="+187"/>
         <source>Copy &amp;link location</source>
         <translation>复制链接位置(&amp;l)</translation>
     </message>
     <message>
-        <location line="-175"/>
+        <location line="-177"/>
         <source>Re&amp;act</source>
         <translation>回应(&amp;a)</translation>
     </message>
@@ -2023,7 +2028,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>标为已读(&amp;M)</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>View raw message</source>
         <translation>查看源代码</translation>
     </message>
@@ -2231,30 +2236,37 @@ Example: https://yourserver.example.com:8787</source>
         <translation>在角色之间移动权限以更改它们</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <location line="+240"/>
+        <location line="+23"/>
+        <location line="+243"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Administrator (%1)</source>
         <translation>管理员 (%1)</translation>
     </message>
     <message>
-        <location line="-238"/>
-        <location line="+240"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Moderator (%1)</source>
         <translation>协管员 (%1)</translation>
     </message>
     <message>
-        <location line="-238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>User (%1)</source>
         <translation>用户 (%1)</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location line="+238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Custom (%1)</source>
         <translation>自定义 (%1)</translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="-230"/>
         <source>Remove event type</source>
         <translation>移除事件类型</translation>
     </message>
@@ -2279,7 +2291,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>上下移动用户以更改其权限</translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+147"/>
         <source>Remove user</source>
         <translation>移除用户</translation>
     </message>
@@ -2335,7 +2347,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerLevels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+750"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+788"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>未能更新权限等级：%1</translation>
     </message>
@@ -2343,7 +2355,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelEditingModels</name>
     <message>
-        <location line="-119"/>
+        <location line="-127"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>未能更新权限等级：%1</translation>
     </message>
@@ -2351,9 +2363,14 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelIndicator</name>
     <message>
-        <location filename="../qml/components/PowerlevelIndicator.qml" line="+30"/>
-        <source>Administrator: %1</source>
-        <translation>管理员：%1</translation>
+        <location filename="../qml/components/PowerlevelIndicator.qml" line="+32"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Administrator (%1)</source>
+        <translation type="unfinished">管理员 (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2369,7 +2386,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="-468"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="-492"/>
         <source>Other events</source>
         <translation>其他事件</translation>
     </message>
@@ -2552,7 +2569,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsUserListModel</name>
     <message>
-        <location line="+217"/>
+        <location line="+230"/>
         <source>Other users</source>
         <translation>其他用户</translation>
     </message>
@@ -2560,7 +2577,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+221"/>
+        <location filename="../../src/main.cpp" line="+220"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>创建一个独特的配置文件，允许你同时登录多个帐户并启动多个 Nheko 实例。</translation>
     </message>
@@ -2888,7 +2905,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2080"/>
+        <location filename="../../src/Cache.cpp" line="+2078"/>
         <source>no version stored</source>
         <translation>没有存储版本</translation>
     </message>
@@ -3224,7 +3241,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>通知</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Muted</source>
         <translation>静音</translation>
     </message>
@@ -3239,7 +3256,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>所有消息</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>ENTRY PERMISSIONS</source>
         <translation>条目权限</translation>
     </message>
@@ -3435,12 +3452,12 @@ Example: https://yourserver.example.com:8787</source>
         <translation>内部 ID</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Copied to clipboard</source>
         <translation>已复制到剪贴板</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>Room Version</source>
         <translation>聊天室版本</translation>
     </message>
@@ -3573,7 +3590,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5121"/>
+        <location filename="../../src/Cache.cpp" line="-5120"/>
         <source>Failed to connect to secret storage</source>
         <translation>未能连接秘密存储</translation>
     </message>
@@ -3868,7 +3885,7 @@ If you choose verify, you need to have the other device available. If you choose
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1605"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1604"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>删除消息失败：%1</translation>
@@ -3900,7 +3917,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>保存文件</translation>
     </message>
     <message numerus="yes">
-        <location line="+347"/>
+        <location line="+348"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3953,13 +3970,13 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 已设置仅成员从加入开始能够阅读此聊天室中的历史消息。</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location line="+244"/>
+        <location line="+29"/>
+        <location line="+245"/>
         <source>%1 has changed the room&apos;s permissions.</source>
         <translation>%1 已更改聊天室的权限。</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-222"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
         <translation>%1 已将聊天室的踢人权限等级从 %2 更改为 %3。</translation>
     </message>
@@ -4062,7 +4079,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation>%1 已将 %2 降级为此聊天室的协管员。</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
         <translation>%1 已将 %2 的权限等级从 %3 改为 %4。</translation>
     </message>
@@ -4224,7 +4241,7 @@ Reason: %4</source>
         <translation>%1 删除了其加入请求。</translation>
     </message>
     <message>
-        <location line="-2310"/>
+        <location line="-2312"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 更改了允许在此聊天室使用的服务器。</translation>
     </message>
@@ -4284,7 +4301,7 @@ Reason: %4</source>
         <translation>%1 更改了未知状态事件 %2。</translation>
     </message>
     <message>
-        <location line="+556"/>
+        <location line="+555"/>
         <source>You joined this room.</source>
         <translation>你已加入此聊天室。</translation>
     </message>
@@ -4296,12 +4313,12 @@ Reason: %4</source>
         </translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+913"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 使此聊天室需要邀请才能加入。</translation>
     </message>
     <message>
-        <location line="+618"/>
+        <location line="+620"/>
         <source>%1 invited %2.</source>
         <translation>%1 邀请了 %2。</translation>
     </message>
@@ -4348,7 +4365,7 @@ Reason: %4</source>
         <translation>未打开聊天室</translation>
     </message>
     <message>
-        <location line="+108"/>
+        <location line="+109"/>
         <source>You are about to notify the whole room</source>
         <translation>你即将通知整个聊天室</translation>
     </message>
@@ -4448,7 +4465,7 @@ Reason: %4</source>
         <translation>未选择聊天室</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+54"/>
         <source>In %1</source>
         <translation>在 %1</translation>
     </message>
@@ -4458,7 +4475,12 @@ Reason: %4</source>
         <translation>返回聊天室列表</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+55"/>
+        <source>Show only notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>Show or hide pinned messages</source>
         <translation>显示或隐藏置顶消息</translation>
     </message>
@@ -4536,7 +4558,7 @@ Reason: %4</source>
         <translation>退出</translation>
     </message>
     <message numerus="yes">
-        <location line="+27"/>
+        <location line="+32"/>
         <source>
 %n unread message(s)</source>
         <translation>
@@ -4737,7 +4759,7 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.h" line="+280"/>
+        <location filename="../../src/UserSettingsPage.h" line="+288"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
@@ -4745,7 +4767,7 @@ Reason: %4</source>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+1030"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+1048"/>
         <source>Theme</source>
         <translation>主题</translation>
     </message>
@@ -4785,12 +4807,7 @@ Reason: %4</source>
         <translation>以 Markdown 格式发送消息</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Use shift+enter to send and enter to start a new line</source>
-        <translation>使用 shift+enter 以发送消息，enter 以换行</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Enable message bubbles</source>
         <translation>启用消息气泡</translation>
     </message>
@@ -5110,7 +5127,7 @@ Reason: %4</source>
         <translation>定期删除过期的事件</translation>
     </message>
     <message>
-        <location line="+121"/>
+        <location line="+116"/>
         <source>Default</source>
         <translation>默认</translation>
     </message>
@@ -5161,12 +5178,7 @@ When disabled, all messages are sent as a plain text.</source>
 禁用时，所有消息都以纯文本形式发送。</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation>反转文本输入中 enter 键的行为，使其在按下 shift+enter 时发送消息，并在按下 enter 时换行。</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+9"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
         <translation>消息获得气泡背景。这也会触发一些布局变化 (WIP)。</translation>
     </message>
@@ -5262,17 +5274,22 @@ This usually causes the application icon in the task bar to animate in some fash
 这通常会导致任务栏中的应用程序图标以某种方式呈现动画效果。</translation>
     </message>
     <message>
-        <location line="-378"/>
+        <location line="-374"/>
         <source>Communities sidebar</source>
         <translation>社区侧边栏</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+6"/>
+        <source>Send messages with a shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
         <source>Show message counts for communities and tags</source>
         <translation>显示社区和标签的消息计数</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+252"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>设置时间线中消息的最大宽度（以像素为单位）。 当 Nheko 最大化时，这有助于提高宽屏上的可读性</translation>
     </message>
@@ -5282,7 +5299,14 @@ This usually causes the application icon in the task bar to animate in some fash
         <translation>在聊天室列表旁边显示包含社区和标签的列。</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+8"/>
+        <source>Select what Enter key combination sends the message. Shift+Enter adds a new line, unless it has been selected, in which case Enter adds a new line instead.
+
+If an emoji picker or a mention picker is open, it is always handled first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -5416,6 +5440,21 @@ This setting will take effect upon restart.</source>
         <translation>从不</translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Shift+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ctrl+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+14"/>
         <source>System font</source>
         <translation>系统字体</translation>
@@ -5426,7 +5465,7 @@ This setting will take effect upon restart.</source>
         <translation>系统表情符号字体</translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+338"/>
         <source>Select a file</source>
         <translation>选择一个文件</translation>
     </message>
@@ -5502,7 +5541,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../qml/pages/UserSettingsPage.qml" line="+187"/>
+        <location filename="../qml/pages/UserSettingsPage.qml" line="+190"/>
         <source>CACHED</source>
         <translation>已缓存</translation>
     </message>
@@ -5619,7 +5658,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+383"/>
+        <location filename="../../src/Utils.cpp" line="+384"/>
         <source>Yesterday</source>
         <translation>昨天</translation>
     </message>

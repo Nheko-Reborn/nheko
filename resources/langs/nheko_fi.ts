@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3500"/>
+        <location filename="../../src/Cache.cpp" line="+3501"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 ja %2</translation>
@@ -1399,6 +1399,11 @@ Voit antaa valinnaisen syyn muiden hyväksyäkseen koputuksesi:</translation>
         <source>Stickers</source>
         <translation>Tarrat</translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>Allowed server changes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IgnoredUsers</name>
@@ -1885,7 +1890,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Kirjoita viesti…</translation>
     </message>
     <message>
-        <location line="+263"/>
+        <location line="+273"/>
         <source>Stickers</source>
         <translation>Tarrat</translation>
     </message>
@@ -1916,7 +1921,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+235"/>
+        <location filename="../qml/MessageView.qml" line="+237"/>
         <source>Edit</source>
         <translation>Muokkaa</translation>
     </message>
@@ -1967,18 +1972,18 @@ Example: https://yourserver.example.com:8787</source>
     </message>
     <message>
         <location line="+11"/>
-        <location line="+185"/>
+        <location line="+187"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopioi</translation>
     </message>
     <message>
-        <location line="-177"/>
-        <location line="+185"/>
+        <location line="-179"/>
+        <location line="+187"/>
         <source>Copy &amp;link location</source>
         <translation>Kopioi &amp;linkin kohde</translation>
     </message>
     <message>
-        <location line="-175"/>
+        <location line="-177"/>
         <source>Re&amp;act</source>
         <translation>Rea&amp;goi</translation>
     </message>
@@ -2023,7 +2028,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>&amp;Merkitse luetuksi</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>View raw message</source>
         <translation>Näytä sisältö raakamuodossa</translation>
     </message>
@@ -2231,30 +2236,37 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Siirrä oikeuksia roolien välillä muuttaaksesi niitä</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <location line="+240"/>
+        <location line="+23"/>
+        <location line="+243"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Administrator (%1)</source>
         <translation>Ylläpitäjä (%1)</translation>
     </message>
     <message>
-        <location line="-238"/>
-        <location line="+240"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Moderator (%1)</source>
         <translation>Moderaattori (%1)</translation>
     </message>
     <message>
-        <location line="-238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>User (%1)</source>
         <translation>Käyttäjä (%1)</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location line="+238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Custom (%1)</source>
         <translation>Mukautettu (%1)</translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="-230"/>
         <source>Remove event type</source>
         <translation>Poista tapahtumatyyppejä</translation>
     </message>
@@ -2279,7 +2291,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Siirrä käyttäjiä ylös tai alas muuttaaksesi heidän oikeuksiaan</translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+147"/>
         <source>Remove user</source>
         <translation>Poista käyttäjiä huoneesta</translation>
     </message>
@@ -2335,7 +2347,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerLevels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+750"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+788"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>Oikeustason päivitys epäonnistui: %1</translation>
     </message>
@@ -2343,7 +2355,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelEditingModels</name>
     <message>
-        <location line="-119"/>
+        <location line="-127"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>Oikeustason päivitys epäonnistui: %1</translation>
     </message>
@@ -2351,9 +2363,14 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelIndicator</name>
     <message>
-        <location filename="../qml/components/PowerlevelIndicator.qml" line="+30"/>
-        <source>Administrator: %1</source>
-        <translation type="unfinished">Ylläpitäjä: %1</translation>
+        <location filename="../qml/components/PowerlevelIndicator.qml" line="+32"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Administrator (%1)</source>
+        <translation type="unfinished">Ylläpitäjä (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2369,7 +2386,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="-468"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="-492"/>
         <source>Other events</source>
         <translation>Muut tapahtumat</translation>
     </message>
@@ -2552,7 +2569,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsUserListModel</name>
     <message>
-        <location line="+217"/>
+        <location line="+230"/>
         <source>Other users</source>
         <translation>Muut käyttäjät</translation>
     </message>
@@ -2560,7 +2577,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+221"/>
+        <location filename="../../src/main.cpp" line="+220"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Luo ainutkertainen profiili, jonka kautta voit kirjautua sisään samanaikaisesti usealla käyttäjällä, sekä käynnistää Nhekosta monta ilmentymää.</translation>
     </message>
@@ -2888,7 +2905,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2080"/>
+        <location filename="../../src/Cache.cpp" line="+2078"/>
         <source>no version stored</source>
         <translation>ei tallennettua versiota</translation>
     </message>
@@ -3226,7 +3243,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">Ilmoitukset</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Muted</source>
         <translation type="unfinished">Mykistetty</translation>
     </message>
@@ -3241,7 +3258,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">Kaikki viestit</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>ENTRY PERMISSIONS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3436,12 +3453,12 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished">Sisäinen ID</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished">Kopioitu leikepöydälle</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>Room Version</source>
         <translation type="unfinished">Huoneen versio</translation>
     </message>
@@ -3574,7 +3591,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5121"/>
+        <location filename="../../src/Cache.cpp" line="-5120"/>
         <source>Failed to connect to secret storage</source>
         <translation>Salattuun tallennustilaan ei saatu yhteyttä</translation>
     </message>
@@ -3869,7 +3886,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1605"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1604"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Viestin muokkaus epäonnistui: %1</translation>
@@ -3901,7 +3918,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
         <translation>Tallenna tiedosto</translation>
     </message>
     <message numerus="yes">
-        <location line="+347"/>
+        <location line="+348"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3955,13 +3972,13 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
         <translation>%1 asetti huoneen historian näkyväksi jäsenille huoneeseen liittymisen jälkeen.</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location line="+244"/>
+        <location line="+29"/>
+        <location line="+245"/>
         <source>%1 has changed the room&apos;s permissions.</source>
         <translation>%1 on muuttanut huoneen oikeuksia.</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-222"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
         <translation>%1 on muuttanut potkimisen oikeustason huoneessa tasosta %2 tasoon %3.</translation>
     </message>
@@ -4068,7 +4085,7 @@ Jos valitset vahvistamisen, toisen laitteen on oltava saatavilla. Jos valitset s
         <translation>%1 on alentanut käyttäjän %2 tämän huoneen moderaattoriksi.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
         <translation>%1 on muuttanut käyttäjän %2 oikeustason tasosta %3 tasoon %4.</translation>
     </message>
@@ -4230,7 +4247,7 @@ Syy: %4</translation>
         <translation>%1 perui koputuksensa.</translation>
     </message>
     <message>
-        <location line="-2310"/>
+        <location line="-2312"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation type="unfinished">%1 muutti tähän huoneeseen sallittuja palvelimia.</translation>
     </message>
@@ -4290,7 +4307,7 @@ Syy: %4</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+556"/>
+        <location line="+555"/>
         <source>You joined this room.</source>
         <translation>Liityit tähän huoneeseen.</translation>
     </message>
@@ -4303,12 +4320,12 @@ Syy: %4</translation>
         </translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+913"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 teki tämän huoneen vaatimaan kutsun liittymiseen.</translation>
     </message>
     <message>
-        <location line="+618"/>
+        <location line="+620"/>
         <source>%1 invited %2.</source>
         <translation>%1 kutsui käyttäjän %2.</translation>
     </message>
@@ -4355,7 +4372,7 @@ Syy: %4</translation>
         <translation>Yhtäkään huonetta ei ole avattu</translation>
     </message>
     <message>
-        <location line="+108"/>
+        <location line="+109"/>
         <source>You are about to notify the whole room</source>
         <translation>Aiot ilmoittaa kaikkia huoneessa olevia</translation>
     </message>
@@ -4456,7 +4473,7 @@ Syy: %4</translation>
         <translation>Ei valittua huonetta</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+54"/>
         <source>In %1</source>
         <translation>Osa yhteisöä %1</translation>
     </message>
@@ -4466,7 +4483,12 @@ Syy: %4</translation>
         <translation>Takaisin huonelistaan</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+55"/>
+        <source>Show only notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>Show or hide pinned messages</source>
         <translation>Näytä tai piilota kiinnitetyt viestit</translation>
     </message>
@@ -4544,7 +4566,7 @@ Syy: %4</translation>
         <translation>Lopeta</translation>
     </message>
     <message numerus="yes">
-        <location line="+27"/>
+        <location line="+32"/>
         <source>
 %n unread message(s)</source>
         <translation type="unfinished">
@@ -4746,7 +4768,7 @@ Syy: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.h" line="+280"/>
+        <location filename="../../src/UserSettingsPage.h" line="+288"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
@@ -4754,7 +4776,7 @@ Syy: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+1030"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+1048"/>
         <source>Theme</source>
         <translation>Teema</translation>
     </message>
@@ -4794,12 +4816,7 @@ Syy: %4</translation>
         <translation>Lähetä viestit Markdownina</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Use shift+enter to send and enter to start a new line</source>
-        <translation>Käytä VAIHTO+SYÖTTÖÄ lähettämiseen ja SYÖTTÖÄ aloittaaksesi uuden rivin</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Enable message bubbles</source>
         <translation>Käytä viestikuplia</translation>
     </message>
@@ -5124,7 +5141,7 @@ Syy: %4</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+121"/>
+        <location line="+116"/>
         <source>Default</source>
         <translation>Oletus</translation>
     </message>
@@ -5175,12 +5192,7 @@ When disabled, all messages are sent as a plain text.</source>
 Kun poissa päältä, kaikki viestit lähetetään tavallisena tekstinä.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+9"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
         <translation>Viestit saavat kuplan muotoisen taustan. Aiheuttaa myös asettelumuutoksia (työn alla).</translation>
     </message>
@@ -5266,17 +5278,22 @@ This usually causes the application icon in the task bar to animate in some fash
 Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalkissa.</translation>
     </message>
     <message>
-        <location line="-378"/>
+        <location line="-374"/>
         <source>Communities sidebar</source>
         <translation>Yhteisösivupalkki</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+6"/>
+        <source>Send messages with a shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
         <source>Show message counts for communities and tags</source>
         <translation>Näytä yhteisöjen ja tagien viestimäärät</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+252"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Aseta viestien maksimileveys aikajanalla (pikseleinä). Voi auttaa luettavuudessa, kun Nheko on suurennettuna</translation>
     </message>
@@ -5286,7 +5303,14 @@ Tämä yleensä saa sovelluksen kuvakkeen liikkumaan jollain tapaa tehtäväpalk
         <translation>Näytä yhteisöt ja tagit sisältävä sarake huonelistan vieressä.</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+8"/>
+        <source>Select what Enter key combination sends the message. Shift+Enter adds a new line, unless it has been selected, in which case Enter adds a new line instead.
+
+If an emoji picker or a mention picker is open, it is always handled first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+20"/>
         <source>Display rooms with new messages first.
 If this is off, the list of rooms will only be sorted by the preferred sorting order.
 If this is on, rooms which have active notifications (the small circle with a number in it) will be sorted on top. Rooms that you have muted will still be sorted by the preferred sorting order, since you don&apos;t seem to consider them as important as the other rooms.</source>
@@ -5426,6 +5450,21 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Shift+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ctrl+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+14"/>
         <source>System font</source>
         <translation type="unfinished"></translation>
@@ -5436,7 +5475,7 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+338"/>
         <source>Select a file</source>
         <translation>Valitse tiedosto</translation>
     </message>
@@ -5507,7 +5546,7 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../qml/pages/UserSettingsPage.qml" line="+187"/>
+        <location filename="../qml/pages/UserSettingsPage.qml" line="+190"/>
         <source>CACHED</source>
         <translation>VÄLIMUISTISSA</translation>
     </message>
@@ -5624,7 +5663,7 @@ Tämä asetus tulee voimaan uudelleenkäynnistyksen jälkeen.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+383"/>
+        <location filename="../../src/Utils.cpp" line="+384"/>
         <source>Yesterday</source>
         <translation>Eilen</translation>
     </message>

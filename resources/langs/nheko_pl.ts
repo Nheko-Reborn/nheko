@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3500"/>
+        <location filename="../../src/Cache.cpp" line="+3501"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 i %2</translation>
@@ -1403,6 +1403,11 @@ Opcjonalnie możesz podać powód, dla którego inni mieliby cię przyjąć:</tr
         <source>Stickers</source>
         <translation>Naklejki</translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>Allowed server changes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IgnoredUsers</name>
@@ -1889,7 +1894,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Napisz wiadomość…</translation>
     </message>
     <message>
-        <location line="+263"/>
+        <location line="+273"/>
         <source>Stickers</source>
         <translation>Naklejki</translation>
     </message>
@@ -1920,7 +1925,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+235"/>
+        <location filename="../qml/MessageView.qml" line="+237"/>
         <source>Edit</source>
         <translation>Edytuj</translation>
     </message>
@@ -1971,18 +1976,18 @@ Example: https://yourserver.example.com:8787</source>
     </message>
     <message>
         <location line="+11"/>
-        <location line="+185"/>
+        <location line="+187"/>
         <source>&amp;Copy</source>
         <translation>&amp;Kopiuj</translation>
     </message>
     <message>
-        <location line="-177"/>
-        <location line="+185"/>
+        <location line="-179"/>
+        <location line="+187"/>
         <source>Copy &amp;link location</source>
         <translation>Kopiuj &amp;adres odnośnika</translation>
     </message>
     <message>
-        <location line="-175"/>
+        <location line="-177"/>
         <source>Re&amp;act</source>
         <translation>Zar&amp;eaguj</translation>
     </message>
@@ -2027,7 +2032,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>&amp;Oznacz jako przeczytane</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>View raw message</source>
         <translation>Wyświetl źródło &amp;wiadomości</translation>
     </message>
@@ -2236,30 +2241,37 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Przenieś uprawnienia między rolami aby je zmienić</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <location line="+240"/>
+        <location line="+23"/>
+        <location line="+243"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Administrator (%1)</source>
         <translation>Administrator (%1)</translation>
     </message>
     <message>
-        <location line="-238"/>
-        <location line="+240"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Moderator (%1)</source>
         <translation>Moderator (%1)</translation>
     </message>
     <message>
-        <location line="-238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>User (%1)</source>
         <translation>Użytkownik (%1)</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location line="+238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Custom (%1)</source>
         <translation>Własny (%1)</translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="-230"/>
         <source>Remove event type</source>
         <translation>Usuń typ zdarzenia</translation>
     </message>
@@ -2284,7 +2296,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Przenieś użytkowników wyżej lub niżej aby zmienić ich uprawnienia</translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+147"/>
         <source>Remove user</source>
         <translation>Usuń użytkownika</translation>
     </message>
@@ -2340,7 +2352,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerLevels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+750"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+788"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>Nie udało się zaktualizować poziomu mocy: %1</translation>
     </message>
@@ -2348,7 +2360,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelEditingModels</name>
     <message>
-        <location line="-119"/>
+        <location line="-127"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>Nie udało się zaktualizować poziomu mocy: %1</translation>
     </message>
@@ -2356,9 +2368,14 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelIndicator</name>
     <message>
-        <location filename="../qml/components/PowerlevelIndicator.qml" line="+30"/>
-        <source>Administrator: %1</source>
-        <translation>Administrator: %1</translation>
+        <location filename="../qml/components/PowerlevelIndicator.qml" line="+32"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Administrator (%1)</source>
+        <translation type="unfinished">Administrator (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2374,7 +2391,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="-468"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="-492"/>
         <source>Other events</source>
         <translation>Inne zdarzenia</translation>
     </message>
@@ -2557,7 +2574,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsUserListModel</name>
     <message>
-        <location line="+217"/>
+        <location line="+230"/>
         <source>Other users</source>
         <translation>Inni użytkownicy</translation>
     </message>
@@ -2565,7 +2582,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+221"/>
+        <location filename="../../src/main.cpp" line="+220"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2893,7 +2910,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2080"/>
+        <location filename="../../src/Cache.cpp" line="+2078"/>
         <source>no version stored</source>
         <translation>brak zapisanej wersji</translation>
     </message>
@@ -3233,7 +3250,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Powiadomienia</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Muted</source>
         <translation>Wyciszony</translation>
     </message>
@@ -3248,7 +3265,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Wszystkie wiadomości</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>ENTRY PERMISSIONS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3443,12 +3460,12 @@ Example: https://yourserver.example.com:8787</source>
         <translation>Wewnętrzne ID</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Copied to clipboard</source>
         <translation>Skopiowano do schowka</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>Room Version</source>
         <translation>Wersja pokoju</translation>
     </message>
@@ -3581,7 +3598,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5121"/>
+        <location filename="../../src/Cache.cpp" line="-5120"/>
         <source>Failed to connect to secret storage</source>
         <translation>Błąd połączenia do menadżera sekretów</translation>
     </message>
@@ -3876,7 +3893,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1605"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1604"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Cenzurowanie wiadomości nie powiodło się: %1</translation>
@@ -3908,7 +3925,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <translation>Zapisz plik</translation>
     </message>
     <message numerus="yes">
-        <location line="+347"/>
+        <location line="+348"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3968,13 +3985,13 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <translation>%1 umożliwił dostęp do historii tego pokoju członkom od momentu kiedy dołączyli do pokoju.</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location line="+244"/>
+        <location line="+29"/>
+        <location line="+245"/>
         <source>%1 has changed the room&apos;s permissions.</source>
         <translation>%1 zmienił(a) uprawnienia pokoju.</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-222"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
         <translation>%1 zmienił(a) poziom mocy wymagany do wyrzucania użytkowników z %2 na %3.</translation>
     </message>
@@ -4085,7 +4102,7 @@ Jeśli zdecydujesz się na weryfikację, będziesz potrzebować innego zaufanego
         <translation>%1 obniżył(a) uprawnienia %2 do poziomu moderatora tego pokoju.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
         <translation>%1 zmienił(a) poziom mocy %2 z %3 na %4.</translation>
     </message>
@@ -4247,7 +4264,7 @@ Powód: %4</translation>
         <translation>Użytkownik %1 ocenzurował własne pukanie.</translation>
     </message>
     <message>
-        <location line="-2310"/>
+        <location line="-2312"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4307,7 +4324,7 @@ Powód: %4</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+556"/>
+        <location line="+555"/>
         <source>You joined this room.</source>
         <translation>Dołączyłeś(-aś) do tego pokoju.</translation>
     </message>
@@ -4321,7 +4338,7 @@ Powód: %4</translation>
         </translation>
     </message>
     <message>
-        <location line="+1530"/>
+        <location line="+1533"/>
         <source>%1 invited %2.</source>
         <translation>%1 zaprosił(a) %2.</translation>
     </message>
@@ -4368,7 +4385,7 @@ Powód: %4</translation>
         <translation>Brak otwartych pokojów</translation>
     </message>
     <message>
-        <location line="+108"/>
+        <location line="+109"/>
         <source>You are about to notify the whole room</source>
         <translation>Zamierzasz wysłać powiadomienie do wszystkich w pokoju</translation>
     </message>
@@ -4470,7 +4487,7 @@ Powód: %4</translation>
         <translation>Nie wybrano pokoju</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+54"/>
         <source>In %1</source>
         <translation>W %1</translation>
     </message>
@@ -4480,7 +4497,12 @@ Powód: %4</translation>
         <translation>Wróć do listy pokoi</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+55"/>
+        <source>Show only notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>Show or hide pinned messages</source>
         <translation>Pokaż lub ukryj przypięte wiadomości</translation>
     </message>
@@ -4558,7 +4580,7 @@ Powód: %4</translation>
         <translation>Zakończ</translation>
     </message>
     <message numerus="yes">
-        <location line="+27"/>
+        <location line="+32"/>
         <source>
 %n unread message(s)</source>
         <translation type="unfinished">
@@ -4762,7 +4784,7 @@ Powód: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.h" line="+280"/>
+        <location filename="../../src/UserSettingsPage.h" line="+288"/>
         <source>Default</source>
         <translation>Domyślne</translation>
     </message>
@@ -4770,7 +4792,7 @@ Powód: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+1030"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+1048"/>
         <source>Theme</source>
         <translation>Motyw</translation>
     </message>
@@ -4810,12 +4832,7 @@ Powód: %4</translation>
         <translation>Wysyłaj wiadomości używając Markdown</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Use shift+enter to send and enter to start a new line</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Enable message bubbles</source>
         <translation>Włącz dymki wiadomości</translation>
     </message>
@@ -5140,7 +5157,7 @@ Powód: %4</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+121"/>
+        <location line="+116"/>
         <source>Default</source>
         <translation>Domyślne</translation>
     </message>
@@ -5190,12 +5207,7 @@ When disabled, all messages are sent as a plain text.</source>
 Gdy ta opcja jest wyłączona, wszystkie wiadomości będą wysyłane jako zwykły tekst.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation>Zmień zachowanie klawisza enter w polu tekstowym: shift+enter wyśle wiadomość, enter przejdzie do nowej linii.</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+9"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
         <translation>Wiadomości wyświetlane są w bąbelkach. To ustawienie powoduje też kilka innych zmian wyglądu (WIP).</translation>
     </message>
@@ -5305,17 +5317,22 @@ This usually causes the application icon in the task bar to animate in some fash
 To zwykle sprawia, że ikona aplikacji na pasku zadań jest animowana.</translation>
     </message>
     <message>
-        <location line="-378"/>
+        <location line="-374"/>
         <source>Communities sidebar</source>
         <translation>Pasek społeczności</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+6"/>
+        <source>Send messages with a shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
         <source>Show message counts for communities and tags</source>
         <translation>Pokaż liczniki wiadomości dla społeczności i tagów</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+252"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Ustaw maksymalną szerokość wiadomości na osi czasu (w pikselach). Może to poprawić czytelność Nheko zmaksymalizowanego na szerokim ekranie</translation>
     </message>
@@ -5325,7 +5342,14 @@ To zwykle sprawia, że ikona aplikacji na pasku zadań jest animowana.</translat
         <translation>Pokaż kolumnę zawierającą społeczności i tagi obok listy pokojów.</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+8"/>
+        <source>Select what Enter key combination sends the message. Shift+Enter adds a new line, unless it has been selected, in which case Enter adds a new line instead.
+
+If an emoji picker or a mention picker is open, it is always handled first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
@@ -5440,6 +5464,21 @@ To ustawienie wejdzie w życie po restarcie aplikacji.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Shift+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ctrl+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+14"/>
         <source>System font</source>
         <translation type="unfinished"></translation>
@@ -5450,7 +5489,7 @@ To ustawienie wejdzie w życie po restarcie aplikacji.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+338"/>
         <source>Select a file</source>
         <translation>Wybierz plik</translation>
     </message>
@@ -5521,7 +5560,7 @@ To ustawienie wejdzie w życie po restarcie aplikacji.</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../qml/pages/UserSettingsPage.qml" line="+187"/>
+        <location filename="../qml/pages/UserSettingsPage.qml" line="+190"/>
         <source>CACHED</source>
         <translation>ZAPISANO W PAMIĘCI PODRĘCZNEJ</translation>
     </message>
@@ -5638,7 +5677,7 @@ To ustawienie wejdzie w życie po restarcie aplikacji.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+383"/>
+        <location filename="../../src/Utils.cpp" line="+384"/>
         <source>Yesterday</source>
         <translation>Wczoraj</translation>
     </message>

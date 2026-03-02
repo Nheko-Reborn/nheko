@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3500"/>
+        <location filename="../../src/Cache.cpp" line="+3501"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 ve %2</translation>
@@ -1395,6 +1395,11 @@ You may optionally provide a reason for others to accept your knock:</source>
         <source>Stickers</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>Allowed server changes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IgnoredUsers</name>
@@ -1881,7 +1886,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+263"/>
+        <location line="+273"/>
         <source>Stickers</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1912,7 +1917,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+235"/>
+        <location filename="../qml/MessageView.qml" line="+237"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1963,18 +1968,18 @@ Example: https://yourserver.example.com:8787</source>
     </message>
     <message>
         <location line="+11"/>
-        <location line="+185"/>
+        <location line="+187"/>
         <source>&amp;Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-177"/>
-        <location line="+185"/>
+        <location line="-179"/>
+        <location line="+187"/>
         <source>Copy &amp;link location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-175"/>
+        <location line="-177"/>
         <source>Re&amp;act</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2019,7 +2024,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>View raw message</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2227,30 +2232,37 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+22"/>
-        <location line="+240"/>
+        <location line="+23"/>
+        <location line="+243"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Administrator (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-238"/>
-        <location line="+240"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Moderator (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>User (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location line="+238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Custom (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="-230"/>
         <source>Remove event type</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2275,7 +2287,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+147"/>
         <source>Remove user</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2331,7 +2343,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerLevels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+750"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+788"/>
         <source>Failed to update powerlevel: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2339,7 +2351,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelEditingModels</name>
     <message>
-        <location line="-119"/>
+        <location line="-127"/>
         <source>Failed to update powerlevel: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2347,8 +2359,13 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelIndicator</name>
     <message>
-        <location filename="../qml/components/PowerlevelIndicator.qml" line="+30"/>
-        <source>Administrator: %1</source>
+        <location filename="../qml/components/PowerlevelIndicator.qml" line="+32"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Administrator (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2365,7 +2382,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="-468"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="-492"/>
         <source>Other events</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2548,7 +2565,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>PowerlevelsUserListModel</name>
     <message>
-        <location line="+217"/>
+        <location line="+230"/>
         <source>Other users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2556,7 +2573,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+221"/>
+        <location filename="../../src/main.cpp" line="+220"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2884,7 +2901,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2080"/>
+        <location filename="../../src/Cache.cpp" line="+2078"/>
         <source>no version stored</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3220,7 +3237,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Muted</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3235,7 +3252,7 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>ENTRY PERMISSIONS</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3430,12 +3447,12 @@ Example: https://yourserver.example.com:8787</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Copied to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>Room Version</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3568,7 +3585,7 @@ Example: https://yourserver.example.com:8787</source>
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5121"/>
+        <location filename="../../src/Cache.cpp" line="-5120"/>
         <source>Failed to connect to secret storage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3921,7 +3938,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+556"/>
+        <location line="+555"/>
         <source>You joined this room.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3965,7 +3982,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+347"/>
+        <location line="+348"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation type="unfinished">
@@ -4023,13 +4040,13 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location line="+244"/>
+        <location line="+29"/>
+        <location line="+245"/>
         <source>%1 has changed the room&apos;s permissions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-222"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4132,7 +4149,7 @@ If you choose verify, you need to have the other device available. If you choose
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4340,7 +4357,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+108"/>
+        <location line="+109"/>
         <source>You are about to notify the whole room</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4440,7 +4457,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+54"/>
         <source>In %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4450,7 +4467,12 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+55"/>
+        <source>Show only notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>Show or hide pinned messages</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4528,7 +4550,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location line="+27"/>
+        <location line="+32"/>
         <source>
 %n unread message(s)</source>
         <translation type="unfinished">
@@ -4728,7 +4750,7 @@ Reason: %4</source>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.h" line="+280"/>
+        <location filename="../../src/UserSettingsPage.h" line="+288"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4736,7 +4758,7 @@ Reason: %4</source>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+1030"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+1048"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4782,7 +4804,7 @@ Reason: %4</source>
     </message>
     <message>
         <location line="+2"/>
-        <source>Use shift+enter to send and enter to start a new line</source>
+        <source>Send messages with a shortcut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5116,7 +5138,7 @@ Reason: %4</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+121"/>
+        <location line="+116"/>
         <source>Default</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5175,11 +5197,13 @@ When disabled, all messages are sent as a plain text.</source>
     </message>
     <message>
         <location line="+4"/>
-        <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
+        <source>Select what Enter key combination sends the message. Shift+Enter adds a new line, unless it has been selected, in which case Enter adds a new line instead.
+
+If an emoji picker or a mention picker is open, it is always handled first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+4"/>
+        <location line="+5"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5394,6 +5418,21 @@ This setting will take effect upon restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Shift+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ctrl+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+14"/>
         <source>System font</source>
         <translation type="unfinished"></translation>
@@ -5404,7 +5443,7 @@ This setting will take effect upon restart.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+338"/>
         <source>Select a file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5475,7 +5514,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../qml/pages/UserSettingsPage.qml" line="+187"/>
+        <location filename="../qml/pages/UserSettingsPage.qml" line="+190"/>
         <source>CACHED</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5592,7 +5631,7 @@ This setting will take effect upon restart.</source>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+383"/>
+        <location filename="../../src/Utils.cpp" line="+384"/>
         <source>Yesterday</source>
         <translation type="unfinished"></translation>
     </message>

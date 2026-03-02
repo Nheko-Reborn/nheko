@@ -130,7 +130,7 @@
 <context>
     <name>Cache</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+3500"/>
+        <location filename="../../src/Cache.cpp" line="+3501"/>
         <source>%1 and %2</source>
         <comment>RoomName</comment>
         <translation>%1 dan %2</translation>
@@ -1395,6 +1395,11 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <source>Stickers</source>
         <translation>Stiker</translation>
     </message>
+    <message>
+        <location line="+11"/>
+        <source>Allowed server changes</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>IgnoredUsers</name>
@@ -1885,7 +1890,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Ketik pesan…</translation>
     </message>
     <message>
-        <location line="+263"/>
+        <location line="+273"/>
         <source>Stickers</source>
         <translation>Stiker</translation>
     </message>
@@ -1916,7 +1921,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>MessageView</name>
     <message>
-        <location filename="../qml/MessageView.qml" line="+235"/>
+        <location filename="../qml/MessageView.qml" line="+237"/>
         <source>Edit</source>
         <translation>Sunting</translation>
     </message>
@@ -1967,18 +1972,18 @@ Contoh: https://serveranda.contoh.id:8787</translation>
     </message>
     <message>
         <location line="+11"/>
-        <location line="+185"/>
+        <location line="+187"/>
         <source>&amp;Copy</source>
         <translation>&amp;Salin</translation>
     </message>
     <message>
-        <location line="-177"/>
-        <location line="+185"/>
+        <location line="-179"/>
+        <location line="+187"/>
         <source>Copy &amp;link location</source>
         <translation>Salin lokasi &amp;tautan</translation>
     </message>
     <message>
-        <location line="-175"/>
+        <location line="-177"/>
         <source>Re&amp;act</source>
         <translation>Re&amp;aksi</translation>
     </message>
@@ -2023,7 +2028,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>&amp;Tandai sebagai dibaca</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+7"/>
         <source>View raw message</source>
         <translation>Tampilkan pesan mentah</translation>
     </message>
@@ -2231,30 +2236,37 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Pindahkan izin antara peran untuk mengubahnya</translation>
     </message>
     <message>
-        <location line="+22"/>
-        <location line="+240"/>
+        <location line="+23"/>
+        <location line="+243"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Administrator (%1)</source>
         <translation>Administrator (%1)</translation>
     </message>
     <message>
-        <location line="-238"/>
-        <location line="+240"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Moderator (%1)</source>
         <translation>Moderator (%1)</translation>
     </message>
     <message>
-        <location line="-238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>User (%1)</source>
         <translation>Pengguna (%1)</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <location line="+238"/>
+        <location line="-241"/>
+        <location line="+243"/>
         <source>Custom (%1)</source>
         <translation>Kustom (%1)</translation>
     </message>
     <message>
-        <location line="-225"/>
+        <location line="-230"/>
         <source>Remove event type</source>
         <translation>Hapus tipe peristiwa</translation>
     </message>
@@ -2279,7 +2291,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Pindahkan pengguna ke atas atau ke bawah untuk mengubah izin mereka</translation>
     </message>
     <message>
-        <location line="+142"/>
+        <location line="+147"/>
         <source>Remove user</source>
         <translation>Hapus pengguna</translation>
     </message>
@@ -2335,7 +2347,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>PowerLevels</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="+750"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="+788"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>Gagal memperbarui tingkat daya: %1</translation>
     </message>
@@ -2343,7 +2355,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>PowerlevelEditingModels</name>
     <message>
-        <location line="-119"/>
+        <location line="-127"/>
         <source>Failed to update powerlevel: %1</source>
         <translation>Gagal memperbarui tingkat daya: %1</translation>
     </message>
@@ -2351,9 +2363,14 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>PowerlevelIndicator</name>
     <message>
-        <location filename="../qml/components/PowerlevelIndicator.qml" line="+30"/>
-        <source>Administrator: %1</source>
-        <translation>Administrator: %1</translation>
+        <location filename="../qml/components/PowerlevelIndicator.qml" line="+32"/>
+        <source>Creator</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Administrator (%1)</source>
+        <translation type="unfinished">Administrator (%1)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2369,7 +2386,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>PowerlevelsTypeListModel</name>
     <message>
-        <location filename="../../src/PowerlevelsEditModels.cpp" line="-468"/>
+        <location filename="../../src/PowerlevelsEditModels.cpp" line="-492"/>
         <source>Other events</source>
         <translation>Peristiwa lainnya</translation>
     </message>
@@ -2552,7 +2569,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>PowerlevelsUserListModel</name>
     <message>
-        <location line="+217"/>
+        <location line="+230"/>
         <source>Other users</source>
         <translation>Pengguna lain</translation>
     </message>
@@ -2560,7 +2577,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>QCoreApplication</name>
     <message>
-        <location filename="../../src/main.cpp" line="+221"/>
+        <location filename="../../src/main.cpp" line="+220"/>
         <source>Create a unique profile which allows you to log into several accounts at the same time and start multiple instances of nheko.</source>
         <translation>Buat sebuah profil unik yang memungkinkan kamu untuk masuk ke beberapa akun secara bersamaan dan mulai beberapa instansi Nheko.</translation>
     </message>
@@ -2888,7 +2905,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
 <context>
     <name>RoomInfo</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="+2080"/>
+        <location filename="../../src/Cache.cpp" line="+2078"/>
         <source>no version stored</source>
         <translation>tidak ada versi yang disimpan</translation>
     </message>
@@ -3224,7 +3241,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Notifikasi</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+8"/>
         <source>Muted</source>
         <translation>Bisukan</translation>
     </message>
@@ -3239,7 +3256,7 @@ Contoh: https://serveranda.contoh.id:8787</translation>
         <translation>Semua pesan</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+11"/>
         <source>ENTRY PERMISSIONS</source>
         <translation>IZIN MASUK</translation>
     </message>
@@ -3436,12 +3453,12 @@ Mohon diingat bahwa ini tidak dapat dinonaktifkan setelah diaktifkan.</translati
         <translation>ID Internal</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="+17"/>
         <source>Copied to clipboard</source>
         <translation>Tersalin ke papan klip</translation>
     </message>
     <message>
-        <location line="+19"/>
+        <location line="+20"/>
         <source>Room Version</source>
         <translation>Versi Ruangan</translation>
     </message>
@@ -3574,7 +3591,7 @@ Mohon diingat bahwa ini tidak dapat dinonaktifkan setelah diaktifkan.</translati
 <context>
     <name>SecretStorage</name>
     <message>
-        <location filename="../../src/Cache.cpp" line="-5121"/>
+        <location filename="../../src/Cache.cpp" line="-5120"/>
         <source>Failed to connect to secret storage</source>
         <translation>Gagal menghubungkan ke penyimpanan rahasia</translation>
     </message>
@@ -3869,7 +3886,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
 <context>
     <name>TimelineModel</name>
     <message>
-        <location filename="../../src/timeline/TimelineModel.cpp" line="+1605"/>
+        <location filename="../../src/timeline/TimelineModel.cpp" line="+1604"/>
         <location line="+17"/>
         <source>Message redaction failed: %1</source>
         <translation>Reaksi pesan gagal: %1</translation>
@@ -3901,7 +3918,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
         <translation>Simpan file</translation>
     </message>
     <message numerus="yes">
-        <location line="+347"/>
+        <location line="+348"/>
         <source>%1 and %2 are typing.</source>
         <comment>Multiple users are typing. First argument is a comma separated list of potentially multiple users. Second argument is the last user of that list. (If only one user is typing, %1 is empty. You should still use it in your string though to silence Qt warnings.)</comment>
         <translation>
@@ -3954,13 +3971,13 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
         <translation>%1 membuat sejarah ruangan bisa dilihat oleh anggota yang telah bergabung ke ruangan ini.</translation>
     </message>
     <message>
-        <location line="+28"/>
-        <location line="+244"/>
+        <location line="+29"/>
+        <location line="+245"/>
         <source>%1 has changed the room&apos;s permissions.</source>
         <translation>%1 telah mengubah izin ruangan.</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-222"/>
         <source>%1 has changed the room&apos;s kick powerlevel from %2 to %3.</source>
         <translation>%1 telah mengubah tingkat daya pengeluaran ruangan dari %2 ke %3.</translation>
     </message>
@@ -4063,7 +4080,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
         <translation>%1 telah menurunkan %2 sebagai moderator di ruangan ini.</translation>
     </message>
     <message>
-        <location line="+3"/>
+        <location line="+4"/>
         <source>%1 has changed the powerlevel of %2 from %3 to %4.</source>
         <translation>%1 telah mengubah tingkat daya %2 dari %3 ke %4.</translation>
     </message>
@@ -4225,7 +4242,7 @@ Alasan: %4</translation>
         <translation>%1 menolak ketukannya.</translation>
     </message>
     <message>
-        <location line="-2310"/>
+        <location line="-2312"/>
         <source>%1 changed which servers are allowed in this room.</source>
         <translation>%1 mengubah server mana yang diizinkan di ruangan ini.</translation>
     </message>
@@ -4285,7 +4302,7 @@ Alasan: %4</translation>
         <translation>%1 mengubah keadaan peristiwa %2 yang tidak diketahui.</translation>
     </message>
     <message>
-        <location line="+556"/>
+        <location line="+555"/>
         <source>You joined this room.</source>
         <translation>Kamu bergabung ruangan ini.</translation>
     </message>
@@ -4297,12 +4314,12 @@ Alasan: %4</translation>
         </translation>
     </message>
     <message>
-        <location line="+912"/>
+        <location line="+913"/>
         <source>%1 made this room require an invitation to join.</source>
         <translation>%1 membuat ruangan ini membutuhkan undangan untuk bergabung.</translation>
     </message>
     <message>
-        <location line="+618"/>
+        <location line="+620"/>
         <source>%1 invited %2.</source>
         <translation>%1 mengundang %2.</translation>
     </message>
@@ -4349,7 +4366,7 @@ Alasan: %4</translation>
         <translation>Tidak ada ruangan yang dibuka</translation>
     </message>
     <message>
-        <location line="+108"/>
+        <location line="+109"/>
         <source>You are about to notify the whole room</source>
         <translation>Kamu akan memberi tahu seluruh ruangan</translation>
     </message>
@@ -4449,7 +4466,7 @@ Alasan: %4</translation>
         <translation>Tidak ada ruangan yang dipilih</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+54"/>
         <source>In %1</source>
         <translation>Dalam %1</translation>
     </message>
@@ -4459,7 +4476,12 @@ Alasan: %4</translation>
         <translation>Kembali ke daftar ruangan</translation>
     </message>
     <message>
-        <location line="+57"/>
+        <location line="+55"/>
+        <source>Show only notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+19"/>
         <source>Show or hide pinned messages</source>
         <translation>Tampilkan atau sembunyikan pesan yang dipasangi pin</translation>
     </message>
@@ -4537,7 +4559,7 @@ Alasan: %4</translation>
         <translation>Tutup</translation>
     </message>
     <message numerus="yes">
-        <location line="+27"/>
+        <location line="+32"/>
         <source>
 %n unread message(s)</source>
         <translation>
@@ -4738,7 +4760,7 @@ Alasan: %4</translation>
 <context>
     <name>UserSettings</name>
     <message>
-        <location filename="../../src/UserSettingsPage.h" line="+280"/>
+        <location filename="../../src/UserSettingsPage.h" line="+288"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -4746,7 +4768,7 @@ Alasan: %4</translation>
 <context>
     <name>UserSettingsModel</name>
     <message>
-        <location filename="../../src/UserSettingsPage.cpp" line="+1030"/>
+        <location filename="../../src/UserSettingsPage.cpp" line="+1048"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
@@ -4786,12 +4808,7 @@ Alasan: %4</translation>
         <translation>Kirim pesan sebagai Markdown</translation>
     </message>
     <message>
-        <location line="+2"/>
-        <source>Use shift+enter to send and enter to start a new line</source>
-        <translation>Gunakan shift+enter untuk mengirim dan enter untuk memulai baris baru</translation>
-    </message>
-    <message>
-        <location line="+2"/>
+        <location line="+4"/>
         <source>Enable message bubbles</source>
         <translation>Aktifkan gelembung pesan</translation>
     </message>
@@ -5111,7 +5128,7 @@ Alasan: %4</translation>
         <translation>Hapus peristiwa yang telah kedaluwarsa secara berkala</translation>
     </message>
     <message>
-        <location line="+121"/>
+        <location line="+116"/>
         <source>Default</source>
         <translation>Default</translation>
     </message>
@@ -5162,12 +5179,7 @@ When disabled, all messages are sent as a plain text.</source>
 Ketika dinonaktifkan, semua pesan akan dikirim sebagai teks biasa.</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <source>Invert the behavior of the enter key in the text input, making it send the message when shift+enter is pressed and starting a new line when enter is pressed.</source>
-        <translation>Balikkan perilaku tombol enter dalam masukan teks, membuatnya mengirim pesan ketika shift+enter ditekan dan memulai baris baru ketika enter ditekan.</translation>
-    </message>
-    <message>
-        <location line="+4"/>
+        <location line="+9"/>
         <source>Messages get a bubble background. This also triggers some layout changes (WIP).</source>
         <translation>Pesan-pesan akan mendapatkan latar belakang gelembung pesan. Ini juga melakukan perubahan layout (dalam pengembangan).</translation>
     </message>
@@ -5281,17 +5293,22 @@ This usually causes the application icon in the task bar to animate in some fash
 Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</translation>
     </message>
     <message>
-        <location line="-378"/>
+        <location line="-374"/>
         <source>Communities sidebar</source>
         <translation>Bilah samping komunitas</translation>
     </message>
     <message>
-        <location line="+48"/>
+        <location line="+6"/>
+        <source>Send messages with a shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+42"/>
         <source>Show message counts for communities and tags</source>
         <translation>Tampilkan hitungan pesan untuk komunitas dan tag</translation>
     </message>
     <message>
-        <location line="+257"/>
+        <location line="+252"/>
         <source>Set the max width of messages in the timeline (in pixels). This can help readability on wide screen when Nheko is maximized</source>
         <translation>Tetapkan lebar pesan di lini masa (dalam pixel). Ini dapat membantu keterbacaan di layar lebar ketika Nheko dimaksimalkan</translation>
     </message>
@@ -5301,7 +5318,14 @@ Ini biasanya menyebabkan ikon aplikasi di bilah tugas untuk beranimasi.</transla
         <translation>Tampilkan sebuah kolom berisi komunitas dan tag di samping daftar ruangan.</translation>
     </message>
     <message>
-        <location line="+46"/>
+        <location line="+8"/>
+        <source>Select what Enter key combination sends the message. Shift+Enter adds a new line, unless it has been selected, in which case Enter adds a new line instead.
+
+If an emoji picker or a mention picker is open, it is always handled first.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
         <source>Show if your message was read.
 Status is displayed next to timestamps.
 Warning: If your homeserver does not support this, your rooms will never be marked as read!</source>
@@ -5417,6 +5441,21 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <translation>Tidak pernah</translation>
     </message>
     <message>
+        <location line="+4"/>
+        <source>Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Shift+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ctrl+Enter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location line="+14"/>
         <source>System font</source>
         <translation>Fon sistem</translation>
@@ -5427,7 +5466,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <translation>Fon emoji sistem</translation>
     </message>
     <message>
-        <location line="+340"/>
+        <location line="+338"/>
         <source>Select a file</source>
         <translation>Pilih sebuah file</translation>
     </message>
@@ -5503,7 +5542,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
 <context>
     <name>UserSettingsPage</name>
     <message>
-        <location filename="../qml/pages/UserSettingsPage.qml" line="+187"/>
+        <location filename="../qml/pages/UserSettingsPage.qml" line="+190"/>
         <source>CACHED</source>
         <translation>DISIMPAN</translation>
     </message>
@@ -5620,7 +5659,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
 <context>
     <name>descriptiveTime</name>
     <message>
-        <location filename="../../src/Utils.cpp" line="+383"/>
+        <location filename="../../src/Utils.cpp" line="+384"/>
         <source>Yesterday</source>
         <translation>Kemarin</translation>
     </message>
