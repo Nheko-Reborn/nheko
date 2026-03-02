@@ -625,22 +625,22 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional. If user is left out, will try to kick the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Müksa kasutaja antud jututoast välja. Võid lisada ka põhjenduse. Kui kasutaja on juba väljas, siis proovi müksata saatja, kellele sa vastad, välja.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ban a user from the current room. Reason is optional. If user is left out, will try to ban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Määra kasutajale antud jututoas suhtluskeeld. Võid lisada ka põhjenduse. Kui kasutaja on juba väljas, siis proovi määrata suhtluskeeld saatjale, kellele sa vastad.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unban a user in the current room. Reason is optional. If user is left out, will try to unban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Lõpeta kasutaja suhtluskeeld antud jututoas. Võid lisada ka põhjenduse. Kui kasutaja on juba väljas, siis proovi lõpetada saatja suhtluskeeld, kellele sa vastad.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Redact an event by event id or that you are replying to or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Muuda sündmust sündmuse tunnuse alusel või sellele, millele sa vastad või kasutaja kõiki kohalikus seadmes puhverdatud sõnumeid.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -775,12 +775,12 @@ Kui soovid, siis võid lisada ka selgituse, miks peaks sinu koputusele reageerim
     <message>
         <location line="+2"/>
         <source>Block all invites from a user, a server, to a specific room or set the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Blokeeri kasutaja, serveri või jututoa kõik kutsed või määra vaikimisi väärtus.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Allow all invites from a user, a server, to a specific room or set the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Luba kasutaja, serveri või jututoa kõik kutsed või määra vaikimisi väärtus.</translation>
     </message>
 </context>
 <context>
@@ -3706,7 +3706,7 @@ Kui eelistad verifitseerimist, siis peab sul teine seade olema käepärast. Kui 
     <message>
         <location filename="../qml/components/SpaceMenu.qml" line="+16"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished">Lisa kogukonda või eemalda sealt...</translation>
+        <translation>Lisa kogukonda või eemalda sealt...</translation>
     </message>
 </context>
 <context>
@@ -4302,9 +4302,9 @@ Põhjus: %4</translation>
     <message numerus="yes">
         <location line="+115"/>
         <source>%n hour(s) later</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n tund hiljem</numerusform>
+            <numerusform>%n tundi hiljem</numerusform>
         </translation>
     </message>
     <message>
