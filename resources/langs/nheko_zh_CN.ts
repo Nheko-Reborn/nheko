@@ -622,22 +622,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional. If user is left out, will try to kick the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>将用户从当前聊天室中踢出。原因可选。如果未指定用户，将尝试踢出您正在回复的发送者。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ban a user from the current room. Reason is optional. If user is left out, will try to ban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>将用户从当前聊天室中封禁。原因可选。如果未指定用户，将尝试封禁您正在回复的发送者。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unban a user in the current room. Reason is optional. If user is left out, will try to unban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>在当前聊天室中解封用户。原因可选。如果未指定用户，将尝试解封您正在回复的发送者。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Redact an event by event id or that you are replying to or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>通过事件ID、您正在回复的事件或用户的所有本地缓存消息来删除事件。</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -772,12 +772,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Block all invites from a user, a server, to a specific room or set the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>阻止来自某个用户、服务器、特定聊天室的所有邀请或设置默认值。</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Allow all invites from a user, a server, to a specific room or set the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>允许来自某个用户、服务器、特定聊天室的所有邀请或设置默认值。</translation>
     </message>
 </context>
 <context>
@@ -1419,7 +1419,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/delegates/ImageMessage.qml" line="+191"/>
         <source>Show</source>
-        <translation type="unfinished">显示</translation>
+        <translation>显示</translation>
     </message>
 </context>
 <context>
@@ -3700,7 +3700,7 @@ If you choose verify, you need to have the other device available. If you choose
     <message>
         <location filename="../qml/components/SpaceMenu.qml" line="+16"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished">在社区中添加或删除...</translation>
+        <translation>在社区中添加或移除...</translation>
     </message>
 </context>
 <context>
@@ -4291,8 +4291,8 @@ Reason: %4</source>
     <message numerus="yes">
         <location line="+115"/>
         <source>%n hour(s) later</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n 小时后</numerusform>
         </translation>
     </message>
     <message>

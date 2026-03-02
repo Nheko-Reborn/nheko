@@ -461,7 +461,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/react &lt;text&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/react &lt;texto&gt;</translation>
     </message>
     <message>
         <location line="+2"/>

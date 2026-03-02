@@ -3398,7 +3398,8 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le chiffrement est actuellement expérimental, certainse choses peuvent casser de manière imprévues. &lt;br/&gt;
+                                Veuillez noter que cela ne peut être désactivé plus tard.</translation>
     </message>
     <message>
         <location line="+16"/>
