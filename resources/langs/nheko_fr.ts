@@ -625,12 +625,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional. If user is left out, will try to kick the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Éjecter in utilisateur du salon. La raison est optionnelle. Si aucun utilisateur n&apos;est spécifié, tentera d&apos;expulser l&apos;auteur du message auquel vous répondez.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ban a user from the current room. Reason is optional. If user is left out, will try to ban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bannir un utilisateur du salon actuel. Le motif du ban est optionnel. Si l&apos;utilisateur à bannir n&apos;est pas précisé, tentera d&apos;expulser l&apos;auteur du message auquel vous répondez.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -640,7 +640,7 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+3"/>
         <source>Redact an event by event id or that you are replying to or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Censure un évenement selon son identifiant, ou celui auquel vous répondez, ou tous les évenements d&apos;un utilisateur qui sont actuellement en cache.</translation>
     </message>
     <message>
         <location line="+56"/>
@@ -750,12 +750,12 @@ Eventuellement, vous pouvez fournir une explication de votre demande aux autres 
     <message>
         <location line="+2"/>
         <source>Send a message with a glitch effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer un message en donnant un aspect corrompu au texte.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Send a message that gradually glitches.</source>
-        <translation type="unfinished"></translation>
+        <translation>Envoyer in message avec du texts de plus en plus corrompu.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2143,7 +2143,7 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 a répondu avec un spoiler.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3398,7 +3398,8 @@ Exemple&#xa0;: https://serveur.domaine.extension:8787</translation>
         <location line="+1"/>
         <source>Encryption is currently experimental and things might break unexpectedly. &lt;br&gt;
                                 Please take note that it can&apos;t be disabled afterwards.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le chiffrement est actuellement expérimental, certainse choses peuvent casser de manière imprévues. &lt;br/&gt;
+                                Veuillez noter que cela ne peut être désactivé plus tard.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -5495,7 +5496,7 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
     <message>
         <location line="+13"/>
         <source>Repeat File Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Répéter le mot de passe du fichier</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -5686,7 +5687,7 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-12"/>
         <source>Message contains spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le message contient un spoiler.</translation>
     </message>
 </context>
 <context>
@@ -5755,13 +5756,13 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vous avez envoyé un spoiler.</translation>
     </message>
     <message>
         <location line="-23"/>
         <location line="+26"/>
         <source>%1 sent a spoiler.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 a envoyé un spoiler.</translation>
     </message>
     <message>
         <location line="-20"/>
@@ -5788,7 +5789,7 @@ Cette fonctionnalité prendra effet au prochain redémarrage de l&apos;applicati
     <message>
         <location line="+23"/>
         <source>* %1 spoils something.</source>
-        <translation type="unfinished"></translation>
+        <translation>* %1 spoil quelque chose.</translation>
     </message>
     <message>
         <location line="+8"/>
