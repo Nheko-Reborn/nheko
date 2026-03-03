@@ -174,8 +174,8 @@ modules:
     config-opts:
       - -Ddefault_library=static
     sources:
-      - commit: f49993e6ad3b2f4fa6503f46d547351fa276ac84
-        tag: v0.3.1
+      - commit: 1c3a9029581a08749874226b68bb40c196ed21bb
+        tag: v0.3.2
         type: git
         url: https://nheko.im/nheko-reborn/coeurl.git
   - name: mtxclient
