@@ -18,6 +18,7 @@ AbstractButton {
     property alias textColor: label.color
     property string url
     property string userid
+    property bool showTooltip: true
 
     height: 48
     width: 48
@@ -98,6 +99,16 @@ AbstractButton {
         radius: Settings.avatarCircles ? height / 2 : height / 8
         visible: !!avatar.userid
         width: height
+
+        ToolTip.visible: avatar.showTooltip && ma.containsMouse
+        ToolTip.text: Presence.lastActive(avatar.userid)
+
+        MouseArea {
+            id: ma
+            anchors.fill: parent
+            anchors.margins: -10
+            hoverEnabled: true
+        }
 
         Connections {
             function onPresenceChanged(id) {

@@ -8,6 +8,7 @@
 
 #include "Cache.h"
 #include "ChatPage.h"
+#include "Logging.h"
 #include "MatrixClient.h"
 #include "Utils.h"
 
@@ -69,8 +70,10 @@ RoomSummary::RoomSummary(std::string roomIdOrAlias_,
       roomIdOrAlias,
       [proxy = std::move(ctx)](const mtx::responses::PublicRoom &room_, mtx::http::RequestErr e) {
           if (e) {
+              nhlog::net()->warn("RoomSummary failed to load: {}", *e);
               emit proxy->failed();
           } else {
+              nhlog::net()->info("RoomSummary loaded. Avatar URL: {}", room_.avatar_url);
               emit proxy->loaded(room_);
           }
       },

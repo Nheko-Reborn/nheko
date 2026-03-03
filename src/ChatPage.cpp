@@ -778,7 +778,7 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
         return;
     }
 
-    nhlog::net()->debug("sync completed: {}", res.next_batch);
+    nhlog::net()->trace("sync completed: {}", res.next_batch);
 
     // Ensure that we have enough one-time keys available.
     std::map<std::string_view, std::uint16_t> counts{res.device_one_time_keys_count.begin(),
@@ -1292,7 +1292,7 @@ ChatPage::ensureOneTimeKeyCount(const std::map<std::string_view, uint16_t> &coun
                       unused_fallback_keys->end(),
                       mtx::crypto::SIGNED_CURVE25519) == unused_fallback_keys->end())
             replace_fallback_key = true;
-        nhlog::crypto()->debug(
+        nhlog::crypto()->trace(
           "Updated server key count {} {}, fallback keys supported: {}, new fallback key: {}",
           count->second,
           mtx::crypto::SIGNED_CURVE25519,

@@ -107,6 +107,24 @@ Rectangle {
 
                                 // Disable built-in wheel handling unless focused
                                 wheelEnabled: activeFocus
+                                enabled: r.model.enabled
+                            }
+                        }
+                        DelegateChoice {
+                            roleValue: UserSettingsModel.DeviceOptions
+                            ComboBox {
+                                anchors.right: parent.right
+                                model: r.model.values
+                                currentIndex: r.model.value
+                                width: Math.min(implicitWidth, scroll.availableWidth - Nheko.paddingMedium)
+                                onActivated: {
+                                    r.model.value = currentIndex
+                                }
+                                implicitContentWidthPolicy: ComboBox.WidestTextWhenCompleted
+
+                                // Disable built-in wheel handling unless focused
+                                wheelEnabled: activeFocus
+                                enabled: !HardwareCallDevices.scanning && r.model.enabled
                             }
                         }
                         DelegateChoice {
@@ -122,6 +140,7 @@ Rectangle {
                                 editable: true
 
                                 wheelEnabled: activeFocus
+                                enabled: model.enabled
                             }
                         }
                         DelegateChoice {
@@ -157,7 +176,9 @@ Rectangle {
                                 }
 
                                 wheelEnabled: activeFocus
+                                enabled: model.enabled
                             }
+
                         }
                         DelegateChoice {
                             roleValue: UserSettingsModel.ReadOnlyText
@@ -248,6 +269,19 @@ Rectangle {
                                     id: ignoredUsersDialog
 
                                     IgnoredUsers {}
+                                }
+                            }
+                        }
+
+                        DelegateChoice {
+                            roleValue: UserSettingsModel.RescanDevs
+                            Button {
+                                id: rescanBtn
+                                text: HardwareCallDevices.scanning ? qsTr("SCANNING...") : qsTr("RESCAN")
+                                enabled: !HardwareCallDevices.scanning
+
+                                onClicked: {
+                                    UserSettingsModel.refreshDevices()
                                 }
                             }
                         }

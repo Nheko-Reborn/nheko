@@ -234,6 +234,12 @@ CallManager::CallManager(QObject *parent)
 }
 
 void
+CallManager::refreshDevices()
+{
+    CallDevices::instance().refresh();
+}
+
+void
 CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int windowIndex)
 {
     if (isOnCall() || isOnCallOnOtherDevice()) {
@@ -321,7 +327,8 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
         ? windows_[windowIndex].second
         : 0;
     if (!session_.createOffer(callType, screenShareType_, shareWindowId)) {
-        emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
+        emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call: ") +
+                                                    QString::fromStdString(session_.lastError()));
         endCall();
     }
 }
@@ -622,7 +629,9 @@ CallManager::handleEvent(const RoomEvent<CallAnswer> &callAnswerEvent)
     if (isOnCall() && callid_ == callAnswerEvent.content.call_id) {
         stopRingtone();
         if (!session_.acceptAnswer(callAnswerEvent.content.answer.sdp)) {
-            emit ChatPage::instance()->showNotification(QStringLiteral("Problem setting up call."));
+            emit ChatPage::instance()->showNotification(
+              QStringLiteral("Problem setting up call. Check your device settings: ") +
+              QString::fromStdString(session_.lastError()));
             hangUp();
         }
     }

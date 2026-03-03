@@ -175,10 +175,15 @@ RoomDirectoryModel::fetchMore(const QModelIndex &)
       [requested_server, job, req](const mtx::responses::PublicRooms &res,
                                    mtx::http::RequestErr err) {
           if (err) {
-              nhlog::net()->error("Failed to retrieve rooms from mtxclient - {} - {} - {}",
-                                  mtx::errors::to_string(err->matrix_error.errcode),
-                                  err->matrix_error.error,
-                                  err->parse_error);
+              if (err->status_code >= 500 && err->status_code < 600) {
+                  nhlog::net()->warn("Failed to retrieve rooms from mtxclient: Server error {}",
+                                     static_cast<int>(err->status_code));
+              } else {
+                  nhlog::net()->error("Failed to retrieve rooms from mtxclient - {} - {} - {}",
+                                      mtx::errors::to_string(err->matrix_error.errcode),
+                                      err->matrix_error.error,
+                                      err->parse_error);
+              }
           } else {
               nhlog::net()->debug("signalling chunk to GUI thread");
               emit job->fetchedRoomsBatch(res.chunk,

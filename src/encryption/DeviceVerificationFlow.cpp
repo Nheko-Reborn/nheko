@@ -11,6 +11,23 @@
 
 #include <fmt/ranges.h>
 #include <nlohmann/json.hpp>
+#include <optional>
+
+namespace {
+template<typename T>
+const T &
+dflt(const T &v)
+{
+    return v;
+}
+template<typename T>
+const T &
+dflt(const std::optional<T> &v)
+{
+    static const T empty;
+    return v.has_value() ? *v : empty;
+}
+}
 
 #include "Cache.h"
 #include "Cache_p.h"
@@ -596,26 +613,46 @@ DeviceVerificationFlow::handleStartMessage(const mtx::events::msg::KeyVerificati
         return;
     }
 
-    nhlog::crypto()->info("verification: received start with mac methods {}",
-                          fmt::join(msg.message_authentication_codes, ", "));
+    if (!dflt(msg.message_authentication_codes).empty()) {
+        nhlog::crypto()->info("verification: received start with mac methods {}",
+                              fmt::join(dflt(msg.message_authentication_codes), ", "));
+    } else {
+        nhlog::crypto()->info("verification: received start with no mac methods");
+    }
+
+    // Only SAS verification is supported, reciprocate not yet
+    if (msg.method != mtx::events::msg::VerificationMethods::SASv1) {
+        this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
+        return;
+    }
+
+    // Get SAS fields with defaults
+    auto key_agreement = dflt(msg.key_agreement_protocols);
+    auto hashes_list   = dflt(msg.hashes);
+    auto mac_codes     = dflt(msg.message_authentication_codes);
+    auto sas_methods   = dflt(msg.short_authentication_string);
+
+    nhlog::crypto()->info("verification: keys: {}, hashes: {}, macs: {}, sas: {}",
+                          fmt::join(key_agreement, ", "),
+                          fmt::join(hashes_list, ", "),
+                          fmt::join(mac_codes, ", "),
+                          nlohmann::json(sas_methods).dump());
 
     // TODO(Nico): Replace with contains once we use C++23
-    if (std::ranges::count(msg.key_agreement_protocols, "curve25519-hkdf-sha256") &&
-        std::ranges::count(msg.hashes, "sha256")) {
-        if (std::ranges::count(msg.message_authentication_codes, mac_method_alg_v2)) {
+    if (std::ranges::count(key_agreement, "curve25519-hkdf-sha256") &&
+        std::ranges::count(hashes_list, "sha256")) {
+        if (std::ranges::count(mac_codes, mac_method_alg_v2)) {
             this->mac_method = mac_method_alg_v2;
-        } else if (std::ranges::count(msg.message_authentication_codes, mac_method_alg_v1)) {
+        } else if (std::ranges::count(mac_codes, mac_method_alg_v1)) {
             this->mac_method = mac_method_alg_v1;
         } else {
             this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
             return;
         }
 
-        if (std::ranges::count(msg.short_authentication_string,
-                               mtx::events::msg::SASMethods::Emoji)) {
+        if (std::ranges::count(sas_methods, mtx::events::msg::SASMethods::Emoji)) {
             this->method = mtx::events::msg::SASMethods::Emoji;
-        } else if (std::ranges::count(msg.short_authentication_string,
-                                      mtx::events::msg::SASMethods::Decimal)) {
+        } else if (std::ranges::count(sas_methods, mtx::events::msg::SASMethods::Decimal)) {
             this->method = mtx::events::msg::SASMethods::Decimal;
         } else {
             this->cancelVerification(DeviceVerificationFlow::Error::UnknownMethod);
