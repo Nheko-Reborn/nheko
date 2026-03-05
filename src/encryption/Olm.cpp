@@ -1173,7 +1173,7 @@ handle_key_request_message(const mtx::events::DeviceEvent<mtx::events::msg::KeyR
               .deviceids.count(req.content.requesting_device_id)) {
             shouldSeeKeys = true;
             minimumIndex  = sessionData->currently.keys.at(req.sender)
-                             .deviceids.at(req.content.requesting_device_id);
+                              .deviceids.at(req.content.requesting_device_id);
         }
     }
 
