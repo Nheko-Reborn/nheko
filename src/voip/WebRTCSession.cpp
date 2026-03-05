@@ -24,6 +24,14 @@
 
 #ifdef GSTREAMER_AVAILABLE
 #include "MainWindow.h"
+#if defined(Q_OS_MACOS)
+#include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
+#include <QPermission>
+#include <QStandardPaths>
+#include <QTimer>
+#endif
 extern "C"
 {
 #include "gst/gl/gstgldisplay.h"
@@ -82,6 +90,25 @@ WebRTCSession::init(std::string *errorMessage)
     if (initialised_)
         return true;
 
+#if defined(Q_OS_MACOS)
+    // Always disable the forked plugin scanner on macOS.
+    // otherwise the LC_RPATH is not inherited (causing plugin load failures)
+    qputenv("GST_REGISTRY_FORK", "no");
+
+    // When running from an app bundle with bundled plugins, use a dedicated registry so
+    // GStreamer never loads system/homebrew plugins alongside the bundled ones.
+    QString bundlePluginPath =
+      QCoreApplication::applicationDirPath() + "/../Resources/gstreamer-1.0";
+    if (QFileInfo::exists(bundlePluginPath)) {
+        QString cacheDir =
+          QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/gstreamer-1.0";
+        QDir().mkpath(cacheDir);
+        qputenv("GST_REGISTRY", (cacheDir + "/bundle-registry.bin").toUtf8());
+        qputenv("GST_PLUGIN_PATH", bundlePluginPath.toUtf8());
+        qputenv("GST_PLUGIN_SYSTEM_PATH_1_0", "");
+    }
+#endif
+
     GError *error = nullptr;
     if (!gst_init_check(nullptr, nullptr, &error)) {
         std::string strError("WebRTC: failed to initialise GStreamer: ");
@@ -99,7 +126,34 @@ WebRTCSession::init(std::string *errorMessage)
     gchar *version = gst_version_string();
     nhlog::ui()->info("WebRTC: initialised {}", version);
     g_free(version);
+#if defined(Q_OS_MACOS)
+    // On macOS, AVFoundation device enumeration requires:
+    //   1. The main NSRunLoop to be active (not the case during static init).
+    //   2. TCC permissions to be granted — Qt's requestPermission() triggers
+    //      the system dialog correctly even on macOS 26+, unlike going through
+    //      GStreamer's device providers directly which silently get denied.
+    // Defer past the event-loop start, then request mic → camera → start monitor.
+    QTimer::singleShot(0, []() {
+        nhlog::ui()->info("WebRTC: requesting microphone permission…");
+        qApp->requestPermission(QMicrophonePermission{}, qApp, [](const QPermission &perm) {
+            nhlog::ui()->info("WebRTC: microphone permission: {}",
+                              perm.status() == Qt::PermissionStatus::Granted  ? "granted"
+                              : perm.status() == Qt::PermissionStatus::Denied ? "denied"
+                                                                              : "undetermined");
+            qApp->requestPermission(QCameraPermission{}, qApp, [](const QPermission &perm2) {
+                nhlog::ui()->info("WebRTC: camera permission: {}",
+                                  perm2.status() == Qt::PermissionStatus::Granted ? "granted"
+                                  : perm2.status() == Qt::PermissionStatus::Denied
+                                    ? "denied"
+                                    : "undetermined");
+                // Start the device monitor regardless — absent devices are fine.
+                CallDevices::instance().init();
+            });
+        });
+    });
+#else
     devices_.init();
+#endif
     return true;
 #else
     (void)errorMessage;
@@ -335,10 +389,12 @@ newVideoSinkChain(GstElement *pipe)
 
     auto graphicsApi       = MainWindow::instance()->graphicsApi();
     GstElement *compositor = gst_element_factory_make(
-      graphicsApi == QSGRendererInterface::OpenGL ? "compositor" : "d3d11compositor", "compositor");
+      graphicsApi == QSGRendererInterface::Direct3D11 ? "d3d11compositor" : "compositor",
+      "compositor");
     g_object_set(compositor, "background", 1, nullptr);
     switch (graphicsApi) {
-    case QSGRendererInterface::OpenGL: {
+    case QSGRendererInterface::OpenGL:
+    case QSGRendererInterface::Metal: {
         GstElement *qmlglsink = gst_element_factory_make("qml6glsink", nullptr);
         GstElement *glsinkbin = gst_element_factory_make("glsinkbin", nullptr);
 
@@ -636,6 +692,10 @@ WebRTCSession::havePlugins(bool isVideo,
         return false;
 
     static constexpr std::initializer_list<const char *> audio_elements = {"audioconvert",
+// MacOS, ensure the Macos plugin
+#if defined(Q_OS_MACOS)
+                                                                           "osxaudiosrc",
+#endif
                                                                            "audioresample",
                                                                            "autoaudiosink",
                                                                            "capsfilter",
@@ -699,6 +759,7 @@ WebRTCSession::havePlugins(bool isVideo,
     if (isVideo) {
         switch (MainWindow::instance()->graphicsApi()) {
         case QSGRendererInterface::OpenGL:
+        case QSGRendererInterface::Metal:
             haveVideoPlugins_ = check_plugins(gl_video_elements);
             break;
         case QSGRendererInterface::Direct3D11:
@@ -718,9 +779,10 @@ WebRTCSession::havePlugins(bool isVideo,
                 haveScreensharePlugins = check_plugins({"waylandsink"});
             } else if (QGuiApplication::platformName() == QStringLiteral("windows")) {
                 haveScreensharePlugins = check_plugins({"d3d11videosink"});
-            } else {
+            } else if (QGuiApplication::platformName() != QStringLiteral("cocoa")) {
                 haveScreensharePlugins = check_plugins({"ximagesink"});
             }
+            // macOS: use the same qml6glsink as video calls
         }
         if (haveScreensharePlugins) {
             if (screenShareType == ScreenShareType::X11) {
@@ -728,6 +790,9 @@ WebRTCSession::havePlugins(bool isVideo,
             } else if (screenShareType == ScreenShareType::D3D11) {
                 haveScreensharePlugins =
                   check_plugins({"d3d11screencapturesrc", "d3d11download", "d3d11convert"});
+                // AVF is for MacOS
+            } else if (screenShareType == ScreenShareType::AVF) {
+                haveScreensharePlugins = check_plugins({"avfvideosrc"});
             } else {
                 haveScreensharePlugins = check_plugins({"pipewiresrc"});
             }
@@ -744,14 +809,17 @@ WebRTCSession::havePlugins(bool isVideo,
 
     if (isVideo || isScreenshare) {
         switch (MainWindow::instance()->graphicsApi()) {
-        case QSGRendererInterface::OpenGL: {
+        case QSGRendererInterface::OpenGL:
+        case QSGRendererInterface::Metal: {
             // load qmlglsink to register GStreamer's GstGLVideoItem QML type
             GstElement *qmlglsink = gst_element_factory_make("qml6glsink", nullptr);
-            gst_object_unref(qmlglsink);
+            if (qmlglsink)
+                gst_object_unref(qmlglsink);
         } break;
         case QSGRendererInterface::Direct3D11: {
             GstElement *qmld3d11sink = gst_element_factory_make("qml6d3d11sink", nullptr);
-            gst_object_unref(qmld3d11sink);
+            if (qmld3d11sink)
+                gst_object_unref(qmld3d11sink);
         } break;
         default:
             break;
@@ -1082,7 +1150,20 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
 
         GstElement *screencastsrc = nullptr;
 
-        if (screenShareType_ == ScreenShareType::X11) {
+        if (screenShareType_ == ScreenShareType::AVF) {
+            GstElement *avfvideosrc = gst_element_factory_make("avfvideosrc", "screenshare");
+            if (!avfvideosrc) {
+                nhlog::ui()->error("WebRTC: failed to create avfvideosrc");
+                return false;
+            }
+            g_object_set(avfvideosrc, "capture-screen", TRUE, nullptr);
+            g_object_set(
+              avfvideosrc, "capture-screen-cursor", !settings->screenShareHideCursor(), nullptr);
+            g_object_set(avfvideosrc, "do-timestamp", (gboolean)1, nullptr);
+
+            gst_bin_add(GST_BIN(pipe_), avfvideosrc);
+            screencastsrc = avfvideosrc;
+        } else if (screenShareType_ == ScreenShareType::X11) {
             GstElement *ximagesrc = gst_element_factory_make("ximagesrc", "screenshare");
             if (!ximagesrc) {
                 nhlog::ui()->error("WebRTC: failed to create ximagesrc");

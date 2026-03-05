@@ -32,7 +32,8 @@ enum class ScreenShareType
 {
     X11,
     XDP,
-    D3D11
+    D3D11,
+    AVF
 };
 Q_ENUM_NS(ScreenShareType)
 

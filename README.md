@@ -395,10 +395,34 @@ guix environment nheko
 
 #### macOS (Xcode 10.2 or later)
 
+This essentially follows the same build process that happens in CI (see: [.gitlab-ci.yml](./.gitlab-ci.yml)).
+
+##### Install dependencies 
+
 ```bash
-brew update
-brew install qt6 lmdb cmake llvm spdlog cmark libolm qtkeychain
+brew install python3 pkg-config clang-format cmake ninja openssl gstreamer meson pipx libnice-gstreamer
+pipx install aqtinstall
+pipx ensurepath
+mkdir -p $HOME/Qt
+aqt -c aqt/settings.ini install-qt --outputdir $HOME/qt mac desktop 6.10 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
 ```
+
+##### Build nheko
+
+```bash
+# set this to ON if you want to bundle Qt frameworks with the app
+# (needed for redistribution, disable for local dev/testing)
+export MACOS_DEPLOY_QT=OFF
+# if you don't use the QT deploy, you can optionally sign the app
+# so you can test the permission requests and other macOS specific features.
+# without it, microphone and camera permissions probably won't work.
+export MACOS_ADHOC_SIGN=ON
+
+export QTPATH=($HOME/qt/6.*/macos/bin)
+export PATH="$QTPATH:${PATH}"
+./.ci/macos/build.sh
+```
+
 
 #### Windows
 
