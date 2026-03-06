@@ -2338,6 +2338,11 @@ TimelineModel::formatTypingUsers(const QStringList &users, const QColor &bg)
         return coloredUsername;
     };
 
+    if (users.size() == 1) {
+        QString one = tr("%1 is typing.");
+        return one.arg(formatUser(users.back()));
+    }
+
     uidWithoutLast.reserve(static_cast<int>(users.size()));
     for (qsizetype i = 0; i + 1 < users.size(); i++) {
         uidWithoutLast.append(formatUser(users[i]));
