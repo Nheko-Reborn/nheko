@@ -400,12 +400,12 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
     const char video[]     = "m=video";
     const std::string &sdp = callInviteEvent.content.offer.sdp;
     bool isVideo           = std::search(sdp.cbegin(),
-                               sdp.cend(),
-                               std::cbegin(video),
-                               std::cend(video) - 1,
-                               [](unsigned char c1, unsigned char c2) {
+                                         sdp.cend(),
+                                         std::cbegin(video),
+                                         std::cend(video) - 1,
+                                         [](unsigned char c1, unsigned char c2) {
                                    return std::tolower(c1) == std::tolower(c2);
-                               }) != sdp.cend();
+                                         }) != sdp.cend();
     nhlog::ui()->debug("WebRTC: call id: {} - incoming {} CallInvite from ({},{}) ",
                        callInviteEvent.content.call_id,
                        (isVideo ? "video" : "voice"),
@@ -439,6 +439,13 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
       *std::find_if(members.begin(), members.end(), [&](RoomMember member) {
           return member.user_id.toStdString() == callInviteEvent.sender;
       });
+
+    // Check if room member was found
+    if (caller.user_id.isEmpty()) {
+        nhlog::ui()->error("WebRTC: Caller not found in room members");
+        return;
+    }
+
     if (isOnCall() || isOnCallOnOtherDevice()) {
         if (isOnCallOnOtherDevice_ != "")
             return;
