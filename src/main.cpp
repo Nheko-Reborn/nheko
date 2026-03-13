@@ -13,6 +13,7 @@
 #include <QLibraryInfo>
 #include <QMessageBox>
 #include <QPoint>
+#include <QQuickStyle>
 #include <QQuickView>
 #include <QScreen>
 #include <QStandardPaths>
@@ -183,6 +184,11 @@ main(int argc, char *argv[])
             matrixUri = arg;
         }
     }
+#if defined(Q_OS_WIN)
+    // Windows default Qt theme does not support Dark Mode breaking color palette.
+    // https://qt-project.atlassian.net/browse/QTBUG-72028#icft=QTBUG-72028
+    QQuickStyle::setStyle(QStringLiteral("Fusion"));
+#endif
 
     QApplication app(argc, argv);
 
