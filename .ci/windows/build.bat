@@ -61,7 +61,8 @@ cmake -G "Visual Studio 17 2022" -A x64 -S. -Bbuild -DHUNTER_ROOT="C:\hunter" -D
 cmake --build build --config Release -j %NUMBER_OF_PROCESSORS%
 
 
-if not exist qt-jdenticon (
+if not exist qt-jdenticon\qtjdenticon.pro (
+    if exist qt-jdenticon rmdir /s /q qt-jdenticon
     git clone https://github.com/Nheko-Reborn/qt-jdenticon.git
 )
 cd qt-jdenticon
@@ -71,7 +72,8 @@ cd ..
 
 :: Build GStreamer Qt6 D3D11 QML plugin (provides qml6d3d11sink)
 set GST_QT6D3D11_SRC=gstreamer-src\subprojects\gst-plugins-bad\ext\qt6d3d11
-if not exist gstreamer-src (
+if not exist %GST_QT6D3D11_SRC%\plugin.cpp (
+    if exist gstreamer-src rmdir /s /q gstreamer-src
     git clone --depth 1 --branch %GSTREAMER_VERSION% --filter=blob:none --sparse https://gitlab.freedesktop.org/gstreamer/gstreamer.git gstreamer-src
     cd gstreamer-src
     git sparse-checkout set subprojects/gst-plugins-bad/ext/qt6d3d11 subprojects/gst-plugins-bad/gst-libs/gst/d3d11

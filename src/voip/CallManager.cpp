@@ -36,6 +36,7 @@
 
 #ifdef Q_OS_WINDOWS
 #include <Windows.h>
+#include <wingdi.h>
 #endif
 
 #ifdef GSTREAMER_AVAILABLE
@@ -315,7 +316,7 @@ CallManager::sendInvite(const QString &roomid, CallType callType, unsigned int w
     emit newInviteState();
     playRingtone(QUrl(QStringLiteral("qrc:/media/media/ringback.ogg")), true);
 
-    uint32_t shareWindowId =
+    uint64_t shareWindowId =
       callType == CallType::SCREEN &&
           (screenShareType_ == ScreenShareType::X11 || screenShareType_ == ScreenShareType::D3D11)
         ? windows_[windowIndex].second
@@ -874,6 +875,8 @@ bool
 CallManager::screenShareReady() const
 {
 #ifdef GSTREAMER_AVAILABLE
+    if (screenShareTypes_.empty())
+        return false;
     if (screenShareType_ == ScreenShareType::X11 || screenShareType_ == ScreenShareType::D3D11) {
         return true;
     } else {
@@ -916,10 +919,11 @@ CallManager::windowList()
         return {};
     }
 
+#ifdef XCB_AVAILABLE
+    // TODO: check multi-monitor setup
     windows_.clear();
     windows_.push_back({tr("Entire screen"), 0});
 
-#ifdef XCB_AVAILABLE
     std::unique_ptr<xcb_connection_t, std::function<void(xcb_connection_t *)>> connection(
       xcb_connect(nullptr, nullptr), [](xcb_connection_t *c) { xcb_disconnect(c); });
     if (xcb_connection_has_error(connection.get())) {
@@ -969,6 +973,80 @@ CallManager::windowList()
     }
 #endif
 #ifdef Q_OS_WINDOWS
+    windows_.clear();
+
+    // Returns EDID friendly name (like "Dell U2720Q") for a monitor, or empty string
+    auto monitorFriendlyName = [](HMONITOR hmon) -> QString {
+        MONITORINFOEXW info = {};
+        info.cbSize         = sizeof(info);
+        if (!GetMonitorInfoW(hmon, &info))
+            return {};
+
+        UINT32 numPaths = 0, numModes = 0;
+        if (GetDisplayConfigBufferSizes(QDC_ONLY_ACTIVE_PATHS, &numPaths, &numModes) !=
+            ERROR_SUCCESS)
+            return {};
+
+        std::vector<DISPLAYCONFIG_PATH_INFO> paths(numPaths);
+        std::vector<DISPLAYCONFIG_MODE_INFO> modes(numModes);
+        if (QueryDisplayConfig(QDC_ONLY_ACTIVE_PATHS,
+                               &numPaths,
+                               paths.data(),
+                               &numModes,
+                               modes.data(),
+                               nullptr) != ERROR_SUCCESS)
+            return {};
+
+        for (const auto &path : paths) {
+            DISPLAYCONFIG_SOURCE_DEVICE_NAME src = {};
+            src.header.type                      = DISPLAYCONFIG_DEVICE_INFO_GET_SOURCE_NAME;
+            src.header.size                      = sizeof(src);
+            src.header.adapterId                 = path.sourceInfo.adapterId;
+            src.header.id                        = path.sourceInfo.id;
+            if (DisplayConfigGetDeviceInfo(&src.header) != ERROR_SUCCESS)
+                continue;
+            if (wcscmp(info.szDevice, src.viewGdiDeviceName) != 0)
+                continue;
+
+            DISPLAYCONFIG_TARGET_DEVICE_NAME tgt = {};
+            tgt.header.type                      = DISPLAYCONFIG_DEVICE_INFO_GET_TARGET_NAME;
+            tgt.header.size                      = sizeof(tgt);
+            tgt.header.adapterId                 = path.targetInfo.adapterId;
+            tgt.header.id                        = path.targetInfo.id;
+            if (DisplayConfigGetDeviceInfo(&tgt.header) != ERROR_SUCCESS)
+                continue;
+            if (tgt.flags.friendlyNameFromEdid)
+                return QString::fromWCharArray(tgt.monitorFriendlyDeviceName);
+        }
+        return {};
+    };
+
+    // Build HMONITOR to screen index map in EnumDisplayMonitors order
+    std::vector<HMONITOR> hmonitors;
+    EnumDisplayMonitors(
+      nullptr,
+      nullptr,
+      [](HMONITOR hmon, HDC, LPRECT, LPARAM lp) -> BOOL {
+          reinterpret_cast<std::vector<HMONITOR> *>(lp)->push_back(hmon);
+          return TRUE;
+      },
+      reinterpret_cast<LPARAM>(&hmonitors));
+
+    // Add one entry per monitor.
+    // Encode as (1ULL << 32) | (uint32_t)HMONITOR so we can distinguish from HWNDs
+    // (both fit in 32 bits on 64-bit Windows) and pass the handle directly to
+    // d3d11screencapturesrc's "monitor-handle" property, avoiding DXGI ordering issues.
+    for (int i = 0; i < (int)hmonitors.size(); ++i) {
+        QString name = tr("Screen %1").arg(i + 1);
+        QString friendly = monitorFriendlyName(hmonitors[i]);
+        if (!friendly.isEmpty())
+            name += QStringLiteral(" (") + friendly + QStringLiteral(")");
+        windows_.push_back({name,
+                            (1ULL << 32) |
+                              static_cast<uint64_t>(
+                                static_cast<uint32_t>(reinterpret_cast<uintptr_t>(hmonitors[i])))});
+    }
+
     for (HWND windowHandle = GetTopWindow(nullptr); windowHandle != nullptr;
          windowHandle      = GetNextWindow(windowHandle, GW_HWNDNEXT)) {
         if (!IsWindowVisible(windowHandle))
@@ -987,11 +1065,19 @@ CallManager::windowList()
         if (titleInfo.rgstate[0] & STATE_SYSTEM_INVISIBLE)
             continue;
 
+        // Determine which screen this window is on
+        HMONITOR hmon   = MonitorFromWindow(windowHandle, MONITOR_DEFAULTTONEAREST);
+        auto it         = std::find(hmonitors.begin(), hmonitors.end(), hmon);
+        int screenNum   = (it != hmonitors.end())
+                          ? (int)std::distance(hmonitors.begin(), it) + 1
+                          : 1;
+
         wchar_t *windowTitle = new wchar_t[titleLength + 1];
         GetWindowTextW(windowHandle, windowTitle, titleLength + 1);
 
-        windows_.push_back(
-          {QString::fromWCharArray(windowTitle), reinterpret_cast<uint64_t>(windowHandle)});
+        windows_.push_back({QString::fromWCharArray(windowTitle) + tr(" [Screen %1]").arg(screenNum),
+                            reinterpret_cast<uint64_t>(windowHandle)});
+        delete[] windowTitle;
     }
 #endif
     QStringList ret;
@@ -1126,7 +1212,14 @@ CallManager::previewWindow(unsigned int index) const
             pipe_ = nullptr;
             return;
         }
-        g_object_set(d3d11screensrc, "window-handle", windows_[index].second, nullptr);
+        uint64_t winVal = windows_[index].second;
+        if (winVal & (1ULL << 32)) {
+            // Encoded HMONITOR: extract the lower 32 bits and pass via monitor-handle
+            guint64 hmon = static_cast<guint64>(static_cast<uint32_t>(winVal & 0xFFFFFFFFULL));
+            g_object_set(d3d11screensrc, "monitor-handle", hmon, nullptr);
+        } else {
+            g_object_set(d3d11screensrc, "window-handle", (guint64)winVal, nullptr);
+        }
         g_object_set(d3d11screensrc, "show-cursor", !settings->screenShareHideCursor(), nullptr);
 
         gst_bin_add(GST_BIN(pipe_), d3d11screensrc);

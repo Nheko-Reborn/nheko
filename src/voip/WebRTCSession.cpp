@@ -763,7 +763,7 @@ WebRTCSession::havePlugins(bool isVideo,
 bool
 WebRTCSession::createOffer(CallType callType,
                            ScreenShareType screenShareType,
-                           uint32_t shareWindowId)
+                           uint64_t shareWindowId)
 {
     clear();
     isOffering_      = true;
@@ -1118,8 +1118,15 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                 pipe_ = nullptr;
                 return false;
             }
-            g_object_set(
-              d3d11screensrc, "window-handle", static_cast<guint64>(shareWindowId_), nullptr);
+            if (shareWindowId_ & (1ULL << 32)) {
+                // Encoded HMONITOR: extract the lower 32 bits and pass via monitor-handle
+                guint64 hmon =
+                  static_cast<guint64>(static_cast<uint32_t>(shareWindowId_ & 0xFFFFFFFFULL));
+                g_object_set(d3d11screensrc, "monitor-handle", hmon, nullptr);
+            } else {
+                g_object_set(
+                  d3d11screensrc, "window-handle", static_cast<guint64>(shareWindowId_), nullptr);
+            }
             g_object_set(
               d3d11screensrc, "show-cursor", !settings->screenShareHideCursor(), nullptr);
             g_object_set(d3d11screensrc, "do-timestamp", (gboolean)1, nullptr);
