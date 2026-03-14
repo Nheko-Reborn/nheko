@@ -1174,37 +1174,10 @@ CallManager::previewWindow(unsigned int index) const
 
     pipe_ = gst_pipeline_new(nullptr);
 
-    GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
-    GstElement *videoscale   = gst_element_factory_make("videoscale", nullptr);
-    GstElement *capsfilter   = gst_element_factory_make("capsfilter", nullptr);
-    GstElement *preview_sink = make_preview_sink();
-    GstElement *videorate    = gst_element_factory_make("videorate", nullptr);
-
-    gst_bin_add_many(
-      GST_BIN(pipe_), videorate, videoconvert, videoscale, capsfilter, preview_sink, nullptr);
-
-    GstCaps *caps = gst_caps_new_simple(
-      "video/x-raw", "framerate", GST_TYPE_FRACTION, settings->screenShareFrameRate(), 1, nullptr);
-    g_object_set(capsfilter, "caps", caps, nullptr);
-    gst_caps_unref(caps);
-
-    GstElement *screencastsrc = nullptr;
-    if (screenShareType_ == ScreenShareType::X11) {
-        GstElement *ximagesrc = gst_element_factory_make("ximagesrc", nullptr);
-        if (!ximagesrc) {
-            nhlog::ui()->error("Failed to create ximagesrc");
-            gst_object_unref(pipe_);
-            pipe_ = nullptr;
-            return;
-        }
-        g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
-        g_object_set(ximagesrc, "xid", windows_[index].second, nullptr);
-        g_object_set(ximagesrc, "show-pointer", !settings->screenShareHideCursor(), nullptr);
-        g_object_set(ximagesrc, "do-timestamp", (gboolean)1, nullptr);
-
-        gst_bin_add(GST_BIN(pipe_), ximagesrc);
-        screencastsrc = ximagesrc;
-    } else if (screenShareType_ == ScreenShareType::D3D11) {
+    if (screenShareType_ == ScreenShareType::D3D11) {
+        // D3D11-native pipeline: stay on GPU to avoid slow format negotiation.
+        // videoconvert/videoscale require system memory and stall for many seconds
+        // when placed after d3d11screencapturesrc.
         GstElement *d3d11screensrc = gst_element_factory_make("d3d11screencapturesrc", nullptr);
         if (!d3d11screensrc) {
             nhlog::ui()->error("Failed to create d3d11screencapturesrc");
@@ -1221,34 +1194,90 @@ CallManager::previewWindow(unsigned int index) const
             g_object_set(d3d11screensrc, "window-handle", (guint64)winVal, nullptr);
         }
         g_object_set(d3d11screensrc, "show-cursor", !settings->screenShareHideCursor(), nullptr);
+        g_object_set(d3d11screensrc, "do-timestamp", (gboolean)1, nullptr);
 
-        gst_bin_add(GST_BIN(pipe_), d3d11screensrc);
-        screencastsrc = d3d11screensrc;
-    } else {
-        ScreenCastPortal &sc_portal            = ScreenCastPortal::instance();
-        const ScreenCastPortal::Stream *stream = sc_portal.getStream();
-        if (stream == nullptr) {
-            nhlog::ui()->error("xdg-desktop-portal stream not started");
+        GstElement *d3d11convert = gst_element_factory_make("d3d11convert", nullptr);
+        GstElement *d3d11sink    = gst_element_factory_make("d3d11videosink", nullptr);
+        if (!d3d11convert || !d3d11sink) {
+            nhlog::ui()->error("Failed to create D3D11 preview elements");
+            if (d3d11convert)
+                gst_object_unref(d3d11convert);
+            if (d3d11sink)
+                gst_object_unref(d3d11sink);
+            gst_object_unref(d3d11screensrc);
             gst_object_unref(pipe_);
             pipe_ = nullptr;
             return;
         }
-        GstElement *pipewiresrc = gst_element_factory_make("pipewiresrc", nullptr);
-        g_object_set(pipewiresrc, "fd", (gint)stream->fd.fileDescriptor(), nullptr);
-        std::string path = std::to_string(stream->nodeId);
-        g_object_set(pipewiresrc, "path", path.c_str(), nullptr);
-        g_object_set(pipewiresrc, "do-timestamp", (gboolean)1, nullptr);
 
-        gst_bin_add(GST_BIN(pipe_), pipewiresrc);
-        screencastsrc = pipewiresrc;
-    }
+        gst_bin_add_many(GST_BIN(pipe_), d3d11screensrc, d3d11convert, d3d11sink, nullptr);
+        if (!gst_element_link_many(d3d11screensrc, d3d11convert, d3d11sink, nullptr)) {
+            nhlog::ui()->error("Failed to link D3D11 preview pipeline");
+            gst_object_unref(pipe_);
+            pipe_ = nullptr;
+            return;
+        }
+    } else {
+        GstElement *videoconvert = gst_element_factory_make("videoconvert", nullptr);
+        GstElement *videoscale   = gst_element_factory_make("videoscale", nullptr);
+        GstElement *capsfilter   = gst_element_factory_make("capsfilter", nullptr);
+        GstElement *preview_sink = make_preview_sink();
+        GstElement *videorate    = gst_element_factory_make("videorate", nullptr);
 
-    if (!gst_element_link_many(
-          screencastsrc, videorate, videoconvert, videoscale, capsfilter, preview_sink, nullptr)) {
-        nhlog::ui()->error("Failed to link preview window elements");
-        gst_object_unref(pipe_);
-        pipe_ = nullptr;
-        return;
+        gst_bin_add_many(
+          GST_BIN(pipe_), videorate, videoconvert, videoscale, capsfilter, preview_sink, nullptr);
+
+        GstCaps *caps = gst_caps_new_simple("video/x-raw",
+                                            "framerate",
+                                            GST_TYPE_FRACTION,
+                                            settings->screenShareFrameRate(),
+                                            1,
+                                            nullptr);
+        g_object_set(capsfilter, "caps", caps, nullptr);
+        gst_caps_unref(caps);
+
+        GstElement *screencastsrc = nullptr;
+        if (screenShareType_ == ScreenShareType::X11) {
+            GstElement *ximagesrc = gst_element_factory_make("ximagesrc", nullptr);
+            if (!ximagesrc) {
+                nhlog::ui()->error("Failed to create ximagesrc");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return;
+            }
+            g_object_set(ximagesrc, "use-damage", FALSE, nullptr);
+            g_object_set(ximagesrc, "xid", windows_[index].second, nullptr);
+            g_object_set(ximagesrc, "show-pointer", !settings->screenShareHideCursor(), nullptr);
+            g_object_set(ximagesrc, "do-timestamp", (gboolean)1, nullptr);
+
+            gst_bin_add(GST_BIN(pipe_), ximagesrc);
+            screencastsrc = ximagesrc;
+        } else {
+            ScreenCastPortal &sc_portal            = ScreenCastPortal::instance();
+            const ScreenCastPortal::Stream *stream = sc_portal.getStream();
+            if (stream == nullptr) {
+                nhlog::ui()->error("xdg-desktop-portal stream not started");
+                gst_object_unref(pipe_);
+                pipe_ = nullptr;
+                return;
+            }
+            GstElement *pipewiresrc = gst_element_factory_make("pipewiresrc", nullptr);
+            g_object_set(pipewiresrc, "fd", (gint)stream->fd.fileDescriptor(), nullptr);
+            std::string path = std::to_string(stream->nodeId);
+            g_object_set(pipewiresrc, "path", path.c_str(), nullptr);
+            g_object_set(pipewiresrc, "do-timestamp", (gboolean)1, nullptr);
+
+            gst_bin_add(GST_BIN(pipe_), pipewiresrc);
+            screencastsrc = pipewiresrc;
+        }
+
+        if (!gst_element_link_many(
+              screencastsrc, videorate, videoconvert, videoscale, capsfilter, preview_sink, nullptr)) {
+            nhlog::ui()->error("Failed to link preview window elements");
+            gst_object_unref(pipe_);
+            pipe_ = nullptr;
+            return;
+        }
     }
 
     if (gst_element_set_state(pipe_, GST_STATE_PLAYING) == GST_STATE_CHANGE_FAILURE) {
