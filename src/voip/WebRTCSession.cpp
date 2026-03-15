@@ -272,22 +272,27 @@ void
 testPacketLoss_(GstPromise *promise, gpointer G_GNUC_UNUSED)
 {
     const GstStructure *reply = gst_promise_get_reply(promise);
-    gint packetsLost          = 0;
-    GstStructure *rtpStats;
-    if (!gst_structure_get(
-          reply, keyFrameRequestData_.statsField.c_str(), GST_TYPE_STRUCTURE, &rtpStats, nullptr)) {
-        nhlog::ui()->error("WebRTC: get-stats: no field: {}", keyFrameRequestData_.statsField);
-        gst_promise_unref(promise);
-        return;
+    gint packetsLost  = 0;
+
+    // Keyframe request logic — only applicable when receiving inbound video
+    if (keyFrameRequestData_.decodebin && !keyFrameRequestData_.statsField.empty()) {
+        GstStructure *rtpStats;
+        if (gst_structure_get(reply,
+                              keyFrameRequestData_.statsField.c_str(),
+                              GST_TYPE_STRUCTURE,
+                              &rtpStats,
+                              nullptr)) {
+            gst_structure_get_int(rtpStats, "packets-lost", &packetsLost);
+            gst_structure_free(rtpStats);
+            if (packetsLost > keyFrameRequestData_.packetsLost) {
+                nhlog::ui()->debug("WebRTC: inbound video lost packet count: {}", packetsLost);
+                keyFrameRequestData_.packetsLost = packetsLost;
+                sendKeyFrameRequest();
+            }
+        }
     }
-    gst_structure_get_int(rtpStats, "packets-lost", &packetsLost);
-    gst_structure_free(rtpStats);
+
     gst_promise_unref(promise);
-    if (packetsLost > keyFrameRequestData_.packetsLost) {
-        nhlog::ui()->debug("WebRTC: inbound video lost packet count: {}", packetsLost);
-        keyFrameRequestData_.packetsLost = packetsLost;
-        sendKeyFrameRequest();
-    }
 }
 
 gboolean
@@ -376,13 +381,15 @@ newVideoSinkChain(GstElement *pipe)
         gst_element_link_many(
           queue, d3d11upload, compositor, d3d11colorconvert, qmld3d11sink, nullptr);
 
+        // to propagate context before syncing to PLAYING
+        gst_element_set_state(qmld3d11sink, GST_STATE_READY);
+
         gst_element_sync_state_with_parent(queue);
         gst_element_sync_state_with_parent(compositor);
         gst_element_sync_state_with_parent(d3d11upload);
+        gst_element_sync_state_with_parent(compositor);
         gst_element_sync_state_with_parent(d3d11colorconvert);
-
-        // to propagate context (hopefully)
-        gst_element_set_state(qmld3d11sink, GST_STATE_READY);
+        gst_element_sync_state_with_parent(qmld3d11sink);
     } break;
     default:
         break;
@@ -763,7 +770,7 @@ WebRTCSession::havePlugins(bool isVideo,
 bool
 WebRTCSession::createOffer(CallType callType,
                            ScreenShareType screenShareType,
-                           uint32_t shareWindowId)
+                           uint64_t shareWindowId)
 {
     clear();
     isOffering_      = true;
@@ -841,7 +848,21 @@ WebRTCSession::acceptNegotiation(const std::string &sdp)
     nhlog::ui()->debug("WebRTC: received negotiation offer:\n{}", sdp);
     if (state_ == State::DISCONNECTED)
         return false;
-    return false;
+
+    GstWebRTCSessionDescription *offer = parseSDP(sdp, GST_WEBRTC_SDP_TYPE_OFFER);
+    if (!offer)
+        return false;
+
+    if (callType_ != CallType::VOICE) {
+        int unused;
+        getMediaAttributes(
+          offer->sdp, "video", "vp8", unused, isRemoteVideoRecvOnly_, isRemoteVideoSendOnly_);
+    }
+
+    GstPromise *promise = gst_promise_new_with_change_func(createAnswer, webrtc_, nullptr);
+    g_signal_emit_by_name(webrtc_, "set-remote-description", offer, promise);
+    gst_webrtc_session_description_free(offer);
+    return true;
 }
 
 bool
@@ -965,6 +986,12 @@ WebRTCSession::createPipeline(int opusPayloadType, int vp8PayloadType)
     GstElement *resample   = gst_element_factory_make("audioresample", nullptr);
     GstElement *queue1     = gst_element_factory_make("queue", nullptr);
     GstElement *opusenc    = gst_element_factory_make("opusenc", nullptr);
+    g_object_set(opusenc, "audio-type", 2048, nullptr);           // OPUS_APPLICATION_VOIP: voice-optimised mode
+    g_object_set(opusenc, "inband-fec", TRUE, nullptr);           // recover lost packets without retransmit round-trip
+    g_object_set(opusenc, "packet-loss-percentage", 5, nullptr);  // FEC aggressiveness (assume ~5% loss)
+    g_object_set(opusenc, "dtx", TRUE, nullptr);                  // silence suppression
+
+
     GstElement *rtp        = gst_element_factory_make("rtpopuspay", nullptr);
     GstElement *queue2     = gst_element_factory_make("queue", nullptr);
     GstElement *capsfilter = gst_element_factory_make("capsfilter", nullptr);
@@ -1104,8 +1131,15 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
                 pipe_ = nullptr;
                 return false;
             }
-            g_object_set(
-              d3d11screensrc, "window-handle", static_cast<guint64>(shareWindowId_), nullptr);
+            if (shareWindowId_ & (1ULL << 32)) {
+                // Encoded HMONITOR: extract the lower 32 bits and pass via monitor-handle
+                guint64 hmon =
+                  static_cast<guint64>(static_cast<uint32_t>(shareWindowId_ & 0xFFFFFFFFULL));
+                g_object_set(d3d11screensrc, "monitor-handle", hmon, nullptr);
+            } else {
+                g_object_set(
+                  d3d11screensrc, "window-handle", static_cast<guint64>(shareWindowId_), nullptr);
+            }
             g_object_set(
               d3d11screensrc, "show-cursor", !settings->screenShareHideCursor(), nullptr);
             g_object_set(d3d11screensrc, "do-timestamp", (gboolean)1, nullptr);
@@ -1197,6 +1231,11 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
     GstElement *vp8enc = gst_element_factory_make("vp8enc", nullptr);
     g_object_set(vp8enc, "deadline", 1, nullptr);
     g_object_set(vp8enc, "error-resilient", 1, nullptr);
+    g_object_set(vp8enc, "target-bitrate", 2000000, nullptr); // 2 Mbps
+    g_object_set(vp8enc, "end-usage", 1, nullptr); // CBR
+    g_object_set(vp8enc, "keyframe-max-dist", 60, nullptr);  // 60 secs max key frame distance
+    g_object_set(vp8enc, "max-quantizer", 52, nullptr); // Less blockiness
+    g_object_set(vp8enc, "token-partitions", 2, nullptr);
     GstElement *rtpvp8pay     = gst_element_factory_make("rtpvp8pay", nullptr);
     GstElement *rtpqueue      = gst_element_factory_make("queue", nullptr);
     GstElement *rtpcapsfilter = gst_element_factory_make("capsfilter", nullptr);
