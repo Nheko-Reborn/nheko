@@ -216,6 +216,9 @@ struct MatrixUriParseResult
 std::optional<MatrixUriParseResult>
 parseMatrixUri(QString uri);
 
+std::optional<QUrl>
+parseMatrixIdentifier(QString identifier, QString &eventId, const QString &query);
+
 void
 markFileAsFromWeb(const QString &file);
 }
