@@ -4624,7 +4624,7 @@ Cache::updateSpaces(lmdb::txn &txn,
 
                 auto create = getStateEvent<mtx::events::state::Create>(txn, space)
                                 .value_or(mtx::events::StateEvent<mtx::events::state::Create>{});
-                auto pls    = getStateEvent<mtx::events::state::PowerLevels>(txn, space);
+                auto pls = getStateEvent<mtx::events::state::PowerLevels>(txn, space);
 
                 if (!pls)
                     continue;

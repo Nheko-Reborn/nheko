@@ -484,8 +484,8 @@ CommunitiesModel::sync(const mtx::responses::Sync &sync_)
         auto &oldUnreads       = roomNotificationCache[roomId];
         auto notificationCDiff = -static_cast<int64_t>(oldUnreads.notification_count) +
                                  static_cast<int64_t>(room.unread_notifications.notification_count);
-        auto highlightCDiff    = -static_cast<int64_t>(oldUnreads.highlight_count) +
-                                 static_cast<int64_t>(room.unread_notifications.highlight_count);
+        auto highlightCDiff = -static_cast<int64_t>(oldUnreads.highlight_count) +
+                              static_cast<int64_t>(room.unread_notifications.highlight_count);
 
         auto applyDiff = [notificationCDiff,
                           highlightCDiff](mtx::responses::UnreadNotifications &n) {
