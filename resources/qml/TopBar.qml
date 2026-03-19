@@ -292,11 +292,16 @@ Pane {
                 id: unpinDialog
 
                 property string eventId
+                property var roomAtOpen
 
                 title: qsTr("Unpin")
                 text: qsTr("Are you sure you want to unpin this message?")
                 buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
-                onOkClicked: room.unpin(eventId)
+                onOkClicked: {
+                    if (roomAtOpen) {
+                        roomAtOpen.unpin(eventId);
+                    }
+                }
             }
 
             ScrollView {
@@ -353,6 +358,7 @@ Pane {
 
                             onClicked: {
                                 unpinDialog.eventId = modelData;
+                                unpinDialog.roomAtOpen = room;
                                 unpinDialog.open();
                             }
                         }

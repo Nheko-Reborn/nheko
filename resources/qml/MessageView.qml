@@ -436,11 +436,19 @@ Item {
 
             P.MessageDialog {
                 property string eventId
+                property var targetRoom
+
+                Component.onCompleted: {
+                    targetRoom = room;
+                }
 
                 title: qsTr("Pin Message")
                 text: qsTr("Are you sure you want to pin this message?")
                 buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
-                onOkClicked: room.pin(eventId)
+                onOkClicked: {
+                    if (targetRoom)
+                        targetRoom.pin(eventId)
+                }
             }
         }
 
@@ -449,11 +457,19 @@ Item {
 
             P.MessageDialog {
                 property string eventId
+                property var targetRoom
+
+                Component.onCompleted: {
+                    targetRoom = room;
+                }
 
                 title: qsTr("Unpin Message")
                 text: qsTr("Are you sure you want to unpin this message?")
                 buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
-                onOkClicked: room.unpin(eventId)
+                onOkClicked: {
+                    if (targetRoom)
+                        targetRoom.unpin(eventId)
+                }
             }
         }
 
