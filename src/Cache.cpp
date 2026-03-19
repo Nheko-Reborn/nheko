@@ -4624,7 +4624,7 @@ Cache::updateSpaces(lmdb::txn &txn,
 
                 auto create = getStateEvent<mtx::events::state::Create>(txn, space)
                                 .value_or(mtx::events::StateEvent<mtx::events::state::Create>{});
-                auto pls    = getStateEvent<mtx::events::state::PowerLevels>(txn, space);
+                auto pls = getStateEvent<mtx::events::state::PowerLevels>(txn, space);
 
                 if (!pls)
                     continue;
@@ -5611,7 +5611,12 @@ Cache::verificationStatus_(const std::string &user_id, lmdb::txn &txn)
     crypto::Trust trustlevel = crypto::Trust::Unverified;
     if (user_id == local_user) {
         status.verified_devices.insert(http::client()->device_id());
+        status.verified_device_keys[olm::client()->identity_keys().curve25519] =
+          crypto::Trust::Verified;
         trustlevel = crypto::Trust::Verified;
+        nhlog::crypto()->debug("  {} is local user, injecting own device_id and key: {}",
+                               user_id,
+                               olm::client()->identity_keys().curve25519);
     }
 
     auto verifyAtLeastOneSig = [](const auto &toVerif,

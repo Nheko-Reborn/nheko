@@ -74,7 +74,7 @@ NotificationsManager::postNotification(const mtx::responses::Notification &notif
 
     const auto isEncrypted = std::get_if<mtx::events::EncryptedEvent<mtx::events::msg::Encrypted>>(
                                &notification.event) != nullptr;
-    const auto isReply     = utils::isReply(notification.event);
+    const auto isReply = utils::isReply(notification.event);
 
     auto playSound = false;
 
