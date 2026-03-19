@@ -8,6 +8,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.13
+import Qt.labs.platform 1.1 as P
 import im.nheko 1.0
 
 Item {
@@ -431,6 +432,48 @@ Item {
         }
 
         Component {
+            id: pinDialogC
+
+            P.MessageDialog {
+                property string eventId
+                property var targetRoom
+
+                Component.onCompleted: {
+                    targetRoom = room;
+                }
+
+                title: qsTr("Pin Message")
+                text: qsTr("Are you sure you want to pin this message?")
+                buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
+                onOkClicked: {
+                    if (targetRoom)
+                        targetRoom.pin(eventId)
+                }
+            }
+        }
+
+        Component {
+            id: unpinDialogC
+
+            P.MessageDialog {
+                property string eventId
+                property var targetRoom
+
+                Component.onCompleted: {
+                    targetRoom = room;
+                }
+
+                title: qsTr("Unpin Message")
+                text: qsTr("Are you sure you want to unpin this message?")
+                buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
+                onOkClicked: {
+                    if (targetRoom)
+                        targetRoom.unpin(eventId)
+                }
+            }
+        }
+
+        Component {
             id: removeReason
 
             InputDialog {
@@ -530,7 +573,19 @@ Item {
                     text: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? qsTr("Un&pin") : qsTr("&Pin")
                     visible: (room ? room.permissions.canChange(MtxEvent.PinnedEvents) : false)
 
-                    onTriggered: visible && room.pinnedMessages.includes(messageContextMenuC.eventId) ? room.unpin(messageContextMenuC.eventId) : room.pin(messageContextMenuC.eventId)
+                    onTriggered: {
+                        if (room && room.pinnedMessages.includes(messageContextMenuC.eventId)) {
+                            var unpinDialog = unpinDialogC.createObject(timelineRoot);
+                            unpinDialog.eventId = messageContextMenuC.eventId;
+                            unpinDialog.open();
+                            timelineRoot.destroyOnClose(unpinDialog);
+                        } else {
+                            var pinDialog = pinDialogC.createObject(timelineRoot);
+                            pinDialog.eventId = messageContextMenuC.eventId;
+                            pinDialog.open();
+                            timelineRoot.destroyOnClose(pinDialog);
+                        }
+                    }
                 }
             }
             Component {
