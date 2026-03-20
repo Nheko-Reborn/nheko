@@ -622,22 +622,22 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>Kick a user from the current room. Reason is optional. If user is left out, will try to kick the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keluarkan pengguna dari ruangan saat ini. Alasan bersifat opsional. Jika pengguna ditinggalkan, akan mencoba mengeluarkan pengirim yang kamu balas.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Ban a user from the current room. Reason is optional. If user is left out, will try to ban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mencekal pengguna dari ruangan saat ini. Alasan bersifat opsional. Jika pengguna ditinggalkan, akan mencoba mencekal pengirim yang kamu balas.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Unban a user in the current room. Reason is optional. If user is left out, will try to unban the sender you are replying to.</source>
-        <translation type="unfinished"></translation>
+        <translation>Batal pencekalan pengguna dalam ruangan saat ini. Alasan bersifat opsional. Jika pengguna ditinggalkan, akan mencoba membatalkan pencekalan pengirim yang kamu balas.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Redact an event by event id or that you are replying to or all locally cached messages of a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Redaksi tindakan berdasarkan ID tindakan atau yang kamu balas, atau semua pesan pengguna yang di-cache secara lokal.</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -772,12 +772,12 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+2"/>
         <source>Block all invites from a user, a server, to a specific room or set the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Blokir semua undangan dari pengguna, server, ke ruangan tertentu atau atur bawaan.</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Allow all invites from a user, a server, to a specific room or set the default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Izinkan semua undangan dari pengguna, server, ke ruangan tertentu atau atur bawaan.</translation>
     </message>
 </context>
 <context>
@@ -1411,7 +1411,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+20"/>
         <source>Ignoring a user hides their messages (they can still see yours!).</source>
-        <translation>Mengabaikan pengguna menyembunyikan pesannya (tetapi mereka masih dapat melihat pesan Anda!).</translation>
+        <translation>Mengabaikan pengguna menyembunyikan pesannya (tetapi mereka masih dapat melihat pesanmu!).</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -1598,7 +1598,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+623"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
-        <translation>Anda perlu mxid yang valid saat mengabaikan pengguna. &apos;%1&apos; bukan userid yang valid.</translation>
+        <translation>Kamu perlu MXID yang valid saat mengabaikan pengguna. &apos;%1&apos; bukan userid yang valid.</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -1632,7 +1632,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <location line="+13"/>
         <source>@user:yourserver.example.com</source>
         <comment>Example user id. The name &apos;user&apos; can be localized however you want.</comment>
-        <translation>@pengguna:serveranda.contoh.id</translation>
+        <translation>@pengguna:servermu.contoh.id</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -1689,7 +1689,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
         <location line="+64"/>
         <location line="+133"/>
         <source>You have entered an invalid Matrix ID e.g. @user:yourserver.example.com</source>
-        <translation>Anda telah memasukkan ID Matrix yang tidak valid, misalnya @pengguna:serveranda.contoh.id</translation>
+        <translation>Kamu telah memasukkan ID Matrix yang tidak valid, misalnya @pengguna:servermu.contoh.id</translation>
     </message>
     <message>
         <location line="-163"/>
@@ -1769,7 +1769,7 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
     <message>
         <location line="+1"/>
         <source>e.g @user:yourserver.example.com</source>
-        <translation>misalnya @pengguna:serveranda.contoh.com</translation>
+        <translation>misalnya @pengguna:servermu.contoh.com</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1777,10 +1777,10 @@ Kamu dapat memberikan alasan untuk orang lain untuk menerima ketukanmu:</transla
 You can also put your homeserver address there if your server doesn&apos;t support .well-known lookup.
 Example: @user:yourserver.example.com
 If Nheko fails to discover your homeserver, it will show you a field to enter the server manually.</source>
-        <translation>Nama login Anda. Sebuah ID Matrix seharusnya berawalan dengan @ beserta ID penggunanya. Setelah ID pengguna, Anda perlu memasukkan nama server Anda setelah tanda titik dua (:).
-Anda juga dapat memasukkan alamat homeserver Anda jika server tidam mendukung pengecekan .well-known.
-Contoh: @pengguna:serveranda.contoh.id
-Jika Nheko gagal menjelajahi homeserver Anda, maka akan ditampilkan kolom untuk memasukkan server secara manual.</translation>
+        <translation>Nama login kamu. Sebuah ID Matrix seharusnya berawalan dengan @ beserta ID penggunanya. Setelah ID pengguna, kamu perlu memasukkan nama server kamu setelah tanda titik dua (:).
+Kamu juga dapat memasukkan alamat homeserver kamu jika server tidak mendukung pengecekan .well-known.
+Contoh: @pengguna:servermu.contoh.id
+Jika Nheko gagal menjelajahi homeserver kamu, maka akan ditampilkan kolom untuk memasukkan server secara manual.</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -1815,14 +1815,14 @@ Jika Nheko gagal menjelajahi homeserver Anda, maka akan ditampilkan kolom untuk 
     <message>
         <location line="+1"/>
         <source>yourserver.example.com:8787</source>
-        <translation>serveranda.contoh.id:8787</translation>
+        <translation>servermu.contoh.id:8787</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>The address that can be used to contact your homeserver&apos;s client API.
 Example: https://yourserver.example.com:8787</source>
-        <translation>Alamat yang dapat digunakan untuk menghubungi API klien homeserver Anda.
-Contoh: https://serveranda.contoh.id:8787</translation>
+        <translation>Alamat yang dapat digunakan untuk menghubungi API klien homeserver kamu.
+Contoh: https://servermu.contoh.id:8787</translation>
     </message>
     <message>
         <location line="+32"/>
@@ -2831,12 +2831,12 @@ Contoh: https://serveranda.contoh.id:8787</translation>
     <message>
         <location line="+15"/>
         <source>This message you are reporting will be sent to your server administrator for review. Please note that not all server administrators review reported content. You should also ask a room moderator to remove the content if necessary.</source>
-        <translation>Pesan ini yang akan dilaporkan akan dikirim ke administrator server Anda untuk ditinjau. Perlu dicatat bahwa tidak semua administrator meninjau konten yang dilaporkan. Anda seharusnya juga bertanya kepada moderator ruangan untuk menghapus konten tersebut jika diperlukan.</translation>
+        <translation>Pesan ini yang akan dilaporkan akan dikirim ke administrator server kamu untuk ditinjau. Perlu dicatat bahwa tidak semua administrator meninjau konten yang dilaporkan. Kamu seharusnya juga bertanya kepada moderator ruangan untuk menghapus konten tersebut jika diperlukan.</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Enter your reason for reporting:</source>
-        <translation>Masukkan alasan Anda melaporkan:</translation>
+        <translation>Masukkan alasanmu melaporkan:</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -3718,7 +3718,7 @@ Jika kamu memilih verifikasi, kamu harus memiliki perangkat lain yang tersedia. 
     <message>
         <location filename="../qml/components/SpaceMenu.qml" line="+16"/>
         <source>Add or remove from community...</source>
-        <translation type="unfinished">Tambahkan atau hapus dari komunitas...</translation>
+        <translation>Tambahkan atau hapus dari komunitas...</translation>
     </message>
 </context>
 <context>
@@ -4309,8 +4309,8 @@ Alasan: %4</translation>
     <message numerus="yes">
         <location line="+115"/>
         <source>%n hour(s) later</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n jam kemudian</numerusform>
         </translation>
     </message>
     <message>
@@ -5196,7 +5196,7 @@ Ketika dinonaktifkan, semua pesan akan dikirim sebagai teks biasa.</translation>
     <message>
         <location line="+2"/>
         <source>If images should be automatically displayed. You can select between always showing images by default, only show them by default in private rooms or always require interaction to show images.</source>
-        <translation>Apakah gambar ditampilkan secara otomatis. Anda dapat memilih antara selalu menampilkan gambar secara bawaan, hanya tampilkan dalam ruangan pribadi secara bawaan atau selalu memerlukan interaksi untuk menampilkan gambar.</translation>
+        <translation>Apakah gambar ditampilkan secara otomatis. Kamu dapat memilih antara selalu menampilkan gambar secara bawaan, hanya tampilkan dalam ruangan pribadi secara bawaan atau selalu memerlukan interaksi untuk menampilkan gambar.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5423,7 +5423,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
     <message>
         <location line="+4"/>
         <source>Manage your ignored users.</source>
-        <translation>Kelola pengguna Anda yang diabaikan.</translation>
+        <translation>Kelola pengguna yang diabaikan oleh kamu.</translation>
     </message>
     <message>
         <location line="+142"/>
@@ -5781,7 +5781,7 @@ Pengaturan ini akan ditetapkan saat dimulai ulang.</translation>
         <location line="+6"/>
         <location line="+26"/>
         <source>You sent a spoiler.</source>
-        <translation>Anda mengirim bocoran.</translation>
+        <translation>Kamu mengirim bocoran.</translation>
     </message>
     <message>
         <location line="-23"/>
