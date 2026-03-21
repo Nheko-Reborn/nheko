@@ -2166,10 +2166,45 @@ mxidFromSegments(QStringView sigil, QStringView mxid)
     }
 }
 
+std::optional<QUrl>
+utils::parseMatrixIdentifier(QString identifier, QString &eventId, const QString &query)
+{
+    if (identifier.isEmpty())
+        return std::nullopt;
+
+    QUrl uri_;
+
+    if (identifier.startsWith(QLatin1String("@"))) {
+        QByteArray newUri = "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+        if (!query.isEmpty())
+            newUri.append("?" + query.toUtf8());
+        uri_ = QUrl::fromEncoded(newUri);
+    } else if (identifier.startsWith(QLatin1String("#"))) {
+        QByteArray newUri = "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+        if (!eventId.isEmpty())
+            newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
+        if (!query.isEmpty())
+            newUri.append("?" + query.toUtf8());
+        uri_ = QUrl::fromEncoded(newUri);
+    } else if (identifier.startsWith(QLatin1String("!"))) {
+        QByteArray newUri = "matrix:roomid/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
+        if (!eventId.isEmpty())
+            newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
+        if (!query.isEmpty())
+            newUri.append("?" + query.toUtf8());
+        uri_ = QUrl::fromEncoded(newUri);
+    }
+
+    return uri_;
+}
+
 std::optional<utils::MatrixUriParseResult>
 utils::parseMatrixUri(QString uri)
 {
     QUrl uri_{uri};
+    QString query;
+    QString eventId;
+    QString identifier = uri; // fallback if it's a raw identifier
 
     // Convert matrix.to URIs to proper format
     if (uri_.scheme() == QLatin1String("https") && uri_.host() == QLatin1String("matrix.to")) {
@@ -2178,37 +2213,21 @@ utils::parseMatrixUri(QString uri)
             p.remove(0, 1);
 
         auto temp = p.split(QStringLiteral("?"));
-        QString query;
         if (temp.size() >= 2)
             query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
 
-        temp            = temp.first().split(QStringLiteral("/"));
-        auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
-        QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
-        if (!identifier.isEmpty()) {
-            if (identifier.startsWith(QLatin1String("@"))) {
-                QByteArray newUri = "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                uri_ = QUrl::fromEncoded(newUri);
-            } else if (identifier.startsWith(QLatin1String("#"))) {
-                QByteArray newUri = "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!eventId.isEmpty())
-                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                uri_ = QUrl::fromEncoded(newUri);
-            } else if (identifier.startsWith(QLatin1String("!"))) {
-                QByteArray newUri =
-                  "matrix:roomid/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!eventId.isEmpty())
-                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                uri_ = QUrl::fromEncoded(newUri);
-            }
-        }
+        temp       = temp.first().split(QStringLiteral("/"));
+        identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
+        eventId    = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
+    } else {
+        auto temp  = identifier.split(QStringLiteral("/"));
+        identifier = temp.takeFirst();
+        eventId    = temp.join('/');
     }
+    const auto optUri = parseMatrixIdentifier(identifier, eventId, query);
+    if (!optUri)
+        return {};
+    uri_ = *optUri;
 
     // non-matrix URIs are not handled by us, return false
     if (uri_.scheme() != QLatin1String("matrix"))
