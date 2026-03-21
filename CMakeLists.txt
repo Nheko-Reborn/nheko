@@ -286,6 +286,20 @@ else()
     find_package(KDSingleApplication-qt6 REQUIRED)
 endif()
 
+if(UNIX)
+    set(KF_MIN_VERSION "6.0.0")
+    find_package(ECM ${KF_MIN_VERSION})
+    if(ECM_FOUND)
+        list(APPEND CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
+        find_package(KF6 COMPONENTS
+            Kirigami
+        )
+        if(KF6_FOUND)
+            add_compile_definitions(NHEKO_USE_KIRIGAMI)
+        endif()
+    endif()
+endif()
+
 if(Qt6Widgets_FOUND)
     if(Qt6Widgets_VERSION VERSION_LESS 6.5.0)
         message(STATUS "Qt version ${Qt6Widgets_VERSION}")
@@ -838,12 +852,20 @@ set(QML_SOURCES
     resources/qml/delegates/EncryptionEnabled.qml
     resources/qml/ui/TimelineEffects.qml
 )
+set(QML_DEPENDENCIES
+    QtQuick
+    QtQml.Models
+)
+if(KF6_FOUND)
+    list(APPEND QML_SOURCES "resources/qml/components/KirigamiWheelHandler.qml")
+    list(APPEND QML_DEPENDENCIES "org.kde.kirigami")
+endif()
 qt_add_qml_module(nheko
     URI im.nheko
     NO_RESOURCE_TARGET_PATH
     RESOURCE_PREFIX "/"
     VERSION 1.1
-    DEPENDENCIES QtQuick QtQml.Models
+    DEPENDENCIES ${QML_DEPENDENCIES}
     QML_FILES
     ${QML_SOURCES}
     SOURCES
