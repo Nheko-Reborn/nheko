@@ -4845,6 +4845,11 @@ Raison : %4</translation>
     </message>
     <message>
         <location line="+2"/>
+        <source>Always display image caption</source>
+    <translation>Afficher la légende des images en permanence</translation>
+    </message>
+    <message>
+        <location line="+2"/>
         <source>Show images automatically</source>
         <translation>Montrer les images automatiquement</translation>
     </message>
@@ -5232,6 +5237,11 @@ Si désactivé, tous les messages sont envoyés comme texte brut.</translation>
         <location line="+2"/>
         <source>Plays media like GIFs or WEBPs only when explicitly hovering over them.</source>
         <translation>Joue les images comme les GIFs ou WEBPs uniquement quand la souris est au-dessus.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Always display the images captions, not only when hovering over them.</source>
+        <translation>Afficher en permanence la légende des images, au lieu de le faire quand la souris est au-dessus.</translation>
     </message>
     <message>
         <location line="+2"/>
