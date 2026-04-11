@@ -124,7 +124,7 @@
     <message>
         <location line="+42"/>
         <source>Enter additional rooms not in the list yet...</source>
-        <translation type="unfinished"></translation>
+        <translation>Введите дополнительные комнаты, которых ещё нет в списке...</translation>
     </message>
 </context>
 <context>
@@ -472,7 +472,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/join &lt;!roomid|#alias&gt; [reason]</source>
-        <translation type="unfinished"></translation>
+        <translation>/join &lt;!id-комнаты|#псевдоним&gt; [причина]</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1468,12 +1468,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Add to pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить в набор</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Change the overview image for this pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить превью для этого набора</translation>
     </message>
     <message>
         <location line="+13"/>
