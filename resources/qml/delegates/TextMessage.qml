@@ -2,6 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+import QtQuick
 import ".."
 import im.nheko
 
@@ -15,6 +16,7 @@ MatrixText {
     property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
     property int metadataWidth: 100
     property bool fitsMetadata: false //positionAt(width,height-4) == positionAt(width-metadataWidth-10, height-4)
+    property bool showSpoilers: false
 
     // table border-collapse doesn't seem to work
     text: `
@@ -33,11 +35,12 @@ MatrixText {
         padding: ` + Math.ceil(fontMetrics.lineSpacing/2) + `px;
     }
     blockquote { margin-left: 1em; }
-    ` + (!Settings.mobileMode ? `span[data-mx-spoiler] {
+    span[data-mx-spoiler] {` + (!showSpoilers ? `
         color: transparent;
-        background-color: ` + palette.text + `;
-    }` : "") +  // TODO(Nico): Figure out how to support mobile
-    `</style>
+        background-color: ` + palette.text + `;` : `
+        background-color: ` + palette.alternateBase + ';') + `
+    }
+    </style>
     ` + formatted.replace(/<del>/g, "<s>").replace(/<\/del>/g, "</s>").replace(/<strike>/g, "<s>").replace(/<\/strike>/g, "</s>")
 
     enabled: !isReply
@@ -49,4 +52,7 @@ MatrixText {
         cursorShape: Qt.PointingHandCursor
     }
 
+    TapHandler {
+        onTapped: showSpoilers = !showSpoilers
+    }
 }
