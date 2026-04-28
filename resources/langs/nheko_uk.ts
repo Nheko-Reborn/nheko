@@ -587,7 +587,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>/gradualglitch &lt;message&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>/gradualglitch &lt;повідомлення&gt;</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -743,7 +743,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Send a message with a glitch effect.</source>
-        <translation type="unfinished"></translation>
+        <translation>Надсилає повідомлення з ефектом глюку.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -768,12 +768,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Ignore a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ігнорувати користувача.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Stop ignoring a user.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перестати ігнорувати користувача.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1180,7 +1180,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Encrypted by an unverified device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Зашифровано неперевіреним пристроєм.</translation>
     </message>
 </context>
 <context>
@@ -1285,7 +1285,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The verification was accepted by a different device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перевірка була прийнята іншим пристроєм.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1414,17 +1414,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/IgnoredUsers.qml" line="+16"/>
         <source>Ignored users</source>
-        <translation type="unfinished"></translation>
+        <translation>Ігноровані користувачі</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Ignoring a user hides their messages (they can still see yours!).</source>
-        <translation type="unfinished"></translation>
+        <translation>Ігнорування користувача ховає усі його повідомлення (але вони все ще можуть бачити ваші!)</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Stop Ignoring.</source>
-        <translation type="unfinished"></translation>
+        <translation>Перестати ігнорувати</translation>
     </message>
 </context>
 <context>
@@ -1440,7 +1440,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ImagePackDeleteDialog.qml" line="+14"/>
         <source>Are you sure you wish to delete the sticker pack &apos;%1&apos;?</source>
-        <translation type="unfinished"></translation>
+        <translation>Ви впевнені, що хочете видалити пак наліпок &apos;%1&apos;?</translation>
     </message>
 </context>
 <context>
@@ -1606,7 +1606,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+0"/>
         <source>Select file(s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Обрати файл(и)</translation>
     </message>
     <message>
         <location line="+623"/>
@@ -1640,7 +1640,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+13"/>
         <source>@user:yourserver.example.com</source>
         <comment>Example user id. The name &apos;user&apos; can be localized however you want.</comment>
-        <translation type="unfinished"></translation>
+        <translation>@користувач:вашсервер.приклад.com</translation>
     </message>
     <message>
         <location line="+42"/>
@@ -1800,7 +1800,7 @@ If Nheko fails to discover your homeserver, it will show you a field to enter th
     <message>
         <location line="+13"/>
         <source>Show/Hide Password</source>
-        <translation type="unfinished"></translation>
+        <translation>Показати/Сховати пароль</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -1952,7 +1952,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+11"/>
         <source>Go to message</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейти до повідомлення</translation>
     </message>
     <message>
         <location line="+17"/>
@@ -1972,7 +1972,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+24"/>
         <source>Go to &amp;message</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейти до &amp;message</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -2147,7 +2147,7 @@ Example: https://yourserver.example.com:8787</source>
         <location line="+12"/>
         <source>%1 replied with a spoiler.</source>
         <comment>Format a reply in a notification. %1 is the sender.</comment>
-        <translation type="unfinished"></translation>
+        <translation>%1 відповів схованим повідомленням.</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -2888,7 +2888,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+0"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Відкрити</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -2989,17 +2989,17 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+7"/>
         <source>Online</source>
-        <translation type="unfinished"></translation>
+        <translation>В мережі</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Unavailable</source>
-        <translation type="unfinished"></translation>
+        <translation>Не доступний</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Offline</source>
-        <translation type="unfinished"></translation>
+        <translation>Не в мережі</translation>
     </message>
     <message>
         <location line="+54"/>
@@ -3042,7 +3042,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+12"/>
         <source>Mark as read</source>
-        <translation type="unfinished"></translation>
+        <translation>Відмітити як прочитане</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3212,10 +3212,10 @@ Example: https://yourserver.example.com:8787</source>
     <message numerus="yes">
         <location line="+11"/>
         <source>%n member(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%n учасник</numerusform>
+            <numerusform>%n учасника</numerusform>
+            <numerusform>%n учасників</numerusform>
         </translation>
     </message>
     <message>
