@@ -146,7 +146,7 @@ AliasEditingModel::deleteAlias(int row)
 void
 AliasEditingModel::addAlias(QString newAlias)
 {
-    const auto aliasStr = newAlias.toStdString();
+    const auto aliasStr = newAlias.trimmed().toStdString();
     for (const auto &e : std::as_const(aliases)) {
         if (e.alias == aliasStr) {
             return;
