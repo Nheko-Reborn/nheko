@@ -679,6 +679,12 @@ TimelineModel::data(const mtx::events::collections::TimelineEvents &event, int r
                 }
                 const auto height = matchImgHeight.match(imgReplacement).captured(2).toInt();
                 imgParams         = QStringLiteral("?scale&height=%1").arg(height);
+            } else if (curImg.contains(QLatin1String("data-mx-emoticon"))) {
+                // put emoticon attribute last to handle all the variants of setting an empty value.
+                imgReplacement =
+                  imgReplacement
+                    .replace(QLatin1String("data-mx-emoticon"), "height=%1 data-mx-emoticon")
+                    .arg(ascent * 2);
             }
 
             // Replace src in current <img>.
