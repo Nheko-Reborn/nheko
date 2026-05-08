@@ -156,12 +156,10 @@ sudo apk add nheko
 
 #### openSUSE
 
-Note: these instructions have only been tested on Tumbleweed.
-
+Note: these instructions have only been tested on Tumbleweed.-
 First, install nheko:
+
 ```bash
-sudo zypper addrepo https://download.opensuse.org/repositories/network:messaging:matrix/openSUSE_Tumbleweed/network:messaging:matrix.repo
-sudo zypper ref
 sudo zypper in nheko
 ```
 
