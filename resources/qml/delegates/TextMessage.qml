@@ -15,6 +15,7 @@ MatrixText {
     property string copyText: selectedText ? getText(selectionStart, selectionEnd) : body
     property int metadataWidth: 100
     property bool fitsMetadata: false //positionAt(width,height-4) == positionAt(width-metadataWidth-10, height-4)
+    height: isReply ? Math.min(contentHeight, timelineView.height / 10) : contentHeight
 
     // table border-collapse doesn't seem to work
     text: `
