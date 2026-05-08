@@ -2,12 +2,14 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include <QGuiApplication>
+
 #include "Theme.h"
 
 QPalette
 Theme::paletteFromTheme(QStringView theme)
 {
-    static QPalette original;
+    static QPalette original = QGuiApplication::palette();
     if (theme == u"light") {
         static QPalette lightActive = [] {
             QPalette lightActive(
