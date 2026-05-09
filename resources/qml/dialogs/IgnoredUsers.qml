@@ -26,6 +26,10 @@ Window {
         spacing: Nheko.paddingMedium
         footerPositioning: ListView.OverlayFooter
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+        }
+
         model: TimelineManager.ignoredUsers
         header: ColumnLayout {
             Text {

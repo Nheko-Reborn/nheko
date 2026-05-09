@@ -90,6 +90,10 @@ ApplicationWindow {
             spacing: 4
             cacheBuffer: 50
 
+            Loader {
+                source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+            }
+
             delegate: RowLayout {
                 anchors.left: parent.left
                 anchors.right: parent.right

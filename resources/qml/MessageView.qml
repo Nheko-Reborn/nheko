@@ -66,6 +66,10 @@ Item {
         spacing: 2
         verticalLayoutDirection: ListView.BottomToTop
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "components/KirigamiWheelHandler.qml" : ""
+        }
+
         property int lastScrollPos: 0
 
         // Fixup the scroll position when the height changes. Without this, the view is kept around the center of the currently visible content, while we usually want to stick to the bottom.

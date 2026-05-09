@@ -55,6 +55,9 @@ ApplicationWindow {
 
             clip: true
 
+            Loader {
+                source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+            }
 
             model: roomSettings.allowedRoomsModel
             spacing: 4

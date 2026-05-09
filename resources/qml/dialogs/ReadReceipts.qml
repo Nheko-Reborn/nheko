@@ -58,6 +58,10 @@ ApplicationWindow {
                 boundsBehavior: Flickable.StopAtBounds
                 model: readReceipts
 
+                Loader {
+                    source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+                }
+
                 delegate: ItemDelegate {
                     id: del
 

@@ -122,6 +122,10 @@ Container {
     contentItem: ListView {
         id: view
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "KirigamiWheelHandler.qml" : ""
+        }
+
         model: container.contentModel
         snapMode: ListView.SnapOneItem
         orientation: ListView.Horizontal
