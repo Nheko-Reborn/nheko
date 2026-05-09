@@ -318,6 +318,16 @@ main(int argc, char *argv[])
 
     registerSignalHandlers();
 
+#if defined(GSTREAMER_AVAILABLE) && defined(Q_OS_WINDOWS)
+    // Set GStreamer plugin path to bundled plugins next to the executable
+    {
+        QString pluginPath =
+          QCoreApplication::applicationDirPath() + QStringLiteral("/lib/gstreamer-1.0");
+        qputenv("GST_PLUGIN_SYSTEM_PATH", pluginPath.toLocal8Bit());
+        qputenv("GST_PLUGIN_SCANNER", "");
+    }
+#endif
+
 #if defined(GSTREAMER_AVAILABLE) && (defined(Q_OS_MACOS) || defined(Q_OS_WINDOWS))
     // If the version of Qt we're running in does not use GLib, we need to
     // start a GMainLoop so that gstreamer can dispatch events.
