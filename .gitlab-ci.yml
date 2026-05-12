@@ -244,8 +244,15 @@ build-macos:
   stage: build
   tags: [macos]
   before_script:
+    - brew install python3 pkg-config clang-format cmake ninja openssl gstreamer meson pipx libnice-gstreamer
+    - pipx install aqtinstall
+    - pipx ensurepath
+    - . ~/.zshrc
+    - aqt -c aqt/settings.ini install-qt --outputdir "$HOME/Qt" mac desktop 6.10 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
     - rm -rf ../.hunter &&  mv .hunter ../.hunter || true
   script:
+    - export QTPATH=($HOME/Qt/6.*/macos/bin)
+    - export PATH="$QTPATH:${PATH}"
     - ./.ci/macos/build.sh
   after_script:
     - mv ../.hunter .hunter
@@ -271,17 +278,6 @@ build-macos-as:
     TART_REGISTRY_USERNAME: $CI_REGISTRY_USER
     TART_REGISTRY_PASSWORD: $CI_JOB_TOKEN
   tags: [macos-tart]
-  before_script:
-    - brew install python3 pkg-config clang-format cmake ninja openssl gstreamer pipx
-    - pipx install aqtinstall
-    - pipx ensurepath
-    - . ~/.zshrc
-    - mkdir $HOME/Qt
-    - aqt install-qt --outputdir $HOME/qt mac desktop 6.8 clang_64 -m qtlocation qtimageformats qtmultimedia qtpositioning qtshadertools
-  script:
-    - export QTPATH=($HOME/qt/6.*/macos/bin)
-    - export PATH="$QTPATH:${PATH}"
-    - ./.ci/macos/build.sh
 
 .codesign-macos: &codesign_macos
   stage: sign

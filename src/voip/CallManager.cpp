@@ -102,9 +102,16 @@ CallManager::CallManager(QObject *parent)
     }
 
     if (QGuiApplication::platformName() != QStringLiteral("windows") &&
+        QGuiApplication::platformName() != QStringLiteral("cocoa") &&
         session_.havePlugins(true, true, ScreenShareType::XDP, &errorMessage)) {
         screenShareTypes_.push_back(ScreenShareType::XDP);
         screenShareType_ = ScreenShareType::XDP;
+    }
+
+    if (QGuiApplication::platformName() == QStringLiteral("cocoa") &&
+        session_.havePlugins(false, true, ScreenShareType::AVF, &errorMessage)) {
+        screenShareTypes_.push_back(ScreenShareType::AVF);
+        screenShareType_ = ScreenShareType::AVF;
     }
 #endif
 
@@ -432,6 +439,13 @@ CallManager::handleEvent(const RoomEvent<CallInvite> &callInviteEvent)
       *std::find_if(members.begin(), members.end(), [&](RoomMember member) {
           return member.user_id.toStdString() == callInviteEvent.sender;
       });
+
+    // Check if room member was found
+    if (caller.user_id.isEmpty()) {
+        nhlog::ui()->error("WebRTC: Caller not found in room members");
+        return;
+    }
+
     if (isOnCall() || isOnCallOnOtherDevice()) {
         if (isOnCallOnOtherDevice_ != "")
             return;
@@ -874,7 +888,8 @@ bool
 CallManager::screenShareReady() const
 {
 #ifdef GSTREAMER_AVAILABLE
-    if (screenShareType_ == ScreenShareType::X11 || screenShareType_ == ScreenShareType::D3D11) {
+    if (screenShareType_ == ScreenShareType::X11 || screenShareType_ == ScreenShareType::D3D11 ||
+        screenShareType_ == ScreenShareType::AVF) {
         return true;
     } else {
         return ScreenCastPortal::instance().ready();
@@ -899,6 +914,9 @@ CallManager::screenShareTypeList()
             break;
         case ScreenShareType::XDP:
             ret.append(tr("PipeWire"));
+            break;
+        case ScreenShareType::AVF:
+            ret.append(tr("Screen Capture"));
             break;
         }
     }
@@ -1103,7 +1121,22 @@ CallManager::previewWindow(unsigned int index) const
     gst_caps_unref(caps);
 
     GstElement *screencastsrc = nullptr;
-    if (screenShareType_ == ScreenShareType::X11) {
+    if (screenShareType_ == ScreenShareType::AVF) {
+        GstElement *avfvideosrc = gst_element_factory_make("avfvideosrc", nullptr);
+        if (!avfvideosrc) {
+            nhlog::ui()->error("Failed to create avfvideosrc");
+            gst_object_unref(pipe_);
+            pipe_ = nullptr;
+            return;
+        }
+        g_object_set(avfvideosrc, "capture-screen", TRUE, nullptr);
+        g_object_set(
+          avfvideosrc, "capture-screen-cursor", !settings->screenShareHideCursor(), nullptr);
+        g_object_set(avfvideosrc, "do-timestamp", (gboolean)1, nullptr);
+
+        gst_bin_add(GST_BIN(pipe_), avfvideosrc);
+        screencastsrc = avfvideosrc;
+    } else if (screenShareType_ == ScreenShareType::X11) {
         GstElement *ximagesrc = gst_element_factory_make("ximagesrc", nullptr);
         if (!ximagesrc) {
             nhlog::ui()->error("Failed to create ximagesrc");

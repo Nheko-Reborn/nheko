@@ -47,5 +47,11 @@
     </array>
     <key>NSSupportsAutomaticGraphicsSwitching</key>
     <true/>
+    <key>NSCameraUsageDescription</key>                                                                                                                                   
+    <string>nheko needs camera access to make video calls.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>nheko needs microphone access to make voice and video calls.</string>
+    <key>NSScreenCaptureUsageDescription</key>
+    <string>nheko needs screen capture access to share your screen during video calls.</string>
 </dict>
 </plist>
