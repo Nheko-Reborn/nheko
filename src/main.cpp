@@ -346,7 +346,7 @@ main(int argc, char *argv[])
         bool to_stderr = bool(targets.removeAll("stderr"));
         QString path   = targets.removeAll("file")
                            ? QDir(QStandardPaths::writableLocation(QStandardPaths::CacheLocation))
-                               .filePath("nheko.log")
+                             .filePath("nheko.log")
                            : QLatin1String("");
         if (!targets.isEmpty()) {
             std::cerr << "Invalid log type '" << targets.first().toStdString().c_str() << "'"

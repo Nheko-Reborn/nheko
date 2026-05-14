@@ -20,10 +20,10 @@ Permissions::Permissions(QString roomId, QObject *parent)
 void
 Permissions::invalidate()
 {
-    pl     = cache::client()
-               ->getStateEvent<mtx::events::state::PowerLevels>(roomId_.toStdString())
-               .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
-               .content;
+    pl = cache::client()
+           ->getStateEvent<mtx::events::state::PowerLevels>(roomId_.toStdString())
+           .value_or(mtx::events::StateEvent<mtx::events::state::PowerLevels>{})
+           .content;
     create = cache::client()
                ->getStateEvent<mtx::events::state::Create>(roomId_.toStdString())
                .value_or(mtx::events::StateEvent<mtx::events::state::Create>{});

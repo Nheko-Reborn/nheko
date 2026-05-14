@@ -1044,17 +1044,17 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
 
         GstElement *camera = gst_device_create_element(device, nullptr);
         GstCaps *caps      = gst_caps_new_simple("video/x-raw",
-                                                 "width",
-                                                 G_TYPE_INT,
-                                                 resolution.first,
-                                                 "height",
-                                                 G_TYPE_INT,
-                                                 resolution.second,
-                                                 "framerate",
-                                                 GST_TYPE_FRACTION,
-                                                 frameRate.first,
-                                                 frameRate.second,
-                                                 nullptr);
+                                            "width",
+                                            G_TYPE_INT,
+                                            resolution.first,
+                                            "height",
+                                            G_TYPE_INT,
+                                            resolution.second,
+                                            "framerate",
+                                            GST_TYPE_FRACTION,
+                                            frameRate.first,
+                                            frameRate.second,
+                                            nullptr);
         camerafilter       = gst_element_factory_make("capsfilter", "camerafilter");
         g_object_set(camerafilter, "caps", caps, nullptr);
         gst_caps_unref(caps);
@@ -1157,14 +1157,14 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
         }
 
         GstCaps *caps          = gst_caps_new_simple("video/x-raw",
-                                                     "format",
-                                                     G_TYPE_STRING,
-                                                     "I420", // For vp8enc
-                                                     "framerate",
-                                                     GST_TYPE_FRACTION,
-                                                     settings->screenShareFrameRate(),
-                                                     1,
-                                                     nullptr);
+                                            "format",
+                                            G_TYPE_STRING,
+                                            "I420", // For vp8enc
+                                            "framerate",
+                                            GST_TYPE_FRACTION,
+                                            settings->screenShareFrameRate(),
+                                            1,
+                                            nullptr);
         GstElement *capsfilter = gst_element_factory_make("capsfilter", nullptr);
         g_object_set(capsfilter, "caps", caps, nullptr);
         gst_caps_unref(caps);
@@ -1201,16 +1201,16 @@ WebRTCSession::addVideoPipeline(int vp8PayloadType)
     GstElement *rtpqueue      = gst_element_factory_make("queue", nullptr);
     GstElement *rtpcapsfilter = gst_element_factory_make("capsfilter", nullptr);
     GstCaps *rtpcaps          = gst_caps_new_simple("application/x-rtp",
-                                                    "media",
-                                                    G_TYPE_STRING,
-                                                    "video",
-                                                    "encoding-name",
-                                                    G_TYPE_STRING,
-                                                    "VP8",
-                                                    "payload",
-                                                    G_TYPE_INT,
-                                                    vp8PayloadType,
-                                                    nullptr);
+                                           "media",
+                                           G_TYPE_STRING,
+                                           "video",
+                                           "encoding-name",
+                                           G_TYPE_STRING,
+                                           "VP8",
+                                           "payload",
+                                           G_TYPE_INT,
+                                           vp8PayloadType,
+                                           nullptr);
     g_object_set(rtpcapsfilter, "caps", rtpcaps, nullptr);
     gst_caps_unref(rtpcaps);
 
