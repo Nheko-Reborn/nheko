@@ -158,7 +158,7 @@ AbstractButton {
 
         anchors.fill: parent
 
-        visible: parent.hovered
+        visible: Settings.alwaysDisplayCaption || parent.hovered
 
         Rectangle {
             id: container

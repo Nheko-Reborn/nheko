@@ -89,6 +89,7 @@ UserSettings::load(std::optional<QString> profile)
     bubbles_              = settings.value("user/bubbles_enabled", false).toBool();
     smallAvatars_         = settings.value("user/small_avatars_enabled", false).toBool();
     animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
+    alwaysDisplayCaption_ = settings.value("user/always_display_caption", false).toBool();
     typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
     sortByImportance_     = settings.value("user/sort_by_unread", true).toBool();
     sortByAlphabet_       = settings.value("user/sort_by_alphabet", false).toBool();
@@ -389,6 +390,16 @@ UserSettings::setAnimateImagesOnHover(bool state)
         return;
     animateImagesOnHover_ = state;
     emit animateImagesOnHoverChanged(state);
+    save();
+}
+
+void
+UserSettings::setAlwaysDisplayCaption(bool state)
+{
+    if (state == alwaysDisplayCaption_)
+        return;
+    alwaysDisplayCaption_ = state;
+    emit alwaysDisplayCaptionChanged(state);
     save();
 }
 
@@ -952,6 +963,7 @@ UserSettings::save()
     settings.setValue("bubbles_enabled", bubbles_);
     settings.setValue("small_avatars_enabled", smallAvatars_);
     settings.setValue("animate_images_on_hover", animateImagesOnHover_);
+    settings.setValue("always_display_caption", alwaysDisplayCaption_);
     settings.setValue("desktop_notifications", hasDesktopNotifications_);
     settings.setValue("alert_on_notification", hasAlertOnNotification_);
     settings.setValue("theme", theme());
@@ -1070,6 +1082,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Enable small Avatars");
         case AnimateImagesOnHover:
             return tr("Play animated images only on hover");
+        case AlwaysDisplayCaption:
+            return tr("Always display image caption");
         case ShowImage:
             return tr("Show images automatically");
         case TypingNotifications:
@@ -1225,6 +1239,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->smallAvatars();
         case AnimateImagesOnHover:
             return i->animateImagesOnHover();
+        case AlwaysDisplayCaption:
+            return i->alwaysDisplayCaption();
         case ShowImage:
             return static_cast<int>(i->showImage());
         case TypingNotifications:
@@ -1395,6 +1411,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Avatars are resized to fit above the message.");
         case AnimateImagesOnHover:
             return tr("Plays media like GIFs or WEBPs only when explicitly hovering over them.");
+        case AlwaysDisplayCaption:
+            return tr("Always display the images captions, not only when hovering over them.");
         case ShowImage:
             return tr("If images should be automatically displayed. You can select between always "
                       "showing images by default, only show them by default in private rooms or "
@@ -1573,6 +1591,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case Bubbles:
         case SmallAvatars:
         case AnimateImagesOnHover:
+        case AlwaysDisplayCaption:
         case TypingNotifications:
         case SortByImportance:
         case SortByAlphabet:
@@ -1861,6 +1880,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case AnimateImagesOnHover: {
             if (value.userType() == QMetaType::Bool) {
                 i->setAnimateImagesOnHover(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case AlwaysDisplayCaption: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setAlwaysDisplayCaption(value.toBool());
                 return true;
             } else
                 return false;
@@ -2311,6 +2337,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::animateImagesOnHoverChanged, this, [this]() {
         emit dataChanged(index(AnimateImagesOnHover), index(AnimateImagesOnHover), {Value});
+    });
+    connect(s.get(), &UserSettings::alwaysDisplayCaptionChanged, this, [this]() {
+        emit dataChanged(index(AlwaysDisplayCaption), index(AlwaysDisplayCaption), {Value});
     });
     connect(s.get(), &UserSettings::showImageChanged, this, [this]() {
         emit dataChanged(index(ShowImage), index(ShowImage), {Value});

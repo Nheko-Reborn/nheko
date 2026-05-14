@@ -35,6 +35,8 @@ class UserSettings final : public QObject
     Q_PROPERTY(bool smallAvatars READ smallAvatars WRITE setSmallAvatars NOTIFY smallAvatarsChanged)
     Q_PROPERTY(bool animateImagesOnHover READ animateImagesOnHover WRITE setAnimateImagesOnHover
                  NOTIFY animateImagesOnHoverChanged)
+    Q_PROPERTY(bool alwaysDisplayCaption READ alwaysDisplayCaption WRITE setAlwaysDisplayCaption
+                 NOTIFY alwaysDisplayCaptionChanged)
     Q_PROPERTY(bool typingNotifications READ typingNotifications WRITE setTypingNotifications NOTIFY
                  typingNotificationsChanged)
     Q_PROPERTY(bool sortByImportance READ sortByImportance WRITE setSortByImportance NOTIFY
@@ -194,6 +196,7 @@ public:
     void setBubbles(bool state);
     void setSmallAvatars(bool state);
     void setAnimateImagesOnHover(bool state);
+    void setAlwaysDisplayCaption(bool state);
     void setReadReceipts(bool state);
     void setTypingNotifications(bool state);
     void setSortByImportance(bool state);
@@ -267,6 +270,7 @@ public:
     bool bubbles() const { return bubbles_; }
     bool smallAvatars() const { return smallAvatars_; }
     bool animateImagesOnHover() const { return animateImagesOnHover_; }
+    bool alwaysDisplayCaption() const { return alwaysDisplayCaption_; }
     bool typingNotifications() const { return typingNotifications_; }
     bool sortByImportance() const { return sortByImportance_; }
     bool sortByAlphabet() const { return sortByAlphabet_; }
@@ -340,6 +344,7 @@ signals:
     void bubblesChanged(bool state);
     void smallAvatarsChanged(bool state);
     void animateImagesOnHoverChanged(bool state);
+    void alwaysDisplayCaptionChanged(bool state);
     void typingNotificationsChanged(bool state);
     void buttonInTimelineChanged(bool state);
     void readReceiptsChanged(bool state);
@@ -411,6 +416,7 @@ private:
     bool bubbles_;
     bool smallAvatars_;
     bool animateImagesOnHover_;
+    bool alwaysDisplayCaption_;
     bool typingNotifications_;
     bool sortByImportance_;
     bool sortByAlphabet_;
@@ -506,6 +512,7 @@ class UserSettingsModel : public QAbstractListModel
         ReducedMotion,
         FancyEffects,
         AnimateImagesOnHover,
+        AlwaysDisplayCaption,
         MessageHoverHighlight,
 
         TimelineSection,
