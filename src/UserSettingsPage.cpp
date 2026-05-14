@@ -141,8 +141,10 @@ UserSettings::load(std::optional<QString> profile)
     deviceId_      = settings.value(prefix + "auth/device_id", "").toString();
     currentTagId_  = settings.value(prefix + "user/current_tag_id", "").toString();
     hiddenTags_    = settings.value(prefix + "user/hidden_tags", QStringList{}).toStringList();
-    mutedTags_  = settings.value(prefix + "user/muted_tags", QStringList{"global"}).toStringList();
-    hiddenPins_ = settings.value(prefix + "user/hidden_pins", QStringList{}).toStringList();
+    mutedTags_   = settings.value(prefix + "user/muted_tags", QStringList{"global"}).toStringList();
+    hideAllPins_ = settings.value(prefix + "user/hide_all_pins", false).toBool();
+    hiddenPins_  = settings.value(prefix + "user/hidden_pins", QStringList{}).toStringList();
+    shownPins_   = settings.value(prefix + "user/shown_pins", QStringList{}).toStringList();
     hiddenWidgets_ = settings.value(prefix + "user/hidden_widgets", QStringList{}).toStringList();
     recentReactions_ =
       settings.value(prefix + "user/recent_reactions", QStringList{}).toStringList();
@@ -279,11 +281,27 @@ UserSettings::setMutedTags(const QStringList &mutedTags)
 }
 
 void
-UserSettings::setHiddenPins(const QStringList &hiddenTags)
+UserSettings::setHideAllPins(bool state)
 {
-    hiddenPins_ = hiddenTags;
+    hideAllPins_ = state;
+    save();
+    emit hideAllPinsChanged(state);
+}
+
+void
+UserSettings::setHiddenPins(const QStringList &hiddenPins)
+{
+    hiddenPins_ = hiddenPins;
     save();
     emit hiddenPinsChanged();
+}
+
+void
+UserSettings::setShownPins(const QStringList &shownPins)
+{
+    shownPins_ = shownPins;
+    save();
+    emit shownPinsChanged();
 }
 
 void
@@ -992,7 +1010,9 @@ UserSettings::save()
     settings.setValue(prefix + "user/online_key_backup", useOnlineKeyBackup_);
     settings.setValue(prefix + "user/hidden_tags", hiddenTags_);
     settings.setValue(prefix + "user/muted_tags", mutedTags_);
+    settings.setValue(prefix + "user/hide_all_pins", hideAllPins_);
     settings.setValue(prefix + "user/hidden_pins", hiddenPins_);
+    settings.setValue(prefix + "user/shown_pins", shownPins_);
     settings.setValue(prefix + "user/hidden_widgets", hiddenWidgets_);
     settings.setValue(prefix + "user/recent_reactions", recentReactions_);
     settings.setValue(
@@ -1060,6 +1080,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Communities sidebar");
         case ScrollbarsInRoomlist:
             return tr("Scrollbars in room list");
+        case HideAllPins:
+            return tr("Hide pinned messages by default");
         case Markdown:
             return tr("Send messages as Markdown");
         case SendMessageKey:
@@ -1215,6 +1237,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->groupView();
         case ScrollbarsInRoomlist:
             return i->scrollbarsInRoomlist();
+        case HideAllPins:
+            return i->hideAllPins();
         case Markdown:
             return i->markdown();
         case SendMessageKey:
@@ -1379,6 +1403,9 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Show a column containing communities and tags next to the room list.");
         case ScrollbarsInRoomlist:
             return tr("Shows scrollbars in the room list and communities list.");
+        case HideAllPins:
+            return tr(
+              "Pinned messages will be hidden by default and will need to be manually viewed.");
         case Markdown:
             return tr(
               "Allow using markdown in messages.\nWhen disabled, all messages are sent as a plain "
@@ -1569,6 +1596,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case StartInTray:
         case GroupView:
         case ScrollbarsInRoomlist:
+        case HideAllPins:
         case Markdown:
         case Bubbles:
         case SmallAvatars:
@@ -1824,6 +1852,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
         case ScrollbarsInRoomlist: {
             if (value.userType() == QMetaType::Bool) {
                 i->setScrollbarsInRoomlist(value.toBool());
+                return true;
+            } else
+                return false;
+        }
+        case HideAllPins: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setHideAllPins(value.toBool());
                 return true;
             } else
                 return false;
@@ -2341,6 +2376,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::scrollbarsInRoomlistChanged, this, [this]() {
         emit dataChanged(index(ScrollbarsInRoomlist), index(ScrollbarsInRoomlist), {Value});
+    });
+    connect(s.get(), &UserSettings::hideAllPinsChanged, this, [this]() {
+        emit dataChanged(index(HideAllPins), index(HideAllPins), {Value});
     });
     connect(s.get(), &UserSettings::roomSortingChangedImportance, this, [this]() {
         emit dataChanged(index(SortByImportance), index(SortByImportance), {Value});
