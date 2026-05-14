@@ -115,17 +115,16 @@ LoginPage::onMatrixIdEntered()
                   }
 
                   if (!err->parse_error.empty()) {
-                      emit versionErrorCb(tr("Autodiscovery failed. Received malformed response."));
                       nhlog::net()->error("Autodiscovery failed. Received malformed response. {}",
                                           err->parse_error);
+                      checkHomeserverVersion();
                       return;
                   }
 
-                  emit versionErrorCb(tr("Autodiscovery failed. Unknown error when "
-                                         "requesting .well-known."));
                   nhlog::net()->error("Autodiscovery failed. Unknown error when "
                                       "requesting .well-known. {}",
                                       *err);
+                  checkHomeserverVersion();
                   return;
               }
 
