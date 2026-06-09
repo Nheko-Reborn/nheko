@@ -80,7 +80,7 @@ UserSettings::load(std::optional<QString> profile)
     enlargeEmojiOnlyMessages_ =
       settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
     tightReactionSpacing_ = settings.value("user/timeline/tight_reaction_spacing", true).toBool();
-    markdown_ = settings.value("user/markdown_enabled", true).toBool();
+    markdown_             = settings.value("user/markdown_enabled", true).toBool();
 
     auto sendMessageKey = settings.value("user/send_message_key", 0).toInt();
     if (sendMessageKey < 0 || sendMessageKey > 2)

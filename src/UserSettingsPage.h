@@ -33,7 +33,8 @@ class UserSettings final : public QObject
                  sendMessageKeyChanged)
     Q_PROPERTY(bool bubbles READ bubbles WRITE setBubbles NOTIFY bubblesChanged)
     Q_PROPERTY(bool smallAvatars READ smallAvatars WRITE setSmallAvatars NOTIFY smallAvatarsChanged)
-    Q_PROPERTY(bool tightReactionSpacing READ tightReactionSpacing WRITE setTightReactionSpacing NOTIFY tightReactionSpacingChanged)
+    Q_PROPERTY(bool tightReactionSpacing READ tightReactionSpacing WRITE setTightReactionSpacing
+                 NOTIFY tightReactionSpacingChanged)
     Q_PROPERTY(bool animateImagesOnHover READ animateImagesOnHover WRITE setAnimateImagesOnHover
                  NOTIFY animateImagesOnHoverChanged)
     Q_PROPERTY(bool typingNotifications READ typingNotifications WRITE setTypingNotifications NOTIFY
