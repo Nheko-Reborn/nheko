@@ -79,6 +79,7 @@ UserSettings::load(std::optional<QString> profile)
       settings.value("user/timeline/message_hover_highlight", false).toBool();
     enlargeEmojiOnlyMessages_ =
       settings.value("user/timeline/enlarge_emoji_only_msg", false).toBool();
+    tightReactionSpacing_ = settings.value("user/timeline/tight_reaction_spacing", true).toBool();
     markdown_ = settings.value("user/markdown_enabled", true).toBool();
 
     auto sendMessageKey = settings.value("user/send_message_key", 0).toInt();
@@ -901,6 +902,16 @@ UserSettings::setOpenVideoExternal(bool state)
 }
 
 void
+UserSettings::setTightReactionSpacing(bool state)
+{
+    if (state == tightReactionSpacing_)
+        return;
+    tightReactionSpacing_ = state;
+    emit tightReactionSpacingChanged(state);
+    save();
+}
+
+void
 UserSettings::applyTheme()
 {
     QGuiApplication::setPalette(Theme::paletteFromTheme(this->theme()));
@@ -926,6 +937,7 @@ UserSettings::save()
     settings.setValue("buttons", buttonsInTimeline_);
     settings.setValue("message_hover_highlight", messageHoverHighlight_);
     settings.setValue("enlarge_emoji_only_msg", enlargeEmojiOnlyMessages_);
+    settings.setValue("tight_reaction_spacing", tightReactionSpacing_);
     settings.setValue("max_width", timelineMaxWidth_);
     settings.endGroup(); // timeline
 
@@ -1112,6 +1124,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return tr("Reduce or disable animations");
         case PrivacyScreen:
             return tr("Privacy Screen");
+        case TightReactionSpacing:
+            return tr("Tight reaction spacing");
         case PrivacyScreenTimeout:
             return tr("Privacy screen timeout (in seconds [0 - 3600])");
         case MobileMode:
@@ -1342,6 +1356,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
             return i->updateSpaceVias();
         case ExpireEvents:
             return i->expireEvents();
+        case TightReactionSpacing:
+            return i->tightReactionSpacing();
         }
     } else if (role == Description) {
         switch (index.row()) {
@@ -1543,6 +1559,8 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
                       "to have one client running this regularly.");
         case IgnoredUsers:
             return tr("Manage your ignored users.");
+        case TightReactionSpacing:
+            return tr("Enable negative padding between messages and reaction buttons");
         }
     } else if (role == Type) {
         switch (index.row()) {
@@ -1599,6 +1617,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         case SpaceNotifications:
         case FancyEffects:
         case ReducedMotion:
+        case TightReactionSpacing:
             return Toggle;
         case Profile:
         case UserId:
@@ -2142,6 +2161,13 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
             } else
                 return false;
         }
+        case TightReactionSpacing: {
+            if (value.userType() == QMetaType::Bool) {
+                i->setTightReactionSpacing(value.toBool());
+                return true;
+            } else
+                return false;
+        }
         }
     }
     return false;
@@ -2335,6 +2361,9 @@ UserSettingsModel::UserSettingsModel(QObject *p)
     });
     connect(s.get(), &UserSettings::smallAvatarsChanged, this, [this]() {
         emit dataChanged(index(SmallAvatars), index(SmallAvatars), {Value});
+    });
+    connect(s.get(), &UserSettings::tightReactionSpacingChanged, this, [this]() {
+        emit dataChanged(index(TightReactionSpacing), index(TightReactionSpacing), {Value});
     });
     connect(s.get(), &UserSettings::groupViewStateChanged, this, [this]() {
         emit dataChanged(index(GroupView), index(GroupView), {Value});
