@@ -2562,7 +2562,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+2"/>
         <source>Reject a call</source>
-        <translation type="unfinished"></translation>
+        <translation>Отклонить звонок</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2601,17 +2601,17 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location filename="../../src/notifications/ManagerMac.cpp" line="-58"/>
         <source>Respond</source>
-        <translation type="unfinished"></translation>
+        <translation>Ответить</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Send</source>
-        <translation type="unfinished">Отправить</translation>
+        <translation>Отправить</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Write a message...</source>
-        <translation type="unfinished">Написать сообщение…</translation>
+        <translation>Написать сообщение…</translation>
     </message>
     <message>
         <location filename="../../src/main.cpp" line="-30"/>
@@ -4936,7 +4936,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Decrypt notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Расшифровывать уведомления</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4951,7 +4951,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Reduce or disable animations</source>
-        <translation type="unfinished"></translation>
+        <translation>Уменьшить или отключить анимации</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5215,7 +5215,7 @@ Set to 0 to blur immediately after focus loss. Max value of 1 hour (3600 seconds
     <message>
         <location line="+2"/>
         <source>Show a column containing communities and tags next to the room list.</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать столбец с сообществами и тегами рядом со списком комнат.</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5358,7 +5358,7 @@ Only affects messages in encrypted chats.</source>
     <message>
         <location line="+3"/>
         <source>Some messages can be sent with fancy effects. For example, messages sent with &apos;/confetti&apos; will show confetti on screen.</source>
-        <translation type="unfinished"></translation>
+        <translation>Некоторые сообщения можно отправлять с визуальными эффектами. Например, сообщения, отправленные с помощью &apos;/confetti&apos;, будут отображать конфетти на экране.</translation>
     </message>
     <message>
         <location line="+3"/>
