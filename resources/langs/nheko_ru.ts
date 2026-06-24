@@ -1344,7 +1344,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../../src/GridImagePackModel.cpp" line="+285"/>
         <source>Account Pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор аккаунта</translation>
     </message>
 </context>
 <context>
@@ -1371,12 +1371,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+18"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in %1:</source>
-        <translation type="unfinished"></translation>
+        <translation>Эти события будут &lt;b&gt;показаны&lt;/b&gt; в %1:</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>These events will be &lt;b&gt;shown&lt;/b&gt; in all rooms:</source>
-        <translation type="unfinished"></translation>
+        <translation>Эти события будут &lt;b&gt;показаны&lt;/b&gt; во всех комнатах:</translation>
     </message>
     <message>
         <location line="+15"/>
@@ -3130,12 +3130,12 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+1"/>
         <source>Power level</source>
-        <translation type="unfinished"></translation>
+        <translation>Уровень доступа</translation>
     </message>
     <message>
         <location line="+98"/>
         <source>This room is not encrypted!</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта комната не зашифрована!</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -3372,7 +3372,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+16"/>
         <source>Locally hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Локальные скрытые события</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -4891,7 +4891,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Hidden events</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрытые события</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5439,12 +5439,12 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+6"/>
         <source>To allow new users to join a community, the community needs to expose some information about what servers participate in a room to community members. Since the room participants can change over time, this needs to be updated from time to time. This setting enables a background job to do that automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>Чтобы новые пользователи могли присоединяться к сообществу, оно должно предоставлять участникам информацию о том, какие серверы задействованы в комнате. Поскольку состав участников комнаты может меняться со временем, эту информацию необходимо периодически обновлять. Данная настройка включает фоновую задачу, которая делает это автоматически.</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Regularly redact expired events as specified in the event expiration configuration. Since this is currently not executed server side, you need to have one client running this regularly.</source>
-        <translation type="unfinished"></translation>
+        <translation>Регулярно удалять просроченные события в соответствии с настройками срока хранения событий. Поскольку в настоящее время эта операция не выполняется на стороне сервера, необходимо, чтобы хотя бы один клиент регулярно выполнял её.</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -5690,22 +5690,22 @@ This setting will take effect upon restart.</source>
     <message>
         <location filename="../../src/emoji/Emoji.cpp" line="+13"/>
         <source>People</source>
-        <translation type="unfinished">Люди</translation>
+        <translation>Люди</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Nature</source>
-        <translation type="unfinished">Природа</translation>
+        <translation>Природа</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Food</source>
-        <translation type="unfinished">Еда</translation>
+        <translation>Еда</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Activity</source>
-        <translation type="unfinished">Активности</translation>
+        <translation>Активности</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5715,17 +5715,17 @@ This setting will take effect upon restart.</source>
     <message>
         <location line="+2"/>
         <source>Objects</source>
-        <translation type="unfinished">Предметы</translation>
+        <translation>Предметы</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Symbols</source>
-        <translation type="unfinished">Символы</translation>
+        <translation>Символы</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Flags</source>
-        <translation type="unfinished">Флаги</translation>
+        <translation>Флаги</translation>
     </message>
 </context>
 <context>
