@@ -1308,12 +1308,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/FallbackAuthDialog.qml" line="+25"/>
         <source>Fallback authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Резервная аутентификация</translation>
     </message>
     <message>
         <location line="+15"/>
         <source>Open the fallback, follow the steps, and confirm after completing them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Откройте резервный вариант, выполните необходимые шаги и подтвердите после их завершения.</translation>
     </message>
     <message>
         <location line="+8"/>
@@ -1396,12 +1396,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+1"/>
         <source>Sent when a moderator is added/removed or the permissions of a room are changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправляется при добавлении / удалении модератора или изменении прав доступа к комнате.</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Стикеры</translation>
     </message>
     <message>
         <location line="+11"/>
@@ -1453,17 +1453,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+56"/>
         <source>Add images</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить изображения</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Images (*.png *.webp *.gif *.jpg *.jpeg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Изображения (*.png *.webp *.gif *.jpg *.jpeg)</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select images for pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите изображения для набора</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1504,13 +1504,13 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location line="+9"/>
         <location line="+75"/>
         <source>Use as Emoji</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать как эмодзи</translation>
     </message>
     <message>
         <location line="-62"/>
         <location line="+75"/>
         <source>Use as Sticker</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать как стикер</translation>
     </message>
     <message>
         <location line="-37"/>
@@ -1525,12 +1525,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+35"/>
         <source>Remove from pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить из набора</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
 </context>
 <context>
@@ -1538,17 +1538,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location filename="../qml/dialogs/ImagePackSettingsDialog.qml" line="+23"/>
         <source>Image pack settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки набора</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Create account pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать набор для аккаунта</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>New room pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Новый набор для комнаты</translation>
     </message>
     <message>
         <location line="+22"/>
@@ -1558,22 +1558,22 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>Pack from this room</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор из этой комнаты</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Pack from parent community</source>
-        <translation type="unfinished"></translation>
+        <translation>Набор из родительского сообщества</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Globally enabled pack</source>
-        <translation type="unfinished"></translation>
+        <translation>Включенный глобально набор</translation>
     </message>
     <message>
         <location line="+68"/>
         <source>Enable globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить глобально</translation>
     </message>
     <message>
         <location line="+4"/>
@@ -1583,17 +1583,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+12"/>
         <source>Edit</source>
-        <translation type="unfinished">Редактировать</translation>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location line="+61"/>
         <source>Close</source>
-        <translation type="unfinished">Закрыть</translation>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
@@ -1611,12 +1611,12 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+623"/>
         <source>You need to pass a valid mxid when ignoring a user. &apos;%1&apos; is not a valid userid.</source>
-        <translation type="unfinished"></translation>
+        <translation>При игнорировании пользователя нужно передавать действительный mxid. &apos;%1&apos; не является действительным userid.</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Failed to fetch user %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось запросить пользователя %1</translation>
     </message>
     <message>
         <location line="+412"/>
@@ -1896,7 +1896,7 @@ Example: https://yourserver.example.com:8787</source>
     <message>
         <location line="+273"/>
         <source>Stickers</source>
-        <translation type="unfinished"></translation>
+        <translation>Стикеры</translation>
     </message>
     <message>
         <location line="+24"/>
@@ -4821,7 +4821,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Communities sidebar</source>
-        <translation type="unfinished"></translation>
+        <translation>Боковая панель сообществ</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -4941,7 +4941,7 @@ Reason: %4</source>
     <message>
         <location line="+2"/>
         <source>Show message counts for communities and tags</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать количество сообщений для сообществ и тегов</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -5353,7 +5353,7 @@ Only affects messages in encrypted chats.</source>
     <message>
         <location line="+2"/>
         <source>Choose where to show the total number of notifications contained within a community or tag.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите, где отображать общее количество уведомлений, содержащихся в сообществе или теге.</translation>
     </message>
     <message>
         <location line="+3"/>
