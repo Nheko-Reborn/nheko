@@ -1252,7 +1252,7 @@ You may optionally provide a reason for others to accept your knock:</source>
         <location filename="../../src/ui/EventExpiry.cpp" line="+50"/>
         <location line="+10"/>
         <source>Failed to set hidden events: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось установить скрытые события: %1</translation>
     </message>
 </context>
 <context>
@@ -1285,17 +1285,17 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+2"/>
         <source>The verification was accepted by a different device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Верификация была принята другим устройством.</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Verification messages received out of order!</source>
-        <translation type="unfinished"></translation>
+        <translation>Сообщения верификации получены не по порядку!</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Unknown verification error.</source>
-        <translation type="unfinished"></translation>
+        <translation>Неизвестная ошибка верификации.</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -1318,7 +1318,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+8"/>
         <source>Open Fallback in Browser</source>
-        <translation type="unfinished">Открыть ответ в Браузере</translation>
+        <translation>Открыть резервный вариант в браузере</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -1381,7 +1381,7 @@ You may optionally provide a reason for others to accept your knock:</source>
     <message>
         <location line="+15"/>
         <source>User events</source>
-        <translation type="unfinished"></translation>
+        <translation>События пользователя</translation>
     </message>
     <message>
         <location line="+1"/>
