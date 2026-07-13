@@ -4,6 +4,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QQmlContext>
 
 #include <mtx/events/collections.hpp>
 #include <mtx/requests.hpp>
@@ -122,6 +123,12 @@ MainWindow::registerQmlTypes()
         } else
             nhlog::ui()->warn("Could not connect to D-Bus!");
     }
+#endif
+
+#ifdef NHEKO_USE_KIRIGAMI
+    engine()->rootContext()->setContextProperty("NHEKO_USE_KIRIGAMI", QVariant(true));
+#else
+    engine()->rootContext()->setContextProperty("NHEKO_USE_KIRIGAMI", QVariant(false));
 #endif
 }
 

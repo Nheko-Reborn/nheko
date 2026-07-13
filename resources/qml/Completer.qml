@@ -93,6 +93,10 @@ Control {
     contentItem: ListView {
         id: listView
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "components/KirigamiWheelHandler.qml" : ""
+        }
+
         clip: true
         displayMarginBeginning: height / 2
         displayMarginEnd: height / 2

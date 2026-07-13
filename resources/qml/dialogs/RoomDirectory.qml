@@ -38,6 +38,10 @@ ApplicationWindow {
         anchors.fill: parent
         model: publicRooms
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+        }
+
         delegate: Rectangle {
             id: roomDirDelegate
 

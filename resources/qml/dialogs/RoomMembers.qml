@@ -112,6 +112,9 @@ ApplicationWindow {
                 boundsBehavior: Flickable.StopAtBounds
                 model: members
 
+                Loader {
+                    source: NHEKO_USE_KIRIGAMI ? "../components/KirigamiWheelHandler.qml" : ""
+                }
 
                 delegate: ItemDelegate {
                     id: del

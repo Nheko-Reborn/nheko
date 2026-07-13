@@ -38,6 +38,10 @@ Page {
         model: Communities.filtered()
         boundsBehavior: Flickable.StopAtBounds
 
+        Loader {
+            source: NHEKO_USE_KIRIGAMI ? "components/KirigamiWheelHandler.qml" : ""
+        }
+
         ScrollBar.vertical: ScrollBar {
             id: scrollbar
 
