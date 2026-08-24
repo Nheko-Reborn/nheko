@@ -49,8 +49,24 @@ ApplicationWindow {
 
                 model: imagePack
 
+                header: Button {
+                    onClicked: addFilesDialog.open()
+                    width: ListView.view.width
+                    text: qsTr("Add images")
 
-                header: AvatarListTile {
+                    FileDialog {
+                        id: addFilesDialog
+
+                        folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
+                        fileMode: FileDialog.OpenFiles
+                        nameFilters: [qsTr("Images (*.png *.webp *.gif *.jpg *.jpeg)")]
+                        title: qsTr("Select images for pack")
+                        acceptLabel: qsTr("Add to pack")
+                        onAccepted: imagePack.addStickers(files)
+                    }
+                }
+
+                footer: AvatarListTile {
                     title: imagePack.packname
                     avatarUrl: imagePack.avatarUrl
                     roomid: imagePack.statekey
@@ -72,23 +88,6 @@ ApplicationWindow {
 
                 }
 
-                footer: Button {
-                    onClicked: addFilesDialog.open()
-                    width: ListView.view.width
-                    text: qsTr("Add images")
-
-                    FileDialog {
-                        id: addFilesDialog
-
-                        folder: StandardPaths.writableLocation(StandardPaths.PicturesLocation)
-                        fileMode: FileDialog.OpenFiles
-                        nameFilters: [qsTr("Images (*.png *.webp *.gif *.jpg *.jpeg)")]
-                        title: qsTr("Select images for pack")
-                        acceptLabel: qsTr("Add to pack")
-                        onAccepted: imagePack.addStickers(files)
-                    }
-
-                }
 
                 delegate: AvatarListTile {
                     id: packItem
