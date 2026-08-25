@@ -156,6 +156,11 @@ if(BUILD_DOCS)
     endif(DOXYGEN_FOUND)
 endif()
 
+if(USE_BUNDLED_OPENSSL)
+    hunter_add_package_safe(OpenSSL)
+endif()
+find_package(OpenSSL 1.1.0 REQUIRED)
+
 #
 ## coeurl
 #
@@ -539,10 +544,6 @@ set(SRC_FILES
 
 include(FeatureSummary)
 
-if(USE_BUNDLED_OPENSSL)
-    hunter_add_package_safe(OpenSSL)
-endif()
-find_package(OpenSSL 1.1.0 REQUIRED)
 if(USE_BUNDLED_OLM)
     include(FetchContent)
     FetchContent_Declare(
