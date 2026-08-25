@@ -6,6 +6,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.15
+import Qt.labs.platform 1.1 as P
 import im.nheko 1.0
 import "./delegates"
 
@@ -287,6 +288,22 @@ Pane {
                     }
                 }
             }
+            P.MessageDialog {
+                id: unpinDialog
+
+                property string eventId
+                property var roomAtOpen
+
+                title: qsTr("Unpin")
+                text: qsTr("Are you sure you want to unpin this message?")
+                buttons: P.MessageDialog.Ok | P.MessageDialog.Cancel
+                onOkClicked: {
+                    if (roomAtOpen) {
+                        roomAtOpen.unpin(eventId);
+                    }
+                }
+            }
+
             ScrollView {
                 id: pinnedMessages
 
@@ -339,7 +356,11 @@ Pane {
                             image: ":/icons/icons/ui/dismiss.svg"
                             visible: room.permissions.canChange(MtxEvent.PinnedEvents)
 
-                            onClicked: room.unpin(modelData)
+                            onClicked: {
+                                unpinDialog.eventId = modelData;
+                                unpinDialog.roomAtOpen = room;
+                                unpinDialog.open();
+                            }
                         }
                     }
                 }
