@@ -33,6 +33,8 @@ class UserSettings final : public QObject
                  sendMessageKeyChanged)
     Q_PROPERTY(bool bubbles READ bubbles WRITE setBubbles NOTIFY bubblesChanged)
     Q_PROPERTY(bool smallAvatars READ smallAvatars WRITE setSmallAvatars NOTIFY smallAvatarsChanged)
+    Q_PROPERTY(bool tightReactionSpacing READ tightReactionSpacing WRITE setTightReactionSpacing
+                 NOTIFY tightReactionSpacingChanged)
     Q_PROPERTY(bool animateImagesOnHover READ animateImagesOnHover WRITE setAnimateImagesOnHover
                  NOTIFY animateImagesOnHoverChanged)
     Q_PROPERTY(bool typingNotifications READ typingNotifications WRITE setTypingNotifications NOTIFY
@@ -242,6 +244,7 @@ public:
     void setUseIdenticon(bool state);
     void setOpenImageExternal(bool state);
     void setOpenVideoExternal(bool state);
+    void setTightReactionSpacing(bool state);
     void setCollapsedSpaces(QList<QStringList> spaces);
     void setExposeDBusApi(bool state);
     void setUpdateSpaceVias(bool state);
@@ -320,6 +323,7 @@ public:
     bool useIdenticon() const;
     bool openImageExternal() const { return openImageExternal_; }
     bool openVideoExternal() const { return openVideoExternal_; }
+    bool tightReactionSpacing() const { return tightReactionSpacing_; }
     QList<QStringList> collapsedSpaces() const { return collapsedSpaces_; }
     bool exposeDBusApi() const { return exposeDBusApi_; }
     bool updateSpaceVias() const { return updateSpaceVias_; }
@@ -385,6 +389,7 @@ signals:
     void useIdenticonChanged(bool state);
     void openImageExternalChanged(bool state);
     void openVideoExternalChanged(bool state);
+    void tightReactionSpacingChanged(bool state);
     void hiddenPinsChanged();
     void hiddenWidgetsChanged();
     void recentReactionsChanged();
@@ -465,6 +470,7 @@ private:
     bool useIdenticon_;
     bool openImageExternal_;
     bool openVideoExternal_;
+    bool tightReactionSpacing_ = true;
     bool exposeDBusApi_;
     bool updateSpaceVias_;
     bool expireEvents_;
@@ -521,6 +527,7 @@ class UserSettingsModel : public QAbstractListModel
         SendMessageKey,
         Bubbles,
         SmallAvatars,
+        TightReactionSpacing,
 
         SidebarSection,
         GroupView,
