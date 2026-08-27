@@ -144,7 +144,7 @@ Column {
             font.italic: true
             font.pointSize: Math.floor(fontMetrics.font.pointSize * 0.8)
             text: userStatus.replace(/\n/g, " ")
-            textFormat: Text.PlainText
+            textFormat: Text.RichText
             width: Math.min(implicitWidth, userInfo.remainingWidth - userName_.width - parent.spacing)
 
             HoverHandler {
