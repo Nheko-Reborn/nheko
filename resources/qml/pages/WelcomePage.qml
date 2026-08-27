@@ -10,93 +10,98 @@ import im.nheko 1.0
 import "../components/"
 import ".."
 
-ColumnLayout {
-    Item {
-        Layout.fillHeight: true
-    }
-
-    Image {
-        Layout.alignment: Qt.AlignHCenter
-        source: "qrc:/logos/splash.png"
-        Layout.preferredHeight: 256
-        Layout.preferredWidth: 256
-    }
-
-    Label {
-        Layout.margins: Nheko.paddingLarge
-        Layout.bottomMargin: 0
-        Layout.alignment: Qt.AlignHCenter
-        Layout.fillWidth: true
-        text: qsTr("Welcome to nheko! The desktop client for the Matrix protocol.")
-        color: palette.text
-        font.pointSize: fontMetrics.font.pointSize*2
-        wrapMode: Text.Wrap
-        horizontalAlignment: Text.AlignHCenter
-    }
-    Label {
-        Layout.margins: Nheko.paddingLarge
-        Layout.alignment: Qt.AlignHCenter
-        Layout.fillWidth: true
-        text: qsTr("Enjoy your stay!")
-        color: palette.text
-        font.pointSize: fontMetrics.font.pointSize*1.5
-        wrapMode: Text.Wrap
-        horizontalAlignment: Text.AlignHCenter
-    }
-
-    RowLayout {
-        Item {
-            Layout.fillWidth: true
-        }
-        FlatButton {
-            Layout.margins: Nheko.paddingLarge
-            Layout.alignment: Qt.AlignHCenter
-            text: qsTr("REGISTER")
-            onClicked: {
-                mainWindow.push(registerPage);
-            }
-        }
-        FlatButton {
-            Layout.margins: Nheko.paddingLarge
-            Layout.alignment: Qt.AlignHCenter
-            text: qsTr("LOGIN")
-            onClicked: {
-                mainWindow.push(loginPage);
-            }
-        }
+ScrollView {
+    contentWidth: availableWidth
+    ColumnLayout {
+        width: parent.width
 
         Item {
-            Layout.fillWidth: true
+            Layout.fillHeight: true
         }
 
-    }
-
-    RowLayout {
-        Layout.alignment: Qt.AlignHCenter
-        Layout.margins: Nheko.paddingLarge
-
-        ToggleButton {
-            Layout.margins: Nheko.paddingLarge
-            Layout.alignment: Qt.AlignRight
-            checked: Settings.reducedMotion
-            onCheckedChanged: Settings.reducedMotion = checked
+        Image {
+            Layout.alignment: Qt.AlignHCenter
+            source: "qrc:/logos/splash.png"
+            Layout.preferredHeight: 256
+            Layout.preferredWidth: 256
         }
 
         Label {
-            Layout.alignment: Qt.AlignLeft
             Layout.margins: Nheko.paddingLarge
-            text: qsTr("Reduce animations")
+            Layout.bottomMargin: 0
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            text: qsTr("Welcome to nheko! The desktop client for the Matrix protocol.")
             color: palette.text
-
-            HoverHandler {
-                id: hovered
-            }
-            ToolTip.visible: hovered.hovered
-            ToolTip.text: qsTr("Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.")
-            ToolTip.delay: Nheko.tooltipDelay
+            font.pointSize: fontMetrics.font.pointSize * 2
+            wrapMode: Text.Wrap
+            horizontalAlignment: Text.AlignHCenter
         }
-    }
-    Item {
-        Layout.fillHeight: true
+        Label {
+            Layout.margins: Nheko.paddingLarge
+            Layout.alignment: Qt.AlignHCenter
+            Layout.fillWidth: true
+            text: qsTr("Enjoy your stay!")
+            color: palette.text
+            font.pointSize: fontMetrics.font.pointSize * 1.5
+            wrapMode: Text.Wrap
+            horizontalAlignment: Text.AlignHCenter
+        }
+
+        RowLayout {
+            Item {
+                Layout.fillWidth: true
+            }
+            FlatButton {
+                Layout.margins: Nheko.paddingLarge
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("REGISTER")
+                onClicked: {
+                    mainWindow.push(registerPage);
+                }
+            }
+            FlatButton {
+                Layout.margins: Nheko.paddingLarge
+                Layout.alignment: Qt.AlignHCenter
+                text: qsTr("LOGIN")
+                onClicked: {
+                    mainWindow.push(loginPage);
+                }
+            }
+
+            Item {
+                Layout.fillWidth: true
+            }
+
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.margins: Nheko.paddingLarge
+
+            ToggleButton {
+                Layout.margins: Nheko.paddingLarge
+                Layout.alignment: Qt.AlignRight
+                checked: Settings.reducedMotion
+                onCheckedChanged: Settings.reducedMotion = checked
+            }
+
+            Label {
+                Layout.alignment: Qt.AlignLeft
+                Layout.margins: Nheko.paddingLarge
+                text: qsTr("Reduce animations")
+                color: palette.text
+
+                HoverHandler {
+                    id: hovered
+                }
+                ToolTip.visible: hovered.hovered
+                ToolTip.text: qsTr("Nheko uses animations in several places to make stuff pretty. This allows you to turn those off if they make you feel unwell.")
+                ToolTip.delay: Nheko.tooltipDelay
+            }
+        }
+        Item {
+            Layout.fillHeight: true
+        }
     }
 }
