@@ -1,0 +1,61 @@
+cmake_minimum_required(VERSION 3.16)
+project(gstqt6d3d11 LANGUAGES CXX)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_AUTOMOC ON)
+
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
+# PkgConfig is provided by GStreamer's own pkg-config.exe on Windows.
+# build.bat sets PKG_CONFIG_PATH and adds %GSTREAMER_ROOT%\bin to PATH
+# before invoking cmake, so pkg-config is available here.
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(GST REQUIRED gstreamer-1.0)
+pkg_check_modules(GST_VIDEO REQUIRED gstreamer-video-1.0)
+pkg_check_modules(GST_D3D11 REQUIRED gstreamer-d3d11-1.0)
+
+# Private headers from gst-plugins-bad source
+set(GST_BAD_PRIVATE_INCLUDE "${CMAKE_CURRENT_SOURCE_DIR}/../../gst-libs")
+
+add_library(gstqt6d3d11 SHARED
+    plugin.cpp
+    gstqml6d3d11sink.cpp
+    gstqsg6d3d11node.cpp
+    gstqt6d3d11videoitem.cpp
+)
+
+target_include_directories(gstqt6d3d11 PRIVATE
+    ${GST_INCLUDE_DIRS}
+    ${GST_VIDEO_INCLUDE_DIRS}
+    ${GST_D3D11_INCLUDE_DIRS}
+    ${GST_BAD_PRIVATE_INCLUDE}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
+if(NOT GSTREAMER_VERSION)
+    set(GSTREAMER_VERSION "unknown")
+endif()
+
+target_compile_definitions(gstqt6d3d11 PRIVATE
+    GST_USE_UNSTABLE_API
+    VERSION="${GSTREAMER_VERSION}"
+    PACKAGE="gst-plugins-bad"
+    GST_PACKAGE_NAME="GStreamer Bad Plug-ins"
+    GST_PACKAGE_ORIGIN="https://gstreamer.freedesktop.org"
+)
+
+target_link_directories(gstqt6d3d11 PRIVATE
+    ${GST_LIBRARY_DIRS}
+    ${GST_VIDEO_LIBRARY_DIRS}
+    ${GST_D3D11_LIBRARY_DIRS}
+)
+
+target_link_libraries(gstqt6d3d11 PRIVATE
+    ${GST_LIBRARIES}
+    ${GST_VIDEO_LIBRARIES}
+    ${GST_D3D11_LIBRARIES}
+    Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick
+    d3d11 dxgi
+)
+
+install(TARGETS gstqt6d3d11 RUNTIME DESTINATION lib/gstreamer-1.0)

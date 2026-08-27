@@ -102,6 +102,7 @@ Popup {
             }
 
             Button {
+                visible: CallManager.haveScreenShare
                 text: qsTr("Screen")
                 icon.source: "qrc:/icons/icons/ui/screen-share.svg"
                 onClicked: {

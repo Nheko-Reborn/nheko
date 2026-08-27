@@ -73,7 +73,7 @@ public:
     bool isRemoteVideoRecvOnly() const { return isRemoteVideoRecvOnly_; }
     bool isRemoteVideoSendOnly() const { return isRemoteVideoSendOnly_; }
 
-    bool createOffer(webrtc::CallType, webrtc::ScreenShareType, uint32_t shareWindowId);
+    bool createOffer(webrtc::CallType, webrtc::ScreenShareType, uint64_t shareWindowId);
     bool acceptOffer(const std::string &sdp);
     bool acceptAnswer(const std::string &sdp);
     bool acceptNegotiation(const std::string &sdp);
@@ -118,7 +118,7 @@ private:
     GstElement *webrtc_                      = nullptr;
     unsigned int busWatchId_                 = 0;
     std::vector<std::string> turnServers_;
-    uint32_t shareWindowId_ = 0;
+    uint64_t shareWindowId_ = 0;
 
     bool init(std::string *errorMessage = nullptr);
     bool startPipeline(int opusPayloadType, int vp8PayloadType);

@@ -85,15 +85,21 @@ addDevice(GstDevice *device)
     if (!device)
         return;
 
-    gchar *name  = gst_device_get_display_name(device);
-    gchar *type  = gst_device_get_device_class(device);
-    bool isVideo = !std::strncmp(type, "Video", 5);
+    gchar *name        = gst_device_get_display_name(device);
+    gchar *type        = gst_device_get_device_class(device);
+    bool isAudioSource = !std::strncmp(type, "Audio/Source", 12) || !std::strncmp(type, "Audio/Duplex", 12);
+    bool isVideoSource = !std::strncmp(type, "Video/Source", 12) || !std::strncmp(type, "Video/Duplex", 12);
     g_free(type);
-    nhlog::ui()->debug("WebRTC: {} device added: {}", isVideo ? "video" : "audio", name);
-    if (!isVideo) {
+    nhlog::ui()->debug("WebRTC: {} device added: {}", isVideoSource ? "video" : "audio", name);
+    if (isAudioSource) {
         audioSources_.push_back({name, device});
         g_free(name);
         setDefaultDevice(false);
+        return;
+    }
+    if (!isVideoSource) {
+        nhlog::ui()->debug("WebRTC: ignoring non-source device: {}", name);
+        g_free(name);
         return;
     }
 
