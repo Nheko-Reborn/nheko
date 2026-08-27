@@ -150,7 +150,7 @@ Pane {
             ImageButton {
                 id: pinButton
 
-                property bool pinsShown: !Settings.hiddenPins.includes(roomId)
+                property bool pinsShown: Settings.hideAllPins ? Settings.shownPins.includes(roomId) : !Settings.hiddenPins.includes(roomId)
 
                 Layout.alignment: Qt.AlignVCenter
                 Layout.column: 4
@@ -164,16 +164,23 @@ Pane {
                 visible: !!room && room.pinnedMessages.length > 0
 
                 onClicked: {
-                    var ps = Settings.hiddenPins;
+                    var hidden = Settings.hiddenPins;
+                    var shown = Settings.shownPins;
                     if (pinsShown) {
-                        ps.push(roomId);
-                    } else {
-                        const index = ps.indexOf(roomId);
+                        hidden.push(roomId);
+                        const index = shown.indexOf(roomId);
                         if (index > -1) {
-                            ps.splice(index, 1);
+                            shown.splice(index, 1);
+                        }
+                    } else {
+                        shown.push(roomId);
+                        const index = hidden.indexOf(roomId);
+                        if (index > -1) {
+                            hidden.splice(index, 1);
                         }
                     }
-                    Settings.hiddenPins = ps;
+                    Settings.hiddenPins = hidden;
+                    Settings.shownPins = shown;
                 }
             }
             AbstractButton {
@@ -297,7 +304,9 @@ Pane {
                 Layout.row: 3
                 ScrollBar.horizontal.visible: false
                 clip: true
-                visible: !!room && room.pinnedMessages.length > 0 && !Settings.hiddenPins.includes(roomId)
+                visible: !!room
+                         && room.pinnedMessages.length > 0
+                         && (Settings.hideAllPins ? Settings.shownPins.includes(roomId) : !Settings.hiddenPins.includes(roomId))
                 contentWidth: availableWidth
 
                 ListView {
