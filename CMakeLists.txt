@@ -72,7 +72,7 @@ option(USE_BUNDLED_BLURHASH "Use the bundled version of blurhash." ON)
 
 include(CMakeDependentOption)
 set(VOIP_DEFAULT ON)
-if(APPLE OR WIN32 OR HAIKU)
+if(WIN32 OR HAIKU)
     set(VOIP_DEFAULT OFF)
 endif()
 option(VOIP "Whether to enable voip support. Disable this, if you don't have gstreamer." ${VOIP_DEFAULT})
@@ -93,7 +93,7 @@ if(${CMAKE_VERSION} VERSION_LESS "3.14.0")
             string(TOLOWER ${contentName} contentNameLower)
             FetchContent_GetProperties(${contentName})
             if(NOT ${contentNameLower}_POPULATED)
-                FetchContent_Populate(${contentName})
+                FetchContent_MakeAvailable(${contentName})
 
                 # Only try to call add_subdirectory() if the populated content
                 # can be treated that way. Protecting the call with the check
@@ -604,7 +604,7 @@ if(USE_BUNDLED_LMDBXX)
         CONFIGURE_COMMAND ""
         BUILD_COMMAND ""
     )
-    FetchContent_Populate(lmdbxx)
+    FetchContent_MakeAvailable(lmdbxx)
     add_library(lmdbxx INTERFACE)
     target_include_directories(lmdbxx INTERFACE ${lmdbxx_SOURCE_DIR})
     add_library(lmdbxx::lmdbxx ALIAS lmdbxx)
@@ -706,6 +706,9 @@ else()
     if(APPLE)
         set_target_properties(nheko PROPERTIES MACOSX_BUNDLE_INFO_PLIST
             "${CMAKE_CURRENT_SOURCE_DIR}/cmake/MacOSXBundleInfo.plist.in")
+        set_target_properties(nheko PROPERTIES
+            XCODE_ATTRIBUTE_CODE_SIGN_ENTITLEMENTS
+            "${CMAKE_CURRENT_SOURCE_DIR}/cmake/nheko.entitlements")
     endif()
 
     if(HAVE_BACKTRACE_SYMBOLS_FD AND NOT CMAKE_BUILD_TYPE STREQUAL "Release")
@@ -988,12 +991,15 @@ if(APPLE)
         BUNDLE  DESTINATION .
         RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     )
-    qt_generate_deploy_qml_app_script(
-        TARGET nheko
-        OUTPUT_SCRIPT deploy_script
-        NO_UNSUPPORTED_PLATFORM_ERROR
-    )
-    install(SCRIPT ${deploy_script})
+    option(MACOS_DEPLOY_QT "Run Qt's macdeployqt to bundle Qt frameworks (needed for redistribution, disable for local dev/testing)" ON)
+    if(MACOS_DEPLOY_QT)
+        qt_generate_deploy_qml_app_script(
+            TARGET nheko
+            OUTPUT_SCRIPT deploy_script
+            NO_UNSUPPORTED_PLATFORM_ERROR
+        )
+        install(SCRIPT ${deploy_script})
+    endif()
 endif()
 
 if(UNIX AND NOT APPLE)
