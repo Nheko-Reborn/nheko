@@ -93,7 +93,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: deviceCombos.imageSize
                     Layout.preferredHeight: deviceCombos.imageSize
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + palette.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-on.svg?" + palette.windowText
                 }
 
                 ComboBox {

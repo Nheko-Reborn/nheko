@@ -30,7 +30,7 @@ Popup {
                 Image {
                     Layout.preferredWidth: 22
                     Layout.preferredHeight: 22
-                    source: "image://colorimage/:/icons/icons/ui/microphone-unmute.svg?" + palette.windowText
+                    source: "image://colorimage/:/icons/icons/ui/microphone-on.svg?" + palette.windowText
                 }
 
                 ComboBox {
