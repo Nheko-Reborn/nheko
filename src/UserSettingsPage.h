@@ -19,6 +19,8 @@ class UserSettings final : public QObject
     QML_SINGLETON
 
     Q_PROPERTY(QString theme READ theme WRITE setTheme NOTIFY themeChanged)
+    Q_PROPERTY(QStringList matrixToDomains READ matrixToDomains WRITE setMatrixToDomains NOTIFY
+                 matrixToDomainsChanged)
     Q_PROPERTY(bool messageHoverHighlight READ messageHoverHighlight WRITE setMessageHoverHighlight
                  NOTIFY messageHoverHighlightChanged)
     Q_PROPERTY(bool enlargeEmojiOnlyMessages READ enlargeEmojiOnlyMessages WRITE
@@ -178,6 +180,7 @@ public:
     void load(std::optional<QString> profile);
     void applyTheme();
     void setTheme(QString theme);
+    void setMatrixToDomains(QStringList domains);
     void setMessageHoverHighlight(bool state);
     void setEnlargeEmojiOnlyMessages(bool state);
     void setTray(bool state);
@@ -248,6 +251,10 @@ public:
     void setExpireEvents(bool state);
 
     QString theme() const { return !theme_.isEmpty() ? theme_ : defaultTheme_; }
+    QStringList matrixToDomains() const
+    {
+        return !matrixToDomains_.isEmpty() ? matrixToDomains_ : defaultMatrixToDomains_;
+    }
     bool messageHoverHighlight() const { return messageHoverHighlight_; }
     bool enlargeEmojiOnlyMessages() const { return enlargeEmojiOnlyMessages_; }
     bool tray() const { return tray_; }
@@ -331,6 +338,7 @@ signals:
     void roomSortingChangedImportance(bool state);
     void roomSortingChangedAlphabetical(bool state);
     void themeChanged(QString state);
+    void matrixToDomainsChanged(QStringList state);
     void messageHoverHighlightChanged(bool state);
     void enlargeEmojiOnlyMessagesChanged(bool state);
     void trayChanged(bool state);
@@ -400,6 +408,7 @@ private:
                               ? "light"
                               : "system";
     QString theme_;
+    QStringList matrixToDomains_;
     bool messageHoverHighlight_;
     bool enlargeEmojiOnlyMessages_;
     bool tray_;
@@ -461,6 +470,7 @@ private:
     QStringList hiddenPins_;
     QStringList hiddenWidgets_;
     QStringList recentReactions_;
+    QStringList defaultMatrixToDomains_ = {"matrix.to"};
     QList<QStringList> collapsedSpaces_;
     bool useIdenticon_;
     bool openImageExternal_;
@@ -484,6 +494,7 @@ class UserSettingsModel : public QAbstractListModel
     {
         GeneralSection,
         Theme,
+        MatrixToDomains,
         MobileMode,
         DisableSwipe,
 #ifndef Q_OS_MACOS
@@ -586,6 +597,7 @@ public:
     {
         Toggle,
         ReadOnlyText,
+        MultiLineText,
         Options,
         Integer,
         Double,
