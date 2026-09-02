@@ -25,6 +25,13 @@ TimelineEvent {
     property bool previousMessageIsStateEvent: (index + 1) >= chat.count ? true : chat.model.dataByIndex(index + 1, Room.IsStateEvent)
     property string previousMessageUserId: (index + 1) >= chat.count ? "" : chat.model.dataByIndex(index + 1, Room.UserId)
 
+    // The newer neighbor (index - 1), used to tell whether this message is the last one in a
+    // consecutive run from the same sender, so its bubble can be merged visually with the next.
+    property var nextMessageDay: (index - 1) < 0 ? 0 : chat.model.dataByIndex(index - 1, Room.Day)
+    property var nextMessageTimestamp: (index - 1) < 0 ? 0 : chat.model.dataByIndex(index - 1, Room.Timestamp)
+    property bool nextMessageIsStateEvent: (index - 1) < 0 ? true : chat.model.dataByIndex(index - 1, Room.IsStateEvent)
+    property string nextMessageUserId: (index - 1) < 0 ? "" : chat.model.dataByIndex(index - 1, Room.UserId)
+
     required property date timestamp
     required property string userId
     required property string userName
@@ -48,7 +55,12 @@ TimelineEvent {
     property alias hovered: messageHover.hovered
 
     property int oneHour: 60 * 60 * 1000
-    property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour 
+    property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour
+
+    // Whether this message is the first/last of a consecutive, same-sender, same-day run within
+    // an hour of its neighbor - used to merge their bubbles into one continuous shape.
+    property bool isGroupStart: wrapper.previousMessageUserId !== wrapper.userId || wrapper.showSection || wrapper.previousMessageIsStateEvent !== wrapper.isStateEvent
+    property bool isGroupEnd: wrapper.nextMessageUserId !== wrapper.userId || wrapper.nextMessageDay !== wrapper.day || wrapper.nextMessageTimestamp - wrapper.timestamp > oneHour || wrapper.nextMessageIsStateEvent !== wrapper.isStateEvent
 
     mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0) + 4
     replyInset: mainInset + 4 + Nheko.paddingSmall
@@ -61,7 +73,7 @@ TimelineEvent {
         Loader {
             id: section
 
-            active: wrapper.previousMessageUserId !== wrapper.userId || wrapper.showSection || wrapper.previousMessageIsStateEvent !== wrapper.isStateEvent
+            active: wrapper.isGroupStart
             //asynchronous: true
             sourceComponent: TimelineSectionHeader {
                 day: wrapper.day
@@ -168,7 +180,9 @@ TimelineEvent {
                 anchors.right: (wrapper.isStateEvent || !wrapper.isSender) ? undefined : parent.right
                 anchors.horizontalCenter: wrapper.isStateEvent ? parent.horizontalCenter : undefined
 
-                property color userColor: TimelineManager.userColor(wrapper.main?.userId ?? '', palette.base)
+                // One color for your own messages, one flat neutral for everyone else's - a
+                // distinct hue-tinted bubble per sender adds up to a lot of clashing colors on
+                // screen in an active room.
 
                 contentItem: Item {
                     id: contentPlacementContainer
@@ -290,15 +304,40 @@ TimelineEvent {
 
                 }
 
-                topPadding: wrapper.isStateEvent ? 0 : Nheko.paddingSmall + 2
-                bottomPadding: wrapper.isStateEvent ? 0 : Nheko.paddingSmall + 2
+                // Continuation lines within a group sit close together, like paragraphs in one
+                // bubble; only the true start/end of a group gets the full roomy padding.
+                topPadding: wrapper.isStateEvent ? 0 : (wrapper.isGroupStart ? Nheko.paddingSmall + 2 : 2)
+                bottomPadding: wrapper.isStateEvent ? 0 : (wrapper.isGroupEnd ? Nheko.paddingSmall + 2 : 2)
                 leftPadding: wrapper.isStateEvent ? 0 : Nheko.paddingMedium
                 rightPadding: wrapper.isStateEvent ? 0 : Nheko.paddingMedium
+
+                property color bubbleColor: wrapper.isStateEvent ? "transparent" : (wrapper.isSender ? Qt.tint(palette.base, Qt.hsla(palette.highlight.hslHue, wrapper.hovered ? 0.8 : 0.5, palette.highlight.hslLightness, 0.2)) : (wrapper.hovered ? palette.dark : palette.alternateBase))
+
                 background: Rectangle {
-                    color: !wrapper.isStateEvent ? Qt.tint(palette.base, Qt.hsla(messageBubble.userColor.hslHue, wrapper.hovered ? 0.8 : 0.5, messageBubble.userColor.hslLightness, 0.2)) : "transparent"
+                    color: messageBubble.bubbleColor
                     radius: 16
                     border.color: Nheko.theme.red
                     border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
+
+                    // Square off the corners on the side(s) where this bubble touches a
+                    // neighboring message from the same sender, so a consecutive run reads as one
+                    // continuous shape rather than a stack of separate bubbles.
+                    Rectangle {
+                        visible: !wrapper.isGroupStart && !wrapper.isStateEvent
+                        color: parent.color
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        height: parent.radius
+                    }
+                    Rectangle {
+                        visible: !wrapper.isGroupEnd && !wrapper.isStateEvent
+                        color: parent.color
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        height: parent.radius
+                    }
                 }
             }
 
