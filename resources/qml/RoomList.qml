@@ -598,19 +598,9 @@ Page {
 
                             anchors.left: parent.left
                             color: roomItem.importantText
-                            elideWidth: parent.width - (timestamp.visible ? timestamp.implicitWidth : 0) - (spaceNotificationBubble.visible ? spaceNotificationBubble.implicitWidth : 0)
+                            elideWidth: parent.width - (spaceNotificationBubble.visible ? spaceNotificationBubble.implicitWidth : 0)
                             fullText: TimelineManager.htmlEscape(roomName)
                             textFormat: Text.RichText
-                        }
-                        Label {
-                            id: timestamp
-
-                            anchors.baseline: titleText.baseline
-                            anchors.right: parent.right
-                            color: roomItem.unimportantText
-                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            text: time
-                            visible: !isInvite && !isSpace
                         }
                         NotificationBubble {
                             id: spaceNotificationBubble

@@ -307,7 +307,10 @@ TimelineEvent {
                 anchors.right: parent.right
                 y: section.visible && section.active ? section.y + section.height : 0
 
-                visible: !wrapper.isStateEvent
+                // Only show the per-message status/trust/time gutter for the newest message
+                // (so delivery status stays visible at a glance) or on hover - repeating it on
+                // every single line drowns out the actual conversation.
+                visible: !wrapper.isStateEvent && (wrapper.index === 0 || wrapper.hovered)
 
                 eventId: wrapper.eventId
                 status: wrapper.status

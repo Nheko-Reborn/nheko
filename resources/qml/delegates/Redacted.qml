@@ -23,9 +23,9 @@ Control {
         Image {
             id: trashImg
             Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
-            Layout.preferredWidth: fontMetrics.font.pixelSize
-            Layout.preferredHeight: fontMetrics.font.pixelSize
-            source: "image://colorimage/:/icons/icons/ui/delete.svg?" + palette.text
+            Layout.preferredWidth: fontMetrics.font.pixelSize * 0.8
+            Layout.preferredHeight: fontMetrics.font.pixelSize * 0.8
+            source: "image://colorimage/:/icons/icons/ui/delete.svg?" + palette.buttonText
         }
         Label {
             id: redactedLabel
@@ -35,7 +35,9 @@ Control {
             Layout.fillWidth: true
             property var redactedPair: msgRoot.room.formatRedactedEvent(msgRoot.eventId)
             text: redactedPair["first"]
-            color: palette.text
+            font.italic: true
+            font.pointSize: 0.8 * Settings.fontSize
+            color: palette.buttonText
             wrapMode: Label.WordWrap
 
             ToolTip.text: redactedPair["second"]
@@ -46,12 +48,7 @@ Control {
         }
     }
 
-    padding: Nheko.paddingSmall
+    padding: 0
 
     Layout.maximumWidth: redactedLayout.Layout.maximumWidth + padding * 2
-
-    background: Rectangle {
-        color: palette.alternateBase
-        radius: Nheko.paddingSmall
-    }
 }

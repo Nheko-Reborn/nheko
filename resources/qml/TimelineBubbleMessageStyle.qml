@@ -190,7 +190,9 @@ TimelineEvent {
                         anchors.right: parent.right
                         anchors.bottom: parent.bottom
 
-                        visible: !wrapper.isStateEvent
+                        // Same reasoning as the default style: repeating this on every bubble is
+                        // noise: keep it for the newest message and reveal the rest on hover.
+                        visible: !wrapper.isStateEvent && (wrapper.index === 0 || wrapper.hovered)
 
                         eventId: wrapper.eventId
                         status: wrapper.status

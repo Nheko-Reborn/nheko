@@ -86,7 +86,7 @@ UserSettings::load(std::optional<QString> profile)
         sendMessageKey = static_cast<int>(SendMessageKey::Enter);
     sendMessageKey_ = static_cast<SendMessageKey>(sendMessageKey);
 
-    bubbles_              = settings.value("user/bubbles_enabled", false).toBool();
+    bubbles_              = settings.value("user/bubbles_enabled", true).toBool();
     smallAvatars_         = settings.value("user/small_avatars_enabled", false).toBool();
     animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
     typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
