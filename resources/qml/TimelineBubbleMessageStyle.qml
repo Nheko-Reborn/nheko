@@ -54,6 +54,45 @@ TimelineEvent {
 
     property alias hovered: messageHover.hovered
 
+    // Raw content width of just this message, exposed so grouped neighbors can read it without
+    // recursing into each other's already-matched (see groupWidth) width.
+    property alias groupItemWidth: contentPlacementContainer.ownContentWidth
+
+    // All bubbles in a consecutive-sender group share one width - the widest message in it -
+    // so the group reads as a single block with straight sides instead of a jagged stack where
+    // each bubble is only as wide as its own text.
+    property real groupWidth: {
+        let w = wrapper.groupItemWidth
+        let view = wrapper.ListView.view
+        if (view) {
+            if (!wrapper.isGroupStart) {
+                let i = wrapper.index + 1
+                while (i < chat.count) {
+                    let item = view.itemAtIndex(i)
+                    if (!item)
+                        break
+                    w = Math.max(w, item.groupItemWidth)
+                    if (item.isGroupStart)
+                        break
+                    i++
+                }
+            }
+            if (!wrapper.isGroupEnd) {
+                let i = wrapper.index - 1
+                while (i >= 0) {
+                    let item = view.itemAtIndex(i)
+                    if (!item)
+                        break
+                    w = Math.max(w, item.groupItemWidth)
+                    if (item.isGroupEnd)
+                        break
+                    i--
+                }
+            }
+        }
+        return w
+    }
+
     property int oneHour: 60 * 60 * 1000
     property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour
 
@@ -193,7 +232,12 @@ TimelineEvent {
                     // property bool fitsMetadataInside: wrapper.main?.positionAt ? (wrapper.main.positionAt(wrapper.main.width, wrapper.main.height - 4) == wrapper.main.positionAt(wrapper.main.width - metadata.width, wrapper.main.height - 4)) : false
                     property bool fitsMetadataInside: false
 
-                    implicitWidth: Math.max((wrapper.reply?.width ?? 0) + wrapper.replyInset, (wrapper.main?.width ?? 0) + wrapper.mainInset + ((fitsMetadata && !fitsMetadataInside) ? metadata.width : 0))
+                    property real ownContentWidth: Math.max((wrapper.reply?.width ?? 0) + wrapper.replyInset, (wrapper.main?.width ?? 0) + wrapper.mainInset + ((fitsMetadata && !fitsMetadataInside) ? metadata.width : 0))
+
+                    // Every bubble in a group is matched to the group's widest message (see
+                    // wrapper.groupWidth) rather than just its own, so the group has straight
+                    // sides instead of a jagged outline.
+                    implicitWidth: wrapper.isStateEvent ? ownContentWidth : wrapper.groupWidth
                     implicitHeight: contentColumn.implicitHeight + ((fitsMetadata || fitsMetadataInside) ? 0 : metadata.height)
 
                     TimelineMetadata {
