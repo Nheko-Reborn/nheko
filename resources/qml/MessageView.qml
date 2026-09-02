@@ -172,15 +172,37 @@ Item {
 
             hoverEnabled: true
             padding: Nheko.paddingSmall + 2
-            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
+            // Moving the pointer from the message to the popup passes through a moment where
+            // neither attached.hovered nor this control's own hovered is true yet - hiding
+            // immediately on that means the pointer arrives at an already-invisible item, which
+            // never gets a fresh enter event, so it stays hidden. hideTimer bridges that gap.
+            property bool shouldBeVisible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
+            visible: shouldBeVisible || hideTimer.running
             z: 10
-            // Below mode reparents straight onto the bubble (attached.bubble) so the anchors
-            // below are a direct parent-child relationship instead of needing to compute the
-            // bubble's position across several nested items and a possibly-centered wrapper.
-            parent: (actionsBelow && attached?.bubble) ? attached.bubble : chat.contentItem
-            anchors.top: actionsBelow ? parent?.bottom : undefined
+            // Stays parented at the top level, a sibling of every ListView delegate (attached),
+            // rather than reparented onto the bubble: that seemed simpler, since it makes the
+            // bubble's own edges valid anchor targets, but its mapped screen position came out
+            // wrong (probably an interaction with the ListView's BottomToTop layout and
+            // reparenting mid-layout) - the popup rendered in one place but hit-tested in
+            // another, which looks exactly like "vanishes when the pointer reaches it". Anchoring
+            // to attached (a valid sibling) with margins computed from the bubble's geometry,
+            // the same approach already proven for the beside-the-bubble placement, avoids it.
+            parent: chat.contentItem
+            anchors.top: actionsBelow ? attached?.top : undefined
             anchors.bottom: actionsBelow ? undefined : attached?.top
-            anchors.right: actionsBelow ? parent?.right : attached?.right
+            anchors.right: attached?.right
+
+            onShouldBeVisibleChanged: {
+                if (shouldBeVisible)
+                    hideTimer.stop();
+                else
+                    hideTimer.restart();
+            }
+
+            Timer {
+                id: hideTimer
+                interval: 300
+            }
 
             background: Rectangle {
                 border.color: palette.buttonText

@@ -153,10 +153,13 @@ TimelineEvent {
                     if (!Settings.mobileMode && hovered) {
                         if (!messageActions.hovered) {
                             messageActions.model = wrapper;
-                            messageActions.attached = wrapper;
+                            // Set before attached, which makes messageActions.visible true
+                            // immediately - see the equivalent comment in
+                            // TimelineBubbleMessageStyle.qml.
                             messageActions.actionsBelow = false;
                             messageActions.anchors.bottomMargin = -gridContainer.y
                             messageActions.anchors.rightMargin = metadata.width
+                            messageActions.attached = wrapper;
                         }
                     }
                 }

@@ -206,14 +206,19 @@ TimelineEvent {
                     if (!Settings.mobileMode && hovered) {
                         if (!messageActions.hovered) {
                             messageActions.model = wrapper;
-                            // attached must be set before actionsBelow, which gates the
-                            // parent/anchors bindings below - otherwise those can transiently
-                            // evaluate against a stale attached from whichever message was
-                            // hovered last.
-                            messageActions.attached = wrapper;
-                            messageActions.anchors.topMargin = Nheko.paddingSmall;
-                            messageActions.anchors.rightMargin = 0;
+                            // actionsBelow and the margins must be set before attached: assigning
+                            // attached makes messageActions.visible become true immediately (it
+                            // only needs attached + attached.hovered), so anything set after would
+                            // miss the popup's first layout pass and it would render in the wrong
+                            // place (or the default style's "above" position) for a moment.
                             messageActions.actionsBelow = true;
+                            // attached is anchored via its own top/right (a plain sibling of
+                            // messageActions, always a valid anchor target - anchoring straight to
+                            // the bubble itself needs it to be a parent or sibling, which it isn't
+                            // here), offset down/left to the bubble's actual bottom/right edge.
+                            messageActions.anchors.topMargin = gridContainer.y + messageBubble.y + messageBubble.height + Nheko.paddingSmall;
+                            messageActions.anchors.rightMargin = wrapper.width - (gridContainer.x + messageBubble.x + messageBubble.width);
+                            messageActions.attached = wrapper;
                         }
                     }
                 }
