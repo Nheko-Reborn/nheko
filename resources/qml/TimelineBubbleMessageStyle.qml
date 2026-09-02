@@ -105,6 +105,35 @@ TimelineEvent {
     property bool isGroupStart: wrapper.previousMessageUserId !== wrapper.userId || wrapper.showSection || wrapper.previousMessageIsStateEvent !== wrapper.isStateEvent
     property bool isGroupEnd: wrapper.nextMessageUserId !== wrapper.userId || wrapper.nextMessageDay !== wrapper.day || wrapper.nextMessageTimestamp - wrapper.timestamp > oneHour || wrapper.nextMessageIsStateEvent !== wrapper.isStateEvent
 
+    // This message's bubble edges, expressed as offsets from this wrapper's own top/right - the
+    // same values used to anchor messageActions below/right of the bubble. Exposed so a message
+    // that's merged into a group but isn't its last member can redirect the popup to the group
+    // end's wrapper instead (see groupEndWrapper()), rather than each message in a visually
+    // merged bubble showing its own separate popup as the pointer crosses between them.
+    property real bubbleBottomOffset: gridContainer.y + messageBubble.y + messageBubble.height
+    property real bubbleRightOffset: wrapper.width - (gridContainer.x + messageBubble.x + messageBubble.width)
+
+    // Walks down (towards newer messages) to the last member of this message's group, so a
+    // merged bubble always shows one popup anchored to its bottom, regardless of which message
+    // within it triggered the hover.
+    function groupEndWrapper() {
+        if (wrapper.isGroupEnd)
+            return wrapper;
+        let view = wrapper.ListView.view;
+        if (!view)
+            return wrapper;
+        let i = wrapper.index - 1;
+        while (i >= 0) {
+            let item = view.itemAtIndex(i);
+            if (!item)
+                return wrapper;
+            if (item.isGroupEnd)
+                return item;
+            i--;
+        }
+        return wrapper;
+    }
+
     mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0) + 4
     replyInset: mainInset + 4 + Nheko.paddingSmall
 
@@ -203,12 +232,20 @@ TimelineEvent {
                 id: messageHover
                 blocking: false
                 onHoveredChanged: () => {
-                    if (!Settings.mobileMode && hovered) {
+                    if (Settings.mobileMode)
+                        return;
+                    if (hovered) {
                         if (!messageActions.hovered) {
+                            // Actions (edit/react/reply/...) still target whichever message the
+                            // pointer is actually over, but the popup itself is always anchored
+                            // to the bottom of this message's group, so hovering anywhere in a
+                            // merged bubble shows one stable popup instead of a new one per
+                            // message as the pointer crosses between them.
+                            let groupEnd = wrapper.groupEndWrapper();
                             messageActions.model = wrapper;
                             // actionsBelow and the margins must be set before attached: assigning
                             // attached makes messageActions.visible become true immediately (it
-                            // only needs attached + attached.hovered), so anything set after would
+                            // only needs attached + sourceHovered), so anything set after would
                             // miss the popup's first layout pass and it would render in the wrong
                             // place (or the default style's "above" position) for a moment.
                             messageActions.actionsBelow = true;
@@ -216,10 +253,20 @@ TimelineEvent {
                             // messageActions, always a valid anchor target - anchoring straight to
                             // the bubble itself needs it to be a parent or sibling, which it isn't
                             // here), offset down/left to the bubble's actual bottom/right edge.
-                            messageActions.anchors.topMargin = gridContainer.y + messageBubble.y + messageBubble.height + Nheko.paddingSmall;
-                            messageActions.anchors.rightMargin = wrapper.width - (gridContainer.x + messageBubble.x + messageBubble.width);
-                            messageActions.attached = wrapper;
+                            messageActions.anchors.topMargin = groupEnd.bubbleBottomOffset + Nheko.paddingSmall;
+                            messageActions.anchors.rightMargin = groupEnd.bubbleRightOffset;
+                            messageActions.attached = groupEnd;
                         }
+                        messageActions.hoverSource = wrapper;
+                        messageActions.sourceHovered = true;
+                    } else if (messageActions.hoverSource === wrapper) {
+                        // Only clear if this exact message is still the one that last set
+                        // sourceHovered. Moving the pointer directly from one message to the
+                        // next within the same merged bubble can deliver the old message's
+                        // "leave" after the new message's "enter" - comparing against the group
+                        // (rather than the specific delegate) wouldn't catch this, since every
+                        // message in the group resolves to the same group-end target.
+                        messageActions.sourceHovered = false;
                     }
                 }
 

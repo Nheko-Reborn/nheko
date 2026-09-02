@@ -150,7 +150,9 @@ TimelineEvent {
                 id: messageHover
                 blocking: false
                 onHoveredChanged: () => {
-                    if (!Settings.mobileMode && hovered) {
+                    if (Settings.mobileMode)
+                        return;
+                    if (hovered) {
                         if (!messageActions.hovered) {
                             messageActions.model = wrapper;
                             // Set before attached, which makes messageActions.visible true
@@ -161,6 +163,13 @@ TimelineEvent {
                             messageActions.anchors.rightMargin = metadata.width
                             messageActions.attached = wrapper;
                         }
+                        messageActions.hoverSource = wrapper;
+                        messageActions.sourceHovered = true;
+                    } else if (messageActions.hoverSource === wrapper) {
+                        // See the equivalent comment in TimelineBubbleMessageStyle.qml - a stale
+                        // leave event for a message the pointer already moved past must not
+                        // clobber a newer, still-active hover on a different message.
+                        messageActions.sourceHovered = false;
                     }
                 }
 

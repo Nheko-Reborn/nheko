@@ -83,6 +83,7 @@ Item {
             updateLastScroll();
             messageActionsC.attached = null;
             messageActionsC.actionsBelow = false;
+            messageActionsC.hoverSource = null;
         }
         onHeightChanged: contentY = (lastScrollPos-height)
 
@@ -169,14 +170,31 @@ Item {
             // Bubble style positions this below the message, right-aligned to it, instead of
             // above it.
             property bool actionsBelow: false
+            // Set by whichever message's own HoverHandler is currently active, which may not be
+            // attached itself: a merged bubble redirects attached to its last (bottom) message so
+            // the popup stays put instead of jumping to a new one per message, but the pointer
+            // can rest on any message within that bubble, not just the last one, so visibility
+            // can't rely on attached.hovered alone.
+            property bool sourceHovered: false
+            // The specific delegate whose HoverHandler last set sourceHovered true. Within a
+            // merged group, every message redirects attached to the same group-end wrapper, so
+            // comparing a leaving message's group-end against attached (as sourceHovered's clear
+            // guard) can't tell messages in the same group apart: moving the pointer from one
+            // message to the next in that group can deliver the new message's enter before the
+            // old one's stale leave, and the stale leave would then clear sourceHovered right
+            // back out from under the fresh hover. Tracking the exact hovering delegate fixes it:
+            // a leave only clears sourceHovered if it came from the delegate that most recently
+            // set it.
+            property Item hoverSource: null
 
             hoverEnabled: true
             padding: Nheko.paddingSmall + 2
-            // Moving the pointer from the message to the popup passes through a moment where
-            // neither attached.hovered nor this control's own hovered is true yet - hiding
-            // immediately on that means the pointer arrives at an already-invisible item, which
-            // never gets a fresh enter event, so it stays hidden. hideTimer bridges that gap.
-            property bool shouldBeVisible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
+            // Moving the pointer from the message to the popup (or between messages merged into
+            // the same bubble) passes through a moment where neither sourceHovered nor this
+            // control's own hovered is true yet - hiding immediately on that means the pointer
+            // arrives at an already-invisible item, which never gets a fresh enter event, so it
+            // stays hidden. hideTimer bridges that gap.
+            property bool shouldBeVisible: Settings.buttonsInTimeline && !!attached && (sourceHovered || hovered)
             visible: shouldBeVisible || hideTimer.running
             z: 10
             // Stays parented at the top level, a sibling of every ListView delegate (attached),
