@@ -45,6 +45,10 @@ Theme::paletteFromTheme(QStringView theme)
               /*base*/ QColor(0x20, 0x22, 0x28),
               /*window*/ QColor(0x2d, 0x31, 0x39));
             darkActive.setColor(QPalette::AlternateBase, QColor(0x34, 0x39, 0x42));
+            // The 9-arg constructor above leaves Button hardcoded to white; stock
+            // QtQuick Controls (e.g. ComboBox) actually use it, unlike our own
+            // widgets, so it needs an explicit dark-appropriate color here.
+            darkActive.setColor(QPalette::Button, QColor(60, 70, 77));
             darkActive.setColor(QPalette::Highlight, QColor(0x0d, 0xbd, 0x8b));
             darkActive.setColor(QPalette::HighlightedText, QColor(0xf4, 0xf5, 0xf8));
             darkActive.setColor(QPalette::ToolTipBase, darkActive.base().color());
