@@ -204,7 +204,10 @@ TimelineEvent {
                             messageActions.model = wrapper;
                             messageActions.attached = wrapper;
                             messageActions.anchors.bottomMargin = -gridContainer.y
-                            //messageActions.anchors.rightMargin = metadata.width
+                            // messageActions is anchored to attached.right, i.e. the full row
+                            // width, which is nowhere near the bubble for a left-aligned message.
+                            // Pull it in to sit just past the bubble's own right edge instead.
+                            messageActions.anchors.rightMargin = wrapper.width - (gridContainer.x + messageBubble.x + messageBubble.width)
                         }
                     }
                 }
