@@ -206,16 +206,14 @@ TimelineEvent {
                     if (!Settings.mobileMode && hovered) {
                         if (!messageActions.hovered) {
                             messageActions.model = wrapper;
-                            // attached/actionsBesideOnLeft must be set before actionsBeside,
-                            // which gates the parent/anchors bindings below - otherwise those
-                            // bindings can transiently evaluate against a stale attached or
-                            // actionsBesideOnLeft from whichever message was hovered last.
+                            // attached must be set before actionsBelow, which gates the
+                            // parent/anchors bindings below - otherwise those can transiently
+                            // evaluate against a stale attached from whichever message was
+                            // hovered last.
                             messageActions.attached = wrapper;
-                            messageActions.actionsBesideOnLeft = wrapper.isSender;
-                            messageActions.anchors.topMargin = 0;
-                            messageActions.anchors.leftMargin = Nheko.paddingSmall;
-                            messageActions.anchors.rightMargin = Nheko.paddingSmall;
-                            messageActions.actionsBeside = true;
+                            messageActions.anchors.topMargin = Nheko.paddingSmall;
+                            messageActions.anchors.rightMargin = 0;
+                            messageActions.actionsBelow = true;
                         }
                     }
                 }

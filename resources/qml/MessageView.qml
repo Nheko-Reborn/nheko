@@ -156,23 +156,21 @@ Item {
             property Item attached: null
             // use comma to update on scroll
             property alias model: row.model
-            // Bubble style positions this beside the message instead of above it - on the left
-            // for a right-aligned (own) message, since there's no room to its right.
-            property bool actionsBeside: false
-            property bool actionsBesideOnLeft: false
+            // Bubble style positions this below the message, right-aligned to it, instead of
+            // above it.
+            property bool actionsBelow: false
 
             hoverEnabled: true
-            padding: Nheko.paddingMedium
+            padding: Nheko.paddingSmall + 2
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
             z: 10
-            // Beside mode reparents straight onto the bubble (attached.bubble) so the anchors
+            // Below mode reparents straight onto the bubble (attached.bubble) so the anchors
             // below are a direct parent-child relationship instead of needing to compute the
             // bubble's position across several nested items and a possibly-centered wrapper.
-            parent: (actionsBeside && attached?.bubble) ? attached.bubble : chat.contentItem
-            anchors.top: actionsBeside ? parent?.top : undefined
-            anchors.bottom: actionsBeside ? undefined : attached?.top
-            anchors.left: (actionsBeside && !actionsBesideOnLeft) ? parent?.right : undefined
-            anchors.right: actionsBeside ? (actionsBesideOnLeft ? parent?.left : undefined) : attached?.right
+            parent: (actionsBelow && attached?.bubble) ? attached.bubble : chat.contentItem
+            anchors.top: actionsBelow ? parent?.bottom : undefined
+            anchors.bottom: actionsBelow ? undefined : attached?.top
+            anchors.right: actionsBelow ? parent?.right : attached?.right
 
             background: Rectangle {
                 border.color: palette.buttonText
@@ -202,10 +200,10 @@ Item {
                         //Layout.preferredHeight: fontMetrics.height
                         Layout.alignment: Qt.AlignBottom
                         focusPolicy: Qt.NoFocus
-                        height: showImage ? 24 : buttonText.implicitHeight
-                        implicitHeight: showImage ? 24 : buttonText.implicitHeight
-                        implicitWidth: showImage ? 24 : buttonText.implicitWidth
-                        width: showImage ? 24 : buttonText.implicitWidth
+                        height: showImage ? 20 : buttonText.implicitHeight
+                        implicitHeight: showImage ? 20 : buttonText.implicitHeight
+                        implicitWidth: showImage ? 20 : buttonText.implicitWidth
+                        width: showImage ? 20 : buttonText.implicitWidth
 
                         onClicked: {
                             room.input.reaction(row.model.eventId, modelData);
@@ -218,7 +216,7 @@ Item {
                             anchors.centerIn: parent
                             color: button.hovered ? button.highlightColor : button.buttonTextColor
                             font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
-                            font.pointSize: Settings.fontSize * 1.4
+                            font.pointSize: Settings.fontSize * 1.2
                             horizontalAlignment: Text.AlignHCenter
                             padding: 0
                             text: TimelineManager.htmlEscape(button.modelData)
@@ -250,8 +248,8 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/edit.svg"
                     visible: !!row.model && row.model.isEditable
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: {
                         if (row.model.isEditable)
@@ -267,8 +265,8 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/smile-add.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, room.roomId, function (plaintext, markdown) {
                             var event_id = row.model ? row.model.eventId : "";
@@ -283,8 +281,8 @@ Item {
                     hoverEnabled: true
                     image: (row.model && row.model.threadId) ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: room.thread = (row.model.threadId || row.model.eventId)
                 }
@@ -295,8 +293,8 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/reply.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: room.reply = row.model.eventId
                 }
@@ -308,8 +306,8 @@ Item {
                     hoverEnabled: true
                     image: ":/icons/icons/ui/go-to.svg"
                     visible: !!row.model && filteredTimeline.filterByContent
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: {
                         topBar.searchString = "";
@@ -324,8 +322,8 @@ Item {
                     ToolTip.visible: hovered
                     hoverEnabled: true
                     image: ":/icons/icons/ui/options.svg"
-                    Layout.preferredWidth: 24
-                    Layout.preferredHeight: 24
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: messageContextMenuC.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }
