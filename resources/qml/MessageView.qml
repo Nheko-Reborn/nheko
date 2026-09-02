@@ -156,14 +156,23 @@ Item {
             property Item attached: null
             // use comma to update on scroll
             property alias model: row.model
+            // Bubble style positions this beside the message instead of above it - on the left
+            // for a right-aligned (own) message, since there's no room to its right.
+            property bool actionsBeside: false
+            property bool actionsBesideOnLeft: false
 
             hoverEnabled: true
             padding: Nheko.paddingMedium
             visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
             z: 10
-            parent: chat.contentItem
-            anchors.bottom: attached?.top
-            anchors.right: attached?.right
+            // Beside mode reparents straight onto the bubble (attached.bubble) so the anchors
+            // below are a direct parent-child relationship instead of needing to compute the
+            // bubble's position across several nested items and a possibly-centered wrapper.
+            parent: (actionsBeside && attached?.bubble) ? attached.bubble : chat.contentItem
+            anchors.top: actionsBeside ? parent?.top : undefined
+            anchors.bottom: actionsBeside ? undefined : attached?.top
+            anchors.left: (actionsBeside && !actionsBesideOnLeft) ? parent?.right : undefined
+            anchors.right: actionsBeside ? (actionsBesideOnLeft ? parent?.left : undefined) : attached?.right
 
             background: Rectangle {
                 border.color: palette.buttonText

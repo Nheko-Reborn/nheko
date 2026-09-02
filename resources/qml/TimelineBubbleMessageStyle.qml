@@ -52,6 +52,10 @@ TimelineEvent {
 
     property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
 
+    // Exposed so messageActions can be reparented directly onto the bubble while hovering it -
+    // anchoring straight to a direct parent avoids fragile cross-item coordinate math entirely.
+    property alias bubble: messageBubble
+
     property alias hovered: messageHover.hovered
 
     // Raw content width of just this message, exposed so grouped neighbors can read it without
@@ -202,12 +206,16 @@ TimelineEvent {
                     if (!Settings.mobileMode && hovered) {
                         if (!messageActions.hovered) {
                             messageActions.model = wrapper;
+                            // attached/actionsBesideOnLeft must be set before actionsBeside,
+                            // which gates the parent/anchors bindings below - otherwise those
+                            // bindings can transiently evaluate against a stale attached or
+                            // actionsBesideOnLeft from whichever message was hovered last.
                             messageActions.attached = wrapper;
-                            messageActions.anchors.bottomMargin = -gridContainer.y
-                            // messageActions is anchored to attached.right, i.e. the full row
-                            // width, which is nowhere near the bubble for a left-aligned message.
-                            // Pull it in to sit just past the bubble's own right edge instead.
-                            messageActions.anchors.rightMargin = wrapper.width - (gridContainer.x + messageBubble.x + messageBubble.width)
+                            messageActions.actionsBesideOnLeft = wrapper.isSender;
+                            messageActions.anchors.topMargin = 0;
+                            messageActions.anchors.leftMargin = Nheko.paddingSmall;
+                            messageActions.anchors.rightMargin = Nheko.paddingSmall;
+                            messageActions.actionsBeside = true;
                         }
                     }
                 }

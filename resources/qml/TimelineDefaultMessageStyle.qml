@@ -154,6 +154,7 @@ TimelineEvent {
                         if (!messageActions.hovered) {
                             messageActions.model = wrapper;
                             messageActions.attached = wrapper;
+                            messageActions.actionsBeside = false;
                             messageActions.anchors.bottomMargin = -gridContainer.y
                             messageActions.anchors.rightMargin = metadata.width
                         }
