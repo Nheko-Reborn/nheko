@@ -52,6 +52,6 @@ Control {
 
     background: Rectangle {
         color: palette.alternateBase
-        radius: fontMetrics.lineSpacing / 2 + 2 * Nheko.paddingSmall
+        radius: Nheko.paddingSmall
     }
 }

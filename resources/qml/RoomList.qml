@@ -506,11 +506,7 @@ Page {
 
                     PropertyChanges {
                         roomItem {
-                            backgroundColor: palette.highlight
-                            bubbleBackground: palette.highlightedText
-                            bubbleText: palette.highlight
-                            importantText: palette.highlightedText
-                            unimportantText: palette.highlightedText
+                            backgroundColor: Qt.rgba(palette.highlight.r, palette.highlight.g, palette.highlight.b, 0.16)
                         }
                     }
                 }
@@ -665,7 +661,7 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 color: palette.highlight
                 height: parent.height - Nheko.paddingSmall * 2
-                visible: hasUnreadMessages
+                visible: hasUnreadMessages || roomItem.state === "selected"
                 width: 3
             }
         }
