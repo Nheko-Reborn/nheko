@@ -76,7 +76,14 @@ Item {
             lastScrollPos = (contentY+height);
         }
         onMovementEnded: updateLastScroll()
-        onModelChanged: updateLastScroll()
+        // Switching rooms destroys the old delegates. messageActionsC.attached may still be
+        // pointing at one of them, which leaves the action popup visibly stuck (wrong position,
+        // wrong content, wrong color) since nothing else ever clears that reference.
+        onModelChanged: {
+            updateLastScroll();
+            messageActionsC.attached = null;
+            messageActionsC.actionsBelow = false;
+        }
         onHeightChanged: contentY = (lastScrollPos-height)
 
         Component {
