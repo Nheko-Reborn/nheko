@@ -63,7 +63,10 @@ Item {
         displayMarginEnd: height / 4
         model: (filteredTimeline.filterByThread || filteredTimeline.filterByContent || filteredTimeline.filterByNotifications) ? filteredTimeline : room
         //pixelAligned: true
-        spacing: 2
+        // 0, not a couple px: any gap here shows through as a seam between the merged bubbles
+        // of a same-sender group in TimelineBubbleMessageStyle.qml. Section headers (avatar +
+        // name), shown once per group, already provide enough separation between groups.
+        spacing: 0
         verticalLayoutDirection: ListView.BottomToTop
 
         property int lastScrollPos: 0
