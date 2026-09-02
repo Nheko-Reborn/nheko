@@ -178,7 +178,9 @@ Item {
             background: Rectangle {
                 border.color: palette.buttonText
                 border.width: 1
-                color: palette.window
+                // Match the bubble it's attached to, so it reads as part of the same message
+                // instead of a generic floating toolbar.
+                color: (messageActionsC.actionsBelow && messageActionsC.attached?.bubble) ? messageActionsC.attached.bubble.bubbleColor : palette.window
                 radius: padding
             }
             contentItem: RowLayout {
