@@ -290,10 +290,13 @@ TimelineEvent {
 
                 }
 
-                padding: wrapper.isStateEvent ? 0 : 4
+                topPadding: wrapper.isStateEvent ? 0 : Nheko.paddingSmall + 2
+                bottomPadding: wrapper.isStateEvent ? 0 : Nheko.paddingSmall + 2
+                leftPadding: wrapper.isStateEvent ? 0 : Nheko.paddingMedium
+                rightPadding: wrapper.isStateEvent ? 0 : Nheko.paddingMedium
                 background: Rectangle {
                     color: !wrapper.isStateEvent ? Qt.tint(palette.base, Qt.hsla(messageBubble.userColor.hslHue, wrapper.hovered ? 0.8 : 0.5, messageBubble.userColor.hslLightness, 0.2)) : "transparent"
-                    radius: 4
+                    radius: 16
                     border.color: Nheko.theme.red
                     border.width: wrapper.notificationlevel == MtxEvent.Highlight ? 1 : 0
                 }
