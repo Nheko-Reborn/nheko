@@ -51,6 +51,7 @@ Flow {
                     elide: Text.ElideRight
                     elideWidth: 150
                     font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
+                    font.pointSize: Settings.fontSize * 1.3
                     text: modelData.displayKey
                 }
                 Text {
@@ -59,6 +60,7 @@ Flow {
                     anchors.verticalCenter: parent.verticalCenter
                     color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText : palette.text
                     font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
+                    font.pointSize: Settings.fontSize * 1.3
                     textFormat: TextEdit.RichText
                     maximumLineCount: 1
                     text: {
