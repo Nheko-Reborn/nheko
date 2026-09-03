@@ -456,7 +456,11 @@ Page {
             id: roomItem
 
             required property string avatarUrl
-            property color backgroundColor: palette.window
+            // Transparent rather than palette.window: an opaque row background here would
+            // paint over the Page's own shaded background (see RoomList.qml's background
+            // Rectangle above), hiding the tint that's meant to set the room list apart from
+            // the communities rail and the timeline.
+            property color backgroundColor: "transparent"
             property color bubbleBackground: palette.highlight
             property color bubbleText: palette.highlightedText
             required property string directChatOtherUserId
