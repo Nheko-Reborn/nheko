@@ -85,7 +85,7 @@ statusMessage();
 //! Sets the user's status message (if supported by the homeserver).
 void
 setStatusMessage(const QString &message);
-//! Sets the current theme (supported values: "light", "dark" or "system")
+//! Sets the current theme (supported values: "light", "dark", "system" or "tokyonight")
 void
 setTheme(const QString &theme);
 

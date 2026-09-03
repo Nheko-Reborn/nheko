@@ -58,6 +58,37 @@ Theme::paletteFromTheme(QStringView theme)
             return darkActive;
         }();
         return darkActive;
+    } else if (theme == u"tokyonight") {
+        // Colors from the Tokyo Night "Night" palette (github.com/folke/tokyonight.nvim).
+        static QPalette tokyoNightActive = [] {
+            QPalette tokyoNightActive(
+              /*windowText*/ QColor(0xc0, 0xca, 0xf5),
+              /*button*/ QColor(Qt::GlobalColor::white),
+              /*light*/ QColor(0xc0, 0xca, 0xf5),
+              /*dark*/ QColor(0x41, 0x48, 0x68),
+              /*mid*/ QColor(0x54, 0x5c, 0x7e),
+              /*text*/ QColor(0xc0, 0xca, 0xf5),
+              /*bright_text*/ QColor(0xf4, 0xf5, 0xf8),
+              /*base*/ QColor(0x16, 0x16, 0x1e),
+              /*window*/ QColor(0x1a, 0x1b, 0x26));
+            tokyoNightActive.setColor(QPalette::AlternateBase, QColor(0x29, 0x2e, 0x42));
+            // The 9-arg constructor above leaves Button hardcoded to white; stock
+            // QtQuick Controls (e.g. ComboBox) actually use it, unlike our own
+            // widgets, so it needs an explicit theme-appropriate color here.
+            tokyoNightActive.setColor(QPalette::Button, QColor(0x41, 0x48, 0x68));
+            tokyoNightActive.setColor(QPalette::Highlight, QColor(0x7a, 0xa2, 0xf7));
+            tokyoNightActive.setColor(QPalette::HighlightedText, QColor(0x16, 0x16, 0x1e));
+            tokyoNightActive.setColor(QPalette::ToolTipBase, tokyoNightActive.base().color());
+            tokyoNightActive.setColor(QPalette::ToolTipText, tokyoNightActive.text().color());
+            tokyoNightActive.setColor(QPalette::Link, QColor(0x7d, 0xcf, 0xff));
+            // Not the comment-gray muted tone used elsewhere for de-emphasis: that's too
+            // close in lightness to Button above and reads as barely-visible text on
+            // dropdowns/buttons (e.g. the theme picker itself). Needs real contrast against
+            // its own background, not just a subdued look.
+            tokyoNightActive.setColor(QPalette::ButtonText, QColor(0xa9, 0xb1, 0xd6));
+            return tokyoNightActive;
+        }();
+        return tokyoNightActive;
     } else {
         return original;
     }
@@ -85,6 +116,15 @@ Theme::Theme(QStringView theme)
         green_             = QColor(QColorConstants::Svg::green);
         orange_            = QColor(0xfc, 0xc5, 0x3a);
         error_             = QColor(0xdd, 0x3d, 0x3d);
+    } else if (theme == u"tokyonight") {
+        // Same "one step up from window" reasoning as dark above - reuses AlternateBase's
+        // shade rather than matching window.
+        sidebarBackground_ = QColor(0x29, 0x2e, 0x42);
+        alternateButton_   = QColor(0x41, 0x48, 0x68);
+        red_               = QColor(0xf7, 0x76, 0x8e);
+        green_             = QColor(0x9e, 0xce, 0x6a);
+        orange_            = QColor(0xff, 0x9e, 0x64);
+        error_             = QColor(0xf7, 0x76, 0x8e);
     } else {
         // Falling back to the inherited system palette otherwise leaves sidebarBackground
         // identical to the window color it's meant to be distinguishable from - the sidebar,

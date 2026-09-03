@@ -71,6 +71,13 @@ Nheko::inactiveColors() const
             return darkInactive;
         }();
         return darkInactive;
+    } else if (theme == QLatin1String("tokyonight")) {
+        static QPalette tokyoNightInactive = [] {
+            auto tokyoNightInactive = Theme::paletteFromTheme(u"tokyonight");
+            tokyoNightInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
+            return tokyoNightInactive;
+        }();
+        return tokyoNightInactive;
     } else {
         static QPalette originalInactive = [] {
             auto originalInactive = Theme::paletteFromTheme(u"system");

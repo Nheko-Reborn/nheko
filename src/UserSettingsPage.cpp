@@ -29,6 +29,7 @@ QStringList themes{
   QStringLiteral("light"),
   QStringLiteral("dark"),
   QStringLiteral("system"),
+  QStringLiteral("tokyonight"),
 };
 
 QSharedPointer<UserSettings> UserSettings::instance_;
@@ -1681,6 +1682,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
               QStringLiteral("Light"),
               QStringLiteral("Dark"),
               QStringLiteral("System"),
+              QStringLiteral("Tokyo Night"),
             };
         case ShowImage:
             return QStringList{
