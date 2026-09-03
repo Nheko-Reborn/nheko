@@ -17,7 +17,11 @@ Page {
     property bool collapsed: false
 
     background: Rectangle {
-        color: Nheko.theme.sidebarBackground
+        // A partial tint of the communities rail's own background, laid over the window color
+        // rather than matching either one exactly - gives the room list its own step between
+        // the rail and the timeline, so the three columns read as distinct areas instead of
+        // two of them (rail + room list) blending into a single block.
+        color: Qt.tint(palette.window, Qt.rgba(Nheko.theme.sidebarBackground.r, Nheko.theme.sidebarBackground.g, Nheko.theme.sidebarBackground.b, 0.55))
     }
     footer: ColumnLayout {
         spacing: 0

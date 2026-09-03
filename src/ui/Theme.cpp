@@ -75,14 +75,25 @@ Theme::Theme(QStringView theme)
         orange_            = QColor(0xfc, 0xbe, 0x05);
         error_             = QColor(0xdd, 0x3d, 0x3d);
     } else if (theme == u"dark") {
-        sidebarBackground_ = QColor(0x2d, 0x31, 0x39);
+        // Was the same color as window (below) - the communities rail, room list, and timeline
+        // all rendered as one indistinguishable block. Reuses AlternateBase's shade, the same
+        // "one step up from window" color already used elsewhere in this theme for elevated
+        // surfaces, rather than inventing a new one.
+        sidebarBackground_ = QColor(0x34, 0x39, 0x42);
         alternateButton_   = QColor(0x41, 0x4A, 0x59);
         red_               = QColor(0xa8, 0x23, 0x53);
         green_             = QColor(QColorConstants::Svg::green);
         orange_            = QColor(0xfc, 0xc5, 0x3a);
         error_             = QColor(0xdd, 0x3d, 0x3d);
     } else {
-        sidebarBackground_ = p.window().color();
+        // Falling back to the inherited system palette otherwise leaves sidebarBackground
+        // identical to the window color it's meant to be distinguishable from - the sidebar,
+        // room list, and timeline all end up the exact same shade, with no visual cue that
+        // they're separate areas. Nudge it a little instead: darker for a light system theme,
+        // lighter for a dark one, so there's always some contrast regardless of what the
+        // system palette actually looks like.
+        auto windowColor   = p.window().color();
+        sidebarBackground_ = windowColor.lightness() > 128 ? windowColor.darker(112) : windowColor.lighter(122);
         alternateButton_   = p.dark().color();
         red_               = QColor(QColorConstants::Svg::red);
         green_             = QColor(QColorConstants::Svg::green);
