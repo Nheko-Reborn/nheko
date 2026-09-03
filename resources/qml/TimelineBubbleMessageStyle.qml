@@ -105,39 +105,21 @@ TimelineEvent {
     property bool isGroupStart: wrapper.previousMessageUserId !== wrapper.userId || wrapper.showSection || wrapper.previousMessageIsStateEvent !== wrapper.isStateEvent
     property bool isGroupEnd: wrapper.nextMessageUserId !== wrapper.userId || wrapper.nextMessageDay !== wrapper.day || wrapper.nextMessageTimestamp - wrapper.timestamp > oneHour || wrapper.nextMessageIsStateEvent !== wrapper.isStateEvent
 
-    // This message's bubble bottom edge, expressed as an offset from this wrapper's own top - the
-    // same value used to anchor messageActions below the bubble. Exposed so a message that's
-    // merged into a group but isn't its last member can redirect the popup to the group end's
-    // wrapper instead (see groupEndWrapper()), rather than each message in a visually merged
-    // bubble showing its own separate popup as the pointer crosses between them.
-    property real bubbleBottomOffset: gridContainer.y + messageBubble.y + messageBubble.height
+    // This message's own bubble, vertically centered, as an offset from this wrapper's own top -
+    // each message in a merged group is still its own delegate/bubble internally (only their
+    // touching edges are squared off to look continuous), so this is specific to the exact
+    // message being hovered, not the group as a whole.
+    property real bubbleCenterOffset: gridContainer.y + messageBubble.y + messageBubble.height / 2
 
-    // Where this specific message's own text ends, as an offset from this wrapper's own left -
-    // groupItemWidth is this message's natural (pre-group-stretch) content width, so a short
-    // message in a group that's mostly long messages still gets an offset that lands just past
-    // its own short line, not the group's shared (stretched) bubble edge.
+    // Where this specific message's own text ends/starts, as an offset from this wrapper's own
+    // left. groupItemWidth is this message's natural (pre-group-stretch) content width, so a
+    // short message in a group that's mostly long messages still gets an offset landing just
+    // past (or before) its own short line, not the group's shared (stretched) bubble edge.
+    // Text is left-aligned within the bubble for other senders (see contentColumn below), so
+    // textEndOffset is what matters there; it's right-aligned for our own messages (mirrored,
+    // to leave slack space on the left instead of the right), so textStartOffset matters there.
     property real textEndOffset: gridContainer.x + messageBubble.x + messageBubble.leftPadding + wrapper.groupItemWidth
-
-    // Walks down (towards newer messages) to the last member of this message's group, so a
-    // merged bubble always shows one popup anchored to its bottom, regardless of which message
-    // within it triggered the hover.
-    function groupEndWrapper() {
-        if (wrapper.isGroupEnd)
-            return wrapper;
-        let view = wrapper.ListView.view;
-        if (!view)
-            return wrapper;
-        let i = wrapper.index - 1;
-        while (i >= 0) {
-            let item = view.itemAtIndex(i);
-            if (!item)
-                return wrapper;
-            if (item.isGroupEnd)
-                return item;
-            i--;
-        }
-        return wrapper;
-    }
+    property real textStartOffset: gridContainer.x + messageBubble.x + messageBubble.width - messageBubble.rightPadding - wrapper.groupItemWidth
 
     mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0) + 4
     replyInset: mainInset + 4 + Nheko.paddingSmall
@@ -241,42 +223,37 @@ TimelineEvent {
                         return;
                     if (hovered) {
                         if (!messageActions.hovered) {
-                            // Actions (edit/react/reply/...) still target whichever message the
-                            // pointer is actually over, but the popup itself is always anchored
-                            // to the bottom of this message's group, so hovering anywhere in a
-                            // merged bubble shows one stable popup instead of a new one per
-                            // message as the pointer crosses between them.
-                            let groupEnd = wrapper.groupEndWrapper();
+                            // Every message in a merged bubble is still its own delegate/bubble
+                            // internally, so each one positions its own popup right beside its
+                            // own text - inline with that exact message's row, not the group as
+                            // a whole. Hovering a short message next to a long one in the same
+                            // group therefore shows the popup right next to the short text, not
+                            // stranded at the group's shared (stretched) edge.
                             messageActions.model = wrapper;
-                            // actionsBelow and the margins must be set before attached: assigning
-                            // attached makes messageActions.visible become true immediately (it
-                            // only needs attached + sourceHovered), so anything set after would
-                            // miss the popup's first layout pass and it would render in the wrong
-                            // place (or the default style's "above" position) for a moment.
-                            messageActions.actionsBelow = true;
-                            // attached is anchored via its own top/left (a plain sibling of
-                            // messageActions, always a valid anchor target - anchoring straight to
-                            // the bubble itself needs it to be a parent or sibling, which it isn't
-                            // here), offset down to the group's bubble bottom edge. The vertical
-                            // position always follows the group (so it doesn't jump around as the
-                            // pointer moves between merged messages), but the horizontal position
-                            // uses this specific message's own text end - wrapper and groupEnd
-                            // share the same x/width (delegates don't shift horizontally, only
-                            // vertically), so wrapper's own offset is valid measured from
-                            // groupEnd's left too.
-                            messageActions.anchors.topMargin = groupEnd.bubbleBottomOffset + Nheko.paddingSmall;
-                            messageActions.preferredLeftOffset = wrapper.textEndOffset + Nheko.paddingSmall;
-                            messageActions.attached = groupEnd;
+                            messageActions.bubbleMode = true;
+                            // Own messages (isSender) mirror the layout: text is right-aligned
+                            // within the bubble (see contentColumn below) so the popup goes to
+                            // its left, using the freed-up space on that side instead of the
+                            // right - matching Signal's own-message-on-the-right convention.
+                            messageActions.anchorFromRight = wrapper.isSender;
+                            // Set before attached, which makes messageActions.visible true
+                            // immediately - see the equivalent comment in
+                            // TimelineDefaultMessageStyle.qml.
+                            messageActions.preferredTopOffset = wrapper.bubbleCenterOffset;
+                            if (wrapper.isSender)
+                                messageActions.preferredRightEdgeOffset = wrapper.textStartOffset - Nheko.paddingSmall;
+                            else
+                                messageActions.preferredLeftOffset = wrapper.textEndOffset + Nheko.paddingSmall;
+                            messageActions.attached = wrapper;
                         }
                         messageActions.hoverSource = wrapper;
                         messageActions.sourceHovered = true;
                     } else if (messageActions.hoverSource === wrapper) {
                         // Only clear if this exact message is still the one that last set
-                        // sourceHovered. Moving the pointer directly from one message to the
-                        // next within the same merged bubble can deliver the old message's
-                        // "leave" after the new message's "enter" - comparing against the group
-                        // (rather than the specific delegate) wouldn't catch this, since every
-                        // message in the group resolves to the same group-end target.
+                        // sourceHovered. Moving the pointer directly from this message to a
+                        // neighboring one can deliver this "leave" after the neighbor's "enter" -
+                        // which has already redirected attached/hoverSource there - and that
+                        // stale leave must not clobber the newer, still-active hover.
                         messageActions.sourceHovered = false;
                     }
                 }
@@ -417,7 +394,31 @@ TimelineEvent {
                         data: [replyRow, wrapper.main]
                     }
 
-
+                    // Column only manages the vertical stacking of its children, leaving x alone -
+                    // wrapper.main defaults to x: 0 (flush left), which is fine for other senders'
+                    // messages, but for our own (right-aligned) bubbles it means a short message
+                    // grouped with a longer one has its slack space on the right, the same side as
+                    // everyone else's messages. Mirroring it to hug the bubble's right edge instead
+                    // puts that slack space on the left, where the action popup for our own
+                    // messages belongs (see TimelineBubbleMessageStyle's
+                    // textStartOffset/anchorFromRight).
+                    // Kept as a sibling of contentColumn, not nested inside it: contentColumn
+                    // already reparents wrapper.main into itself via the data list above, and a
+                    // Binding declared as a further child of the same Column alongside that
+                    // explicit data list assignment conflicts with it (wrapper.main ends up not
+                    // reparented into contentColumn at all, rendering outside the bubble entirely).
+                    // Set directly via x rather than anchors: wrapper.main isn't declared as
+                    // contentColumn's child in QML (only placed there via that data list), so it
+                    // isn't a valid anchor target/source pair with contentColumn (Qt Quick anchors
+                    // only resolve between an item and its actual parent or sibling) - anchoring
+                    // here silently fails and leaves the item unpositioned. Plain x has no such
+                    // restriction.
+                    Binding {
+                        target: wrapper.main
+                        property: "x"
+                        value: wrapper.isSender ? Math.max(0, contentColumn.width - wrapper.main.width) : 0
+                        when: wrapper.main !== null
+                    }
                 }
 
                 // Continuation lines within a group sit close together, like paragraphs in one

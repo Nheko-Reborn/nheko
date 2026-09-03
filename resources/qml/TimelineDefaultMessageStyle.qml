@@ -158,9 +158,9 @@ TimelineEvent {
                             // Set before attached, which makes messageActions.visible true
                             // immediately - see the equivalent comment in
                             // TimelineBubbleMessageStyle.qml.
-                            messageActions.actionsBelow = false;
-                            messageActions.anchors.bottomMargin = -gridContainer.y
-                            messageActions.anchors.rightMargin = metadata.width
+                            messageActions.bubbleMode = false;
+                            messageActions.preferredBottomOffset = -gridContainer.y;
+                            messageActions.preferredRightOffset = metadata.width;
                             messageActions.attached = wrapper;
                         }
                         messageActions.hoverSource = wrapper;
