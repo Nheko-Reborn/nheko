@@ -416,7 +416,14 @@ TimelineEvent {
                     Binding {
                         target: wrapper.main
                         property: "x"
-                        value: wrapper.isSender ? Math.max(0, contentColumn.width - wrapper.main.width) : 0
+                        // When the timestamp fits at the end of the text instead of getting its
+                        // own row below (see fitsMetadata/ownContentWidth above), the bubble's
+                        // content width already has metadata.width added on to make room for it.
+                        // For left-aligned text that room falls after the text naturally; mirrored
+                        // text has to explicitly stop short of the bubble's right edge by the same
+                        // amount, or its right-aligned block sits flush against that edge and
+                        // covers the timestamp instead of leaving it the room it was sized for.
+                        value: wrapper.isSender ? Math.max(0, contentColumn.width - wrapper.main.width - ((contentPlacementContainer.fitsMetadata && !contentPlacementContainer.fitsMetadataInside) ? metadata.width : 0)) : 0
                         when: wrapper.main !== null
                     }
                 }
