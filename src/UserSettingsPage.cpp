@@ -25,12 +25,42 @@
 
 #include "config/nheko.h"
 
-QStringList themes{
-  QStringLiteral("light"),
-  QStringLiteral("dark"),
-  QStringLiteral("system"),
-  QStringLiteral("tokyonight"),
-};
+namespace {
+QStringList
+builtinThemes()
+{
+    return {
+      QStringLiteral("light"),
+      QStringLiteral("dark"),
+      QStringLiteral("system"),
+      QStringLiteral("tokyonight"),
+    };
+}
+
+// Built-ins plus whatever theme files were found under <AppDataLocation>/themes/ - computed on
+// demand rather than once at static-init time, since ThemeLoader::customThemeIds() needs
+// QStandardPaths, which isn't reliably usable before QCoreApplication's org/app name are set in
+// main().
+QStringList
+allThemes()
+{
+    return builtinThemes() + ThemeLoader::customThemeIds();
+}
+
+QStringList
+themeDisplayNames()
+{
+    QStringList names{
+      QStringLiteral("Light"),
+      QStringLiteral("Dark"),
+      QStringLiteral("System"),
+      QStringLiteral("Tokyo Night"),
+    };
+    for (const auto &id : ThemeLoader::customThemeIds())
+        names << ThemeLoader::displayName(id);
+    return names;
+}
+}
 
 QSharedPointer<UserSettings> UserSettings::instance_;
 
@@ -659,7 +689,7 @@ UserSettings::setShowImage(ShowImage state)
 void
 UserSettings::setTheme(QString theme)
 {
-    if (theme == theme_ || !themes.contains(theme))
+    if (theme == theme_ || !allThemes().contains(theme))
         return;
     theme_ = theme;
     save();
@@ -1201,7 +1231,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
     } else if (role == Value) {
         switch (index.row()) {
         case Theme:
-            return themes.indexOf(i->theme());
+            return allThemes().indexOf(i->theme());
         case ScaleFactor:
             return utils::scaleFactor();
         case MessageHoverHighlight:
@@ -1678,12 +1708,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         };
         switch (index.row()) {
         case Theme:
-            return QStringList{
-              QStringLiteral("Light"),
-              QStringLiteral("Dark"),
-              QStringLiteral("System"),
-              QStringLiteral("Tokyo Night"),
-            };
+            return themeDisplayNames();
         case ShowImage:
             return QStringList{
               tr("Always"),
@@ -1763,7 +1788,8 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
     if (role == Value) {
         switch (index.row()) {
         case Theme: {
-            auto idx = value.toInt();
+            auto idx    = value.toInt();
+            auto themes = allThemes();
 
             if (idx >= 0 && idx < themes.size()) {
                 i->setTheme(themes[idx]);

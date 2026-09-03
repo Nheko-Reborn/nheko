@@ -7,6 +7,31 @@
 #include <QColor>
 #include <QPalette>
 #include <QQmlEngine>
+#include <QString>
+#include <QStringList>
+
+#include <optional>
+
+// A theme loaded from <AppDataLocation>/themes/<id>.json, rather than one of the built-in
+// light/dark/system/tokyonight themes hardcoded in Theme.cpp. Every color is required - unlike
+// the built-ins, there's no partial/inherited theme support, so a file missing or misspelling a
+// key just fails to load entirely (logged, not applied).
+struct CustomTheme
+{
+    QString displayName;
+    QPalette palette;
+    QColor sidebarBackground, alternateButton, red, green, orange, error;
+};
+
+namespace ThemeLoader {
+// Ids (filenames minus ".json") of every theme file found in the themes directory, sorted.
+QStringList customThemeIds();
+// The theme's own "name" field if it loads successfully, otherwise just id unchanged.
+QString displayName(const QString &id);
+// Parses <themes dir>/<id>.json. Cached after the first call for a given id - a file edited or
+// added after startup needs a restart to be picked up.
+std::optional<CustomTheme> load(const QString &id);
+}
 
 class Theme final : public QPalette
 {

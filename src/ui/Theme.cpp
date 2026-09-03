@@ -2,9 +2,138 @@
 //
 // SPDX-License-Identifier: GPL-3.0-or-later
 
+#include <QDir>
+#include <QFile>
 #include <QGuiApplication>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QMap>
+#include <QStandardPaths>
 
+#include "Logging.h"
 #include "Theme.h"
+
+namespace {
+QDir
+themesDir()
+{
+    return QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
+                QStringLiteral("/themes"));
+}
+
+// Reads one color key out of a theme JSON object. Clears `ok` (rather than throwing or
+// aborting) on anything invalid, so load() can finish scanning all the keys and log a single
+// complete failure instead of stopping at the first bad one.
+QColor
+jsonColor(const QJsonObject &obj, QLatin1String key, bool &ok)
+{
+    auto v = obj.value(key);
+    if (!v.isString()) {
+        ok = false;
+        return {};
+    }
+
+    QColor c(v.toString());
+    if (!c.isValid())
+        ok = false;
+
+    return c;
+}
+
+// nhlog::ui() can still be null here: applyTheme() runs during UserSettings::load() at
+// startup (main.cpp), which happens before nhlog::init() sets the loggers up - so a theme
+// name that fails to load this early (a typo, or a custom theme file that was since removed)
+// would otherwise crash trying to log about it instead of just silently falling back.
+template<typename... Args>
+void
+logWarn(fmt::format_string<Args...> fmt, Args &&...args)
+{
+    if (auto logger = nhlog::ui())
+        logger->warn(fmt, std::forward<Args>(args)...);
+}
+}
+
+QStringList
+ThemeLoader::customThemeIds()
+{
+    QStringList ids;
+    for (const auto &info :
+         themesDir().entryInfoList({QStringLiteral("*.json")}, QDir::Files, QDir::Name))
+        ids << info.completeBaseName();
+    return ids;
+}
+
+std::optional<CustomTheme>
+ThemeLoader::load(const QString &id)
+{
+    static QMap<QString, std::optional<CustomTheme>> cache;
+    if (auto it = cache.find(id); it != cache.end())
+        return it.value();
+
+    auto path = themesDir().filePath(id + QStringLiteral(".json"));
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly)) {
+        logWarn("Custom theme '{}': could not open {}", id.toStdString(), path.toStdString());
+        return cache.insert(id, std::nullopt).value();
+    }
+
+    QJsonParseError err;
+    auto doc = QJsonDocument::fromJson(f.readAll(), &err);
+    if (err.error != QJsonParseError::NoError || !doc.isObject()) {
+        logWarn("Custom theme '{}': invalid JSON ({})",
+                id.toStdString(),
+                err.errorString().toStdString());
+        return cache.insert(id, std::nullopt).value();
+    }
+
+    auto obj = doc.object();
+    bool ok  = true;
+    auto col = [&](const char *key) { return jsonColor(obj, QLatin1String(key), ok); };
+
+    QPalette pal(/*windowText*/ col("windowText"),
+                 /*button*/ col("button"),
+                 /*light*/ col("light"),
+                 /*dark*/ col("dark"),
+                 /*mid*/ col("mid"),
+                 /*text*/ col("text"),
+                 /*bright_text*/ col("brightText"),
+                 /*base*/ col("base"),
+                 /*window*/ col("window"));
+    pal.setColor(QPalette::AlternateBase, col("alternateBase"));
+    pal.setColor(QPalette::Highlight, col("highlight"));
+    pal.setColor(QPalette::HighlightedText, col("highlightedText"));
+    pal.setColor(QPalette::ToolTipBase, col("tooltipBase"));
+    pal.setColor(QPalette::ToolTipText, col("tooltipText"));
+    pal.setColor(QPalette::Link, col("link"));
+    pal.setColor(QPalette::ButtonText, col("buttonText"));
+
+    CustomTheme theme;
+    theme.palette           = pal;
+    theme.sidebarBackground = col("sidebarBackground");
+    theme.alternateButton   = col("alternateButton");
+    theme.red               = col("red");
+    theme.green             = col("green");
+    theme.orange            = col("orange");
+    theme.error             = col("error");
+    theme.displayName       = obj.value(QStringLiteral("name")).toString(id);
+
+    if (!ok) {
+        logWarn("Custom theme '{}': missing or invalid color key in {}",
+                id.toStdString(),
+                path.toStdString());
+        return cache.insert(id, std::nullopt).value();
+    }
+
+    return cache.insert(id, theme).value();
+}
+
+QString
+ThemeLoader::displayName(const QString &id)
+{
+    if (auto t = load(id))
+        return t->displayName;
+    return id;
+}
 
 QPalette
 Theme::paletteFromTheme(QStringView theme)
@@ -89,6 +218,10 @@ Theme::paletteFromTheme(QStringView theme)
             return tokyoNightActive;
         }();
         return tokyoNightActive;
+    } else if (theme == u"system") {
+        return original;
+    } else if (auto custom = ThemeLoader::load(theme.toString())) {
+        return custom->palette;
     } else {
         return original;
     }
@@ -125,13 +258,31 @@ Theme::Theme(QStringView theme)
         green_             = QColor(0x9e, 0xce, 0x6a);
         orange_            = QColor(0xff, 0x9e, 0x64);
         error_             = QColor(0xf7, 0x76, 0x8e);
-    } else {
+    } else if (theme == u"system") {
         // Falling back to the inherited system palette otherwise leaves sidebarBackground
         // identical to the window color it's meant to be distinguishable from - the sidebar,
         // room list, and timeline all end up the exact same shade, with no visual cue that
         // they're separate areas. Nudge it a little instead: darker for a light system theme,
         // lighter for a dark one, so there's always some contrast regardless of what the
         // system palette actually looks like.
+        auto windowColor   = p.window().color();
+        sidebarBackground_ = windowColor.lightness() > 128 ? windowColor.darker(112) : windowColor.lighter(122);
+        alternateButton_   = p.dark().color();
+        red_               = QColor(QColorConstants::Svg::red);
+        green_             = QColor(QColorConstants::Svg::green);
+        orange_            = QColor(QColorConstants::Svg::orange); // SVG orange
+        error_             = QColor(0xdd, 0x3d, 0x3d);
+    } else if (auto custom = ThemeLoader::load(theme.toString())) {
+        sidebarBackground_ = custom->sidebarBackground;
+        alternateButton_   = custom->alternateButton;
+        red_               = custom->red;
+        green_             = custom->green;
+        orange_            = custom->orange;
+        error_             = custom->error;
+    } else {
+        // A theme name that isn't a built-in and isn't a loadable custom theme either (a typo,
+        // or one whose file was deleted) - fall back to the same system-derived contrast as the
+        // "system" branch above rather than leaving these uninitialized.
         auto windowColor   = p.window().color();
         sidebarBackground_ = windowColor.lightness() > 128 ? windowColor.darker(112) : windowColor.lighter(122);
         alternateButton_   = p.dark().color();

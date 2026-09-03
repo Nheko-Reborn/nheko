@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QDesktopServices>
 #include <QGuiApplication>
+#include <QMap>
 #include <QQuickItem>
 #include <QQuickRenderControl>
 #include <QQuickWindow>
@@ -56,36 +57,20 @@ Nheko::colors() const
 QPalette
 Nheko::inactiveColors() const
 {
+    // Keyed by theme name rather than a branch per built-in theme: that would otherwise need a
+    // new branch added for every custom theme file too, since each one is only known at
+    // runtime. "system" falls in here like any other name - QStringView comparisons against
+    // arbitrary theme strings already happen once inside paletteFromTheme, no need to special
+    // case it again here.
+    static QMap<QString, QPalette> inactiveByTheme;
     auto theme = UserSettings::instance()->theme();
-    if (theme == QLatin1String("light")) {
-        static QPalette lightInactive = [] {
-            auto lightInactive = Theme::paletteFromTheme(u"light");
-            lightInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
-            return lightInactive;
-        }();
-        return lightInactive;
-    } else if (theme == QLatin1String("dark")) {
-        static QPalette darkInactive = [] {
-            auto darkInactive = Theme::paletteFromTheme(u"dark");
-            darkInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
-            return darkInactive;
-        }();
-        return darkInactive;
-    } else if (theme == QLatin1String("tokyonight")) {
-        static QPalette tokyoNightInactive = [] {
-            auto tokyoNightInactive = Theme::paletteFromTheme(u"tokyonight");
-            tokyoNightInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
-            return tokyoNightInactive;
-        }();
-        return tokyoNightInactive;
-    } else {
-        static QPalette originalInactive = [] {
-            auto originalInactive = Theme::paletteFromTheme(u"system");
-            originalInactive.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
-            return originalInactive;
-        }();
-        return originalInactive;
+    auto it    = inactiveByTheme.find(theme);
+    if (it == inactiveByTheme.end()) {
+        auto palette = Theme::paletteFromTheme(theme);
+        palette.setCurrentColorGroup(QPalette::ColorGroup::Inactive);
+        it = inactiveByTheme.insert(theme, palette);
     }
+    return it.value();
 }
 
 Theme
