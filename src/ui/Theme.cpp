@@ -17,8 +17,12 @@ namespace {
 QDir
 themesDir()
 {
-    return QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) +
-                QStringLiteral("/themes"));
+    // Not AppDataLocation: with both the organization and application name set to "nheko",
+    // that resolves to .../nheko/nheko (e.g. ~/.local/share/nheko/nheko on Linux, alongside
+    // this app's own database) - a real path, but a confusing one to point users at. Building
+    // it from GenericDataLocation instead gives the plain ~/.local/share/nheko/themes.
+    return QDir(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) +
+                QStringLiteral("/nheko/themes"));
 }
 
 // Reads one color key out of a theme JSON object. Clears `ok` (rather than throwing or

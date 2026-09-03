@@ -37,10 +37,10 @@ builtinThemes()
     };
 }
 
-// Built-ins plus whatever theme files were found under <AppDataLocation>/themes/ - computed on
-// demand rather than once at static-init time, since ThemeLoader::customThemeIds() needs
-// QStandardPaths, which isn't reliably usable before QCoreApplication's org/app name are set in
-// main().
+// Built-ins plus whatever theme files were found under ~/.local/share/nheko/themes/ (see
+// ThemeLoader in Theme.h) - computed on demand rather than once at static-init time, since
+// ThemeLoader::customThemeIds() needs QStandardPaths, which isn't reliably usable before
+// QCoreApplication's org/app name are set in main().
 QStringList
 allThemes()
 {

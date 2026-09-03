@@ -12,7 +12,8 @@
 
 #include <optional>
 
-// A theme loaded from <AppDataLocation>/themes/<id>.json, rather than one of the built-in
+// A theme loaded from ~/.local/share/nheko/themes/<id>.json (or the equivalent
+// GenericDataLocation on other platforms), rather than one of the built-in
 // light/dark/system/tokyonight themes hardcoded in Theme.cpp. Every color is required - unlike
 // the built-ins, there's no partial/inherited theme support, so a file missing or misspelling a
 // key just fails to load entirely (logged, not applied).
