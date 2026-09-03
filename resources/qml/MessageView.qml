@@ -186,6 +186,14 @@ Item {
             // a leave only clears sourceHovered if it came from the delegate that most recently
             // set it.
             property Item hoverSource: null
+            // Bubble style's preferred left offset (from attached's own left) - just past the
+            // hovered message's own text. Held separately from anchors.leftMargin itself because
+            // the preferred spot can be past attached's right edge for a message that already
+            // fills the bubble's width (an own-message bubble is flush against the timeline's
+            // right edge, so there's no room past its text at all): anchors.leftMargin below
+            // clamps this against this popup's own (by-then-known) width so it slides back
+            // on-screen instead of hanging off the edge.
+            property real preferredLeftOffset: 0
 
             hoverEnabled: true
             padding: Nheko.paddingSmall + 2
@@ -208,7 +216,14 @@ Item {
             parent: chat.contentItem
             anchors.top: actionsBelow ? attached?.top : undefined
             anchors.bottom: actionsBelow ? undefined : attached?.top
-            anchors.right: attached?.right
+            // Bubble style (actionsBelow) positions this by its left edge, just past the hovered
+            // message's own text (see TimelineBubbleMessageStyle's textEndOffset) - a short
+            // message in a group of otherwise-long ones would otherwise leave the popup stranded
+            // far past its own text if it stayed right-aligned to the group's shared bubble edge.
+            // Default style keeps the original right-edge anchoring.
+            anchors.left: actionsBelow ? attached?.left : undefined
+            anchors.leftMargin: actionsBelow ? Math.max(0, Math.min(preferredLeftOffset, (attached?.width ?? 0) - width)) : 0
+            anchors.right: actionsBelow ? undefined : attached?.right
 
             onShouldBeVisibleChanged: {
                 if (shouldBeVisible)

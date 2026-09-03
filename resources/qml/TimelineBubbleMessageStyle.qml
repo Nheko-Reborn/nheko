@@ -105,13 +105,18 @@ TimelineEvent {
     property bool isGroupStart: wrapper.previousMessageUserId !== wrapper.userId || wrapper.showSection || wrapper.previousMessageIsStateEvent !== wrapper.isStateEvent
     property bool isGroupEnd: wrapper.nextMessageUserId !== wrapper.userId || wrapper.nextMessageDay !== wrapper.day || wrapper.nextMessageTimestamp - wrapper.timestamp > oneHour || wrapper.nextMessageIsStateEvent !== wrapper.isStateEvent
 
-    // This message's bubble edges, expressed as offsets from this wrapper's own top/right - the
-    // same values used to anchor messageActions below/right of the bubble. Exposed so a message
-    // that's merged into a group but isn't its last member can redirect the popup to the group
-    // end's wrapper instead (see groupEndWrapper()), rather than each message in a visually
-    // merged bubble showing its own separate popup as the pointer crosses between them.
+    // This message's bubble bottom edge, expressed as an offset from this wrapper's own top - the
+    // same value used to anchor messageActions below the bubble. Exposed so a message that's
+    // merged into a group but isn't its last member can redirect the popup to the group end's
+    // wrapper instead (see groupEndWrapper()), rather than each message in a visually merged
+    // bubble showing its own separate popup as the pointer crosses between them.
     property real bubbleBottomOffset: gridContainer.y + messageBubble.y + messageBubble.height
-    property real bubbleRightOffset: wrapper.width - (gridContainer.x + messageBubble.x + messageBubble.width)
+
+    // Where this specific message's own text ends, as an offset from this wrapper's own left -
+    // groupItemWidth is this message's natural (pre-group-stretch) content width, so a short
+    // message in a group that's mostly long messages still gets an offset that lands just past
+    // its own short line, not the group's shared (stretched) bubble edge.
+    property real textEndOffset: gridContainer.x + messageBubble.x + messageBubble.leftPadding + wrapper.groupItemWidth
 
     // Walks down (towards newer messages) to the last member of this message's group, so a
     // merged bubble always shows one popup anchored to its bottom, regardless of which message
@@ -249,12 +254,18 @@ TimelineEvent {
                             // miss the popup's first layout pass and it would render in the wrong
                             // place (or the default style's "above" position) for a moment.
                             messageActions.actionsBelow = true;
-                            // attached is anchored via its own top/right (a plain sibling of
+                            // attached is anchored via its own top/left (a plain sibling of
                             // messageActions, always a valid anchor target - anchoring straight to
                             // the bubble itself needs it to be a parent or sibling, which it isn't
-                            // here), offset down/left to the bubble's actual bottom/right edge.
+                            // here), offset down to the group's bubble bottom edge. The vertical
+                            // position always follows the group (so it doesn't jump around as the
+                            // pointer moves between merged messages), but the horizontal position
+                            // uses this specific message's own text end - wrapper and groupEnd
+                            // share the same x/width (delegates don't shift horizontally, only
+                            // vertically), so wrapper's own offset is valid measured from
+                            // groupEnd's left too.
                             messageActions.anchors.topMargin = groupEnd.bubbleBottomOffset + Nheko.paddingSmall;
-                            messageActions.anchors.rightMargin = groupEnd.bubbleRightOffset;
+                            messageActions.preferredLeftOffset = wrapper.textEndOffset + Nheko.paddingSmall;
                             messageActions.attached = groupEnd;
                         }
                         messageActions.hoverSource = wrapper;
