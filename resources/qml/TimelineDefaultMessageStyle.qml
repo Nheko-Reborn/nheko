@@ -48,7 +48,15 @@ TimelineEvent {
     property alias hovered: messageHover.hovered
 
     property int oneHour: 60 * 60 * 1000
-    property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour 
+    property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour
+
+    // Where this message's own text ends, as an offset from this wrapper's own left. gridContainer
+    // spans the full pane width regardless of how short the text is (it's what lets the timestamp
+    // gutter sit flush at the far right), so anchoring the action popup to gridContainer's own edge
+    // would leave it stranded far from short messages - this instead tracks contentColumn's actual
+    // packed position (after the avatar gutter and optional thread-line marker) plus the text's own
+    // natural width, matching the equivalent property in TimelineBubbleMessageStyle.qml.
+    property real textEndOffset: gridContainer.x + contentColumn.x + (wrapper.main ? wrapper.main.width : 0)
 
     mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0)
     replyInset: mainInset + 4 + Nheko.paddingSmall
@@ -160,7 +168,7 @@ TimelineEvent {
                             // TimelineBubbleMessageStyle.qml.
                             messageActions.bubbleMode = false;
                             messageActions.preferredBottomOffset = -gridContainer.y;
-                            messageActions.preferredRightOffset = metadata.width;
+                            messageActions.preferredLeftOffset = wrapper.textEndOffset + Nheko.paddingSmall;
                             messageActions.attached = wrapper;
                         }
                         messageActions.hoverSource = wrapper;

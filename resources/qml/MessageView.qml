@@ -203,12 +203,9 @@ Item {
             // target lines (left vs. right) repeatedly at runtime - which bubbleMode does on every
             // hover, since anchorFromRight flips per message - doesn't reliably detach the old
             // line, and can leave both edges anchored at once, stretching the popup to fill the
-            // entire attached width. Keeping bubbleMode on a single, never-swapped anchors.left
-            // avoids that; only default style (which never flips) uses anchors.right.
+            // entire attached width. Both styles stay on a single, never-swapped anchors.left for
+            // the same reason - default style just always uses the preferredLeftOffset branch.
             property real preferredRightEdgeOffset: 0
-            // Default style only: plain right-edge offset (metadata.width), consumed via
-            // anchors.rightMargin - safe there since default style's anchor side never changes.
-            property real preferredRightOffset: 0
             // bubbleMode: offset from attached's own top to the vertical center of that specific
             // message's own bubble - see TimelineBubbleMessageStyle's bubbleCenterOffset.
             property real preferredTopOffset: 0
@@ -239,17 +236,16 @@ Item {
             anchors.topMargin: bubbleMode ? (preferredTopOffset - height / 2) : 0
             anchors.bottom: bubbleMode ? undefined : attached?.top
             anchors.bottomMargin: bubbleMode ? 0 : preferredBottomOffset
-            // Bubble style always anchors by its left edge (see preferredRightEdgeOffset above for
-            // why anchorFromRight doesn't switch to anchors.right instead) - just past the hovered
-            // message's own text, or for our own messages, offset back from the desired right edge
-            // by this popup's own width so that edge lands just before the text start. A short
-            // message in a group of otherwise-long ones would otherwise leave the popup stranded
-            // far from its own text if it stayed anchored to the group's shared bubble edge.
-            // Default style keeps the original right-edge anchoring.
-            anchors.left: bubbleMode ? attached?.left : undefined
-            anchors.leftMargin: bubbleMode ? (anchorFromRight ? Math.max(0, Math.min(preferredRightEdgeOffset - width, (attached?.width ?? 0) - width)) : Math.max(0, Math.min(preferredLeftOffset, (attached?.width ?? 0) - width))) : 0
-            anchors.right: bubbleMode ? undefined : attached?.right
-            anchors.rightMargin: bubbleMode ? 0 : preferredRightOffset
+            // Always anchored by its left edge (see preferredRightEdgeOffset above for why
+            // anchorFromRight doesn't switch to anchors.right instead) - just past the hovered
+            // message's own text, or for our own bubble-style messages, offset back from the
+            // desired right edge by this popup's own width so that edge lands just before the
+            // text start. A short message in a group of otherwise-long ones would otherwise leave
+            // the popup stranded far from its own text if it stayed anchored to the group's
+            // shared bubble edge; default style's text is always full pane width regardless of
+            // how short a given message is, so the same reasoning applies to every message there.
+            anchors.left: attached?.left
+            anchors.leftMargin: (bubbleMode && anchorFromRight) ? Math.max(0, Math.min(preferredRightEdgeOffset - width, (attached?.width ?? 0) - width)) : Math.max(0, Math.min(preferredLeftOffset, (attached?.width ?? 0) - width))
 
             onShouldBeVisibleChanged: {
                 if (shouldBeVisible)
