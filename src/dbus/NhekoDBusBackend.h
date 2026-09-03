@@ -40,7 +40,7 @@ public slots:
     Q_SCRIPTABLE QString statusMessage() const;
     //! Sets the user's status message.
     Q_SCRIPTABLE void setStatusMessage(const QString &message);
-    //! Sets the current theme (supported values: "light", "dark" or "system")
+    //! Sets the current theme (supported values: "light", "dark", "system", or the id of a custom theme file under ~/.local/share/nheko/themes/)
     Q_SCRIPTABLE void setTheme(const QString &theme);
 
 private:

@@ -25,11 +25,40 @@
 
 #include "config/nheko.h"
 
-QStringList themes{
-  QStringLiteral("light"),
-  QStringLiteral("dark"),
-  QStringLiteral("system"),
-};
+namespace {
+QStringList
+builtinThemes()
+{
+    return {
+      QStringLiteral("light"),
+      QStringLiteral("dark"),
+      QStringLiteral("system"),
+    };
+}
+
+// Built-ins plus whatever theme files were found under ~/.local/share/nheko/themes/ (see
+// ThemeLoader in Theme.h) - computed on demand rather than once at static-init time, since
+// ThemeLoader::customThemeIds() needs QStandardPaths, which isn't reliably usable before
+// QCoreApplication's org/app name are set in main().
+QStringList
+allThemes()
+{
+    return builtinThemes() + ThemeLoader::customThemeIds();
+}
+
+QStringList
+themeDisplayNames()
+{
+    QStringList names{
+      QStringLiteral("Light"),
+      QStringLiteral("Dark"),
+      QStringLiteral("System"),
+    };
+    for (const auto &id : ThemeLoader::customThemeIds())
+        names << ThemeLoader::displayName(id);
+    return names;
+}
+}
 
 QSharedPointer<UserSettings> UserSettings::instance_;
 
@@ -86,7 +115,7 @@ UserSettings::load(std::optional<QString> profile)
         sendMessageKey = static_cast<int>(SendMessageKey::Enter);
     sendMessageKey_ = static_cast<SendMessageKey>(sendMessageKey);
 
-    bubbles_              = settings.value("user/bubbles_enabled", false).toBool();
+    bubbles_              = settings.value("user/bubbles_enabled", true).toBool();
     smallAvatars_         = settings.value("user/small_avatars_enabled", false).toBool();
     animateImagesOnHover_ = settings.value("user/animate_images_on_hover", false).toBool();
     typingNotifications_  = settings.value("user/typing_notifications", true).toBool();
@@ -658,7 +687,7 @@ UserSettings::setShowImage(ShowImage state)
 void
 UserSettings::setTheme(QString theme)
 {
-    if (theme == theme_ || !themes.contains(theme))
+    if (theme == theme_ || !allThemes().contains(theme))
         return;
     theme_ = theme;
     save();
@@ -1200,7 +1229,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
     } else if (role == Value) {
         switch (index.row()) {
         case Theme:
-            return themes.indexOf(i->theme());
+            return allThemes().indexOf(i->theme());
         case ScaleFactor:
             return utils::scaleFactor();
         case MessageHoverHighlight:
@@ -1677,11 +1706,7 @@ UserSettingsModel::data(const QModelIndex &index, int role) const
         };
         switch (index.row()) {
         case Theme:
-            return QStringList{
-              QStringLiteral("Light"),
-              QStringLiteral("Dark"),
-              QStringLiteral("System"),
-            };
+            return themeDisplayNames();
         case ShowImage:
             return QStringList{
               tr("Always"),
@@ -1761,7 +1786,8 @@ UserSettingsModel::setData(const QModelIndex &index, const QVariant &value, int 
     if (role == Value) {
         switch (index.row()) {
         case Theme: {
-            auto idx = value.toInt();
+            auto idx    = value.toInt();
+            auto themes = allThemes();
 
             if (idx >= 0 && idx < themes.size()) {
                 i->setTheme(themes[idx]);

@@ -48,7 +48,15 @@ TimelineEvent {
     property alias hovered: messageHover.hovered
 
     property int oneHour: 60 * 60 * 1000
-    property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour 
+    property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour
+
+    // Where this message's own text ends, as an offset from this wrapper's own left. gridContainer
+    // spans the full pane width regardless of how short the text is (it's what lets the timestamp
+    // gutter sit flush at the far right), so anchoring the action popup to gridContainer's own edge
+    // would leave it stranded far from short messages - this instead tracks contentColumn's actual
+    // packed position (after the avatar gutter and optional thread-line marker) plus the text's own
+    // natural width, matching the equivalent property in TimelineBubbleMessageStyle.qml.
+    property real textEndOffset: gridContainer.x + contentColumn.x + (wrapper.main ? wrapper.main.width : 0)
 
     mainInset: (threadId ? (4 + Nheko.paddingSmall) : 0)
     replyInset: mainInset + 4 + Nheko.paddingSmall
@@ -150,13 +158,26 @@ TimelineEvent {
                 id: messageHover
                 blocking: false
                 onHoveredChanged: () => {
-                    if (!Settings.mobileMode && hovered) {
+                    if (Settings.mobileMode)
+                        return;
+                    if (hovered) {
                         if (!messageActions.hovered) {
                             messageActions.model = wrapper;
+                            // Set before attached, which makes messageActions.visible true
+                            // immediately - see the equivalent comment in
+                            // TimelineBubbleMessageStyle.qml.
+                            messageActions.bubbleMode = false;
+                            messageActions.preferredBottomOffset = -gridContainer.y;
+                            messageActions.preferredLeftOffset = wrapper.textEndOffset + Nheko.paddingSmall;
                             messageActions.attached = wrapper;
-                            messageActions.anchors.bottomMargin = -gridContainer.y
-                            messageActions.anchors.rightMargin = metadata.width
                         }
+                        messageActions.hoverSource = wrapper;
+                        messageActions.sourceHovered = true;
+                    } else if (messageActions.hoverSource === wrapper) {
+                        // See the equivalent comment in TimelineBubbleMessageStyle.qml - a stale
+                        // leave event for a message the pointer already moved past must not
+                        // clobber a newer, still-active hover on a different message.
+                        messageActions.sourceHovered = false;
                     }
                 }
 
@@ -307,7 +328,10 @@ TimelineEvent {
                 anchors.right: parent.right
                 y: section.visible && section.active ? section.y + section.height : 0
 
-                visible: !wrapper.isStateEvent
+                // Only show the per-message status/trust/time gutter for the newest message
+                // (so delivery status stays visible at a glance) or on hover - repeating it on
+                // every single line drowns out the actual conversation.
+                visible: !wrapper.isStateEvent && (wrapper.index === 0 || wrapper.hovered)
 
                 eventId: wrapper.eventId
                 status: wrapper.status

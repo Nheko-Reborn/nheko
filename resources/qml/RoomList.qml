@@ -17,7 +17,11 @@ Page {
     property bool collapsed: false
 
     background: Rectangle {
-        color: Nheko.theme.sidebarBackground
+        // A partial tint of the communities rail's own background, laid over the window color
+        // rather than matching either one exactly - gives the room list its own step between
+        // the rail and the timeline, so the three columns read as distinct areas instead of
+        // two of them (rail + room list) blending into a single block.
+        color: Qt.tint(palette.window, Qt.rgba(Nheko.theme.sidebarBackground.r, Nheko.theme.sidebarBackground.g, Nheko.theme.sidebarBackground.b, 0.55))
     }
     footer: ColumnLayout {
         spacing: 0
@@ -452,7 +456,11 @@ Page {
             id: roomItem
 
             required property string avatarUrl
-            property color backgroundColor: palette.window
+            // Transparent rather than palette.window: an opaque row background here would
+            // paint over the Page's own shaded background (see RoomList.qml's background
+            // Rectangle above), hiding the tint that's meant to set the room list apart from
+            // the communities rail and the timeline.
+            property color backgroundColor: "transparent"
             property color bubbleBackground: palette.highlight
             property color bubbleText: palette.highlightedText
             required property string directChatOtherUserId
@@ -506,11 +514,7 @@ Page {
 
                     PropertyChanges {
                         roomItem {
-                            backgroundColor: palette.highlight
-                            bubbleBackground: palette.highlightedText
-                            bubbleText: palette.highlight
-                            importantText: palette.highlightedText
-                            unimportantText: palette.highlightedText
+                            backgroundColor: Qt.rgba(palette.highlight.r, palette.highlight.g, palette.highlight.b, 0.16)
                         }
                     }
                 }
@@ -602,19 +606,9 @@ Page {
 
                             anchors.left: parent.left
                             color: roomItem.importantText
-                            elideWidth: parent.width - (timestamp.visible ? timestamp.implicitWidth : 0) - (spaceNotificationBubble.visible ? spaceNotificationBubble.implicitWidth : 0)
+                            elideWidth: parent.width - (spaceNotificationBubble.visible ? spaceNotificationBubble.implicitWidth : 0)
                             fullText: TimelineManager.htmlEscape(roomName)
                             textFormat: Text.RichText
-                        }
-                        Label {
-                            id: timestamp
-
-                            anchors.baseline: titleText.baseline
-                            anchors.right: parent.right
-                            color: roomItem.unimportantText
-                            font.pixelSize: fontMetrics.font.pixelSize * 0.9
-                            text: time
-                            visible: !isInvite && !isSpace
                         }
                         NotificationBubble {
                             id: spaceNotificationBubble
@@ -665,7 +659,7 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 color: palette.highlight
                 height: parent.height - Nheko.paddingSmall * 2
-                visible: hasUnreadMessages
+                visible: hasUnreadMessages || roomItem.state === "selected"
                 width: 3
             }
         }

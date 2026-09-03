@@ -46,7 +46,11 @@ Page {
         delegate: ItemDelegate {
             id: communityItem
 
-            property color backgroundColor: palette.window
+            // Transparent rather than palette.window: an opaque row background here would
+            // paint over the Page's own shaded background above, hiding the tint that sets
+            // the communities rail apart from the room list and the timeline. See the
+            // equivalent fix in RoomList.qml's own row delegate.
+            property color backgroundColor: "transparent"
             property color bubbleBackground: palette.highlight
             property color bubbleText: palette.highlightedText
             property color importantText: palette.text
