@@ -4,7 +4,7 @@
   "button": "#444a73",
   "light": "#c8d3f5",
   "dark": "#444a73",
-  "mid": "#6e738d",
+  "mid": "#545c7e",
   "text": "#c8d3f5",
   "brightText": "#f4f5f8",
   "base": "#1e2030",
@@ -21,5 +21,5 @@
   "red": "#ff757f",
   "green": "#c3e88d",
   "orange": "#ff966c",
-  "error": "#ff757f"
+  "error": "#c53b53"
 }

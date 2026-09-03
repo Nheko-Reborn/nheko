@@ -7,12 +7,12 @@
   "mid": "#848cb5",
   "text": "#3760bf",
   "brightText": "#1a1b26",
-  "base": "#d5d6db",
+  "base": "#d0d5e3",
   "window": "#e1e2e7",
   "alternateBase": "#c4c8da",
   "highlight": "#2e7de9",
   "highlightedText": "#e1e2e7",
-  "tooltipBase": "#d5d6db",
+  "tooltipBase": "#d0d5e3",
   "tooltipText": "#3760bf",
   "link": "#007197",
   "buttonText": "#ffffff",
@@ -21,5 +21,5 @@
   "red": "#f52a65",
   "green": "#587539",
   "orange": "#b15c00",
-  "error": "#f52a65"
+  "error": "#c64343"
 }
