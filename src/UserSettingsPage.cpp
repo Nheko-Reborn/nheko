@@ -33,7 +33,6 @@ builtinThemes()
       QStringLiteral("light"),
       QStringLiteral("dark"),
       QStringLiteral("system"),
-      QStringLiteral("tokyonight"),
     };
 }
 
@@ -54,7 +53,6 @@ themeDisplayNames()
       QStringLiteral("Light"),
       QStringLiteral("Dark"),
       QStringLiteral("System"),
-      QStringLiteral("Tokyo Night"),
     };
     for (const auto &id : ThemeLoader::customThemeIds())
         names << ThemeLoader::displayName(id);

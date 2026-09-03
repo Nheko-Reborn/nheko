@@ -85,7 +85,7 @@ statusMessage();
 //! Sets the user's status message (if supported by the homeserver).
 void
 setStatusMessage(const QString &message);
-//! Sets the current theme (supported values: "light", "dark", "system" or "tokyonight")
+//! Sets the current theme (supported values: "light", "dark", "system", or the id of a custom theme file under ~/.local/share/nheko/themes/)
 void
 setTheme(const QString &theme);
 
