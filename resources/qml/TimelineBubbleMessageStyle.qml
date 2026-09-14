@@ -348,7 +348,7 @@ TimelineEvent {
                 //left: row.bubbleOnRight ? undefined : row.left
                 //right: row.bubbleOnRight ? row.right : undefined
                 top: gridContainer.bottom
-                topMargin: -4
+                topMargin: Settings.tightReactionSpacing ? -4 : 0
             }
         },
         Rectangle {
