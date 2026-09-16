@@ -55,6 +55,10 @@ Image {
                 return sourceUrl + Nheko.theme.green;
             case Crypto.TOFU:
                 return sourceUrl + palette.buttonText;
+            case Crypto.Unverified:
+            case Crypto.MessageUnverified:
+                // Just an unverified device, not an actual problem - don't use the alarm color for it.
+                return sourceUrl + Nheko.theme.orange;
             default:
                 return sourceUrl + Nheko.theme.error;
             }

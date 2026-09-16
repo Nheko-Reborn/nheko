@@ -41,7 +41,7 @@ Pane {
             anchors.margins: Nheko.paddingMedium
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
-            columnSpacing: Nheko.paddingSmall
+            columnSpacing: Nheko.paddingMedium
             rowSpacing: Nheko.paddingSmall
 
             Avatar {

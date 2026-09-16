@@ -63,7 +63,10 @@ Item {
         displayMarginEnd: height / 4
         model: (filteredTimeline.filterByThread || filteredTimeline.filterByContent || filteredTimeline.filterByNotifications) ? filteredTimeline : room
         //pixelAligned: true
-        spacing: 2
+        // 0, not a couple px: any gap here shows through as a seam between the merged bubbles
+        // of a same-sender group in TimelineBubbleMessageStyle.qml. Section headers (avatar +
+        // name), shown once per group, already provide enough separation between groups.
+        spacing: 0
         verticalLayoutDirection: ListView.BottomToTop
 
         property int lastScrollPos: 0
@@ -73,7 +76,15 @@ Item {
             lastScrollPos = (contentY+height);
         }
         onMovementEnded: updateLastScroll()
-        onModelChanged: updateLastScroll()
+        // Switching rooms destroys the old delegates. messageActionsC.attached may still be
+        // pointing at one of them, which leaves the action popup visibly stuck (wrong position,
+        // wrong content, wrong color) since nothing else ever clears that reference.
+        onModelChanged: {
+            updateLastScroll();
+            messageActionsC.attached = null;
+            messageActionsC.bubbleMode = false;
+            messageActionsC.hoverSource = null;
+        }
         onHeightChanged: contentY = (lastScrollPos-height)
 
         Component {
@@ -156,19 +167,104 @@ Item {
             property Item attached: null
             // use comma to update on scroll
             property alias model: row.model
+            // True for bubble style's positioning (inline with whichever specific message is
+            // hovered, just past its text); false for the legacy default style (float above,
+            // right edge near the metadata).
+            property bool bubbleMode: false
+            // Only meaningful when bubbleMode: true for our own (right-aligned) messages, whose
+            // popup mirrors to sit left of their text instead of right of it - see
+            // TimelineBubbleMessageStyle's textStartOffset/anchorFromRight.
+            property bool anchorFromRight: false
+            // Set by whichever message's own HoverHandler is currently active. Each message in a
+            // merged bubble is its own delegate with its own popup position, but the pointer can
+            // linger on the popup itself between two such positions, so visibility can't rely on
+            // attached.hovered alone.
+            property bool sourceHovered: false
+            // The specific delegate whose HoverHandler last set sourceHovered true. Moving the
+            // pointer directly from one message to a neighboring one can deliver the old
+            // message's "leave" after the new message's "enter" (which already moved attached
+            // elsewhere) - comparing against attached itself wouldn't catch that reordering,
+            // since by the time the stale leave arrives attached already points elsewhere; this
+            // tracks the exact delegate so only its own leave can clear the hover it set.
+            property Item hoverSource: null
+
+            // Raw preferred offsets, set imperatively by whichever style/message is hovered. Kept
+            // separate from the anchor margins themselves (computed below as bindings) because a
+            // Qt anchor margin, once ever assigned imperatively, permanently stops being a live
+            // binding - and this single Control is shared between bubble and default style, with
+            // bubbleMode able to flip at runtime if the user toggles the bubbles setting, so every
+            // margin here has to stay a pure binding driven by these plain (imperative-write-safe)
+            // properties instead of ever being assigned directly.
+            property real preferredLeftOffset: 0
+            // bubbleMode + anchorFromRight (our own messages): offset from attached's own left to
+            // where the popup's RIGHT edge should land (just before the text start). Kept in
+            // "distance from the left" terms, like preferredLeftOffset, rather than switching to
+            // an actual anchors.right binding: toggling a Qt Quick anchor between two different
+            // target lines (left vs. right) repeatedly at runtime - which bubbleMode does on every
+            // hover, since anchorFromRight flips per message - doesn't reliably detach the old
+            // line, and can leave both edges anchored at once, stretching the popup to fill the
+            // entire attached width. Both styles stay on a single, never-swapped anchors.left for
+            // the same reason - default style just always uses the preferredLeftOffset branch.
+            property real preferredRightEdgeOffset: 0
+            // bubbleMode: offset from attached's own top to the vertical center of that specific
+            // message's own bubble - see TimelineBubbleMessageStyle's bubbleCenterOffset.
+            property real preferredTopOffset: 0
+            // Default style: offset from attached's own top to where the popup's bottom edge
+            // should sit (equivalent to the old "-gridContainer.y" expression).
+            property real preferredBottomOffset: 0
 
             hoverEnabled: true
-            padding: Nheko.paddingSmall
-            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
+            padding: Nheko.paddingSmall + 2
+            // Moving the pointer from the message to the popup (or between messages) passes
+            // through a moment where neither sourceHovered nor this control's own hovered is
+            // true yet - hiding immediately on that means the pointer arrives at an
+            // already-invisible item, which never gets a fresh enter event, so it stays hidden.
+            // hideTimer bridges that gap.
+            property bool shouldBeVisible: Settings.buttonsInTimeline && !!attached && (sourceHovered || hovered)
+            visible: shouldBeVisible || hideTimer.running
             z: 10
+            // Stays parented at the top level, a sibling of every ListView delegate (attached),
+            // rather than reparented onto the bubble: that seemed simpler, since it makes the
+            // bubble's own edges valid anchor targets, but its mapped screen position came out
+            // wrong (probably an interaction with the ListView's BottomToTop layout and
+            // reparenting mid-layout) - the popup rendered in one place but hit-tested in
+            // another, which looks exactly like "vanishes when the pointer reaches it". Anchoring
+            // to attached (a valid sibling) with margins computed from the bubble's geometry,
+            // the same approach already proven for the beside-the-bubble placement, avoids it.
             parent: chat.contentItem
-            anchors.bottom: attached?.top
-            anchors.right: attached?.right
+            anchors.top: bubbleMode ? attached?.top : undefined
+            anchors.topMargin: bubbleMode ? (preferredTopOffset - height / 2) : 0
+            anchors.bottom: bubbleMode ? undefined : attached?.top
+            anchors.bottomMargin: bubbleMode ? 0 : preferredBottomOffset
+            // Always anchored by its left edge (see preferredRightEdgeOffset above for why
+            // anchorFromRight doesn't switch to anchors.right instead) - just past the hovered
+            // message's own text, or for our own bubble-style messages, offset back from the
+            // desired right edge by this popup's own width so that edge lands just before the
+            // text start. A short message in a group of otherwise-long ones would otherwise leave
+            // the popup stranded far from its own text if it stayed anchored to the group's
+            // shared bubble edge; default style's text is always full pane width regardless of
+            // how short a given message is, so the same reasoning applies to every message there.
+            anchors.left: attached?.left
+            anchors.leftMargin: (bubbleMode && anchorFromRight) ? Math.max(0, Math.min(preferredRightEdgeOffset - width, (attached?.width ?? 0) - width)) : Math.max(0, Math.min(preferredLeftOffset, (attached?.width ?? 0) - width))
+
+            onShouldBeVisibleChanged: {
+                if (shouldBeVisible)
+                    hideTimer.stop();
+                else
+                    hideTimer.restart();
+            }
+
+            Timer {
+                id: hideTimer
+                interval: 300
+            }
 
             background: Rectangle {
                 border.color: palette.buttonText
                 border.width: 1
-                color: palette.window
+                // Match the bubble it's attached to, so it reads as part of the same message
+                // instead of a generic floating toolbar.
+                color: (messageActionsC.bubbleMode && messageActionsC.attached?.bubble) ? messageActionsC.attached.bubble.bubbleColor : palette.window
                 radius: padding
             }
             contentItem: RowLayout {
@@ -178,75 +274,10 @@ Item {
 
                 spacing: messageActionsC.padding
 
-                Repeater {
-                    model: Settings.recentReactions
-                    visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
-
-                    delegate: AbstractButton {
-                        id: button
-
-                        property color buttonTextColor: palette.buttonText
-                        property color highlightColor: palette.highlight
-                        required property string modelData
-                        property bool showImage: modelData.startsWith("mxc://")
-
-                        //Layout.preferredHeight: fontMetrics.height
-                        Layout.alignment: Qt.AlignBottom
-                        focusPolicy: Qt.NoFocus
-                        height: showImage ? 16 : buttonText.implicitHeight
-                        implicitHeight: showImage ? 16 : buttonText.implicitHeight
-                        implicitWidth: showImage ? 16 : buttonText.implicitWidth
-                        width: showImage ? 16 : buttonText.implicitWidth
-
-                        onClicked: {
-                            room.input.reaction(row.model.eventId, modelData);
-                            TimelineManager.focusMessageInput();
-                        }
-
-                        Label {
-                            id: buttonText
-
-                            anchors.centerIn: parent
-                            color: button.hovered ? button.highlightColor : button.buttonTextColor
-                            font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
-                            horizontalAlignment: Text.AlignHCenter
-                            padding: 0
-                            text: TimelineManager.htmlEscape(button.modelData)
-                            verticalAlignment: Text.AlignVCenter
-                            visible: !button.showImage
-                        }
-                        Image {
-                            // Workaround, can't get icon.source working for now...
-                            anchors.fill: parent
-                            fillMode: Image.PreserveAspectFit
-                            source: button.showImage ? (button.modelData.replace("mxc://", "image://MxcImage/") + "?scale") : ""
-                            sourceSize.height: button.height
-                            sourceSize.width: button.width
-                        }
-                        NhekoCursorShape {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                        Ripple {
-                            color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
-                        }
-                    }
-                }
-                ImageButton {
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Edit")
-                    ToolTip.visible: hovered
-                    buttonTextColor: palette.buttonText
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/edit.svg"
-                    visible: !!row.model && row.model.isEditable
-                    Layout.preferredWidth: 16
-
-                    onClicked: {
-                        if (row.model.isEditable)
-                            room.edit = row.model.eventId;
-                    }
-                }
+                // Exactly three actions, matching Signal's hover toolbar: react (a generic,
+                // uncolored heart - opens the emoji picker rather than sending a fixed emoji
+                // itself, hence the "+" badge), reply, and a catch-all options menu for
+                // everything else (edit, threads, pin, forward, go to message, ...).
                 ImageButton {
                     id: reactButton
 
@@ -254,9 +285,10 @@ Item {
                     ToolTip.text: qsTr("React")
                     ToolTip.visible: hovered
                     hoverEnabled: true
-                    image: ":/icons/icons/ui/smile-add.svg"
+                    image: ":/icons/icons/ui/heart-add.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
-                    Layout.preferredWidth: 16
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, room.roomId, function (plaintext, markdown) {
                             var event_id = row.model ? row.model.eventId : "";
@@ -266,40 +298,15 @@ Item {
                 }
                 ImageButton {
                     ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: (row.model && row.model.threadId) ? qsTr("Reply in thread") : qsTr("New thread")
-                    ToolTip.visible: hovered
-                    hoverEnabled: true
-                    image: (row.model && row.model.threadId) ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
-                    visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    Layout.preferredWidth: 16
-
-                    onClicked: room.thread = (row.model.threadId || row.model.eventId)
-                }
-                ImageButton {
-                    ToolTip.delay: Nheko.tooltipDelay
                     ToolTip.text: qsTr("Reply")
                     ToolTip.visible: hovered
                     hoverEnabled: true
                     image: ":/icons/icons/ui/reply.svg"
                     visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    Layout.preferredWidth: 16
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: room.reply = row.model.eventId
-                }
-                ImageButton {
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Go to message")
-                    ToolTip.visible: hovered
-                    buttonTextColor: palette.buttonText
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/go-to.svg"
-                    visible: !!row.model && filteredTimeline.filterByContent
-                    Layout.preferredWidth: 16
-
-                    onClicked: {
-                        topBar.searchString = "";
-                        room.showEvent(row.model.eventId);
-                    }
                 }
                 ImageButton {
                     id: optionsButton
@@ -309,7 +316,8 @@ Item {
                     ToolTip.visible: hovered
                     hoverEnabled: true
                     image: ":/icons/icons/ui/options.svg"
-                    Layout.preferredWidth: 16
+                    Layout.preferredWidth: 20
+                    Layout.preferredHeight: 20
 
                     onClicked: messageContextMenuC.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
                 }

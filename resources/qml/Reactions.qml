@@ -15,8 +15,11 @@ Flow {
 
     // lower-contrast colors to avoid distracting from text & to enhance hover effect
     property color gentleHighlight: Qt.hsla(palette.highlight.hslHue, palette.highlight.hslSaturation, palette.highlight.hslLightness, 0.8)
-    property color gentleText: Qt.hsla(palette.text.hslHue, palette.text.hslSaturation, palette.text.hslLightness, 0.6)
     property alias reactions: repeater.model
+    // Matches the message bubble it's attached to, so the pill reads as part of the same
+    // message instead of a separate floating chip. Falls back to the window color for the
+    // default (non-bubble) style, which has no bubble to match.
+    property color bubbleColor: palette.window
 
     spacing: 4
 
@@ -34,9 +37,7 @@ Flow {
 
             background: Rectangle {
                 anchors.centerIn: parent
-                border.color: reaction.hovered ? palette.text : gentleText
-                border.width: 1
-                color: reaction.hovered ? palette.highlight : (modelData.selfReactedEvent !== '' ? gentleHighlight : palette.window)
+                color: reaction.hovered ? palette.highlight : (modelData.selfReactedEvent !== '' ? gentleHighlight : reactionFlow.bubbleColor)
                 implicitHeight: reaction.implicitHeight
                 implicitWidth: reaction.implicitWidth
                 radius: reaction.height / 2
@@ -50,14 +51,16 @@ Flow {
                     elide: Text.ElideRight
                     elideWidth: 150
                     font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
+                    font.pointSize: Settings.fontSize * 1.3
                     text: modelData.displayKey
                 }
                 Text {
                     id: reactionText
 
-                    anchors.baseline: reactionCounter.baseline
+                    anchors.verticalCenter: parent.verticalCenter
                     color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText : palette.text
                     font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
+                    font.pointSize: Settings.fontSize * 1.3
                     textFormat: TextEdit.RichText
                     maximumLineCount: 1
                     text: {
@@ -72,7 +75,7 @@ Flow {
                     visible: !modelData.key.startsWith("mxc://")
                 }
                 Image {
-                    anchors.verticalCenter: divider.verticalCenter
+                    anchors.verticalCenter: parent.verticalCenter
                     fillMode: Image.PreserveAspectFit
                     height: textMetrics.height
                     mipmap: true
@@ -80,21 +83,22 @@ Flow {
                     visible: modelData.key.startsWith("mxc://")
                     width: textMetrics.height
                 }
-                Rectangle {
-                    id: divider
+            }
 
-                    color: reaction.hovered ? palette.text : gentleText
-                    height: Math.floor(reactionCounter.implicitHeight * 1.4)
-                    width: 1
-                }
-                Text {
-                    id: reactionCounter
-
-                    anchors.verticalCenter: divider.verticalCenter
-                    color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText : palette.windowText
-                    font: reaction.font
-                    text: modelData.count
-                }
+            // Discreet stand-in for the old count: a small dot instead of a number, so a
+            // reaction from several people still reads differently from a single one without
+            // a prominent digit competing with the emoji. The exact count is still available
+            // via the tooltip on hover.
+            Rectangle {
+                visible: modelData.count > 1
+                width: 6
+                height: 6
+                radius: 3
+                color: (reaction.hovered || modelData.selfReactedEvent !== '') ? palette.highlightedText : palette.highlight
+                anchors.bottom: parent.bottom
+                anchors.right: parent.right
+                anchors.bottomMargin: 2
+                anchors.rightMargin: 2
             }
 
             Component.onCompleted: {
