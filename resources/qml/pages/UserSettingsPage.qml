@@ -257,6 +257,48 @@ Rectangle {
                                 text: model.value
                             }
                         }
+
+                        DelegateChoice {
+                            roleValue: UserSettingsModel.MultiLineText
+
+                            ColumnLayout {
+                                width: parent.width
+                                spacing: Nheko.paddingSmall
+                                ScrollView {
+                                    Layout.fillWidth: true
+                                    Layout.preferredHeight: 150
+                                    clip: true
+
+                                    TextArea {
+                                        id: multiLineInput
+
+                                        text: {
+                                            if (model.value === undefined || model.value === null) return "";
+                                            if (typeof model.value === "string") return model.value;
+                                            return model.value.join("\n");
+                                        }
+
+                                        color: palette.text
+                                        wrapMode: TextEdit.WrapAnywhere
+                                        selectByMouse: true
+
+                                        background: Rectangle {
+                                            color: palette.base
+                                            border.color: multiLineInput.activeFocus ? palette.highlight : palette.mid
+                                            border.width: 1
+                                            radius: 3
+                                        }
+
+                                        onEditingFinished: {
+                                            let lines = text.split("\n")
+                                                .map(line => line.trim())
+                                                .filter(line => line.length > 0);
+                                            model.value = lines;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
