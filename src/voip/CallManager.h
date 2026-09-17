@@ -49,6 +49,7 @@ class CallManager : public QObject
     Q_PROPERTY(QStringList mics READ mics NOTIFY devicesChanged)
     Q_PROPERTY(QStringList cameras READ cameras NOTIFY devicesChanged)
     Q_PROPERTY(bool callsSupported READ callsSupported CONSTANT)
+    Q_PROPERTY(bool haveScreenShare READ haveScreenShare CONSTANT)
     Q_PROPERTY(bool screenShareReady READ screenShareReady NOTIFY screenShareChanged)
 
 public:
@@ -71,6 +72,7 @@ public:
     QStringList mics() const { return devices(false); }
     QStringList cameras() const { return devices(true); }
     void refreshTurnServer();
+    bool haveScreenShare() const { return !screenShareTypes_.empty(); }
     bool screenShareReady() const;
 
     static bool callsSupported();

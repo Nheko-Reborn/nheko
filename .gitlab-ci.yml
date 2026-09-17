@@ -24,16 +24,21 @@ build-windows:
   before_script:
     - mkdir -p hunter -f
     - Move-Item -Path hunter -Destination C:/hunter
+    - if (Test-Path gstreamer) { Move-Item -Path gstreamer -Destination C:/gstreamer -Force }
   script:
     - ./.ci/windows/build.bat
   after_script:
     - ./.ci/upload-nightly.ps1
     - Move-Item -Path C:/hunter -Destination hunter -Force
+    - if (Test-Path C:/gstreamer) { Move-Item -Path C:/gstreamer -Destination gstreamer -Force }
   cache:
     key: "$CI_JOB_NAME"
     paths:
       - hunter/
       - build/_deps
+      - gstreamer/
+      - gstreamer-src/
+      - qt-jdenticon/
   artifacts:
     paths:
       - nheko.msix
