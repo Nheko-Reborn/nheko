@@ -207,6 +207,9 @@ glitchText(const QString &text);
 QString
 graduallyGlitchText(const QString &text);
 
+std::optional<QUrl>
+convertToMatrixURI(const QString &input);
+
 struct MatrixUriParseResult
 {
     QString sigil1, mxid1, sigil2, mxid2, action;

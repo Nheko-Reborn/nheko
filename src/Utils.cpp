@@ -2166,53 +2166,68 @@ mxidFromSegments(QStringView sigil, QStringView mxid)
     }
 }
 
-std::optional<utils::MatrixUriParseResult>
-utils::parseMatrixUri(QString uri)
+std::optional<QUrl>
+utils::convertToMatrixURI(const QString &input)
 {
-    QUrl uri_{uri};
+    QUrl uri_{input};
 
-    // Convert matrix.to URIs to proper format
+    if (uri_.scheme() == QLatin1String("matrix"))
+        return uri_;
+
+    QString query;
+    QString eventId;
+    QString identifier;
+
     if (uri_.scheme() == QLatin1String("https") && uri_.host() == QLatin1String("matrix.to")) {
         QString p = uri_.fragment(QUrl::FullyEncoded);
-        if (p.startsWith(QLatin1String("/")))
+        if (p.startsWith(QLatin1Char('/')))
             p.remove(0, 1);
 
         auto temp = p.split(QStringLiteral("?"));
-        QString query;
         if (temp.size() >= 2)
             query = QUrl::fromPercentEncoding(temp.takeAt(1).toUtf8());
 
-        temp            = temp.first().split(QStringLiteral("/"));
-        auto identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
-        QString eventId = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
-        if (!identifier.isEmpty()) {
-            if (identifier.startsWith(QLatin1String("@"))) {
-                QByteArray newUri = "matrix:u/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                uri_ = QUrl::fromEncoded(newUri);
-            } else if (identifier.startsWith(QLatin1String("#"))) {
-                QByteArray newUri = "matrix:r/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!eventId.isEmpty())
-                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                uri_ = QUrl::fromEncoded(newUri);
-            } else if (identifier.startsWith(QLatin1String("!"))) {
-                QByteArray newUri =
-                  "matrix:roomid/" + QUrl::toPercentEncoding(identifier.remove(0, 1));
-                if (!eventId.isEmpty())
-                    newUri.append("/e/" + QUrl::toPercentEncoding(eventId.remove(0, 1)));
-                if (!query.isEmpty())
-                    newUri.append("?" + query.toUtf8());
-                uri_ = QUrl::fromEncoded(newUri);
-            }
-        }
+        temp       = temp.first().split(QStringLiteral("/"));
+        identifier = QUrl::fromPercentEncoding(temp.takeFirst().toUtf8());
+        eventId    = QUrl::fromPercentEncoding(temp.join('/').toUtf8());
+    } else if (input.startsWith(QLatin1Char('@')) || input.startsWith(QLatin1Char('#')) ||
+               input.startsWith(QLatin1Char('!'))) {
+        auto temp  = input.split(QStringLiteral("/"));
+        identifier = temp.takeFirst();
+        eventId    = temp.join('/');
     }
 
-    // non-matrix URIs are not handled by us, return false
-    if (uri_.scheme() != QLatin1String("matrix"))
+    if (identifier.isEmpty())
+        return std::nullopt;
+
+    QByteArray newUri = "matrix:";
+    const QChar sigil = identifier.front();
+
+    if (sigil == QLatin1Char('@'))
+        newUri += "u/";
+    else if (sigil == QLatin1Char('#'))
+        newUri += "r/";
+    else if (sigil == QLatin1Char('!'))
+        newUri += "roomid/";
+    else
+        return std::nullopt;
+
+    newUri += QUrl::toPercentEncoding(identifier.mid(1));
+    if ((sigil == QLatin1Char('#') || sigil == QLatin1Char('!')) && !eventId.isEmpty())
+        newUri += "/e/" + QUrl::toPercentEncoding(eventId.mid(1));
+    if (!query.isEmpty())
+        newUri += "?" + query.toUtf8();
+
+    return QUrl::fromEncoded(newUri);
+}
+
+std::optional<utils::MatrixUriParseResult>
+utils::parseMatrixUri(QString uri)
+{
+    const auto optUri = convertToMatrixURI(uri);
+    if (!optUri)
         return {};
+    const QUrl &uri_ = *optUri;
 
     auto tempPath = uri_.path(QUrl::ComponentFormattingOption::FullyEncoded);
     if (tempPath.startsWith('/'))
