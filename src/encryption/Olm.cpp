@@ -1707,10 +1707,8 @@ unlock_secrets(const std::string &key,
               nhlog::net()->error("Failed to download secret storage key for {}: {}",
                                   fmt::join(std::views::keys(secrets), ", "),
                                   *err);
-              emit ChatPage::instance()->showNotification(
-                QCoreApplication::translate("CrossSigningSecrets",
-                                            "Failed to download your encryption secrets. Device "
-                                            "verification will not work until this is resolved."));
+              emit ChatPage::instance()->showNotification(QCoreApplication::translate(
+                "CrossSigningSecrets", "Failed to download your encryption secrets."));
               return;
           }
 
@@ -1718,59 +1716,53 @@ unlock_secrets(const std::string &key,
       });
 }
 
-//! Choose which secret storage key to use for a secret.
+//! Collect every key a secret is encrypted with.
 //!
-//! A secret can be encrypted with several keys, for example after the recovery
-//! key was reset. The recovery key the user holds belongs to the account's
-//! *default* key, so prefer that one instead of an arbitrary (possibly stale)
-//! key, which would ask for a recovery key the user does not have.
-std::optional<std::pair<std::string, mtx::secret_storage::AesHmacSha2EncryptedData>>
-secret_encryption_key(const mtx::secret_storage::Secret &secret, const std::string &defaultKeyId)
-{
-    if (secret.encrypted.empty())
-        return std::nullopt;
-
-    if (!defaultKeyId.empty()) {
-        auto it = secret.encrypted.find(defaultKeyId);
-        if (it != secret.encrypted.end())
-            return *it;
-    }
-
-    return *secret.encrypted.begin();
-}
-}
-
-namespace {
+//! A secret can be encrypted with more than one key, for example after the
+//! recovery key was reset. We cannot tell which key the user holds, so offer
+//! all of them instead of picking an arbitrary (possibly stale) key, which
+//! would ask for a recovery key the user does not have.
 void
-download_cross_signing_secrets(const std::string &defaultKeyId)
+add_secret(std::map<std::string,
+                    std::map<std::string, mtx::secret_storage::AesHmacSha2EncryptedData>> &secrets,
+           const std::optional<mtx::secret_storage::Secret> &secret,
+           const std::string &name)
+{
+    if (!secret)
+        return;
+
+    for (const auto &[keyId, data] : secret->encrypted)
+        secrets[keyId][name] = data;
+}
+}
+
+void
+download_cross_signing_keys()
 {
     using namespace mtx::secret_storage;
     http::client()->secret_storage_secret(
-      secrets::megolm_backup_v1,
-      [defaultKeyId](Secret secret, mtx::http::RequestErr err) {
+      secrets::megolm_backup_v1, [](Secret secret, mtx::http::RequestErr err) {
           std::optional<Secret> backup_key;
           if (!err)
               backup_key = secret;
 
           http::client()->secret_storage_secret(
-            secrets::cross_signing_master,
-            [defaultKeyId, backup_key](Secret secret, mtx::http::RequestErr err) {
+            secrets::cross_signing_master, [backup_key](Secret secret, mtx::http::RequestErr err) {
                 std::optional<Secret> master_key;
                 if (!err)
                     master_key = secret;
 
                 http::client()->secret_storage_secret(
                   secrets::cross_signing_self_signing,
-                  [defaultKeyId, backup_key, master_key](Secret secret,
-                                                         mtx::http::RequestErr err) {
+                  [backup_key, master_key](Secret secret, mtx::http::RequestErr err) {
                       std::optional<Secret> self_signing_key;
                       if (!err)
                           self_signing_key = secret;
 
                       http::client()->secret_storage_secret(
                         secrets::cross_signing_user_signing,
-                        [defaultKeyId, backup_key, self_signing_key, master_key](
-                          Secret secret, mtx::http::RequestErr err) {
+                        [backup_key, self_signing_key, master_key](Secret secret,
+                                                                   mtx::http::RequestErr err) {
                             std::optional<Secret> user_signing_key;
                             if (!err)
                                 user_signing_key = secret;
@@ -1778,47 +1770,21 @@ download_cross_signing_secrets(const std::string &defaultKeyId)
                             std::map<std::string, std::map<std::string, AesHmacSha2EncryptedData>>
                               secrets;
 
-                            auto addSecret = [&secrets, &defaultKeyId](
-                                               const std::optional<Secret> &secret,
-                                               std::string name) {
-                                if (!secret)
-                                    return;
-                                if (auto enc = secret_encryption_key(*secret, defaultKeyId))
-                                    secrets[enc->first][std::move(name)] = enc->second;
-                            };
-
-                            addSecret(backup_key, std::string(secrets::megolm_backup_v1));
-                            addSecret(master_key, std::string(secrets::cross_signing_master));
-                            addSecret(self_signing_key,
-                                      std::string(secrets::cross_signing_self_signing));
-                            addSecret(user_signing_key,
-                                      std::string(secrets::cross_signing_user_signing));
+                            add_secret(secrets, backup_key, std::string(secrets::megolm_backup_v1));
+                            add_secret(
+                              secrets, master_key, std::string(secrets::cross_signing_master));
+                            add_secret(secrets,
+                                       self_signing_key,
+                                       std::string(secrets::cross_signing_self_signing));
+                            add_secret(secrets,
+                                       user_signing_key,
+                                       std::string(secrets::cross_signing_user_signing));
 
                             for (const auto &[key, secret_] : secrets)
                                 unlock_secrets(key, secret_);
                         });
                   });
             });
-      });
-}
-} // namespace
-
-void
-download_cross_signing_keys()
-{
-    // A secret can be encrypted with several keys, for example after the
-    // recovery key was reset. The recovery key the user holds belongs to the
-    // account's default key, so fetch it and prefer it instead of an arbitrary
-    // key, which would ask for a recovery key the user does not have.
-    http::client()->get_account_data<nlohmann::json>(
-      "m.secret_storage.default_key",
-      [](nlohmann::json defaultKey, mtx::http::RequestErr err) {
-          std::string defaultKeyId;
-          if (!err && defaultKey.is_object() && defaultKey.contains("key") &&
-              defaultKey["key"].is_string())
-              defaultKeyId = defaultKey["key"].get<std::string>();
-
-          download_cross_signing_secrets(defaultKeyId);
       });
 }
 
