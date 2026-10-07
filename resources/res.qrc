@@ -25,8 +25,8 @@
         <file>icons/ui/image-failed.svg</file>
         <file>icons/ui/image.svg</file>
         <file>icons/ui/lowprio.svg</file>
-        <file>icons/ui/microphone-mute.svg</file>
-        <file>icons/ui/microphone-unmute.svg</file>
+        <file>icons/ui/microphone-muted.svg</file>
+        <file>icons/ui/microphone-on.svg</file>
         <file>icons/ui/music.svg</file>
         <file>icons/ui/thread.svg</file>
         <file>icons/ui/new-thread.svg</file>

@@ -218,7 +218,7 @@ Rectangle {
             Layout.preferredWidth: 24
             Layout.preferredHeight: 24
             buttonTextColor: "#000000"
-            image: CallManager.isMicMuted ? ":/icons/icons/ui/microphone-unmute.svg" : ":/icons/icons/ui/microphone-mute.svg"
+            image: CallManager.isMicMuted ? ":/icons/icons/ui/microphone-muted.svg" : ":/icons/icons/ui/microphone-on.svg"
             hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: CallManager.isMicMuted ? qsTr("Unmute Mic") : qsTr("Mute Mic")
