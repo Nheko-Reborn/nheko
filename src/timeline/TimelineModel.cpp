@@ -2045,8 +2045,9 @@ TimelineModel::copyMedia(const QString &eventId) const
               clipContents->setData(mimeType, by);
 
               if (eventType == qml_mtx_events::EventType::ImageMessage) {
-                  auto img = utils::readImage(QByteArray(data.data(), (qsizetype)data.size()));
-                  clipContents->setImageData(img);
+                  auto img = utils::readImage(by);
+                  if (!img.isNull())
+                      clipContents->setImageData(img);
               }
 
               // Qt uses COM for clipboard management on windows and our HTTP threads do not
