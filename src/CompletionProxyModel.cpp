@@ -49,6 +49,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
         if (!string1.isEmpty()) {
             trie_.insert<ElementRank::first>(string1.toUcs4(), i);
             insertParts(string1, i);
+            searchStrings_.emplace_back(string1, i);
         }
 
         auto string2 = sourceModel()
@@ -59,6 +60,7 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
         if (!string2.isEmpty()) {
             trie_.insert<ElementRank::first>(string2.toUcs4(), i);
             insertParts(string2, i);
+            searchStrings_.emplace_back(string2, i);
         }
     }
 
@@ -84,10 +86,12 @@ CompletionProxyModel::CompletionProxyModel(QAbstractItemModel *model,
 void
 CompletionProxyModel::invalidate()
 {
-    auto key = searchString_.toUcs4();
     beginResetModel();
-    if (!key.empty()) // return default model data, if no search string
-        mapping = trie_.search(key, max_completions_, maxMistakes_);
+    if (!searchString_.isEmpty()) { // return default model data, if no search string
+        const auto key =
+          searchString_.startsWith(ignoredPrefix_) ? searchString_.mid(1) : searchString_;
+        mapping = searchWithSubstrings(trie_, searchStrings_, key, max_completions_, maxMistakes_);
+    }
     endResetModel();
 }
 
@@ -170,6 +174,12 @@ void
 CompletionProxyModel::setSearchString(const QString &s)
 {
     emit newSearchString(s);
+}
+
+void
+CompletionProxyModel::setIgnoredPrefix(const QChar ignoredPrefix)
+{
+    ignoredPrefix_ = ignoredPrefix;
 }
 
 #include "moc_CompletionProxyModel.cpp"

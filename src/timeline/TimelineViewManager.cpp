@@ -510,11 +510,13 @@ TimelineViewManager::completerFor(const QString &completerName, const QString &r
     if (completerName == QLatin1String("user")) {
         auto userModel = new UsersModel(roomId.toStdString());
         auto proxy     = new CompletionProxyModel(userModel);
+        proxy->setIgnoredPrefix('@');
         userModel->setParent(proxy);
         return proxy;
     } else if (completerName == QLatin1String("emoji")) {
         auto emojiModel = new CombinedImagePackModel(roomId.toStdString());
         auto proxy      = new CompletionProxyModel(emojiModel);
+        proxy->setIgnoredPrefix(':');
         emojiModel->setParent(proxy);
         return proxy;
     } else if (completerName == QLatin1String("room")) {

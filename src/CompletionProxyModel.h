@@ -160,6 +160,42 @@ struct trie
     }
 };
 
+// search prefix matches first, then substring matches and finally fuzzy matches.
+template<typename Value>
+std::vector<Value>
+searchWithSubstrings(const trie<uint, Value> &prefix_trie,
+                     const std::vector<std::pair<QString, Value>> &strings,
+                     const QString &key,
+                     size_t max_results,
+                     size_t max_edit_distance)
+{
+    auto keys                = key.toUcs4();
+    auto results             = prefix_trie.search(keys, max_results, 0);
+    const auto prefixMatches = results.size();
+
+    auto append = [&results](const Value &val) {
+        if (std::ranges::find(results, val) == results.end())
+            results.push_back(val);
+    };
+
+    for (const auto &[str, val] : strings) {
+        if (results.size() >= max_results)
+            return results;
+        if (str.contains(key))
+            append(val);
+    }
+
+    // the fuzzy search returns the prefix matches again first, so ask for that many more
+    for (const auto &val :
+         prefix_trie.search(keys, max_results + prefixMatches, max_edit_distance)) {
+        if (results.size() >= max_results)
+            break;
+        append(val);
+    }
+
+    return results;
+}
+
 class CompletionProxyModel final : public QAbstractProxyModel
 {
     Q_OBJECT
@@ -171,6 +207,7 @@ public:
                          QObject *parent        = nullptr);
 
     void invalidate();
+    void setIgnoredPrefix(QChar ignoredPrefix);
 
     QHash<int, QByteArray> roleNames() const override;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -193,8 +230,10 @@ signals:
     void newSearchString(QString);
 
 private:
+    QChar ignoredPrefix_ = {};
     QString searchString_;
     trie<uint, int> trie_;
+    std::vector<std::pair<QString, int>> searchStrings_;
     std::vector<int> mapping;
     int maxMistakes_;
     size_t max_completions_;
