@@ -615,6 +615,14 @@ Item {
             }
             Component {
                 MenuItem {
+                    text: qsTr("Copy image")
+                    visible: messageContextMenuC.eventType == MtxEvent.ImageMessage
+
+                    onTriggered: room.copyMedia(messageContextMenuC.eventId);
+                }
+            }
+            Component {
+                MenuItem {
                     text: qsTr("&Open in external program")
                     visible: messageContextMenuC.eventType == MtxEvent.ImageMessage || messageContextMenuC.eventType == MtxEvent.VideoMessage || messageContextMenuC.eventType == MtxEvent.AudioMessage || messageContextMenuC.eventType == MtxEvent.FileMessage || messageContextMenuC.eventType == MtxEvent.Sticker
 
