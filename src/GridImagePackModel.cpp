@@ -128,10 +128,12 @@ GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers,
             if (!string1.isEmpty()) {
                 trie_.insert<ElementRank::first>(string1.toUcs4(), key);
                 insertParts(string1, key);
+                searchStrings_.emplace_back(string1, key);
             }
             if (!string2.isEmpty()) {
                 trie_.insert<ElementRank::first>(string2.toUcs4(), key);
                 insertParts(string2, key);
+                searchStrings_.emplace_back(string2, key);
             }
 
             emojiIndex++;
@@ -147,10 +149,12 @@ GridImagePackModel::GridImagePackModel(const std::string &roomId, bool stickers,
             if (!string1.isEmpty()) {
                 trie_.insert<ElementRank::first>(string1.toUcs4(), key);
                 insertParts(string1, key);
+                searchStrings_.emplace_back(string1, key);
             }
             if (!string2.isEmpty()) {
                 trie_.insert<ElementRank::first>(string2.toUcs4(), key);
                 insertParts(string2, key);
+                searchStrings_.emplace_back(string2, key);
             }
 
             imgIndex++;
@@ -346,9 +350,11 @@ GridImagePackModel::setSearchString(QString key)
     searchString_ = key;
 
     if (!key.isEmpty()) {
-        auto searchParts = key.toCaseFolded().toUcs4();
-        auto tempResults =
-          trie_.search(searchParts, static_cast<std::size_t>(columns * columns * 4));
+        auto tempResults = searchWithSubstrings(trie_,
+                                                searchStrings_,
+                                                key.toCaseFolded(),
+                                                static_cast<std::size_t>(columns * columns * 4),
+                                                2);
 
         std::map<std::uint32_t, std::size_t> firstPositionOfPack;
         for (const auto &e : tempResults)
