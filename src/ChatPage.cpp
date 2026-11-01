@@ -37,8 +37,12 @@
 
 ChatPage *ChatPage::instance_                    = nullptr;
 static constexpr int CHECK_CONNECTIVITY_INTERVAL = 15'000;
-static constexpr int RETRY_TIMEOUT               = 5'000;
-static constexpr size_t MAX_ONETIME_KEYS         = 50;
+// The connectivity check is a single request to the homeserver. A homeserver can answer it with an
+// error or drop that one connection while the network is perfectly fine, so only declare the
+// connection lost after several failed checks in a row.
+static constexpr int CHECK_CONNECTIVITY_MAX_FAILURES = 3;
+static constexpr int RETRY_TIMEOUT                   = 5'000;
+static constexpr size_t MAX_ONETIME_KEYS             = 50;
 
 ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
   : QObject(parent)
@@ -74,30 +78,7 @@ ChatPage::ChatPage(QSharedPointer<UserSettings> userSettings, QObject *parent)
     });
 
     connectivityTimer_.setInterval(CHECK_CONNECTIVITY_INTERVAL);
-    connect(&connectivityTimer_, &QTimer::timeout, this, [this]() {
-        if (http::client()->access_token().empty()) {
-            connectivityTimer_.stop();
-            return;
-        }
-
-        http::client()->versions(
-          [this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
-              if (err) {
-                  emit connectionLost();
-                  return;
-              }
-
-              // only update spaces every 20 minutes
-              if (lastSpacesUpdate < QDateTime::currentDateTime().addSecs(-20 * 60)) {
-                  lastSpacesUpdate = QDateTime::currentDateTime();
-                  utils::updateSpaceVias();
-                  utils::removeExpiredEvents();
-              }
-
-              if (!isConnected_)
-                  emit connectionRestored();
-          });
-    });
+    connect(&connectivityTimer_, &QTimer::timeout, this, &ChatPage::checkConnectivity);
 
     connect(this, &ChatPage::loggedOut, this, &ChatPage::logout);
 
@@ -879,6 +860,45 @@ ChatPage::handleSyncResponse(const mtx::responses::Sync &res, const std::string 
         QTimer::singleShot(1000, this, &ChatPage::trySyncCb);
     else
         emit trySyncCb();
+}
+
+void
+ChatPage::checkConnectivity()
+{
+    if (http::client()->access_token().empty()) {
+        connectivityTimer_.stop();
+        return;
+    }
+
+    http::client()->versions([this](const mtx::responses::Versions &, mtx::http::RequestErr err) {
+        if (err) {
+            const int failures = ++connectivityFailures_;
+            nhlog::net()->info("connectivity check failed ({} in a row): {}", failures, *err);
+
+            if (failures < CHECK_CONNECTIVITY_MAX_FAILURES) {
+                // Check again soon instead of waiting for the next regular check, so a real
+                // outage is still noticed quickly.
+                QTimer::singleShot(RETRY_TIMEOUT, this, &ChatPage::checkConnectivity);
+                return;
+            }
+
+            if (isConnected_)
+                emit connectionLost();
+            return;
+        }
+
+        connectivityFailures_ = 0;
+
+        // only update spaces every 20 minutes
+        if (lastSpacesUpdate < QDateTime::currentDateTime().addSecs(-20 * 60)) {
+            lastSpacesUpdate = QDateTime::currentDateTime();
+            utils::updateSpaceVias();
+            utils::removeExpiredEvents();
+        }
+
+        if (!isConnected_)
+            emit connectionRestored();
+    });
 }
 
 void
