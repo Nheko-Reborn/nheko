@@ -183,6 +183,8 @@ private:
     void startInitialSync();
     void tryInitialSync();
     void trySync();
+    // Asks the homeserver if it is reachable and updates the connection state from the answer.
+    void checkConnectivity();
     void verifyOneTimeKeyCountAfterStartup();
     void ensureOneTimeKeyCount(const std::map<std::string_view, uint16_t> &counts,
                                const std::optional<std::vector<std::string>> &fallback_keys);
@@ -207,6 +209,8 @@ private:
 
     QTimer connectivityTimer_;
     std::atomic_bool isConnected_;
+    // Number of failed connectivity checks in a row, reset by a successful one.
+    std::atomic_int connectivityFailures_{0};
 
     // Global user settings.
     QSharedPointer<UserSettings> userSettings_;
