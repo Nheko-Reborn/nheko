@@ -553,10 +553,10 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
     if (encryptionInfo && !cache::isRoomEncrypted(roomId.toStdString())) {
         http::client()->download(
           content,
-          [this, roomId, e, encryptionInfo](const std::string &res,
-                                            const std::string &content_type,
-                                            const std::string &originalFilename,
-                                            mtx::http::RequestErr err) {
+          [this, roomId, ev = *e, encryptionInfo](const std::string &res,
+                                                  const std::string &content_type,
+                                                  const std::string &originalFilename,
+                                                  mtx::http::RequestErr err) {
               if (err)
                   return;
 
@@ -567,8 +567,8 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
                 data,
                 content_type,
                 originalFilename,
-                [this, roomId, e](const mtx::responses::ContentURI &res,
-                                  mtx::http::RequestErr err) mutable {
+                [this, roomId, ev](const mtx::responses::ContentURI &res,
+                                   mtx::http::RequestErr err) mutable {
                     if (err) {
                         nhlog::net()->warn("failed to upload media: {} {} ({})",
                                            err->matrix_error.error,
@@ -598,7 +598,7 @@ TimelineViewManager::forwardMessageToRoom(mtx::events::collections::TimelineEven
                               }
                           }
                       },
-                      *e);
+                      ev);
                 });
 
               return;

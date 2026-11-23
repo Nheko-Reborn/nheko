@@ -4,6 +4,7 @@
 
 #include "EventStore.h"
 
+#include <QPointer>
 #include <QThread>
 #include <QTimer>
 
@@ -126,27 +127,31 @@ EventStore::EventStore(std::string room_id, QObject *)
                     room_id_,
                     txn_id,
                     e.content,
-                    [this, txn_id, e](const mtx::responses::EventId &event_id,
-                                      mtx::http::RequestErr err) {
+                    [self = QPointer<EventStore>(this), txn_id, e](
+                      const mtx::responses::EventId &event_id, mtx::http::RequestErr err) {
                         if (err) {
                             const int status_code = static_cast<int>(err->status_code);
                             nhlog::net()->warn("[{}] failed to send message: {} {}",
                                                txn_id,
                                                err->matrix_error.error,
                                                status_code);
-                            emit messageFailed(txn_id);
+                            if (self)
+                                emit self->messageFailed(txn_id);
                             return;
                         }
 
-                        emit messageSent(txn_id, event_id.event_id.to_string());
+                        if (!self)
+                            return;
+
+                        emit self->messageSent(txn_id, event_id.event_id.to_string());
                         if constexpr (std::is_same_v<decltype(e.content),
                                                      mtx::events::msg::Encrypted>) {
-                            auto event = decryptEvent({room_id_, e.event_id}, e);
+                            auto event = self->decryptEvent({self->room_id_, e.event_id}, e);
                             if (event->event) {
                                 if (auto dec = std::get_if<mtx::events::RoomEvent<
                                       mtx::events::msg::KeyVerificationRequest>>(
                                       &event->event.value())) {
-                                    emit updateFlowEventId(event_id.event_id.to_string());
+                                    emit self->updateFlowEventId(event_id.event_id.to_string());
                                 }
                             }
                         }
@@ -274,9 +279,9 @@ EventStore::EventStore(std::string room_id, QObject *)
           http::client()->read_event(
             room_id_,
             event_id,
-            [this, event_id](mtx::http::RequestErr err) {
+            [room_id = room_id_, event_id](mtx::http::RequestErr err) {
                 if (err) {
-                    nhlog::net()->warn("failed to read_event ({}, {})", room_id_, event_id);
+                    nhlog::net()->warn("failed to read_event ({}, {})", room_id, event_id);
                 }
             },
             !UserSettings::instance()->readReceipts());
@@ -851,7 +856,9 @@ EventStore::get(const std::string &id,
         if (!event) {
             http::client()->get_event(room_id_,
                                       index.id,
-                                      [this, relatedTo = std::string(related_to), id = index.id](
+                                      [self      = QPointer<EventStore>(this),
+                                       relatedTo = std::string(related_to),
+                                       id        = index.id](
                                         const mtx::events::collections::TimelineEvents &timeline,
                                         mtx::http::RequestErr err) {
                                           if (err) {
@@ -862,7 +869,8 @@ EventStore::get(const std::string &id,
                                                 relatedTo);
                                               return;
                                           }
-                                          emit eventFetched(id, relatedTo, timeline);
+                                          if (self)
+                                              emit self->eventFetched(id, relatedTo, timeline);
                                       });
             return nullptr;
         }
@@ -934,11 +942,14 @@ EventStore::fetchMore()
     nhlog::ui()->debug("Paginating room {}, token {}", opts.room_id, opts.from);
 
     http::client()->messages(
-      opts, [this, opts](const mtx::responses::Messages &res, mtx::http::RequestErr err) {
-          if (cache::client()->previousBatchToken(room_id_) != opts.from) {
+      opts,
+      [self = QPointer<EventStore>(this), opts](const mtx::responses::Messages &res,
+                                                mtx::http::RequestErr err) {
+          if (cache::client()->previousBatchToken(opts.room_id) != opts.from) {
               nhlog::net()->warn("Cache cleared while fetching more messages, dropping "
                                  "/messages response");
-              emit fetchedMore();
+              if (self)
+                  emit self->fetchedMore();
               return;
           }
           if (err) {
@@ -947,11 +958,13 @@ EventStore::fetchMore()
                                   mtx::errors::to_string(err->matrix_error.errcode),
                                   err->matrix_error.error,
                                   err->parse_error);
-              emit fetchedMore();
+              if (self)
+                  emit self->fetchedMore();
               return;
           }
 
-          emit oldMessagesRetrieved(std::move(res));
+          if (self)
+              emit self->oldMessagesRetrieved(std::move(res));
       });
 }
 

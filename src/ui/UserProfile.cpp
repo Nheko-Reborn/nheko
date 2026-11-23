@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QImageReader>
 #include <QMimeDatabase>
+#include <QPointer>
 #include <QStandardPaths>
 
 #include "Cache.h"
@@ -216,18 +217,20 @@ UserProfile::signOutDevice(const QString &deviceID)
     http::client()->delete_device(
       deviceID.toStdString(),
       UIA::instance()->genericHandler(tr("Sign out device %1").arg(deviceID)),
-      [this, deviceID](mtx::http::RequestErr e) {
+      [self = QPointer<UserProfile>(this), deviceID](mtx::http::RequestErr e) {
           if (e) {
               nhlog::ui()->critical("Failure when attempting to sign out device {}",
                                     deviceID.toStdString());
               return;
           }
           nhlog::ui()->info("Device {} successfully signed out!", deviceID.toStdString());
+          if (!self)
+              return;
           // This is us. Let's update the interface accordingly
-          if (isSelf() && deviceID.toStdString() == ::http::client()->device_id()) {
+          if (self->isSelf() && deviceID.toStdString() == ::http::client()->device_id()) {
               ChatPage::instance()->dropToLoginPageCb(tr("You signed out this device."));
           }
-          refreshDevices();
+          self->refreshDevices();
       });
 }
 
@@ -300,8 +303,8 @@ UserProfile::fetchDeviceList(const QString &userID)
 
     cache::client()->query_keys(
       userID.toStdString(),
-      [other_user_id = userID.toStdString(), this](const UserKeyCache &,
-                                                   mtx::http::RequestErr err) {
+      [other_user_id = userID.toStdString(),
+       self          = QPointer<UserProfile>(this)](const UserKeyCache &, mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->warn("failed to query device keys: {}", *err);
           }
@@ -309,7 +312,7 @@ UserProfile::fetchDeviceList(const QString &userID)
           // Ensure local key cache is up to date
           cache::client()->query_keys(
             utils::localUser().toStdString(),
-            [this](const UserKeyCache &, mtx::http::RequestErr err) {
+            [self](const UserKeyCache &, mtx::http::RequestErr err) {
                 using namespace mtx;
                 std::string local_user_id = utils::localUser().toStdString();
 
@@ -317,7 +320,8 @@ UserProfile::fetchDeviceList(const QString &userID)
                     nhlog::net()->warn("failed to query device keys: {}", *err);
                 }
 
-                emit verificationStatiChanged();
+                if (self)
+                    emit self->verificationStatiChanged();
             });
       });
 }
@@ -367,12 +371,14 @@ UserProfile::updateVerificationStatus()
     // For self, also query devices without keys
     if (isSelf()) {
         http::client()->query_devices(
-          [this, deviceInfo](const mtx::responses::QueryDevices &allDevs,
-                             mtx::http::RequestErr err) mutable {
+          [self = QPointer<UserProfile>(this), deviceInfo](
+            const mtx::responses::QueryDevices &allDevs, mtx::http::RequestErr err) mutable {
+              if (!self)
+                  return;
               if (err) {
                   nhlog::net()->warn("failed to query device keys: {}", *err);
-                  this->deviceList_.queueReset(std::move(deviceInfo));
-                  emit devicesChanged();
+                  self->deviceList_.queueReset(std::move(deviceInfo));
+                  emit self->devicesChanged();
                   return;
               }
               for (const auto &d : allDevs.devices) {
@@ -397,8 +403,8 @@ UserProfile::updateVerificationStatus()
                   }
               }
 
-              this->deviceList_.queueReset(std::move(deviceInfo));
-              emit devicesChanged();
+              self->deviceList_.queueReset(std::move(deviceInfo));
+              emit self->devicesChanged();
           });
         return;
     }
@@ -459,12 +465,15 @@ void
 UserProfile::changeDeviceName(const QString &deviceID, const QString &deviceName)
 {
     http::client()->set_device_name(
-      deviceID.toStdString(), deviceName.toStdString(), [this](mtx::http::RequestErr err) {
+      deviceID.toStdString(),
+      deviceName.toStdString(),
+      [self = QPointer<UserProfile>(this)](mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->warn("could not change device name: {}", *err);
               return;
           }
-          refreshDevices();
+          if (self)
+              self->refreshDevices();
       });
 }
 
@@ -530,7 +539,7 @@ UserProfile::changeAvatar()
       payload,
       mime.name().toStdString(),
       QFileInfo(fileName).fileName().toStdString(),
-      [this,
+      [self = QPointer<UserProfile>(this),
        payload,
        mimetype = mime.name().toStdString(),
        size     = payload.size(),
@@ -541,24 +550,30 @@ UserProfile::changeAvatar()
               return;
           }
 
-          if (isGlobalUserProfile()) {
-              http::client()->set_avatar_url(res.content_uri, [this](mtx::http::RequestErr err) {
+          if (!self)
+              return;
+
+          if (self->isGlobalUserProfile()) {
+              http::client()->set_avatar_url(res.content_uri, [self](mtx::http::RequestErr err) {
                   if (err) {
                       nhlog::ui()->error("Failed to set user avatar url: {}", *err);
                   }
 
-                  isLoading_ = false;
-                  emit loadingChanged();
-                  getGlobalProfileData();
+                  if (!self)
+                      return;
+
+                  self->isLoading_ = false;
+                  emit self->loadingChanged();
+                  self->getGlobalProfileData();
               });
           } else {
               // change room username
               mtx::events::state::Member member;
-              member.display_name = cache::displayName(roomid_, userid_).toStdString();
+              member.display_name = cache::displayName(self->roomid_, self->userid_).toStdString();
               member.avatar_url   = res.content_uri;
               member.membership   = mtx::events::state::Membership::Join;
 
-              updateRoomMemberState(std::move(member));
+              self->updateRoomMemberState(std::move(member));
           }
       });
 }

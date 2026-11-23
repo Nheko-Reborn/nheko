@@ -7,6 +7,7 @@
 #include <QFileDialog>
 #include <QImageReader>
 #include <QMimeDatabase>
+#include <QPointer>
 #include <QStandardPaths>
 #include <mtx/events/event_type.hpp>
 #include <mtx/responses/common.hpp>
@@ -29,38 +30,45 @@ RoomSettings::RoomSettings(QString roomid, QObject *parent)
     retrieveRoomInfo();
 
     // get room setting notifications
+    const auto roomId = roomid_.toStdString();
     http::client()->get_pushrules(
       "global",
       "override",
-      roomid_.toStdString(),
-      [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr err) {
+      roomId,
+      [self = QPointer<RoomSettings>(this), roomId](const mtx::pushrules::PushRule &rule,
+                                                    mtx::http::RequestErr err) {
           if (err) {
               if (err->status_code == 404)
                   http::client()->get_pushrules(
                     "global",
                     "room",
-                    roomid_.toStdString(),
-                    [this](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr err) {
+                    roomId,
+                    [self](const mtx::pushrules::PushRule &rule, mtx::http::RequestErr err) {
+                        if (!self)
+                            return;
                         if (err) {
-                            notifications_ = 2; // all messages
-                            emit notificationsChanged();
+                            self->notifications_ = 2; // all messages
+                            emit self->notificationsChanged();
                             return;
                         }
 
                         if (rule.enabled) {
-                            notifications_ = 1; // mentions only
-                            emit notificationsChanged();
+                            self->notifications_ = 1; // mentions only
+                            emit self->notificationsChanged();
                         }
                     });
               return;
           }
 
+          if (!self)
+              return;
+
           if (rule.enabled) {
-              notifications_ = 0; // muted
-              emit notificationsChanged();
+              self->notifications_ = 0; // muted
+              emit self->notificationsChanged();
           } else {
-              notifications_ = 2; // all messages
-              emit notificationsChanged();
+              self->notifications_ = 2; // all messages
+              emit self->notificationsChanged();
           }
       });
 
@@ -234,17 +242,21 @@ RoomSettings::enableEncryption()
 
     const auto room_id = roomid_.toStdString();
     http::client()->enable_encryption(
-      room_id, [room_id, this](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+      room_id,
+      [room_id, self = QPointer<RoomSettings>(this)](const mtx::responses::EventId &,
+                                                     mtx::http::RequestErr err) {
           if (err) {
               int status_code = static_cast<int>(err->status_code);
               nhlog::net()->warn("failed to enable encryption in room ({}): {} {}",
                                  room_id,
                                  err->matrix_error.error,
                                  status_code);
-              emit displayError(tr("Failed to enable encryption: %1")
-                                  .arg(QString::fromStdString(err->matrix_error.error)));
-              usesEncryption_ = false;
-              emit encryptionChanged();
+              if (self) {
+                  emit self->displayError(tr("Failed to enable encryption: %1")
+                                            .arg(QString::fromStdString(err->matrix_error.error)));
+                  self->usesEncryption_ = false;
+                  emit self->encryptionChanged();
+              }
               return;
           }
 
@@ -593,34 +605,40 @@ RoomSettings::updateAccessRules(const std::string &room_id,
     http::client()->send_state_event(
       room_id,
       join_rule,
-      [this, room_id, guest_access, join_rule](const mtx::responses::EventId &,
-                                               mtx::http::RequestErr err) {
+      [self = QPointer<RoomSettings>(this), room_id, guest_access, join_rule](
+        const mtx::responses::EventId &, mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->warn("failed to send m.room.join_rule: {} {}",
                                  static_cast<int>(err->status_code),
                                  err->matrix_error.error);
-              emit displayError(QString::fromStdString(err->matrix_error.error));
-              isLoading_ = false;
-              emit loadingChanged();
+              if (self) {
+                  emit self->displayError(QString::fromStdString(err->matrix_error.error));
+                  self->isLoading_ = false;
+                  emit self->loadingChanged();
+              }
               return;
           }
 
           http::client()->send_state_event(
             room_id,
             guest_access,
-            [this, join_rule](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+            [self, join_rule](const mtx::responses::EventId &, mtx::http::RequestErr err) {
                 if (err) {
                     nhlog::net()->warn("failed to send m.room.guest_access: {} {}",
                                        static_cast<int>(err->status_code),
                                        err->matrix_error.error);
-                    emit displayError(QString::fromStdString(err->matrix_error.error));
+                    if (self)
+                        emit self->displayError(QString::fromStdString(err->matrix_error.error));
                 }
 
-                isLoading_ = false;
-                emit loadingChanged();
+                if (!self)
+                    return;
 
-                this->accessRules_ = join_rule;
-                emit accessJoinRulesChanged();
+                self->isLoading_ = false;
+                emit self->loadingChanged();
+
+                self->accessRules_ = join_rule;
+                emit self->accessJoinRulesChanged();
             });
       });
 }

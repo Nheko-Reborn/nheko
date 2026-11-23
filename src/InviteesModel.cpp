@@ -4,6 +4,8 @@
 
 #include "InviteesModel.h"
 
+#include <QPointer>
+
 #include "Logging.h"
 #include "MatrixClient.h"
 #include "mtx/responses/profile.hpp"
@@ -93,17 +95,20 @@ Invitee::Invitee(QString mxid, QString displayName, QString avatarUrl, QObject *
     if (displayName == "" && avatarUrl == "") {
         http::client()->get_profile(
           mxid_.toStdString(),
-          [this](const mtx::responses::Profile &res, mtx::http::RequestErr err) {
+          [self = QPointer<Invitee>(this)](const mtx::responses::Profile &res,
+                                           mtx::http::RequestErr err) {
+              if (!self)
+                  return;
               if (err) {
                   nhlog::net()->warn("failed to retrieve profile info");
-                  emit userInfoLoaded();
+                  emit self->userInfoLoaded();
                   return;
               }
 
-              displayName_ = QString::fromStdString(res.display_name);
-              avatarUrl_   = QString::fromStdString(res.avatar_url);
+              self->displayName_ = QString::fromStdString(res.display_name);
+              self->avatarUrl_   = QString::fromStdString(res.avatar_url);
 
-              emit userInfoLoaded();
+              emit self->userInfoLoaded();
           });
     } else {
         displayName_ = displayName;

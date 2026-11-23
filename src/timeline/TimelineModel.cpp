@@ -15,6 +15,7 @@
 #include <QGuiApplication>
 #include <QMimeData>
 #include <QMimeDatabase>
+#include <QPointer>
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QVariant>
@@ -1403,16 +1404,18 @@ TimelineModel::setCurrentIndex(int index, bool ignoreInactiveState)
 void
 TimelineModel::readEvent(const std::string &id)
 {
+    const auto roomId = room_id_.toStdString();
     http::client()->read_event(
-      room_id_.toStdString(),
+      roomId,
       id,
-      [this, newId = id, oldId = currentReadId](mtx::http::RequestErr err) {
+      [self = QPointer<TimelineModel>(this), roomId, newId = id, oldId = currentReadId](
+        mtx::http::RequestErr err) {
           if (err) {
-              nhlog::net()->warn("failed to read_event ({}, {})", room_id_.toStdString(), newId);
+              nhlog::net()->warn("failed to read_event ({}, {})", roomId, newId);
 
-              ChatPage::instance()->callFunctionOnGuiThread([this, newId, oldId] {
-                  if (currentReadId.toStdString() == newId)
-                      this->currentReadId = oldId;
+              ChatPage::instance()->callFunctionOnGuiThread([self, newId, oldId] {
+                  if (self && self->currentReadId.toStdString() == newId)
+                      self->currentReadId = oldId;
               });
           }
       },
@@ -1596,23 +1599,30 @@ TimelineModel::redactEvent(const QString &id, const QString &reason)
         http::client()->redact_event(
           room_id_.toStdString(),
           id.toStdString(),
-          [this, id, reason](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+          [self = QPointer<TimelineModel>(this), id, reason](const mtx::responses::EventId &,
+                                                             mtx::http::RequestErr err) {
               if (err) {
                   if (err->status_code == 429 && err->matrix_error.retry_after.count() != 0) {
                       ChatPage::instance()->callFunctionOnGuiThread(
-                        [this, id, reason, interval = err->matrix_error.retry_after] {
-                            QTimer::singleShot(interval * 2, this, [this, id, reason]() {
-                                this->redactEvent(id, reason);
+                        [self, id, reason, interval = err->matrix_error.retry_after] {
+                            if (!self)
+                                return;
+                            QTimer::singleShot(interval * 2, self, [self, id, reason]() {
+                                if (self)
+                                    self->redactEvent(id, reason);
                             });
                         });
                       return;
                   }
-                  emit redactionFailed(tr("Message redaction failed: %1")
-                                         .arg(QString::fromStdString(err->matrix_error.error)));
+                  if (self)
+                      emit self->redactionFailed(
+                        tr("Message redaction failed: %1")
+                          .arg(QString::fromStdString(err->matrix_error.error)));
                   return;
               }
 
-              emit dataAtIdChanged(id);
+              if (self)
+                  emit self->dataAtIdChanged(id);
           },
           reason.toStdString());
 
@@ -1622,14 +1632,18 @@ TimelineModel::redactEvent(const QString &id, const QString &reason)
             http::client()->redact_event(
               room_id_.toStdString(),
               id_,
-              [this, id, id_](const mtx::responses::EventId &, mtx::http::RequestErr err) {
+              [self = QPointer<TimelineModel>(this), id](const mtx::responses::EventId &,
+                                                         mtx::http::RequestErr err) {
                   if (err) {
-                      emit redactionFailed(tr("Message redaction failed: %1")
-                                             .arg(QString::fromStdString(err->matrix_error.error)));
+                      if (self)
+                          emit self->redactionFailed(
+                            tr("Message redaction failed: %1")
+                              .arg(QString::fromStdString(err->matrix_error.error)));
                       return;
                   }
 
-                  emit dataAtIdChanged(id);
+                  if (self)
+                      emit self->dataAtIdChanged(id);
               },
               reason.toStdString());
         }
@@ -2112,10 +2126,11 @@ TimelineModel::cacheMedia(const QString &eventId,
 
     http::client()->download(
       url,
-      [this, callback, mxcUrl, filename, url, encryptionInfo](const std::string &data,
-                                                              const std::string &,
-                                                              const std::string &,
-                                                              mtx::http::RequestErr err) {
+      [self = QPointer<TimelineModel>(this), callback, mxcUrl, filename, url, encryptionInfo](
+        const std::string &data,
+        const std::string &,
+        const std::string &,
+        mtx::http::RequestErr err) {
           if (err) {
               nhlog::net()->warn("failed to retrieve image {}: {} {}",
                                  url,
@@ -2145,10 +2160,12 @@ TimelineModel::cacheMedia(const QString &eventId,
               nhlog::ui()->warn("Error while saving file to: {}", e.what());
           }
 
+          if (!self)
+              return;
 #if defined(Q_OS_WIN)
-          emit mediaCached(mxcUrl, filename.filePath());
+          emit self->mediaCached(mxcUrl, filename.filePath());
 #else
-          emit mediaCached(mxcUrl, "file://" + filename.filePath());
+          emit self->mediaCached(mxcUrl, "file://" + filename.filePath());
 #endif
       });
 }
@@ -3209,13 +3226,15 @@ TimelineModel::resetState()
 {
     http::client()->get_state(
       room_id_.toStdString(),
-      [this](const mtx::responses::StateEvents &events_, mtx::http::RequestErr e) {
+      [self = QPointer<TimelineModel>(this)](const mtx::responses::StateEvents &events_,
+                                             mtx::http::RequestErr e) {
           if (e) {
               nhlog::net()->error("Failed to retrieve current room state: {}", *e);
               return;
           }
 
-          emit newState(events_);
+          if (self)
+              emit self->newState(events_);
       });
 }
 

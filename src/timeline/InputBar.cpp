@@ -14,6 +14,7 @@
 #include <QMediaPlayer>
 #include <QMimeData>
 #include <QMimeDatabase>
+#include <QPointer>
 #include <QRegularExpression>
 #include <QStandardPaths>
 #include <QTextBoundaryFinder>
@@ -1305,7 +1306,8 @@ MediaUpload::startUpload()
               payload,
               encryptedFile ? "application/octet-stream" : "image/png",
               "",
-              [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
+              [self = QPointer<MediaUpload>(this)](const mtx::responses::ContentURI &res,
+                                                   mtx::http::RequestErr err) mutable {
                   if (err) {
                       emit ChatPage::instance()->showNotification(
                         tr("Failed to upload media. Please try again."));
@@ -1313,16 +1315,21 @@ MediaUpload::startUpload()
                                          err->matrix_error.error,
                                          to_string(err->matrix_error.errcode),
                                          static_cast<int>(err->status_code));
-                      thumbnail_ = QImage();
-                      startUpload();
+                      if (!self)
+                          return;
+                      self->thumbnail_ = QImage();
+                      self->startUpload();
                       return;
                   }
 
-                  thumbnailUrl_ = QString::fromStdString(res.content_uri);
-                  if (thumbnailEncryptedFile)
-                      thumbnailEncryptedFile->url = res.content_uri;
+                  if (!self)
+                      return;
 
-                  startUpload();
+                  self->thumbnailUrl_ = QString::fromStdString(res.content_uri);
+                  if (self->thumbnailEncryptedFile)
+                      self->thumbnailEncryptedFile->url = res.content_uri;
+
+                  self->startUpload();
               });
             return;
         }
@@ -1340,7 +1347,8 @@ MediaUpload::startUpload()
       payload,
       encryptedFile ? "application/octet-stream" : mimetype_.toStdString(),
       encrypt_ ? "" : originalFilename_.toStdString(),
-      [this](const mtx::responses::ContentURI &res, mtx::http::RequestErr err) mutable {
+      [self = QPointer<MediaUpload>(this)](const mtx::responses::ContentURI &res,
+                                           mtx::http::RequestErr err) mutable {
           if (err) {
               emit ChatPage::instance()->showNotification(
                 tr("Failed to upload media. Please try again."));
@@ -1348,15 +1356,19 @@ MediaUpload::startUpload()
                                  err->matrix_error.error,
                                  to_string(err->matrix_error.errcode),
                                  static_cast<int>(err->status_code));
-              emit uploadFailed(this);
+              if (self)
+                  emit self->uploadFailed(self);
               return;
           }
 
-          auto url = QString::fromStdString(res.content_uri);
-          if (encryptedFile)
-              encryptedFile->url = res.content_uri;
+          if (!self)
+              return;
 
-          emit uploadComplete(this, std::move(url));
+          auto url = QString::fromStdString(res.content_uri);
+          if (self->encryptedFile)
+              self->encryptedFile->url = res.content_uri;
+
+          emit self->uploadComplete(self, std::move(url));
       });
 }
 

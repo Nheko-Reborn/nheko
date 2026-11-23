@@ -7,6 +7,7 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QMimeDatabase>
+#include <QPointer>
 
 #include <mtx/events/mscs/image_packs.hpp>
 #include <nlohmann/json.hpp>
@@ -293,13 +294,13 @@ SingleImagePackModel::save()
           roomid_,
           statekey_,
           pack,
-          [this](const mtx::responses::EventId &, mtx::http::RequestErr e) {
+          [statekey = statekey_](const mtx::responses::EventId &, mtx::http::RequestErr e) {
               if (e)
                   ChatPage::instance()->showNotification(
                     tr("Failed to update image pack: %1")
                       .arg(QString::fromStdString(e->matrix_error.error)));
 
-              nhlog::net()->info("Uploaded image pack: %1", statekey_);
+              nhlog::net()->info("Uploaded image pack: %1", statekey);
           });
     }
 }
@@ -369,7 +370,8 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
           bytes.toStdString(),
           QMimeDatabase().mimeTypeForFile(f.toLocalFile()).name().toStdString(),
           filename,
-          [this, basename, info](const mtx::responses::ContentURI &uri, mtx::http::RequestErr e) {
+          [self = QPointer<SingleImagePackModel>(this), basename, info](
+            const mtx::responses::ContentURI &uri, mtx::http::RequestErr e) {
               if (e) {
                   ChatPage::instance()->showNotification(
                     tr("Failed to upload image: %1")
@@ -377,7 +379,8 @@ SingleImagePackModel::addStickers(QList<QUrl> files)
                   return;
               }
 
-              emit addImage(uri.content_uri, basename, info);
+              if (self)
+                  emit self->addImage(uri.content_uri, basename, info);
           });
     }
 }
@@ -398,7 +401,8 @@ SingleImagePackModel::setAvatar(QUrl f)
       bytes.toStdString(),
       QMimeDatabase().mimeTypeForFile(f.toLocalFile()).name().toStdString(),
       filename,
-      [this, filename](const mtx::responses::ContentURI &uri, mtx::http::RequestErr e) {
+      [self = QPointer<SingleImagePackModel>(this), filename](const mtx::responses::ContentURI &uri,
+                                                              mtx::http::RequestErr e) {
           if (e) {
               ChatPage::instance()->showNotification(
                 tr("Failed to upload image: %1")
@@ -406,7 +410,8 @@ SingleImagePackModel::setAvatar(QUrl f)
               return;
           }
 
-          emit avatarUploaded(QString::fromStdString(uri.content_uri));
+          if (self)
+              emit self->avatarUploaded(QString::fromStdString(uri.content_uri));
       });
 }
 
