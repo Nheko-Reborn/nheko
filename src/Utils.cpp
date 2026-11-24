@@ -1354,20 +1354,37 @@ utils::restoreCombobox(QComboBox *combo, const QString &value)
     }
 }
 
+static void
+limitDecodedSize(QImageReader &reader, const QSize &maxSize)
+{
+    if (!maxSize.isValid())
+        return;
+
+    const auto originalSize = reader.size();
+    if (!originalSize.isValid())
+        return;
+
+    const auto scaledSize = originalSize.scaled(maxSize, Qt::KeepAspectRatio);
+    if (scaledSize.width() < originalSize.width() || scaledSize.height() < originalSize.height())
+        reader.setScaledSize(scaledSize);
+}
+
 QImage
-utils::readImageFromFile(const QString &filename)
+utils::readImageFromFile(const QString &filename, const QSize &maxSize)
 {
     QImageReader reader(filename);
     reader.setAutoTransform(true);
+    limitDecodedSize(reader, maxSize);
     return reader.read();
 }
 QImage
-utils::readImage(const QByteArray &data)
+utils::readImage(const QByteArray &data, const QSize &maxSize)
 {
     QBuffer buf;
     buf.setData(data);
     QImageReader reader(&buf);
     reader.setAutoTransform(true);
+    limitDecodedSize(reader, maxSize);
     return reader.read();
 }
 

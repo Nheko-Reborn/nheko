@@ -68,6 +68,8 @@ Window {
 
             visible: !mxcimage.loaded
             anchors.fill: parent
+            sourceSize.width: Screen.desktopAvailableWidth * Screen.devicePixelRatio
+            sourceSize.height: Screen.desktopAvailableHeight * Screen.devicePixelRatio
             source: url.replace("mxc://", "image://MxcImage/")
             asynchronous: true
             fillMode: Image.PreserveAspectFit

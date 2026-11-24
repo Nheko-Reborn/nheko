@@ -7,6 +7,7 @@
 #include <CacheStructs.h>
 #include <QDateTime>
 #include <QPixmap>
+#include <QSize>
 #include <mtx/events.hpp>
 
 namespace mtx::events::collections {
@@ -175,13 +176,13 @@ centerWidget(QWidget *widget, QWindow *parent);
 void
 restoreCombobox(QComboBox *combo, const QString &value);
 
-//! Read image respecting exif orientation
+//! Read image respecting exif orientation, decoding it at most at maxSize
 QImage
-readImageFromFile(const QString &filename);
+readImageFromFile(const QString &filename, const QSize &maxSize = {});
 
-//! Read image respecting exif orientation
+//! Read image respecting exif orientation, decoding it at most at maxSize
 QImage
-readImage(const QByteArray &data);
+readImage(const QByteArray &data, const QSize &maxSize = {});
 
 bool
 isReply(const mtx::events::collections::TimelineEvents &e);
