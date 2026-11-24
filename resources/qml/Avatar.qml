@@ -55,15 +55,9 @@ AbstractButton {
         anchors.fill: parent
         asynchronous: true
         fillMode: avatar.crop ? Image.PreserveAspectCrop : Image.PreserveAspectFit
-        source: if (avatar.url.startsWith('image://colorimage')) {
-            return avatar.url + "&radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale");
-        } else if (avatar.url.startsWith('image://')) {
-            return avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale");
-        } else if (avatar.url.startsWith(':/')) {
-            return "image://colorimage/" + avatar.url + "?" + label.color;
-        } else {
-            return "";
-        }
+        // sourceSize has to be set before source, otherwise Qt loads the image
+        // at its natural size first and only scales it afterwards. For avatars
+        // that meant decoding full-size images and clipping them in memory.
         sourceSize.height: if (!avatar.url.startsWith('image://MxcImage/') && avatar.url.endsWith('.svg')){
             return avatar.height
         } else {
@@ -73,6 +67,15 @@ AbstractButton {
             return avatar.width
         } else {
             return avatar.width * Screen.devicePixelRatio
+        }
+        source: if (avatar.url.startsWith('image://colorimage')) {
+            return avatar.url + "&radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale");
+        } else if (avatar.url.startsWith('image://')) {
+            return avatar.url + "?radius=" + (Settings.avatarCircles ? 100 : 25) + ((avatar.crop) ? "" : "&scale");
+        } else if (avatar.url.startsWith(':/')) {
+            return "image://colorimage/" + avatar.url + "?" + label.color;
+        } else {
+            return "";
         }
     }
     Rectangle {
