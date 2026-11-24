@@ -91,12 +91,15 @@ private slots:
 
 private:
     void setLoaded(bool value);
+    void startMovie(bool force = false);
 
     TimelineModel *room_ = nullptr;
     QString eventId_;
     QString filename_;
     bool animatable_ = false;
     bool loaded_     = false;
+    bool pendingMovieStart_ = false;
+    QByteArray movieMimeType_;
     QBuffer buffer;
     QMovie movie;
     QSize naturalSize_;
