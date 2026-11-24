@@ -87,6 +87,7 @@ public slots:
     static void download(const QString &id,
                          const QSize &requestedSize,
                          std::function<void(QString, QSize, QImage, QString)> then,
-                         bool crop     = true,
-                         double radius = 0);
+                         bool crop           = true,
+                         double radius       = 0,
+                         bool allowThumbnail = true);
 };

@@ -14,7 +14,6 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QPainter>
-#include <QPainterPath>
 #include <QStandardPaths>
 #include <QThreadPool>
 #include <QTimer>
@@ -103,6 +102,9 @@ MxcImageProvider::requestImageResponse(const QString &id, const QSize &requested
         }
     }
 
+    if (size.width() < 0 || size.height() < 0)
+        nhlog::ui()->trace("No source size for image {}", id.toStdString());
+
     return new MxcImageResponse(id_, crop, radius, size);
 }
 
@@ -132,18 +134,26 @@ MxcImageRunnable::run()
 static QImage
 clipRadius(QImage img, double radius)
 {
-    QImage out(img.size(), QImage::Format_ARGB32_Premultiplied);
-    out.fill(Qt::transparent);
+    if (img.isNull() || radius <= 0)
+        return img;
+
+    // With relative sizing 100% means half of the shorter side. If the corner
+    // radius is below half a pixel, clipping cannot change the result.
+    const auto radiusPx = (radius / 100.) * (qMin(img.width(), img.height()) / 2.);
+    if (img.width() < 2 || img.height() < 2 || radiusPx < 0.5)
+        return img;
+
+    QImage out = img.convertToFormat(QImage::Format_ARGB32_Premultiplied);
 
     QPainter painter(&out);
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setRenderHint(QPainter::SmoothPixmapTransform, true);
-
-    QPainterPath ppath;
-    ppath.addRoundedRect(img.rect(), radius, radius, Qt::SizeMode::RelativeSize);
-
-    painter.setClipPath(ppath);
-    painter.drawImage(img.rect(), img);
+    // Keep the pixels inside the rounded rectangle and make everything else
+    // transparent in a single pass, instead of clipping and drawing the whole
+    // image into a second buffer.
+    painter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+    painter.setPen(Qt::NoPen);
+    painter.setBrush(Qt::black);
+    painter.drawRoundedRect(out.rect(), radius, radius, Qt::SizeMode::RelativeSize);
 
     return out;
 }
@@ -183,7 +193,8 @@ MxcImageProvider::download(const QString &id,
                            const QSize &requestedSize,
                            std::function<void(QString, QSize, QImage, QString)> then,
                            bool crop,
-                           double radius)
+                           double radius,
+                           bool allowThumbnail)
 {
     if (id.isEmpty()) {
         nhlog::net()->warn("Attempted to download image with empty ID");
@@ -202,7 +213,15 @@ MxcImageProvider::download(const QString &id,
     if (temp != infos.end())
         encryptionInfo = *temp;
 
-    if (requestedSize.isValid() &&
+    nhlog::ui()->debug("Loading image {} at {}x{} (crop={}, radius={}, encrypted={})",
+                       id.toStdString(),
+                       requestedSize.width(),
+                       requestedSize.height(),
+                       crop,
+                       radius,
+                       encryptionInfo.has_value());
+
+    if (allowThumbnail && requestedSize.isValid() &&
         !encryptionInfo
         // Protect against synapse not following the spec:
         // https://github.com/matrix-org/synapse/issues/5302
@@ -261,7 +280,16 @@ MxcImageProvider::download(const QString &id,
           [fileInfo, requestedSize, radius, then, id, crop, cropLocally](
             const std::string &res, mtx::http::RequestErr err) {
               if (err || res.empty()) {
-                  download(id, QSize(), then, crop, radius);
+                  nhlog::ui()->debug("Thumbnail request failed for {}, falling back to decoded "
+                                     "original at {}x{}: {}",
+                                     id.toStdString(),
+                                     requestedSize.width(),
+                                     requestedSize.height(),
+                                     err ? err->matrix_error.error : std::string("empty"));
+                  // Decode the original at the size we wanted to draw it at
+                  // instead of at its full resolution. Never retry the
+                  // thumbnail path here or we would recurse forever.
+                  download(id, requestedSize, then, crop, radius, false);
                   return;
               }
 
