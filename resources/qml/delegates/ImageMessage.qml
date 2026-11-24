@@ -115,15 +115,14 @@ AbstractButton {
 
         visible: !mxcimage.loaded
         anchors.fill: parent
+        sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth < 1 ? Screen.desktopAvailableWidth : originalWidth) * Screen.devicePixelRatio
+        sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth*proportionalHeight)) * Screen.devicePixelRatio
         source: (url != "" && showImage) ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignLeft
         smooth: true
         mipmap: true
-
-        sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth < 1 ? Screen.desktopAvailableWidth : originalWidth) * Screen.devicePixelRatio
-        sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth*proportionalHeight)) * Screen.devicePixelRatio
     }
 
     MxcAnimatedImage {

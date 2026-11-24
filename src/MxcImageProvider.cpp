@@ -148,6 +148,18 @@ clipRadius(QImage img, double radius)
     return out;
 }
 
+static QImage
+scaleToRequestedSize(QImage img, const QSize &requestedSize)
+{
+    if (img.isNull() || !requestedSize.isValid())
+        return img;
+
+    if (img.width() <= requestedSize.width() && img.height() <= requestedSize.height())
+        return img;
+
+    return img.scaled(requestedSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+}
+
 static void
 possiblyUpdateAccessTime(const QFileInfo &fileInfo)
 {
@@ -307,7 +319,8 @@ MxcImageProvider::download(const QString &id,
                     auto tempData       = mtx::crypto::to_string(
                       mtx::crypto::decrypt_file(fileData.toStdString(), encryptionInfo.value()));
                     auto data    = QByteArray(tempData.data(), (int)tempData.size());
-                    QImage image = utils::readImage(data);
+                    QImage image = utils::readImage(data, requestedSize);
+                    image        = scaleToRequestedSize(std::move(image), requestedSize);
                     image.setText(QStringLiteral("mxc url"), "mxc://" + id);
                     if (!image.isNull()) {
                         possiblyUpdateAccessTime(fileInfo);
@@ -319,7 +332,9 @@ MxcImageProvider::download(const QString &id,
                         return;
                     }
                 } else {
-                    QImage image = utils::readImageFromFile(fileInfo.absoluteFilePath());
+                    QImage image =
+                      utils::readImageFromFile(fileInfo.absoluteFilePath(), requestedSize);
+                    image = scaleToRequestedSize(std::move(image), requestedSize);
                     if (!image.isNull()) {
                         possiblyUpdateAccessTime(fileInfo);
                         if (radius != 0) {
@@ -361,7 +376,8 @@ MxcImageProvider::download(const QString &id,
                       tempData = mtx::crypto::to_string(
                         mtx::crypto::decrypt_file(tempData, encryptionInfo.value()));
                       auto data    = QByteArray(tempData.data(), (int)tempData.size());
-                      QImage image = utils::readImage(data);
+                      QImage image = utils::readImage(data, requestedSize);
+                      image        = scaleToRequestedSize(std::move(image), requestedSize);
                       if (radius != 0) {
                           image = clipRadius(std::move(image), radius);
                       }
@@ -374,7 +390,9 @@ MxcImageProvider::download(const QString &id,
                       return;
                   }
 
-                  QImage image = utils::readImageFromFile(fileInfo.absoluteFilePath());
+                  QImage image =
+                    utils::readImageFromFile(fileInfo.absoluteFilePath(), requestedSize);
+                  image = scaleToRequestedSize(std::move(image), requestedSize);
                   if (radius != 0) {
                       image = clipRadius(std::move(image), radius);
                   }
