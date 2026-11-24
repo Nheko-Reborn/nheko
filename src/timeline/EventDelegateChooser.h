@@ -203,6 +203,9 @@ public:
 
     void setEventId(QString idx)
     {
+        if (eventId_ == idx)
+            return;
+
         eventId_ = idx;
         emit eventIdChanged();
 
@@ -212,6 +215,9 @@ public:
     [[nodiscard]] QString eventId() const { return eventId_; }
     void setReplyTo(QString id)
     {
+        if (replyId == id)
+            return;
+
         replyId = id;
         emit replyToChanged();
 
