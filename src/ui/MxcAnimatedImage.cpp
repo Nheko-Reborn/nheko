@@ -101,9 +101,25 @@ MxcAnimatedImage::startDownload()
 
             if (height() != 0 && width() != 0)
                 movie.setScaledSize(this->size().toSize());
-            if (buffer.bytesAvailable() <
-                4LL * 1024 * 1024 * 1024) // cache images smaller than 4MB in RAM
-                movie.setCacheMode(QMovie::CacheAll);
+
+            const auto frameCount = movie.frameCount();
+            const auto frameSize =
+              movie.scaledSize().isValid() ? movie.scaledSize() : movie.frameRect().size();
+            const qint64 decodedBytes =
+              qint64(frameCount) * frameSize.width() * frameSize.height() * 4;
+            // CacheAll keeps every decoded frame in RAM. Small animations are
+            // cheap to cache, but large GIFs can otherwise use hundreds of MB.
+            constexpr qint64 maxCachedAnimationBytes = 16LL * 1024 * 1024;
+            const bool cacheAll = frameCount > 1 && frameSize.isValid() &&
+                                  decodedBytes > 0 && decodedBytes <= maxCachedAnimationBytes;
+            movie.setCacheMode(cacheAll ? QMovie::CacheAll : QMovie::CacheNone);
+            nhlog::ui()->debug("Animation with {} frames, frame size {}x{}, estimated {} bytes, "
+                               "cache mode {}",
+                               frameCount,
+                               frameSize.width(),
+                               frameSize.height(),
+                               decodedBytes,
+                               movie.cacheMode() == QMovie::CacheAll ? "all" : "none");
             if (play_ && movie.frameCount() > 1)
                 movie.start();
             else {
