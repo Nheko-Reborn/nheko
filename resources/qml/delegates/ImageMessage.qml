@@ -21,6 +21,11 @@ AbstractButton {
     property double divisor: EventDelegateChooser.isReply ? 10 : 4
 
     property bool showImage: room.showImage()
+    property int retryCount: 0
+    property int maxRetries: 3
+    property string retrySuffix: retryCount > 0 ? ("&retry=" + retryCount) : ""
+
+    onUrlChanged: retryCount = 0
 
     EventDelegateChooser.keepAspectRatio: true
     EventDelegateChooser.maxWidth: originalWidth
@@ -30,7 +35,7 @@ AbstractButton {
     hoverEnabled: true
     enabled: !EventDelegateChooser.isReply
 
-    state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"
+    state: (timeline.privacyScreen.active || (img.status != Image.Ready && !mxcimage.loaded)) ? "BlurhashVisible" : "ImageVisible"
     states: [
         State {
             name: "BlurhashVisible"
@@ -117,12 +122,29 @@ AbstractButton {
         anchors.fill: parent
         sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth < 1 ? Screen.desktopAvailableWidth : originalWidth) * Screen.devicePixelRatio
         sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth*proportionalHeight)) * Screen.devicePixelRatio
-        source: (url != "" && showImage && !mxcimage.loaded) ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
+        source: (url != "" && showImage && !mxcimage.loaded) ? (url.replace("mxc://", "image://MxcImage/") + "?scale" + retrySuffix) : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignLeft
         smooth: true
         mipmap: true
+
+        onStatusChanged: {
+            if (status === Image.Error && showImage && retryCount < maxRetries)
+                retryTimer.restart();
+        }
+    }
+
+    Timer {
+        id: retryTimer
+
+        interval: 3000
+        repeat: false
+
+        onTriggered: {
+            if (img.status === Image.Error && retryCount < maxRetries)
+                retryCount += 1;
+        }
     }
 
     MxcAnimatedImage {

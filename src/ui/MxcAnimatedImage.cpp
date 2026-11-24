@@ -6,6 +6,7 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QImageReader>
 #include <QMimeDatabase>
 #include <QQuickWindow>
 #include <QSGImageNode>
@@ -77,6 +78,8 @@ MxcAnimatedImage::startDownload()
                 movie.setDevice(nullptr);
                 buffer.close();
             }
+            setLoaded(false);
+            naturalSize_ = {};
 
             if (encryptionInfo) {
                 QByteArray ba = device.readAll();
@@ -89,6 +92,10 @@ MxcAnimatedImage::startDownload()
             }
             buffer.open(QIODevice::ReadOnly);
             buffer.reset();
+
+            QImageReader reader(&buffer);
+            naturalSize_ = reader.size();
+            buffer.reset();
         } catch (const std::exception &e) {
             nhlog::net()->error("Failed to setup animated image buffer: {}", e.what());
         }
@@ -99,12 +106,17 @@ MxcAnimatedImage::startDownload()
             movie.setFormat(mimeType);
             movie.setDevice(&buffer);
 
-            if (height() != 0 && width() != 0)
-                movie.setScaledSize(this->size().toSize());
+            QSize targetSize;
+            if (height() != 0 && width() != 0 && naturalSize_.isValid()) {
+                targetSize = naturalSize_.scaled(this->size().toSize(), Qt::KeepAspectRatio);
+                movie.setScaledSize(targetSize);
+            }
 
             const auto frameCount = movie.frameCount();
-            const auto frameSize =
-              movie.scaledSize().isValid() ? movie.scaledSize() : movie.frameRect().size();
+            const auto frameSize = movie.scaledSize().isValid()
+                                     ? movie.scaledSize()
+                                     : (naturalSize_.isValid() ? naturalSize_
+                                                               : movie.frameRect().size());
             const qint64 decodedBytes =
               qint64(frameCount) * frameSize.width() * frameSize.height() * 4;
             // CacheAll keeps every decoded frame in RAM. Small animations are
@@ -120,13 +132,14 @@ MxcAnimatedImage::startDownload()
                                frameSize.height(),
                                decodedBytes,
                                movie.cacheMode() == QMovie::CacheAll ? "all" : "none");
-            if (play_ && movie.frameCount() > 1)
+            if (play_ && frameCount > 1)
                 movie.start();
             else {
                 movie.jumpToFrame(0);
                 movie.setPaused(true);
             }
-            emit loadedChanged();
+            if (!movie.currentImage().isNull())
+                setLoaded(true);
             update();
         });
     };
@@ -172,15 +185,25 @@ MxcAnimatedImage::startDownload()
 }
 
 void
+MxcAnimatedImage::setLoaded(bool value)
+{
+    if (loaded_ == value)
+        return;
+
+    loaded_ = value;
+    emit loadedChanged();
+}
+
+void
 MxcAnimatedImage::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     QQuickItem::geometryChange(newGeometry, oldGeometry);
 
     if (newGeometry.size() != oldGeometry.size()) {
-        if (height() != 0 && width() != 0) {
-            QSizeF r = movie.scaledSize();
-            r.scale(newGeometry.size(), Qt::KeepAspectRatio);
-            movie.setScaledSize(r.toSize());
+        const auto sourceSize = naturalSize_.isValid() ? naturalSize_ : movie.frameRect().size();
+        if (height() != 0 && width() != 0 && sourceSize.isValid()) {
+            movie.setScaledSize(sourceSize.scaled(newGeometry.size().toSize(),
+                                                  Qt::KeepAspectRatio));
             imageDirty = true;
             update();
         }
