@@ -305,7 +305,7 @@ TimelineEvent {
                 xAxis.maximum: wrapper.avatarMargin
                 onActiveChanged: {
                     if (!replyDragHandler.active) {
-                        if (replyDragHandler.xAxis.minimum <= replyDragHandler.xAxis.activeValue + 1) {
+                        if (gridContainer.x <= wrapper.avatarMargin - 50) {
                             wrapper.room.reply = wrapper.eventId
                         }
                         gridContainer.x = wrapper.avatarMargin;
