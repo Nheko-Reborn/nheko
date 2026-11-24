@@ -8,6 +8,8 @@ import QtQuick.Controls
 import im.nheko
 
 AbstractButton {
+    id: message
+
     required property int type
     required property int originalWidth
     required property int originalHeight
@@ -21,6 +23,44 @@ AbstractButton {
     property double divisor: EventDelegateChooser.isReply ? 10 : 4
 
     property bool showImage: room.showImage()
+    property int retryCount: 0
+    property int maxRetries: 3
+    property string retrySuffix: retryCount > 0 ? ("&retry=" + retryCount) : ""
+
+    // The delegate size is computed by EventDelegateChooser during polish and
+    // is the size the image is actually drawn at. Decoding at that size (in
+    // device pixels) instead of the original image size keeps multi-megapixel
+    // QImages out of memory for every visible message. Round up to a multiple
+    // of 32px so small layout changes don't trigger a new decode. The short
+    // timer coalesces the intermediate sizes used while polishing the layout.
+    property int decodeWidth: 1
+    property int decodeHeight: 1
+    property bool layoutReady: false
+
+    function updateDecodeSize() {
+        if (width <= 0) {
+            layoutReady = false;
+            return;
+        }
+        const dpr = Screen.devicePixelRatio;
+        const newWidth = Math.max(32, Math.ceil((width * dpr) / 32) * 32);
+        const newHeight = Math.max(32, Math.ceil((width * proportionalHeight * dpr) / 32) * 32);
+        // Once the image is shown, only reload it when it has to grow
+        // noticeably (for example after enlarging the window). Reloading for
+        // small layout changes makes the image flash back to its placeholder.
+        if (layoutReady && img.status === Image.Ready &&
+            newWidth <= decodeWidth * 1.25 && newHeight <= decodeHeight * 1.25)
+            return;
+        decodeWidth = newWidth;
+        decodeHeight = newHeight;
+        layoutReady = true;
+    }
+
+    onWidthChanged: decodeSettleTimer.restart()
+    onHeightChanged: decodeSettleTimer.restart()
+
+    onUrlChanged: retryCount = 0
+    Component.onCompleted: decodeSettleTimer.restart()
 
     EventDelegateChooser.keepAspectRatio: true
     EventDelegateChooser.maxWidth: originalWidth
@@ -30,7 +70,7 @@ AbstractButton {
     hoverEnabled: true
     enabled: !EventDelegateChooser.isReply
 
-    state: (img.status != Image.Ready || timeline.privacyScreen.active) ? "BlurhashVisible" : "ImageVisible"
+    state: (timeline.privacyScreen.active || (img.status != Image.Ready && !mxcimage.loaded)) ? "BlurhashVisible" : "ImageVisible"
     states: [
         State {
             name: "BlurhashVisible"
@@ -115,15 +155,40 @@ AbstractButton {
 
         visible: !mxcimage.loaded
         anchors.fill: parent
-        source: (url != "" && showImage) ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
+        sourceSize.width: message.decodeWidth
+        sourceSize.height: message.decodeHeight
+        source: (message.layoutReady && url != "" && showImage && !mxcimage.loaded) ? (url.replace("mxc://", "image://MxcImage/") + "?scale" + retrySuffix) : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignLeft
         smooth: true
         mipmap: true
 
-        sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth < 1 ? Screen.desktopAvailableWidth : originalWidth) * Screen.devicePixelRatio
-        sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth*proportionalHeight)) * Screen.devicePixelRatio
+        onStatusChanged: {
+            if (status === Image.Error && showImage && retryCount < maxRetries)
+                retryTimer.restart();
+        }
+    }
+
+    Timer {
+        id: retryTimer
+
+        interval: 3000
+        repeat: false
+
+        onTriggered: {
+            if (img.status === Image.Error && retryCount < maxRetries)
+                retryCount += 1;
+        }
+    }
+
+    Timer {
+        id: decodeSettleTimer
+
+        interval: 50
+        repeat: false
+
+        onTriggered: parent.updateDecodeSize()
     }
 
     MxcAnimatedImage {

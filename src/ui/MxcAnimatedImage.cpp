@@ -6,10 +6,12 @@
 
 #include <QDir>
 #include <QFileInfo>
+#include <QImageReader>
 #include <QMimeDatabase>
 #include <QQuickWindow>
 #include <QSGImageNode>
 #include <QStandardPaths>
+#include <QTimer>
 
 #include "EventAccessors.h"
 #include "Logging.h"
@@ -72,11 +74,14 @@ MxcAnimatedImage::startDownload()
             return;
 
         try {
+            pendingMovieStart_ = false;
             if (buffer.isOpen()) {
                 movie.stop();
                 movie.setDevice(nullptr);
                 buffer.close();
             }
+            setLoaded(false);
+            naturalSize_ = {};
 
             if (encryptionInfo) {
                 QByteArray ba = device.readAll();
@@ -89,30 +94,23 @@ MxcAnimatedImage::startDownload()
             }
             buffer.open(QIODevice::ReadOnly);
             buffer.reset();
+
+            QImageReader reader(&buffer);
+            naturalSize_ = reader.size();
+            buffer.reset();
         } catch (const std::exception &e) {
             nhlog::net()->error("Failed to setup animated image buffer: {}", e.what());
         }
 
-        QTimer::singleShot(0, this, [this, mimeType] {
-            nhlog::ui()->info(
-              "Playing movie with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
-            movie.setFormat(mimeType);
-            movie.setDevice(&buffer);
-
-            if (height() != 0 && width() != 0)
-                movie.setScaledSize(this->size().toSize());
-            if (buffer.bytesAvailable() <
-                4LL * 1024 * 1024 * 1024) // cache images smaller than 4MB in RAM
-                movie.setCacheMode(QMovie::CacheAll);
-            if (play_ && movie.frameCount() > 1)
-                movie.start();
-            else {
-                movie.jumpToFrame(0);
-                movie.setPaused(true);
-            }
-            emit loadedChanged();
-            update();
-        });
+        movieMimeType_     = mimeType;
+        pendingMovieStart_ = true;
+        // Wait for the item geometry before handing the buffer to QMovie. If it
+        // is still unlaid out, QMovie would decode the first frame at the
+        // natural resolution, which can be tens of MB for single-frame images.
+        QTimer::singleShot(0, this, [this] { startMovie(); });
+        // Safety net: if the item never gets a size, start anyway rather than
+        // leaving the image invisible forever.
+        QTimer::singleShot(1000, this, [this] { startMovie(true); });
     };
 
     if (filename.isReadable()) {
@@ -156,15 +154,85 @@ MxcAnimatedImage::startDownload()
 }
 
 void
+MxcAnimatedImage::startMovie(bool force)
+{
+    if (!pendingMovieStart_ || !buffer.isOpen())
+        return;
+
+    // Wait until the item is laid out. Starting earlier makes QMovie decode
+    // the first frame at its natural size, which can be tens of MB.
+    if (!force && (width() < 1. || height() < 1.))
+        return;
+
+    pendingMovieStart_ = false;
+
+    nhlog::ui()->info(
+      "Playing movie with size: {}, {}", buffer.bytesAvailable(), buffer.isOpen());
+    movie.setFormat(movieMimeType_);
+    movie.setDevice(&buffer);
+
+    // Parse the header first so frameRect() is available for formats where
+    // QImageReader could not report the natural size.
+    const auto frameCount = movie.frameCount();
+
+    if (width() >= 1. && height() >= 1.) {
+        const auto sourceSize =
+          naturalSize_.isValid() ? naturalSize_ : movie.frameRect().size();
+        if (sourceSize.isValid())
+            movie.setScaledSize(sourceSize.scaled(this->size().toSize(), Qt::KeepAspectRatio));
+    }
+
+    const auto frameSize = movie.scaledSize().isValid()
+                             ? movie.scaledSize()
+                             : (naturalSize_.isValid() ? naturalSize_ : movie.frameRect().size());
+    const qint64 decodedBytes = qint64(frameCount) * frameSize.width() * frameSize.height() * 4;
+    // CacheAll keeps every decoded frame in RAM. Small animations are
+    // cheap to cache, but large GIFs can otherwise use hundreds of MB.
+    constexpr qint64 maxCachedAnimationBytes = 16LL * 1024 * 1024;
+    const bool cacheAll = frameCount > 1 && frameSize.isValid() && decodedBytes > 0 &&
+                          decodedBytes <= maxCachedAnimationBytes;
+    movie.setCacheMode(cacheAll ? QMovie::CacheAll : QMovie::CacheNone);
+    nhlog::ui()->debug("Animation with {} frames, frame size {}x{}, estimated {} bytes, "
+                       "cache mode {}",
+                       frameCount,
+                       frameSize.width(),
+                       frameSize.height(),
+                       decodedBytes,
+                       movie.cacheMode() == QMovie::CacheAll ? "all" : "none");
+    if (play_ && frameCount > 1)
+        movie.start();
+    else {
+        movie.jumpToFrame(0);
+        movie.setPaused(true);
+    }
+    if (!movie.currentImage().isNull())
+        setLoaded(true);
+    update();
+}
+
+void
+MxcAnimatedImage::setLoaded(bool value)
+{
+    if (loaded_ == value)
+        return;
+
+    loaded_ = value;
+    emit loadedChanged();
+}
+
+void
 MxcAnimatedImage::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     QQuickItem::geometryChange(newGeometry, oldGeometry);
 
+    if (pendingMovieStart_ && width() >= 1. && height() >= 1.)
+        QTimer::singleShot(0, this, [this] { startMovie(); });
+
     if (newGeometry.size() != oldGeometry.size()) {
-        if (height() != 0 && width() != 0) {
-            QSizeF r = movie.scaledSize();
-            r.scale(newGeometry.size(), Qt::KeepAspectRatio);
-            movie.setScaledSize(r.toSize());
+        const auto sourceSize = naturalSize_.isValid() ? naturalSize_ : movie.frameRect().size();
+        if (height() != 0 && width() != 0 && sourceSize.isValid()) {
+            movie.setScaledSize(sourceSize.scaled(newGeometry.size().toSize(),
+                                                  Qt::KeepAspectRatio));
             imageDirty = true;
             update();
         }
