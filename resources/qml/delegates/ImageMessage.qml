@@ -117,7 +117,7 @@ AbstractButton {
         anchors.fill: parent
         sourceSize.width: Math.min(Screen.desktopAvailableWidth, originalWidth < 1 ? Screen.desktopAvailableWidth : originalWidth) * Screen.devicePixelRatio
         sourceSize.height: Math.min(Screen.desktopAvailableHeight, (originalWidth < 1 ? Screen.desktopAvailableHeight : originalWidth*proportionalHeight)) * Screen.devicePixelRatio
-        source: (url != "" && showImage) ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
+        source: (url != "" && showImage && !mxcimage.loaded) ? (url.replace("mxc://", "image://MxcImage/") + "?scale") : ""
         asynchronous: true
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignLeft
