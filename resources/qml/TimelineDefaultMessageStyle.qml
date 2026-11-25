@@ -45,7 +45,9 @@ TimelineEvent {
 
     property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
 
-    property alias hovered: messageHover.hovered
+    property alias hovered: contentHover.hovered
+    property alias actionsHovered: messageHover.hovered
+    property int actionsTop: gridContainer.y
 
     property int oneHour: 60 * 60 * 1000
     property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour 
@@ -81,7 +83,7 @@ TimelineEvent {
         Rectangle {
             // this looks better without margins
             anchors.fill: gridContainer
-            color: (Settings.messageHoverHighlight && messageHover.hovered) ? palette.alternateBase : "transparent"
+            color: (Settings.messageHoverHighlight && wrapper.hovered) ? palette.alternateBase : "transparent"
 
             // This is partially duplicated by a later handler, however we need this to handle the remaining events around the reply.
             TapHandler {
@@ -147,19 +149,8 @@ TimelineEvent {
             spacing: Nheko.paddingSmall
 
             HoverHandler {
-                id: messageHover
+                id: contentHover
                 blocking: false
-                onHoveredChanged: () => {
-                    if (!Settings.mobileMode && hovered) {
-                        if (!messageActions.hovered) {
-                            messageActions.model = wrapper;
-                            messageActions.attached = wrapper;
-                            messageActions.anchors.bottomMargin = -gridContainer.y
-                            messageActions.anchors.rightMargin = metadata.width
-                        }
-                    }
-                }
-
             }
 
             AbstractButton {
@@ -360,6 +351,19 @@ TimelineEvent {
                 right: parent.right
                 top: reactionRow.bottom
                 topMargin: 5
+            }
+        },
+        HoverHandler {
+            id: messageHover
+            blocking: false
+            onHoveredChanged: () => {
+                if (!Settings.mobileMode && hovered) {
+                    if (!messageActions.hovered) {
+                        messageActions.model = wrapper;
+                        messageActions.attached = wrapper;
+                        messageActions.anchors.rightMargin = metadata.width
+                    }
+                }
             }
         }
     ]
