@@ -45,7 +45,9 @@ TimelineEvent {
 
     property int avatarMargin: (wrapper.isStateEvent || Settings.smallAvatars ? 0 : (Nheko.avatarSize + 8)) // align bubble with section header
 
-    property alias hovered: messageHover.hovered
+    property alias hovered: contentHover.hovered
+    property alias actionsHovered: messageHover.hovered
+    property int actionsTop: gridContainer.y
 
     property int oneHour: 60 * 60 * 1000
     property bool showSection: wrapper.previousMessageDay !== wrapper.day || wrapper.timestamp - wrapper.previousMessageTimestamp > oneHour 
@@ -84,7 +86,7 @@ TimelineEvent {
             anchors.fill: gridContainer
             property color threadColor: TimelineManager.userColor(wrapper.threadId, palette.base)
             property color threadBackgroundColor: wrapper.threadId ? Qt.tint(palette.base, Qt.hsla(threadColor.hslHue, 0.7, threadColor.hslLightness, 0.1)) : "transparent"
-            color: (Settings.messageHoverHighlight && messageHover.hovered) ? palette.alternateBase : threadBackgroundColor
+            color: (Settings.messageHoverHighlight && wrapper.hovered) ? palette.alternateBase : threadBackgroundColor
 
             // this looks better without margins
             TapHandler {
@@ -145,19 +147,8 @@ TimelineEvent {
             y: section.visible && section.active ? section.y + section.height : 0
 
             HoverHandler {
-                id: messageHover
+                id: contentHover
                 blocking: false
-                onHoveredChanged: () => {
-                    if (!Settings.mobileMode && hovered) {
-                        if (!messageActions.hovered) {
-                            messageActions.model = wrapper;
-                            messageActions.attached = wrapper;
-                            messageActions.anchors.bottomMargin = -gridContainer.y
-                            //messageActions.anchors.rightMargin = metadata.width
-                        }
-                    }
-                }
-
             }
 
 
@@ -363,6 +354,18 @@ TimelineEvent {
                 right: parent.right
                 top: reactionRow.bottom
                 topMargin: 5
+            }
+        },
+        HoverHandler {
+            id: messageHover
+            blocking: false
+            onHoveredChanged: () => {
+                if (!Settings.mobileMode && hovered) {
+                    if (!messageActions.hovered) {
+                        messageActions.model = wrapper;
+                        messageActions.attached = wrapper;
+                    }
+                }
             }
         }
     ]

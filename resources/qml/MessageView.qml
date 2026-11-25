@@ -159,10 +159,12 @@ Item {
 
             hoverEnabled: true
             padding: Nheko.paddingSmall
-            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
+            visible: Settings.buttonsInTimeline && !!attached && (attached.actionsHovered || hovered)
             z: 10
             parent: chat.contentItem
             anchors.bottom: attached?.top
+            // Sit the bar fully inside the message, raised by the 6 px gap between messages.
+            anchors.bottomMargin: attached ? -(attached.actionsTop + height - 6) : 0
             anchors.right: attached?.right
 
             background: Rectangle {
