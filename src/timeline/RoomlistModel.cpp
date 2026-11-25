@@ -681,7 +681,8 @@ RoomlistModel::acceptInvite(QString roomid)
             }
         }
 
-        ChatPage::instance()->joinRoom(roomid);
+        ChatPage::instance()->joinRoomVia(
+          roomid.toStdString(), utils::roomVias(roomid.toStdString()), false);
     }
 }
 void
