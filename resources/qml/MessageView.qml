@@ -157,161 +157,180 @@ Item {
             // use comma to update on scroll
             property alias model: row.model
 
-            hoverEnabled: true
+            hoverEnabled: false
             padding: Nheko.paddingSmall
-            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || hovered)
+            visible: Settings.buttonsInTimeline && !!attached && (attached.hovered || barHover.hovered)
             z: 10
             parent: chat.contentItem
             anchors.bottom: attached?.top
+            anchors.left: attached?.left
             anchors.right: attached?.right
 
-            background: Rectangle {
-                border.color: palette.buttonText
-                border.width: 1
-                color: palette.window
-                radius: padding
+            HoverHandler {
+                id: barHover
+
+                // Claim the whole band above the message while the bar is visible, so
+                // moving sideways towards it does not hand the hover to the message above.
+                blocking: true
             }
-            contentItem: RowLayout {
-                id: row
+            contentItem: Item {
+                id: actionsContent
 
-                property var model
+                implicitWidth: row.implicitWidth
+                implicitHeight: row.implicitHeight
 
-                spacing: messageActionsC.padding
+                Rectangle {
+                    anchors.fill: row
+                    anchors.margins: -messageActionsC.padding
+                    border.color: palette.buttonText
+                    border.width: 1
+                    color: palette.window
+                    radius: messageActionsC.padding
+                }
+                RowLayout {
+                    id: row
 
-                Repeater {
-                    model: Settings.recentReactions
-                    visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
+                    property var model
 
-                    delegate: AbstractButton {
-                        id: button
+                    anchors.right: parent.right
+                    anchors.verticalCenter: parent.verticalCenter
+                    spacing: messageActionsC.padding
 
-                        property color buttonTextColor: palette.buttonText
-                        property color highlightColor: palette.highlight
-                        required property string modelData
-                        property bool showImage: modelData.startsWith("mxc://")
+                    Repeater {
+                        model: Settings.recentReactions
+                        visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
 
-                        //Layout.preferredHeight: fontMetrics.height
-                        Layout.alignment: Qt.AlignBottom
-                        focusPolicy: Qt.NoFocus
-                        height: showImage ? 16 : buttonText.implicitHeight
-                        implicitHeight: showImage ? 16 : buttonText.implicitHeight
-                        implicitWidth: showImage ? 16 : buttonText.implicitWidth
-                        width: showImage ? 16 : buttonText.implicitWidth
+                        delegate: AbstractButton {
+                            id: button
+
+                            property color buttonTextColor: palette.buttonText
+                            property color highlightColor: palette.highlight
+                            required property string modelData
+                            property bool showImage: modelData.startsWith("mxc://")
+
+                            //Layout.preferredHeight: fontMetrics.height
+                            Layout.alignment: Qt.AlignBottom
+                            focusPolicy: Qt.NoFocus
+                            height: showImage ? 16 : buttonText.implicitHeight
+                            implicitHeight: showImage ? 16 : buttonText.implicitHeight
+                            implicitWidth: showImage ? 16 : buttonText.implicitWidth
+                            width: showImage ? 16 : buttonText.implicitWidth
+
+                            onClicked: {
+                                room.input.reaction(row.model.eventId, modelData);
+                                TimelineManager.focusMessageInput();
+                            }
+
+                            Label {
+                                id: buttonText
+
+                                anchors.centerIn: parent
+                                color: button.hovered ? button.highlightColor : button.buttonTextColor
+                                font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
+                                horizontalAlignment: Text.AlignHCenter
+                                padding: 0
+                                text: TimelineManager.htmlEscape(button.modelData)
+                                verticalAlignment: Text.AlignVCenter
+                                visible: !button.showImage
+                            }
+                            Image {
+                                // Workaround, can't get icon.source working for now...
+                                anchors.fill: parent
+                                fillMode: Image.PreserveAspectFit
+                                source: button.showImage ? (button.modelData.replace("mxc://", "image://MxcImage/") + "?scale") : ""
+                                sourceSize.height: button.height
+                                sourceSize.width: button.width
+                            }
+                            NhekoCursorShape {
+                                anchors.fill: parent
+                                cursorShape: Qt.PointingHandCursor
+                            }
+                            Ripple {
+                                color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
+                            }
+                        }
+                    }
+                    ImageButton {
+                        ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.text: qsTr("Edit")
+                        ToolTip.visible: hovered
+                        buttonTextColor: palette.buttonText
+                        hoverEnabled: true
+                        image: ":/icons/icons/ui/edit.svg"
+                        visible: !!row.model && row.model.isEditable
+                        Layout.preferredWidth: 16
 
                         onClicked: {
-                            room.input.reaction(row.model.eventId, modelData);
-                            TimelineManager.focusMessageInput();
-                        }
-
-                        Label {
-                            id: buttonText
-
-                            anchors.centerIn: parent
-                            color: button.hovered ? button.highlightColor : button.buttonTextColor
-                            font.family: Settings.emojiFont != "" ? Settings.emojiFont : undefined
-                            horizontalAlignment: Text.AlignHCenter
-                            padding: 0
-                            text: TimelineManager.htmlEscape(button.modelData)
-                            verticalAlignment: Text.AlignVCenter
-                            visible: !button.showImage
-                        }
-                        Image {
-                            // Workaround, can't get icon.source working for now...
-                            anchors.fill: parent
-                            fillMode: Image.PreserveAspectFit
-                            source: button.showImage ? (button.modelData.replace("mxc://", "image://MxcImage/") + "?scale") : ""
-                            sourceSize.height: button.height
-                            sourceSize.width: button.width
-                        }
-                        NhekoCursorShape {
-                            anchors.fill: parent
-                            cursorShape: Qt.PointingHandCursor
-                        }
-                        Ripple {
-                            color: Qt.rgba(buttonTextColor.r, buttonTextColor.g, buttonTextColor.b, 0.5)
+                            if (row.model.isEditable)
+                                room.edit = row.model.eventId;
                         }
                     }
-                }
-                ImageButton {
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Edit")
-                    ToolTip.visible: hovered
-                    buttonTextColor: palette.buttonText
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/edit.svg"
-                    visible: !!row.model && row.model.isEditable
-                    Layout.preferredWidth: 16
+                    ImageButton {
+                        id: reactButton
 
-                    onClicked: {
-                        if (row.model.isEditable)
-                            room.edit = row.model.eventId;
+                        ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.text: qsTr("React")
+                        ToolTip.visible: hovered
+                        hoverEnabled: true
+                        image: ":/icons/icons/ui/smile-add.svg"
+                        visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
+                        Layout.preferredWidth: 16
+
+                        onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, room.roomId, function (plaintext, markdown) {
+                                var event_id = row.model ? row.model.eventId : "";
+                                room.input.reaction(event_id, plaintext);
+                                TimelineManager.focusMessageInput();
+                            })
                     }
-                }
-                ImageButton {
-                    id: reactButton
+                    ImageButton {
+                        ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.text: (row.model && row.model.threadId) ? qsTr("Reply in thread") : qsTr("New thread")
+                        ToolTip.visible: hovered
+                        hoverEnabled: true
+                        image: (row.model && row.model.threadId) ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
+                        visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
+                        Layout.preferredWidth: 16
 
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("React")
-                    ToolTip.visible: hovered
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/smile-add.svg"
-                    visible: room ? room.permissions.canSend(MtxEvent.Reaction) : false
-                    Layout.preferredWidth: 16
-
-                    onClicked: emojiPopup.visible ? emojiPopup.close() : emojiPopup.show(reactButton, room.roomId, function (plaintext, markdown) {
-                            var event_id = row.model ? row.model.eventId : "";
-                            room.input.reaction(event_id, plaintext);
-                            TimelineManager.focusMessageInput();
-                        })
-                }
-                ImageButton {
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: (row.model && row.model.threadId) ? qsTr("Reply in thread") : qsTr("New thread")
-                    ToolTip.visible: hovered
-                    hoverEnabled: true
-                    image: (row.model && row.model.threadId) ? ":/icons/icons/ui/thread.svg" : ":/icons/icons/ui/new-thread.svg"
-                    visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    Layout.preferredWidth: 16
-
-                    onClicked: room.thread = (row.model.threadId || row.model.eventId)
-                }
-                ImageButton {
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Reply")
-                    ToolTip.visible: hovered
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/reply.svg"
-                    visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
-                    Layout.preferredWidth: 16
-
-                    onClicked: room.reply = row.model.eventId
-                }
-                ImageButton {
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Go to message")
-                    ToolTip.visible: hovered
-                    buttonTextColor: palette.buttonText
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/go-to.svg"
-                    visible: !!row.model && filteredTimeline.filterByContent
-                    Layout.preferredWidth: 16
-
-                    onClicked: {
-                        topBar.searchString = "";
-                        room.showEvent(row.model.eventId);
+                        onClicked: room.thread = (row.model.threadId || row.model.eventId)
                     }
-                }
-                ImageButton {
-                    id: optionsButton
+                    ImageButton {
+                        ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.text: qsTr("Reply")
+                        ToolTip.visible: hovered
+                        hoverEnabled: true
+                        image: ":/icons/icons/ui/reply.svg"
+                        visible: room ? room.permissions.canSend(MtxEvent.TextMessage) : false
+                        Layout.preferredWidth: 16
 
-                    ToolTip.delay: Nheko.tooltipDelay
-                    ToolTip.text: qsTr("Options")
-                    ToolTip.visible: hovered
-                    hoverEnabled: true
-                    image: ":/icons/icons/ui/options.svg"
-                    Layout.preferredWidth: 16
+                        onClicked: room.reply = row.model.eventId
+                    }
+                    ImageButton {
+                        ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.text: qsTr("Go to message")
+                        ToolTip.visible: hovered
+                        buttonTextColor: palette.buttonText
+                        hoverEnabled: true
+                        image: ":/icons/icons/ui/go-to.svg"
+                        visible: !!row.model && filteredTimeline.filterByContent
+                        Layout.preferredWidth: 16
 
-                    onClicked: messageContextMenuC.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
+                        onClicked: {
+                            topBar.searchString = "";
+                            room.showEvent(row.model.eventId);
+                        }
+                    }
+                    ImageButton {
+                        id: optionsButton
+
+                        ToolTip.delay: Nheko.tooltipDelay
+                        ToolTip.text: qsTr("Options")
+                        ToolTip.visible: hovered
+                        hoverEnabled: true
+                        image: ":/icons/icons/ui/options.svg"
+                        Layout.preferredWidth: 16
+
+                        onClicked: messageContextMenuC.show(row.model.eventId, row.model.threadId, row.model.type, row.model.isSender, row.model.isEncrypted, row.model.isEditable, "", row.model.body, optionsButton)
+                    }
                 }
             }
         }
